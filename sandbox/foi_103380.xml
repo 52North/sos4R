@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gml:FeatureCollection xmlns:gml="http://www.opengis.net/gml" xmlns:sa="http://www.opengis.net/sampling/1.0">
+  <gml:featureMember>
+    <sa:SamplingPoint gml:id="foi_103380">
+      <gml:name>HANNOVER</gml:name>
+      <sa:position>
+        <gml:Point>
+          <gml:pos srsName="urn:ogc:def:crs:EPSG:4326">-52.5 -9.7</gml:pos>
+        </gml:Point>
+      </sa:position>
+    </sa:SamplingPoint>
+  </gml:featureMember>
+</gml:FeatureCollection>
