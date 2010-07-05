@@ -1,29 +1,29 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North											   #
-# Initiative for Geospatial Open Source Software GmbH						   #
-# 																			   #
-# Contact: Andreas Wytzisk													   #
-# 52 North Initiative for Geospatial Open Source Software GmbH				   #
-# Martin-Luther-King-Weg 24													   #
-# 48155 Muenster, Germany													   #
-# info@52north.org															   #
-#																			   #
+# Copyright (C) 2010 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
 # This program is free software; you can redistribute and/or modify it under   #
 # the terms of the GNU General Public License version 2 as published by the    #
-# Free Software Foundation.													   #
-#																			   #
+# Free Software Foundation.                                                    #
+#                                                                              #
 # This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
 # WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
-# General Public License for more details.									   #
-#																			   #
+# General Public License for more details.                                     #
+#                                                                              #
 # You should have received a copy of the GNU General Public License along with #
-# this program (see gpl-2.0.txt). If not, write to the Free Software		   #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
-# visit the Free Software Foundation web page, http://www.fsf.org.			   #
-#																			   #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18														   #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #                                              #
+# Created: 2010-06-18                                                          #
+# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
@@ -31,42 +31,60 @@
 #
 #
 SOS <- function(url, method = "GET", version = "1.0.0") {
-	new("SOS", url = url, method = method, version = version)
+	.sos <- new("SOS", url = url, method = method, version = version,
+			capabilities = new("OwsCapabilities", version = "NA", 
+					updateSequence = as.character(NA),
+					owsVersion = "1.1.0")
+			)
+	.caps <- getCapabilities(.sos)
+	.sos@capabilities <- .caps
+	return(.sos)
 }
 
+#
+#
+#
 if (!isGeneric("sosRequest"))
 	setGeneric(name = "sosRequest", def = function(sos, request, verbose = FALSE)
 				standardGeneric("sosRequest"))
-#
-#
-#
 setMethod("sosRequest", "SOS", 
 	function(sos, request, verbose = TRUE) { # TODO change verbose default to FALSE
-		response = ""
+		.response = ""
 		
 		if(sos@method == "GET") {
-			if(verbose) print("get!")
+			if(verbose) {
+				print(paste("get! url: ", sos@url))
+			}
 			
-			kvpEncoding = kvp(request)
-			url = paste(sos@url, kvpEncoding, sep="?")
-			
-			if(verbose) print(url)
-			
-			response = getURL(url)
-			
-			print(response)
+			.kvpEncoding = kvp(request)
+			.url = paste(sos@url, .kvpEncoding, sep="?")
+			.response = getURL(.url)
+			#print(response)
 		}
 		else if(sos@method == "POST") {
 			if(verbose) print("post!")
-			# TODO implement post client request
+				
+			# TODO implement POST stuff
+			.xmlEncoding <- encode(request)
+			
+			print(.xmlEncoding)
+			
+			.response = "NOT IMPLEMENTED!"
+				
+		}
+		else if(sos@method == "SOAP") {
+			if(verbose) print("soap!")
+			
+			# TODO implement SOAP stuff
+			
 		}
 		else {
-			warning("Unsupported method, has to be one of GET or POST!")
+			warning("Unsupported method, has to be one of GET, POST, or SOAP!")
 		}
 
 		# TODO exception handling!
 		
-		return(response)
+		return(.response)
 	}
 )
 
@@ -80,6 +98,105 @@ setMethod("sosRequest", "SOS",
 	else
 		return(FALSE)
 }
+
+################################################################################
+# accessor functions
+if (!isGeneric("sosCaps"))
+	setGeneric(name = "sosCaps", def = function(sos)
+				standardGeneric("sosCaps"))
+setMethod("sosCaps", "SOS", 
+		function(sos) {
+			return(sos@capabilities)
+		}
+)
+
+if (!isGeneric("sosUrl"))
+	setGeneric(name = "sosUrl", def = function(sos)
+				standardGeneric("sosUrl"))
+setMethod("sosUrl", "SOS", 
+		function(sos) {
+			return(sos@url)
+		})
+
+if (!isGeneric("sosVersion"))
+	setGeneric(name = "sosVersion", def = function(sos)
+				standardGeneric("sosVersion"))
+setMethod("sosVersion", "SOS", 
+		function(sos) {
+			return(sos@version)
+		})
+
+if (!isGeneric("sosMethod"))
+	setGeneric(name = "sosMethod", def = function(sos)
+				standardGeneric("sosMethod"))
+setMethod("sosMethod", "SOS", 
+		function(sos) {
+			return(sos@method)
+		})
+
+if (!isGeneric("sosProcedures"))
+	setGeneric(name = "sosProcedures", def = function(sos)
+				standardGeneric("sosProcedures"))
+setMethod("sosProcedures", "SOS", 
+		function(sos) {
+			.caps <- sosCaps(sos)
+			.ds <- .caps@operations@operations[["DescribeSensor"]]
+			return(.ds@parameters$procedure)
+		})
+
+if (!isGeneric("sosObservedProperties"))
+	setGeneric(name = "sosObservedProperties", def = function(sos)
+				standardGeneric("sosObservedProperties"))
+setMethod("sosObservedProperties", "SOS", 
+		function(sos) {
+			.caps <- sosCaps(sos)
+			.getOb <- .caps@operations@operations[["GetObservation"]]
+			return(.getOb@parameters$observedProperty)
+		})
+
+if (!isGeneric("sosOfferings"))
+	setGeneric(name = "sosOfferings", def = function(sos)
+				standardGeneric("sosOfferings"))
+setMethod("sosOfferings", "SOS", 
+		function(sos) {
+			.offerings <- sos@capabilities@contents@observationOfferings
+			return(.offerings)
+		})
+if (!isGeneric("sosOfferingIds"))
+	setGeneric(name = "sosOfferingIds", def = function(sos)
+				standardGeneric("sosOfferingIds"))
+setMethod("sosOfferingIds", "SOS", 
+		function(sos) {
+			return(names(sosOfferings(sos)))
+		})
+
+if (!isGeneric("sosFOIs"))
+	setGeneric(name = "sosFOIs", def = function(sos)
+				standardGeneric("sosFOIs"))
+setMethod("sosFOIs", "SOS", 
+		function(sos) {
+			.caps <- sosCaps(sos)
+			
+			# via GetFeatureOfInterest
+			.gfoi <- .caps@operations@operations[["GetFeatureOfInterest"]]
+			if(!is.null(.gfoi)) {
+				return(.gfoi@parameters$featureOfInterestId)
+			}
+			else return("GetFeatureOfInterest-Operation not supported!")
+				
+			# via contents section, list flatting does NOT work yet
+#			.fois <- c(sapply(.caps@contents@observationOfferings, 
+#							slot, "featureOfInterest"))
+#			.fois <- 
+#			names(.fois) <- NULL # TODO remove duplicates
+				
+			return(.fois)
+		})
+
+# sosKeywords, sosTitle/sosAbstract
+
+################################################################################
+# functions for SOS operations
 
 if (!isGeneric("getCapabilities"))
 	setGeneric(name = "getCapabilities", def = function(sos)
@@ -100,8 +217,8 @@ setMethod("getCapabilities", "SOS",
 				return(.er)
 			}
 			else {
-				.capabilities <- .parseSosCapabilities(.response)
-				return(.capabilities)
+				.caps <- .parseSosCapabilities(.response)
+				return(.caps)
 			}
 		}
 )
@@ -201,11 +318,13 @@ SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
 #
 # construction function
 #
-SosObservationOffering <- function(time, procedure, observedProperty,
+SosObservationOffering <- function(id, name = as.character(NA),
+		time, procedure, observedProperty,
 		featureOfInterest, responseFormat,
 		intendedApplication = as.character(NA), resultModel = as.character(NA),
 		responseMode = as.character(NA), boundedBy = list()) {
-	new("SosObservationOffering", time = time, procedure = procedure,
+	new("SosObservationOffering", id = id, name = name,
+			time = time, procedure = procedure,
 			observedProperty = observedProperty,
 			featureOfInterest = featureOfInterest,
 			responseFormat = responseFormat,
@@ -246,7 +365,8 @@ SosContents <- function(observationOfferings) {
 			lowerCorner = xmlValue(ob[["boundedBy"]][["Envelope"]][["lowerCorner"]]),
 			upperCorner = xmlValue(ob[["boundedBy"]][["Envelope"]][["upperCorner"]]))
 	
-	.ob <- SosObservationOffering(time = .time, procedure = .procedure,
+	.ob <- SosObservationOffering(id = .id, name = .name, 
+			time = .time, procedure = .procedure,
 			observedProperty = .observedProperty,
 			featureOfInterest = .featureOfInterest,
 			responseFormat = .responseFormat, resultModel = .resultModel,
@@ -276,11 +396,24 @@ SosContents <- function(observationOfferings) {
 	# parsed: operations and contents section
 	.operationsXML <- .filterXmlChildren(.caps.root[["OperationsMetadata"]],
 			"Operation")
-	.operations = sapply(.operationsXML, .parseOwsOperation)
+	.operations <- sapply(.operationsXML, .parseOwsOperation)
+	# add names for indexing of list
+	names(.operations) <- lapply(.operations,
+			function(obj) {
+				return(obj@name)
+			})
+	
 	.caps.om <- OwsOperationsMetadata(operations = .operations)
 	
 	.observationsXML <- .filterXmlChildren(.caps.root[["Contents"]][["ObservationOfferingList"]], "ObservationOffering")
 	.observations = sapply(.observationsXML, .parseSosObservationOffering)
+	# add names to list
+	names(.observations) <- lapply(.observations,
+			function(obj) {
+				return(obj@id)
+			})
+	
+	
 	.caps.contents <- SosContents(observationOfferings = .observations)
 	
 	.capabilities <- SosCapabilities(version = .caps.version,

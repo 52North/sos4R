@@ -224,11 +224,10 @@ OwsContents <- function(xmlNode) {
 			.parameters[[length(.parameters) + 1]] <- .allowedValues
 		}
 		
-		print("parameters")
-		print(.parameters)
-		print("names:")
-		print(.names)
-		
+		#print("parameters")
+		#print(.parameters)
+		#print("names:")
+		#print(.names)
 		names(.parameters) <- .names
 	}
 	
@@ -275,6 +274,7 @@ kvp.getCapabilities <- function(obj) {
 	
 	return(.kvpString)
 }
+
 kvp.getCapabilities_1.1.0 <- function(obj) {
 #	print("kvp.GetCapabilities_1.0.0")
 	
@@ -301,6 +301,7 @@ kvp.getCapabilities_1.1.0 <- function(obj) {
 	
 	return(.kvpString)
 }
+
 kvp.getCapabilities_2.0.0 <- function(obj) {
 #	print("kvp.GetCapabilities_2.0.0")
 	
@@ -321,9 +322,6 @@ setMethod("encode", "OwsGetCapabilities_1.1.0",
 		function(obj) {
 			print("encode gc 1.1.0")
 			
-			print(obj)
-			class(obj)
-			
 			xmlDoc <- xmlNode(name = "GetCapabilities", namespace = "sos",
 					namespaceDefinitions = c(
 							"sos" = "http://www.opengis.net/sos/1.0",
@@ -337,13 +335,13 @@ setMethod("encode", "OwsGetCapabilities_1.1.0",
 			if( !is.na(obj@acceptVersions)) {
 				acceptVersions <- xmlNode(name = "AcceptVersions", namespace = "ows")
 				acceptVersions$children <- lapply(
-						gc@acceptVersions, "xmlNode", name="ows:Version")
+						obj@acceptVersions, "xmlNode", name="ows:Version")
 				xmlDoc$children[[1]] <- acceptVersions
 			}
 			
 			if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
 				sections <- xmlNode("ows:Sections")
-				sections$children <- lapply(gc@sections, "xmlNode", name="Section", namespace="ows")
+				sections$children <- lapply(obj@sections, "xmlNode", name="Section", namespace="ows")
 				xmlDoc$children[[2]] <- sections
 			}
 			
@@ -354,7 +352,7 @@ setMethod("encode", "OwsGetCapabilities_1.1.0",
 			if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
 				acceptFormats <- xmlNode(name = "AcceptFormats", namespace = "ows")
 				acceptFormats$children <- lapply(
-						gc@acceptFormats, "xmlNode", name="ows:OutputFormat")
+						obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
 				xmlDoc$children[[3]] <- acceptFormats
 			}
 			
@@ -371,27 +369,13 @@ setMethod("decode", "OwsGetCapabilities",
 )
 
 
-# TODO implement summary function
-summary.OwsGetCapabilities = function(object, ...) {
-	obj = list()
-	obj[["class"]] = class(object)
-	obj[["service"]] = object@service
-	obj[["request"]] = object@request
-	#	if (is(object, "SpatialPoints"))
-		obj[["npoints"]] = nrow(object@coords)
-	if (is(object, "OwsGetCapabilities_2.0.0"))
-		obj[["acceptLanguages"]] = object@acceptLanguages
-	class(obj) = "summary.OwsGetCapabilities"
-	obj
-}
-setMethod("summary", "OwsGetCapabilities", summary.OwsGetCapabilities)
-
 # saveXML(gc, file="/tmp/_testsave.xml")
 setMethod("saveXML", "OwsGetCapabilities",
 		function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
 			saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)
 		}
 )
+
 
 #
 # Get the meaning of an OWS exception code
@@ -515,3 +499,4 @@ parseOwsException <- function(node) {
 	
 	return(.exception)
 }
+
