@@ -35,12 +35,15 @@ DescribeSensor <- function(
 		version,
 		procedure,
 		outputFormat = "text/xml;subtype=&quot;sensorML/1.0.1&quot;") {
-	new("DescribeSensor", service=service, version = version,
-			procedure = procedure, outputFormat = outputFormat)
+	new("DescribeSensor",
+			request = "DescribeSensor",
+			service = service,
+			version = version,
+			procedure = procedure,
+			outputFormat = outputFormat)
 }
 
 
-# encode as KVP
 #
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #
@@ -48,74 +51,144 @@ setMethod("kvp", "DescribeSensor",
 		function(obj) {
 			
 			if(obj@version == "1.0.0") {
-				# mandatory:
-				.service <- paste("service",
-						.kvpEscapeSpecialCharacters(obj@service), sep = "=")
-				.request <- "&request=DescribeSensor"
-				.version <- paste("version", 
-						.kvpEscapeSpecialCharacters(obj@version), sep = "=")
-				.procedure <- paste("procedure",
-						.kvpEscapeSpecialCharacters(obj@procedure), sep = "=")
-				.format <- paste(
-						"outputFormat",
-						.kvpEscapeSpecialCharacters(
-								gsub(obj@outputFormat, pattern = "&quot;",
-										replacement = '"')),
-						sep = "=")
-				
-				.kvpString <- paste(.service, .request, .version, .procedure,
-						.format, sep="&")
-				
-				#cat(.kvpString)
-				return(.kvpString)
+				return(kvp.DescribeSensor_1.0.0(obj))
 			}
 			else {
 				warning("Version not supported!")
 			}
 		}
 )
-
-# encode as XML
-setMethod("encode", "DescribeSensor", 
-		function(obj) {
-			xmlDoc <- xmlNode(name = "DescribeSensor", namespace = "sos",
-					namespaceDefinitions = c(
-							"sos" = "http://www.opengis.net/sos/1.0",
-							"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-					attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosDescribeSensor.xsd",
-							service = obj@service,
-							outputFormat = obj@outputFormat,
-							version = obj@version))
-			
-			procedure <- xmlNode(name = "procedure", namespace = "sos", obj@procedure)
-			xmlDoc$children[[1]] <- procedure
-			
-			return(xmlDoc)
-		}
-)
-
-
-# decode from XML
-setMethod("decode", "DescribeSensor", 
-		function(obj) {
-			warning("Function decode is not implemented for DescribeSensor!")
-			
-			# TODO maybe it can become useful to parse an example request?
-		}
-)
-
+kvp.DescribeSensor_1.0.0 <- function(obj) {
+	# mandatory:
+	.service <- paste("service",
+			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
+	.request <- "&request=DescribeSensor"
+	.version <- paste("version", 
+			.kvpEscapeSpecialCharacters(obj@version), sep = "=")
+	.procedure <- paste("procedure",
+			.kvpEscapeSpecialCharacters(obj@procedure), sep = "=")
+	.format <- paste(
+			"outputFormat",
+			.kvpEscapeSpecialCharacters(
+					gsub(obj@outputFormat, pattern = "&quot;",
+							replacement = '"')),
+			sep = "=")
+	
+	.kvpString <- paste(.service, .request, .version, .procedure,
+			.format, sep="&")
+	
+	#cat(.kvpString)
+	return(.kvpString)
+}
 
 #
-summary.DescribeSensor = function(object, ...) {
-	obj = list()
+# encode as XML
+#
+setMethod("encode", "DescribeSensor", 
+		function(obj, verbose = FALSE) {
+			if(verbose) cat("ENCODE ", class(obj), "\n")
+			
+			if(obj@version == "1.0.0") {
+				return(encode.DescribeSensor_1.0.0(obj))
+			}
+			else {
+				warning("Version not supported!")
+			}
+		}
+)
+encode.DescribeSensor_1.0.0 <- function(obj) {
+	xmlDoc <- xmlNode(name = "DescribeSensor", namespace = "sos",
+			namespaceDefinitions = c(
+					"sos" = "http://www.opengis.net/sos/1.0",
+					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosDescribeSensor.xsd",
+					service = obj@service,
+					outputFormat = obj@outputFormat,
+					version = obj@version))
 	
-	# TODO implement summary method
+	procedure <- xmlNode(name = "procedure", namespace = "sos", obj@procedure)
+	xmlDoc$children[[1]] <- procedure
 	
-	obj
+	return(xmlDoc)
 }
-setMethod("summary", "DescribeSensor", summary.DescribeSensor)
 
+#
+# decode from XML
+#
+setMethod("decode", "DescribeSensor", 
+		function(obj) {
+			warning("Function 'decode' is not implemented for DescribeSensor!")
+		}
+)
+
+################################################################################
+#
+setMethod(f = "checkRequest",
+		signature = c(service = "ANY", operation = "DescribeSensor",
+				verbose = "logical"),
+		def = function(service, operation, verbose) {
+			# check if operation is for SOS and operation is DescribeSensor
+			if(!(operation@service == "SOS" && 
+						operation@request == "DescribeSensor")) {
+				warning("Wrong input! Require classes 'SOS' as service and 'DescribeSensor' as operation.")
+				return(FALSE)
+			}
+				
+			# check if sensor in in listed in procedures
+			.procedures = sosProcedures(sos)
+			.dsOperation <- sosOperation(sos, "DescribeSensor")
+
+			.procContained <- FALSE
+			for (x in .procedures) {
+				if(x == operation@procedure)
+					.procContained <- TRUE
+			}
+			if(!.procContained)
+				warning("Requested procedure ist not listed in capablities, service might return error!")
+			
+			
+			# check if output format is supported by sos
+			.oFSupported <- FALSE
+			.supportedFormats <- .dsOperation@parameters[["outputFormat"]];
+			.format <- gsub(operation@outputFormat, pattern = "&quot;",
+					replacement = '"')
+			# if(verbose) cat("Supperted formats: ", .supportedFormats, " -- format: ",
+			#			.format, "\n")
+			
+			if(!any(sapply(.supportedFormats,
+							"==",
+							.format),
+					na.rm = TRUE)) {
+				warning(paste("outputformat has to be one of",
+								paste(.supportedFormats, sep=", ",
+										collapse = " ")))
+			}
+			else {
+				.oFSupported <- TRUE
+			}
+			
+			# check if method is supported
+			.methodSupported <- FALSE
+			if(sos@method == "POST") {
+				if(!is.na(.dsOperation@DCPs[["Post"]]))
+					.methodSupported <- TRUE
+			}
+			else if(sos@method == "GET") {
+				if(!is.na(.dsOperation@DCPs[["Get"]]))
+					.methodSupported <- TRUE
+			}
+			if(!.procContained)
+				warning("Requested method type ist not listed in capablities for this operation, service might return error!")
+			
+			if(verbose) cat("Checks: procedure contained=", .procContained,
+						", output supported=", .oFSupported,
+						", method supported", .methodSupported, "\n")
+			return(.procContained && .oFSupported && .methodSupported)
+		})
+
+#
 # saveXML(gc, file="/tmp/_testsave.xml")
+#
 setMethod("saveXML", "DescribeSensor",
 		function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
 			saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)

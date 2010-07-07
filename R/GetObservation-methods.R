@@ -45,6 +45,7 @@ GetObservation <- function(
 		responseMode = as.character(NA),
 		BBOX = as.character(NA)) {
 	new("GetObservation",
+			request = "GetObservation",
 			service = service,
 			version = version,
 			offering = offering, 
@@ -65,129 +66,194 @@ GetObservation <- function(
 #
 setMethod("kvp", "GetObservation", 
 	function(obj) {
-
-		# required:
-		.request <- "request=GetObservation"
-		.service <- paste("service",
-				.kvpEscapeSpecialCharacters(obj@service), sep="=")
-		.version <- paste("version",
-				.kvpEscapeSpecialCharacters(obj@version), sep="=")
-		.offering <- paste("offering",
-				.kvpEscapeSpecialCharacters(obj@offering), sep="=")
-		.observedProperty <- .kvpKeyAndValues("observedProperty", 
-				obj@observedProperty)
-		.responseFormat <- paste(
-				"responseFormat", 
-				.kvpEscapeSpecialCharacters(
-						gsub(obj@responseFormat, pattern = "&quot;",
-								replacement = '"')),
-				sep="=")
-		.mandatory <- paste(.service, .request, .version, .offering,
-				.observedProperty, .responseFormat, sep="&")
-		
-		print(.mandatory)
-		
-		# optional:
-		.optionals = ""
-		if( !is.na(obj@srsName)) {
-			.optionals <- paste(.optionals, paste("srsName", 
-							.kvpEscapeSpecialCharacters(obj@srsName), sep="="),
-					sep="&")
+		if(obj@version == "1.0.0") {
+			return(kvp.GetObservation_1.0.0(obj))		
 		}
-
-		if( !is.na(obj@eventTime)) {
-			.optionals <- paste(.optionals, paste("eventTime", 
-							.kvpEscapeSpecialCharacters(obj@eventTime), 
-							sep="="), 
-					sep="&")
+		else {
+			warning("Version not supported!")
 		}
-		
-		if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
-			.optionals <- paste(.optionals, .kvpKeyAndValues("procedure", obj@procedure), sep="&")
-		}
-		
-		if( !any(sapply(obj@featureOfInterest, "is.na"), na.rm = TRUE)) {
-			.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest", obj@featureOfInterest), sep="&")
-		}
-		
-		if( !is.na(obj@result)) {
-			.optionals <- paste(.optionals, paste("result", 
-							.kvpEscapeSpecialCharacters(obj@result), sep="="),
-					sep="&")
-		}
-		
-		if( !is.na(obj@resultModel)) {
-			.optionals <- paste(.optionals, paste("resultModel",
-							.kvpEscapeSpecialCharacters(obj@resultModel),
-							sep="="),
-					sep="&")
-		}
-		
-		if( !is.na(obj@responseMode)) {
-			.optionals <- paste(.optionals, paste("responseMode",
-							.kvpEscapeSpecialCharacters(obj@responseMode),
-							sep="="),
-					sep="&")
-		}
-		
-		if( !is.na(obj@BBOX)) {
-			.optionals <- paste(.optionals, paste("BBOX", 
-							.kvpEscapeSpecialCharacters(obj@BBOX), sep="="),
-					sep="&")
-		}
-		
-		.kvpString <- paste(.mandatory, .optionals, sep="")
-		
-		cat(.kvpString); cat("\n")
-		
-		return(.kvpString)
 	}
 )
+kvp.GetObservation_1.0.0 <- function(obj) {
+	# required:
+	.request <- "request=GetObservation"
+	.service <- paste("service",
+			.kvpEscapeSpecialCharacters(obj@service), sep="=")
+	.version <- paste("version",
+			.kvpEscapeSpecialCharacters(obj@version), sep="=")
+	.offering <- paste("offering",
+			.kvpEscapeSpecialCharacters(obj@offering), sep="=")
+	.observedProperty <- .kvpKeyAndValues("observedProperty", 
+			obj@observedProperty)
+	.responseFormat <- paste(
+			"responseFormat", 
+			.kvpEscapeSpecialCharacters(
+					gsub(obj@responseFormat, pattern = "&quot;",
+							replacement = '"')),
+			sep="=")
+	.mandatory <- paste(.service, .request, .version, .offering,
+			.observedProperty, .responseFormat, sep="&")
+	
+	# optional:
+	.optionals = ""
+	if( !is.na(obj@srsName)) {
+		.optionals <- paste(.optionals, paste("srsName", 
+						.kvpEscapeSpecialCharacters(obj@srsName), sep="="),
+				sep="&")
+	}
+	
+	if( !is.na(obj@eventTime)) {
+		.optionals <- paste(.optionals, paste("eventTime", 
+						.kvpEscapeSpecialCharacters(obj@eventTime), 
+						sep="="), 
+				sep="&")
+	}
+	
+	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
+		.optionals <- paste(.optionals, .kvpKeyAndValues("procedure", obj@procedure), sep="&")
+	}
+	
+	if( !any(sapply(obj@featureOfInterest, "is.na"), na.rm = TRUE)) {
+		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest", obj@featureOfInterest), sep="&")
+	}
+	
+	if( !is.na(obj@result)) {
+		warning("GetObservation contains result, but that is not supported for 'GET' - parameter is discarded, use another method to include it!")
+		
+	}
+	
+	if( !is.na(obj@resultModel)) {
+		.optionals <- paste(.optionals, paste("resultModel",
+						.kvpEscapeSpecialCharacters(obj@resultModel),
+						sep="="),
+				sep="&")
+	}
+	
+	if( !is.na(obj@responseMode)) {
+		.optionals <- paste(.optionals, paste("responseMode",
+						.kvpEscapeSpecialCharacters(obj@responseMode),
+						sep="="),
+				sep="&")
+	}
+	
+	if( !is.na(obj@BBOX)) {
+		.optionals <- paste(.optionals, paste("BBOX", 
+						.kvpEscapeSpecialCharacters(obj@BBOX), sep="="),
+				sep="&")
+	}
+	
+	.kvpString <- paste(.mandatory, .optionals, sep="")
+	return(.kvpString)
+}
 
 #
 # encode as XML
 #
 setMethod("encode", "GetObservation", 
-	function(obj) {
-		xmlDoc <- xmlNode(name = "GetObservation", namespace = "sos",
-				namespaceDefinitions = c(
-						"sos" = "http://www.opengis.net/sos/1.0",
-						"ows" = "http://www.opengis.net/ows/1.1",
-						"ogc" = "http://www.opengis.net/ogc",
-						"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-						attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd",
-						service=obj@service))
-
-		# mandatory:
+	function(obj, verbose = FALSE) {
+		if(verbose) cat("ENCODE", class(obj), "\n")
 		
-		# optional:
-		
-		return(xmlDoc)
+		if(obj@version == "1.0.0") {
+			return(encode.GetObservation_1.0.0(obj))		
+		}
+		else {
+			warning("Version not supported!")
+		}
 	}
 )
-
+encode.GetObservation_1.0.0 <- function(obj) {
+	.xmlDoc <- xmlNode(name = "GetObservation", namespace = "sos",
+			namespaceDefinitions = c(
+					"sos" = "http://www.opengis.net/sos/1.0",
+					"ows" = "http://www.opengis.net/ows/1.1",
+					"om" = "http://www.opengis.net/om/1.0", # required for resultModel values
+					"ogc" = "http://www.opengis.net/ogc",
+					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd",
+					service = obj@service, version = obj@version))
+	
+	# required and optional are mixed as schema requires a particular order:
+	.offering <- xmlNode(name = "offering", namespace = "sos", obj@offering)
+	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
+	
+	if( !is.na(obj@eventTime)) {
+		# .eventTimes <- .eventTimeNodeList(obj@eventTime)
+		# TODO model and implement
+	}
+	
+	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
+		.procedureList <- lapply(obj@procedure, "xmlNode",
+				name="procedure", namespace = "sos")
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = .procedureList,
+				append = TRUE)
+	}
+	
+	.observedProperties <- lapply(obj@observedProperty, "xmlNode",
+			name="observedProperty", namespace = "sos")
+	.xmlDoc <- addChildren(node = .xmlDoc, kids = .observedProperties,
+			append = TRUE)
+	
+	if( !any(sapply(obj@featureOfInterest, "is.na"), na.rm = TRUE)) {
+		# TODO add foi with ogc:spatialOps and sos:ObjectID
+	}
+	
+	if( !is.na(obj@result)) {
+		# TODO add result with ogc:comparisonOps
+	}
+	
+	.responseFormat <- xmlNode(name = "responseFormat", namespace = "sos",
+			gsub(obj@responseFormat, pattern = "&quot;",
+					replacement = '"'))
+	.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
+			append = TRUE)
+	
+	if( !is.na(obj@resultModel)) {
+		.resultModel <- xmlNode(name = "resultModel", namespace = "sos",
+				obj@resultModel)
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.resultModel),
+				append = TRUE)
+	}
+	
+	if( !is.na(obj@responseMode)) {
+		.responseMode <- xmlNode(name = "responseMode", namespace = "sos",
+				obj@responseMode)
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseMode),
+				append = TRUE)
+	}
+	
+	if( !is.na(obj@srsName)) {
+		addAttributes(.xmlDoc, srsName = obj@srsName, append = TRUE)
+	}
+	
+	if( !is.na(obj@BBOX)) {
+		warning("GetObservation contains BBOX, but that is not supported for 'POST' (and not at all in the SOS Specification...) - use featureOfInterest instead!")
+	}
+	
+	return(.xmlDoc)
+}
 
 # decode from XML
 setMethod("decode", "GetObservation", 
 	function(obj) {
-		warning("Function decode is not implemented for GetObservation!")
+		warning("Function 'decode' is not implemented for GetObservation!")
 	}
 )
 
-
-# TODO implement summary function
-summary.GetObservation = function(object, ...) {
-	obj = list()
-#	obj[["class"]] = class(object)
-#	obj[["proj4string"]] = object@proj4string@projargs
-#	if (is(object, "SpatialPoints"))
-#		obj[["npoints"]] = nrow(object@coords)
-#	if (is(object, "SpatialGrid") || is(object, "SpatialPixels"))
-#		obj[["grid"]] = gridparameters(object)
-#	class(obj) = "summary.Spatial"
-	obj
-}
-setMethod("summary", "GetObservation", summary.GetObservation)
+################################################################################
+#
+setMethod(f = "checkRequest",
+		signature = c(service = "ANY", operation = "GetObservation",
+				verbose = "logical"),
+		def = function(service, operation, verbose) {
+			# check if operation is for SOS and operation is DescribeSensor
+			if(!(operation@service == "SOS" && 
+						operation@request == "GetObservation")) {
+				warning("Wrong input! Require classes 'SOS' as service and 'GetObservation' as operation.")
+				return(FALSE)
+			}
+			
+			# TODO add useful checks for GetObservation
+		})
 
 # saveXML(gc, file="/tmp/_testsave.xml")
 setMethod("saveXML", "GetObservation",

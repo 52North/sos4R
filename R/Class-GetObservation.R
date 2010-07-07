@@ -32,8 +32,6 @@
 #
 setClass("GetObservation",
 		representation(
-				service = "character",
-				version = "vector",
 				offering = "character",
 				observedProperty = "vector", # one or many
 				responseFormat = "character",
@@ -47,10 +45,11 @@ setClass("GetObservation",
 				BBOX = "character"), # optional, not in spec, see http://www.oostethys.org/best-practices/best-practices-get
 		prototype = list(
 				service = as.character(NA),
-				version = NA,
+				version = as.character(NA),
 				offering = as.character(NA),
 				observedProperty = c(NA),
 				responseFormat = as.character(NA)), # prototype should not pass validity
+		contains = "OwsServiceOperation",
 		validity = function(object) {
 			print("Entering validation: GetObservation")
 			# TODO implement validity function
@@ -81,7 +80,7 @@ setClass("GetObservation",
 			
 			# resultModel must be a QName
 			
-			# responseMode must be one of inline, out-of-band, attached, or resultTemplate
+			# TODO responseMode must be one of inline, out-of-band, attached, or resultTemplate
 			
 			return(TRUE)
 		}

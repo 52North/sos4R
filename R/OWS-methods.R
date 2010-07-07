@@ -23,7 +23,7 @@
 #																			   #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
 # Created: 2010-06-18														   #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #                                              #
+# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
@@ -41,18 +41,27 @@ OwsGetCapabilities <- function(
 	if(owsVersion == "1.1.0") {
 		if(!any(sapply(acceptLanguages, "is.na"), na.rm = TRUE))
 			warning("Parameter 'acceptLanguages' is lost because it is not included in 1.1.0!")
-		new("OwsGetCapabilities_1.1.0", service = service,
+		new("OwsGetCapabilities_1.1.0",
+				request = "GetCapabilities",
+				version = "1.1.0",
+				service = service,
 				acceptVersions = acceptVersions, sections = sections,
 				acceptFormats = acceptFormats, updateSequence = updateSequence)
 	}
 	else if(owsVersion == "2.0.0") {
-		new("OwsGetCapabilities_2.0.0", service = service,
+		new("OwsGetCapabilities_2.0.0",
+				request = "GetCapabilities",
+				version = "2.0.0",
+				service = service,
 				acceptVersions = acceptVersions, sections = sections,
 				acceptFormats = acceptFormats, updateSequence = updateSequence,
 				acceptLanguages = acceptLanguages)
 	}
 	else {
-		new("OwsGetCapabilities", service = service,
+		new("OwsGetCapabilities",
+				request = "GetCapabilities",
+				version = "NONE",
+				service = service,
 				acceptVersions = acceptVersions, owsVersion = owsVersion)
 	}
 }
@@ -97,8 +106,14 @@ OwsCapabilities <- function(
 #
 # construction methods for capabilities elements that are only XML
 #
-OwsServiceIdentification <- function(xmlNode) {
-	new("OwsServiceIdentification", xml = xmlNode)
+OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
+		profile = c(NA), title, abstract = c(NA), keywords = c(NA),
+		fees = as.character(NA), accessConstraints = c(NA)) {
+	new("OwsServiceIdentification",
+			serviceType = serviceType, serviceTypeVersion = serviceTypeVersion,
+			profile = profile, title = title, abstract = abstract,
+			keywords = keywords, fees = fees,
+			accessConstraints = accessConstraints)
 }
 OwsServiceProvider <- function(xmlNode) {
 	new("OwsServiceProvider", xml = xmlNode)
@@ -126,7 +141,36 @@ OwsContents <- function(xmlNode) {
 	new("OwsContents", xml = xmlNode)
 }
 
+
+################################################################################
+# checking of operations before they are sent out
 #
+if (!isGeneric("checkRequest"))
+	setGeneric(name = "checkRequest",
+			def = function(service, operation, verbose) {
+				standardGeneric("checkRequest")
+			})
+setMethod(f = "checkRequest",
+		signature = c(service = "ANY", operation = "OwsGetCapabilities_1.1.0",
+				verbose = "logical"),
+		def = function(service, operation, verbose) {
+			
+			# TODO implement useful checks for OwsGetCapabilities
+			
+			return(TRUE)
+		})
+setMethod(f = "checkRequest",
+		signature = c(service = "ANY", operation = "OwsGetCapabilities_2.0.0",
+				verbose = "logical"),
+		def = function(service, operation, verbose) {
+			
+			# TODO implement useful checks for OwsGetCapabilities
+			
+			return(TRUE)
+		})
+
+
+################################################################################
 # helper method to add (possible) multiple values
 #
 .kvpKeyAndValues <- function(key, values) {
@@ -166,101 +210,20 @@ OwsContents <- function(xmlNode) {
 #
 #
 #
-.filterXmlChildren <- function(node, childrenName, includeNamed = TRUE) {
-	.temp <- xmlChildren(node)
-	.filtered <- c()
-	for (.x in .temp) {
-		if(xmlName(.x) == childrenName && includeNamed)
-			.filtered = c(.filtered, .x)
-		else if(!includeNamed && xmlName(.x) != childrenName)
-			.filtered = c(.filtered, .x) 
-	}
-	rm(.temp)
-	return(.filtered)
-}
+if (!isGeneric("kvp"))
+	setGeneric(name = "kvp", def = function(obj) {
+				standardGeneric("kvp")
+			})
 
 #
 #
 #
-.parseOwsOperation <- function(op) {
-	.name <- xmlGetAttr(op, "name")
-	
-	.dcpsXML <- .filterXmlChildren(op, "DCP")
-	.dcps <- c()
-	for(.dcp in .dcpsXML) {
-		.http <- .dcp[["HTTP"]]
-		.endpoints <- c(
-			.filterXmlChildren(.http, "Get"),
-			.filterXmlChildren(.http, "Post"))
-		
-		for(.ep in .endpoints) {
-			.newEndpoint <- c(xmlGetAttr(.ep, "href"))
-			names(.newEndpoint) <- xmlName(.ep)
-			.dcps <- c(.dcps, .newEndpoint)
-		}
-	}
-	
-	.parametersXML <- .filterXmlChildren(op, "Parameter")
-	if(length(.parametersXML) > 0) {
-		.parameters = list()
-		.names = list()
-		
-		
-		for(.p in .parametersXML) {
-			# put all alowed values in list
-			# check for ows:AnyValue	
-			if(length(.p["AnyValue"]) > 0)
-				.allowedValues = c("AnyValue")
-			else 
-				.allowedValues <- sapply(
-					getNodeSet(
-						.p,
-						"ows:AllowedValues/ows:Value",
-						c(ows = "http://www.opengis.net/ows/1.1")
-						),
-					xmlValue)
-			
-			.names <- c(.names, xmlGetAttr(.p, "name"))
-			.parameters[[length(.parameters) + 1]] <- .allowedValues
-		}
-		
-		#print("parameters")
-		#print(.parameters)
-		#print("names:")
-		#print(.names)
-		names(.parameters) <- .names
-	}
-	
-	if(any(sapply(names(op), "==", "constraints")))
-		warning("constraint elements are NOT processed!")
-	.constraints = c(NA)
-	
-	if(any(sapply(names(op), "==", "metadata")))
-		warning("metadata elements are NOT processed!")
-	.metadata = c(NA)
-	
-	.op <- OwsOperation(name = .name, DCPs = .dcps,
-			parameters = .parameters, constraints = .constraints,
-			metadata = .metadata)
-	return(.op)
-}
-
-#
-#
-#
-setMethod("kvp", "OwsGetCapabilities", 
-		function(obj) kvp.getCapabilities(obj))
-setMethod("kvp", "OwsGetCapabilities_1.1.0", 
-		function(obj) kvp.getCapabilities_1.1.0(obj))
-setMethod("kvp", "OwsGetCapabilities_2.0.0", 
-		function(obj) kvp.getCapabilities_2.0.0(obj))
-
-#
-#
-#
+setMethod(f = "kvp",
+		signature = c(obj = "OwsGetCapabilities"), 
+		def = function(obj) {
+			kvp.getCapabilities(obj)
+		})
 kvp.getCapabilities <- function(obj) {
-#	print("kvp.GetCapabilities")
-	
 	.service <- paste(
 			"service",
 			.kvpEscapeSpecialCharacters(obj@service),
@@ -275,9 +238,15 @@ kvp.getCapabilities <- function(obj) {
 	return(.kvpString)
 }
 
+#
+#
+#
+setMethod(f = "kvp",
+		signature = c(obj = "OwsGetCapabilities_1.1.0"), 
+		function(obj) {
+			kvp.getCapabilities_1.1.0(obj)
+		})
 kvp.getCapabilities_1.1.0 <- function(obj) {
-#	print("kvp.GetCapabilities_1.0.0")
-	
 	.mandatory <- kvp.getCapabilities(obj)
 	
 	.optionals = ""
@@ -302,9 +271,15 @@ kvp.getCapabilities_1.1.0 <- function(obj) {
 	return(.kvpString)
 }
 
+#
+#
+#
+setMethod(f = "kvp",
+		signature = c(obj = "OwsGetCapabilities_2.0.0"), 
+		function(obj) {
+			kvp.getCapabilities_2.0.0(obj)
+		})
 kvp.getCapabilities_2.0.0 <- function(obj) {
-#	print("kvp.GetCapabilities_2.0.0")
-	
 	.kvpString <- kvp.getCapabilities_1.1.0(obj)
 	
 	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
@@ -314,62 +289,136 @@ kvp.getCapabilities_2.0.0 <- function(obj) {
 	return(.kvpString)
 }
 
+#
+#
+#
+if (!isGeneric("encode"))
+	setGeneric(name = "encode",
+			#signature = c(obj = "missing", verbose = "logical"),# TODO why can I not set obj to ANY here?
+			def = function(obj, verbose = FALSE) {
+				standardGeneric("encode")
+			})
 
 #
 # encode as XML
 #
-setMethod("encode", "OwsGetCapabilities_1.1.0", 
-		function(obj) {
-			print("encode gc 1.1.0")
+setMethod("encode", "OwsGetCapabilities", 
+		function(obj, verbose = FALSE) {
+			if(verbose) cat("ENCODE ", class(obj), "\n")
 			
-			xmlDoc <- xmlNode(name = "GetCapabilities", namespace = "sos",
-					namespaceDefinitions = c(
-							"sos" = "http://www.opengis.net/sos/1.0",
-							"ows" = "http://www.opengis.net/ows/1.1",
-							"ogc" = "http://www.opengis.net/ogc",
-							"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-					attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd",
-							service=obj@service))
-			
-			# optional:
-			if( !is.na(obj@acceptVersions)) {
-				acceptVersions <- xmlNode(name = "AcceptVersions", namespace = "ows")
-				acceptVersions$children <- lapply(
-						obj@acceptVersions, "xmlNode", name="ows:Version")
-				xmlDoc$children[[1]] <- acceptVersions
+			# TODO use obj@version of generic request class...
+			if(obj@verion == "1.1.0") {
+				return(encode.OwsGetCapabilities_1.1.0(obj))
 			}
-			
-			if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-				sections <- xmlNode("ows:Sections")
-				sections$children <- lapply(obj@sections, "xmlNode", name="Section", namespace="ows")
-				xmlDoc$children[[2]] <- sections
+			else if(obj@version == "2.0.0") {
+				return(encode.OwsGetCapabilities_2.0.0(obj))
 			}
-			
-			if( !is.na(obj@updateSequence)) {
-				xmlDoc <- addAttributes(xmlDoc, updateSequence = obj@updateSequence)
+			else {
+				warning("Version not supported!")
 			}
-			
-			if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-				acceptFormats <- xmlNode(name = "AcceptFormats", namespace = "ows")
-				acceptFormats$children <- lapply(
-						obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
-				xmlDoc$children[[3]] <- acceptFormats
-			}
-			
-			return(xmlDoc)
 		}
 )
+encode.OwsGetCapabilities_1.1.0 <- function(obj) {
+	xmlDoc <- xmlNode(name = "GetCapabilities", namespace = "sos",
+			namespaceDefinitions = c(
+					"sos" = "http://www.opengis.net/sos/1.0",
+					"ows" = "http://www.opengis.net/ows/1.1",
+					"ogc" = "http://www.opengis.net/ogc",
+					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd",
+					service=obj@service))
+	
+	# optional:
+	if( !is.na(obj@acceptVersions)) {
+		acceptVersions <- xmlNode(name = "AcceptVersions", namespace = "ows")
+		acceptVersions$children <- lapply(
+				obj@acceptVersions, "xmlNode", name="ows:Version")
+		xmlDoc$children[[1]] <- acceptVersions
+	}
+	
+	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
+		sections <- xmlNode("ows:Sections")
+		sections$children <- lapply(obj@sections, "xmlNode", name="Section", namespace="ows")
+		xmlDoc$children[[2]] <- sections
+	}
+	
+	if( !is.na(obj@updateSequence)) {
+		xmlDoc <- addAttributes(xmlDoc, updateSequence = obj@updateSequence)
+	}
+	
+	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
+		acceptFormats <- xmlNode(name = "AcceptFormats", namespace = "ows")
+		acceptFormats$children <- lapply(
+				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
+		xmlDoc$children[[3]] <- acceptFormats
+	}
+	
+	return(xmlDoc)
+}
+encode.OwsGetCapabilities_2.0.0 <- function(obj) {
+	xmlDoc <- xmlNode(name = "GetCapabilities", namespace = "sos",
+			namespaceDefinitions = c(
+					"sos" = "http://www.opengis.net/sos/1.0",
+					"ows" = "http://www.opengis.net/ows/1.1",
+					"ogc" = "http://www.opengis.net/ogc",
+					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd",
+					service=obj@service))
+	
+	# optional:
+	if( !is.na(obj@acceptVersions)) {
+		acceptVersions <- xmlNode(name = "AcceptVersions", namespace = "ows")
+		acceptVersions$children <- lapply(
+				obj@acceptVersions, "xmlNode", name="ows:Version")
+		xmlDoc$children[[1]] <- acceptVersions
+	}
+	
+	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
+		sections <- xmlNode("ows:Sections")
+		sections$children <- lapply(obj@sections, "xmlNode", name="Section", namespace="ows")
+		xmlDoc$children[[2]] <- sections
+	}
+	
+	if( !is.na(obj@updateSequence)) {
+		xmlDoc <- addAttributes(xmlDoc, updateSequence = obj@updateSequence)
+	}
+	
+	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
+		acceptFormats <- xmlNode(name = "AcceptFormats", namespace = "ows")
+		acceptFormats$children <- lapply(
+				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
+		xmlDoc$children[[3]] <- acceptFormats
+	}
+	
+	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
+		acceptLanguages <- xmlNode(name = "AcceptLanguages", namespace = "ows")
+		acceptLanguages$children <- lapply(
+				obj@acceptLanguages, "xmlNode", name="ows:Language")
+		xmlDoc$children[[4]] <- acceptLanguages
+	}
+	
+	return(xmlDoc)
+}
 
-
+#
+#
+#
+if (!isGeneric("decode"))
+	setGeneric(name = "decode", def = function(obj) {
+				standardGeneric("decode")
+			})
+#
 # decode from XML
+#
 setMethod("decode", "OwsGetCapabilities", 
 		function(obj) {
 			return("Function decode is not implemented for OwsGetCapabilities!")
 		}
 )
 
-
+#
 # saveXML(gc, file="/tmp/_testsave.xml")
+#
 setMethod("saveXML", "OwsGetCapabilities",
 		function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
 			saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)
@@ -417,9 +466,10 @@ OWS_STANDARD_EXCEPTIONS <- data.frame(
 		check.rows = TRUE, check.names = TRUE)
 
 if (!isGeneric("owsMeaningOfCode"))
-	setGeneric(name = "owsMeaningOfCode", def = function(exceptionCode)
-				standardGeneric("owsMeaningOfCode"))
-setMethod("owsMeaningOfCode", "character",
+	setGeneric(name = "owsMeaningOfCode", def = function(exceptionCode) {
+				standardGeneric("owsMeaningOfCode")
+			})
+setMethod(f = "owsMeaningOfCode", signature = c(exceptionCode = "character"),
 	def = function(exceptionCode) {
 		.meaning <- as.character(
 				OWS_STANDARD_EXCEPTIONS[
@@ -446,57 +496,3 @@ OwsException <- function(exceptionCode, exceptionText = c(),
 			exceptionText = exceptionText, 
 			locator = locator)
 }
-
-#
-# method for parsing an ows:ExceptionReport.
-#
-parseOwsExceptionReport <- function(document) {
-#	print("parsing er!")
-	
-	.docRoot <- xmlRoot(document)
-	## print(.docRoot)
-	
-	.attrs <- xmlAttrs(.docRoot)
-	.version <- .attrs["version"]
-	if(!is.null(.attrs["lang"]) && !is.na(.attrs["lang"]))
-		.lang <- .attrs["lang"]
-	else .lang <- as.character(NA)
-	
-	# remove all elements from docRoot that are not 'Exception'
-	# could probably be done nicer with subsetting, but indexing with wildcards or similar (... xmlChildren()[[]] ...) did not work.
-	.children <- xmlChildren(.docRoot) 
-	.exceptionsXML <- list()
-	for (x in .children) {
-		if(xmlName(x) == "Exception")
-			.exceptionsXML = c(.exceptionsXML, x)
-		# else print(xmlName(x))
-	}
-	
-	.exceptions = sapply(.exceptionsXML, parseOwsException)
-	.report <- OwsExceptionReport(version = .version, lang = .lang, exceptions = .exceptions)
-	
-	return(.report)
-}
-
-#
-# parsing a single xml node that is an ows:Exception
-#
-parseOwsException <- function(node) {
-#	print("parsing e!")
-	.attrs <- xmlAttrs(node)
-	.code <- .attrs[["exceptionCode"]]
-	if(!is.null(.attrs["locator"]) && !is.na(.attrs["locator"]))
-		.locator <- .attrs[["locator"]]
-	else .locator <- as.character(NA)
-	
-	if(!is.na(xmlChildren(node)["ExceptionText"]))
-		.text <- xmlValue(xmlChildren(node)[["ExceptionText"]])
-	else .text <- as.character(NA)
-	
-	.exception <- OwsException(exceptionCode = .code, 
-			exceptionText = .text,
-			locator = .locator)
-	
-	return(.exception)
-}
-

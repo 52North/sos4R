@@ -31,10 +31,10 @@
 # See OGC 06-009r6
 #
 setClass("DescribeSensor",
-		representation(service = "character", version = "character",
-				procedure = "character", outputFormat = "character"),
+		representation(procedure = "character", outputFormat = "character"),
 		prototype = list(service = as.character(NA), version = as.character(NA),
 				procedure = as.character(NA), outputFormat = as.character(NA)), # prototype should not pass validity
+		contains = "OwsServiceOperation",
 		validity = function(object) {
 			#print("Entering validation: DescribeSensor")
 			# TODO implement validity function

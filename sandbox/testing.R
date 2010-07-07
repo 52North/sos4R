@@ -26,7 +26,8 @@
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-		
+
+################################################################################
 source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 
 
@@ -35,20 +36,19 @@ source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 
 sosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
 request = "service=SOS&request=GetCapabilities&acceptVersions=1.0.0,2.0.0&sections=OperationsMetadata,ServiceIdentification,ServiceProvider,Filter_Capabilities,Contents&acceptFormats=text/xml"
-
 url = paste(sosUrl, request, sep="?")
-
 getURL(url, verbose = TRUE)
+
 
 ################################################################################
 # GetCapabilities
 
 climatesosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
 weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
-sos = SOS(climatesosUrl)
-sos = SOS(weathersosUrl)
+climatesos = SOS(climatesosUrl)
+weathersos = SOS(weathersosUrl)
 
-getCapabilities(sos)
+caps = getCapabilities(weathersos)
 
 
 ################################################################################
@@ -72,6 +72,7 @@ go.responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;"
 
 # creation method
 go <- GetObservation(service = go.service, version = go.version, offering = go.offering, observedProperty =  go.observedProperty, responseFormat =  go.responseFormat)
+go.xml <- encode(go)
 
 # with service
 sos = SOS(climatesos)
@@ -86,9 +87,9 @@ go.procedure = c("urn:ogc:object:feature:WMOStation:104380",
 		"urn:ogc:object:feature:WMOStation:226020",
 		"urn:ogc:object:feature:WMOStation:33020")
 go.foi = c("foi_id_1", "foi_id_2")
-#go.result = "<noResult>lala</noResult>" # not implemented by SOS, causes exception "The parameter result is not supported by this SOS."
-go.resultModel = "om:Observation" # om:CategoryObservation, om:Measurement, om:SpatialObservation
-go.responseMode = "inline" # reslutTemplate, only for usage with GetResult, so not need for know
+go.result = "<noResult>lala</noResult>" # not implemented for GET, causes exception "The parameter result is not supported by this SOS."
+go.resultModel = "om:Observation" # om:CategoryObservation, om:Measurement, om:SpatialObservation, not mentioned by OOSTethys, but implemented in 52N SOS
+go.responseMode = "inline" # reslutTemplate, only for usage with GetResult, so not need for know, not mentioned by OOSTethys, but implemented in 52N SOS
 go.BBOX = "7.0,52.0,7.4,52.4"
 go.BBOX2 = "7.0,52.0,7.4,52.4,urn:ogc:def:crs:EPSG:6.5:4326"
 
@@ -98,9 +99,11 @@ go <- GetObservation(service = go.service, version = go.version,
 		responseFormat =  go.responseFormat,
 		srsName = go.srsName, eventTime = go.eventTimePeriod,
 		procedure = go.procedure, featureOfInterest = go.foi,
-		#result = go.result,
+		result = go.result,
 		resultModel = go.resultModel,
 		responseMode = go.responseMode, BBOX = go.BBOX)
+
+go.xml <- encode(go)
 
 
 ################################################################################
@@ -159,36 +162,48 @@ getURL(paste(url, request2, sep = "?"))
 ################################################################################
 # Parsing the capabilities file...
 
-weathersos.url = "http://v-swe.ubni-muenster.de:8080/WeatherSOS2/sos"
+weathersos.url = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
 weathersos = SOS(weathersos.url)
-caps <- getCapabilities(weathersos)
-str(caps)
+#caps <- getCapabilities(weathersos, verbose = TRUE)
+weathersos@capabilities
 
 ################################################################################
 # accessor functions
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos")
-
 sosUrl(weathersos)
 sosMethod(weathersos)
 sosVersion(weathersos)
 sosCaps(weathersos)
 
 ################################################################################
-# Parsing the observations
+# POST
 
+# manually:
+getCapRequest <- '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://www.opengis.net/sos/1.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd" service="SOS"><ows:AcceptVersions><ows:Version>1.0.0</ows:Version></ows:AcceptVersions><ows:Sections><ows:Section>OperationsMetadata</ows:Section><ows:Section>ServiceIdentification</ows:Section><ows:Section>ServiceProvider</ows:Section><ows:Section>Filter_Capabilities</ows:Section><ows:Section>Contents</ows:Section></ows:Sections></GetCapabilities>'
+# using 'post' for application/x-www-form-urlencoded content
+caps.response <- postForm(uri = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos",
+		request = getCapRequest,
+		style = "POST",
+		.encoding = "UTF-8")
+caps.doc <- xmlParseDoc(caps.response)
+caps <- parseSosCapabilities(caps.doc)
+
+# GetCapabilities
+sos = SOS("http://localhost:8080/ClimateSOS-local/sos", method = "POST",
+		verboseOutput = TRUE)
+sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos", method = "POST",
+		verboseOutput = TRUE)
+caps = sosCaps(sos)
+
+# DescribeSensor
+procedures = sosProcedures(sos)
+sensor.10 <- describeSensor(sos = sos, procedure = procedures[1], verbose = TRUE)
+
+# GetObservation
 
 
 ################################################################################
-# POST
-climatesosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
-
-
-sos = SOS(climatesosUrl, method ="POST")
-
-caps = capabilities(sos)
-
-
-
+# Parsing the observations
 ################################################################################
 # SOAP
 

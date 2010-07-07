@@ -28,14 +28,17 @@
 ################################################################################
 
 #
-# possible parent class...
-# TODO let all service operations extend the class OswServiceOperation
+# virtual parent class for all service requests etc., loosely based on
+# commonalities of OWS 1.1.0 and OWS 2.0.0
 #
 setClass("OwsServiceOperation",
-		representation(service = "character", request = "character",
-				version = "character"),
+		representation(
+				service = "character",	# service type identifier, e.g. "WMS"
+				request = "character",	# operation name, e.g. "GetMap"
+				version = "character"),	# version of the operation
 		prototype = list(service = as.character(NA), request= as.character(NA),
 				version = as.character(NA)),
+		contains = "VIRTUAL",
 		validity = function(object) {
 			print("Entering validation: OwsServiceOperation")
 			# TODO implement validity function
@@ -44,7 +47,7 @@ setClass("OwsServiceOperation",
 				return("service parameter must be given")
 			if(is.na(object@request))
 				return("request parameter must be given")
-			if(is.na(object@acceptVersions))
+			if(is.na(object@version))
 				return("version parameter must be given")
 			
 			return(TRUE)
@@ -52,31 +55,14 @@ setClass("OwsServiceOperation",
 )
 
 #
-#
-#
-if (!isGeneric("kvp"))
-	setGeneric("kvp", function(obj)
-				standardGeneric("kvp"))
-if (!isGeneric("encode"))
-	setGeneric("encode", function(obj)
-				standardGeneric("encode"))
-if (!isGeneric("decode"))
-	setGeneric("decode", function(obj)
-				standardGeneric("decode"))
-
-# Show the implementing functions of these methods:
-#showMethods("kvp")
-#showMethods("encode")
-#showMethods("decode")
-
-#
 # Mandatory parameters, see OWS Common 2.0, OGC 06-121r3
 #
 setClass("OwsGetCapabilities",
-		representation(service = "character", request = "character",
-				acceptVersions = "character", owsVersion = "character"),
+		representation(acceptVersions = "character", owsVersion = "character"),
 		prototype = list(service = as.character(NA), request= "GetCapabilities",
-				acceptVersions = as.character(NA), owsVersion = as.character(NA)),
+				acceptVersions = as.character(NA),
+				owsVersion = as.character(NA)),
+		contains = "OwsServiceOperation",
 		validity = function(object) {
 			print("Entering validation: OwsGetCapabilities")
 			# TODO implement validity function
@@ -187,14 +173,26 @@ setClass("OwsOperation",
 )
 
 #
-# See OGC 06-121r3, clause 7.4.4
+# See OGC 06-121r3, clause 7.4.4 or OGC 06-121r9, clause 7.4.4 (only changes is
+# the data type of the parameter 'serviceType' that changed to URN instead of
+# character string type, and that does not require special handling here).
 #
 setClass("OwsServiceIdentification",
-		representation(xml = "XMLAbstractNode"),
-		prototype = list(xml = NULL),
+		representation(serviceType = "character",
+				serviceTypeVersion = "vector",
+				profile = "vector",
+				title = "vector",
+				abstract = "vector",
+				keywords = "vector",
+				fees = "character",
+				accessConstraints = "vector"),
+		prototype = list(),
 		validity = function(object) {
 			print("Entering validation: OwsServiceIdentification")
 			# TODO implement validity function
+			
+			# mandatory elements: serviceType, serviceTypeVersion, title
+			
 			return(TRUE)
 		}
 )

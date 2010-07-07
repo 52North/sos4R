@@ -30,13 +30,15 @@
 #
 #
 #
-SOS <- function(url, method = "GET", version = "1.0.0") {
+SOS <- function(url, method = "GET", version = "1.0.0", verboseOutput = FALSE) {
 	.sos <- new("SOS", url = url, method = method, version = version,
 			capabilities = new("OwsCapabilities", version = "NA", 
 					updateSequence = as.character(NA),
-					owsVersion = "1.1.0")
-			)
-	.caps <- getCapabilities(.sos)
+					owsVersion = "1.1.0"),
+			verboseOutput = verboseOutput)
+	if(verboseOutput) warning("Verbose output is activated!", immediate. = TRUE)
+	
+	.caps <- getCapabilities(.sos, verbose = TRUE)
 	.sos@capabilities <- .caps
 	return(.sos)
 }
@@ -45,46 +47,53 @@ SOS <- function(url, method = "GET", version = "1.0.0") {
 #
 #
 if (!isGeneric("sosRequest"))
-	setGeneric(name = "sosRequest", def = function(sos, request, verbose = FALSE)
-				standardGeneric("sosRequest"))
-setMethod("sosRequest", "SOS", 
-	function(sos, request, verbose = TRUE) { # TODO change verbose default to FALSE
-		.response = ""
-		
-		if(sos@method == "GET") {
-			if(verbose) {
-				print(paste("get! url: ", sos@url))
+	setGeneric(name = "sosRequest",
+			def = function(sos, request, verbose = FALSE) {
+				standardGeneric("sosRequest")
+			})
+setMethod(f = "sosRequest",
+		signature = c(sos = "SOS", request = "ANY", verbose = "logical"),
+		def = function(sos, request, verbose = FALSE) {
+			.checkResult <- checkRequest(service = sos, operation = request,
+					verbose = verbose)
+			if(!.checkResult)
+				warning("Check returned FALSE!")
+			
+			.response = ""
+			
+			if(sos@method == "GET") {
+				.kvpEncoding = kvp(request)
+				.url = paste(sos@url, .kvpEncoding, sep="?")
+				if(verbose) cat("GET! REQUEST: ", sos@url, "\n")
+				
+				.response = getURL(.url)
+				if(verbose) cat("RESPONSE:"); cat(.response)
 			}
-			
-			.kvpEncoding = kvp(request)
-			.url = paste(sos@url, .kvpEncoding, sep="?")
-			.response = getURL(.url)
-			#print(response)
-		}
-		else if(sos@method == "POST") {
-			if(verbose) print("post!")
+			else if(sos@method == "POST") {
+				.xmlEncoding <- encode(request, verbose)
+				if(verbose) cat("POST! REQUEST: "); print(.xmlEncoding)
 				
-			# TODO implement POST stuff
-			.xmlEncoding <- encode(request)
-			
-			print(.xmlEncoding)
-			
-			.response = "NOT IMPLEMENTED!"
+				# using 'post' for application/x-www-form-urlencoded content
+				.response <- postForm(uri = sos@url,
+						request = toString(.xmlEncoding),
+						style = "POST",
+						.encoding = "UTF-8")
 				
-		}
-		else if(sos@method == "SOAP") {
-			if(verbose) print("soap!")
+				if(verbose) print("RESPONSE:"); print(.response)
+			}
+			else if(sos@method == "SOAP") {
+				if(verbose) print("soap!")
+				
+				# TODO implement SOAP stuff
+				
+			}
+			else {
+				warning("Unsupported method, has to be one of GET, POST, or SOAP!")
+			}
+	
+			# TODO exception handling!
 			
-			# TODO implement SOAP stuff
-			
-		}
-		else {
-			warning("Unsupported method, has to be one of GET, POST, or SOAP!")
-		}
-
-		# TODO exception handling!
-		
-		return(.response)
+			return(.response)
 	}
 )
 
@@ -102,79 +111,81 @@ setMethod("sosRequest", "SOS",
 ################################################################################
 # accessor functions
 if (!isGeneric("sosCaps"))
-	setGeneric(name = "sosCaps", def = function(sos)
-				standardGeneric("sosCaps"))
-setMethod("sosCaps", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosCaps", def = function(sos) {
+				standardGeneric("sosCaps")
+			})
+setMethod(f = "sosCaps", signature = c(sos = "SOS"), def = function(sos) {
 			return(sos@capabilities)
 		}
 )
 
 if (!isGeneric("sosUrl"))
-	setGeneric(name = "sosUrl", def = function(sos)
-				standardGeneric("sosUrl"))
-setMethod("sosUrl", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosUrl", def = function(sos) {
+				standardGeneric("sosUrl")
+			})
+setMethod(f = "sosUrl", signature = c(sos = "SOS"), def = function(sos) {
 			return(sos@url)
 		})
 
 if (!isGeneric("sosVersion"))
-	setGeneric(name = "sosVersion", def = function(sos)
-				standardGeneric("sosVersion"))
-setMethod("sosVersion", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosVersion", def = function(sos) {
+				standardGeneric("sosVersion")
+			})
+setMethod(f = "sosVersion", signature = c(sos = "SOS"), def = function(sos) {
 			return(sos@version)
 		})
 
 if (!isGeneric("sosMethod"))
-	setGeneric(name = "sosMethod", def = function(sos)
-				standardGeneric("sosMethod"))
-setMethod("sosMethod", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosMethod", def = function(sos) {
+				standardGeneric("sosMethod")
+			})
+setMethod(f = "sosMethod", signature = c(sos = "SOS"), def = function(sos) {
 			return(sos@method)
 		})
 
 if (!isGeneric("sosProcedures"))
-	setGeneric(name = "sosProcedures", def = function(sos)
-				standardGeneric("sosProcedures"))
-setMethod("sosProcedures", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosProcedures", def = function(sos) {
+				standardGeneric("sosProcedures")
+			})
+setMethod(f = "sosProcedures", signature = c(sos = "SOS"), def = function(sos) {
 			.caps <- sosCaps(sos)
 			.ds <- .caps@operations@operations[["DescribeSensor"]]
 			return(.ds@parameters$procedure)
 		})
 
 if (!isGeneric("sosObservedProperties"))
-	setGeneric(name = "sosObservedProperties", def = function(sos)
-				standardGeneric("sosObservedProperties"))
-setMethod("sosObservedProperties", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosObservedProperties", def = function(sos) {
+				standardGeneric("sosObservedProperties")
+			})
+setMethod(f = "sosObservedProperties", signature = c(sos = "SOS"),
+		def = function(sos) {
 			.caps <- sosCaps(sos)
 			.getOb <- .caps@operations@operations[["GetObservation"]]
 			return(.getOb@parameters$observedProperty)
 		})
 
 if (!isGeneric("sosOfferings"))
-	setGeneric(name = "sosOfferings", def = function(sos)
-				standardGeneric("sosOfferings"))
-setMethod("sosOfferings", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosOfferings", def = function(sos) {
+				standardGeneric("sosOfferings")
+			})
+setMethod(f = "sosOfferings", signature = c(sos = "SOS"), def = function(sos) {
 			.offerings <- sos@capabilities@contents@observationOfferings
 			return(.offerings)
 		})
 if (!isGeneric("sosOfferingIds"))
-	setGeneric(name = "sosOfferingIds", def = function(sos)
-				standardGeneric("sosOfferingIds"))
-setMethod("sosOfferingIds", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosOfferingIds", def = function(sos) {
+				standardGeneric("sosOfferingIds")
+			})
+setMethod(f = "sosOfferingIds", signature = c(sos = "SOS"),
+		def = function(sos) {
 			return(names(sosOfferings(sos)))
 		})
 
 if (!isGeneric("sosFOIs"))
-	setGeneric(name = "sosFOIs", def = function(sos)
-				standardGeneric("sosFOIs"))
-setMethod("sosFOIs", "SOS", 
-		function(sos) {
+	setGeneric(name = "sosFOIs", def = function(sos) {
+				standardGeneric("sosFOIs")
+			})
+setMethod(f = "sosFOIs", signature = c(sos = "SOS"), def = function(sos) {
 			.caps <- sosCaps(sos)
 			
 			# via GetFeatureOfInterest
@@ -184,40 +195,56 @@ setMethod("sosFOIs", "SOS",
 			}
 			else return("GetFeatureOfInterest-Operation not supported!")
 				
-			# via contents section, list flatting does NOT work yet
-#			.fois <- c(sapply(.caps@contents@observationOfferings, 
-#							slot, "featureOfInterest"))
-#			.fois <- 
-#			names(.fois) <- NULL # TODO remove duplicates
-				
 			return(.fois)
 		})
 
-# sosKeywords, sosTitle/sosAbstract
+if (!isGeneric("sosOperation"))
+	setGeneric(name = "sosOperation", def = function(sos, operationName) {
+				standardGeneric("sosOperation")
+			})
+setMethod(f = "sosOperation",
+		signature = c(sos = "SOS", operationName = "character"),
+		def = function(sos, operationName) {
+			.caps <- sosCaps(sos)
+			return(.caps@operations@operations[[operationName]])
+		})
+
+# TODO sosKeywords, sosTitle/sosAbstract
 
 ################################################################################
 # functions for SOS operations
 
 if (!isGeneric("getCapabilities"))
-	setGeneric(name = "getCapabilities", def = function(sos)
-				standardGeneric("getCapabilities"))
+	setGeneric(name = "getCapabilities",
+			valueClass = c("SosCapabilities", "SosCapabilities_1.1.0",
+					"OwsExceptionReport"),
+			def = function(sos, verbose = FALSE) {
+				standardGeneric("getCapabilities")	
+			})
 #
 #
 #
-setMethod("getCapabilities", "SOS", 
-		function(sos) {
-			.gc <- OwsGetCapabilities(service = "SOS", acceptVersions = c(sos@version))
+setMethod(f = "getCapabilities",
+		signature = c(sos = "SOS", verbose = "logical"), 
+		function(sos, verbose = FALSE) {
+			cat("Requesting capabilities... ")
 			
-			.responseString = sosRequest(sos = sos, request = .gc)
+			.gc <- OwsGetCapabilities(service = "SOS", acceptVersions = c(sos@version))
+			if(verbose) cat("REQUEST:\n"); print(.gc);
+			
+			.responseString = sosRequest(sos = sos, request = .gc, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
+			if(verbose) cat("RESPONSE:\n"); print(.response)
 			
 			if(.isExceptionReport(.response)) {
-				print("Received ExceptionReport in getCapabilities!")
 				.er <- parseOwsExceptionReport(.response)
+				cat(" done - Exception!\n")
+				warning(toString(.er))
 				return(.er)
 			}
 			else {
-				.caps <- .parseSosCapabilities(.response)
+				.caps <- parseSosCapabilities(.response)
+				cat("done!\n")
 				return(.caps)
 			}
 		}
@@ -225,22 +252,32 @@ setMethod("getCapabilities", "SOS",
 
 
 if (!isGeneric("describeSensor"))
-	setGeneric(name = "describeSensor", def = function(sos, procedure)
-				standardGeneric("describeSensor"))
+	setGeneric(name = "describeSensor",
+			valueClass = c("SensorML", "OwsExceptionReport"),
+			def = function(sos, procedure, verbose = FALSE) {
+				standardGeneric("describeSensor")	
+			})
 #
 #
 #
-setMethod("describeSensor", "SOS", 
-		function(sos, procedure) {
+setMethod(f = "describeSensor",
+		signature = c(sos = "SOS", procedure = "character",
+				verbose = "logical"), 
+		function(sos, procedure, verbose = FALSE) {
+			if(verbose) cat("DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
+			
 			.ds <- DescribeSensor(service = "SOS", version = sos@version,
 					procedure = procedure)
+			if(verbose) cat("REQUEST:\n"); print(.ds)
 			
-			.responseString = sosRequest(sos = sos, request = .ds)
+			.responseString = sosRequest(sos = sos, request = .ds, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
+			if(verbose) cat("RESPONSE:\n"); print(.response)
 			
 			if(.isExceptionReport(.response)) {
 				print("Received ExceptionReport in describeSensor!")
 				.er <- parseOwsExceptionReport(.response)
+				warning(toString(.er))
 				return(.er)
 			}
 			else {
@@ -253,23 +290,32 @@ setMethod("describeSensor", "SOS",
 
 if (!isGeneric("getObservation"))
 	setGeneric(name = "getObservation",
-			def = function(sos, offering, observedProperty, responseFormat)
-				standardGeneric("getObservation"))
+			def = function(sos, offering, observedProperty, responseFormat,
+					verbose = FALSE) {
+				standardGeneric("getObservation")
+			})
 #
 #
 #
-setMethod("getObservation", "SOS", 
-		function(sos, offering, observedProperty, responseFormat) {
+setMethod(f = "getObservation",
+		signature = c(sos = "SOS", offering = "character",
+				observedProperty = "character", responseFormat = "character",
+				verbose = "logical"), 
+		function(sos, offering, observedProperty, responseFormat,
+				verbose = FALSE) {
 			.go <- GetObservation(service = "SOS", version = sos@version, 
 					offering = offering, observedProperty =  observedProperty,
 					responseFormat =  responseFormat)
+			if(verbose) cat("REQUEST:\n"); print(.go)
 			
-			.responseString = sosRequest(sos = sos, request = .go)
+			.responseString = sosRequest(sos = sos, request = .go, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
+			if(verbose) cat("RESPONSE:\n"); print(.response)
 			
 			if(.isExceptionReport(.response)) {
 				print("Received ExceptionReport in describeSensor!")
 				.er <- parseOwsExceptionReport(.response)
+				warning(toString(.er))
 				return(.er)
 			}
 			else {
@@ -282,19 +328,14 @@ setMethod("getObservation", "SOS",
 		}
 )
 
-################################################################################
-#
 
-#
-#
+################################################################################
+# other construction functions
 #
 SosFilter_Capabilities <- function(xmlNode) {
 	new("SosFilter_Capabilities", xml = xmlNode)
 }
 
-#
-# construction function
-#
 SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
 		identification, provider, operations, filterCaps, contents) {
 	if(owsVersion == "1.1.0") {
@@ -315,9 +356,6 @@ SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
 	}	
 }
 
-#
-# construction function
-#
 SosObservationOffering <- function(id, name = as.character(NA),
 		time, procedure, observedProperty,
 		featureOfInterest, responseFormat,
@@ -333,97 +371,6 @@ SosObservationOffering <- function(id, name = as.character(NA),
 			boundedBy = boundedBy)
 }
 
-#
-# construction function
-#
 SosContents <- function(observationOfferings) {
 	new("SosContents", observationOfferings = observationOfferings)
 }
-
-#
-#
-#
-.parseSosObservationOffering <- function(ob) {
-	.id <- xmlGetAttr(ob, "id")
-	.name <- xmlValue(ob[["name"]])
-	
-	.time <- list(beginPosition = xmlValue(
-					ob[["time"]][["TimePeriod"]][["beginPosition"]]),
-			endPosition = xmlValue(
-					ob[["time"]][["TimePeriod"]][["endPosition"]]))
-	
-	.procedure <- sapply(ob["procedure"], xmlGetAttr, "href")
-	.observedProperty <- sapply(ob["observedProperty"], xmlGetAttr, "href")
-	.featureOfInterest <- sapply(ob["featureOfInterest"], xmlGetAttr, "href")
-	
-	.responseFormat <- sapply(ob["responseFormat"], xmlValue)
-	.resultModel <- sapply(ob["resultModel"], xmlValue)
-	.responseMode <- sapply(ob["responseMode"], xmlValue)
-	
-	.boundedBy <- list(
-			srsName = xmlGetAttr(ob[["boundedBy"]][["Envelope"]], "srsName"),
-			lowerCorner = xmlValue(ob[["boundedBy"]][["Envelope"]][["lowerCorner"]]),
-			upperCorner = xmlValue(ob[["boundedBy"]][["Envelope"]][["upperCorner"]]))
-	
-	.ob <- SosObservationOffering(id = .id, name = .name, 
-			time = .time, procedure = .procedure,
-			observedProperty = .observedProperty,
-			featureOfInterest = .featureOfInterest,
-			responseFormat = .responseFormat, resultModel = .resultModel,
-			responseMode = .responseMode, boundedBy = .boundedBy)
-	
-	return(.ob)
-}
-
-#
-#
-#
-.parseSosCapabilities <- function(document) {
-	.caps.root <- xmlRoot(document)
-	
-	# attributes:
-	.caps.attrs <- xmlAttrs(.caps.root)
-	.caps.version <- .caps.attrs[["version"]]
-	if(any(sapply(names(.caps.attrs), "==", "updateSequence")))
-		.caps.updateSequence <- .caps.attrs[["updateSequence"]]
-	else .caps.updateSequence <- as.character(NA)
-	
-	# as xml only: service identification, service provider and filter capabilities 
-	.caps.si <- OwsServiceIdentification(.caps.root[["ServiceIdentification"]])
-	.caps.sp <- OwsServiceProvider(.caps.root[["ServiceProvider"]])
-	.caps.fc <- SosFilter_Capabilities(.caps.root[["Filter_Capabilities"]])
-	
-	# parsed: operations and contents section
-	.operationsXML <- .filterXmlChildren(.caps.root[["OperationsMetadata"]],
-			"Operation")
-	.operations <- sapply(.operationsXML, .parseOwsOperation)
-	# add names for indexing of list
-	names(.operations) <- lapply(.operations,
-			function(obj) {
-				return(obj@name)
-			})
-	
-	.caps.om <- OwsOperationsMetadata(operations = .operations)
-	
-	.observationsXML <- .filterXmlChildren(.caps.root[["Contents"]][["ObservationOfferingList"]], "ObservationOffering")
-	.observations = sapply(.observationsXML, .parseSosObservationOffering)
-	# add names to list
-	names(.observations) <- lapply(.observations,
-			function(obj) {
-				return(obj@id)
-			})
-	
-	
-	.caps.contents <- SosContents(observationOfferings = .observations)
-	
-	.capabilities <- SosCapabilities(version = .caps.version,
-			updateSequence = .caps.updateSequence,
-			identification = .caps.si,
-			provider = .caps.sp,
-			operations = .caps.om,
-			filterCaps = .caps.fc,
-			contents = .caps.contents)
-	
-	return(.capabilities)
-}
-

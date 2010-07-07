@@ -34,33 +34,29 @@ SensorML <- function(xml) {
 	new("SensorML", xml = xml)
 }
 
+#
 # encode as XML
+#
 setMethod("encode", "SensorML", 
-		function(obj) {
-			warning("Function encode is not implemented for SensorML!")
+		function(obj, verbose = FALSE) {
+			if(verbose) cat("ENCODE", class(obj, "\n"))
+			warning("Function 'encode' is not implemented for SensorML!")
 		}
 )
-
-
-# decode from XML
-setMethod("decode", "SensorML", 
-		function(obj) {
-			warning("Function decode is not implemented for SensorML!")
-		}
-)
-
 
 #
-summary.SensorML = function(object, ...) {
-	obj = list()
-	
-	# TODO implement method
-	
-	obj
-}
-setMethod("summary", "SensorML", summary.SensorML)
+# decode from XML
+#
+setMethod("decode", "SensorML", 
+		function(obj) {
+			if(verbose) cat("DECODE", class(obj, "\n"))
+			warning("Function 'decode' is not implemented for SensorML!")
+		}
+)
 
+#
 # saveXML(gc, file="/tmp/_testsave.xml")
+#
 setMethod("saveXML", "SensorML",
 		function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
 			saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)

@@ -32,7 +32,8 @@
 #
 setClass("SOS",
 		representation(url = "character", method = "character",
-				version = "character", capabilities = "OwsCapabilities"),
+				version = "character", capabilities = "OwsCapabilities",
+				verboseOutput = "logical"),
 		prototype = list(
 				url = as.character(NA),
 				method = as.character(NA),

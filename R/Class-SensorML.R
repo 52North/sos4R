@@ -31,7 +31,7 @@
 # See OWS Common, OGC 06-121r9
 #
 setClass("SensorML",
-		representation(xml = "XMLDocument"), # was XMLInternalDocument!
+		representation(xml = "XMLInternalDocument"),
 		prototype = list(xml = NULL),
 		validity = function(object) {
 			#print("Entering validation: SensorML")

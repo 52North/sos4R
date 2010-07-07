@@ -39,15 +39,17 @@ climatesos = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
 
 source(paste(path, "R", "Class-OWS.R",  sep="/"))
 source(paste(path, "R", "OWS-methods.R",  sep="/"))
+source(paste(path, "R", "OWS-methods-parsing.R",  sep="/"))
 
+source(paste(path, "R", "Class-SOS.R",  sep="/"))
 source(paste(path, "R", "Class-DescribeSensor.R",  sep="/"))
 source(paste(path, "R", "Class-GetObservation.R",  sep="/"))
-source(paste(path, "R", "Class-SOS.R",  sep="/"))
 source(paste(path, "R", "Class-SensorML.R",  sep="/"))
 
 source(paste(path, "R", "DescribeSensor-methods.R",  sep="/"))
 source(paste(path, "R", "GetObservation-methods.R",  sep="/"))
 source(paste(path, "R", "SOS-methods.R",  sep="/"))
+source(paste(path, "R", "SOS-methods-parsing.R",  sep="/"))
 source(paste(path, "R", "SensorML-methods.R",  sep="/"))
 
 source(paste(path, "R", "PrintShowStructureSummmary-methods.R",  sep="/"))
