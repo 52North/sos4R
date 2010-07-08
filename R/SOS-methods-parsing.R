@@ -77,7 +77,7 @@ parseSosCapabilities <- function(document) {
 	
 	# as xml only: service identification, service provider and filter capabilities 
 	.caps.si <- parseOwsServiceIdentification(.caps.root[["ServiceIdentification"]])
-	.caps.sp <- OwsServiceProvider(.caps.root[["ServiceProvider"]])
+	.caps.sp <- parseOwsServiceProvider(.caps.root[["ServiceProvider"]])
 	.caps.fc <- SosFilter_Capabilities(.caps.root[["Filter_Capabilities"]])
 	
 	# parsed: operations and contents section

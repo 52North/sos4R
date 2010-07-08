@@ -116,9 +116,13 @@ print.OwsServiceIdentification <- function(x, ...) {
 }
 
 print.OwsServiceProvider <- function(x, ...) {
-	cat("Object of class OwsServiceProvider (wraps unparsed XML, see @xml for details).\n")
-#	print("xml:")
-#	print(x@xml)
+	cat("Object of class OwsServiceProvider:\n")
+	cat("Provider name: ")
+	cat(x@providerName)
+	cat(", providerSite: ")
+	cat(x@providerSite)
+	cat("\nService contact:  (unparsed XML, see @serviceContact for details)")
+#	print(x@serviceContact)
 	invisible(x)
 }
 

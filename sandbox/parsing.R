@@ -93,13 +93,35 @@ names(docRoot[2:4])
 names(docRoot[["ServiceIdentification"]])
 names(docRoot[["Contents"]])
 
-
-
-#
 # 
 caps.xmlString = doc$doc
 isXMLString(caps.xmlString)
-
 capsTree = xmlParseString(xmlString)
-
 class(capsTree)
+
+# 
+sp = '<ows:ServiceProvider xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<ows:ProviderName>Insitute for Geoinformatics, Unversity Muenster, Germany</ows:ProviderName>
+		<ows:ProviderSite xlink:hdef="http://ifgi.uni-muenster.de/"/>
+		<ows:ServiceContact>
+		<ows:IndividualName>Juerrens, Eike Hinderk</ows:IndividualName>
+		<ows:PositionName>Student Assistant</ows:PositionName>
+		<ows:ContactInfo>
+		<ows:Phone>
+		<ows:Voice>+49(0)251/83-31972</ows:Voice>
+		</ows:Phone>
+		<ows:Address>
+		<ows:DeliveryPoint>Weselerstrasse 253</ows:DeliveryPoint>
+		<ows:City>Muenster</ows:City>
+		<ows:AdministrativeArea>North Rhine-Westphalia</ows:AdministrativeArea>
+		<ows:PostalCode>48151</ows:PostalCode>
+		<ows:Country>Germany</ows:Country>
+		<ows:ElectronicMailAddress>ehjuerrens@uni-muenster.de</ows:ElectronicMailAddress>
+		</ows:Address>
+		</ows:ContactInfo>
+		<ows:Role/>
+		</ows:ServiceContact>
+		</ows:ServiceProvider>'
+sp.xml <- xmlParseString(sp)
+sp.parsed <- parseOwsServiceProvider(sp.xml)
+sp.parsed

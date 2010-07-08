@@ -27,8 +27,8 @@
 #                                                                              #
 ################################################################################
 
-#
-#
+################################################################################
+# construction functions
 #
 OwsGetCapabilities <- function(
 		service,
@@ -66,9 +66,6 @@ OwsGetCapabilities <- function(
 	}
 }
 
-#
-#
-#
 OwsCapabilities <- function(
 		version, 
 		updateSequence = NA,
@@ -103,9 +100,6 @@ OwsCapabilities <- function(
 	}	
 }
 
-#
-# construction methods for capabilities elements that are only XML
-#
 OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
 		profile = c(NA), title, abstract = c(NA), keywords = c(NA),
 		fees = as.character(NA), accessConstraints = c(NA)) {
@@ -115,30 +109,40 @@ OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
 			keywords = keywords, fees = fees,
 			accessConstraints = accessConstraints)
 }
-OwsServiceProvider <- function(xmlNode) {
-	new("OwsServiceProvider", xml = xmlNode)
+
+OwsServiceProvider <- function(providerName, providerSite = as.character(NA),
+		serviceContact = xmlNode(NA)) {
+	new("OwsServiceProvider", providerName = providerName,
+			providerSite = providerSite, serviceContact = serviceContact)
 }
 
-#
-# construction functions
-#
 OwsOperationsMetadata <- function(operations, parameters = c(NA),
 	constraints = c(NA), extendedCapabilities = xmlNode(NA)) {
 	new("OwsOperationsMetadata", operations = operations,
 		parameters = parameters, constraints = constraints,
 		extendedCapabilities = extendedCapabilities)
 }
+
 OwsOperation <- function(name, DCPs, parameters = c(NA), constraints = c(NA),
 			metadata = c(NA)) {
 	new("OwsOperation", name = name, DCPs = DCPs, parameters = parameters,
 		constraints = constraints, metadata = metadata)
 }
 
-#
-# construction function
-#
 OwsContents <- function(xmlNode) {
 	new("OwsContents", xml = xmlNode)
+}
+
+OwsExceptionReport <- function(version, lang = as.character(NA), exceptions = list()) {
+	new("OwsExceptionReport", version = version, lang = lang,
+			exceptions = exceptions)
+}
+
+OwsException <- function(exceptionCode, exceptionText = c(),
+		locator = as.character(NA)) {
+	new("OwsException", exceptionCode = exceptionCode,
+			exceptionText = exceptionText, 
+			locator = locator)
 }
 
 
@@ -171,7 +175,11 @@ setMethod(f = "checkRequest",
 
 
 ################################################################################
-# helper method to add (possible) multiple values
+# helper methods
+#
+
+# 
+# to add (possible) multiple values in kvp
 #
 .kvpKeyAndValues <- function(key, values) {
 	if(is(values, "vector")) {
@@ -207,17 +215,14 @@ setMethod(f = "checkRequest",
 	return(.escaped)
 }
 
-#
-#
+################################################################################
+# kvp encoding
 #
 if (!isGeneric("kvp"))
 	setGeneric(name = "kvp", def = function(obj) {
 				standardGeneric("kvp")
 			})
 
-#
-#
-#
 setMethod(f = "kvp",
 		signature = c(obj = "OwsGetCapabilities"), 
 		def = function(obj) {
@@ -238,9 +243,6 @@ kvp.getCapabilities <- function(obj) {
 	return(.kvpString)
 }
 
-#
-#
-#
 setMethod(f = "kvp",
 		signature = c(obj = "OwsGetCapabilities_1.1.0"), 
 		function(obj) {
@@ -271,9 +273,6 @@ kvp.getCapabilities_1.1.0 <- function(obj) {
 	return(.kvpString)
 }
 
-#
-#
-#
 setMethod(f = "kvp",
 		signature = c(obj = "OwsGetCapabilities_2.0.0"), 
 		function(obj) {
@@ -289,9 +288,6 @@ kvp.getCapabilities_2.0.0 <- function(obj) {
 	return(.kvpString)
 }
 
-#
-#
-#
 if (!isGeneric("encode"))
 	setGeneric(name = "encode",
 			#signature = c(obj = "missing", verbose = "logical"),# TODO why can I not set obj to ANY here?
@@ -299,15 +295,16 @@ if (!isGeneric("encode"))
 				standardGeneric("encode")
 			})
 
-#
-# encode as XML
+
+################################################################################
+# XML encoding
 #
 setMethod("encode", "OwsGetCapabilities", 
 		function(obj, verbose = FALSE) {
 			if(verbose) cat("ENCODE ", class(obj), "\n")
 			
 			# TODO use obj@version of generic request class...
-			if(obj@verion == "1.1.0") {
+			if(obj@version == "1.1.0") {
 				return(encode.OwsGetCapabilities_1.1.0(obj))
 			}
 			else if(obj@version == "2.0.0") {
@@ -400,34 +397,38 @@ encode.OwsGetCapabilities_2.0.0 <- function(obj) {
 	return(xmlDoc)
 }
 
-#
-#
+
+################################################################################
+# decoding
 #
 if (!isGeneric("decode"))
 	setGeneric(name = "decode", def = function(obj) {
 				standardGeneric("decode")
 			})
-#
-# decode from XML
-#
 setMethod("decode", "OwsGetCapabilities", 
 		function(obj) {
 			return("Function decode is not implemented for OwsGetCapabilities!")
 		}
 )
 
-#
+
+################################################################################
 # saveXML(gc, file="/tmp/_testsave.xml")
 #
 setMethod("saveXML", "OwsGetCapabilities",
-		function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
-			saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)
+		function(doc, file = NULL, compression = 0, indent = TRUE,
+				prefix = '<?xml version="1.0"?>\n', doctype = NULL,
+				encoding = "", ...) {
+			saveXML(doc = encode(doc), file = file, compression = compression,
+					indent = indent, prefix = prefix, doctype = doctype,
+					encoding = encoding, ...)
 		}
 )
 
 
-#
-# Get the meaning of an OWS exception code
+################################################################################
+# Helper functions for OWS exceptions, e.g. to get the meaning of an exception
+# code.
 #
 .codes = c(
 		"OperationNotSupported",
@@ -478,21 +479,3 @@ setMethod(f = "owsMeaningOfCode", signature = c(exceptionCode = "character"),
 		return(.meaning)
 	}
 )
-
-#
-#
-#
-OwsExceptionReport <- function(version, lang = as.character(NA), exceptions = list()) {
-	new("OwsExceptionReport", version = version, lang = lang,
-			exceptions = exceptions)
-}
-
-#
-#
-#
-OwsException <- function(exceptionCode, exceptionText = c(),
-		locator = as.character(NA)) {
-	new("OwsException", exceptionCode = exceptionCode,
-			exceptionText = exceptionText, 
-			locator = locator)
-}

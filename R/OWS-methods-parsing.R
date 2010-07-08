@@ -146,7 +146,7 @@ parseOwsException <- function(node) {
 #
 #
 parseOwsServiceIdentification <- function(node) {
-	print("parsing ows service identification!")
+#	print("parsing ows service identification!")
 	
 	.children <- xmlChildren(node)
 	.serviceType <- sapply(.filterXmlChildren(node, "ServiceType"),
@@ -158,23 +158,60 @@ parseOwsServiceIdentification <- function(node) {
 			xmlValue)
 	
 	# optional:
-	.profile <- sapply(.filterXmlChildren(node, "Profile"),
-			xmlValue)
-	.abstract <- sapply(.filterXmlChildren(node, "Abstract"),
-			xmlValue)
-	.keywords <- sapply(.filterXmlChildren(node, "Keywords"),
-			xmlValue)
-	.keywords <- sapply(.keywords, gsub, pattern = "^[[:space:]]+|[[:space:]]+$",
-					replacement = "") # http://finzi.psych.upenn.edu/R/Rhelp02a/archive/40714.html
-	.fees <- sapply(.filterXmlChildren(node, "Fees"),
-			xmlValue)
-	.accessConstraints <- sapply(.filterXmlChildren(node, "AccessConstraints"),
-			xmlValue)
+	if(!is.na(xmlChildren(node)["Profile"]))
+		.profile <- sapply(.filterXmlChildren(node, "Profile"), xmlValue)
+	else .profile <- c(NA)
+	
+	if(!is.na(xmlChildren(node)["Abstract"]))
+		.abstract <- sapply(.filterXmlChildren(node, "Abstract"), xmlValue)
+	else .abstract <- c(NA)
+	
+	if(!is.na(xmlChildren(node)["Keywords"])) {
+		.keywords <- sapply(.filterXmlChildren(node, "Keywords"),
+				xmlValue)
+		.keywords <- sapply(.keywords, gsub, pattern = "^[[:space:]]+|[[:space:]]+$",
+				replacement = "") # http://finzi.psych.upenn.edu/R/Rhelp02a/archive/40714.html
+	}
+	else .keywords <- c(NA)
+	
+	if(!is.na(xmlChildren(node)["Fees"]))
+		.fees <- sapply(.filterXmlChildren(node, "Fees"), xmlValue)
+	else .fees <- as.character(NA)
+	
+	if(!is.na(xmlChildren(node)["AccessConstraints"]))
+		.accessConstraints <- sapply(.filterXmlChildren(node,
+						"AccessConstraints"),
+				xmlValue)
+	else .accessConstraints <- c(NA)
 	
 	.si <- OwsServiceIdentification(serviceType =  .serviceType,
 			serviceTypeVersion = .serviceTypeVersion, profile = .profile,
 			title = .title, abstract = .abstract, keywords = .keywords,
 			fees = .fees, accessConstraints = .accessConstraints)
+}
+
+#
+#
+#
+parseOwsServiceProvider <- function(node) {
+	print("parsing ows service provider!")
+	
+	.name <- xmlValue(node[["ProviderName"]])
+	
+	# optional:
+	if(!is.null(xmlChildren(node)[["ProviderSite"]]))
+		.site <- xmlGetAttr(node = node[["ProviderSite"]],
+				name = "href", default = as.character(NA))
+	else .site <- as.character(NA)
+	
+	if(!is.null(xmlChildren(node)[["ServiceContact"]])) {
+		.contact <- node[["ServiceContact"]]
+		.sp <- OwsServiceProvider(providerName = .name, providerSite = .site,
+				serviceContact = .contact)
+	}
+	else .sp <- OwsServiceProvider(providerName = .name, providerSite = .site)
+	
+	return(.sp)
 }
 
 #

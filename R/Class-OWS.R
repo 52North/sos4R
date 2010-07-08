@@ -198,13 +198,18 @@ setClass("OwsServiceIdentification",
 )
 
 #
-# See OGC 06-121r3, clause 7.4.5
+# See OGC 06-121r3, clause 7.4.5 or OGC 06-121r9, clause 7.4.4 (no changes
+# between the two versions).
 #
 setClass("OwsServiceProvider",
-		representation(xml = "XMLAbstractNode"),
-		prototype = list(xml = NULL),
+		representation(providerName = "character", providerSite = "character",
+				serviceContact = "XMLAbstractNode"),
+		prototype = list(providerName = as.character(NA)),
 		validity = function(object) {
 			print("Entering validation: OwsServiceProvider")
+			
+			#TODO implement validity function, providerName is mandatory
+			
 			return(TRUE)
 		}
 )
