@@ -62,6 +62,28 @@ GetObservation <- function(
 }
 
 #
+#
+#
+GetObservationById <- function(
+		service,
+		version,
+		observationId,
+		responseFormat, 
+		srsName = as.character(NA),
+		resultModel = as.character(NA),
+		responseMode = as.character(NA)) {
+	new("GetObservationById",
+			request = "GetObservationById",
+			service = service,
+			version = version,
+			observationId = observationId,
+			responseFormat = responseFormat,
+			srsName = srsName,
+			resultModel = resultModel,
+			responseMode = responseMode)
+}
+
+#
 # encode as KVP
 #
 setMethod("kvp", "GetObservation", 
@@ -146,6 +168,12 @@ kvp.GetObservation_1.0.0 <- function(obj) {
 	return(.kvpString)
 }
 
+setMethod("kvp", "GetObservationById", 
+		function(obj) {
+			warning("KVP encoding of operation 'GetObservationById' not supported!")
+		}
+)
+
 #
 # encode as XML
 #
@@ -169,7 +197,7 @@ encode.GetObservation_1.0.0 <- function(obj) {
 					"om" = "http://www.opengis.net/om/1.0", # required for resultModel values
 					"ogc" = "http://www.opengis.net/ogc",
 					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd",
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
 					service = obj@service, version = obj@version))
 	
 	# required and optional are mixed as schema requires a particular order:
@@ -222,7 +250,7 @@ encode.GetObservation_1.0.0 <- function(obj) {
 	}
 	
 	if( !is.na(obj@srsName)) {
-		addAttributes(.xmlDoc, srsName = obj@srsName, append = TRUE)
+		.xmlDoc <- addAttributes(.xmlDoc, srsName = obj@srsName, append = TRUE)
 	}
 	
 	if( !is.na(obj@BBOX)) {
@@ -232,10 +260,68 @@ encode.GetObservation_1.0.0 <- function(obj) {
 	return(.xmlDoc)
 }
 
+setMethod("encode", "GetObservationById", 
+		function(obj, verbose = FALSE) {
+			if(verbose) cat("ENCODE", class(obj), "\n")
+			
+			if(obj@version == "1.0.0") {
+				return(encode.GetObservationById_1.0.0(obj))		
+			}
+			else {
+				warning("Version not supported!")
+			}
+		}
+)
+encode.GetObservationById_1.0.0 <- function(obj) {
+	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = "sos",
+			namespaceDefinitions = c(
+					"sos" = "http://www.opengis.net/sos/1.0",
+					"ows" = "http://www.opengis.net/ows/1.1",
+					"om" = "http://www.opengis.net/om/1.0", # required for resultModel values
+					"ogc" = "http://www.opengis.net/ogc",
+					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
+					service = obj@service, version = obj@version))
+	
+	.obsId <- xmlNode(name = "ObservationId", namespace = "sos", obj@observationId)
+	.xmlDoc <- addChildren(node = .xmlDoc, .obsId)
+	
+	.responseFormat <- xmlNode(name = "responseFormat", namespace = "sos",
+			gsub(obj@responseFormat, pattern = "&quot;",
+					replacement = '"'))
+	.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
+			append = TRUE)
+	
+	if( !is.na(obj@resultModel)) {
+		.resultModel <- xmlNode(name = "resultModel", namespace = "sos",
+				obj@resultModel)
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.resultModel),
+				append = TRUE)
+	}
+	
+	if( !is.na(obj@responseMode)) {
+		.responseMode <- xmlNode(name = "responseMode", namespace = "sos",
+				obj@responseMode)
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseMode),
+				append = TRUE)
+	}
+	
+	if( !is.na(obj@srsName)) {
+		.xmlDoc <- addAttributes(.xmlDoc, srsName = obj@srsName, append = TRUE)
+	}
+	
+	return(.xmlDoc)
+}
+
 # decode from XML
 setMethod("decode", "GetObservation", 
+		function(obj) {
+			warning("Function 'decode' is not implemented for GetObservation!")
+		}
+)
+setMethod("decode", "GetObservationById", 
 	function(obj) {
-		warning("Function 'decode' is not implemented for GetObservation!")
+		warning("Function 'decode' is not implemented for GetObservationById!")
 	}
 )
 
@@ -253,12 +339,20 @@ setMethod(f = "checkRequest",
 			}
 			
 			# TODO add useful checks for GetObservation
+			return(TRUE)
 		})
 
-# saveXML(gc, file="/tmp/_testsave.xml")
-setMethod("saveXML", "GetObservation",
-	function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
-		saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)
-	}
-)
-
+setMethod(f = "checkRequest",
+		signature = c(service = "ANY", operation = "GetObservationById",
+				verbose = "logical"),
+		def = function(service, operation, verbose) {
+			# check if operation is for SOS and operation is DescribeSensor
+			if(!(operation@service == "SOS" && 
+						operation@request == "GetObservationById")) {
+				warning("Wrong input! Require classes 'SOS' as service and 'GetObservationById' as operation.")
+				return(FALSE)
+			}
+			
+			# TODO add useful checks for GetObservationById
+			return(TRUE)
+		})

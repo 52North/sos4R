@@ -85,3 +85,41 @@ setClass("GetObservation",
 			return(TRUE)
 		}
 )
+
+#
+# See SOS specification, OGC 06-009r6, section 10.1
+#
+setClass("GetObservationById",
+		representation(
+				observationId = "character",
+				responseFormat = "character",
+				srsName = "character", # optional
+				resultModel = "character", # optional
+				responseMode = "character"), # optional
+		prototype = list(
+				observationId = as.character(NA),
+				responseFormat = as.character(NA)), # prototype should not pass validity
+		contains = "OwsServiceOperation",
+		validity = function(object) {
+			print("Entering validation: GetObservationById")
+			# TODO implement validity function
+			
+			# service, version, observationId, and responseFormat are mandatory
+			if(is.na(object@service))
+				return("service parameter must be given")
+			if(is.na(object@version))
+				return("version must be given")
+			if(is.na(object@observationId))
+				return("observationId parameter must be given")
+			if(is.na(object@responseFormat))
+				return("responseFormat parameter must be given")
+			
+			# if version is there, it hast to be in a certain format, see ows common
+			
+			# responseFormat must be MIME content type
+			# resultModel must be a QName
+			# TODO responseMode must be one of inline, out-of-band, attached, or resultTemplate
+			
+			return(TRUE)
+		}
+)

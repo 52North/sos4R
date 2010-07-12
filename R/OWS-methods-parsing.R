@@ -59,7 +59,8 @@ parseOwsOperation <- function(op) {
 			# check for ows:AnyValue	
 			if(length(.p["AnyValue"]) > 0)
 				.allowedValues = c("AnyValue")
-			else 
+			else {
+				# list of allowed values				
 				.allowedValues <- sapply(
 						getNodeSet(
 								.p,
@@ -67,9 +68,19 @@ parseOwsOperation <- function(op) {
 								c(ows = "http://www.opengis.net/ows/1.1")
 						),
 						xmlValue)
+				# list of ranges
+				.ranges <-  sapply(
+						getNodeSet(
+								.p,
+								"ows:AllowedValues/ows:Range",
+								c(ows = "http://www.opengis.net/ows/1.1")
+						),
+						parseOwsRange)
+				.allowedValuesAndRanges <- c(.allowedValues, .ranges)
+			}
 			
 			.names <- c(.names, xmlGetAttr(.p, "name"))
-			.parameters[[length(.parameters) + 1]] <- .allowedValues
+			.parameters[[length(.parameters) + 1]] <- .allowedValuesAndRanges
 		}
 		
 		names(.parameters) <- .names
@@ -213,6 +224,46 @@ parseOwsServiceProvider <- function(node) {
 	
 	return(.sp)
 }
+
+#
+# all elements are optional
+#
+parseOwsRange <- function(node) {
+	.children <- xmlChildren(node)
+	
+	.minimumXml <- .children[["MinimumValue"]]
+	if(is.null(.minimumXml)) {
+		.minimum <- as.character(NA)
+	} else {
+		.minimum <- xmlValue(.minimumXml)
+	}
+	
+	
+	.maximumXml <- .children[["MaximumValue"]]
+	if(is.null(.maximumXml)) {
+		.maximum <- as.character(NA)
+	} else {
+		.maximum <- xmlValue(.maximumXml)
+	}
+	
+	.closure <- xmlGetAttr(node = node, name = "rangeClosure")
+	if(is.null(.closure)) {
+		.closure <- as.character(NA)
+	}
+	
+	.spacingXml <- .children[["Spacing"]]
+	if(is.null(.spacingXml)) {
+		.spacing <- as.character(NA)
+	} else {
+		.spacing <- xmlValue(.spacingXml)
+	}
+	
+	.range <- OwsRange(minimumValue = .minimum, maximumValue = .maximum,
+			rangeClosure = .closure, spacing = .spacing)
+	
+	return(.range)
+}
+
 
 #
 #

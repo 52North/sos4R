@@ -101,7 +101,7 @@ encode.DescribeSensor_1.0.0 <- function(obj) {
 			namespaceDefinitions = c(
 					"sos" = "http://www.opengis.net/sos/1.0",
 					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosDescribeSensor.xsd",
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
 					service = obj@service,
 					outputFormat = obj@outputFormat,
 					version = obj@version))

@@ -99,7 +99,7 @@ isXMLString(caps.xmlString)
 capsTree = xmlParseString(xmlString)
 class(capsTree)
 
-# 
+#  SERVICE PROVIDER
 sp = '<ows:ServiceProvider xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<ows:ProviderName>Insitute for Geoinformatics, Unversity Muenster, Germany</ows:ProviderName>
 		<ows:ProviderSite xlink:hdef="http://ifgi.uni-muenster.de/"/>
@@ -125,3 +125,14 @@ sp = '<ows:ServiceProvider xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="htt
 sp.xml <- xmlParseString(sp)
 sp.parsed <- parseOwsServiceProvider(sp.xml)
 sp.parsed
+
+# RANGES
+range = '<ows:Range xmlns:ows="http://www.opengis.net/ows/1.1">
+<ows:MinimumValue>2008-02-14T11:03:02.000+01:00</ows:MinimumValue>
+<ows:MaximumValue>2010-07-12T12:45:00.000+02:00</ows:MaximumValue>
+</ows:Range>'
+
+range.xml <- xmlParseString(range)
+range.parsed <- parseOwsRange(range.xml)
+range.parsed
+

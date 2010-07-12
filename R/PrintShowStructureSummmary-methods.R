@@ -199,6 +199,19 @@ print.OwsException <- function(x, ...) {
 	invisible(x)
 }
 
+print.OwsRange <- function(x, ...) {
+	cat("Object of class OwsRange")
+	cat("; spacing: ")
+	cat(x@spacing)
+	cat(", rangeClosure: ")
+	cat(x@rangeClosure)
+	cat("\nFROM ")
+	cat(x@minimumValue)
+	cat(" TO ")
+	cat(x@maximumValue)
+	invisible(x)
+}
+
 print.SOS <- function(x, ...) {
 	cat("Object of class SOS")
 	cat("; version: ")
@@ -227,11 +240,11 @@ print.SosObservationOffering <- function(x, ...) {
 	cat(x@name)
 	cat(", time: ")
 	cat(paste(x@time$beginPosition, " - ", x@time$endPosition))
-	cat("\nprocedure: ")
+	cat("\nprocedure(s): ")
 	cat(x@procedure)
-	cat("\nobservedProperty: ")
+	cat("\nobservedProperty(s): ")
 	cat(x@observedProperty)
-	cat("\nfeatureOfInterest: ")
+	cat("\nfeature(s)OfInterest: ")
 	cat(x@featureOfInterest)
 	cat("\nresponseFormat(s): ")
 	cat(x@responseFormat)
@@ -293,6 +306,27 @@ print.GetObservation <- function(x, ...) {
 	invisible(x)
 }
 
+print.GetObservationById <- function(x, ...) {
+	cat("Object of class GetObservationById: ")
+	cat("service: ")
+	cat(x@service)
+	cat(", version: ")
+	cat(x@version)
+	cat("\nObsvervation ID: ")
+	cat(x@observationId)
+	cat("\nResponseFormat(s): ")
+	cat(x@responseFormat)
+	cat(", responseMode(s): ")
+	cat(paste(x@responseMode))
+	# optionals:
+	cat(", srsName: ")
+	cat(x@srsName)
+	cat(", resultModel(s): ")
+	cat(x@resultModel)
+	invisible(x)
+}
+
+
 print.DescribeSensor <- function(x, ...) {
 	cat("Object of class DescribeSensor: ")
 	cat("service: ")
@@ -324,12 +358,14 @@ setMethod("show", "OwsCapabilities_1.1.0", function(object) print.OwsCapabilitie
 setMethod("show", "OwsCapabilities_2.0.0", function(object) print.OwsCapabilities(object))
 setMethod("show", "OwsExceptionReport", function(object) print.OwsExceptionReport(object))
 setMethod("show", "OwsException", function(object) print.OwsException(object))
+setMethod("show", "OwsRange", function(object) print.OwsRange(object))
 setMethod("show", "SOS", function(object) print.SOS(object))
 setMethod("show", "SosFilter_Capabilities", function(object) print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) print.SosObservationOffering(object))
 setMethod("show", "SosContents", function(object) print.SosContents(object))
 setMethod("show", "SensorML", function(object) print.SensorML(object))
 setMethod("show", "GetObservation", function(object) print.GetObservation(object))
+setMethod("show", "GetObservationById", function(object) print.GetObservationById(object))
 setMethod("show", "DescribeSensor", function(object) print.DescribeSensor(object))
 
 ################################################################################

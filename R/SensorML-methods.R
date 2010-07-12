@@ -58,7 +58,11 @@ setMethod("decode", "SensorML",
 # saveXML(gc, file="/tmp/_testsave.xml")
 #
 setMethod("saveXML", "SensorML",
-		function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
-			saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)
+		function(doc, file=NULL, compression=0, indent=TRUE,
+				prefix = '<?xml version="1.0"?>\n', doctype = NULL,
+				encoding = "UTF-8", ...) {
+			saveXML(doc = encode(doc), file=file, compression=compression,
+					indent=indent, prefix=prefix, doctype=doctype,
+					encoding=encoding, ...)
 		}
 )

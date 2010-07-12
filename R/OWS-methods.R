@@ -145,6 +145,14 @@ OwsException <- function(exceptionCode, exceptionText = c(),
 			locator = locator)
 }
 
+OwsRange <- function(minimumValue = as.character(NA),
+		maximumValue = as.character(NA), rangeClosure = as.character(NA),
+		spacing = as.character(NA)) {
+	new("OwsRange", minimumValue = minimumValue, maximumValue = maximumValue,
+			rangeClosure = rangeClosure, spacing = spacing)
+}
+
+
 
 ################################################################################
 # checking of operations before they are sent out
@@ -203,6 +211,9 @@ setMethod(f = "checkRequest",
 # # 					%23
 # ? 					%3F
 # = 					%3D
+#
+# TODO check if this is conform with chapter "Reserved and encoded characters in
+# HTTP GET URLs" in OWS Common.
 #
 .kvpEscapeSpecialCharacters <- function(valueString) {
 #	print(valueString)
@@ -322,7 +333,7 @@ encode.OwsGetCapabilities_1.1.0 <- function(obj) {
 					"ows" = "http://www.opengis.net/ows/1.1",
 					"ogc" = "http://www.opengis.net/ogc",
 					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd",
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
 					service=obj@service))
 	
 	# optional:
@@ -359,7 +370,7 @@ encode.OwsGetCapabilities_2.0.0 <- function(obj) {
 					"ows" = "http://www.opengis.net/ows/1.1",
 					"ogc" = "http://www.opengis.net/ogc",
 					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd",
+			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
 					service=obj@service))
 	
 	# optional:
@@ -413,12 +424,12 @@ setMethod("decode", "OwsGetCapabilities",
 
 
 ################################################################################
-# saveXML(gc, file="/tmp/_testsave.xml")
+# saveXML(request, file="/tmp/_testsave.xml")
 #
-setMethod("saveXML", "OwsGetCapabilities",
+setMethod("saveXML", "OwsServiceOperation",
 		function(doc, file = NULL, compression = 0, indent = TRUE,
 				prefix = '<?xml version="1.0"?>\n', doctype = NULL,
-				encoding = "", ...) {
+				encoding = "UTF-8", ...) {
 			saveXML(doc = encode(doc), file = file, compression = compression,
 					indent = indent, prefix = prefix, doctype = doctype,
 					encoding = encoding, ...)

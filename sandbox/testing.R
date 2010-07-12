@@ -199,15 +199,48 @@ caps = sosCaps(sos)
 procedures = sosProcedures(sos)
 sensor.10 <- describeSensor(sos = sos, procedure = procedures[1], verbose = TRUE)
 
-# GetObservation
-
-
 ################################################################################
-# Parsing the observations
+# GetObservationById
+getobsbyid.id <- "lala:123"
+getobsbyid <- GetObservationById("SOS", "1.0.0", getobsbyid.id,
+		"text/xml;subtype=&quot;om/1.0.0&quot;")
+getobsbyid
+encode(getobsbyid)
+getobsbyid <- GetObservationById(service = "SOS", version = "1.0.0",
+		observationId = getobsbyid.id,
+		responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;",
+		resultModel = "om:Measurement", responseMode = "inline",
+		srsName = "epsg:1234")
+getobsbyid
+encode(getobsbyid) # is valid!
 
 
 ################################################################################
 # SOAP
+
+################################################################################
+# Parsing observations
+
+sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos")
+
+# request:
+go.offering = sosOfferings(sos)[[6]]@id
+go.observedProperty = sosObservedProperties(sos)[[6]] # temp
+
+go.responseFormat = sosResponseFormats(sos)[[1]] # temp
+go.responseMode = sosResponseMode(sos)[[2]] # inline
+go.eventTime = "2010-07-01T12:00/2010-07-10T12:00" 
+go.resultModel = sosResultModels(sos)[[3]] # om:Measurement
+go.srsName = "urn:ogc:def:crs:EPSG:6.8:4326" # is "AnyValue" in capabilities... contacted Carsten about that
+
+
+# no event time -> latest
+getObservation(sos, offering = go.offering,
+		observedProperty =  go.observedProperty,
+		responseFormat = go.responseFormat)
+
+
+
 
 
 ################################################################################

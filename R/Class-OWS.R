@@ -337,3 +337,22 @@ setClass("OwsException",
 			return(TRUE)
 		}
 )
+
+#
+#
+#
+setClass("OwsRange",
+		representation(minimumValue = "character", maximumValue = "character",
+				rangeClosure = "character", spacing = "character"),
+		prototype = list(),
+		validity = function(object) {
+			print("Entering validation: OwsRange")
+			# TODO implement validity function
+			
+			# all elements are optional!
+			
+			# closure: one of closed, open, open-closed, closed-open, see owsDomainType.xsd
+			return(TRUE)
+		}
+)
+

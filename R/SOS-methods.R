@@ -149,7 +149,7 @@ if (!isGeneric("sosProcedures"))
 			})
 setMethod(f = "sosProcedures", signature = c(sos = "SOS"), def = function(sos) {
 			.caps <- sosCaps(sos)
-			.ds <- .caps@operations@operations[["DescribeSensor"]]
+			.ds <- .caps@operations@operations[["GetObservation"]]
 			return(.ds@parameters$procedure)
 		})
 
@@ -171,6 +171,16 @@ if (!isGeneric("sosOfferings"))
 setMethod(f = "sosOfferings", signature = c(sos = "SOS"), def = function(sos) {
 			.offerings <- sos@capabilities@contents@observationOfferings
 			return(.offerings)
+		})
+if (!isGeneric("sosOffering"))
+	setGeneric(name = "sosOffering", def = function(sos, offeringId) {
+				standardGeneric("sosOffering")
+			})
+setMethod(f = "sosOffering", signature = c(sos = "SOS", 
+				offeringId = "character"),
+		def = function(sos, offeringId) {
+			.offerings <- sos@capabilities@contents@observationOfferings
+			return(.offerings[[offeringId]])
 		})
 if (!isGeneric("sosOfferingIds"))
 	setGeneric(name = "sosOfferingIds", def = function(sos) {
@@ -209,7 +219,67 @@ setMethod(f = "sosOperation",
 			return(.caps@operations@operations[[operationName]])
 		})
 
+if (!isGeneric("sosResponseFormats"))
+	setGeneric(name = "sosResponseFormats", def = function(sos) {
+				standardGeneric("sosResponseFormats")
+			})
+setMethod(f = "sosResponseFormats", signature = c(sos = "SOS"),
+		def = function(sos) {
+			.caps <- sosCaps(sos)
+			.getOb <- .caps@operations@operations[["GetObservation"]]
+			return(.getOb@parameters$responseFormat)
+		})
+
+if (!isGeneric("sosResponseMode"))
+	setGeneric(name = "sosResponseMode", def = function(sos) {
+				standardGeneric("sosResponseMode")
+			})
+setMethod(f = "sosResponseMode", signature = c(sos = "SOS"),
+		def = function(sos) {
+			.caps <- sosCaps(sos)
+			.getOb <- .caps@operations@operations[["GetObservation"]]
+			return(.getOb@parameters$responseMode)
+		})
+
+if (!isGeneric("sosSrsName"))
+	setGeneric(name = "sosSrsName", def = function(sos) {
+				standardGeneric("sosSrsName")
+			})
+setMethod(f = "sosSrsName", signature = c(sos = "SOS"),
+		def = function(sos) {
+			.caps <- sosCaps(sos)
+			.getOb <- .caps@operations@operations[["GetObservation"]]
+			return(.getOb@parameters$srsName)
+		})
+
+if (!isGeneric("sosResultModels"))
+	setGeneric(name = "sosResultModels", def = function(sos) {
+				standardGeneric("sosResultModels")
+			})
+setMethod(f = "sosResultModels", signature = c(sos = "SOS"),
+		def = function(sos) {
+			.caps <- sosCaps(sos)
+			.getOb <- .caps@operations@operations[["GetObservation"]]
+			return(.getOb@parameters$resultModel)
+		})
+
+if (!isGeneric("sosTimePeriod"))
+	setGeneric(name = "sosTimePeriod", def = function(obj) {
+				standardGeneric("sosTimePeriod")
+			})
+setMethod(f = "sosTimePeriod", signature = c(obj = "SOS"),
+		def = function(obj) {
+			.caps <- sosCaps(obj)
+			.getOb <- .caps@operations@operations[["GetObservation"]]
+			return(.getOb@parameters$eventTime)
+		})
+setMethod(f = "sosTimePeriod", signature = c(obj = "SosObservationOffering"),
+		def = function(obj) {
+			return(obj@time)
+		})
+
 # TODO sosKeywords, sosTitle/sosAbstract
+
 
 ################################################################################
 # functions for SOS operations
@@ -291,6 +361,10 @@ setMethod(f = "describeSensor",
 if (!isGeneric("getObservation"))
 	setGeneric(name = "getObservation",
 			def = function(sos, offering, observedProperty, responseFormat,
+					srsName = as.character(NA), eventTime = as.character(NA), 
+					procedure = c(NA), featureOfInterest = c(NA), 
+					result = as.character(NA), resultModel = as.character(NA),
+					responseMode = as.character(NA), BBOX = as.character(NA),
 					verbose = FALSE) {
 				standardGeneric("getObservation")
 			})
@@ -298,14 +372,33 @@ if (!isGeneric("getObservation"))
 #
 #
 setMethod(f = "getObservation",
-		signature = c(sos = "SOS", offering = "character",
-				observedProperty = "character", responseFormat = "character",
+		signature = c(sos = "SOS",
+				offering = "character",
+				observedProperty = "character",
+				responseFormat = "character",
+				#optional:
+				srsName = "character",
+				eventTime = "character", 
+				procedure = "vector",
+				featureOfInterest = "vector", 
+				result = "character",
+				resultModel = "character",
+				responseMode = "character",
+				BBOX = "character",
 				verbose = "logical"), 
-		function(sos, offering, observedProperty, responseFormat,
+		function(sos, offering, observedProperty, responseFormat, 
+				srsName = as.character(NA), eventTime = as.character(NA), 
+				procedure = c(NA), featureOfInterest = c(NA), 
+				result = as.character(NA), resultModel = as.character(NA),
+				responseMode = as.character(NA), BBOX = as.character(NA),
 				verbose = FALSE) {
 			.go <- GetObservation(service = "SOS", version = sos@version, 
 					offering = offering, observedProperty =  observedProperty,
-					responseFormat =  responseFormat)
+					responseFormat =  responseFormat, srsName = srsName,
+					eventTime = eventTime, procedure = procedure,
+					featureOfInterest = featureOfInterest, result = result,
+					resultModel = resultModel, responseMode = responseMode,
+					BBOX = BBOX)
 			if(verbose) cat("REQUEST:\n"); print(.go)
 			
 			.responseString = sosRequest(sos = sos, request = .go, verbose)
@@ -328,6 +421,49 @@ setMethod(f = "getObservation",
 		}
 )
 
+
+if (!isGeneric("getObservationById"))
+	setGeneric(name = "getObservationById",
+			def = function(sos, observationId, responseFormat, srsName,
+					resultModel, responseMode, verbose = FALSE) {
+				standardGeneric("getObservationById")
+			})
+#
+#
+#
+setMethod(f = "getObservationById",
+		signature = c(sos = "SOS", observationId = "character",
+				responseFormat = "character", srsName = "character",
+				resultModel = "character", responseMode = "character",
+				verbose = "logical"), 
+		function(sos, observationId, responseFormat, srsName = as.character(NA),
+				resultModel = as.character(NA), responseMode = as.character(NA),
+				verbose = FALSE) {
+			.go <- GetObservation(service = "SOS", version = sos@version, 
+					offering = offering, observedProperty =  observedProperty,
+					responseFormat =  responseFormat, srsName = srsName,
+					resultModel = resultModel, responseMode = responseMode)
+			if(verbose) cat("REQUEST:\n"); print(.go)
+			
+			.responseString = sosRequest(sos = sos, request = .go, verbose)
+			.response <- xmlParseDoc(.responseString, asText = TRUE)
+			if(verbose) cat("RESPONSE:\n"); print(.response)
+			
+			if(.isExceptionReport(.response)) {
+				print("Received ExceptionReport in describeSensor!")
+				.er <- parseOwsExceptionReport(.response)
+				warning(toString(.er))
+				return(.er)
+			}
+			else {
+				# TODO add a check whether there is handling for the given response method implemented
+				
+				# TODO parse and return data.frame? sptX class?
+			}
+			
+			return(.response)
+		}
+)
 
 ################################################################################
 # other construction functions

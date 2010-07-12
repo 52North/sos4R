@@ -34,6 +34,7 @@ parseSosObservationOffering <- function(ob) {
 	.id <- xmlGetAttr(ob, "id")
 	.name <- xmlValue(ob[["name"]])
 	
+	# TODO use some real time period class, not list!
 	.time <- list(beginPosition = xmlValue(
 					ob[["time"]][["TimePeriod"]][["beginPosition"]]),
 			endPosition = xmlValue(
@@ -75,12 +76,13 @@ parseSosCapabilities <- function(document) {
 		.caps.updateSequence <- .caps.attrs[["updateSequence"]]
 	else .caps.updateSequence <- as.character(NA)
 	
-	# as xml only: service identification, service provider and filter capabilities 
-	.caps.si <- parseOwsServiceIdentification(.caps.root[["ServiceIdentification"]])
-	.caps.sp <- parseOwsServiceProvider(.caps.root[["ServiceProvider"]])
+	# as xml only: filter capabilities
 	.caps.fc <- SosFilter_Capabilities(.caps.root[["Filter_Capabilities"]])
 	
-	# parsed: operations and contents section
+	# parsed:
+	.caps.si <- parseOwsServiceIdentification(
+			.caps.root[["ServiceIdentification"]])
+	.caps.sp <- parseOwsServiceProvider(.caps.root[["ServiceProvider"]])
 	.operationsXML <- .filterXmlChildren(.caps.root[["OperationsMetadata"]],
 			"Operation")
 	.operations <- sapply(.operationsXML, parseOwsOperation)
@@ -89,7 +91,6 @@ parseSosCapabilities <- function(document) {
 			function(obj) {
 				return(obj@name)
 			})
-	
 	.caps.om <- OwsOperationsMetadata(operations = .operations)
 	
 	.observationsXML <- .filterXmlChildren(.caps.root[["Contents"]][["ObservationOfferingList"]], "ObservationOffering")
