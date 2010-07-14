@@ -170,17 +170,17 @@ parseOwsServiceIdentification <- function(node) {
 	
 	# optional:
 	if(!is.na(xmlChildren(node)["Profile"]))
-		.profile <- sapply(.filterXmlChildren(node, "Profile"), xmlValue)
+		.profile <- lapply(.filterXmlChildren(node, "Profile"), xmlValue)
 	else .profile <- c(NA)
 	
 	if(!is.na(xmlChildren(node)["Abstract"]))
-		.abstract <- sapply(.filterXmlChildren(node, "Abstract"), xmlValue)
+		.abstract <- lapply(.filterXmlChildren(node, "Abstract"), xmlValue)
 	else .abstract <- c(NA)
 	
 	if(!is.na(xmlChildren(node)["Keywords"])) {
-		.keywords <- sapply(.filterXmlChildren(node, "Keywords"),
-				xmlValue)
-		.keywords <- sapply(.keywords, gsub, pattern = "^[[:space:]]+|[[:space:]]+$",
+		.keywordLists <- .filterXmlChildren(node, "Keywords")
+		.keywords <- c(lapply(.keywordLists, FUN = xmlToList), recursive = TRUE)
+		.keywords <- lapply(.keywords, gsub, pattern = "^[[:space:]]+|[[:space:]]+$",
 				replacement = "") # http://finzi.psych.upenn.edu/R/Rhelp02a/archive/40714.html
 	}
 	else .keywords <- c(NA)
@@ -190,7 +190,7 @@ parseOwsServiceIdentification <- function(node) {
 	else .fees <- as.character(NA)
 	
 	if(!is.na(xmlChildren(node)["AccessConstraints"]))
-		.accessConstraints <- sapply(.filterXmlChildren(node,
+		.accessConstraints <- lapply(.filterXmlChildren(node,
 						"AccessConstraints"),
 				xmlValue)
 	else .accessConstraints <- c(NA)
@@ -205,8 +205,7 @@ parseOwsServiceIdentification <- function(node) {
 #
 #
 parseOwsServiceProvider <- function(node) {
-	print("parsing ows service provider!")
-	
+	#print("parsing ows service provider!")
 	.name <- xmlValue(node[["ProviderName"]])
 	
 	# optional:

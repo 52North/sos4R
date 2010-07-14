@@ -99,19 +99,19 @@ print.OwsServiceIdentification <- function(x, ...) {
 	cat("Object of class OwsServiceIdentification")
 	cat(":\nServiceType: ")
 	cat(x@serviceType)
-	cat(", serviceTypeVersion(s): ")
-	cat(x@serviceTypeVersion)
-	cat(", title(s): ")
-	cat(x@title)
+	cat("; serviceTypeVersion(s): ")
+	cat(paste(x@serviceTypeVersion, collapse = ", "))
+	cat("; title(s): ")
+	cat(paste(x@title, collapse = "; "))
 	# optional:
 	cat("\nProfile(s): ")
-	cat(x@profile)
+	cat(paste(x@profile, collapse = "; "))
 	cat("\nAbstract(s): ")
-	cat(x@abstract)
+	cat(paste(x@abstract, collapse = "; "))
 	cat("\nKeywords(s): ")
-	cat(x@keywords)
+	cat(paste(x@keywords, collapse = "; "))
 	cat("\nAccessConstraints(s): ")
-	cat(x@accessConstraints)
+	cat(paste(x@accessConstraints, collapse = "; "))
 	invisible(x)
 }
 
@@ -119,7 +119,7 @@ print.OwsServiceProvider <- function(x, ...) {
 	cat("Object of class OwsServiceProvider:\n")
 	cat("Provider name: ")
 	cat(x@providerName)
-	cat(", providerSite: ")
+	cat("; providerSite: ")
 	cat(x@providerSite)
 	cat("\nService contact:  (unparsed XML, see @serviceContact for details)")
 #	print(x@serviceContact)
@@ -180,7 +180,7 @@ toString.OwsExceptionReport <- function(x) {
 				e@exceptionText, sep = "")
 		.s <- paste(.s, .e, sep = "\n")
 	}
-	return(.s)
+	return(paste(.s, "\n"))
 }
 
 print.OwsExceptionReport <- function(x, ...) {
@@ -303,6 +303,7 @@ print.GetObservation <- function(x, ...) {
 	cat(x@resultModel)
 	cat("\nbounding box: ")
 	cat(paste(x@BBOX))
+	cat("\n")
 	invisible(x)
 }
 

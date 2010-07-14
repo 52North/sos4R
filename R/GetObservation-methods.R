@@ -339,6 +339,9 @@ setMethod(f = "checkRequest",
 			}
 			
 			# TODO add useful checks for GetObservation
+			
+			# check if given responseFormat is supported by the service
+			
 			return(TRUE)
 		})
 
@@ -354,5 +357,7 @@ setMethod(f = "checkRequest",
 			}
 			
 			# TODO add useful checks for GetObservationById
+			# see above!
+			
 			return(TRUE)
 		})

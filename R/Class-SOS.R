@@ -39,7 +39,7 @@ setClass("SOS",
 				method = as.character(NA),
 				version = as.character(NA)),
 		validity = function(object) {
-			print("Entering validation: SOS")
+			#print("Entering validation: SOS")
 			
 			# method has to be one of GET, POST, SOAP
 			.allowedMethods = c("GET" , "POST", "SOAP")
@@ -73,7 +73,7 @@ setClass("SosFilter_Capabilities",
 		representation(xml = "XMLAbstractNode"),
 		prototype = list(xml = NULL),
 		validity = function(object) {
-			print("Entering validation: SosFilter_Capabilities")
+			#print("Entering validation: SosFilter_Capabilities")
 			# TODO implement validity function
 			return(TRUE)
 		}
@@ -87,7 +87,7 @@ setClass("SosCapabilities_1.1.0",
 		prototype = list(filterCaps = NULL),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {
-			print("Entering validation: SosCapabilities_1.1.0")
+			#print("Entering validation: SosCapabilities_1.1.0")
 			# TODO implement validity function
 			return(TRUE)
 		}
@@ -107,7 +107,7 @@ setClass("SosObservationOffering",
 				procedure = c(NA), observedProperty = c(NA),
 				featureOfInterest = c(NA), responseFormat = c(NA)),
 		validity = function(object) {
-			print("Entering validation: ObservationOffering")
+			#print("Entering validation: ObservationOffering")
 			# TODO implement validity function
 			
 			# time is required
@@ -126,7 +126,7 @@ setClass("SosContents",
 		prototype = list(observationOfferings = c(NA), xml = xmlNode(NA)),
 		contains = "OwsContents",
 		validity = function(object) {
-			print("Entering validation: SosContents")
+			#print("Entering validation: SosContents")
 			# TODO implement validity function
 			return(TRUE)
 		}

@@ -72,9 +72,7 @@ getCap <- postToHost(host=host, path=path3, data.to.send=datalist, referer=NULL,
 # Error in make.socket(host = host, port = port, server = FALSE) : socket not established
 
 
-
-
-############################################
+################################################################################
 # http://www.omegahat.org/RCurl/
 # install.packages(packageName, repos = "http://www.omegahat.org/R")
 library("RCurl")
@@ -107,6 +105,108 @@ temp <- postForm("http://giv-sos.uni-muenster.de:8080/52nSOSv3/sos", "request"=g
 # encoding error
 
 
-############################################
+
+
+################################################################################
 # http://www.omegahat.org/SSOAP/
 library("SSOAP")
+library("XML")
+library("XMLSchema")
+
+#
+#
+#
+myParseSchemaDoc <- function (url, removeComments = TRUE, 
+		namespaces = c(xs = "http://www.w3.org/2001/XMLSchema"), 
+		followImports = TRUE, followIncludes = followImports) {
+	
+	print("START...")
+	
+	baseURL = dirname(url)
+	doc = xmlInternalTreeParse(url)
+	
+	print(paste("parsed doc from url:", url))
+	
+	if (length(namespaces) == 0 || !("xs" %in% names(namespaces))) 
+		names(namespaces)[1] = "xs"
+	if (followImports) {
+		imports = getNodeSet(doc, "//xs:schema/xs:import", namespaces)
+		imports = lapply(imports, function(node) {
+					xdoc = myImportSchema(node, baseURL)
+					if (is.null(xdoc)) {
+						removeNodes(node)
+						return(NULL)
+					}
+					schema = getNodeSet(xdoc, "//xs:schema", namespaces)
+					sapply(schema, function(s) replaceNodes(node, xmlRoot(s)))
+				})
+	}
+	if (followIncludes) {
+		includes = getNodeSet(doc, "//xs:schema/xs:include", 
+				namespaces)
+		if (length(includes)) {
+			sapply(includes, function(node) {
+						xdoc = myImportSchema(node, baseURL)
+						schema = getNodeSet(xdoc, "//xs:schema", c(xs = "http://www.w3.org/2001/XMLSchema"))
+						p = xmlParent(node)
+						sapply(schema, function(s) addChildren(p, kids = xmlChildren(s)))
+					})
+			removeNodes(includes, TRUE)
+		}
+	}
+	if (removeComments) {
+		comments = getNodeSet(doc, "//comment()", c(xs = "http://www.w3.org/2001/XMLSchema"), 
+				noMatchOkay = TRUE)
+		if (length(comments)) 
+			removeNodes(comments)
+	}
+	
+	print("DONE.")
+	
+	doc
+}
+
+myImportSchema <- function (node, baseURL) {
+	print(paste("Import schema from base url ", baseURL))
+	
+	u = xmlGetAttr(node, "schemaLocation", NA)
+	if (is.na(u)) 
+		return(NULL)
+	u = getRelativeURL(u, baseURL)
+	myParseSchemaDoc(u)
+}
+
+# works fine:
+# tmp = processWSDL(system.file("examples", "KEGG.wsdl", package = "SSOAP"))
+
+sosWsdlFile = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/data/SOS.wsdl"
+
+debug(processWSDL)
+
+# figure out why R crashes here:
+w = processWSDL(
+		fileName = sosWsdlFile,
+		verbose = TRUE,
+		useInternalNodes = FALSE)
+
+
+# might be problem with parseSchemaDoc
+debug(parseSchemaDoc)
+
+sosWsdl <- myParseSchemaDoc(sosWsdlFile)
+
+gmlFeature <- myParseSchemaDoc("http://schemas.opengis.net/gml/3.1.1/base/feature.xsd")
+
+gmlBasictype <- myParseSchemaDoc("http://schemas.opengis.net/gml/3.1.1/base/basicTypes.xsd")
+
+# ********************** HIER GEHT'S WEITER ********************************** #
+
+
+iface = genSOAPClientInterface(def = sosWsdl, verbose = TRUE)
+# namespaces = "1.1!
+# SSOAP:::.SOAPDefaultNameSpaces
+# SSOAP:::.SOAPDefaultHandlers
+
+iface
+
+?parseSOAP

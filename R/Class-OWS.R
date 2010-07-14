@@ -40,7 +40,7 @@ setClass("OwsServiceOperation",
 				version = as.character(NA)),
 		contains = "VIRTUAL",
 		validity = function(object) {
-			print("Entering validation: OwsServiceOperation")
+			#print("Entering validation: OwsServiceOperation")
 			# TODO implement validity function
 			
 			if(is.na(object@service))
@@ -64,7 +64,7 @@ setClass("OwsGetCapabilities",
 				owsVersion = as.character(NA)),
 		contains = "OwsServiceOperation",
 		validity = function(object) {
-			print("Entering validation: OwsGetCapabilities")
+			#print("Entering validation: OwsGetCapabilities")
 			# TODO implement validity function
 			
 			# service and request need to be there
@@ -92,7 +92,7 @@ setClass("OwsGetCapabilities_1.1.0",
 		prototype = list(owsVersion = "1.1.0"),
 		contains = "OwsGetCapabilities",
 		validity = function(object) {
-			print("Entering validation: OwsGetCapabilities_1.1.0")
+			#print("Entering validation: OwsGetCapabilities_1.1.0")
 			# TODO implement validity function
 			
 			# service and request need to be there
@@ -116,7 +116,7 @@ setClass("OwsGetCapabilities_2.0.0",
 				owsVersion = "2.0.0"),
 		contains = "OwsGetCapabilities_1.1.0",
 		validity = function(object) {
-			print("Entering validation: OwsGetCapabilities_2.0.0")
+			#print("Entering validation: OwsGetCapabilities_2.0.0")
 			# TODO implement validity function
 			
 			# service and request need to be there
@@ -143,7 +143,7 @@ setClass("OwsOperationsMetadata",
 				extendedCapabilities = "XMLAbstractNode"),
 		prototype = list(operations = c(NA)),
 		validity = function(object) {
-			print("Entering validation: OwsOperationsMetadata")
+			#print("Entering validation: OwsOperationsMetadata")
 			# TODO implement validity function
 			
 			# operations must all be of class OwsOperation and at least one must be there
@@ -161,7 +161,7 @@ setClass("OwsOperation",
 			metadata = "vector"),
 		prototype = list(name = as.character(NA), DCPs = c(NA)),
 		validity = function(object) {
-			print("Entering validation: OwsOperation")
+			#print("Entering validation: OwsOperation")
 			# TODO implement validity function
 			
 			# name is mandatory
@@ -188,7 +188,7 @@ setClass("OwsServiceIdentification",
 				accessConstraints = "vector"),
 		prototype = list(),
 		validity = function(object) {
-			print("Entering validation: OwsServiceIdentification")
+			#print("Entering validation: OwsServiceIdentification")
 			# TODO implement validity function
 			
 			# mandatory elements: serviceType, serviceTypeVersion, title
@@ -206,7 +206,7 @@ setClass("OwsServiceProvider",
 				serviceContact = "XMLAbstractNode"),
 		prototype = list(providerName = as.character(NA)),
 		validity = function(object) {
-			print("Entering validation: OwsServiceProvider")
+			#print("Entering validation: OwsServiceProvider")
 			
 			#TODO implement validity function, providerName is mandatory
 			
@@ -221,7 +221,7 @@ setClass("OwsContents",
 		representation(xml = "XMLAbstractNode"),
 		prototype = list(xml = NULL),
 		validity = function(object) {
-			print("Entering validation: OwsContents")
+			#print("Entering validation: OwsContents")
 			return(TRUE)
 		}
 )
@@ -241,7 +241,7 @@ setClass("OwsCapabilities",
 			updateSequence = as.character(NA),
 			owsVersion = as.character(NA)),
 		validity = function(object) {
-			print("Entering validation: OwsCapabilities")
+			#print("Entering validation: OwsCapabilities")
 			# TODO implement validity function
 			
 			# version is mandatory
@@ -270,7 +270,7 @@ setClass("OwsCapabilities_1.1.0",
 			operations = NULL, contents = NULL),
 		contains = "OwsCapabilities",
 		validity = function(object) {
-			print("Entering validation: OwsCapabilities_1.1.0")
+			#print("Entering validation: OwsCapabilities_1.1.0")
 			# TODO implement validity function
 			return(TRUE)
 		}
@@ -287,7 +287,7 @@ setClass("OwsCapabilities_2.0.0",
 				owsVersion = "2.0.0"),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {
-			print("Entering validation: OwsCapabilities_2.0.0")
+			#print("Entering validation: OwsCapabilities_2.0.0")
 			# TODO implement validity function
 			return(TRUE)
 		}
@@ -308,7 +308,7 @@ setClass("OwsExceptionReport",
 		prototype = list(version = as.character(NA), lang = as.character(NA),
 				exceptions = list()),
 		validity = function(object) {
-			print("Entering validation: OwsExceptionReport")
+			#print("Entering validation: OwsExceptionReport")
 			# TODO implement validity function
 			
 			# version needs to be there
@@ -327,7 +327,7 @@ setClass("OwsException",
 				locator = "character"),
 		prototype = list(code = as.character(NA)),
 		validity = function(object) {
-			print("Entering validation: OwsException")
+			#print("Entering validation: OwsException")
 			# TODO implement validity function
 			
 			# version needs to be there
@@ -346,7 +346,7 @@ setClass("OwsRange",
 				rangeClosure = "character", spacing = "character"),
 		prototype = list(),
 		validity = function(object) {
-			print("Entering validation: OwsRange")
+			#print("Entering validation: OwsRange")
 			# TODO implement validity function
 			
 			# all elements are optional!

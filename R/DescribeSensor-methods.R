@@ -127,6 +127,8 @@ setMethod(f = "checkRequest",
 		signature = c(service = "ANY", operation = "DescribeSensor",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
+			if(verbose) cat("Checking DescribeSensor... ")
+			
 			# check if operation is for SOS and operation is DescribeSensor
 			if(!(operation@service == "SOS" && 
 						operation@request == "DescribeSensor")) {
@@ -135,8 +137,8 @@ setMethod(f = "checkRequest",
 			}
 				
 			# check if sensor in in listed in procedures
-			.procedures = sosProcedures(sos)
-			.dsOperation <- sosOperation(sos, "DescribeSensor")
+			.procedures = sosProcedures(service)
+			.dsOperation <- sosOperation(service, "DescribeSensor")
 
 			.procContained <- FALSE
 			for (x in .procedures) {
@@ -169,12 +171,12 @@ setMethod(f = "checkRequest",
 			
 			# check if method is supported
 			.methodSupported <- FALSE
-			if(sos@method == "POST") {
-				if(!is.na(.dsOperation@DCPs[["Post"]]))
+			if(service@method == "POST") {
+				if(!is.na(.dsOperation@DCPs["Post"]))
 					.methodSupported <- TRUE
 			}
-			else if(sos@method == "GET") {
-				if(!is.na(.dsOperation@DCPs[["Get"]]))
+			else if(service@method == "GET") {
+				if(!is.na(.dsOperation@DCPs["Get"]))
 					.methodSupported <- TRUE
 			}
 			if(!.procContained)

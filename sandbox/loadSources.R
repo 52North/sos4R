@@ -34,9 +34,6 @@ library("RCurl")
 # load required source files for testing
 path = "/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R"
 
-# define url for testing
-climatesos = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
-
 source(paste(path, "R", "Class-OWS.R",  sep="/"))
 source(paste(path, "R", "OWS-methods.R",  sep="/"))
 source(paste(path, "R", "OWS-methods-parsing.R",  sep="/"))

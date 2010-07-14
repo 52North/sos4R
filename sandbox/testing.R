@@ -44,21 +44,27 @@ getURL(url, verbose = TRUE)
 # GetCapabilities
 
 climatesosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
-weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
 climatesos = SOS(climatesosUrl)
-weathersos = SOS(weathersosUrl)
+weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
+weathersos = SOS(weathersosUrl, verboseOutput = FALSE)
 
 caps = getCapabilities(weathersos)
+sosCaps(weathersos)
 
 
 ################################################################################
 # DescribeSensor
 
 climatesosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
-climatesos = SOS(climatesosUrl)
+climatesos = SOS(climatesosUrl, verboseOutput = FALSE)
 id = "urn:ogc:object:feature:WMOStation:10280"
-describeSensor(climatesos, id)
+describeSensor(sos = climatesos, procedure = id)
 
+# !!! describeSensor does not check if using GET, because Capabilities lack that DCP in current SOS!
+weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
+weathersos = SOS(weathersosUrl, method = "POST", verboseOutput = FALSE)
+sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
+sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]], verbose = FALSE)
 
 ################################################################################
 # GetObservation
@@ -214,6 +220,8 @@ getobsbyid <- GetObservationById(service = "SOS", version = "1.0.0",
 getobsbyid
 encode(getobsbyid) # is valid!
 
+# TODO ********************************************************* continue here!!
+
 
 ################################################################################
 # SOAP
@@ -232,7 +240,6 @@ go.responseMode = sosResponseMode(sos)[[2]] # inline
 go.eventTime = "2010-07-01T12:00/2010-07-10T12:00" 
 go.resultModel = sosResultModels(sos)[[3]] # om:Measurement
 go.srsName = "urn:ogc:def:crs:EPSG:6.8:4326" # is "AnyValue" in capabilities... contacted Carsten about that
-
 
 # no event time -> latest
 getObservation(sos, offering = go.offering,

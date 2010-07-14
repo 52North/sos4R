@@ -99,14 +99,91 @@ isXMLString(caps.xmlString)
 capsTree = xmlParseString(xmlString)
 class(capsTree)
 
+# operation
+op = '<ows:Operation name="GetObservationById" xmlns:ows="http://www.opengis.net/ows/1.1">
+<ows:DCP><ows:HTTP>
+<ows:Post xlink:href="http://localhost:8080/ClimateSOS-local/sos"/>
+</ows:HTTP>
+</ows:DCP>
+<ows:Parameter name="version">
+<ows:AllowedValues>
+<ows:Value>1.0.0</ows:Value>
+</ows:AllowedValues>
+</ows:Parameter>
+<ows:Parameter name="service">
+<ows:AllowedValues>
+<ows:Value>SOS</ows:Value>
+</ows:AllowedValues>
+</ows:Parameter>
+<ows:Parameter name="srsName">
+<ows:AnyValue/>
+</ows:Parameter>
+<ows:Parameter name="ObservationId">
+<ows:AnyValue/>
+</ows:Parameter>
+<ows:Parameter name="responseFormat">
+<ows:AllowedValues>
+<ows:Value>text/xml;subtype="OM/1.0.0"</ows:Value>
+<ows:Value>application/zip</ows:Value>
+</ows:AllowedValues>
+</ows:Parameter>
+<ows:Parameter name="resultModel">
+<ows:AllowedValues>
+<ows:Value>om:Observation</ows:Value>
+<ows:Value>om:CategoryObservation</ows:Value>
+<ows:Value>om:Measurement</ows:Value>
+<ows:Value>om:SpatialObservation</ows:Value>
+</ows:AllowedValues>
+</ows:Parameter>
+<ows:Parameter name="responseMode">
+<ows:AllowedValues>
+<ows:Value>inline</ows:Value>
+<ows:Value>resultTemplate</ows:Value>
+</ows:AllowedValues>
+</ows:Parameter>
+</ows:Operation>'
+
+op.parsed <- parseOwsOperation(op)
+
+# SERVICE IDENTIFICATION
+si = '<ows:ServiceIdentification xmlns:ows="http://www.opengis.net/ows/1.1">
+		<ows:Title>IFGI SOS</ows:Title>
+		<ows:Title>ifgi sos</ows:Title>
+		<ows:Abstract>SOS at IFGI, Muenster, Germany</ows:Abstract>
+		<ows:Abstract>SOS beim ifgi in Münster</ows:Abstract>
+		<ows:Keywords>
+			<ows:Keyword>water level</ows:Keyword>
+			<ows:Keyword>gauge height</ows:Keyword>
+			<ows:Keyword>waterspeed</ows:Keyword>
+		</ows:Keywords>
+		<ows:Keywords>
+			<ows:Keyword>wasserniveau</ows:Keyword>
+			<ows:Keyword>flussgeschwindigkeit</ows:Keyword>
+		</ows:Keywords>
+		<ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
+		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+		<ows:ServiceTypeVersion>3.0.0</ows:ServiceTypeVersion>
+		<ows:Fees>NONE</ows:Fees>
+		<ows:Profile>prof1</ows:Profile>
+		<ows:Profile>profile2</ows:Profile>
+		<ows:AccessConstraints>NONE</ows:AccessConstraints>
+		<ows:AccessConstraints>or some, sorry</ows:AccessConstraints>
+		</ows:ServiceIdentification>'
+
+si.xml <- xmlParseString(si)
+si.parsed <- parseOwsServiceIdentification(si.xml)
+si.parsed
+
+parseOwsServiceIdentification
+
 #  SERVICE PROVIDER
 sp = '<ows:ServiceProvider xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<ows:ProviderName>Insitute for Geoinformatics, Unversity Muenster, Germany</ows:ProviderName>
-		<ows:ProviderSite xlink:hdef="http://ifgi.uni-muenster.de/"/>
+		<ows:ProviderSite xlink:href="http://ifgi.uni-muenster.de/"/>
 		<ows:ServiceContact>
 		<ows:IndividualName>Juerrens, Eike Hinderk</ows:IndividualName>
 		<ows:PositionName>Student Assistant</ows:PositionName>
-		<ows:ContactInfo>
+<!--		<ows:ContactInfo>
 		<ows:Phone>
 		<ows:Voice>+49(0)251/83-31972</ows:Voice>
 		</ows:Phone>
@@ -120,6 +197,7 @@ sp = '<ows:ServiceProvider xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="htt
 		</ows:Address>
 		</ows:ContactInfo>
 		<ows:Role/>
+-->
 		</ows:ServiceContact>
 		</ows:ServiceProvider>'
 sp.xml <- xmlParseString(sp)

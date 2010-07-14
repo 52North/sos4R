@@ -38,7 +38,7 @@ SOS <- function(url, method = "GET", version = "1.0.0", verboseOutput = FALSE) {
 			verboseOutput = verboseOutput)
 	if(verboseOutput) warning("Verbose output is activated!", immediate. = TRUE)
 	
-	.caps <- getCapabilities(.sos, verbose = TRUE)
+	.caps <- getCapabilities(.sos, verbose = verboseOutput)
 	.sos@capabilities <- .caps
 	return(.sos)
 }
@@ -56,22 +56,33 @@ setMethod(f = "sosRequest",
 		def = function(sos, request, verbose = FALSE) {
 			.checkResult <- checkRequest(service = sos, operation = request,
 					verbose = verbose)
-			if(!.checkResult)
-				warning("Check returned FALSE!")
-			
+			if(!.checkResult) {
+				warning("Check returned FALSE!", immediate. = TRUE)
+				if(!verbose) {
+					checkRequest(service = sos, operation = request,
+							verbose = TRUE)
+				}
+			}
+				
 			.response = ""
 			
 			if(sos@method == "GET") {
 				.kvpEncoding = kvp(request)
 				.url = paste(sos@url, .kvpEncoding, sep="?")
-				if(verbose) cat("GET! REQUEST: ", sos@url, "\n")
+				if(verbose) cat("*** GET! REQUEST: ", .url, "\n")
 				
 				.response = getURL(.url)
-				if(verbose) cat("RESPONSE:"); cat(.response)
+				if(verbose) {
+					cat("*** RESPONSE:\n")
+					cat(.response)
+				}
 			}
 			else if(sos@method == "POST") {
 				.xmlEncoding <- encode(request, verbose)
-				if(verbose) cat("POST! REQUEST: "); print(.xmlEncoding)
+				if(verbose) {
+					cat("*** POST! REQUEST:\n")
+					print(.xmlEncoding)
+				}
 				
 				# using 'post' for application/x-www-form-urlencoded content
 				.response <- postForm(uri = sos@url,
@@ -79,10 +90,13 @@ setMethod(f = "sosRequest",
 						style = "POST",
 						.encoding = "UTF-8")
 				
-				if(verbose) print("RESPONSE:"); print(.response)
+				if(verbose) {
+					cat("*** RESPONSE:\n")
+					print(.response)
+				}
 			}
 			else if(sos@method == "SOAP") {
-				if(verbose) print("soap!")
+				if(verbose) print("SOAP!")
 				
 				# TODO implement SOAP stuff
 				
@@ -91,8 +105,6 @@ setMethod(f = "sosRequest",
 				warning("Unsupported method, has to be one of GET, POST, or SOAP!")
 			}
 	
-			# TODO exception handling!
-			
 			return(.response)
 	}
 )
@@ -278,8 +290,6 @@ setMethod(f = "sosTimePeriod", signature = c(obj = "SosObservationOffering"),
 			return(obj@time)
 		})
 
-# TODO sosKeywords, sosTitle/sosAbstract
-
 
 ################################################################################
 # functions for SOS operations
@@ -288,6 +298,7 @@ if (!isGeneric("getCapabilities"))
 	setGeneric(name = "getCapabilities",
 			valueClass = c("SosCapabilities", "SosCapabilities_1.1.0",
 					"OwsExceptionReport"),
+			signature = signature("sos", "verbose"),
 			def = function(sos, verbose = FALSE) {
 				standardGeneric("getCapabilities")	
 			})
@@ -295,26 +306,32 @@ if (!isGeneric("getCapabilities"))
 #
 #
 setMethod(f = "getCapabilities",
-		signature = c(sos = "SOS", verbose = "logical"), 
-		function(sos, verbose = FALSE) {
-			cat("Requesting capabilities... ")
-			
+		signature = c(sos = "SOS", verbose = "ANY"),
+		def = function(sos, verbose = FALSE) {
+			if (verbose) print("Requesting capabilities... ")
+
 			.gc <- OwsGetCapabilities(service = "SOS", acceptVersions = c(sos@version))
-			if(verbose) cat("REQUEST:\n"); print(.gc);
+			if(verbose) {
+				cat("REQUEST:\n")
+				print(.gc)
+			}
 			
 			.responseString = sosRequest(sos = sos, request = .gc, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
-			if(verbose) cat("RESPONSE:\n"); print(.response)
+			if(verbose) {
+				cat("RESPONSE:\n")
+				print(.response)
+			}
 			
 			if(.isExceptionReport(.response)) {
 				.er <- parseOwsExceptionReport(.response)
-				cat(" done - Exception!\n")
+				if (verbose) cat(" done - Exception!\n")
 				warning(toString(.er))
 				return(.er)
 			}
 			else {
 				.caps <- parseSosCapabilities(.response)
-				cat("done!\n")
+				if (verbose) cat("done!\n")
 				return(.caps)
 			}
 		}
@@ -324,6 +341,7 @@ setMethod(f = "getCapabilities",
 if (!isGeneric("describeSensor"))
 	setGeneric(name = "describeSensor",
 			valueClass = c("SensorML", "OwsExceptionReport"),
+			signature = signature("sos", "procedure", "verbose"),
 			def = function(sos, procedure, verbose = FALSE) {
 				standardGeneric("describeSensor")	
 			})
@@ -331,18 +349,26 @@ if (!isGeneric("describeSensor"))
 #
 #
 setMethod(f = "describeSensor",
-		signature = c(sos = "SOS", procedure = "character",
-				verbose = "logical"), 
-		function(sos, procedure, verbose = FALSE) {
-			if(verbose) cat("DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
+		signature = c(sos = "SOS", procedure  ="character", 
+				verbose = "ANY"), 
+		def = function(sos, procedure, verbose = FALSE) {
+			if(verbose) {
+				cat("DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
+			}
 			
 			.ds <- DescribeSensor(service = "SOS", version = sos@version,
 					procedure = procedure)
-			if(verbose) cat("REQUEST:\n"); print(.ds)
+			if(verbose) {
+				cat("REQUEST:\n")
+				print(.ds)
+			}
 			
 			.responseString = sosRequest(sos = sos, request = .ds, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
-			if(verbose) cat("RESPONSE:\n"); print(.response)
+			if(verbose) {
+				cat("RESPONSE:\n")
+				print(.response)
+			}
 			
 			if(.isExceptionReport(.response)) {
 				print("Received ExceptionReport in describeSensor!")
@@ -360,6 +386,11 @@ setMethod(f = "describeSensor",
 
 if (!isGeneric("getObservation"))
 	setGeneric(name = "getObservation",
+			#valueClass = c("OwsExceptionReport"),
+			signature = signature("sos", "offering", "observedProperty",
+					"responseFormat", "srsName", "eventTime", "procedure",
+					"featureOfInterest", "result", "resultModel",
+					"responseMode", "BBOX", "verbose"),
 			def = function(sos, offering, observedProperty, responseFormat,
 					srsName = as.character(NA), eventTime = as.character(NA), 
 					procedure = c(NA), featureOfInterest = c(NA), 
@@ -377,15 +408,15 @@ setMethod(f = "getObservation",
 				observedProperty = "character",
 				responseFormat = "character",
 				#optional:
-				srsName = "character",
-				eventTime = "character", 
-				procedure = "vector",
-				featureOfInterest = "vector", 
-				result = "character",
-				resultModel = "character",
-				responseMode = "character",
-				BBOX = "character",
-				verbose = "logical"), 
+				srsName = "ANY", # "character",
+				eventTime = "ANY", # "character", 
+				procedure = "ANY", # "vector",
+				featureOfInterest = "ANY", # "vector", 
+				result = "ANY", # "character",
+				resultModel = "ANY", # "character",
+				responseMode = "ANY", # "character",
+				BBOX = "ANY", # "character",
+				verbose = "ANY"),  # "logical"
 		function(sos, offering, observedProperty, responseFormat, 
 				srsName = as.character(NA), eventTime = as.character(NA), 
 				procedure = c(NA), featureOfInterest = c(NA), 
@@ -403,15 +434,19 @@ setMethod(f = "getObservation",
 			
 			.responseString = sosRequest(sos = sos, request = .go, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
-			if(verbose) cat("RESPONSE:\n"); print(.response)
 			
 			if(.isExceptionReport(.response)) {
-				print("Received ExceptionReport in describeSensor!")
+				cat("Received ExceptionReport in getObservation!\n")
 				.er <- parseOwsExceptionReport(.response)
 				warning(toString(.er))
 				return(.er)
 			}
 			else {
+				if(verbose) {
+					cat("getObservation - parsed response:\n")
+					print(.response)
+				}
+				
 				# TODO add a check whether there is handling for the given response method implemented
 				
 				# TODO parse and return data.frame? sptX class?
