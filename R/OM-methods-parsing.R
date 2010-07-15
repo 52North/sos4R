@@ -27,30 +27,7 @@
 #                                                                              #
 ################################################################################
 
-#
-#
-#
-SensorML <- function(xml) {
-	new("SensorML", xml = xml)
+parseOM <- function(xml) {
+	warning("parsing function not implemented yet, only dummy...")
+	return(xmlToList(xml))
 }
-
-#
-# no parsing actually done here...
-#
-parseSensorML <- function(sml) {
-	.sml = SensorML(sml)
-	return(.sml)
-}
-
-#
-# saveXML(gc, file="/tmp/_testsave.xml")
-#
-setMethod("saveXML", "SensorML",
-		function(doc, file=NULL, compression=0, indent=TRUE,
-				prefix = '<?xml version="1.0"?>\n', doctype = NULL,
-				encoding = .sosDefaultCharacterEncoding, ...) {
-			saveXML(doc = parseSensorML(doc), file=file, compression=compression,
-					indent=indent, prefix=prefix, doctype=doctype,
-					encoding=encoding, ...)
-		}
-)

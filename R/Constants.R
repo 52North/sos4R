@@ -27,33 +27,14 @@
 #                                                                              #
 ################################################################################
 
-# load required libraries
-library("XML")
-library("RCurl")
+.sosDefaultCharacterEncoding <- "UTF-8"
 
-# load required source files for testing
-path = "/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R"
+.sosConnectionMethodGet <- "GET"
+.sosConnectionMethodPost <- "POST"
+.sosConnectionMethodSOAP <- "SOAP"
 
-source(paste(path, "R", "Constants.R",  sep="/"))
-
-source(paste(path, "R", "Class-OWS.R",  sep="/"))
-source(paste(path, "R", "OWS-methods.R",  sep="/"))
-source(paste(path, "R", "OWS-methods-parsing.R",  sep="/"))
-
-source(paste(path, "R", "Class-SOS.R",  sep="/"))
-source(paste(path, "R", "Class-DescribeSensor.R",  sep="/"))
-source(paste(path, "R", "Class-GetObservation.R",  sep="/"))
-source(paste(path, "R", "Class-SensorML.R",  sep="/"))
-
-source(paste(path, "R", "DescribeSensor-methods.R",  sep="/"))
-source(paste(path, "R", "GetObservation-methods.R",  sep="/"))
-source(paste(path, "R", "SOS-methods.R",  sep="/"))
-source(paste(path, "R", "SOS-methods-parsing.R",  sep="/"))
-source(paste(path, "R", "OM-methods.R",  sep="/"))
-source(paste(path, "R", "OM-methods-parsing.R",  sep="/"))
-source(paste(path, "R", "SensorML-methods.R",  sep="/"))
-
-source(paste(path, "R", "PrintShowStructureSummmary-methods.R",  sep="/"))
-
-source(paste(path, "R", "Defaults.R",  sep="/"))
-
+.sosGetCapabilitiesName = "GetCapabilities"
+.sosDescribeSensorName = "DescribeSensor"
+.sosGetObservationName = "GetObservation"
+.sosGetObservationByIdName = "GetObservationById"
+.sosOwsExceptionReportRootName = "ExceptionReport"

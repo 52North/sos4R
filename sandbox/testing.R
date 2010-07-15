@@ -64,6 +64,7 @@ describeSensor(sos = climatesos, procedure = id)
 weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
 weathersos = SOS(weathersosUrl, method = "POST", verboseOutput = FALSE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
+sensor <- describeSensor(weathersos, "manniK")
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]], verbose = FALSE)
 
 ################################################################################
@@ -206,6 +207,60 @@ procedures = sosProcedures(sos)
 sensor.10 <- describeSensor(sos = sos, procedure = procedures[1], verbose = TRUE)
 
 ################################################################################
+# testing to call functions from a list
+myFunc1 <- function(xml) {
+	print("myfunc: ")
+	print(xml)
+	return(list(xml, "anotherone"))
+}
+value <- "lala la"
+temp <- list(func1 = myFunc1)
+# call the function:
+result <- temp[["func1"]](value)
+result
+
+################################################################################
+# Replace a parsing function...
+myParseSensorML <- function(xml) {
+	root <- xmlRoot(xml)
+	return(xmlValue(root))
+}
+myER <- function(xml) {
+	return("EXCEPTION! RUN!!!!1111")
+}
+# testing:
+myParsers <- SOSParsers("DescribeSensor" = myParseSensorML)
+SOSParsers("DescribeSensor" = myParseSensorML, "ExceptionReport" = myER)
+SOSParsers("DescribeSensor" = myParseSensorML, include = c("GetObservation", "DescribeSensor"))
+SOSParsers("DescribeSensor" = myParseSensorML, exclude = c("GetObservation", "DescribeSensor"))
+
+
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos",
+		method = "POST",
+		parsers = SOSParsers("DescribeSensor" = myParseSensorML),
+		verboseOutput = FALSE)
+sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
+# WORKS! YEAH!
+
+################################################################################
+# Replace an encoding function
+myPostEncoding <- function(object, v) {
+	# myPostEncoding
+	return(encodeRequestXML(obj = object, verbose = v))
+}
+	
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos",
+		method = "POST",
+		encoders = SOSEncoders("POST" = myPostEncoding),
+		verboseOutput = TRUE)
+sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
+# works!
+
+################################################################################
+# SOAP
+
+
+################################################################################
 # GetObservationById
 getobsbyid.id <- "lala:123"
 getobsbyid <- GetObservationById("SOS", "1.0.0", getobsbyid.id,
@@ -222,9 +277,6 @@ encode(getobsbyid) # is valid!
 
 # TODO ********************************************************* continue here!!
 
-
-################################################################################
-# SOAP
 
 ################################################################################
 # Parsing observations

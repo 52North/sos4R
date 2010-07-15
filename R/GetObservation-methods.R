@@ -86,17 +86,17 @@ GetObservationById <- function(
 #
 # encode as KVP
 #
-setMethod("kvp", "GetObservation", 
+setMethod("encodeRequestKVP", "GetObservation", 
 	function(obj) {
 		if(obj@version == "1.0.0") {
-			return(kvp.GetObservation_1.0.0(obj))		
+			return(sosEncodeRequestKVPGetObservation_1.0.0(obj))		
 		}
 		else {
 			warning("Version not supported!")
 		}
 	}
 )
-kvp.GetObservation_1.0.0 <- function(obj) {
+sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj) {
 	# required:
 	.request <- "request=GetObservation"
 	.service <- paste("service",
@@ -168,7 +168,7 @@ kvp.GetObservation_1.0.0 <- function(obj) {
 	return(.kvpString)
 }
 
-setMethod("kvp", "GetObservationById", 
+setMethod("encodeRequestKVP", "GetObservationById", 
 		function(obj) {
 			warning("KVP encoding of operation 'GetObservationById' not supported!")
 		}
@@ -177,19 +177,21 @@ setMethod("kvp", "GetObservationById",
 #
 # encode as XML
 #
-setMethod("encode", "GetObservation", 
+setMethod("encodeRequestXML", "GetObservation", 
 	function(obj, verbose = FALSE) {
-		if(verbose) cat("ENCODE", class(obj), "\n")
+		if(verbose) {
+			cat("ENCODE XML ", class(obj), "\n")
+		}
 		
 		if(obj@version == "1.0.0") {
-			return(encode.GetObservation_1.0.0(obj))		
+			return(sosEncodeRequestXMLGetObservation_1.0.0(obj))		
 		}
 		else {
 			warning("Version not supported!")
 		}
 	}
 )
-encode.GetObservation_1.0.0 <- function(obj) {
+sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = "GetObservation", namespace = "sos",
 			namespaceDefinitions = c(
 					"sos" = "http://www.opengis.net/sos/1.0",
@@ -260,19 +262,21 @@ encode.GetObservation_1.0.0 <- function(obj) {
 	return(.xmlDoc)
 }
 
-setMethod("encode", "GetObservationById", 
+setMethod("encodeRequestXML", "GetObservationById", 
 		function(obj, verbose = FALSE) {
-			if(verbose) cat("ENCODE", class(obj), "\n")
+			if(verbose) {
+				cat("ENCODE XML ", class(obj), "\n")
+			}
 			
 			if(obj@version == "1.0.0") {
-				return(encode.GetObservationById_1.0.0(obj))		
+				return(sosEncodeRequestXMLGetObservationById_1.0.0(obj))		
 			}
 			else {
 				warning("Version not supported!")
 			}
 		}
 )
-encode.GetObservationById_1.0.0 <- function(obj) {
+sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = "sos",
 			namespaceDefinitions = c(
 					"sos" = "http://www.opengis.net/sos/1.0",
@@ -313,16 +317,22 @@ encode.GetObservationById_1.0.0 <- function(obj) {
 	return(.xmlDoc)
 }
 
-# decode from XML
-setMethod("decode", "GetObservation", 
-		function(obj) {
-			warning("Function 'decode' is not implemented for GetObservation!")
+#
+# encode for SOAP
+#
+setMethod("encodeRequestSOAP", "GetObservation", 
+		function(obj, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE SOAP ", class(obj), "\n")
+			}
+			
+			if(obj@version == "1.0.0") {
+				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
+			}
+			else {
+				warning("Version not supported!")
+			}
 		}
-)
-setMethod("decode", "GetObservationById", 
-	function(obj) {
-		warning("Function 'decode' is not implemented for GetObservationById!")
-	}
 )
 
 ################################################################################

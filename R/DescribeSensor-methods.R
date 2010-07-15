@@ -47,18 +47,18 @@ DescribeSensor <- function(
 #
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #
-setMethod("kvp", "DescribeSensor", 
+setMethod("encodeRequestKVP", "DescribeSensor", 
 		function(obj) {
 			
 			if(obj@version == "1.0.0") {
-				return(kvp.DescribeSensor_1.0.0(obj))
+				return(sosEncodeRequestKVPDescribeSensor_1.0.0(obj))
 			}
 			else {
 				warning("Version not supported!")
 			}
 		}
 )
-kvp.DescribeSensor_1.0.0 <- function(obj) {
+sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj) {
 	# mandatory:
 	.service <- paste("service",
 			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
@@ -84,19 +84,21 @@ kvp.DescribeSensor_1.0.0 <- function(obj) {
 #
 # encode as XML
 #
-setMethod("encode", "DescribeSensor", 
+setMethod("encodeRequestXML", "DescribeSensor", 
 		function(obj, verbose = FALSE) {
-			if(verbose) cat("ENCODE ", class(obj), "\n")
+			if(verbose) {
+				cat("ENCODE XML ", class(obj), "\n")
+			}
 			
 			if(obj@version == "1.0.0") {
-				return(encode.DescribeSensor_1.0.0(obj))
+				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
 			}
 			else {
 				warning("Version not supported!")
 			}
 		}
 )
-encode.DescribeSensor_1.0.0 <- function(obj) {
+sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
 	xmlDoc <- xmlNode(name = "DescribeSensor", namespace = "sos",
 			namespaceDefinitions = c(
 					"sos" = "http://www.opengis.net/sos/1.0",
@@ -113,13 +115,23 @@ encode.DescribeSensor_1.0.0 <- function(obj) {
 }
 
 #
-# decode from XML
+# encode for SOAP
 #
-setMethod("decode", "DescribeSensor", 
-		function(obj) {
-			warning("Function 'decode' is not implemented for DescribeSensor!")
+setMethod("encodeRequestSOAP", "DescribeSensor", 
+		function(obj, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE SOAP ", class(obj), "\n")
+			}
+			
+			if(obj@version == "1.0.0") {
+				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
+			}
+			else {
+				warning("Version not supported!")
+			}
 		}
 )
+
 
 ################################################################################
 #
@@ -127,7 +139,9 @@ setMethod(f = "checkRequest",
 		signature = c(service = "ANY", operation = "DescribeSensor",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
-			if(verbose) cat("Checking DescribeSensor... ")
+			if(verbose) {
+				cat("Checking DescribeSensor... ")
+			}
 			
 			# check if operation is for SOS and operation is DescribeSensor
 			if(!(operation@service == "SOS" && 
@@ -138,7 +152,7 @@ setMethod(f = "checkRequest",
 				
 			# check if sensor in in listed in procedures
 			.procedures = sosProcedures(service)
-			.dsOperation <- sosOperation(service, "DescribeSensor")
+			.dsOperation <- sosOperationInfo(service, .sosDescribeSensorName)
 
 			.procContained <- FALSE
 			for (x in .procedures) {
@@ -154,8 +168,6 @@ setMethod(f = "checkRequest",
 			.supportedFormats <- .dsOperation@parameters[["outputFormat"]];
 			.format <- gsub(operation@outputFormat, pattern = "&quot;",
 					replacement = '"')
-			# if(verbose) cat("Supperted formats: ", .supportedFormats, " -- format: ",
-			#			.format, "\n")
 			
 			if(!any(sapply(.supportedFormats,
 							"==",
@@ -171,29 +183,22 @@ setMethod(f = "checkRequest",
 			
 			# check if method is supported
 			.methodSupported <- FALSE
-			if(service@method == "POST") {
+			if(service@method == .sosConnectionMethodPost) {
 				if(!is.na(.dsOperation@DCPs["Post"]))
 					.methodSupported <- TRUE
 			}
-			else if(service@method == "GET") {
+			else if(service@method == .sosConnectionMethodGet) {
 				if(!is.na(.dsOperation@DCPs["Get"]))
 					.methodSupported <- TRUE
 			}
-			if(!.procContained)
+			if(!.methodSupported)
 				warning("Requested method type ist not listed in capablities for this operation, service might return error!")
 			
-			if(verbose) cat("Checks: procedure contained=", .procContained,
+			if(verbose) {
+				cat("Checks: procedure contained=", .procContained,
 						", output supported=", .oFSupported,
 						", method supported", .methodSupported, "\n")
+			}
+			
 			return(.procContained && .oFSupported && .methodSupported)
 		})
-
-#
-# saveXML(gc, file="/tmp/_testsave.xml")
-#
-setMethod("saveXML", "DescribeSensor",
-		function(doc, file=NULL, compression=0, indent=TRUE, prefix = '<?xml version="1.0"?>\n', doctype = NULL, encoding = "", ...) {
-			saveXML(doc = encode(doc), file=file, compression=compression, indent=indent, prefix=prefix, doctype=doctype, encoding=encoding, ...)
-		}
-)
-

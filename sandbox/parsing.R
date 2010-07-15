@@ -99,6 +99,33 @@ isXMLString(caps.xmlString)
 capsTree = xmlParseString(xmlString)
 class(capsTree)
 
+# SensorML
+sml = 'SensorML version="1.0.1" xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+<member>
+<System>
+<gml:description>
+Weather station located on the roof of the
+				Insititute for Geoinformatics of the University Münster, Germany.
+</gml:description>
+<keywords>
+<KeywordList>
+<keyword>weather station</keyword>
+<keyword>precipitation</keyword>
+<keyword>wind speed</keyword>
+<keyword>temperature</keyword>
+<keyword>barometric pressure</keyword>
+<keyword>luminance</keyword>
+<keyword>relative humidity</keyword>
+<keyword>Münster</keyword>
+</KeywordList>
+</keywords>
+</System>
+</member>
+</SensorML>'
+
+sml.parsed <- xmlParseDoc(sml)
+parseSensorML(sml.parsed)
+
 # operation
 op = '<ows:Operation name="GetObservationById" xmlns:ows="http://www.opengis.net/ows/1.1">
 <ows:DCP><ows:HTTP>

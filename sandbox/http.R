@@ -176,28 +176,79 @@ myImportSchema <- function (node, baseURL) {
 	myParseSchemaDoc(u)
 }
 
+myProcessWSDL <- function (fileName, handlers = WSDLParseHandlers(fileName), 
+		nameSpaces = character(), useInternalNodes = TRUE, verbose = FALSE) {
+	if (!is(fileName, "XMLAbstractDocument")) {
+		if (useInternalNodes) {
+			# wsdl = myParseSchemaDoc(fileName)
+			wsdl = myParseSchemaDoc(fileName, followImports = FALSE,
+					followIncludes = FALSE)
+			print("Not following imports and includes!")
+		}
+		else wsdl = xmlTreeParse(fileName, handlers = handlers, 
+					asTree = TRUE, fullNamespaceInfo = TRUE)
+	}
+	root = xmlRoot(wsdl)
+	port = root[["service"]][["port"]]
+	
+	if (sum(xmlSApply(root[["service"]], xmlName) == "port") > 
+			1) 
+		warning("Ignoring additional <service><port> ... elements")
+	
+	loc = xmlGetAttr(port[["address"]], "location")
+	server = SOAPServer(loc)
+	
+	print("Server:")
+	print(server)
+	
+	types = processSchemaTypes(root[["types"]], root, verbose = verbose)
+	tmp = root[names(root) == "binding"]
+	ops = lapply(tmp, processWSDLBindings, root, types)
+	names(ops) = sapply(tmp, xmlGetAttr, "name")
+	if (missing(nameSpaces)) {
+		schemaURIs = sapply(.SOAPDefaultNameSpaces, function(x) x["xsd"])
+		uris = sapply(xmlNamespaceDefinitions(root), function(x) x$uri)
+		i = match(uris, schemaURIs)
+		nameSpaces = NA
+		if (!all(is.na(i))) 
+			nameSpaces = names(.SOAPDefaultNameSpaces)[i[!is.na(i)]]
+	}
+	
+	SOAPServerDescription(name = xmlGetAttr(port, "name"), server = server, 
+			operations = ops, types = types, nameSpaces = as.character(nameSpaces))
+}
+
 # works fine:
 # tmp = processWSDL(system.file("examples", "KEGG.wsdl", package = "SSOAP"))
 
 sosWsdlFile = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/data/SOS.wsdl"
 
-debug(processWSDL)
+# figure out why R crashes on processWSDL... might be problem with parseSchemaDoc
+sosWsdl <- myParseSchemaDoc(sosWsdlFile)
+# crashes R, "segfault"
 
-# figure out why R crashes here:
+sosWsdl <- myParseSchemaDoc(sosWsdlFile, followImports = FALSE,
+		followIncludes = FALSE)
+# goes through
+
+# parts of schemas work, so problem probably lies in lack of memory?
+gmlFeature <- myParseSchemaDoc("http://schemas.opengis.net/gml/3.1.1/base/feature.xsd")
+gmlBasictype <- myParseSchemaDoc("http://schemas.opengis.net/gml/3.1.1/base/basicTypes.xsd")
+
+
+w = myProcessWSDL(
+		fileName = sosWsdlFile,
+		verbose = TRUE,
+		useInternalNodes = TRUE)
+# useInternalNodes = FALSE -> Error: /home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/data/sosCommon.xsd  does not seem to be XML, nor to identify a file name
+# Probably a resolvement issue.
+# uesInternaLnodes = TRUE  -> crashes as well...
+
 w = processWSDL(
 		fileName = sosWsdlFile,
 		verbose = TRUE,
 		useInternalNodes = FALSE)
 
-
-# might be problem with parseSchemaDoc
-debug(parseSchemaDoc)
-
-sosWsdl <- myParseSchemaDoc(sosWsdlFile)
-
-gmlFeature <- myParseSchemaDoc("http://schemas.opengis.net/gml/3.1.1/base/feature.xsd")
-
-gmlBasictype <- myParseSchemaDoc("http://schemas.opengis.net/gml/3.1.1/base/basicTypes.xsd")
 
 # ********************** HIER GEHT'S WEITER ********************************** #
 

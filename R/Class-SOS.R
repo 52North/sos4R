@@ -33,7 +33,7 @@
 setClass("SOS",
 		representation(url = "character", method = "character",
 				version = "character", capabilities = "OwsCapabilities",
-				verboseOutput = "logical"),
+				parsers = "list", encoders = "list", verboseOutput = "logical"),
 		prototype = list(
 				url = as.character(NA),
 				method = as.character(NA),
@@ -42,7 +42,7 @@ setClass("SOS",
 			#print("Entering validation: SOS")
 			
 			# method has to be one of GET, POST, SOAP
-			.allowedMethods = c("GET" , "POST", "SOAP")
+			.allowedMethods = c(.sosConnectionMethodGet, .sosConnectionMethodPost, .sosConnectionMethodSOAP)
 			if(!any(sapply(.allowedMethods, "==", object@method), na.rm = TRUE))
 				return(paste("method has to be one of", paste(.allowedMethods, sep=", ", collapse = " ")))
 				
