@@ -104,8 +104,6 @@ parseOwsOperation <- function(op) {
 # method for parsing an ows:ExceptionReport.
 #
 parseOwsExceptionReport <- function(document) {
-#	print("parsing er!")
-	
 	.docRoot <- xmlRoot(document)
 	## print(.docRoot)
 	
@@ -265,7 +263,9 @@ parseOwsRange <- function(node) {
 
 
 #
-#
+# If includeNamed is TRUE, this function returns a list of all children with the
+# given name, of the given element. If includeNamed is FALSE, it contains all
+# children of the given node not matching the given name.
 #
 .filterXmlChildren <- function(node, childrenName, includeNamed = TRUE) {
 	.temp <- xmlChildren(node)

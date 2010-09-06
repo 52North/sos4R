@@ -32,16 +32,23 @@
 #
 SOS <- function(url, method = SOSDefaultConnectionMethod(),
 		version = "1.0.0", parsers = SOSParsers(), encoders = SOSEncoders(),
+		curlOpts = list(), curlHandle = getCurlHandle(),
 		verboseOutput = FALSE) {
+	if(method == .sosConnectionMethodPost)
+		.curlOpts <- curlOptions(url = url)
+	else .curlOpts <- curlOpts
+	
 	.sos <- new("SOS",
 			url = url,
 			method = method,
 			version = version,
-			capabilities = new("OwsCapabilities", version = "NA", 
+			capabilities = new("OwsCapabilities", version = "NA", # dummy capabilities to be replaced below
 					updateSequence = as.character(NA),
 					owsVersion = "1.1.0"),
 			parsers = parsers,
 			encoders = encoders,
+			curlOptions = .curlOpts,
+			curlHandle = curlHandle,
 			verboseOutput = verboseOutput)
 	
 	if(verboseOutput) {
@@ -115,6 +122,7 @@ if (!isGeneric("sosRequest"))
 setMethod(f = "sosRequest",
 		signature = c(sos = "SOS", request = "ANY", verbose = "logical"),
 		def = function(sos, request, verbose = FALSE) {
+			# check the request for consistency with service description
 			.checkResult <- checkRequest(service = sos, operation = request,
 					verbose = verbose)
 			if(!.checkResult) {
@@ -167,7 +175,6 @@ setMethod(f = "sosRequest",
 			}
 			else if(sos@method == .sosConnectionMethodSOAP) {
 				.soapEncoding <- .encode(request, verbose)
-				
 				
 				if(verbose) {
 					print("SOAP!")
@@ -395,15 +402,16 @@ setMethod(f = "getCapabilities",
 			.responseString = sosRequest(sos = sos, request = .gc, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			if(verbose) {
-				cat("RESPONSE:\n")
+				cat("** RESPONSE DOC:\n")
 				print(.response)
 			}
 			
 			if(.isExceptionReport(.response)) {
 				.parsingFunction <- sos@parsers[[.sosOwsExceptionReportRootName]]
 				.er <- .parsingFunction(.response)
-				if (verbose) cat(" done - Exception!\n")
-				warning(toString(.er))
+				
+				if(class(.er) == "OwsExceptionReport")
+					warning(toString(.er))
 				return(.er)
 			}
 			else {
@@ -445,14 +453,16 @@ setMethod(f = "describeSensor",
 			.responseString = sosRequest(sos = sos, request = .ds, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			if(verbose) {
-				cat("RESPONSE:\n")
+				cat("** RESPONSE DOC:\n")
 				print(.response)
 			}
 			
 			if(.isExceptionReport(.response)) {
 				.parsingFunction <- sos@parsers[[.sosOwsExceptionReportRootName]]
 				.er <- .parsingFunction(.response)
-				warning(toString(.er))
+				
+				if(class(.er) == "OwsExceptionReport")
+					warning(toString(.er))
 				return(.er)
 			}
 			else {
@@ -520,7 +530,9 @@ setMethod(f = "getObservation",
 				cat("Received ExceptionReport in getObservation!\n")
 				.parsingFunction <- sos@parsers[[.sosOwsExceptionReportRootName]]
 				.er <- .parsingFunction(.response)
-				warning(toString(.er))
+				
+				if(class(.er) == "OwsExceptionReport")
+					warning(toString(.er))
 				return(.er)
 			}
 			else {
@@ -528,7 +540,7 @@ setMethod(f = "getObservation",
 				.obs <- .parsingFunction(.response)
 				
 				if(verbose) {
-					cat("getObservation - parsed response:\n")
+					cat("* getObservation - parsed response:\n")
 					print(.obs)
 				}
 				
@@ -571,7 +583,8 @@ setMethod(f = "getObservationById",
 			.responseString = sosRequest(sos = sos, request = .go, verbose)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			if(verbose) {
-				cat("RESPONSE:\n"); print(.response)
+				cat("** RESPONSE DOC:\n")
+				print(.response)
 			}
 			
 			if(.isExceptionReport(.response)) {
@@ -586,7 +599,7 @@ setMethod(f = "getObservationById",
 				.obs <- .parsingFunction(.response)
 				
 				if(verbose) {
-					cat("getObservationById - parsed response:\n")
+					cat("* getObservationById - parsed response:\n")
 					print(.obs)
 				}
 				

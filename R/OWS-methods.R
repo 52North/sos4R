@@ -230,16 +230,16 @@ setMethod(f = "checkRequest",
 # kvp encoding
 #
 if (!isGeneric("encodeRequestKVP"))
-	setGeneric(name = "encodeRequestKVP", def = function(obj) {
+	setGeneric(name = "encodeRequestKVP",
+			def = function(obj, verbose = FALSE) {
 				standardGeneric("encodeRequestKVP")
 			})
 
-setMethod(f = "encodeRequestKVP",
-		signature = c(obj = "OwsGetCapabilities"), 
-		def = function(obj) {
-			sosEncodeRequestKVPGetCapabilities(obj)
+setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
+		def = function(obj, verbose = FALSE) {
+			sosEncodeRequestKVPGetCapabilities(obj, verbose)
 		})
-sosEncodeRequestKVPGetCapabilities <- function(obj) {
+sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
 	.service <- paste(
 			"service",
 			.kvpEscapeSpecialCharacters(obj@service),
@@ -251,16 +251,18 @@ sosEncodeRequestKVPGetCapabilities <- function(obj) {
 	
 	.kvpString <- paste(.service, .request, sep="&")
 	
+	if(verbose)
+		cat(.kvpString)
+	
 	return(.kvpString)
 }
 
-setMethod(f = "encodeRequestKVP",
-		signature = c(obj = "OwsGetCapabilities_1.1.0"), 
-		function(obj) {
-			sosEncodeRequestKVPGetCapabilities_1.1.0(obj)
+setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_1.1.0",
+		function(obj, verbose = FALSE) {
+			sosEncodeRequestKVPGetCapabilities_1.1.0(obj, verbose)
 		})
-sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj) {
-	.mandatory <- sosEncodeRequestKVPGetCapabilities(obj)
+sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
+	.mandatory <- sosEncodeRequestKVPGetCapabilities(obj, verbose)
 	
 	.optionals = ""
 	if( !is.na(obj@acceptVersions)) {
@@ -281,20 +283,25 @@ sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj) {
 	
 	.kvpString <- paste(.mandatory, .optionals, sep="")
 	
+	if(verbose)
+		cat(.kvpString)
+	
 	return(.kvpString)
 }
 
-setMethod(f = "encodeRequestKVP",
-		signature = c(obj = "OwsGetCapabilities_2.0.0"), 
-		function(obj) {
-			sosEncodeRequestKVPGetCapabilities_2.0.0(obj)
+setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
+		function(obj, verbose = FALSE) {
+			sosEncodeRequestKVPGetCapabilities_2.0.0(obj, verbose)
 		})
-sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj) {
+sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
 	.kvpString <- sosEncodeRequestKVPGetCapabilities_1.1.0(obj)
 	
 	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
 		.kvpString <- paste(.kvpString, .kvpKeyAndValues("acceptLanguages", obj@acceptLanguages), sep="&")
 	}
+	
+	if(verbose)
+		cat(.kvpString)
 	
 	return(.kvpString)
 }

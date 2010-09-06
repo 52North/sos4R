@@ -34,8 +34,10 @@
 # (http://www.omegahat.org/SSOAP/)
 #
 
+# List of the default parsing functions. The names of the list are the
+# names of the respective XML documents set in Constants.R.
 .sosDefaultParsers <- list(
-		parseSosCapabilities, # do not make "sub-parsing-functions" interchangeable
+		parseSosCapabilities, # functions for different versions not changeable
 		parseSensorML,
 		parseOM,
 		parseOM,
@@ -47,6 +49,9 @@ names(.sosDefaultParsers) <- list(
 		.sosGetObservationByIdName,
 		.sosOwsExceptionReportRootName)
 
+# Using a different approach for the encoders here, because there is more than
+# one way of encoding something (in contrast to parsing). So the different 
+# objects (and versions) override the respective encoding functions. 
 .sosDefaultEncoders <- list(
 		encodeRequestKVP,
 		encodeRequestXML,
@@ -93,7 +98,6 @@ SOSDefaultConnectionMethod <- function() {
 			# replace the defaults for all given elements
 			defaults[!is.na(which)] <- els[names(defaults)[!is.na(which)]]
 			els <- defaults
-			
 			# original: els[names(defaults)[!is.na(which)]] <- defaults[!is.na(which)]
 		}
 	}
@@ -111,4 +115,23 @@ SOSDefaultConnectionMethod <- function() {
 	return(els)
 }
 
-
+#
+# Dummy parsing function if a user wants to inspect the responses unprocessed.
+# This works for all but capabilities, as these need to be requested on creating
+# a new SOS instance.
+#
+.parseSosNoParsing <- function(ob) {
+	return(ob)	
+}
+SOSDisabledParsers <- list(
+		parseSosCapabilities, # changing this
+		.parseSosNoParsing,
+		.parseSosNoParsing,
+		.parseSosNoParsing,
+		.parseSosNoParsing)
+names(SOSDisabledParsers) <- list(
+		.sosGetCapabilitiesName,
+		.sosDescribeSensorName,
+		.sosGetObservationName,
+		.sosGetObservationByIdName,
+		.sosOwsExceptionReportRootName)

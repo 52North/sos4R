@@ -33,7 +33,8 @@
 setClass("SOS",
 		representation(url = "character", method = "character",
 				version = "character", capabilities = "OwsCapabilities",
-				parsers = "list", encoders = "list", verboseOutput = "logical"),
+				parsers = "list", encoders = "list", curlHandle = "CURLHandle",
+				curlOptions = "ANY", verboseOutput = "logical"),
 		prototype = list(
 				url = as.character(NA),
 				method = as.character(NA),

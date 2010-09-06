@@ -87,16 +87,16 @@ GetObservationById <- function(
 # encode as KVP
 #
 setMethod("encodeRequestKVP", "GetObservation", 
-	function(obj) {
+	function(obj, verbose = FALSE) {
 		if(obj@version == "1.0.0") {
-			return(sosEncodeRequestKVPGetObservation_1.0.0(obj))		
+			return(sosEncodeRequestKVPGetObservation_1.0.0(obj, verbose))		
 		}
 		else {
 			warning("Version not supported!")
 		}
 	}
 )
-sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj) {
+sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	# required:
 	.request <- "request=GetObservation"
 	.service <- paste("service",
@@ -165,11 +165,15 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj) {
 	}
 	
 	.kvpString <- paste(.mandatory, .optionals, sep="")
+	
+	if(verbose)
+		cat(.kvpString)
+	
 	return(.kvpString)
 }
 
 setMethod("encodeRequestKVP", "GetObservationById", 
-		function(obj) {
+		function(obj, verbose = TRUE) {
 			warning("KVP encoding of operation 'GetObservationById' not supported!")
 		}
 )

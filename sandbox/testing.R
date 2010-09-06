@@ -45,7 +45,7 @@ getURL(url, verbose = TRUE)
 
 climatesosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
 climatesos = SOS(climatesosUrl)
-weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
+weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"
 weathersos = SOS(weathersosUrl, verboseOutput = FALSE)
 
 caps = getCapabilities(weathersos)
@@ -61,7 +61,7 @@ id = "urn:ogc:object:feature:WMOStation:10280"
 describeSensor(sos = climatesos, procedure = id)
 
 # !!! describeSensor does not check if using GET, because Capabilities lack that DCP in current SOS!
-weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
+weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"
 weathersos = SOS(weathersosUrl, method = "POST", verboseOutput = FALSE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
 sensor <- describeSensor(weathersos, "manniK")
@@ -116,7 +116,7 @@ go.xml <- encode(go)
 ################################################################################
 # ExceptionReports
 
-weathersos.url = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
+weathersos.url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"
 weathersos = SOS(weathersos.url)
 
 id.correct = "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"
@@ -169,14 +169,14 @@ getURL(paste(url, request2, sep = "?"))
 ################################################################################
 # Parsing the capabilities file...
 
-weathersos.url = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos"
+weathersos.url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"
 weathersos = SOS(weathersos.url)
 #caps <- getCapabilities(weathersos, verbose = TRUE)
 weathersos@capabilities
 
 ################################################################################
 # accessor functions
-weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos")
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 sosUrl(weathersos)
 sosMethod(weathersos)
 sosVersion(weathersos)
@@ -188,7 +188,7 @@ sosCaps(weathersos)
 # manually:
 getCapRequest <- '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://www.opengis.net/sos/1.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd" service="SOS"><ows:AcceptVersions><ows:Version>1.0.0</ows:Version></ows:AcceptVersions><ows:Sections><ows:Section>OperationsMetadata</ows:Section><ows:Section>ServiceIdentification</ows:Section><ows:Section>ServiceProvider</ows:Section><ows:Section>Filter_Capabilities</ows:Section><ows:Section>Contents</ows:Section></ows:Sections></GetCapabilities>'
 # using 'post' for application/x-www-form-urlencoded content
-caps.response <- postForm(uri = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos",
+caps.response <- postForm(uri = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 		request = getCapRequest,
 		style = "POST",
 		.encoding = "UTF-8")
@@ -198,7 +198,7 @@ caps <- parseSosCapabilities(caps.doc)
 # GetCapabilities
 sos = SOS("http://localhost:8080/ClimateSOS-local/sos", method = "POST",
 		verboseOutput = TRUE)
-sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos", method = "POST",
+sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST",
 		verboseOutput = TRUE)
 caps = sosCaps(sos)
 
@@ -235,7 +235,7 @@ SOSParsers("DescribeSensor" = myParseSensorML, include = c("GetObservation", "De
 SOSParsers("DescribeSensor" = myParseSensorML, exclude = c("GetObservation", "DescribeSensor"))
 
 
-weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos",
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 		method = "POST",
 		parsers = SOSParsers("DescribeSensor" = myParseSensorML),
 		verboseOutput = FALSE)
@@ -249,11 +249,23 @@ myPostEncoding <- function(object, v) {
 	return(encodeRequestXML(obj = object, verbose = v))
 }
 	
-weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos",
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 		method = "POST",
 		encoders = SOSEncoders("POST" = myPostEncoding),
 		verboseOutput = TRUE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
+# works!
+
+################################################################################
+# inspecting XML using dummy parsing function
+weathersos2 = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
+		method = "POST",
+		parsers = SOSDisabledParsers,
+		verboseOutput = FALSE)
+sensor2 <- describeSensor(weathersos2, sosProcedures(weathersos2)[[1]])
+sensor2 <- describeSensor(weathersos2, "lala")
+class(sensor) # from example above
+class(sensor2)
 # works!
 
 ################################################################################
@@ -281,7 +293,7 @@ encode(getobsbyid) # is valid!
 ################################################################################
 # Parsing observations
 
-sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS2/sos")
+sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "GET")
 
 # request:
 go.offering = sosOfferings(sos)[[6]]@id

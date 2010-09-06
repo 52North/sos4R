@@ -48,17 +48,17 @@ DescribeSensor <- function(
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #
 setMethod("encodeRequestKVP", "DescribeSensor", 
-		function(obj) {
+		function(obj, verbose = FALSE) {
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestKVPDescribeSensor_1.0.0(obj))
+				return(sosEncodeRequestKVPDescribeSensor_1.0.0(obj, verbose))
 			}
 			else {
 				warning("Version not supported!")
 			}
 		}
 )
-sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj) {
+sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, verbose = FALSE) {
 	# mandatory:
 	.service <- paste("service",
 			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
@@ -77,7 +77,9 @@ sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj) {
 	.kvpString <- paste(.service, .request, .version, .procedure,
 			.format, sep="&")
 	
-	#cat(.kvpString)
+	if(verbose)
+		cat(.kvpString)
+	
 	return(.kvpString)
 }
 

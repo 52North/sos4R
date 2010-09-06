@@ -35,7 +35,6 @@ setClass("SensorML",
 		prototype = list(xml = NULL),
 		validity = function(object) {
 			#print("Entering validation: SensorML")
-			# TODO implement validity function
 			return(TRUE)
 		}
 )
