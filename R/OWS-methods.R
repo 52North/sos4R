@@ -33,16 +33,16 @@
 OwsGetCapabilities <- function(
 		service,
 		acceptVersions,
-		sections = c("All"),
-		acceptFormats = c("text/xml"),
+		sections = .sosDefaultGetCapSections,
+		acceptFormats = .sosDefaultGetCapAcceptFormats,
 		updateSequence = c(as.character(NA)),
-		owsVersion = "1.1.0",
+		owsVersion = .sosDefaultGetCapOwsVersion,
 		acceptLanguages = c(as.character(NA))) {
 	if(owsVersion == "1.1.0") {
 		if(!any(sapply(acceptLanguages, "is.na"), na.rm = TRUE))
 			warning("Parameter 'acceptLanguages' is lost because it is not included in 1.1.0!")
 		new("OwsGetCapabilities_1.1.0",
-				request = "GetCapabilities",
+				request = .sosGetCapabilitiesName,
 				version = "1.1.0",
 				service = service,
 				acceptVersions = acceptVersions, sections = sections,
@@ -50,7 +50,7 @@ OwsGetCapabilities <- function(
 	}
 	else if(owsVersion == "2.0.0") {
 		new("OwsGetCapabilities_2.0.0",
-				request = "GetCapabilities",
+				request = .sosGetCapabilitiesName,
 				version = "2.0.0",
 				service = service,
 				acceptVersions = acceptVersions, sections = sections,
@@ -59,7 +59,7 @@ OwsGetCapabilities <- function(
 	}
 	else {
 		new("OwsGetCapabilities",
-				request = "GetCapabilities",
+				request = .sosGetCapabilitiesName,
 				version = "NONE",
 				service = service,
 				acceptVersions = acceptVersions, owsVersion = owsVersion)
@@ -69,7 +69,7 @@ OwsGetCapabilities <- function(
 OwsCapabilities <- function(
 		version, 
 		updateSequence = NA,
-		owsVersion = "1.1.0",
+		owsVersion = .sosDefaultGetCapOwsVersion,
 		identification,
 		provider,
 		operations,
@@ -80,16 +80,14 @@ OwsCapabilities <- function(
 			warning("Parameter 'languages' is lost because it is not included in 1.1.0!")
 		new("OwsCapabilities_1.1.0",
 			version = version, updateSequence = updateSequence,
-			owsVersion = owsVersion,
-			identification = identification,
+			owsVersion = owsVersion, identification = identification,
 			provider = provider, operations = operations,
 			contents = contents)
 	}
 	else if(owsVersion == "2.0.0") {
 		new("OwsCapabilities_2.0.0",
 			version = version, updateSequence = updateSequence,
-			owsVersion = owsVersion,
-			identification = identification,
+			owsVersion = owsVersion, identification = identification,
 			provider = provider, operations = operations,
 			contents = contents, languages = languages)
 	}
@@ -192,11 +190,11 @@ setMethod(f = "checkRequest",
 .kvpKeyAndValues <- function(key, values) {
 	if(is(values, "vector")) {
 		.values <- sapply(values, .kvpEscapeSpecialCharacters)
-		valueList <- paste(.values, collapse=",")
-		return(paste(key, valueList, sep="="))
+		valueList <- paste(.values, collapse = ",")
+		return(paste(key, valueList, sep = "="))
 	}
 	else {
-		return(paste(key, .kvpEscapeSpecialCharacters(value), sep="="))
+		return(paste(key, .kvpEscapeSpecialCharacters(value), sep = "="))
 	}
 }
 
@@ -243,13 +241,13 @@ sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
 	.service <- paste(
 			"service",
 			.kvpEscapeSpecialCharacters(obj@service),
-			sep="=")
+			sep = "=")
 	.request <- paste(
 			"request",
 			.kvpEscapeSpecialCharacters(obj@request),
-			sep="=")
+			sep = "=")
 	
-	.kvpString <- paste(.service, .request, sep="&")
+	.kvpString <- paste(.service, .request, sep = "&")
 	
 	if(verbose)
 		cat(.kvpString)
@@ -266,22 +264,22 @@ sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
 	
 	.optionals = ""
 	if( !is.na(obj@acceptVersions)) {
-		.optionals <- paste(.optionals, .kvpKeyAndValues("acceptVersions", obj@acceptVersions), sep="&")
+		.optionals <- paste(.optionals, .kvpKeyAndValues("acceptVersions", obj@acceptVersions), sep = "&")
 	}
 	
 	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-		.optionals <- paste(.optionals, .kvpKeyAndValues("sections", obj@sections), sep="&")
+		.optionals <- paste(.optionals, .kvpKeyAndValues("sections", obj@sections), sep = "&")
 	}
 	
 	if( !is.na(obj@updateSequence)) {
-		.optionals <- paste(.optionals, .kvpKeyAndValues("updateSequence", obj@updateSequence), sep="&")
+		.optionals <- paste(.optionals, .kvpKeyAndValues("updateSequence", obj@updateSequence), sep = "&")
 	}
 	
 	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-		.optionals <- paste(.optionals, .kvpKeyAndValues("acceptFormats", obj@acceptFormats), sep="&")
+		.optionals <- paste(.optionals, .kvpKeyAndValues("acceptFormats", obj@acceptFormats), sep = "&")
 	}
 	
-	.kvpString <- paste(.mandatory, .optionals, sep="")
+	.kvpString <- paste(.mandatory, .optionals, sep = "")
 	
 	if(verbose)
 		cat(.kvpString)
@@ -297,7 +295,7 @@ sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
 	.kvpString <- sosEncodeRequestKVPGetCapabilities_1.1.0(obj)
 	
 	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
-		.kvpString <- paste(.kvpString, .kvpKeyAndValues("acceptLanguages", obj@acceptLanguages), sep="&")
+		.kvpString <- paste(.kvpString, .kvpKeyAndValues("acceptLanguages", obj@acceptLanguages), sep = "&")
 	}
 	
 	if(verbose)
@@ -334,18 +332,16 @@ setMethod("encodeRequestXML", "OwsGetCapabilities",
 		}
 )
 sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = "GetCapabilities", namespace = "sos",
-			namespaceDefinitions = c(
-					"sos" = "http://www.opengis.net/sos/1.0",
-					"ows" = "http://www.opengis.net/ows/1.1",
-					"ogc" = "http://www.opengis.net/ogc",
-					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
+	xmlDoc <- xmlNode(name = .sosGetCapabilitiesName, namespace = .sosNamespacePrefix,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+					.sosNamespaceDefinitionsGetCap),
+			attrs=c(.xsiSchemaLocationAttribute,
 					service=obj@service))
 	
 	# optional:
 	if( !is.na(obj@acceptVersions)) {
-		acceptVersions <- xmlNode(name = "AcceptVersions", namespace = "ows")
+		acceptVersions <- xmlNode(name = "AcceptVersions",
+				namespace = .owsNamespacePrefix)
 		acceptVersions$children <- lapply(
 				obj@acceptVersions, "xmlNode", name="ows:Version")
 		xmlDoc$children[[1]] <- acceptVersions
@@ -353,7 +349,8 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	
 	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
 		sections <- xmlNode("ows:Sections")
-		sections$children <- lapply(obj@sections, "xmlNode", name="Section", namespace="ows")
+		sections$children <- lapply(obj@sections, "xmlNode", name="Section",
+				namespace = .owsNamespacePrefix)
 		xmlDoc$children[[2]] <- sections
 	}
 	
@@ -362,7 +359,8 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	}
 	
 	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-		acceptFormats <- xmlNode(name = "AcceptFormats", namespace = "ows")
+		acceptFormats <- xmlNode(name = "AcceptFormats",
+				namespace = .owsNamespacePrefix)
 		acceptFormats$children <- lapply(
 				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
 		xmlDoc$children[[3]] <- acceptFormats
@@ -371,26 +369,26 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	return(xmlDoc)
 }
 sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = "GetCapabilities", namespace = "sos",
-			namespaceDefinitions = c(
-					"sos" = "http://www.opengis.net/sos/1.0",
-					"ows" = "http://www.opengis.net/ows/1.1",
-					"ogc" = "http://www.opengis.net/ogc",
-					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
+	xmlDoc <- xmlNode(name = .sosGetCapabilitiesName,
+			namespace = .sosNamespacePrefix,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+					.sosNamespaceDefinitionsGetCap),
+			attrs=c(.xsiSchemaLocationAttribute,
 					service=obj@service))
 	
 	# optional:
 	if( !is.na(obj@acceptVersions)) {
-		acceptVersions <- xmlNode(name = "AcceptVersions", namespace = "ows")
+		acceptVersions <- xmlNode(name = "AcceptVersions",
+				namespace = .owsNamespacePrefix)
 		acceptVersions$children <- lapply(
-				obj@acceptVersions, "xmlNode", name="ows:Version")
+				obj@acceptVersions, "xmlNode", name = "ows:Version")
 		xmlDoc$children[[1]] <- acceptVersions
 	}
 	
 	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
 		sections <- xmlNode("ows:Sections")
-		sections$children <- lapply(obj@sections, "xmlNode", name="Section", namespace="ows")
+		sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
+				namespace = .owsNamespacePrefix)
 		xmlDoc$children[[2]] <- sections
 	}
 	
@@ -399,14 +397,16 @@ sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	}
 	
 	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-		acceptFormats <- xmlNode(name = "AcceptFormats", namespace = "ows")
+		acceptFormats <- xmlNode(name = "AcceptFormats",
+				namespace = .owsNamespacePrefix)
 		acceptFormats$children <- lapply(
 				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
 		xmlDoc$children[[3]] <- acceptFormats
 	}
 	
 	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
-		acceptLanguages <- xmlNode(name = "AcceptLanguages", namespace = "ows")
+		acceptLanguages <- xmlNode(name = "AcceptLanguages",
+				namespace = .owsNamespacePrefix)
 		acceptLanguages$children <- lapply(
 				obj@acceptLanguages, "xmlNode", name="ows:Language")
 		xmlDoc$children[[4]] <- acceptLanguages
@@ -436,59 +436,9 @@ setMethod("encodeRequestSOAP", "OwsGetCapabilities",
 
 
 ################################################################################
-# saveXML(request, file="/tmp/_testsave.xml")
-#
-setMethod("saveXML", "OwsServiceOperation",
-		function(doc, file = NULL, compression = 0, indent = TRUE,
-				prefix = '<?xml version="1.0"?>\n', doctype = NULL,
-				encoding = .sosDefaultCharacterEncoding, ...) {
-			saveXML(doc = encode(doc), file = file, compression = compression,
-					indent = indent, prefix = prefix, doctype = doctype,
-					encoding = encoding, ...)
-		}
-)
-
-
-################################################################################
 # Helper functions for OWS exceptions, e.g. to get the meaning of an exception
 # code.
 #
-.codes = c(
-		"OperationNotSupported",
-		"MissingParameterValue",
-		"InvalidParameterValue",
-		"VersionNegotiationFailed",
-		"InvalidUpdateSequence",
-		"OptionNotSupported",
-		"NoApplicableCode")
-.meanings = c(
-		"Request is for an operation that is not supported by this server",
-		"Operation request does not include a parameter value, and this server did not declare a default parameter value for that parameter",
-		"Operation request contains an invalid parameter value",
-		"List of versions in 'AcceptVersions' parameter value in GetCapabilities operation request did not include any version supported by this server",
-		"Value of (optional) updateSequence parameter in GetCapabilities operation request is greater than current value of service metadata updateSequence number",
-		"Request is for an option that is not supported by this server",
-		"No other exceptionCode specified by this service and server applies to this exception")
-.locators = c(
-		"Name of operation not supported",
-		"Name of missing parameter",
-		"Name of parameter with invalid value",
-		"None, omit 'locator' parameter",
-		"None, omit 'locator' parameter",
-		"Identifier of option not supported",
-		"None, omit 'locator' parameter")
-.httpCode = c("501", "400", "400", "400", "400", "501", "3xx, 4xx, 5xx")
-.httpMessage = c("Not Implemented", "Bad request", "Bad request", "Bad request",
-		"Bad request", "Not implemented", "Internal Server Error")
-
-OWS_STANDARD_EXCEPTIONS <- data.frame(
-		exceptionCode = .codes,
-		meaningOfCode = .meanings, 
-		locator = .locators,
-		httpStatusCode = .httpCode,
-		httpMessage = .httpMessage,
-		check.rows = TRUE, check.names = TRUE)
-
 if (!isGeneric("owsMeaningOfCode"))
 	setGeneric(name = "owsMeaningOfCode", def = function(exceptionCode) {
 				standardGeneric("owsMeaningOfCode")
@@ -496,8 +446,8 @@ if (!isGeneric("owsMeaningOfCode"))
 setMethod(f = "owsMeaningOfCode", signature = c(exceptionCode = "character"),
 	def = function(exceptionCode) {
 		.meaning <- as.character(
-				OWS_STANDARD_EXCEPTIONS[
-						OWS_STANDARD_EXCEPTIONS$exceptionCode=="OperationNotSupported",
+				.owsStandardExceptions[
+						.owsStandardExceptions$exceptionCode==exceptionCode,
 						2])
 		return(.meaning)
 	}

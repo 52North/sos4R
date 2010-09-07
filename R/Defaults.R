@@ -62,9 +62,6 @@ names(.sosDefaultEncoders) <- list(
 		.sosConnectionMethodSOAP
 		)
 
-# TODO default namespaces for operations...
-.sosDefaultOperationNameSpaces <- list()
-
 ################################################################################
 # access methods
 
@@ -123,15 +120,29 @@ SOSDefaultConnectionMethod <- function() {
 .parseSosNoParsing <- function(ob) {
 	return(ob)	
 }
-SOSDisabledParsers <- list(
+.sosDisabledParsers <- list(
 		parseSosCapabilities, # changing this
 		.parseSosNoParsing,
 		.parseSosNoParsing,
 		.parseSosNoParsing,
 		.parseSosNoParsing)
-names(SOSDisabledParsers) <- list(
+names(.sosDisabledParsers) <- list(
 		.sosGetCapabilitiesName,
 		.sosDescribeSensorName,
 		.sosGetObservationName,
 		.sosGetObservationByIdName,
 		.sosOwsExceptionReportRootName)
+SOSDisabledParsers <- function() {
+	return(.sosDisabledParsers)
+}
+
+################################################################################
+# other defaults
+
+.sosDefaultCharacterEncoding <- "UTF-8"
+.sosDescribeSensorDefaultOutputFormat <- "text/xml;subtype=&quot;sensorML/1.0.1&quot;"
+.sosDefaultGetCapSections <- c("All")
+.sosDefaultGetCapAcceptFormats <- c("text/xml")
+.sosDefaultGetCapOwsVersion <- "1.1.0"
+
+.sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'

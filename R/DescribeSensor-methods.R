@@ -34,9 +34,9 @@ DescribeSensor <- function(
 		service,
 		version,
 		procedure,
-		outputFormat = "text/xml;subtype=&quot;sensorML/1.0.1&quot;") {
+		outputFormat = .sosDescribeSensorDefaultOutputFormat) {
 	new("DescribeSensor",
-			request = "DescribeSensor",
+			request = .sosDescribeSensorName,
 			service = service,
 			version = version,
 			procedure = procedure,
@@ -62,7 +62,7 @@ sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, verbose = FALSE) {
 	# mandatory:
 	.service <- paste("service",
 			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
-	.request <- "&request=DescribeSensor"
+	.request <- paste("&request" , .sosDescribeSensorName, sep = "=")
 	.version <- paste("version", 
 			.kvpEscapeSpecialCharacters(obj@version), sep = "=")
 	.procedure <- paste("procedure",
@@ -75,7 +75,7 @@ sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, verbose = FALSE) {
 			sep = "=")
 	
 	.kvpString <- paste(.service, .request, .version, .procedure,
-			.format, sep="&")
+			.format, sep = "&")
 	
 	if(verbose)
 		cat(.kvpString)
@@ -101,16 +101,16 @@ setMethod("encodeRequestXML", "DescribeSensor",
 		}
 )
 sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = "DescribeSensor", namespace = "sos",
-			namespaceDefinitions = c(
-					"sos" = "http://www.opengis.net/sos/1.0",
-					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
+	xmlDoc <- xmlNode(name = .sosDescribeSensorName,
+			namespace = .sosNamespacePrefix,
+			namespaceDefinitions = .sosNamespaceDefinitionsAll,
+			attrs=c(.xsiSchemaLocationAttribute,
 					service = obj@service,
 					outputFormat = obj@outputFormat,
 					version = obj@version))
 	
-	procedure <- xmlNode(name = "procedure", namespace = "sos", obj@procedure)
+	procedure <- xmlNode(name = "procedure", namespace = .sosNamespacePrefix,
+			obj@procedure)
 	xmlDoc$children[[1]] <- procedure
 	
 	return(xmlDoc)
@@ -146,8 +146,8 @@ setMethod(f = "checkRequest",
 			}
 			
 			# check if operation is for SOS and operation is DescribeSensor
-			if(!(operation@service == "SOS" && 
-						operation@request == "DescribeSensor")) {
+			if(!(operation@service == .sosService && 
+						operation@request == .sosDescribeSensorName)) {
 				warning("Wrong input! Require classes 'SOS' as service and 'DescribeSensor' as operation.")
 				return(FALSE)
 			}
@@ -176,7 +176,7 @@ setMethod(f = "checkRequest",
 							.format),
 					na.rm = TRUE)) {
 				warning(paste("outputformat has to be one of",
-								paste(.supportedFormats, sep=", ",
+								paste(.supportedFormats, sep = ", ",
 										collapse = " ")))
 			}
 			else {

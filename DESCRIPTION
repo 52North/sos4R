@@ -1,0 +1,10 @@
+Package: sos4R
+Type: Package
+Title: A client for the OGC Sensor Observation Service
+Version: 0.1
+Date: 2010-09-07
+Author: Daniel Nüst
+Maintainer: Daniel Nüst <daniel.nuest@uni-muenster.de>
+Description: sos4R is a powerful client for OGC Sensor Observation Services (SOS). It allows users to retrieve metadata from SOS web service instances and subsequently create requests for observation data based on the available sensor, phenomena, observation offerings etc.
+License: GPL (2.0)
+LazyLoad: yes

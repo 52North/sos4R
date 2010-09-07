@@ -45,7 +45,7 @@ GetObservation <- function(
 		responseMode = as.character(NA),
 		BBOX = as.character(NA)) {
 	new("GetObservation",
-			request = "GetObservation",
+			request = .sosGetObservationName,
 			service = service,
 			version = version,
 			offering = offering, 
@@ -73,7 +73,7 @@ GetObservationById <- function(
 		resultModel = as.character(NA),
 		responseMode = as.character(NA)) {
 	new("GetObservationById",
-			request = "GetObservationById",
+			request = .sosGetObservationByIdName,
 			service = service,
 			version = version,
 			observationId = observationId,
@@ -98,13 +98,13 @@ setMethod("encodeRequestKVP", "GetObservation",
 )
 sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	# required:
-	.request <- "request=GetObservation"
+	.request <- pasete("request" , .sosGetObservationName, sep = "=")
 	.service <- paste("service",
-			.kvpEscapeSpecialCharacters(obj@service), sep="=")
+			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
 	.version <- paste("version",
-			.kvpEscapeSpecialCharacters(obj@version), sep="=")
+			.kvpEscapeSpecialCharacters(obj@version), sep = "=")
 	.offering <- paste("offering",
-			.kvpEscapeSpecialCharacters(obj@offering), sep="=")
+			.kvpEscapeSpecialCharacters(obj@offering), sep = "=")
 	.observedProperty <- .kvpKeyAndValues("observedProperty", 
 			obj@observedProperty)
 	.responseFormat <- paste(
@@ -112,31 +112,33 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 			.kvpEscapeSpecialCharacters(
 					gsub(obj@responseFormat, pattern = "&quot;",
 							replacement = '"')),
-			sep="=")
+			sep = "=")
 	.mandatory <- paste(.service, .request, .version, .offering,
-			.observedProperty, .responseFormat, sep="&")
+			.observedProperty, .responseFormat, sep = "&")
 	
 	# optional:
 	.optionals = ""
 	if( !is.na(obj@srsName)) {
 		.optionals <- paste(.optionals, paste("srsName", 
-						.kvpEscapeSpecialCharacters(obj@srsName), sep="="),
-				sep="&")
+						.kvpEscapeSpecialCharacters(obj@srsName), sep = "="),
+				sep = "&")
 	}
 	
 	if( !is.na(obj@eventTime)) {
 		.optionals <- paste(.optionals, paste("eventTime", 
 						.kvpEscapeSpecialCharacters(obj@eventTime), 
-						sep="="), 
-				sep="&")
+						sep = "="), 
+				sep = "&")
 	}
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
-		.optionals <- paste(.optionals, .kvpKeyAndValues("procedure", obj@procedure), sep="&")
+		.optionals <- paste(.optionals, .kvpKeyAndValues("procedure",
+						obj@procedure), sep = "&")
 	}
 	
 	if( !any(sapply(obj@featureOfInterest, "is.na"), na.rm = TRUE)) {
-		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest", obj@featureOfInterest), sep="&")
+		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest",
+						obj@featureOfInterest), sep = "&")
 	}
 	
 	if( !is.na(obj@result)) {
@@ -147,24 +149,24 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	if( !is.na(obj@resultModel)) {
 		.optionals <- paste(.optionals, paste("resultModel",
 						.kvpEscapeSpecialCharacters(obj@resultModel),
-						sep="="),
-				sep="&")
+						sep = "="),
+				sep = "&")
 	}
 	
 	if( !is.na(obj@responseMode)) {
 		.optionals <- paste(.optionals, paste("responseMode",
 						.kvpEscapeSpecialCharacters(obj@responseMode),
-						sep="="),
-				sep="&")
+						sep = "="),
+				sep = "&")
 	}
 	
 	if( !is.na(obj@BBOX)) {
 		.optionals <- paste(.optionals, paste("BBOX", 
-						.kvpEscapeSpecialCharacters(obj@BBOX), sep="="),
-				sep="&")
+						.kvpEscapeSpecialCharacters(obj@BBOX), sep = "="),
+				sep = "&")
 	}
 	
-	.kvpString <- paste(.mandatory, .optionals, sep="")
+	.kvpString <- paste(.mandatory, .optionals, sep = "")
 	
 	if(verbose)
 		cat(.kvpString)
@@ -196,18 +198,16 @@ setMethod("encodeRequestXML", "GetObservation",
 	}
 )
 sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
-	.xmlDoc <- xmlNode(name = "GetObservation", namespace = "sos",
-			namespaceDefinitions = c(
-					"sos" = "http://www.opengis.net/sos/1.0",
-					"ows" = "http://www.opengis.net/ows/1.1",
-					"om" = "http://www.opengis.net/om/1.0", # required for resultModel values
-					"ogc" = "http://www.opengis.net/ogc",
-					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
-					service = obj@service, version = obj@version))
+	.xmlDoc <- xmlNode(name = .sosGetObservationName,
+			namespace = .sosNamespacePrefix,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+					.sosNamespaceDefinitionsGetObs),
+			attrs=c(.xsiSchemaLocationAttribute, service = obj@service,
+					version = obj@version))
 	
 	# required and optional are mixed as schema requires a particular order:
-	.offering <- xmlNode(name = "offering", namespace = "sos", obj@offering)
+	.offering <- xmlNode(name = "offering", namespace = .sosNamespacePrefix,
+			obj@offering)
 	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
 	
 	if( !is.na(obj@eventTime)) {
@@ -217,13 +217,13 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
 		.procedureList <- lapply(obj@procedure, "xmlNode",
-				name="procedure", namespace = "sos")
+				name="procedure", namespace = .sosNamespacePrefix)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = .procedureList,
 				append = TRUE)
 	}
 	
 	.observedProperties <- lapply(obj@observedProperty, "xmlNode",
-			name="observedProperty", namespace = "sos")
+			name="observedProperty", namespace = .sosNamespacePrefix)
 	.xmlDoc <- addChildren(node = .xmlDoc, kids = .observedProperties,
 			append = TRUE)
 	
@@ -235,21 +235,24 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 		# TODO add result with ogc:comparisonOps
 	}
 	
-	.responseFormat <- xmlNode(name = "responseFormat", namespace = "sos",
+	.responseFormat <- xmlNode(name = "responseFormat",
+			namespace = .sosNamespacePrefix,
 			gsub(obj@responseFormat, pattern = "&quot;",
 					replacement = '"'))
 	.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
 			append = TRUE)
 	
 	if( !is.na(obj@resultModel)) {
-		.resultModel <- xmlNode(name = "resultModel", namespace = "sos",
+		.resultModel <- xmlNode(name = "resultModel",
+				namespace = .sosNamespacePrefix,
 				obj@resultModel)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.resultModel),
 				append = TRUE)
 	}
 	
 	if( !is.na(obj@responseMode)) {
-		.responseMode <- xmlNode(name = "responseMode", namespace = "sos",
+		.responseMode <- xmlNode(name = "responseMode",
+				namespace = .sosNamespacePrefix,
 				obj@responseMode)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseMode),
 				append = TRUE)
@@ -281,34 +284,34 @@ setMethod("encodeRequestXML", "GetObservationById",
 		}
 )
 sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj) {
-	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = "sos",
-			namespaceDefinitions = c(
-					"sos" = "http://www.opengis.net/sos/1.0",
-					"ows" = "http://www.opengis.net/ows/1.1",
-					"om" = "http://www.opengis.net/om/1.0", # required for resultModel values
-					"ogc" = "http://www.opengis.net/ogc",
-					"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
-			attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd",
+	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = .sosNamespacePrefix,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+					.sosNamespaceDefinitionsGetObs),
+			attrs=c(.xsiSchemaLocationAttribute,
 					service = obj@service, version = obj@version))
 	
-	.obsId <- xmlNode(name = "ObservationId", namespace = "sos", obj@observationId)
+	.obsId <- xmlNode(name = "ObservationId", namespace = .sosNamespacePrefix,
+			obj@observationId)
 	.xmlDoc <- addChildren(node = .xmlDoc, .obsId)
 	
-	.responseFormat <- xmlNode(name = "responseFormat", namespace = "sos",
+	.responseFormat <- xmlNode(name = "responseFormat",
+			namespace =  .sosNamespacePrefix,
 			gsub(obj@responseFormat, pattern = "&quot;",
 					replacement = '"'))
 	.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
 			append = TRUE)
 	
 	if( !is.na(obj@resultModel)) {
-		.resultModel <- xmlNode(name = "resultModel", namespace = "sos",
+		.resultModel <- xmlNode(name = "resultModel",
+				namespace =  .sosNamespacePrefix,
 				obj@resultModel)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.resultModel),
 				append = TRUE)
 	}
 	
 	if( !is.na(obj@responseMode)) {
-		.responseMode <- xmlNode(name = "responseMode", namespace = "sos",
+		.responseMode <- xmlNode(name = "responseMode",
+				namespace =  .sosNamespacePrefix,
 				obj@responseMode)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseMode),
 				append = TRUE)
@@ -346,8 +349,8 @@ setMethod(f = "checkRequest",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
-			if(!(operation@service == "SOS" && 
-						operation@request == "GetObservation")) {
+			if(!(operation@service == .sosService && 
+						operation@request == .sosGetObservationName)) {
 				warning("Wrong input! Require classes 'SOS' as service and 'GetObservation' as operation.")
 				return(FALSE)
 			}
@@ -364,8 +367,8 @@ setMethod(f = "checkRequest",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
-			if(!(operation@service == "SOS" && 
-						operation@request == "GetObservationById")) {
+			if(!(operation@service == .sosService && 
+						operation@request == .sosGetObservationByIdName)) {
 				warning("Wrong input! Require classes 'SOS' as service and 'GetObservationById' as operation.")
 				return(FALSE)
 			}

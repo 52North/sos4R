@@ -36,7 +36,7 @@ source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 
 sosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
 request = "service=SOS&request=GetCapabilities&acceptVersions=1.0.0,2.0.0&sections=OperationsMetadata,ServiceIdentification,ServiceProvider,Filter_Capabilities,Contents&acceptFormats=text/xml"
-url = paste(sosUrl, request, sep="?")
+url = paste(sosUrl, request, sep = "?")
 getURL(url, verbose = TRUE)
 
 
@@ -271,6 +271,7 @@ class(sensor2)
 ################################################################################
 # SOAP
 
+# TODO ********************************************************* continue here!!
 
 ################################################################################
 # GetObservationById

@@ -65,7 +65,7 @@ parseOwsOperation <- function(op) {
 						getNodeSet(
 								.p,
 								"ows:AllowedValues/ows:Value",
-								c(ows = "http://www.opengis.net/ows/1.1")
+								.owsNamespace
 						),
 						xmlValue)
 				# list of ranges
@@ -73,7 +73,7 @@ parseOwsOperation <- function(op) {
 						getNodeSet(
 								.p,
 								"ows:AllowedValues/ows:Range",
-								c(ows = "http://www.opengis.net/ows/1.1")
+								.owsNamespace
 						),
 						parseOwsRange)
 				.allowedValuesAndRanges <- c(.allowedValues, .ranges)

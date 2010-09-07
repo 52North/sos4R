@@ -43,14 +43,17 @@ setClass("SOS",
 			#print("Entering validation: SOS")
 			
 			# method has to be one of GET, POST, SOAP
-			.allowedMethods = c(.sosConnectionMethodGet, .sosConnectionMethodPost, .sosConnectionMethodSOAP)
+			.allowedMethods = c(.sosConnectionMethodGet,
+					.sosConnectionMethodPost, .sosConnectionMethodSOAP)
 			if(!any(sapply(.allowedMethods, "==", object@method), na.rm = TRUE))
-				return(paste("method has to be one of", paste(.allowedMethods, sep=", ", collapse = " ")))
+				return(paste("method has to be one of", paste(.allowedMethods,
+										sep = ", ", collapse = " ")))
 				
 			# version has to be one of the listed ones
 			.allowedVersions = c("1.0.0")
 			if(!any(sapply(.allowedVersions, "==", object@version), na.rm = TRUE))
-				return(paste("version has to be one of", paste(.allowedVersions, sep=", ", collapse = " ")))
+				return(paste("version has to be one of", paste(.allowedVersions,
+										sep = ", ", collapse = " ")))
 			
 			# url has to match an URL pattern
 			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"

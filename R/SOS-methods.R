@@ -143,7 +143,7 @@ setMethod(f = "sosRequest",
 			
 			if(sos@method == .sosConnectionMethodGet) {
 				.kvpEncoding = .encode(request, verbose)
-				.url = paste(sos@url, .kvpEncoding, sep="?")
+				.url = paste(sos@url, .kvpEncoding, sep = "?")
 				if(verbose) {
 					cat("*** GET! REQUEST: ", .url, "\n")
 				}
@@ -393,7 +393,8 @@ setMethod(f = "getCapabilities",
 				cat("Requesting capabilities... ")
 			}
 			
-			.gc <- OwsGetCapabilities(service = "SOS", acceptVersions = c(sos@version))
+			.gc <- OwsGetCapabilities(service = .sosService,
+					acceptVersions = c(sos@version))
 			if(verbose) {
 				cat("REQUEST:\n")
 				print(.gc)
@@ -443,7 +444,7 @@ setMethod(f = "describeSensor",
 				cat("DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
 			}
 			
-			.ds <- DescribeSensor(service = "SOS", version = sos@version,
+			.ds <- DescribeSensor(service = .sosService, version = sos@version,
 					procedure = procedure)
 			if(verbose) {
 				cat("REQUEST:\n")
@@ -512,7 +513,7 @@ setMethod(f = "getObservation",
 				result = as.character(NA), resultModel = as.character(NA),
 				responseMode = as.character(NA), BBOX = as.character(NA),
 				verbose = FALSE) {
-			.go <- GetObservation(service = "SOS", version = sos@version, 
+			.go <- GetObservation(service = .sosService, version = sos@version, 
 					offering = offering, observedProperty =  observedProperty,
 					responseFormat =  responseFormat, srsName = srsName,
 					eventTime = eventTime, procedure = procedure,
@@ -572,7 +573,7 @@ setMethod(f = "getObservationById",
 		function(sos, observationId, responseFormat, srsName = as.character(NA),
 				resultModel = as.character(NA), responseMode = as.character(NA),
 				verbose = FALSE) {
-			.go <- GetObservation(service = "SOS", version = sos@version, 
+			.go <- GetObservation(service = .sosService, version = sos@version, 
 					offering = offering, observedProperty =  observedProperty,
 					responseFormat =  responseFormat, srsName = srsName,
 					resultModel = resultModel, responseMode = responseMode)

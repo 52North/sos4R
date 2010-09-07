@@ -47,9 +47,9 @@ parseSensorML <- function(sml) {
 #
 setMethod("saveXML", "SensorML",
 		function(doc, file=NULL, compression=0, indent=TRUE,
-				prefix = '<?xml version="1.0"?>\n', doctype = NULL,
+				prefix = .sosDefaultSaveXmlPrefix, doctype = NULL,
 				encoding = .sosDefaultCharacterEncoding, ...) {
-			saveXML(doc = parseSensorML(doc), file=file, compression=compression,
+			saveXML(doc@xml, file=file, compression=compression,
 					indent=indent, prefix=prefix, doctype=doctype,
 					encoding=encoding, ...)
 		}
