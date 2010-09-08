@@ -22,32 +22,27 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18                                                          #
+# Created: 2010-09-08                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
 #
+# TODO add schema references
 #
-#
-setClass("OmObservation",
-		representation(
-				samplingTime = "GmlTimeObject",	
-				procedure = "ANY",
-				observedProperty = "SwePhenomenonProperty",
-				featureOfInterest = "GmlFeatureProperty",
-				result = "ANY",
+setClass("SaSamplingFeature",
+		representation(sampledFeatures = "list",
+				position = "GmlPointProperty",
 				# optional:
-				metadata = "ANY",
-				resultTime = "GmlTimeObject",
-				resultQuality = "ANY",
-				parameter = "ANY"),
-		prototype = list(samplingTime = NULL, procedure = as.character(NA),
-				observedProperty = NULL, featureOfInterest = NULL,
-				result = NULL),
+				relatedObservation = "OmObservationProperty",
+				relatedSamplingFeature = "ANY",
+				surveyDetails = "ANY"),
+		prototype = list(sampledFeatures = list(NA), position = NULL),
+		contains = "GmlFeature",
 		validity = function(object) {
-			print("Entering validation: OmObservation")
+			print("Entering validation: SaSamplingFeature")
 			# TODO implement validity function
+			# sampledFeatures list must contain > 0 gml:_Feature instances
 			return(TRUE)
 		}
 )
@@ -55,43 +50,20 @@ setClass("OmObservation",
 #
 #
 #
-setClass("OmObservationProperty",
-		representation(href = "character",	
-				obs = "OmObservation"),
-		#prototype = list(),
+setClass("SaSamplingSurface",
+		representation(sampledFeatures = "list",
+				shape = "ANY",
+				# optional:
+				relatedObservation = "OmObservationProperty",
+				relatedSamplingFeature = "ANY",
+				surveyDetails = "ANY",
+				position = "GmlPointProperty"),
+		prototype = list(sampledFeatures = list(NA), shape = NULL),
+		contains = "GmlFeature",
 		validity = function(object) {
-			print("Entering validation: OmObservationProperty")
+			print("Entering validation: SaSamplingSurface")
 			# TODO implement validity function
-			# one of parameters has to be set
+			# sampledFeatures list must contain > 0 gml:_Feature instances
 			return(TRUE)
 		}
 )
-
-#
-#
-#
-setClass("OmMeasure",
-		representation(value = "numeric",
-				uom = "character"),
-		prototype = list(value = as.real(NA), uom = as.character(NA)),
-		validity = function(object) {
-			print("Entering validation: OmMeasure")
-			# TODO implement validity function
-			# both parameters are required!
-			return(TRUE)
-		}
-)
-
-#
-#
-#
-setClass("OmMeasurement",
-		representation(result = "OmMeasure"),
-		contains = "OmObservation",
-		validity = function(object) {
-			print("Entering validation: OmMeasurement")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
-

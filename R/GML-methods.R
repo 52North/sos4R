@@ -22,76 +22,62 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18                                                          #
+# Created: 2010-09-08                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
 #
+# construction methods
 #
-#
-setClass("OmObservation",
-		representation(
-				samplingTime = "GmlTimeObject",	
-				procedure = "ANY",
-				observedProperty = "SwePhenomenonProperty",
-				featureOfInterest = "GmlFeatureProperty",
-				result = "ANY",
-				# optional:
-				metadata = "ANY",
-				resultTime = "GmlTimeObject",
-				resultQuality = "ANY",
-				parameter = "ANY"),
-		prototype = list(samplingTime = NULL, procedure = as.character(NA),
-				observedProperty = NULL, featureOfInterest = NULL,
-				result = NULL),
-		validity = function(object) {
-			print("Entering validation: OmObservation")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
+GmlTimeInstant <- function(timePosition, id = as.character(NA),
+		relatedTime = list(NA), frame = as.character(NA)) {
+	new("GmlTimeInstant", timePosition = timePosition, id = id,
+			relatedTime = relatedTime, frame = frame)
+}
 
-#
-#
-#
-setClass("OmObservationProperty",
-		representation(href = "character",	
-				obs = "OmObservation"),
-		#prototype = list(),
-		validity = function(object) {
-			print("Entering validation: OmObservationProperty")
-			# TODO implement validity function
-			# one of parameters has to be set
-			return(TRUE)
-		}
-)
+GmlTimePeriod <- function(begin = NA, beginPosition = NA, end = NA,
+		endPosition = NA, duration = as.character(NA), timeInterval = NA,
+		id = as.character(NA), relatedTime = NULL, frame = as.character(NA)) {
+	new("GmlTimePeriod", begin = beging, beginPosition = beginPosition,
+			end = end, endPosition = endPosition, durcation = duration,
+			timeInterval = timeInterval, id = id, relatedTime = relatedTime,
+			frame = frame)
+}
 
-#
-#
-#
-setClass("OmMeasure",
-		representation(value = "numeric",
-				uom = "character"),
-		prototype = list(value = as.real(NA), uom = as.character(NA)),
-		validity = function(object) {
-			print("Entering validation: OmMeasure")
-			# TODO implement validity function
-			# both parameters are required!
-			return(TRUE)
-		}
-)
+GmlTimePosition <- function(time, frame = as.character(NA),
+		calendarEraName = as.character(NA),
+		indeterminatePosition = as.character(NA)) {
+	new("GmlTimePosition", time = time, frame = frame,
+			calendarEraName = calendarEraName,
+			indeterminatePosition = indeterminatePosition)
+}
 
-#
-#
-#
-setClass("OmMeasurement",
-		representation(result = "OmMeasure"),
-		contains = "OmObservation",
-		validity = function(object) {
-			print("Entering validation: OmMeasurement")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
+GmlTimeInterval <- function(interval, unit, radix = NA, factor = NA) {
+	new("GmlTimeInteval", interval = interval, unit = unit, radix = radix,
+			factor = factor)
+}
 
+GmlFeatureProperty <- function(href = NA, phenomenon = NA) {
+	new("GmlFeatureProperty", href = href, phenomenon = phenomenon)	
+}
+
+GmlDirectPosition <- function(pos, srsName = as.character(NA),
+		srsDimension = as.character(NA), axisLabels = as.character(NA), 
+		uomLabels = as.character(NA)) {
+	new("GmlDirectPosition", pos = pos, srsName = srsName,
+			srsDimension = srsDimension, axisLabels = axisLabels,
+			uomLabels = uomLabels)
+}
+
+GmlPoint <- function(pos, id = as.character(NA), srsName = as.character(NA),
+		srsDimension = as.character(NA), axisLabels = as.character(NA),
+		uomLabels = as.character(NA)) {
+	new("GmlPoint", pos = pos, id = id, srsName = srsName,
+			srsDimension = srsDimension, axisLabels = axisLabels,
+			uomLabels = uomLabels)
+}
+
+GmlPointProperty <- function(href = NA, point = NA) {
+	new("GmlPointProperty", href = href, point = point)
+}

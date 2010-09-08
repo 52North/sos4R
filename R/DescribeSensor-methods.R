@@ -34,7 +34,7 @@ DescribeSensor <- function(
 		service,
 		version,
 		procedure,
-		outputFormat = .sosDescribeSensorDefaultOutputFormat) {
+		outputFormat) {
 	new("DescribeSensor",
 			request = .sosDescribeSensorName,
 			service = service,

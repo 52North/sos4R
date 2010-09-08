@@ -22,8 +22,40 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18                                                          #
+# Created: 2010-09-08                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
+#
+# construction methods
+#
+OmObservation <- function(samplingTime, procedure, observedProperty,
+		featureOfInterest, result, metadata = NA, resultTime = NA,
+		resultQuality = NA,	parameter = NA) {
+	new("OmObservation", samplingTime = samplingTime, procedure = procedure,
+			observedProperty = observedProperty,
+			featureOfInterest = featureOfInterest, result = result,
+			metadata = metadata, resultTime = resultTime,
+			resultQuality = resultQuality,
+			parameter = parameter)
+}
+
+OmObservationProperty <- function(href = as.character(NA), obs = NA) {
+	new("OmObservationProperty", href = href, obs = obs)
+}
+
+OmMeasure <- function(value, uom) {
+	new("OmMeasure", value = value, uom = uom)
+}
+
+OmMeasurement <- function(samplingTime, procedure, observedProperty,
+		featureOfInterest, result, metadata = NA, resultTime = NA,
+		resultQuality = NA,	parameter = NA) {
+	new("OmMeasurement", samplingTime = samplingTime, procedure = procedure,
+			observedProperty = observedProperty,
+			featureOfInterest = featureOfInterest, result = result,
+			metadata = metadata, resultTime = resultTime,
+			resultQuality = resultQuality,
+			parameter = parameter)
+}

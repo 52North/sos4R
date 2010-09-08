@@ -204,7 +204,7 @@ caps = sosCaps(sos)
 
 # DescribeSensor
 procedures = sosProcedures(sos)
-sensor.10 <- describeSensor(sos = sos, procedure = procedures[1], verbose = TRUE)
+sensor.10 <- describeSensor(sos = sos, procedure = procedures[[1]])
 
 ################################################################################
 # testing to call functions from a list
@@ -269,30 +269,40 @@ class(sensor2)
 # works!
 
 ################################################################################
-# SOAP
-
-# TODO ********************************************************* continue here!!
-
-################################################################################
 # GetObservationById
-getobsbyid.id <- "lala:123"
-getobsbyid <- GetObservationById("SOS", "1.0.0", getobsbyid.id,
+
+# some ids for weathersos
+ids = paste("o_33765", c(80:99), sep = "")
+getobsbyid <- GetObservationById("SOS", "1.0.0", ids[1],
 		"text/xml;subtype=&quot;om/1.0.0&quot;")
 getobsbyid
-encode(getobsbyid)
+encodeRequestXML(getobsbyid) # is valid!
+
 getobsbyid <- GetObservationById(service = "SOS", version = "1.0.0",
-		observationId = getobsbyid.id,
+		observationId = ids[2],
 		responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;",
 		resultModel = "om:Measurement", responseMode = "inline",
-		srsName = "epsg:1234")
+		srsName = "urn:ogc:def:crs:EPSG:4326")
 getobsbyid
-encode(getobsbyid) # is valid!
+encodeRequestXML(getobsbyid) # is valid!
 
-# TODO ********************************************************* continue here!!
-
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
+		method = "POST", verboseOutput = FALSE)
+ids = paste("o_33765", c(80:99), sep = "")
+getobsbyid <- getObservationById(sos = weathersos, observationId = ids[[1]], verbose = TRUE)
 
 ################################################################################
-# Parsing observations
+# parsing om:Measurement
+
+meas <- '<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:Measurement gml:id="o_3376580"><om:samplingTime><gml:TimeInstant xsi:type="gml:TimeInstantType"><gml:timePosition>2010-09-08T09:45:00.000+02:00</gml:timePosition></gml:TimeInstant></om:samplingTime><om:procedure xlink:href="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/><om:observedProperty xlink:href="urn:ogc:def:property:OGC::Temperature"/><om:featureOfInterest><sa:SamplingPoint gml:id="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"><gml:name>NOT_SET</gml:name><sa:position><gml:Point><gml:pos srsName="urn:ogc:def:crs:EPSG:4326">51.9412 7.6103</gml:pos></gml:Point></sa:position></sa:SamplingPoint></om:featureOfInterest><om:result uom="Cel">12.9</om:result></om:Measurement></om:member><om:member><om:Measurement gml:id="o_3376580"><om:samplingTime><gml:TimeInstant xsi:type="gml:TimeInstantType"><gml:timePosition>2010-09-08T09:45:00.000+02:00</gml:timePosition></gml:TimeInstant></om:samplingTime><om:procedure xlink:href="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/><om:observedProperty xlink:href="urn:ogc:def:property:OGC::Temperature"/><om:featureOfInterest><sa:SamplingPoint gml:id="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"><gml:name>NOT_SET</gml:name><sa:position><gml:Point><gml:pos srsName="urn:ogc:def:crs:EPSG:4326">51.9412 7.6103</gml:pos></gml:Point></sa:position></sa:SamplingPoint></om:featureOfInterest><om:result uom="Cel">12.9</om:result></om:Measurement></om:member></om:ObservationCollection>'
+measDoc <- xmlParseDoc(meas)
+
+parseOM(measDoc)
+
+################################################################################
+# GetObservations
+
+
 
 sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "GET")
 
@@ -312,7 +322,10 @@ getObservation(sos, offering = go.offering,
 		responseFormat = go.responseFormat)
 
 
+################################################################################
+# SOAP
 
+# TODO ********************************************************* continue here!!
 
 
 ################################################################################

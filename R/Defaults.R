@@ -140,9 +140,10 @@ SOSDisabledParsers <- function() {
 # other defaults
 
 .sosDefaultCharacterEncoding <- "UTF-8"
-.sosDescribeSensorDefaultOutputFormat <- "text/xml;subtype=&quot;sensorML/1.0.1&quot;"
+
+.sosDefaultDescribeSensorOutputFormat <- SosSupportedResponseFormats()[2]
 .sosDefaultGetCapSections <- c("All")
 .sosDefaultGetCapAcceptFormats <- c("text/xml")
 .sosDefaultGetCapOwsVersion <- "1.1.0"
-
+.sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
 .sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'

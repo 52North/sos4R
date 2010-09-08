@@ -39,11 +39,27 @@
 .sosGetObservationByIdName <- "GetObservationById"
 .sosOwsExceptionReportRootName <- "ExceptionReport"
 
+.sosSupportedResponseFormats <- c(
+		"text/xml;subtype=&quot;om/1.0.0&quot;",
+		"text/xml;subtype=&quot;sensorML/1.0.1&quot;")
+SosSupportedResponseFormats <- function() {
+	return(.sosSupportedResponseFormats)
+}
+
+.sosSupportedResultModels <- c("om:Measurement", "om:Observation")
+SosSupportedResultModels <- function() {
+	return(.sosSupportedResultModels)
+}
+
+.sosSupportedResponseModes <- c("inline")
+SosSupportedResponseModes <- function() {
+	return(.sosSupportedResponseModes)
+}
+
 .sosNamespacePrefix <- "sos"
 .sosNamespaceDefinitionsAll <- c(sos = "http://www.opengis.net/sos/1.0",
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
-.sosNamespaceDefinitionsGetObs <- c(sos = "http://www.opengis.net/sos/1.0",
-		ows = "http://www.opengis.net/ows/1.1",
+.sosNamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
 		om = "http://www.opengis.net/om/1.0",
 		ogc = "http://www.opengis.net/ogc")
 .sosNamespaceDefinitionsGetCap <- c(ows = "http://www.opengis.net/ows/1.1",

@@ -28,70 +28,19 @@
 ################################################################################
 
 #
+# construction methods
 #
-#
-setClass("OmObservation",
-		representation(
-				samplingTime = "GmlTimeObject",	
-				procedure = "ANY",
-				observedProperty = "SwePhenomenonProperty",
-				featureOfInterest = "GmlFeatureProperty",
-				result = "ANY",
-				# optional:
-				metadata = "ANY",
-				resultTime = "GmlTimeObject",
-				resultQuality = "ANY",
-				parameter = "ANY"),
-		prototype = list(samplingTime = NULL, procedure = as.character(NA),
-				observedProperty = NULL, featureOfInterest = NULL,
-				result = NULL),
-		validity = function(object) {
-			print("Entering validation: OmObservation")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
+SwePhenomenon <- function(id, name, description = as.character(NA)) {
+	new("SwePhenomenon", id = id, name = name, description = description)
+}
 
-#
-#
-#
-setClass("OmObservationProperty",
-		representation(href = "character",	
-				obs = "OmObservation"),
-		#prototype = list(),
-		validity = function(object) {
-			print("Entering validation: OmObservationProperty")
-			# TODO implement validity function
-			# one of parameters has to be set
-			return(TRUE)
-		}
-)
+SweCompositePhenomenon <- function(id, name, description = as.character(NA),
+		dimension, components, base = NA) {
+	new("SweCompositePhenomenon", id = id, name = name,
+			description = description, dimension = dimension,
+			components = components, base = base)	
+}
 
-#
-#
-#
-setClass("OmMeasure",
-		representation(value = "numeric",
-				uom = "character"),
-		prototype = list(value = as.real(NA), uom = as.character(NA)),
-		validity = function(object) {
-			print("Entering validation: OmMeasure")
-			# TODO implement validity function
-			# both parameters are required!
-			return(TRUE)
-		}
-)
-
-#
-#
-#
-setClass("OmMeasurement",
-		representation(result = "OmMeasure"),
-		contains = "OmObservation",
-		validity = function(object) {
-			print("Entering validation: OmMeasurement")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
-
+SwePhenomenonProperty <- function(href = as.character(NA), phenomenon = NA) {
+	new("SwePhenomenonProperty", href = href, phenomenon = phenomenon)
+}
