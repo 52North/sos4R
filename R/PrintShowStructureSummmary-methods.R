@@ -143,25 +143,25 @@ print.OwsCapabilities <- function(x, ...) {
 	cat(", updateSequence: ")
 	cat(x@updateSequence)
 	
-	if (is(x, "OwsCapabilities_1.1.0")) {
-		cat("\nIdentification: ")
-		print(x@identification)
-		cat("\nProvider: ")
-		print(x@provider)
-		cat("Operations (names): ")
-		cat(paste(names(x@operations@operations)))
-		cat("\nContents: ")
-		print(x@contents)
-	}
-	if (is(x, "OwsCapabilities_2.0.0")) {
-		cat("\nLanguages: ")
-		print(x@languages)
-	}
-	if (is(x, "SosCapabilities_1.1.0")) {
-		cat("\nFilter Capablities: ")
-		print(x@filterCaps)
-	}
-	
+#	if (is(x, "OwsCapabilities_1.1.0")) {
+#		cat("\nIdentification: ")
+#		print(x@identification)
+#		cat("\nProvider: ")
+#		print(x@provider)
+#		cat("Operations (names): ")
+#		cat(paste(names(x@operations@operations)))
+#		cat("\nContents: ")
+#		print(x@contents)
+#	}
+#	if (is(x, "OwsCapabilities_2.0.0")) {
+#		cat("\nLanguages: ")
+#		print(x@languages)
+#	}
+#	if (is(x, "SosCapabilities_1.1.0")) {
+#		cat("\nFilter Capablities: ")
+#		print(x@filterCaps)
+#	}
+
 	invisible(x)
 }
 
@@ -213,15 +213,15 @@ print.OwsRange <- function(x, ...) {
 }
 
 print.SOS <- function(x, ...) {
-	cat("Object of class SOS")
-	cat("; version: ")
+	cat("Object of class SOS -- version: ")
 	cat(x@version)
 	cat(", method: ")
 	cat(x@method)
 	cat(", url: ")
 	cat(x@url)
-	cat("\nCapabilities: ")
+	cat("\n\tCapabilities: ")
 	print(x@capabilities)
+	cat("\n")
 	invisible(x)
 }
 
@@ -342,7 +342,86 @@ print.DescribeSensor <- function(x, ...) {
 	invisible(x)
 }
 
+toString.OmMeasurement <- function(x) {
+	.s <- paste(
+			"Object of class OmMeasurement",
+			"; result: ",
+			toString(x@result),
+			"\n", sep = "")
+	return(.s)
+}
 
+print.OmMeasurement <- function(x, ...) {
+	cat(toString.OmMeasurement(x))
+	invisible(x)
+}
+
+toString.OmMeasure <- function(x) {
+	.s <- paste(
+			"Object of class OmMeasure",
+			"; value: ",
+			x@value,
+			"; uom: ",
+			x@uom,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.OmMeasure <- function(x, ...) {
+	cat(toString.OmMeasure(x))
+	invisible(x)
+}
+
+toString.SwePhenomenonProperty <- function(x) {
+	.s <- paste("Object of class SwePhenomenonProperty",
+			"; href: ",
+			x@href,
+			"; phenomenon: ",
+			x@phenomenon,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.SwePhenomenonProperty <- function(x) {
+	cat(toString.SwePhenomenonProperty(x))
+	invisible(x)
+}
+
+print.SwePhenomenon <- function(x) {
+	cat("Object of class SwePhenomenon",
+		"; id: ",
+		x@id,
+		"; name: ",
+		x@name,
+		"; description: ",
+		x@description,
+		"\n", sep = "")
+	invisible(x)
+}
+
+toString.SweCompositePhenomenon <- function(x) {
+	.s <- paste("Object of class SweCompositePhenomenon",
+		"; id: ",
+		x@id,
+		"; name: ",
+		x@name,
+		"; description: ",
+		x@description,
+		"; dimension: ",
+		x@dimension,
+		"; base: ",
+		toString(x@base),
+		";\ncomponents:\t",
+		sapply(sapply(x@components, toString), paste, "\t\t\t"),
+		"\n", sep = "")
+	return(.s)
+}
+
+print.SweCompositePhenomenon <- function(x) {
+	cat(toString.SweCompositePhenomenon(x))
+	invisible(x)
+}
+	
 ################################################################################
 # SHOW FUNCTIONS
 setMethod("show", "OwsServiceOperation", function(object) print.OwsServiceOperation(object))
@@ -360,6 +439,7 @@ setMethod("show", "OwsCapabilities_2.0.0", function(object) print.OwsCapabilitie
 setMethod("show", "OwsExceptionReport", function(object) print.OwsExceptionReport(object))
 setMethod("show", "OwsException", function(object) print.OwsException(object))
 setMethod("show", "OwsRange", function(object) print.OwsRange(object))
+
 setMethod("show", "SOS", function(object) print.SOS(object))
 setMethod("show", "SosFilter_Capabilities", function(object) print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) print.SosObservationOffering(object))
@@ -368,6 +448,31 @@ setMethod("show", "SensorML", function(object) print.SensorML(object))
 setMethod("show", "GetObservation", function(object) print.GetObservation(object))
 setMethod("show", "GetObservationById", function(object) print.GetObservationById(object))
 setMethod("show", "DescribeSensor", function(object) print.DescribeSensor(object))
+
+setMethod("show", "SaSamplingPoint", function(object) print.SaSamplingPoint(object))
+setMethod("show", "SaSamplingSurface", function(object) print.SaSamplingSurface(object))
+
+setMethod("show", "SwePhenomenon", function(object) print.SwePhenomenon(object))
+setMethod("show", "SwePhenomenonProperty", function(object) print.SwePhenomenonProperty(object))
+setMethod("show", "SweCompositePhenomenon", function(object) print.SweCompositePhenomenon(object))
+
+setMethod("show", "OmObservation", function(object) print.OmObservation(object))
+setMethod("show", "OmObservationProperty", function(object) print.OmObservationProperty(object))
+setMethod("show", "OmMeasure", function(object) print.OmMeasure(object))
+setMethod("show", "OmMeasurement", function(object) print.OmMeasurement(object))
+
+setMethod("show", "GmlTimeObject", function(object) print.GmlTimeObject(object))
+setMethod("show", "GmlTimePrimitive", function(object) print.GmlTimePrimitive(object))
+setMethod("show", "GmlTimeGeometricPrimitive", function(object) print.GmlTimeGeometricPrimitive(object))
+setMethod("show", "GmlTimePosition", function(object) print.GmlTimePosition(object))
+setMethod("show", "GmlTimeInstant", function(object) print.GmlTimeInstant(object))
+setMethod("show", "GmlTimeInterval", function(object) print.GmlTimeInterval(object))
+setMethod("show", "GmlTimePeriod", function(object) print.GmlTimePeriod(object))
+setMethod("show", "GmlFeature", function(object) print.GmlFeature(object))
+setMethod("show", "GmlFeatureProperty", function(object) print.GmlFeatureProperty(object))
+setMethod("show", "GmlDirectPosition", function(object) print.GmlDirectPosition(object))
+setMethod("show", "GmlPoint", function(object) print.GmlPoint(object))
+setMethod("show", "GmlPointProperty", function(object) print.GmlPointProperty(object))
 
 ################################################################################
 # SUMMARY FUNCTIONS

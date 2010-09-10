@@ -30,28 +30,28 @@
 #
 #
 #
-parseSosObservationOffering <- function(ob) {
-	.id <- xmlGetAttr(ob, "id")
-	.name <- xmlValue(ob[["name"]])
+parseSosObservationOffering <- function(obj) {
+	.id <- xmlGetAttr(obj, "id")
+	.name <- xmlValue(obj[["name"]])
 	
 	# TODO use some real time period class, not list!
 	.time <- list(beginPosition = xmlValue(
-					ob[["time"]][["TimePeriod"]][["beginPosition"]]),
+					obj[["time"]][["TimePeriod"]][["beginPosition"]]),
 			endPosition = xmlValue(
-					ob[["time"]][["TimePeriod"]][["endPosition"]]))
+					obj[["time"]][["TimePeriod"]][["endPosition"]]))
 	
-	.procedure <- sapply(ob["procedure"], xmlGetAttr, "href")
-	.observedProperty <- sapply(ob["observedProperty"], xmlGetAttr, "href")
-	.featureOfInterest <- sapply(ob["featureOfInterest"], xmlGetAttr, "href")
+	.procedure <- sapply(obj["procedure"], xmlGetAttr, "href")
+	.observedProperty <- sapply(obj["observedProperty"], xmlGetAttr, "href")
+	.featureOfInterest <- sapply(obj["featureOfInterest"], xmlGetAttr, "href")
 	
-	.responseFormat <- sapply(ob["responseFormat"], xmlValue)
-	.resultModel <- sapply(ob["resultModel"], xmlValue)
-	.responseMode <- sapply(ob["responseMode"], xmlValue)
+	.responseFormat <- sapply(obj["responseFormat"], xmlValue)
+	.resultModel <- sapply(obj["resultModel"], xmlValue)
+	.responseMode <- sapply(obj["responseMode"], xmlValue)
 	
 	.boundedBy <- list(
-			srsName = xmlGetAttr(ob[["boundedBy"]][["Envelope"]], "srsName"),
-			lowerCorner = xmlValue(ob[["boundedBy"]][["Envelope"]][["lowerCorner"]]),
-			upperCorner = xmlValue(ob[["boundedBy"]][["Envelope"]][["upperCorner"]]))
+			srsName = xmlGetAttr(obj[["boundedBy"]][["Envelope"]], "srsName"),
+			lowerCorner = xmlValue(obj[["boundedBy"]][["Envelope"]][["lowerCorner"]]),
+			upperCorner = xmlValue(obj[["boundedBy"]][["Envelope"]][["upperCorner"]]))
 	
 	.ob <- SosObservationOffering(id = .id, name = .name, 
 			time = .time, procedure = .procedure,
@@ -66,8 +66,8 @@ parseSosObservationOffering <- function(ob) {
 #
 #
 #
-parseSosCapabilities <- function(document) {
-	.caps.root <- xmlRoot(document)
+parseSosCapabilities <- function(obj) {
+	.caps.root <- xmlRoot(obj)
 	
 	# attributes:
 	.caps.attrs <- xmlAttrs(.caps.root)

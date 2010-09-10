@@ -45,7 +45,7 @@ GetObservation <- function(
 		responseMode = as.character(NA),
 		BBOX = as.character(NA)) {
 	new("GetObservation",
-			request = .sosGetObservationName,
+			request = sosGetObservationName,
 			service = service,
 			version = version,
 			offering = offering, 
@@ -73,7 +73,7 @@ GetObservationById <- function(
 		resultModel = as.character(NA),
 		responseMode = as.character(NA)) {
 	new("GetObservationById",
-			request = .sosGetObservationByIdName,
+			request = sosGetObservationByIdName,
 			service = service,
 			version = version,
 			observationId = observationId,
@@ -98,7 +98,7 @@ setMethod("encodeRequestKVP", "GetObservation",
 )
 sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	# required:
-	.request <- pasete("request" , .sosGetObservationName, sep = "=")
+	.request <- pasete("request" , sosGetObservationName, sep = "=")
 	.service <- paste("service",
 			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
 	.version <- paste("version",
@@ -198,15 +198,15 @@ setMethod("encodeRequestXML", "GetObservation",
 	}
 )
 sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
-	.xmlDoc <- xmlNode(name = .sosGetObservationName,
-			namespace = .sosNamespacePrefix,
+	.xmlDoc <- xmlNode(name = sosGetObservationName,
+			namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetObs),
 			attrs=c(.xsiSchemaLocationAttribute, service = obj@service,
 					version = obj@version))
 	
 	# required and optional are mixed as schema requires a particular order:
-	.offering <- xmlNode(name = "offering", namespace = .sosNamespacePrefix,
+	.offering <- xmlNode(name = "offering", namespace = sosNamespacePrefix,
 			obj@offering)
 	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
 	
@@ -217,13 +217,13 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
 		.procedureList <- lapply(obj@procedure, "xmlNode",
-				name="procedure", namespace = .sosNamespacePrefix)
+				name="procedure", namespace = sosNamespacePrefix)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = .procedureList,
 				append = TRUE)
 	}
 	
 	.observedProperties <- lapply(obj@observedProperty, "xmlNode",
-			name="observedProperty", namespace = .sosNamespacePrefix)
+			name="observedProperty", namespace = sosNamespacePrefix)
 	.xmlDoc <- addChildren(node = .xmlDoc, kids = .observedProperties,
 			append = TRUE)
 	
@@ -236,7 +236,7 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	}
 	
 	.responseFormat <- xmlNode(name = "responseFormat",
-			namespace = .sosNamespacePrefix,
+			namespace = sosNamespacePrefix,
 			gsub(obj@responseFormat, pattern = "&quot;",
 					replacement = '"'))
 	.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
@@ -244,7 +244,7 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	
 	if( !is.na(obj@resultModel)) {
 		.resultModel <- xmlNode(name = "resultModel",
-				namespace = .sosNamespacePrefix,
+				namespace = sosNamespacePrefix,
 				obj@resultModel)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.resultModel),
 				append = TRUE)
@@ -252,7 +252,7 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	
 	if( !is.na(obj@responseMode)) {
 		.responseMode <- xmlNode(name = "responseMode",
-				namespace = .sosNamespacePrefix,
+				namespace = sosNamespacePrefix,
 				obj@responseMode)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseMode),
 				append = TRUE)
@@ -284,18 +284,18 @@ setMethod("encodeRequestXML", "GetObservationById",
 		}
 )
 sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj) {
-	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = .sosNamespacePrefix,
+	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetObs),
 			attrs=c(.xsiSchemaLocationAttribute,
 					service = obj@service, version = obj@version))
 	
-	.obsId <- xmlNode(name = "ObservationId", namespace = .sosNamespacePrefix,
+	.obsId <- xmlNode(name = "ObservationId", namespace = sosNamespacePrefix,
 			obj@observationId)
 	.xmlDoc <- addChildren(node = .xmlDoc, .obsId)
 	
 	.responseFormat <- xmlNode(name = "responseFormat",
-			namespace =  .sosNamespacePrefix,
+			namespace =  sosNamespacePrefix,
 			gsub(obj@responseFormat, pattern = "&quot;",
 					replacement = '"'))
 	.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
@@ -303,7 +303,7 @@ sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj) {
 	
 	if( !is.na(obj@resultModel)) {
 		.resultModel <- xmlNode(name = "resultModel",
-				namespace =  .sosNamespacePrefix,
+				namespace =  sosNamespacePrefix,
 				obj@resultModel)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.resultModel),
 				append = TRUE)
@@ -311,7 +311,7 @@ sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj) {
 	
 	if( !is.na(obj@responseMode)) {
 		.responseMode <- xmlNode(name = "responseMode",
-				namespace =  .sosNamespacePrefix,
+				namespace =  sosNamespacePrefix,
 				obj@responseMode)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseMode),
 				append = TRUE)
@@ -349,8 +349,8 @@ setMethod(f = "checkRequest",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
-			if(!(operation@service == .sosService && 
-						operation@request == .sosGetObservationName)) {
+			if(!(operation@service == sosService && 
+						operation@request == sosGetObservationName)) {
 				warning("Wrong input! Require classes 'SOS' as service and 'GetObservation' as operation.")
 				return(FALSE)
 			}
@@ -367,8 +367,8 @@ setMethod(f = "checkRequest",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
-			if(!(operation@service == .sosService && 
-						operation@request == .sosGetObservationByIdName)) {
+			if(!(operation@service == sosService && 
+						operation@request == sosGetObservationByIdName)) {
 				warning("Wrong input! Require classes 'SOS' as service and 'GetObservationById' as operation.")
 				return(FALSE)
 			}

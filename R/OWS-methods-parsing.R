@@ -106,12 +106,9 @@ parseOwsOperation <- function(op) {
 parseOwsExceptionReport <- function(document) {
 	.docRoot <- xmlRoot(document)
 	## print(.docRoot)
-	
-	.attrs <- xmlAttrs(.docRoot)
-	.version <- .attrs["version"]
-	if(!is.null(.attrs["lang"]) && !is.na(.attrs["lang"]))
-		.lang <- .attrs["lang"]
-	else .lang <- as.character(NA)
+
+	.version <- xmlGetAttr(node = .docRoot, name = "version")
+	.lang <- xmlGetAttr(node = .docRoot, name = "lang", default = NA_character_)
 	
 	# remove all elements from docRoot that are not 'Exception'
 	# could probably be done nicer with subsetting, but indexing with wildcards or similar (... xmlChildren()[[]] ...) did not work.
@@ -136,9 +133,8 @@ parseOwsException <- function(node) {
 #	print("parsing e!")
 	.attrs <- xmlAttrs(node)
 	.code <- .attrs[["exceptionCode"]]
-	if(!is.null(.attrs["locator"]) && !is.na(.attrs["locator"]))
-		.locator <- .attrs[["locator"]]
-	else .locator <- as.character(NA)
+	.locator <- xmlGetAttr(node = node, name = "locator",
+			default = NA_character_)
 	
 	if(!is.na(xmlChildren(node)["ExceptionText"]))
 		.text <- xmlValue(xmlChildren(node)[["ExceptionText"]])
@@ -270,12 +266,19 @@ parseOwsRange <- function(node) {
 .filterXmlChildren <- function(node, childrenName, includeNamed = TRUE) {
 	.temp <- xmlChildren(node)
 	.filtered <- c()
+	.names <- c()
 	for (.x in .temp) {
-		if(xmlName(.x) == childrenName && includeNamed)
-			.filtered = c(.filtered, .x)
-		else if(!includeNamed && xmlName(.x) != childrenName)
-			.filtered = c(.filtered, .x) 
+		if(xmlName(.x) == childrenName && includeNamed) {
+			.filtered <- c(.filtered, .x)
+			.names <- c(.names, xmlName(.x))
+		}
+		else if(!includeNamed && xmlName(.x) != childrenName) {
+			.filtered <- c(.filtered, .x)
+			.names <- c(.names, xmlName(.x))
+		}
 	}
+	names(.filtered) <- .names
 	rm(.temp)
+	rm(.names)
 	return(.filtered)
 }

@@ -36,7 +36,7 @@ DescribeSensor <- function(
 		procedure,
 		outputFormat) {
 	new("DescribeSensor",
-			request = .sosDescribeSensorName,
+			request = sosDescribeSensorName,
 			service = service,
 			version = version,
 			procedure = procedure,
@@ -62,7 +62,7 @@ sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, verbose = FALSE) {
 	# mandatory:
 	.service <- paste("service",
 			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
-	.request <- paste("&request" , .sosDescribeSensorName, sep = "=")
+	.request <- paste("&request" , sosDescribeSensorName, sep = "=")
 	.version <- paste("version", 
 			.kvpEscapeSpecialCharacters(obj@version), sep = "=")
 	.procedure <- paste("procedure",
@@ -101,15 +101,15 @@ setMethod("encodeRequestXML", "DescribeSensor",
 		}
 )
 sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = .sosDescribeSensorName,
-			namespace = .sosNamespacePrefix,
+	xmlDoc <- xmlNode(name = sosDescribeSensorName,
+			namespace = sosNamespacePrefix,
 			namespaceDefinitions = .sosNamespaceDefinitionsAll,
 			attrs=c(.xsiSchemaLocationAttribute,
 					service = obj@service,
 					outputFormat = obj@outputFormat,
 					version = obj@version))
 	
-	procedure <- xmlNode(name = "procedure", namespace = .sosNamespacePrefix,
+	procedure <- xmlNode(name = "procedure", namespace = sosNamespacePrefix,
 			obj@procedure)
 	xmlDoc$children[[1]] <- procedure
 	
@@ -146,15 +146,15 @@ setMethod(f = "checkRequest",
 			}
 			
 			# check if operation is for SOS and operation is DescribeSensor
-			if(!(operation@service == .sosService && 
-						operation@request == .sosDescribeSensorName)) {
+			if(!(operation@service == sosService && 
+						operation@request == sosDescribeSensorName)) {
 				warning("Wrong input! Require classes 'SOS' as service and 'DescribeSensor' as operation.")
 				return(FALSE)
 			}
 				
 			# check if sensor in in listed in procedures
 			.procedures = sosProcedures(service)
-			.dsOperation <- sosOperationInfo(service, .sosDescribeSensorName)
+			.dsOperation <- sosOperationInfo(service, sosDescribeSensorName)
 
 			.procContained <- FALSE
 			for (x in .procedures) {

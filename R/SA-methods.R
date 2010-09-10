@@ -22,45 +22,29 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18                                                          #
+# Created: 2010-09-09                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
-# load required libraries
-library("XML")
-library("RCurl")
+#
+# construction methods
+#
+SaSamplingPoint <- function(sampledFeatures, position,
+		relatedObservation = NA, relatedSamplingFeature = NA,
+		surveyDetails = NA) {
+	new("SaSamplingPoint", sampledFeatures = sampledFeatures,
+			position = position, relatedObservation = relatedObservation,
+			surveyDetails = surveyDetails)
+}
 
-# load required source files for testing
-.path = "/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R"
-
-source(paste(.path, "R", "Constants.R",  sep = "/"))
-
-source(paste(.path, "R", "Class-OWS.R",  sep = "/"))
-source(paste(.path, "R", "OWS-methods.R",  sep = "/"))
-source(paste(.path, "R", "OWS-methods-parsing.R",  sep = "/"))
-
-source(paste(.path, "R", "Class-GML.R",  sep = "/"))
-source(paste(.path, "R", "Class-SWE.R",  sep = "/"))
-source(paste(.path, "R", "Class-OM.R",  sep = "/"))
-source(paste(.path, "R", "Class-SA.R",  sep = "/"))
-source(paste(.path, "R", "Class-SOS.R",  sep = "/"))
-source(paste(.path, "R", "Class-DescribeSensor.R",  sep = "/"))
-source(paste(.path, "R", "Class-GetObservation.R",  sep = "/"))
-source(paste(.path, "R", "Class-SensorML.R",  sep = "/"))
-
-source(paste(.path, "R", "DescribeSensor-methods.R",  sep = "/"))
-source(paste(.path, "R", "GetObservation-methods.R",  sep = "/"))
-source(paste(.path, "R", "SOS-methods-parsing.R",  sep = "/"))
-source(paste(.path, "R", "OM-methods.R",  sep = "/"))
-source(paste(.path, "R", "OM-methods-parsing.R",  sep = "/"))
-source(paste(.path, "R", "SA-methods.R",  sep = "/"))
-source(paste(.path, "R", "GML-methods.R",  sep = "/"))
-source(paste(.path, "R", "SWE-methods.R",  sep = "/"))
-source(paste(.path, "R", "SensorML-methods.R",  sep = "/"))
-
-source(paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
-
-source(paste(.path, "R", "Defaults.R",  sep = "/"))
-
-source(paste(.path, "R", "SOS-methods.R",  sep = "/"))
+#
+#
+#
+SaSamplingSurface <- function(sampledFeatures, shape, relatedObservation = NA,
+		relatedSamplingFeature = NA, surveyDetails = NA, position = NA) {
+	new("SaSamplingSurface", sampledFeatures = sampledFeatures,
+			shape = shape, relatedObservation = relatedObservation,
+			relatedSamplingFeature = relatedSamplingFeature, 
+			surveyDetails = surveyDetails, position = position)
+}

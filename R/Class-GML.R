@@ -35,7 +35,6 @@
 setClass("GmlTimeObject",
 		representation(# optional:
 				id = "character"),
-		#prototype = list(id = as.character(NA)),
 		contains = c("VIRTUAL"),
 		validity = function(object) {
 			print("Entering validation: GmlTime")
@@ -60,7 +59,6 @@ setClass("GmlTimePrimitive",
 setClass("GmlTimeGeometricPrimitive",
 		representation(# optional:
 				frame = "character"),
-		#prototype = list(relatedTime = NULL),
 		contains = c("VIRTUAL", "GmlTimePrimitive"),
 		validity = function(object) {
 			print("Entering validation: GmlTimeGeometricPrimitive")
@@ -73,7 +71,7 @@ setClass("GmlTimeGeometricPrimitive",
 # GmlTimePosition wraps a POSIXct
 #
 setClass("GmlTimePosition",
-		representation(time = "POSIXct",
+		representation(time = "POSIXt",
 				# optional:
 				frame = "character",
 				calendarEraName = "character",
@@ -106,6 +104,21 @@ setClass("GmlTimeInstant",
 #
 #
 #
+setClass("GmlTimeInstantProperty",
+		representation(href = "character", time = "ANY"),
+		prototype = list(href = as.character(NA), time = NA),
+		contains = "GmlTimeGeometricPrimitive",
+		validity = function(object) {
+			print("Entering validation: GmlTimeInstant")
+			# TODO implement validity function
+			# timePosition needs to be set			
+			return(TRUE)
+		}
+)
+
+#
+#
+#
 setClass("GmlTimeInterval",
 		representation(interval = "character",
 				unit = "character",
@@ -126,23 +139,25 @@ setClass("GmlTimeInterval",
 #
 #
 setClass("GmlTimePeriod",
-		representation(begin = "GmlTimeInstant",
-				beginPosition = "GmlTimePosition",
-				end = "GmlTimeInstant",
-				endPosition = "GmlTimePosition",
+		representation(begin = "ANY",
+				beginPosition = "ANY",
+				end = "ANY",
+				endPosition = "ANY",
 				# optional:
 				# for brevity, the TimeDurationType layer is removed here
 				duration = "character",
-				timeInterval = "GmlTimeInterval"
+				timeInterval = "ANY"
 		),
-		prototype = list(begin = NULL, beginPosition = NULL, end = NULL, 
-				endPosition = NULL),
+		prototype = list(begin = NA, beginPosition = NA, end = NA, 
+				endPosition = NA),
 		contains = "GmlTimeGeometricPrimitive",
 		validity = function(object) {
 			print("Entering validation: GmlTimeInstant")
 			# TODO implement validity function
 			# either both begin and end, or beginPosition and endPosition need to be set.
 			# only one of the optional duration and timeInterval can be set!
+			# begin and end need to be of class GmlTimeInstantProperty
+			# beginPosition and endPosition need to be of class GmlTimePosition
 			return(TRUE)
 		}		
 )
@@ -165,8 +180,8 @@ setClass("GmlFeature",
 #
 setClass("GmlFeatureProperty",
 		representation(href = "character",	
-				phenomenon = "GmlFeature"),
-		#prototype = list(),
+				feature = "ANY"),
+		prototype = list(href = as.character(NA), feature = NA),
 		validity = function(object) {
 			print("Entering validation: GmlFeatureProperty")
 			# TODO implement validity function
@@ -219,12 +234,12 @@ setClass("GmlPoint",
 #
 setClass("GmlPointProperty",
 		representation(href = "character",	
-				point = "GmlPoint"),
+				point = "ANY"),
 		#prototype = list(),
 		validity = function(object) {
 			print("Entering validation: GmlPointProperty")
 			# TODO implement validity function
-			# one of parameters has to be set
+			# one of parameters has to be set, point has to be NA or GmlPoint
 			return(TRUE)
 		}
 )

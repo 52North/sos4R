@@ -31,17 +31,35 @@
 # construction methods
 #
 GmlTimeInstant <- function(timePosition, id = as.character(NA),
-		relatedTime = list(NA), frame = as.character(NA)) {
+		relatedTimes = list(NA), frame = as.character(NA)) {
 	new("GmlTimeInstant", timePosition = timePosition, id = id,
-			relatedTime = relatedTime, frame = frame)
+			relatedTimes = relatedTimes, frame = frame)
 }
 
 GmlTimePeriod <- function(begin = NA, beginPosition = NA, end = NA,
 		endPosition = NA, duration = as.character(NA), timeInterval = NA,
-		id = as.character(NA), relatedTime = NULL, frame = as.character(NA)) {
-	new("GmlTimePeriod", begin = beging, beginPosition = beginPosition,
-			end = end, endPosition = endPosition, durcation = duration,
-			timeInterval = timeInterval, id = id, relatedTime = relatedTime,
+		id = as.character(NA), relatedTimes = list(NA), frame = as.character(NA)) {
+	new("GmlTimePeriod", begin = begin, beginPosition = beginPosition,
+			end = end, endPosition = endPosition, duration = duration,
+			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
+			frame = frame)
+}
+
+GmlTimePeriod <- function(begin, end, duration = as.character(NA),
+		timeInterval = NA, id = as.character(NA), relatedTimes = list(NA),
+		frame = as.character(NA)) {
+	new("GmlTimePeriod", begin = begin, beginPosition = NA,
+			end = end, endPosition = NA, duration = duration,
+			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
+			frame = frame)
+}
+
+GmlTimePeriod <- function(beginPosition, endPosition,
+		duration = as.character(NA), timeInterval = NA, id = as.character(NA),
+		relatedTimes = list(NA), frame = as.character(NA)) {
+	new("GmlTimePeriod", begin = NA, beginPosition = beginPosition,
+			end = NA, endPosition = endPosition, duration = duration,
+			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
 			frame = frame)
 }
 
@@ -58,8 +76,8 @@ GmlTimeInterval <- function(interval, unit, radix = NA, factor = NA) {
 			factor = factor)
 }
 
-GmlFeatureProperty <- function(href = NA, phenomenon = NA) {
-	new("GmlFeatureProperty", href = href, phenomenon = phenomenon)	
+GmlFeatureProperty <- function(href = as.character(NA), feature = NA) {
+	new("GmlFeatureProperty", href = href, feature = feature)	
 }
 
 GmlDirectPosition <- function(pos, srsName = as.character(NA),
@@ -78,6 +96,10 @@ GmlPoint <- function(pos, id = as.character(NA), srsName = as.character(NA),
 			uomLabels = uomLabels)
 }
 
-GmlPointProperty <- function(href = NA, point = NA) {
+GmlPointProperty <- function(href = as.character(NA), point = NA) {
 	new("GmlPointProperty", href = href, point = point)
+}
+
+GmlTimeInstantProperty <- function(href = as.character(NA), time = NA) {
+	new("GmlTimeInstantProperty", href = href, time = time)
 }

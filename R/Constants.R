@@ -27,17 +27,22 @@
 #                                                                              #
 ################################################################################
 
-.sosService <- "SOS"
+################################################################################
+# SOS
+sosService <- "SOS"
+sosNamespacePrefix <- "sos"
 
+sosGetCapabilitiesName <- "GetCapabilities"
+sosDescribeSensorName <- "DescribeSensor"
+sosGetObservationName <- "GetObservation"
+sosGetObservationByIdName <- "GetObservationById"
+sosOwsExceptionReportRootName <- "ExceptionReport"
+
+################################################################################
+# not exported SOS
 .sosConnectionMethodGet <- "GET"
 .sosConnectionMethodPost <- "POST"
 .sosConnectionMethodSOAP <- "SOAP"
-
-.sosGetCapabilitiesName <- "GetCapabilities"
-.sosDescribeSensorName <- "DescribeSensor"
-.sosGetObservationName <- "GetObservation"
-.sosGetObservationByIdName <- "GetObservationById"
-.sosOwsExceptionReportRootName <- "ExceptionReport"
 
 .sosSupportedResponseFormats <- c(
 		"text/xml;subtype=&quot;om/1.0.0&quot;",
@@ -56,7 +61,6 @@ SosSupportedResponseModes <- function() {
 	return(.sosSupportedResponseModes)
 }
 
-.sosNamespacePrefix <- "sos"
 .sosNamespaceDefinitionsAll <- c(sos = "http://www.opengis.net/sos/1.0",
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
 .sosNamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
@@ -67,6 +71,50 @@ SosSupportedResponseModes <- function() {
 
 .xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
 
+################################################################################
+# O&M
+omMeasurementName <- "Measurement"
+omMemberName <- "member"
+omObservationName <- "Observation"
+omObservationCollectionName <- "ObservationCollection"
+omFeatureOfInterestName <- "featureOfInterest"
+omProcedureName <- "procedure"
+omObservedPropertyName <- "observedProperty"
+omSamplingTimeName <- "samplingTime"
+omResultName <- "result"
+
+################################################################################
+# SA
+saSamplingPointName <- "SamplingPoint"
+saSamplingSurface <- "SamplingSurface"
+saPositionName <- "position"
+saSampledFeatureName <- "sampledFeature"
+saSamplingTimeName <- "samplingTime"
+
+################################################################################
+# GML
+gmlPosName <- "pos"
+gmlPointName <- "Point"
+gmlTimeInstantName <- "TimeInstant"
+gmlTimePeriodName <- "TimePeriod"
+gmlRelatedTimeName <- "relatedTime"
+gmlNameName <- "name"
+gmlDescriptionName <- "description"
+gmlBeginName <- "begin"
+gmlEndName <- "end"
+gmlBeginPositionName <- "beginPosition"
+gmlEndPositionName <-"endPosition"
+gmlFeatureCollectionName <- "FeatureCollection"
+
+################################################################################
+# SWE
+sweCompositePhenomenonName <- "CompositePhenomenon"
+sweBaseName <- "base"
+sweComponentName <- "component"
+sweDataArrayName <- "DataArray"
+
+################################################################################
+# OWS
 .owsNamespacePrefix <- "ows"
 .owsNamespace <- c(ows = "http://www.opengis.net/ows/1.1")
 .owsCodes = c(
@@ -104,3 +152,8 @@ SosSupportedResponseModes <- function() {
 		httpStatusCode = .httpCode,
 		httpMessage = .httpMessage,
 		check.rows = TRUE, check.names = TRUE)
+
+################################################################################
+# others
+xmlInternalDocumentName <- "XMLInternalDocument"
+xmlTextNodeName <- "text"

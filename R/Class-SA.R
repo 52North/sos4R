@@ -30,19 +30,20 @@
 #
 # TODO add schema references
 #
-setClass("SaSamplingFeature",
+setClass("SaSamplingPoint",
 		representation(sampledFeatures = "list",
 				position = "GmlPointProperty",
 				# optional:
-				relatedObservation = "OmObservationProperty",
+				relatedObservation = "ANY",
 				relatedSamplingFeature = "ANY",
 				surveyDetails = "ANY"),
 		prototype = list(sampledFeatures = list(NA), position = NULL),
 		contains = "GmlFeature",
 		validity = function(object) {
-			print("Entering validation: SaSamplingFeature")
+			print("Entering validation: SaSamplingPoint")
 			# TODO implement validity function
 			# sampledFeatures list must contain > 0 gml:_Feature instances
+			# realted observation must be OmObservationProperty
 			return(TRUE)
 		}
 )
@@ -54,16 +55,17 @@ setClass("SaSamplingSurface",
 		representation(sampledFeatures = "list",
 				shape = "ANY",
 				# optional:
-				relatedObservation = "OmObservationProperty",
+				relatedObservation = "ANY",
 				relatedSamplingFeature = "ANY",
 				surveyDetails = "ANY",
 				position = "GmlPointProperty"),
-		prototype = list(sampledFeatures = list(NA), shape = NULL),
+		prototype = list(sampledFeatures = list(NA), shape = NA),
 		contains = "GmlFeature",
 		validity = function(object) {
 			print("Entering validation: SaSamplingSurface")
 			# TODO implement validity function
 			# sampledFeatures list must contain > 0 gml:_Feature instances
+			# related observation must be of type OmObservationProperty
 			return(TRUE)
 		}
 )

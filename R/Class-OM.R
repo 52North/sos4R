@@ -39,7 +39,7 @@ setClass("OmObservation",
 				result = "ANY",
 				# optional:
 				metadata = "ANY",
-				resultTime = "GmlTimeObject",
+				resultTime = "ANY",
 				resultQuality = "ANY",
 				parameter = "ANY"),
 		prototype = list(samplingTime = NULL, procedure = as.character(NA),
@@ -48,6 +48,7 @@ setClass("OmObservation",
 		validity = function(object) {
 			print("Entering validation: OmObservation")
 			# TODO implement validity function
+			# result time should be GmlTimeObject
 			return(TRUE)
 		}
 )
@@ -73,7 +74,7 @@ setClass("OmObservationProperty",
 setClass("OmMeasure",
 		representation(value = "numeric",
 				uom = "character"),
-		prototype = list(value = as.real(NA), uom = as.character(NA)),
+		prototype = list(value = as.numeric(NA), uom = as.character(NA)),
 		validity = function(object) {
 			print("Entering validation: OmMeasure")
 			# TODO implement validity function

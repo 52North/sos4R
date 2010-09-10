@@ -27,125 +27,427 @@
 #                                                                              #
 ################################################################################
 
-parseOM <- function(om) {
-	result <- NULL
+parseOM <- function(obj, parsers, verbose = FALSE) {
+	.om <- NULL
 	
-	# ...
-	if(inherits(om, "XMLInternalDocument"))
-		root <- xmlRoot(om)
-	else root <- om
+	# check if this is the outermost call and a document is given, not a node
+	if(inherits(obj, xmlInternalDocumentName))
+		.root <- xmlRoot(obj)
+	else .root <- obj
 	
 	# switch submethods based on name
-	rootName <- xmlName(root)
-	print(paste("parsing O&M", rootName))
+	.rootName <- xmlName(.root)
 	
-	if(rootName == "ObservationCollection") {
-		result <- .parseObservationCollection(root)
-	}
-	else if(rootName == "Observation") {
-		result <- .parseObservation(root)
-	}
-	else if(rootName == "Measurement") {
-		result <- .parseMeasurement(root)
-	}
-	else if(rootName == "member") {
-		result <- .parseMember(root)
+	.parsingFunction <- parsers[[.rootName]]
+	if(!is.null(.parsingFunction)) {
+		if(verbose) cat("Parsing O&M", .rootName, "\n") #, "with: "); print(.parsingFunction)
+		.om <- .parsingFunction(.root, parsers, verbose)		
+		if(verbose) cat("Done: ", substr(toString(.om), 0, 74), "...\n")
 	}
 	else {
-		warning(paste("No parsing function for given OM element ", rootName))
+		warning(paste("No parsing function for given element ", .rootName))
 	}
-		
-	return(result)
-}
-
-#
-#
-#
-.parseObservationCollection <- function(oc) {
-	return(xmlApply(oc, parseOM))
-}
-
-#
-#
-#
-.parseMember <- function(member) {
-	return(xmlApply(member, parseOM))
-}
-
-#
-#
-#
-.parseMeasurement <- function(m) {
-	.samplingTime <- .parseSamplingTime(m[["samplingTime"]])
-	.procedure <-
-	.observedProperty <-
-	.featureOfInterest <-
 	
+	return(.om)
+}
+
+#
+# extracts Obervation or Measurement from member
+#
+parseMember <- function(obj, parsers, verbose = FALSE) {
+	# a member can only have on child element, parse that, omit possible text nodes artefacts
+	if(xmlSize(obj) > 1) {
+		.noneTexts <- .filterXmlChildren(obj, xmlTextNodeName, includeNamed = FALSE)
+		.child <- .noneTexts[[1]]
+	}
+	else {
+		.child <- xmlChildren(obj)[[1]]
+	}
+	
+	if(verbose) {
+		cat("Parsing child of member:", xmlName(.child), "\n")
+	}
+	
+	.mResult <- parseOM(.child, parsers, verbose)
+	
+	return(.mResult)
+}
+
+#
+#
+#
+parseMeasurement <- function(obj, parsers, verbose = FALSE, 
+		timeFormat = sosDefaultTimeParsingFormat) {
+	
+	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]], timeFormat)
+	
+	# 52N SOS only returns om:Measurements (!) with procedure ids and observed 
+	# properties in xlink:href
+	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
+	.observedProperty <- SwePhenomenonProperty(
+			href = xmlGetAttr(node = obj[[omObservedPropertyName]], name = "href"))
+	
+	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
 	
 	# must be OmMeasure
-	.result <-
+	.result <- parseMeasure(obj[[omResultName]])
 	
 	# TODO optionals elements for OmMeasurement
-	.metadata
-	.resultTime
-	.resultQuality
-	.parameter
+	#.metadata
+	#.resultTime
+	#.resultQuality
+	#.parameter
 	
 	.measurement <- OmMeasurement(samplingTime = .samplingTime,
 			procedure = .procedure, observedProperty = .observedProperty,
 			featureOfInterest = .featureOfInterest, result = .result)
 	
-	print(.measurement)
+	return(.measurement)
+}
+
+#
+#
+#
+parseObservation <- function(obj, parsers, verbose = FALSE,
+		timeFormat = sosDefaultTimeParsingFormat) {
 	
-	.measurement
+	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]], timeFormat)
+	
+	# 52N SOS only returns om:Observation with procedure ids xlink:href
+	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
+	
+	.observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]])
+	
+	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
+	
+	# must be OmMeasure
+	.result <- parseResult(obj[[omResultName]])
+	
+	# TODO optionals elements for OmMeasurement
+	#.metadata
+	#.resultTime
+	#.resultQuality
+	#.parameter
+	#.metadata
+	
+	.obs <- OmObservation(samplingTime = .samplingTime,
+			procedure = .procedure, observedProperty = .observedProperty,
+			featureOfInterest = .featureOfInterest, result = .result)
+	
+	return(.obs)
+}
+
+#
+#
+#
+parseObservationCollection <- function(obj, parsers, verbose) {
+	# remove nodes other than member
+	.members <- .filterXmlChildren(obj, omMemberName, includeNamed = TRUE)
+	
+	if(verbose) cat("Parsing", length(.members),
+				"element(s) in ObservationCollection:", names(.members), "\n")
+	
+	.resultList <- lapply(.members, parseOM, parsers, verbose)
+	names(.resultList) <- lapply(.resultList, class)
+	
+	if(verbose)
+		cat("Parsed ObservationCollection with", length(.resultList),
+				"elements:", names(.resultList), "\n")
+	
+	return(.resultList)
+}
+
+################################################################################
+# sub-parsing functions, not exchangeable via SosParsers
+
+parseResult <- function(obj) {
+	.result <- NULL
+	
+	.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
+			includeNamed = FALSE)
+	# 52N SOS currently only returns swe:DataArrayDocument, but still check
+	if(xmlName(.noneText[[1]]) != sweDataArrayName) {
+		warning(paste("Parsing of given result is NOT supported:",
+						xmlName(.noneText[[1]]), "-- only", sweDataArrayName,
+						"can be parsed."))
+	}
+	else {
+		.dataArray <- .noneText[[1]]
+		.result <- parseDataArray(.dataArray)
+	}
+
+	return(.result)
+}
+
+parseDataArray <- function(obj) {
+	print("Parsing data array:")
+	print(obj)
+	
+	# TODO continue here
+}
+
+parsePhenomenonProperty <- function(obj) {
+	.obsProp <- NULL
+	
+	# check if reference or inline phenomenon
+	.href <- xmlGetAttr(node = obj, name = "href")
+	if(!is.null(.href)) {
+		.obsProp <- SwePhenomenonProperty(href = .href)
+	}
+	else {
+		.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
+				includeNamed = FALSE)
+		.compPhen <- .noneText[[1]]
+		# 52N SOS only returns swe:CompositePhenomenon
+		.name <- xmlName(.compPhen)
+		
+		if(.name == sweCompositePhenomenonName) {
+			.phen <- parseCompositePhenomenon(.compPhen)
+			.obsProp <- SwePhenomenonProperty(phenomenon = .phen)
+		}
+		else {
+			warning(paste("Unsupprted observed property: ", .name))
+		}
+	}
+	
+	return(.obsProp)
+}
+
+parseCompositePhenomenon <- function(obj) {
+	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+	.dimension <- as.integer(
+			xmlGetAttr(node = obj, name = "dimension", default = NA_character_))
+	.name <- xmlValue(obj[[gmlNameName]])
+	
+	.components <- lapply(obj[sweComponentName], parseComponent)
+	
+	# optional:
+	.description <- NA_character_
+	if(!is.null(obj[[gmlDescriptionName]])) {
+		.description <- parsePhenomenonProperty(obj[[sweBaseName]])
+	}
+	.base <- NULL
+	if(!is.null(obj[[sweBaseName]])) {
+		.base <- parsePhenomenonProperty(obj[[sweBaseName]])
+	}
+	
+	.compPhen <- SweCompositePhenomenon(id = .id, name = .name, 
+			description = .description, dimension = .dimension,
+			components = .components, base = .base)
+	
+	return(.compPhen)
+}
+
+parseComponent <- function(obj) {
+	# 52N SOS only sets the href property on swe components, but still reuse function
+	.component <- parsePhenomenonProperty(obj)
+	return(.component)
+}
+
+parseMeasure <- function(obj) {
+	.value <- as.numeric(xmlValue(obj))
+	.uom <- xmlGetAttr(node = obj, name = "uom", default = NA_character_)
+	
+	.result <- OmMeasure(.value, .uom)
+	
+	return(.result)
+}
+
+parseFOI <- function(obj) {
+	.foi <- NULL
+	
+	# has href attribute?
+	.href <- xmlGetAttr(node = obj, name = "href")
+	if(!is.null(.href)) {
+		# feature is referenced
+		.foi <- GmlFeatureProperty(href = .href)
+	}
+	else {
+		# feature is available in the element
+		.noneTexts <- .filterXmlChildren(obj, xmlTextNodeName,
+				includeNamed = FALSE)
+		.feature <- .noneTexts[[1]]
+		.name <- xmlName(.feature)
+		
+		if(.name == saSamplingPointName) {
+			.sp <- parseSamplingPoint(.feature)
+			.foi <- GmlFeatureProperty(feature = .sp)
+		}
+		else if (.name == saSamplingSurface) {
+			# TODO implement parsing of sampling surface
+			.foi <- GmlFeatureProperty(feature = .name)
+		}
+		else if (.name == gmlFeatureCollectionName) {
+			# TODO implement parsing of feature collection
+			.foi <- GmlFeatureProperty(feature = .name)
+		}
+		else {
+			warning("No parsing for given feature implemented")
+			.foi <- GmlFeatureProperty(feature = .feature)
+		}
+	}
+	
+	return(.foi)
+}
+
+#
+#
+#
+parseSamplingPoint <- function(obj) {
+	.sampledFeatures <- list(obj[saSampledFeatureName])
+	.position <- parsePosition(obj[[saPositionName]])
+	
+	.sp <- SaSamplingPoint(sampledFeatures = .sampledFeatures,
+			position = .position)
+	return(.sp)
+}
+
+#
+#
+#
+parsePosition <- function(obj) {
+	.position <- NULL
+	
+	# has href attribute?
+	.href <- xmlGetAttr(node = obj, name = "href")
+	if(!is.null(.href)) {
+		# position is referenced
+		.position <- GmlPointProperty(href = .href)
+	}
+	else {
+		# must be point
+		.position <- GmlPointProperty(point = parsePoint(obj[[gmlPointName]]))
+	}
+	
+	return(.position)
+}
+
+#
+#
+#
+parsePoint <- function(obj) {
+	.point <- NA
+	.pos <- obj[[gmlPosName]]
+	
+	.posString <- xmlValue(.pos)
+	
+	# optional attributes:
+	.srsName <- xmlGetAttr(node = .pos, name = "srsName",
+			default = NA_character_)
+	.srsDimension <- xmlGetAttr(node = .pos, name = "srsDimension",
+			default = NA_integer_)
+	.axisLabels <- xmlGetAttr(node = .pos, name = "axisLabels",
+			default = NA_character_)
+	.uomLabels <- xmlGetAttr(node = .pos, name = "uomLabels",
+			default = NA_character_)
+	
+	.point <- GmlDirectPosition(pos = .posString, srsName = .srsName,
+			srsDimension = .srsDimension, axisLabels = .axisLabels,
+			uomLabels = .uomLabels)
+	
+	return(.point)
 }
 
 #
 # create according GmlTimeObject from om:samplingTime
 #
-.parseSamplingTime <- function(st) {
-	if(xmlName(st) != "samplingTime") {
-		warning(paste("Illegal argument for .parseSamplingTime: ", st))
-		return(NULL)
-	}
+parseSamplingTime <- function(obj, format) {
 	.timeObject = NULL
 	
-	.ti <- xmlChildren(st)[["TimeInstant"]]
-	.tp <- xmlChildren(st)[["TimePeriod"]]
-	if(.ti != NULL) {
-		.timeObject <- .parseTimePosition(.ti)
-		
-		#optionals
-		.attrs <- xmlAttrs(.ti)
-		
-		.id = as.character(NA)
-		.relatedTime = list(NA)
-		.frame = as.character(NA)
-		
-		if(!is.na(.attrs["id"]))
-			.id <- is.na(.attrs["id"])
-		if(!is.na(.attrs["frame"]))
-			.frame <- is.na(.attrs["frame"])
-		.relatedTime <- xmlChildren(.ti)["relatedTime"]
-		
-		
-		.timeObject <- GmlTimeInstant(timePosition = .timeObject, id = .id,
-				relatedTime = .relatedTime, frame = .frame)
+	.ti <- xmlChildren(obj)[[gmlTimeInstantName]]
+	.tp <- xmlChildren(obj)[[gmlTimePeriodName]]
+	if(!is.null(.ti)) {
+		.timeObject <- parseTimeInstant(.ti)
 	}
-	else if(.tp != NULL) {
-		# TODO parse time period
-	}
+	else if(!is.null(.tp)) {
+		# optionals
+		.id = xmlGetAttr(node = .tp, name = "id",
+				default = NA_character_)
+		.frame = xmlGetAttr(node = .tp, name = "frame",
+				default = as.character(NA))
+		.noneTexts <- .filterXmlChildren(node = .tp, gmlRelatedTimeName)
+		if(!is.null(.noneTexts))
+			.relatedTimes <- .noneTexts
+		else
+			.relatedTimes = list()
+		
+		# TODO parse gml:timeLength
+		.duration <- NA_character_
+		.timeInterval <- NA
 	
-	print(.timeObject)
+		# begin and end
+		if(!is.null(.tp[[gmlBeginName]]) || !is.null(.tp[[gmlEndName]])) {
+			.begin <- parseTimeInstantProperty(.tp[[gmlBeginName]])
+			.end <- parseTimeInstantProperty(.tp[[gmlEndName]])
+		
+			.timeObject <- GmlTimePeriod(begin = .begin, end = .end, duration = .duration,
+					timeInterval = .timeInterval, id = .id,
+					relatedTimes = .relatedTimes, frame = .frame)
+		}
+		# beginPosition and endPosition
+		else if(!is.null(.tp[[gmlBeginPositionName]])
+				|| !is.null(.tp[[gmlEndPositionName]])) {
+			.beginPosition <- parseTimePosition(
+					obj = .tp[[gmlBeginPositionName]],
+					format = format)
+			.endPosition <- parseTimePosition(
+					obj = .tp[[gmlEndPositionName]],
+					format = format)
+			
+			.timeObject <- GmlTimePeriod(beginPosition = .beginPosition,
+					endPosition = .endPosition, duration = .duration,
+					timeInterval = .timeInterval, id = .id,
+					relatedTimes = .relatedTimes, frame = .frame)
+		}
+	}
 	
 	return(.timeObject)
 }
 
-.parseTimePosition <- function(tp) {
-	.attrs <- xmlAttrs(tp)
+parseTimeInstant <- function(obj) {
+	.timePos <- parseTimePosition(.ti, format)
 	
-	# TODO remove "T" ???
-	.time <- as.POSIXct(xmlValue(tp))
+	#optionals
+	.id = xmlGetAttr(node = obj, name = "id",
+			default = NA_character_)
+	.frame = xmlGetAttr(node = obj, name = "frame",
+			default = as.character(NA))
+	.noneTexts <- .filterXmlChildren(node = obj, gmlRelatedTimeName)
+	if(!is.null(.noneTexts))
+		.relatedTimes <- .noneTexts
+	else
+		.relatedTimes = list()
+	
+	.ti <- GmlTimeInstant(timePosition = .timePos, id = .id,
+			relatedTimes = .relatedTimes, frame = .frame)
+	return(.ti)
+}
+
+parseTimeInstantProperty <- function(obj) {
+	.timeProp <- NULL
+	
+	# check if reference or inline phenomenon
+	.href <- xmlGetAttr(node = obj, name = "href")
+	if(!is.null(.href)) {
+		.timeProp <- GmlTimeInstantProperty(href = .href)
+	}
+	else {
+		.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
+				includeNamed = FALSE)
+		.time <- parseTimeInstant(.noneText[[1]])
+		.timeProp <- GmlTimeInstantProperty(time = .time)
+	}
+	
+	return(.timeProp)
+}
+
+#
+# 
+#
+parseTimePosition <- function(obj, format) {
+	.attrs <- xmlAttrs(obj)
+	
+	.time <- strptime(xmlValue(obj), format)
 	
 	# optional:
 	.frame = as.character(NA)
@@ -153,15 +455,17 @@ parseOM <- function(om) {
 	.indeterminatePosition = as.character(NA)
 	
 	if(!is.null(.attrs)) {
-		if(!is.na(.attrs[["frame"]]))
-			.frame <- is.na(.attrs[["frame"]])
+		if(!is.na(.attrs["frame"]))
+			.frame <- .attrs[["frame"]]
 		if(!is.na(.attrs["calendarEraName"]))
-			.calendarEraName <- is.na(.attrs["calendarEraName"])
+			.calendarEraName <- .attrs[["calendarEraName"]]
 		if(!is.na(.attrs["indeterminatePosition"]))
-			.indeterminatePosition <- is.na(.attrs["indeterminatePosition"])
+			.indeterminatePosition <- attrs[["indeterminatePosition"]]
 	}
 	
 	.timePosition <- GmlTimePosition(time = .time, frame = .frame,
 			calendarEraName = .calendarEraName,
 			indeterminatePosition = .indeterminatePosition)
 }
+
+

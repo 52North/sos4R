@@ -27,7 +27,7 @@
 #                                                                              #
 ################################################################################
 
-# Snippets used only in the blog
+# Snippets used (mainly) in the blog
 ################################################################################
 
 # using download to file
@@ -39,3 +39,41 @@ download.file(
 library(RCurl)
 caps <- getURL("http://giv-sos.uni-muenster.de:8080/52nSOSv3/sos?request=GetCapabilities&version=1.0.0&service=SOS")
 print(caps)
+
+################################################################################
+# parsing ISO 8601 time
+
+# Using basic R functions to create a POSIXt object from a ISO 8601 string.
+x <- "2005-12-05T01:17:42.999+02:00"
+t <- strptime(x, "%Y-%m-%dT%H:%M:%S")
+# "2005-12-05 01:17:42" -- Does not handle fractions of seconds and time zone.
+
+# tz	A timezone specification to be used for the conversion. System-specific (see as.POSIXlt), but "" is the current time zone, and "GMT" is UTC.
+t <- strptime(x, "%Y-%m-%dT%H:%M:%S", tz = "UTC")
+# "2005-12-05 01:17:42 GMT" -- This is OK, so I just ignore the time zone designator!
+
+?strptime # gives the answer to the missing milliseconds:
+# 'Specific to R is %OSn, which for output gives the seconds to 0 <= n <= 6 decimal places (and if %OS is not followed by a digit, it uses the setting of getOption("digits.secs"), or if that is unset, n = 3). Further, for strptime %OS will input seconds including fractional seconds. Note that %S ignores (and not rounds) fractional parts on output.'
+t <- strptime(x, "%Y-%m-%dT%H:%M:%OS", tz = "UTC")
+# "2005-12-05 01:17:42 UTC" -- Milliseconds are not shown... yet.
+format(t, "%Y-%m-%dT%H:%M:%OS3")
+# to show the milliseconds, use the option with n manually set
+# "2005-12-05T01:17:42.999" -- Done.
+
+#
+#
+#
+parseMeasurement <- function(measurement, timeFormat = sosDefaultTimeParsingFormat) {
+	.samplingTime <- parseSamplingTime(m[["samplingTime"]], timeFormat)
+# [...]
+	
+# To replace the format, set the default...
+sosDefaultTimeParsingFormat <- "%Y/%m/%d"
+# ... or wrap the parsing function in you own function
+
+myParseMeasurement <- function(measurement) {
+	return(parseMeasurement(measurement, "%Y/%m/%d"))
+}
+sos <- SOS(url = "http://v-swe.uni-muenster.de/WeatherSOS",
+		parsers = SOSParsers("Measurement" = myParseMeasurement))
+

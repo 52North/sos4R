@@ -50,13 +50,13 @@ setClass("SwePhenomenon",
 #
 setClass("SwePhenomenonProperty",
 		representation(
-				href = "character",	
-				phenomenon = "SwePhenomenon"),
-		#prototype = list(),
+				href = "character",
+				phenomenon = "ANY"),
+		prototype = list(href = as.character(NA), phenomenon = NA),
 		validity = function(object) {
 			print("Entering validation: SwePhenomenonProperty")
 			# TODO implement validity function
-			# one of parameters has to be set
+			# one of parameters has to be set, phenomenon has to be SwePhenomenon if set
 			return(TRUE)
 		}
 )
@@ -67,16 +67,17 @@ setClass("SwePhenomenonProperty",
 #
 setClass("SweCompositePhenomenon",
 		representation(
-				dimension = "character",
+				dimension = "integer",
 				components = "list",
 				# optional:
-				base = "SwePhenomenonProperty"),
-		prototype = list(dimension = as.character(NA), components = list(NA)),
+				base = "ANY"),
+		prototype = list(dimension = NA_integer_, components = list(NA)),
 		contains = "SwePhenomenon",
 		validity = function(object) {
 			print("Entering validation: SweCompositePhenomenon")
 			# TODO implement validity function
 			# components needs to be a list of SwePhenomenonProperty instances
+			# base must be SwePhenomenonProperty
 			return(TRUE)
 		}
 )

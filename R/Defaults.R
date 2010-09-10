@@ -41,13 +41,22 @@
 		parseSensorML,
 		parseOM,
 		parseOM,
-		parseOwsExceptionReport)
+		parseOwsExceptionReport,
+		parseMeasurement,
+		parseMember,
+		parseObservation,
+		parseObservationCollection)
 names(.sosDefaultParsers) <- list(
-		.sosGetCapabilitiesName,
-		.sosDescribeSensorName,
-		.sosGetObservationName,
-		.sosGetObservationByIdName,
-		.sosOwsExceptionReportRootName)
+		sosGetCapabilitiesName,
+		sosDescribeSensorName,
+		sosGetObservationName,
+		sosGetObservationByIdName,
+		sosOwsExceptionReportRootName,
+		omMeasurementName,
+		omMemberName,
+		omObservationName,
+		omObservationCollectionName
+		)
 
 # Using a different approach for the encoders here, because there is more than
 # one way of encoding something (in contrast to parsing). So the different 
@@ -78,7 +87,7 @@ SOSEncoders <- function (..., include = character(0), exclude = character(0)) {
 }
 
 SOSDefaultConnectionMethod <- function() {
-	return(.sosConnectionMethodGet)
+	return(.sosConnectionMethodPost)
 }
 
 #
@@ -127,11 +136,11 @@ SOSDefaultConnectionMethod <- function() {
 		.parseSosNoParsing,
 		.parseSosNoParsing)
 names(.sosDisabledParsers) <- list(
-		.sosGetCapabilitiesName,
-		.sosDescribeSensorName,
-		.sosGetObservationName,
-		.sosGetObservationByIdName,
-		.sosOwsExceptionReportRootName)
+		sosGetCapabilitiesName,
+		sosDescribeSensorName,
+		sosGetObservationName,
+		sosGetObservationByIdName,
+		sosOwsExceptionReportRootName)
 SOSDisabledParsers <- function() {
 	return(.sosDisabledParsers)
 }
@@ -139,11 +148,12 @@ SOSDisabledParsers <- function() {
 ################################################################################
 # other defaults
 
-.sosDefaultCharacterEncoding <- "UTF-8"
+sosDefaultCharacterEncoding <- "UTF-8"
 
-.sosDefaultDescribeSensorOutputFormat <- SosSupportedResponseFormats()[2]
-.sosDefaultGetCapSections <- c("All")
-.sosDefaultGetCapAcceptFormats <- c("text/xml")
-.sosDefaultGetCapOwsVersion <- "1.1.0"
-.sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
-.sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'
+sosDefaultDescribeSensorOutputFormat <- SosSupportedResponseFormats()[2]
+sosDefaultGetCapSections <- c("All")
+sosDefaultGetCapAcceptFormats <- c("text/xml")
+sosDefaultGetCapOwsVersion <- "1.1.0"
+sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
+sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'
+sosDefaultTimeParsingFormat <- "%Y-%m-%dT%H:%M:%OS"

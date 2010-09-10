@@ -33,16 +33,16 @@
 OwsGetCapabilities <- function(
 		service,
 		acceptVersions,
-		sections = .sosDefaultGetCapSections,
-		acceptFormats = .sosDefaultGetCapAcceptFormats,
+		sections = sosDefaultGetCapSections,
+		acceptFormats = sosDefaultGetCapAcceptFormats,
 		updateSequence = c(as.character(NA)),
-		owsVersion = .sosDefaultGetCapOwsVersion,
+		owsVersion = sosDefaultGetCapOwsVersion,
 		acceptLanguages = c(as.character(NA))) {
 	if(owsVersion == "1.1.0") {
 		if(!any(sapply(acceptLanguages, "is.na"), na.rm = TRUE))
 			warning("Parameter 'acceptLanguages' is lost because it is not included in 1.1.0!")
 		new("OwsGetCapabilities_1.1.0",
-				request = .sosGetCapabilitiesName,
+				request = sosGetCapabilitiesName,
 				version = "1.1.0",
 				service = service,
 				acceptVersions = acceptVersions, sections = sections,
@@ -50,7 +50,7 @@ OwsGetCapabilities <- function(
 	}
 	else if(owsVersion == "2.0.0") {
 		new("OwsGetCapabilities_2.0.0",
-				request = .sosGetCapabilitiesName,
+				request = sosGetCapabilitiesName,
 				version = "2.0.0",
 				service = service,
 				acceptVersions = acceptVersions, sections = sections,
@@ -59,7 +59,7 @@ OwsGetCapabilities <- function(
 	}
 	else {
 		new("OwsGetCapabilities",
-				request = .sosGetCapabilitiesName,
+				request = sosGetCapabilitiesName,
 				version = "NONE",
 				service = service,
 				acceptVersions = acceptVersions, owsVersion = owsVersion)
@@ -69,7 +69,7 @@ OwsGetCapabilities <- function(
 OwsCapabilities <- function(
 		version, 
 		updateSequence = NA,
-		owsVersion = .sosDefaultGetCapOwsVersion,
+		owsVersion = sosDefaultGetCapOwsVersion,
 		identification,
 		provider,
 		operations,
@@ -332,7 +332,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities",
 		}
 )
 sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = .sosGetCapabilitiesName, namespace = .sosNamespacePrefix,
+	xmlDoc <- xmlNode(name = sosGetCapabilitiesName, namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetCap),
 			attrs=c(.xsiSchemaLocationAttribute,
@@ -369,8 +369,8 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	return(xmlDoc)
 }
 sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = .sosGetCapabilitiesName,
-			namespace = .sosNamespacePrefix,
+	xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
+			namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetCap),
 			attrs=c(.xsiSchemaLocationAttribute,
