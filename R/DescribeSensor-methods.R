@@ -54,7 +54,7 @@ setMethod("encodeRequestKVP", "DescribeSensor",
 				return(sosEncodeRequestKVPDescribeSensor_1.0.0(obj, verbose))
 			}
 			else {
-				warning("Version not supported!")
+				stop("Version not supported!")
 			}
 		}
 )
@@ -96,7 +96,7 @@ setMethod("encodeRequestXML", "DescribeSensor",
 				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
 			}
 			else {
-				warning("Version not supported!")
+				stop("Version not supported!")
 			}
 		}
 )
@@ -129,7 +129,7 @@ setMethod("encodeRequestSOAP", "DescribeSensor",
 				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
 			}
 			else {
-				warning("Version not supported!")
+				stop("Version not supported!")
 			}
 		}
 )
@@ -148,7 +148,7 @@ setMethod(f = "checkRequest",
 			# check if operation is for SOS and operation is DescribeSensor
 			if(!(operation@service == sosService && 
 						operation@request == sosDescribeSensorName)) {
-				warning("Wrong input! Require classes 'SOS' as service and 'DescribeSensor' as operation.")
+				stop("Wrong input! Require classes 'SOS' as service and 'DescribeSensor' as operation.")
 				return(FALSE)
 			}
 				
@@ -175,7 +175,7 @@ setMethod(f = "checkRequest",
 							"==",
 							.format),
 					na.rm = TRUE)) {
-				warning(paste("outputformat has to be one of",
+				stop(paste("outputformat has to be one of",
 								paste(.supportedFormats, sep = ", ",
 										collapse = " ")))
 			}

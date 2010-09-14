@@ -327,7 +327,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities",
 				return(sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
 			}
 			else {
-				warning("Version not supported!")
+				stop("Version not supported!")
 			}
 		}
 )
@@ -430,7 +430,7 @@ setMethod("encodeRequestSOAP", "OwsGetCapabilities",
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}
 			
-			warning("Function not implemented yet...")
+			stop("Function not implemented yet...")
 		}
 )
 

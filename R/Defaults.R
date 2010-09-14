@@ -42,21 +42,46 @@
 		parseOM,
 		parseOM,
 		parseOwsExceptionReport,
+		#
 		parseMeasurement,
 		parseMember,
 		parseObservation,
-		parseObservationCollection)
+		parseObservationCollection,
+		parseResult,
+		parseDataArray,
+		parseElementType,
+		parseEncoding,
+		parseValues,
+		#
+		parseGeometryObservation,
+		parseCategoryObservation,
+		parseCountObservation,
+		parseTruthObservation,
+		parseTemporalObservation,
+		parseComplexObservation)
 names(.sosDefaultParsers) <- list(
 		sosGetCapabilitiesName,
 		sosDescribeSensorName,
 		sosGetObservationName,
 		sosGetObservationByIdName,
 		sosOwsExceptionReportRootName,
+		#
 		omMeasurementName,
 		omMemberName,
 		omObservationName,
-		omObservationCollectionName
-		)
+		omObservationCollectionName,
+		omResultName,
+		sweDataArrayName,
+		sweElementTypeName,
+		sweEncodingName,
+		sweValuesName,
+		#
+		omGeometryObservationName,
+		omCategoryObservationName,
+		omCountObservationName,
+		omTruthObservationName,
+		omTemporalObservationName,
+		omComplexObservationName)
 
 # Using a different approach for the encoders here, because there is more than
 # one way of encoding something (in contrast to parsing). So the different 

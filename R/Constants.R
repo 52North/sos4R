@@ -82,6 +82,12 @@ omProcedureName <- "procedure"
 omObservedPropertyName <- "observedProperty"
 omSamplingTimeName <- "samplingTime"
 omResultName <- "result"
+omCategoryObservationName <- "CategoryObservation"
+omCountObservationName <- "CountObservation"
+omTruthObservationName <- "TruthObservation"
+omGeometryObservationName <- "GeometryObservation"
+omTemporalObservationName <- "TemporalObservation"
+omComplexObservationName <- "ComplexObservation"
 
 ################################################################################
 # SA
@@ -112,6 +118,16 @@ sweCompositePhenomenonName <- "CompositePhenomenon"
 sweBaseName <- "base"
 sweComponentName <- "component"
 sweDataArrayName <- "DataArray"
+sweElementTypeName <- "elementType"
+sweSimpleDataRecordName <- "SimpleDataRecord"
+sweFieldName <- "field"
+sweTimeName <- "Time"
+sweQuantityName <- "Quantity"
+sweEncodingName <- "encoding"
+sweTextBlockName <- "TextBlock"
+sweValuesName <- "values"
+sweTextName <- "Text"
+sweUomName <- "uom"
 
 ################################################################################
 # OWS

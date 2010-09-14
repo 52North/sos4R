@@ -44,3 +44,10 @@ SweCompositePhenomenon <- function(id, name, description = as.character(NA),
 SwePhenomenonProperty <- function(href = as.character(NA), phenomenon = NA) {
 	new("SwePhenomenonProperty", href = href, phenomenon = phenomenon)
 }
+
+SweTextBlock <- function(tokenSeparator, blockSeparator, decimalSeparator,
+		id = as.character(NA)) {
+	new("SweTextBlock", tokenSeparator = tokenSeparator,
+			blockSeparator = blockSeparator,
+			decimalSeparator = decimalSeparator, id = id)
+}

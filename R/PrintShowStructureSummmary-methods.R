@@ -421,7 +421,190 @@ print.SweCompositePhenomenon <- function(x) {
 	cat(toString.SweCompositePhenomenon(x))
 	invisible(x)
 }
-	
+
+toString.SweTextBlock <- function(x) {
+	.s <- paste("Object of class SweTextBlock",
+			" '",
+			x@tokenSeparator,
+			" ",
+			x@blockSeparator,
+			" ",
+			x@decimalSeparator,
+			"'; id: ",
+			x@id,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.SweTextBlock <- function(x) {
+	cat(toString.SweTextBlock(x))
+	invisible(x)
+}
+
+toString.GmlTimePosition <- function(x) {
+	.s <- paste("Object of class GmlTimePosition",
+			"; time: ",
+			x@time,
+			"; frame: ",
+			x@frame,
+			"; calendarEraName: ",
+			x@calendarEraName,
+			"; indeterminatePosition: ",
+			x@indeterminatePosition,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlTimePosition <- function(x) {
+	cat(toString.GmlTimePosition(x))
+	invisible(x)
+}
+
+toString.GmlTimeInstant <- function(x) {
+	.s <- paste("Object of class GmlTimeInstant",
+			"; timePosition: ",
+			toString(x@timePosition),
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlTimeInstant <- function(x) {
+	cat(toString.GmlTimeInstant(x))
+	invisible(x)
+}
+
+toString.GmlTimeInstantProperty <- function(x) {
+	.s <- paste("Object of class GmlTimeInstantProperty",
+			"; href: ",
+			x@href,
+			"; time: ",
+			x@time,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlTimeInstantProperty <- function(x) {
+	cat(toString.GmlTimeInstantProperty(x))
+	invisible(x)
+}
+
+toString.GmlTimeInterval <- function(x) {
+	.s <- paste("Object of class GmlTimeInterval",
+			"; interval: ",
+			x@interval,
+			"; unit: ",
+			x@unit,
+			"; radix: ",
+			x@radix,
+			"; factor: ",
+			x@factor,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlTimeInterval <- function(x) {
+	cat(toString.GmlTimeInterval(x))
+	invisible(x)
+}
+
+toString.GmlTimePeriod <- function(x) {
+	.s <- paste("Object of class GmlTimePeriod",
+			"; duraction: ",
+			x@duration,
+			", timeInterval: ",
+			x@timeInterval,
+			";\nbegin: ",
+			x@begin,
+			" -- end: ",
+			x@end,
+			";\nbeginPosition: ",
+			x@beginPosition,
+			" -- endPosition: ",
+			x@endPosition,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlTimePeriod <- function(x) {
+	cat(toString.GmlTimePeriod(x))
+	invisible(x)
+}
+
+toString.GmlFeatureProperty <- function(x) {
+	.s <- paste("Object of class GmlFeatureProperty",
+			"; id: ",
+			x@id,
+			", href: ",
+			x@href,
+			", feature: ",
+			x@feature,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlFeatureProperty <- function(x) {
+	cat(toString.GmlFeatureProperty(x))
+	invisible(x)
+}
+
+toString.GmlDirectPosition <- function(x) {
+	.s <- paste("Object of class GmlDirectPosition",
+			"; pos: ",
+			x@pos,
+			"; srsName: ",
+			x@srsName,
+			", srsDimension: ",
+			x@srsDimension,
+			", srsDimension: ",
+			x@axisLabels,
+			", uomLabels: ",
+			x@uomLabels,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlDirectPosition <- function(x) {
+	cat(toString.GmlDirectPosition(x))
+	invisible(x)
+}
+
+toString.GmlPoint <- function(x) {
+	.s <- paste("Object of class GmlPoint",
+			"; pos: ",
+			toString(x@pos),
+			";\nsrsName: ",
+			x@srsName,
+			", srsDimension: ",
+			x@srsDimension,
+			", srsDimension: ",
+			x@axisLabels,
+			", uomLabels: ",
+			x@uomLabels,
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlPoint <- function(x) {
+	cat(toString.GmlPoint(x))
+	invisible(x)
+}
+
+toString.GmlPointProperty <- function(x) {
+	.s <- paste("Object of class GmlPointProperty",
+			"; href: ",
+			x@href,
+			"; point: ",
+			toString(x@point),
+			"\n", sep = "")
+	return(.s)
+}
+
+print.GmlPointProperty <- function(x) {
+	cat(toString.GmlPointProperty(x))
+	invisible(x)
+}
+
+
 ################################################################################
 # SHOW FUNCTIONS
 setMethod("show", "OwsServiceOperation", function(object) print.OwsServiceOperation(object))
@@ -461,14 +644,11 @@ setMethod("show", "OmObservationProperty", function(object) print.OmObservationP
 setMethod("show", "OmMeasure", function(object) print.OmMeasure(object))
 setMethod("show", "OmMeasurement", function(object) print.OmMeasurement(object))
 
-setMethod("show", "GmlTimeObject", function(object) print.GmlTimeObject(object))
-setMethod("show", "GmlTimePrimitive", function(object) print.GmlTimePrimitive(object))
-setMethod("show", "GmlTimeGeometricPrimitive", function(object) print.GmlTimeGeometricPrimitive(object))
+# no show, print and toString fucntions for VIRTUAL classes
 setMethod("show", "GmlTimePosition", function(object) print.GmlTimePosition(object))
 setMethod("show", "GmlTimeInstant", function(object) print.GmlTimeInstant(object))
 setMethod("show", "GmlTimeInterval", function(object) print.GmlTimeInterval(object))
 setMethod("show", "GmlTimePeriod", function(object) print.GmlTimePeriod(object))
-setMethod("show", "GmlFeature", function(object) print.GmlFeature(object))
 setMethod("show", "GmlFeatureProperty", function(object) print.GmlFeatureProperty(object))
 setMethod("show", "GmlDirectPosition", function(object) print.GmlDirectPosition(object))
 setMethod("show", "GmlPoint", function(object) print.GmlPoint(object))

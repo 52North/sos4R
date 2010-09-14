@@ -41,7 +41,7 @@ parseOM <- function(obj, parsers, verbose = FALSE) {
 	.parsingFunction <- parsers[[.rootName]]
 	if(!is.null(.parsingFunction)) {
 		if(verbose) cat("Parsing O&M", .rootName, "\n") #, "with: "); print(.parsingFunction)
-		.om <- .parsingFunction(.root, parsers, verbose)		
+		.om <- .parsingFunction(.root, parsers, verbose)	
 		if(verbose) cat("Done: ", substr(toString(.om), 0, 74), "...\n")
 	}
 	else {
@@ -120,8 +120,9 @@ parseObservation <- function(obj, parsers, verbose = FALSE,
 	
 	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
 	
-	# must be OmMeasure
-	.result <- parseResult(obj[[omResultName]])
+	# result parser is exchangeable
+	.resultParsingFunction <- parsers[[omResultName]]
+	.result <- .resultParsingFunction(obj[[omResultName]], parsers, verbose)
 	
 	# TODO optionals elements for OmMeasurement
 	#.metadata
@@ -157,10 +158,46 @@ parseObservationCollection <- function(obj, parsers, verbose) {
 	return(.resultList)
 }
 
-################################################################################
-# sub-parsing functions, not exchangeable via SosParsers
+#
+# not yet supported, TODO: implement parsing of further observation specializations (constraints)
+#
+parseGeometryObservation <- function(obj, parsers, verbose = FALSE,
+		timeFormat = sosDefaultTimeParsingFormat) {
+	warning("Parsing of om:GeometryObservation is not implemented!")
+	return(NA)
+}
 
-parseResult <- function(obj) {
+parseCategoryObservation <- function(obj, parsers, verbose = FALSE,
+		timeFormat = sosDefaultTimeParsingFormat) {
+	warning("Parsing of om:CategoryObservation is not implemented!")
+	return(NA)
+}
+
+parseCountObservation <- function(obj, parsers, verbose = FALSE,
+		timeFormat = sosDefaultTimeParsingFormat) {
+	warning("Parsing of om:CountObservation is not implemented!")
+	return(NA)
+}
+
+parseTruthObservation <- function(obj, parsers, verbose = FALSE,
+		timeFormat = sosDefaultTimeParsingFormat) {
+	warning("Parsing of om:TruthObservation is not implemented!")
+	return(NA)
+}
+
+parseTemporalObservation <- function(obj, parsers, verbose = FALSE,
+		timeFormat = sosDefaultTimeParsingFormat) {
+	warning("Parsing of om:TemporalObservatio is not implemented!")
+	return(NA)
+}
+
+parseComplexObservation <- function(obj, parsers, verbose = FALSE,
+		timeFormat = sosDefaultTimeParsingFormat) {
+	warning("Parsing of om:ComplexObservation is not implemented!")
+	return(NA)
+}
+
+parseResult <- function(obj, parsers, verbose = FALSE) {
 	.result <- NULL
 	
 	.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
@@ -172,18 +209,131 @@ parseResult <- function(obj) {
 						"can be parsed."))
 	}
 	else {
+		# data array parser is exchangeable
+		.dataArrayParsingFunction <- parsers[[sweDataArrayName]]
 		.dataArray <- .noneText[[1]]
-		.result <- parseDataArray(.dataArray)
+		.result <- .dataArrayParsingFunction(.dataArray, parsers, verbose)
 	}
 
 	return(.result)
 }
 
-parseDataArray <- function(obj) {
-	print("Parsing data array:")
-	print(obj)
+#
+# optimized for 52N SOS, that means only options used there in OMEncoder are
+# handled here.
+#
+# For example, swe:elementCount can also have an attribut ref, but this is not
+# checked here, and swe:Count is actually a swe:AbstractDataComponentType, but
+# here it is just looked for a child element swe:value.
+#
+parseDataArray <- function(obj, parsers, verbose = FALSE) {
+	.elementCount <-  xmlValue(obj[["elementCount"]][["Count"]][["value"]])
+	if(verbose) cat("Parsing DataArray with", .elementCount, "elements.\n")
+	
+	.eTParser <- parsers[[sweElementTypeName]]
+	.fields <- .eTParser(obj[[sweElementTypeName]])
+	
+	.encParser <- parsers[[sweEncodingName]]
+	.encoding <- .encParser(obj[[sweEncodingName]])
+	
+	.valParser <- parsers[[sweValuesName]]
+	.values <- .valParser(obj[[sweValuesName]], .encoding, verbose)
+	
+	# TODO add values with names and encoding information as attributes to a data record
+	
+	return(.values)
+}
+
+
+#
+# values is XML and encoding holds a SweTextBlock with the required separators.
+#
+parseValues <- function(values, encoding, verbose = FALSE) {
+	if(verbose) cat("Parsing swe:values using", toString(encoding))
 	
 	# TODO continue here
+	# use some clever string handling... ?strsplit
+	
+	.values <- NULL
+	
+	return(.values)
+}
+
+parseElementType <- function(obj) {
+	# can only process swe:elementType containing a swe:SimpleDataRecord
+	.simpleDR <- obj[[sweSimpleDataRecordName]]
+	if(is.null(.simpleDR)) {
+		stop(paste("Cannot parse swe:elementType, only children of type",
+						sweSimpleDataRecordName, "is supported!"))
+	}
+	else {
+		.fields <- .filterXmlChildren(node = .simpleDR, childrenName = sweFieldName,
+			includeNamed = TRUE)
+		
+		# extract the fields, naming with attribute 'name'
+		.parsedFields <- lapply(.fields, parseField)
+		
+		return(.parsedFields)
+	}
+}
+
+parseEncoding <- function(obj) {
+	.textBlock <- obj[[sweTextBlockName]]
+	
+	if(is.null(.textBlock)) {
+		stop(paste("Cannot parse swe:encoding, only", sweTextBlockName,
+						"is supported!"))
+	}
+	else {
+		.tb <- parseTextBlock(.textBlock)
+		return(.tb)
+	}
+}
+
+################################################################################
+# sub-parsing functions, not exchangeable via SosParsers
+
+parseField <- function(obj) {
+	.field <- NULL
+	
+	.name <- xmlGetAttr(node = obj, name = "name")
+	
+	.noneText <- .filterXmlChildren(node = obj, childrenName = xmlTextNodeName,
+			includeNamed = FALSE)
+	.innerField <- .noneText[[1]]
+	.innerFieldName <- xmlName(.innerField)
+
+	#cat("parsing ", .innerFieldName, "\n")
+	
+	# available options: Time, Text, Quantity
+	if(.innerFieldName == sweTimeName) {
+		.def <- xmlGetAttr(node = .innerField, name = "definition")
+		.field <- c(name = .name, definition = .def)
+	}
+	else if (.innerFieldName == sweTextName) {
+		.def <- xmlGetAttr(node = .innerField, name = "definition")
+		.field <- c(name = .name, definition = .def)
+	}
+	else if (.innerFieldName == sweQuantityName) {
+		.def <- xmlGetAttr(node = .innerField, name = "definition")
+		.uom <- xmlGetAttr(node = .innerField[[sweUomName]], name = "code")
+		.field <- c(name = .name, definition = .def, uom = .uom)
+	}
+	
+	# TODO implement other options: DataRecord with Position, Category, Count, Boolean
+	
+	return(.field)
+}
+
+parseTextBlock <- function(obj) {
+	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+	.tS <- xmlGetAttr(node = obj, name = "tokenSeparator")
+	.bS <- xmlGetAttr(node = obj, name = "blockSeparator")
+	.dS <- xmlGetAttr(node = obj, name = "decimalSeparator")
+	
+	.tb <- SweTextBlock(tokenSeparator = .tS, blockSeparator = .bS,
+			decimalSeparator = .dS, id = .id)
+	return(.tb)
 }
 
 parsePhenomenonProperty <- function(obj) {

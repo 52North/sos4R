@@ -92,7 +92,7 @@ setMethod("encodeRequestKVP", "GetObservation",
 			return(sosEncodeRequestKVPGetObservation_1.0.0(obj, verbose))		
 		}
 		else {
-			warning("Version not supported!")
+			stop("Version not supported!")
 		}
 	}
 )
@@ -176,7 +176,7 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 
 setMethod("encodeRequestKVP", "GetObservationById", 
 		function(obj, verbose = TRUE) {
-			warning("KVP encoding of operation 'GetObservationById' not supported!")
+			stop("KVP encoding of operation 'GetObservationById' not supported!")
 		}
 )
 
@@ -193,7 +193,7 @@ setMethod("encodeRequestXML", "GetObservation",
 			return(sosEncodeRequestXMLGetObservation_1.0.0(obj))		
 		}
 		else {
-			warning("Version not supported!")
+			stop("Version not supported!")
 		}
 	}
 )
@@ -279,7 +279,7 @@ setMethod("encodeRequestXML", "GetObservationById",
 				return(sosEncodeRequestXMLGetObservationById_1.0.0(obj))		
 			}
 			else {
-				warning("Version not supported!")
+				stop("Version not supported!")
 			}
 		}
 )
@@ -337,7 +337,7 @@ setMethod("encodeRequestSOAP", "GetObservation",
 				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
 			}
 			else {
-				warning("Version not supported!")
+				stop("Version not supported!")
 			}
 		}
 )
@@ -351,7 +351,7 @@ setMethod(f = "checkRequest",
 			# check if operation is for SOS and operation is DescribeSensor
 			if(!(operation@service == sosService && 
 						operation@request == sosGetObservationName)) {
-				warning("Wrong input! Require classes 'SOS' as service and 'GetObservation' as operation.")
+				stop("Wrong input! Require classes 'SOS' as service and 'GetObservation' as operation.")
 				return(FALSE)
 			}
 			
@@ -369,7 +369,7 @@ setMethod(f = "checkRequest",
 			# check if operation is for SOS and operation is DescribeSensor
 			if(!(operation@service == sosService && 
 						operation@request == sosGetObservationByIdName)) {
-				warning("Wrong input! Require classes 'SOS' as service and 'GetObservationById' as operation.")
+				stop("Wrong input! Require classes 'SOS' as service and 'GetObservationById' as operation.")
 				return(FALSE)
 			}
 			

@@ -81,7 +81,7 @@ SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
 				filterCaps = filterCaps, contents = contents)
 	}
 	else if(owsVersion == "2.0.0") {
-		warning("Version 2.0.0 not supported!")
+		stop("Version 2.0.0 not supported!")
 	}
 	else {
 		new("OwsCapabilities",
@@ -183,7 +183,7 @@ setMethod(f = "sosRequest",
 				
 			}
 			else {
-				warning("Unsupported method, has to be one of GET, POST, or SOAP!")
+				stop("Unsupported method, has to be one of GET, POST, or SOAP!")
 			}
 	
 			return(.response)
@@ -603,7 +603,7 @@ setMethod(f = "getObservation",
 ################################################################################
 #
 .handleExceptionReport <- function(obj) {
-	cat("Received ExceptionReport in describeSensor!")
+	warning("Received ExceptionReport!")
 	.parsingFunction <- sos@parsers[[sosOwsExceptionReportRootName]]
 	.er <- .parsingFunction(obj)
 	if(class(.er) == "OwsExceptionReport")

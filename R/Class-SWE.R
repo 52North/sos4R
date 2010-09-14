@@ -31,9 +31,7 @@
 #
 #
 setClass("SwePhenomenon",
-		representation(
-				id = "character",	
-				name = "character",
+		representation(id = "character", name = "character",
 				# optional:
 				description = "character"),
 		prototype = list(id = as.character(NA), name = as.character(NA)),
@@ -49,9 +47,7 @@ setClass("SwePhenomenon",
 #
 #
 setClass("SwePhenomenonProperty",
-		representation(
-				href = "character",
-				phenomenon = "ANY"),
+		representation(href = "character", phenomenon = "ANY"),
 		prototype = list(href = as.character(NA), phenomenon = NA),
 		validity = function(object) {
 			print("Entering validation: SwePhenomenonProperty")
@@ -66,9 +62,7 @@ setClass("SwePhenomenonProperty",
 # CompoundPhenomenon is intentionally left out for brevity
 #
 setClass("SweCompositePhenomenon",
-		representation(
-				dimension = "integer",
-				components = "list",
+		representation(dimension = "integer", components = "list",
 				# optional:
 				base = "ANY"),
 		prototype = list(dimension = NA_integer_, components = list(NA)),
@@ -78,6 +72,26 @@ setClass("SweCompositePhenomenon",
 			# TODO implement validity function
 			# components needs to be a list of SwePhenomenonProperty instances
 			# base must be SwePhenomenonProperty
+			return(TRUE)
+		}
+)
+
+#
+#
+#
+setClass("SweTextBlock",
+		representation(tokenSeparator = "character",
+				blockSeparator = "character",
+				decimalSeparator = "character",
+				#optional:
+				id = "character"),
+		prototype = list(tokenSeparator = NA_character_,
+				blockSeparator = NA_character_,
+				decimalSeparator = NA_character_),
+		contains = "SwePhenomenon",
+		validity = function(object) {
+			print("Entering validation: SweTextBlock")
+			# TODO implement validity function
 			return(TRUE)
 		}
 )
