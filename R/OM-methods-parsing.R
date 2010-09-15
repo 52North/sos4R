@@ -124,7 +124,7 @@ parseObservation <- function(obj, parsers, verbose = FALSE,
 	.resultParsingFunction <- parsers[[omResultName]]
 	.result <- .resultParsingFunction(obj[[omResultName]], parsers, verbose)
 	
-	# TODO optionals elements for OmMeasurement
+	# TODO optionals elements for OmObservation
 	#.metadata
 	#.resultTime
 	#.resultQuality
@@ -239,7 +239,33 @@ parseDataArray <- function(obj, parsers, verbose = FALSE) {
 	.valParser <- parsers[[sweValuesName]]
 	.values <- .valParser(obj[[sweValuesName]], .encoding, verbose)
 	
-	# TODO add values with names and encoding information as attributes to a data record
+	if(!is.data.frame(.values)) {
+		stop("value parser needs to return a data frame for this data array parser to work!")
+	}
+	
+	
+	# struktur des data frames passt noch nicht ganz!
+#	> str(tempValues)
+#	'data.frame':	8 obs. of  1 variable:
+#			$ V1:List of 8
+#	..$ : chr  "2010-03-01T12:15:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "73.0"
+#	..$ : chr  "2010-03-01T12:30:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "68.0"
+#	..$ : chr  "2010-03-01T12:45:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "69.0"
+#	..$ : chr  "2010-03-01T13:00:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "65.0"
+#	..$ : chr  "2010-03-01T13:15:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "61.0"
+#	..$ : chr  "2010-03-01T13:30:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "56.0"
+#	..$ : chr  "2010-03-01T13:45:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "60.0"
+#	..$ : chr  "2010-03-01T14:00:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "57.0"
+
+	# TODO continue here!!
+	
+	# add values with names and encoding information as attributes to a data record
+	
+	# if one field contains defnition with "urn:ogc:data:time:iso8601", then convert the whole column to time objects
+	
+	# if one filed contains a uom, convert the whole column to numeric
+	
+	# set these conversion rules as default values
 	
 	return(.values)
 }
@@ -249,14 +275,19 @@ parseDataArray <- function(obj, parsers, verbose = FALSE) {
 # values is XML and encoding holds a SweTextBlock with the required separators.
 #
 parseValues <- function(values, encoding, verbose = FALSE) {
-	if(verbose) cat("Parsing swe:values using", toString(encoding))
+	if(verbose) cat("Parsing swe:values using", toString(encoding), "\n")
 	
-	# TODO continue here
-	# use some clever string handling... ?strsplit
-	
-	.values <- NULL
-	
-	return(.values)
+	if(!inherits(encoding, "SweTextBlock")) {
+		stop("Handling for given encoding not implemented!")
+	}
+	else {
+		.blockLines <- strsplit(x = xmlValue(values),
+				split = encoding@blockSeparator)
+		.tokenLines <- sapply(.blockLines, strsplit,
+				split = encoding@tokenSeparator)
+		.values <- as.data.frame(.tokenLines)
+		return(.values)
+	}
 }
 
 parseElementType <- function(obj) {
@@ -325,75 +356,6 @@ parseField <- function(obj) {
 	return(.field)
 }
 
-parseTextBlock <- function(obj) {
-	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
-	.tS <- xmlGetAttr(node = obj, name = "tokenSeparator")
-	.bS <- xmlGetAttr(node = obj, name = "blockSeparator")
-	.dS <- xmlGetAttr(node = obj, name = "decimalSeparator")
-	
-	.tb <- SweTextBlock(tokenSeparator = .tS, blockSeparator = .bS,
-			decimalSeparator = .dS, id = .id)
-	return(.tb)
-}
-
-parsePhenomenonProperty <- function(obj) {
-	.obsProp <- NULL
-	
-	# check if reference or inline phenomenon
-	.href <- xmlGetAttr(node = obj, name = "href")
-	if(!is.null(.href)) {
-		.obsProp <- SwePhenomenonProperty(href = .href)
-	}
-	else {
-		.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
-				includeNamed = FALSE)
-		.compPhen <- .noneText[[1]]
-		# 52N SOS only returns swe:CompositePhenomenon
-		.name <- xmlName(.compPhen)
-		
-		if(.name == sweCompositePhenomenonName) {
-			.phen <- parseCompositePhenomenon(.compPhen)
-			.obsProp <- SwePhenomenonProperty(phenomenon = .phen)
-		}
-		else {
-			warning(paste("Unsupprted observed property: ", .name))
-		}
-	}
-	
-	return(.obsProp)
-}
-
-parseCompositePhenomenon <- function(obj) {
-	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
-	.dimension <- as.integer(
-			xmlGetAttr(node = obj, name = "dimension", default = NA_character_))
-	.name <- xmlValue(obj[[gmlNameName]])
-	
-	.components <- lapply(obj[sweComponentName], parseComponent)
-	
-	# optional:
-	.description <- NA_character_
-	if(!is.null(obj[[gmlDescriptionName]])) {
-		.description <- parsePhenomenonProperty(obj[[sweBaseName]])
-	}
-	.base <- NULL
-	if(!is.null(obj[[sweBaseName]])) {
-		.base <- parsePhenomenonProperty(obj[[sweBaseName]])
-	}
-	
-	.compPhen <- SweCompositePhenomenon(id = .id, name = .name, 
-			description = .description, dimension = .dimension,
-			components = .components, base = .base)
-	
-	return(.compPhen)
-}
-
-parseComponent <- function(obj) {
-	# 52N SOS only sets the href property on swe components, but still reuse function
-	.component <- parsePhenomenonProperty(obj)
-	return(.component)
-}
-
 parseMeasure <- function(obj) {
 	.value <- as.numeric(xmlValue(obj))
 	.uom <- xmlGetAttr(node = obj, name = "uom", default = NA_character_)
@@ -406,7 +368,7 @@ parseMeasure <- function(obj) {
 parseFOI <- function(obj) {
 	.foi <- NULL
 	
-	# has href attribute?
+	# has href attribute? if yes, use it!
 	.href <- xmlGetAttr(node = obj, name = "href")
 	if(!is.null(.href)) {
 		# feature is referenced
@@ -441,181 +403,10 @@ parseFOI <- function(obj) {
 }
 
 #
-#
-#
-parseSamplingPoint <- function(obj) {
-	.sampledFeatures <- list(obj[saSampledFeatureName])
-	.position <- parsePosition(obj[[saPositionName]])
-	
-	.sp <- SaSamplingPoint(sampledFeatures = .sampledFeatures,
-			position = .position)
-	return(.sp)
-}
-
-#
-#
-#
-parsePosition <- function(obj) {
-	.position <- NULL
-	
-	# has href attribute?
-	.href <- xmlGetAttr(node = obj, name = "href")
-	if(!is.null(.href)) {
-		# position is referenced
-		.position <- GmlPointProperty(href = .href)
-	}
-	else {
-		# must be point
-		.position <- GmlPointProperty(point = parsePoint(obj[[gmlPointName]]))
-	}
-	
-	return(.position)
-}
-
-#
-#
-#
-parsePoint <- function(obj) {
-	.point <- NA
-	.pos <- obj[[gmlPosName]]
-	
-	.posString <- xmlValue(.pos)
-	
-	# optional attributes:
-	.srsName <- xmlGetAttr(node = .pos, name = "srsName",
-			default = NA_character_)
-	.srsDimension <- xmlGetAttr(node = .pos, name = "srsDimension",
-			default = NA_integer_)
-	.axisLabels <- xmlGetAttr(node = .pos, name = "axisLabels",
-			default = NA_character_)
-	.uomLabels <- xmlGetAttr(node = .pos, name = "uomLabels",
-			default = NA_character_)
-	
-	.point <- GmlDirectPosition(pos = .posString, srsName = .srsName,
-			srsDimension = .srsDimension, axisLabels = .axisLabels,
-			uomLabels = .uomLabels)
-	
-	return(.point)
-}
-
-#
 # create according GmlTimeObject from om:samplingTime
 #
 parseSamplingTime <- function(obj, format) {
-	.timeObject = NULL
-	
-	.ti <- xmlChildren(obj)[[gmlTimeInstantName]]
-	.tp <- xmlChildren(obj)[[gmlTimePeriodName]]
-	if(!is.null(.ti)) {
-		.timeObject <- parseTimeInstant(.ti)
-	}
-	else if(!is.null(.tp)) {
-		# optionals
-		.id = xmlGetAttr(node = .tp, name = "id",
-				default = NA_character_)
-		.frame = xmlGetAttr(node = .tp, name = "frame",
-				default = as.character(NA))
-		.noneTexts <- .filterXmlChildren(node = .tp, gmlRelatedTimeName)
-		if(!is.null(.noneTexts))
-			.relatedTimes <- .noneTexts
-		else
-			.relatedTimes = list()
-		
-		# TODO parse gml:timeLength
-		.duration <- NA_character_
-		.timeInterval <- NA
-	
-		# begin and end
-		if(!is.null(.tp[[gmlBeginName]]) || !is.null(.tp[[gmlEndName]])) {
-			.begin <- parseTimeInstantProperty(.tp[[gmlBeginName]])
-			.end <- parseTimeInstantProperty(.tp[[gmlEndName]])
-		
-			.timeObject <- GmlTimePeriod(begin = .begin, end = .end, duration = .duration,
-					timeInterval = .timeInterval, id = .id,
-					relatedTimes = .relatedTimes, frame = .frame)
-		}
-		# beginPosition and endPosition
-		else if(!is.null(.tp[[gmlBeginPositionName]])
-				|| !is.null(.tp[[gmlEndPositionName]])) {
-			.beginPosition <- parseTimePosition(
-					obj = .tp[[gmlBeginPositionName]],
-					format = format)
-			.endPosition <- parseTimePosition(
-					obj = .tp[[gmlEndPositionName]],
-					format = format)
-			
-			.timeObject <- GmlTimePeriod(beginPosition = .beginPosition,
-					endPosition = .endPosition, duration = .duration,
-					timeInterval = .timeInterval, id = .id,
-					relatedTimes = .relatedTimes, frame = .frame)
-		}
-	}
-	
+	.timeObject <- parseAbstractTimeGeometricPrimitive(obj, format)
 	return(.timeObject)
 }
-
-parseTimeInstant <- function(obj) {
-	.timePos <- parseTimePosition(.ti, format)
-	
-	#optionals
-	.id = xmlGetAttr(node = obj, name = "id",
-			default = NA_character_)
-	.frame = xmlGetAttr(node = obj, name = "frame",
-			default = as.character(NA))
-	.noneTexts <- .filterXmlChildren(node = obj, gmlRelatedTimeName)
-	if(!is.null(.noneTexts))
-		.relatedTimes <- .noneTexts
-	else
-		.relatedTimes = list()
-	
-	.ti <- GmlTimeInstant(timePosition = .timePos, id = .id,
-			relatedTimes = .relatedTimes, frame = .frame)
-	return(.ti)
-}
-
-parseTimeInstantProperty <- function(obj) {
-	.timeProp <- NULL
-	
-	# check if reference or inline phenomenon
-	.href <- xmlGetAttr(node = obj, name = "href")
-	if(!is.null(.href)) {
-		.timeProp <- GmlTimeInstantProperty(href = .href)
-	}
-	else {
-		.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
-				includeNamed = FALSE)
-		.time <- parseTimeInstant(.noneText[[1]])
-		.timeProp <- GmlTimeInstantProperty(time = .time)
-	}
-	
-	return(.timeProp)
-}
-
-#
-# 
-#
-parseTimePosition <- function(obj, format) {
-	.attrs <- xmlAttrs(obj)
-	
-	.time <- strptime(xmlValue(obj), format)
-	
-	# optional:
-	.frame = as.character(NA)
-	.calendarEraName = as.character(NA)
-	.indeterminatePosition = as.character(NA)
-	
-	if(!is.null(.attrs)) {
-		if(!is.na(.attrs["frame"]))
-			.frame <- .attrs[["frame"]]
-		if(!is.na(.attrs["calendarEraName"]))
-			.calendarEraName <- .attrs[["calendarEraName"]]
-		if(!is.na(.attrs["indeterminatePosition"]))
-			.indeterminatePosition <- attrs[["indeterminatePosition"]]
-	}
-	
-	.timePosition <- GmlTimePosition(time = .time, frame = .frame,
-			calendarEraName = .calendarEraName,
-			indeterminatePosition = .indeterminatePosition)
-}
-
 

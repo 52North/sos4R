@@ -44,6 +44,11 @@ sosOwsExceptionReportRootName <- "ExceptionReport"
 .sosConnectionMethodPost <- "POST"
 .sosConnectionMethodSOAP <- "SOAP"
 
+SosSupportedConnectionMethods <- function() {
+	# TODO add SOAP once it's implemented
+	return(c(.sosConnectionMethodGet, .sosConnectionMethodPost))
+}
+
 .sosSupportedResponseFormats <- c(
 		"text/xml;subtype=&quot;om/1.0.0&quot;",
 		"text/xml;subtype=&quot;sensorML/1.0.1&quot;")

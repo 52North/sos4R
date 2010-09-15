@@ -58,6 +58,9 @@ source(paste(.path, "R", "SA-methods.R",  sep = "/"))
 source(paste(.path, "R", "GML-methods.R",  sep = "/"))
 source(paste(.path, "R", "SWE-methods.R",  sep = "/"))
 source(paste(.path, "R", "SensorML-methods.R",  sep = "/"))
+source(paste(.path, "R", "GML-methods-parsing.R",  sep = "/"))
+source(paste(.path, "R", "SA-methods-parsing.R",  sep = "/"))
+source(paste(.path, "R", "SWE-methods-parsing.R",  sep = "/"))
 
 source(paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
 

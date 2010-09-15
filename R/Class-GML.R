@@ -37,7 +37,7 @@ setClass("GmlTimeObject",
 				id = "character"),
 		contains = c("VIRTUAL"),
 		validity = function(object) {
-			print("Entering validation: GmlTime")
+			#print("Entering validation: GmlTime")
 			# TODO implement validity function
 			return(TRUE)
 		}
@@ -49,7 +49,7 @@ setClass("GmlTimePrimitive",
 		prototype = list(relatedTimes = list()),
 		contains = c("VIRTUAL", "GmlTimeObject"),
 		validity = function(object) {
-			print("Entering validation: GmlTimePrimitive")
+			#print("Entering validation: GmlTimePrimitive")
 			# TODO implement validity function
 			# related times must be GmlTimePrimitive
 			return(TRUE)
@@ -61,7 +61,7 @@ setClass("GmlTimeGeometricPrimitive",
 				frame = "character"),
 		contains = c("VIRTUAL", "GmlTimePrimitive"),
 		validity = function(object) {
-			print("Entering validation: GmlTimeGeometricPrimitive")
+			#print("Entering validation: GmlTimeGeometricPrimitive")
 			# TODO implement validity function
 			return(TRUE)
 		}
@@ -79,7 +79,7 @@ setClass("GmlTimePosition",
 		),
 		prototype = list(timePosition = as.character(NA)),
 		validity = function(object) {
-			print("Entering validation: GmlTimePosition")
+			#print("Entering validation: GmlTimePosition")
 			# TODO implement validity function
 			# time needs to be set			
 			return(TRUE)
@@ -94,7 +94,7 @@ setClass("GmlTimeInstant",
 		prototype = list(timePosition = NULL),
 		contains = "GmlTimeGeometricPrimitive",
 		validity = function(object) {
-			print("Entering validation: GmlTimeInstant")
+			#print("Entering validation: GmlTimeInstant")
 			# TODO implement validity function
 			# timePosition needs to be set			
 			return(TRUE)
@@ -109,7 +109,7 @@ setClass("GmlTimeInstantProperty",
 		prototype = list(href = as.character(NA), time = NA),
 		contains = "GmlTimeGeometricPrimitive",
 		validity = function(object) {
-			print("Entering validation: GmlTimeInstant")
+			#print("Entering validation: GmlTimeInstant")
 			# TODO implement validity function
 			# timePosition needs to be set			
 			return(TRUE)
@@ -128,7 +128,7 @@ setClass("GmlTimeInterval",
 		),
 		prototype = list(interval = as.character(NA), unit = as.character(NA)),
 		validity = function(object) {
-			print("Entering validation: GmlTimeInterval")
+			#print("Entering validation: GmlTimeInterval")
 			# TODO implement validity function
 			# interval and unit need to be set, radix must be positive
 			return(TRUE)
@@ -152,7 +152,7 @@ setClass("GmlTimePeriod",
 				endPosition = NA),
 		contains = "GmlTimeGeometricPrimitive",
 		validity = function(object) {
-			print("Entering validation: GmlTimeInstant")
+			#print("Entering validation: GmlTimeInstant")
 			# TODO implement validity function
 			# either both begin and end, or beginPosition and endPosition need to be set.
 			# only one of the optional duration and timeInterval can be set!
@@ -170,7 +170,7 @@ setClass("GmlFeature",
 		contains = "VIRTUAL",
 		#prototype = list(),
 		validity = function(object) {
-			print("Entering validation: GmlFeature")
+			#print("Entering validation: GmlFeature")
 			return(TRUE)
 		}
 )
@@ -183,7 +183,7 @@ setClass("GmlFeatureProperty",
 				feature = "ANY"),
 		prototype = list(href = as.character(NA), feature = NA),
 		validity = function(object) {
-			print("Entering validation: GmlFeatureProperty")
+			#print("Entering validation: GmlFeatureProperty")
 			# TODO implement validity function
 			# one of parameters has to be set
 			return(TRUE)
@@ -202,7 +202,7 @@ setClass("GmlDirectPosition",
 				uomLabels = "character"),
 		prototype = list(pos = as.character(NA)),
 		validity = function(object) {
-			print("Entering validation: GmlDirectPosition")
+			#print("Entering validation: GmlDirectPosition")
 			# TODO implement validity function
 			# pos string is required
 			return(TRUE)
@@ -222,7 +222,7 @@ setClass("GmlPoint",
 				uomLabels = "character"),
 		prototype = list(pos = NULL),
 		validity = function(object) {
-			print("Entering validation: GmlPoint")
+			#print("Entering validation: GmlPoint")
 			# TODO implement validity function
 			# one of parameters has to be set
 			return(TRUE)
@@ -237,7 +237,7 @@ setClass("GmlPointProperty",
 				point = "ANY"),
 		#prototype = list(),
 		validity = function(object) {
-			print("Entering validation: GmlPointProperty")
+			#print("Entering validation: GmlPointProperty")
 			# TODO implement validity function
 			# one of parameters has to be set, point has to be NA or GmlPoint
 			return(TRUE)

@@ -238,8 +238,8 @@ print.SosObservationOffering <- function(x, ...) {
 	cat(x@id)
 	cat(", name: ")
 	cat(x@name)
-	cat(", time: ")
-	cat(paste(x@time$beginPosition, " - ", x@time$endPosition))
+	cat(", time class (inspect via @time): ")
+	cat(class(x@time))
 	cat("\nprocedure(s): ")
 	cat(x@procedure)
 	cat("\nobservedProperty(s): ")
@@ -265,87 +265,113 @@ print.SosContents <- function(x, ...) {
 	invisible(x)
 }
 
+toString.SensorML <- function(x) {
+	.s <- ("Object of class SensorML (wraps unparsed XML, see @xml for details).\n")
+	return(.s)
+}
+
 print.SensorML <- function(x, ...) {
-	cat("Object of class SensorML (wraps unparsed XML, see @xml for details).\n")
-#	print("xml:")
-#	print(x@xml)
+	cat(toString(x))
 	invisible(x)
+}
+
+toString.GetObservation <- function(x) {
+	.s <- paste("Object of class GetObservation: ",
+			"service: ",
+			x@service,
+			", version: ",
+			x@version,
+			", offering: ",
+			x@offering,
+			"\nobservered property: ",
+			x@observedProperty,
+			"\nresponseFormat(s): ",
+			x@responseFormat,
+			", responseMode(s): ",
+			paste(x@responseMode),
+			# optionals:
+			"\nprocedure(s)",
+			paste(x@procedure),
+			"\nfeature(s) of interest",
+			paste(x@featureOfInterest),
+			", event time: ",
+			paste(x@eventTime),
+			"\nresult: ",
+			x@result,
+			"\nsrsName: ",
+			x@srsName,
+			"\nevent time: ",
+			x@eventTime,
+			"\nresultModel(s): ",
+			x@resultModel,
+			"\nbounding box: ",
+			paste(x@BBOX),
+			"\n")
+	return(.s)
 }
 
 print.GetObservation <- function(x, ...) {
-	cat("Object of class GetObservation: ")
-	cat("service: ")
-	cat(x@service)
-	cat(", version: ")
-	cat(x@version)
-	cat(", offering: ")
-	cat(x@offering)
-	cat("\nobservered property: ")
-	cat(x@observedProperty)
-	cat("\nresponseFormat(s): ")
-	cat(x@responseFormat)
-	cat(", responseMode(s): ")
-	cat(paste(x@responseMode))
-	# optionals:
-	cat("\nprocedure(s)")
-	cat(paste(x@procedure))
-	cat("\nfeature(s) of interest")
-	cat(paste(x@featureOfInterest))
-	cat(", event time: ")
-	cat(paste(x@eventTime))
-	cat("\nresult: ")
-	cat(x@result)
-	cat("\nsrsName: ")
-	cat(x@srsName)
-	cat("\nevent time: ")
-	cat(x@eventTime)
-	cat("\nresultModel(s): ")
-	cat(x@resultModel)
-	cat("\nbounding box: ")
-	cat(paste(x@BBOX))
-	cat("\n")
+	cat(toString(x))
 	invisible(x)
+}
+
+toString.GetObservationById <- function(x) {
+	.s <- paste("Object of class GetObservationById: ",
+			"service: ",
+			x@service,
+			", version: ",
+			x@version,
+			"\nObsvervation ID: ",
+			x@observationId,
+			"\nResponseFormat(s): ",
+			x@responseFormat,
+			", responseMode(s): ",
+			paste(x@responseMode),
+			# optionals:
+			", srsName: ",
+			x@srsName,
+			", resultModel(s): ",
+			x@resultModel)
+	return(.s)
 }
 
 print.GetObservationById <- function(x, ...) {
-	cat("Object of class GetObservationById: ")
-	cat("service: ")
-	cat(x@service)
-	cat(", version: ")
-	cat(x@version)
-	cat("\nObsvervation ID: ")
-	cat(x@observationId)
-	cat("\nResponseFormat(s): ")
-	cat(x@responseFormat)
-	cat(", responseMode(s): ")
-	cat(paste(x@responseMode))
-	# optionals:
-	cat(", srsName: ")
-	cat(x@srsName)
-	cat(", resultModel(s): ")
-	cat(x@resultModel)
+	cat(toString(x))
 	invisible(x)
 }
 
 
+toString.DescribeSensor <- function(x) {
+	.s <- paste("Object of class DescribeSensor: ",
+			"service: ",
+			x@service,
+			", version: ",
+			x@version,
+			", outputFormat: ",
+			x@outputFormat,
+			"\nProcedure: ",
+			x@procedure,
+			"\n")
+	return(.s)
+}
+
 print.DescribeSensor <- function(x, ...) {
-	cat("Object of class DescribeSensor: ")
-	cat("service: ")
-	cat(x@service)
-	cat(", version: ")
-	cat(x@version)
-	cat(", outputFormat: ")
-	cat(x@outputFormat)
-	cat("\nProcedure: ")
-	cat(x@procedure)
-	cat("\n")
+	cat(toString(x))
 	invisible(x)
 }
 
 toString.OmMeasurement <- function(x) {
 	.s <- paste(
 			"Object of class OmMeasurement",
-			"; result: ",
+			", procedure ",
+			x@procedure,
+			", observedProperty: ",
+			x@observedProperty,
+			", foi: ",
+			x@featureOfInterest,
+			"; samplingTime: ",
+			toString(x@samplingTime),
+			";\n\tresult: ",
 			toString(x@result),
 			"\n", sep = "")
 	return(.s)
@@ -356,6 +382,28 @@ print.OmMeasurement <- function(x, ...) {
 	invisible(x)
 }
 
+toString.OmObservation <- function(x) {
+	.s <- paste(
+			"Object of class OmObservation",
+			", procedure ",
+			toString(x@procedure),
+			", observedProperty: ",
+			toString(x@observedProperty),
+			", foi: ",
+			toString(x@featureOfInterest),
+			"; samplingTime: ",
+			toString(x@samplingTime),
+			";\n\tresult: ",
+			toString(x@result),
+			sep = "")
+	return(.s)
+}
+
+print.OmObservation <- function(x, ...) {
+	cat(toString.OmObservation(x), "\n")
+	invisible(x)
+}
+
 toString.OmMeasure <- function(x) {
 	.s <- paste(
 			"Object of class OmMeasure",
@@ -363,12 +411,12 @@ toString.OmMeasure <- function(x) {
 			x@value,
 			"; uom: ",
 			x@uom,
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
 print.OmMeasure <- function(x, ...) {
-	cat(toString.OmMeasure(x))
+	cat(toString.OmMeasure(x), "\n")
 	invisible(x)
 }
 
@@ -377,13 +425,13 @@ toString.SwePhenomenonProperty <- function(x) {
 			"; href: ",
 			x@href,
 			"; phenomenon: ",
-			x@phenomenon,
-			"\n", sep = "")
+			toString(x@phenomenon),
+			sep = "")
 	return(.s)
 }
 
 print.SwePhenomenonProperty <- function(x) {
-	cat(toString.SwePhenomenonProperty(x))
+	cat(toString.SwePhenomenonProperty(x), "\n")
 	invisible(x)
 }
 
@@ -395,7 +443,7 @@ print.SwePhenomenon <- function(x) {
 		x@name,
 		"; description: ",
 		x@description,
-		"\n", sep = "")
+		sep = "")
 	invisible(x)
 }
 
@@ -413,12 +461,12 @@ toString.SweCompositePhenomenon <- function(x) {
 		toString(x@base),
 		";\ncomponents:\t",
 		sapply(sapply(x@components, toString), paste, "\t\t\t"),
-		"\n", sep = "")
+		sep = "")
 	return(.s)
 }
 
 print.SweCompositePhenomenon <- function(x) {
-	cat(toString.SweCompositePhenomenon(x))
+	cat(toString.SweCompositePhenomenon(x), "\n")
 	invisible(x)
 }
 
@@ -432,12 +480,12 @@ toString.SweTextBlock <- function(x) {
 			x@decimalSeparator,
 			"'; id: ",
 			x@id,
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
 print.SweTextBlock <- function(x) {
-	cat(toString.SweTextBlock(x))
+	cat(toString.SweTextBlock(x), "\n")
 	invisible(x)
 }
 
@@ -451,7 +499,7 @@ toString.GmlTimePosition <- function(x) {
 			x@calendarEraName,
 			"; indeterminatePosition: ",
 			x@indeterminatePosition,
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
@@ -464,7 +512,7 @@ toString.GmlTimeInstant <- function(x) {
 	.s <- paste("Object of class GmlTimeInstant",
 			"; timePosition: ",
 			toString(x@timePosition),
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
@@ -479,7 +527,7 @@ toString.GmlTimeInstantProperty <- function(x) {
 			x@href,
 			"; time: ",
 			x@time,
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
@@ -498,7 +546,7 @@ toString.GmlTimeInterval <- function(x) {
 			x@radix,
 			"; factor: ",
 			x@factor,
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
@@ -513,15 +561,15 @@ toString.GmlTimePeriod <- function(x) {
 			x@duration,
 			", timeInterval: ",
 			x@timeInterval,
-			";\nbegin: ",
-			x@begin,
+			";\n\tbegin: ",
+			toString(x@begin),
 			" -- end: ",
-			x@end,
-			";\nbeginPosition: ",
-			x@beginPosition,
+			toString(x@end),
+			";\n\tbeginPosition: ",
+			toString(x@beginPosition),
 			" -- endPosition: ",
-			x@endPosition,
-			"\n", sep = "")
+			toString(x@endPosition),
+			sep = "")
 	return(.s)
 }
 
@@ -532,8 +580,6 @@ print.GmlTimePeriod <- function(x) {
 
 toString.GmlFeatureProperty <- function(x) {
 	.s <- paste("Object of class GmlFeatureProperty",
-			"; id: ",
-			x@id,
 			", href: ",
 			x@href,
 			", feature: ",
@@ -604,7 +650,6 @@ print.GmlPointProperty <- function(x) {
 	invisible(x)
 }
 
-
 ################################################################################
 # SHOW FUNCTIONS
 setMethod("show", "OwsServiceOperation", function(object) print.OwsServiceOperation(object))
@@ -638,6 +683,7 @@ setMethod("show", "SaSamplingSurface", function(object) print.SaSamplingSurface(
 setMethod("show", "SwePhenomenon", function(object) print.SwePhenomenon(object))
 setMethod("show", "SwePhenomenonProperty", function(object) print.SwePhenomenonProperty(object))
 setMethod("show", "SweCompositePhenomenon", function(object) print.SweCompositePhenomenon(object))
+setMethod("show", "SweTextBlock", function(object) print.SweTextBlock(object))
 
 setMethod("show", "OmObservation", function(object) print.OmObservation(object))
 setMethod("show", "OmObservationProperty", function(object) print.OmObservationProperty(object))
