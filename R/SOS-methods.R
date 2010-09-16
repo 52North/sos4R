@@ -33,7 +33,7 @@
 SOS <- function(url, method = SOSDefaultConnectionMethod(),
 		version = "1.0.0", parsers = SOSParsers(), encoders = SOSEncoders(),
 		curlOpts = list(), curlHandle = getCurlHandle(),
-		verboseOutput = FALSE) {
+		timeFormat = sosDefaultTimeParsingFormat, verboseOutput = FALSE) {
 	if(method == .sosConnectionMethodPost)
 		.curlOpts <- curlOptions(url = url)
 	else .curlOpts <- curlOpts
@@ -49,6 +49,7 @@ SOS <- function(url, method = SOSDefaultConnectionMethod(),
 			encoders = encoders,
 			curlOptions = .curlOpts,
 			curlHandle = curlHandle,
+			timeFormat = timeFormat,
 			verboseOutput = verboseOutput)
 	
 	if(verboseOutput) {
@@ -374,6 +375,14 @@ setMethod(f = "sosTimePeriod", signature = c(obj = "SosObservationOffering"),
 			return(obj@time)
 		})
 
+if (!isGeneric("sosTimeFormat"))
+	setGeneric(name = "sosTimeFormat", def = function(sos) {
+				standardGeneric("sosTimeFormat")
+			})
+setMethod(f = "sosTimeFormat", signature = c(sos = "SOS"),
+		def = function(sos) {
+			return(sos@timeFormat)
+		})
 
 ################################################################################
 # functions for SOS operations
@@ -414,7 +423,8 @@ setMethod(f = "getCapabilities",
 			}
 			else {
 				.parsingFunction <- sos@parsers[[sosGetCapabilitiesName]]
-				.caps <- .parsingFunction(obj = .response)
+				.caps <- .parsingFunction(obj = .response,
+						timeFormat = sosTimeFormat(sos))
 				if (verbose) {
 					cat("done!\n")
 				} 
@@ -618,4 +628,18 @@ setMethod(f = "getObservation",
 	if(class(.er) == "OwsExceptionReport")
 		warning(toString(.er))
 	return(.er)
+}
+
+################################################################################
+# conversion methods
+sosConvertTime <- function(x, sos) {
+	.t <- strptime(x = x, format = sosTimeFormat(sos = sos))
+	print(.t)
+	return(.t)
+}
+sosConvertNumber <- function(x, sos) {
+	return(as.numeric(x = x))
+}
+sosConvertString <- function(x, sos) {
+	return(as.character(x = x))
 }

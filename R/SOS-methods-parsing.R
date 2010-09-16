@@ -30,13 +30,12 @@
 #
 #
 #
-parseSosObservationOffering <- function(obj,
-		tFormat  = sosDefaultTimeParsingFormat) {
+parseSosObservationOffering <- function(obj, timeFormat) {
 	.id <- xmlGetAttr(obj, "id")
 	.name <- xmlValue(obj[["name"]])
 	
 	# TODO use some real time period class, not list!
-	.time <- parseAbstractTimeGeometricPrimitive(obj[["time"]], tFormat)
+	.time <- parseAbstractTimeGeometricPrimitive(obj[["time"]], timeFormat)
 	
 	.procedure <- sapply(obj["procedure"], xmlGetAttr, "href")
 	.observedProperty <- sapply(obj["observedProperty"], xmlGetAttr, "href")
@@ -64,7 +63,7 @@ parseSosObservationOffering <- function(obj,
 #
 #
 #
-parseSosCapabilities <- function(obj, tFormat = sosDefaultTimeParsingFormat) {
+parseSosCapabilities <- function(obj, timeFormat) {
 	.caps.root <- xmlRoot(obj)
 	
 	# attributes:
@@ -93,7 +92,7 @@ parseSosCapabilities <- function(obj, tFormat = sosDefaultTimeParsingFormat) {
 	
 	.observationsXML <- .filterXmlChildren(.caps.root[["Contents"]][["ObservationOfferingList"]], "ObservationOffering")
 	.observations = sapply(.observationsXML, parseSosObservationOffering,
-			tFormat = tFormat)
+			timeFormat = timeFormat)
 	# add names to list
 	names(.observations) <- lapply(.observations,
 			function(obj) {

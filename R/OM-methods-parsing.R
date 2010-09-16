@@ -27,7 +27,7 @@
 #                                                                              #
 ################################################################################
 
-parseOM <- function(obj, parsers, verbose = FALSE) {
+parseOM <- function(obj, sos, verbose = FALSE) {
 	.om <- NULL
 	
 	# check if this is the outermost call and a document is given, not a node
@@ -38,10 +38,10 @@ parseOM <- function(obj, parsers, verbose = FALSE) {
 	# switch submethods based on name
 	.rootName <- xmlName(.root)
 	
-	.parsingFunction <- parsers[[.rootName]]
+	.parsingFunction <- sos@parsers[[.rootName]]
 	if(!is.null(.parsingFunction)) {
 		if(verbose) cat("Parsing O&M", .rootName, "\n") #, "with: "); print(.parsingFunction)
-		.om <- .parsingFunction(.root, parsers, verbose)	
+		.om <- .parsingFunction(.root, sos, verbose)	
 		if(verbose) cat("Done: ", substr(toString(.om), 0, 74), "...\n")
 	}
 	else {
@@ -54,7 +54,7 @@ parseOM <- function(obj, parsers, verbose = FALSE) {
 #
 # extracts Obervation or Measurement from member
 #
-parseMember <- function(obj, parsers, verbose = FALSE) {
+parseMember <- function(obj, sos, verbose = FALSE) {
 	# a member can only have on child element, parse that, omit possible text nodes artefacts
 	if(xmlSize(obj) > 1) {
 		.noneTexts <- .filterXmlChildren(obj, xmlTextNodeName, includeNamed = FALSE)
@@ -68,7 +68,7 @@ parseMember <- function(obj, parsers, verbose = FALSE) {
 		cat("Parsing child of member:", xmlName(.child), "\n")
 	}
 	
-	.mResult <- parseOM(.child, parsers, verbose)
+	.mResult <- parseOM(.child, sos, verbose)
 	
 	return(.mResult)
 }
@@ -76,10 +76,10 @@ parseMember <- function(obj, parsers, verbose = FALSE) {
 #
 #
 #
-parseMeasurement <- function(obj, parsers, verbose = FALSE, 
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseMeasurement <- function(obj, sos, verbose = FALSE) {
 	
-	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]], timeFormat)
+	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]],
+			sosTimeFormat(sos))
 	
 	# 52N SOS only returns om:Measurements (!) with procedure ids and observed 
 	# properties in xlink:href
@@ -108,10 +108,10 @@ parseMeasurement <- function(obj, parsers, verbose = FALSE,
 #
 #
 #
-parseObservation <- function(obj, parsers, verbose = FALSE,
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseObservation <- function(obj, sos, verbose = FALSE) {
 	
-	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]], timeFormat)
+	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]],
+			sosTimeFormat(sos))
 	
 	# 52N SOS only returns om:Observation with procedure ids xlink:href
 	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
@@ -121,8 +121,8 @@ parseObservation <- function(obj, parsers, verbose = FALSE,
 	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
 	
 	# result parser is exchangeable
-	.resultParsingFunction <- parsers[[omResultName]]
-	.result <- .resultParsingFunction(obj[[omResultName]], parsers, verbose)
+	.resultParsingFunction <- sos@parsers[[omResultName]]
+	.result <- .resultParsingFunction(obj[[omResultName]], sos, verbose)
 	
 	# TODO optionals elements for OmObservation
 	#.metadata
@@ -141,14 +141,14 @@ parseObservation <- function(obj, parsers, verbose = FALSE,
 #
 #
 #
-parseObservationCollection <- function(obj, parsers, verbose) {
+parseObservationCollection <- function(obj, sos, verbose) {
 	# remove nodes other than member
 	.members <- .filterXmlChildren(obj, omMemberName, includeNamed = TRUE)
 	
 	if(verbose) cat("Parsing", length(.members),
 				"element(s) in ObservationCollection:", names(.members), "\n")
 	
-	.resultList <- lapply(.members, parseOM, parsers, verbose)
+	.resultList <- lapply(.members, parseOM, sos, verbose)
 	names(.resultList) <- lapply(.resultList, class)
 	
 	if(verbose)
@@ -161,43 +161,37 @@ parseObservationCollection <- function(obj, parsers, verbose) {
 #
 # not yet supported, TODO: implement parsing of further observation specializations (constraints)
 #
-parseGeometryObservation <- function(obj, parsers, verbose = FALSE,
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseGeometryObservation <- function(obj, sos, verbose = FALSE) {
 	warning("Parsing of om:GeometryObservation is not implemented!")
 	return(NA)
 }
 
-parseCategoryObservation <- function(obj, parsers, verbose = FALSE,
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseCategoryObservation <- function(obj, sos, verbose = FALSE) {
 	warning("Parsing of om:CategoryObservation is not implemented!")
 	return(NA)
 }
 
-parseCountObservation <- function(obj, parsers, verbose = FALSE,
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseCountObservation <- function(obj, sos, verbose = FALSE) {
 	warning("Parsing of om:CountObservation is not implemented!")
 	return(NA)
 }
 
-parseTruthObservation <- function(obj, parsers, verbose = FALSE,
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseTruthObservation <- function(obj, sos, verbose = FALSE) {
 	warning("Parsing of om:TruthObservation is not implemented!")
 	return(NA)
 }
 
-parseTemporalObservation <- function(obj, parsers, verbose = FALSE,
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseTemporalObservation <- function(obj, sos, verbose = FALSE) {
 	warning("Parsing of om:TemporalObservatio is not implemented!")
 	return(NA)
 }
 
-parseComplexObservation <- function(obj, parsers, verbose = FALSE,
-		timeFormat = sosDefaultTimeParsingFormat) {
+parseComplexObservation <- function(obj, sos, verbose = FALSE) {
 	warning("Parsing of om:ComplexObservation is not implemented!")
 	return(NA)
 }
 
-parseResult <- function(obj, parsers, verbose = FALSE) {
+parseResult <- function(obj, sos, verbose = FALSE) {
 	.result <- NULL
 	
 	.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
@@ -210,9 +204,9 @@ parseResult <- function(obj, parsers, verbose = FALSE) {
 	}
 	else {
 		# data array parser is exchangeable
-		.dataArrayParsingFunction <- parsers[[sweDataArrayName]]
+		.dataArrayParsingFunction <- sos@parsers[[sweDataArrayName]]
 		.dataArray <- .noneText[[1]]
-		.result <- .dataArrayParsingFunction(.dataArray, parsers, verbose)
+		.result <- .dataArrayParsingFunction(.dataArray, sos, verbose)
 	}
 
 	return(.result)
@@ -226,46 +220,19 @@ parseResult <- function(obj, parsers, verbose = FALSE) {
 # checked here, and swe:Count is actually a swe:AbstractDataComponentType, but
 # here it is just looked for a child element swe:value.
 #
-parseDataArray <- function(obj, parsers, verbose = FALSE) {
+parseDataArray <- function(obj, sos, verbose = FALSE) {
 	.elementCount <-  xmlValue(obj[["elementCount"]][["Count"]][["value"]])
 	if(verbose) cat("Parsing DataArray with", .elementCount, "elements.\n")
 	
-	.eTParser <- parsers[[sweElementTypeName]]
+	.eTParser <- sos@parsers[[sweElementTypeName]]
 	.fields <- .eTParser(obj[[sweElementTypeName]])
 	
-	.encParser <- parsers[[sweEncodingName]]
+	.encParser <- sos@parsers[[sweEncodingName]]
 	.encoding <- .encParser(obj[[sweEncodingName]])
 	
-	.valParser <- parsers[[sweValuesName]]
-	.values <- .valParser(obj[[sweValuesName]], .encoding, verbose)
-	
-	if(!is.data.frame(.values)) {
-		stop("value parser needs to return a data frame for this data array parser to work!")
-	}
-	
-	
-	# struktur des data frames passt noch nicht ganz!
-#	> str(tempValues)
-#	'data.frame':	8 obs. of  1 variable:
-#			$ V1:List of 8
-#	..$ : chr  "2010-03-01T12:15:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "73.0"
-#	..$ : chr  "2010-03-01T12:30:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "68.0"
-#	..$ : chr  "2010-03-01T12:45:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "69.0"
-#	..$ : chr  "2010-03-01T13:00:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "65.0"
-#	..$ : chr  "2010-03-01T13:15:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "61.0"
-#	..$ : chr  "2010-03-01T13:30:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "56.0"
-#	..$ : chr  "2010-03-01T13:45:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "60.0"
-#	..$ : chr  "2010-03-01T14:00:00.000+01:00" "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93" "57.0"
-
-	# TODO continue here!!
-	
-	# add values with names and encoding information as attributes to a data record
-	
-	# if one field contains defnition with "urn:ogc:data:time:iso8601", then convert the whole column to time objects
-	
-	# if one filed contains a uom, convert the whole column to numeric
-	
-	# set these conversion rules as default values
+	.valParser <- sos@parsers[[sweValuesName]]
+	.values <- .valParser(values = obj[[sweValuesName]], fields = .fields,
+			encoding = .encoding, sos = sos, verbose = verbose)
 	
 	return(.values)
 }
@@ -274,8 +241,10 @@ parseDataArray <- function(obj, parsers, verbose = FALSE) {
 #
 # values is XML and encoding holds a SweTextBlock with the required separators.
 #
-parseValues <- function(values, encoding, verbose = FALSE) {
-	if(verbose) cat("Parsing swe:values using", toString(encoding), "\n")
+parseValues <- function(values, fields, encoding, sos,
+		converter = SOSFieldConverter(), verbose = FALSE) {
+	if(verbose) cat("Parsing swe:values using", toString(encoding), "and",
+				length(fields), "fields:", toString(names(fields)), "\n")
 	
 	if(!inherits(encoding, "SweTextBlock")) {
 		stop("Handling for given encoding not implemented!")
@@ -285,8 +254,41 @@ parseValues <- function(values, encoding, verbose = FALSE) {
 				split = encoding@blockSeparator)
 		.tokenLines <- sapply(.blockLines, strsplit,
 				split = encoding@tokenSeparator)
-		.values <- as.data.frame(.tokenLines)
-		return(.values)
+
+		# create data frame of correct length via temporal id
+		idCol = "tempID"
+		.data <- data.frame(idCol = seq(1,length(.tokenLines)))
+		
+		# do following for all fields
+		.fieldCount <- length(fields)
+		for (.currentField in seq(1,.fieldCount)) {
+			# create list for each variable
+			.currentValues <- sapply(.tokenLines, "[[", .currentField)
+			
+			# convert values to the correct types
+			.method <- converter[[fields[[.currentField]][["definition"]]]]
+			if(!is.null(.method)) {
+				.currentValues <- lapply(.currentValues, .method, sos)
+			}
+			# could still be a unit of measurement given, use as
+			else if(!is.na(fields[[.currentField]]["uom"])) {
+				.method <- converter[["uom"]]
+				.currentValues <- lapply(.currentValues, .method, sos)
+			}
+			else {
+				warning(paste("No converter found for the given field",
+								toString(fields[[.currentField]])))		
+			}
+			
+			# add values with names to the data frame
+			.data[,fields[[.currentField]][["name"]]] <- .currentValues
+		}
+		
+		# remove id column
+		.dataClean <- .data[,!colnames(.data)%in%idCol]
+		.data <- NULL
+		
+		return(.dataClean)
 	}
 }
 
@@ -303,6 +305,8 @@ parseElementType <- function(obj) {
 		
 		# extract the fields, naming with attribute 'name'
 		.parsedFields <- lapply(.fields, parseField)
+		.names <- sapply(.parsedFields, "[", "name")
+		names(.parsedFields) <- .names
 		
 		return(.parsedFields)
 	}

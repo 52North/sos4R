@@ -64,6 +64,5 @@ source(paste(.path, "R", "SWE-methods-parsing.R",  sep = "/"))
 
 source(paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
 
-source(paste(.path, "R", "Defaults.R",  sep = "/"))
-
 source(paste(.path, "R", "SOS-methods.R",  sep = "/"))
+source(paste(.path, "R", "Defaults.R",  sep = "/"))

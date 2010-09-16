@@ -37,7 +37,7 @@
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
 .sosDefaultParsers <- list(
-		parseSosCapabilities, # functions for different versions not changeable
+		parseSosCapabilities,
 		parseSensorML,
 		parseOM,
 		parseOM,
@@ -95,6 +95,22 @@ names(.sosDefaultEncoders) <- list(
 		.sosConnectionMethodPost,
 		.sosConnectionMethodSOAP
 		)
+		
+#
+#
+#
+.sosDefaultFieldConverter <- list(
+		sosConvertTime,
+		sosConvertNumber,
+		sosConvertNumber,
+		sosConvertString
+		)
+names(.sosDefaultFieldConverter) <- list(
+		"urn:ogc:data:time:iso8601",
+		"uom",
+		"urn:ogc:def:property:OGC::",
+		"urn:ogc:data:feature"
+		)
 
 ################################################################################
 # access methods
@@ -113,6 +129,12 @@ SOSEncoders <- function (..., include = character(0), exclude = character(0)) {
 
 SOSDefaultConnectionMethod <- function() {
 	return(.sosConnectionMethodPost)
+}
+
+SOSFieldConverter <- function (..., include = character(0), exclude = character(0)) {
+	defaults <- .sosDefaultFieldConverter
+	els <- list(...)
+	.merge(els, defaults, include, exclude)
 }
 
 #
@@ -155,7 +177,7 @@ SOSDefaultConnectionMethod <- function() {
 	return(ob)	
 }
 .sosDisabledParsers <- list(
-		parseSosCapabilities, # changing this
+		parseSosCapabilities, # if this is removed, no more SOS instances can be created! 
 		.parseSosNoParsing,
 		.parseSosNoParsing,
 		.parseSosNoParsing,
