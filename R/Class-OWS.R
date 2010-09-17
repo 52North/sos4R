@@ -139,10 +139,10 @@ setClass("OwsGetCapabilities_2.0.0",
 # See OGC 06-121r3, clause 7.4.6 
 #
 setClass("OwsOperationsMetadata",
-		representation(operations = "vector", parameters = "vector",
-				constraints = "vector",
+		representation(operations = "list", parameters = "list",
+				constraints = "list",
 				extendedCapabilities = "XMLAbstractNode"),
-		prototype = list(operations = c(NA)),
+		prototype = list(operations = list(NA)),
 		validity = function(object) {
 			#print("Entering validation: OwsOperationsMetadata")
 			# TODO implement validity function
@@ -157,10 +157,10 @@ setClass("OwsOperationsMetadata",
 # See OGC 06-121r3, clause 7.4.6
 #
 setClass("OwsOperation",
-		representation(name = "character", DCPs = "vector",
-			parameters = "vector", constraints = "vector",
-			metadata = "vector"),
-		prototype = list(name = as.character(NA), DCPs = c(NA)),
+		representation(name = "character", DCPs = "list",
+			parameters = "list", constraints = "list",
+			metadata = "list"),
+		prototype = list(name = as.character(NA), DCPs = list(NA)),
 		validity = function(object) {
 			#print("Entering validation: OwsOperation")
 			# TODO implement validity function

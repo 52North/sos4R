@@ -30,25 +30,29 @@
 #
 #
 #
-parseSosObservationOffering <- function(obj, timeFormat) {
+parseSosObservationOffering <- function(obj, sos) {
 	.id <- xmlGetAttr(obj, "id")
-	.name <- xmlValue(obj[["name"]])
+	.name <- xmlValue(obj[[gmlNameName]])
 	
 	# TODO use some real time period class, not list!
-	.time <- parseAbstractTimeGeometricPrimitive(obj[["time"]], timeFormat)
+	.time <- parseAbstractTimeGeometricPrimitive(obj = obj[[sosTimeName]],
+			format = sosTimeFormat(sos))
 	
-	.procedure <- sapply(obj["procedure"], xmlGetAttr, "href")
-	.observedProperty <- sapply(obj["observedProperty"], xmlGetAttr, "href")
-	.featureOfInterest <- sapply(obj["featureOfInterest"], xmlGetAttr, "href")
+	.procedure <- sapply(obj[sosProcedureName], xmlGetAttr, "href")
+	.observedProperty <- sapply(obj[sosObservedPropertyName], xmlGetAttr,
+			"href")
+	.featureOfInterest <- sapply(obj[sosFeatureOfInterestName], xmlGetAttr,
+			"href")
 	
-	.responseFormat <- sapply(obj["responseFormat"], xmlValue)
-	.resultModel <- sapply(obj["resultModel"], xmlValue)
-	.responseMode <- sapply(obj["responseMode"], xmlValue)
+	.responseFormat <- sapply(obj[sosResponseFormatName], xmlValue)
+	.resultModel <- sapply(obj[sosResultModelName], xmlValue)
+	.responseMode <- sapply(obj[sosResponseFormatName], xmlValue)
 	
+	.env <- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
 	.boundedBy <- list(
-			srsName = xmlGetAttr(obj[["boundedBy"]][["Envelope"]], "srsName"),
-			lowerCorner = xmlValue(obj[["boundedBy"]][["Envelope"]][["lowerCorner"]]),
-			upperCorner = xmlValue(obj[["boundedBy"]][["Envelope"]][["upperCorner"]]))
+			srsName = xmlGetAttr(.env, "srsName"),
+			lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
+			upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
 	
 	.ob <- SosObservationOffering(id = .id, name = .name, 
 			time = .time, procedure = .procedure,
@@ -63,26 +67,27 @@ parseSosObservationOffering <- function(obj, timeFormat) {
 #
 #
 #
-parseSosCapabilities <- function(obj, timeFormat) {
+parseSosCapabilities <- function(obj, sos) {
 	.caps.root <- xmlRoot(obj)
 	
 	# attributes:
 	.caps.attrs <- xmlAttrs(.caps.root)
 	.caps.version <- .caps.attrs[["version"]]
-	if(any(sapply(names(.caps.attrs), "==", "updateSequence")))
-		.caps.updateSequence <- .caps.attrs[["updateSequence"]]
-	else .caps.updateSequence <- as.character(NA)
+	.caps.updateSequence <- xmlGetAttr(node = .caps.root,
+			name = "updateSequence", default = NA_character_)
 	
 	# as xml only: filter capabilities
-	.caps.fc <- SosFilter_Capabilities(.caps.root[["Filter_Capabilities"]])
+	.caps.fc <- SosFilter_Capabilities(.caps.root[[sosFilterCapabilitiesName]])
 	
-	# parsed:
+	# parsed parts:
 	.caps.si <- parseOwsServiceIdentification(
-			.caps.root[["ServiceIdentification"]])
-	.caps.sp <- parseOwsServiceProvider(.caps.root[["ServiceProvider"]])
-	.operationsXML <- .filterXmlChildren(.caps.root[["OperationsMetadata"]],
-			"Operation")
-	.operations <- sapply(.operationsXML, parseOwsOperation)
+			.caps.root[[owsServiceIdentificationName]])
+	.caps.sp <- parseOwsServiceProvider(.caps.root[[owsServiceProviderName]])
+	.operationsXML <- .filterXmlChildren(
+			node = .caps.root[[owsOperationsMetadataName]],
+			childrenName = owsOperationName)
+	
+	.operations <- lapply(.operationsXML, parseOwsOperation)
 	# add names for indexing of list
 	names(.operations) <- lapply(.operations,
 			function(obj) {
@@ -90,9 +95,11 @@ parseSosCapabilities <- function(obj, timeFormat) {
 			})
 	.caps.om <- OwsOperationsMetadata(operations = .operations)
 	
-	.observationsXML <- .filterXmlChildren(.caps.root[["Contents"]][["ObservationOfferingList"]], "ObservationOffering")
+	.observationsXML <- .filterXmlChildren(
+			node = .caps.root[[sosContentsName]][[sosObservationOfferingListName]],
+			childrenName = sosObservationOfferingName)
 	.observations = sapply(.observationsXML, parseSosObservationOffering,
-			timeFormat = timeFormat)
+			sos = sos)
 	# add names to list
 	names(.observations) <- lapply(.observations,
 			function(obj) {

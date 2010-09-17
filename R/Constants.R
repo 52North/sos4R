@@ -27,6 +27,10 @@
 #                                                                              #
 ################################################################################
 
+#
+# Constants for version 1.0.0 of SOS
+#
+
 ################################################################################
 # SOS
 sosService <- "SOS"
@@ -77,6 +81,21 @@ SosSupportedResponseModes <- function() {
 .xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
 
 ################################################################################
+# SOS
+sosTimeName <- "time"
+sosProcedureName <- "procedure"
+sosObservedPropertyName <- "observedProperty"
+sosFeatureOfInterestName <- "featureOfInterest"
+sosResultModelName <- "resultModel"
+sosResponseFormatName <- "responseFormat"
+sosResponseModeName <- "responseMode"
+sosObservationOfferingName <- "ObservationOffering"
+sosObservationOfferingListName <- "ObservationOfferingList"
+sosContentsName <- "Contents"
+sosFilterCapabilitiesName <- "Filter_Capabilities"
+sosCapabilitiesName <- "Capabilities"
+
+################################################################################
 # O&M
 omMeasurementName <- "Measurement"
 omMemberName <- "member"
@@ -116,6 +135,10 @@ gmlEndName <- "end"
 gmlBeginPositionName <- "beginPosition"
 gmlEndPositionName <-"endPosition"
 gmlFeatureCollectionName <- "FeatureCollection"
+gmlBoundedByName <- "boundedBy"
+gmlEnvelopeName <- "Envelope"
+gmlLowerCornerName <- "lowerCorner"
+gmlUpperCornerName <- "upperCorner"
 
 ################################################################################
 # SWE
@@ -135,7 +158,61 @@ sweTextName <- "Text"
 sweUomName <- "uom"
 
 ################################################################################
+# OGC
+# only the operators supported by 52N SOS
+ogcTempOpTMAfterName <- "TM_After"
+ogcTempOpTMBeforeName <- "TM_Before"
+ogcTempOpTMDuringName <- "TM_During"
+ogcTempOpTMEqualsName <- "TM_Equals"
+
+.ogcSupportedTempOps <- list(
+		ogcTempOpTMAfterName,
+		ogcTempOpTMBeforeName,
+		ogcTempOpTMDuringName,
+		ogcTempOpTMEqualsName
+)
+names(.ogcSupportedTempOps) <- .ogcSupportedTempOps
+
+SosSupportedTemporalOperators <- function() {
+	return(.ogcSupportedTempOps)
+}
+
+################################################################################
 # OWS
+owsServiceIdentificationName <- "ServiceIdentification"
+owsTitleName <- "Title"
+owsAbstractName <- "Abstract"
+owsKeywordsName <- "Keywords"
+owsKeywordName <- "Keyword"
+owsServiceTypeName <- "ServiceType"
+owsServiceTypeVersionName <- "ServiceTypeVersion"
+owsFeesName <- "Fees"
+owsAccessConstraintsName <- "AccessConstraints"
+owsServiceProviderName <- "ServiceProvider"
+owsOperationsMetadataName <- "OperationsMetadata"
+owsOperationName <- "Operation"
+owsDCPName <- "DCP"
+owsHTTPName <- "HTTP"
+owsGetName <- "Get"
+owsPostName <- "Post"
+owsParameterName <- "Parameter"
+owsAllowedValuesName <- "AllowedValues"
+owsValueName <- "Value"
+owsAnyValueName <- "AnyValue"
+owsRangeName <- "Range"
+owsMinimumValueName <- "MinimumValue"
+owsMaximumValueName <- "MaximumValue"
+owsSpacingName <- "Spacing"
+owsConstraintName <- "Constraint"
+owsMetadataName <- "Metadata"
+owsExceptionName <- "Exception"
+owsExceptionTextName <- "ExceptionText"
+owsProfileName <- "Profile"
+owsProviderNameName <- "ProviderName"
+owsProviderSiteName <- "ProviderSite"
+owsServiceContactName <- "ServiceContact"
+
+
 .owsNamespacePrefix <- "ows"
 .owsNamespace <- c(ows = "http://www.opengis.net/ows/1.1")
 .owsCodes = c(

@@ -34,95 +34,122 @@
 # (http://www.omegahat.org/SSOAP/)
 #
 
-# List of the default parsing functions. The names of the list are the
-# names of the respective XML documents set in Constants.R.
-.sosDefaultParsers <- list(
-		parseSosCapabilities,
-		parseSensorML,
-		parseOM,
-		parseOM,
-		parseOwsExceptionReport,
-		#
-		parseMeasurement,
-		parseMember,
-		parseObservation,
-		parseObservationCollection,
-		parseResult,
-		parseDataArray,
-		parseElementType,
-		parseEncoding,
-		parseValues,
-		#
-		parseGeometryObservation,
-		parseCategoryObservation,
-		parseCountObservation,
-		parseTruthObservation,
-		parseTemporalObservation,
-		parseComplexObservation)
-names(.sosDefaultParsers) <- list(
-		sosGetCapabilitiesName,
-		sosDescribeSensorName,
-		sosGetObservationName,
-		sosGetObservationByIdName,
-		sosOwsExceptionReportRootName,
-		#
-		omMeasurementName,
-		omMemberName,
-		omObservationName,
-		omObservationCollectionName,
-		omResultName,
-		sweDataArrayName,
-		sweElementTypeName,
-		sweEncodingName,
-		sweValuesName,
-		#
-		omGeometryObservationName,
-		omCategoryObservationName,
-		omCountObservationName,
-		omTruthObservationName,
-		omTemporalObservationName,
-		omComplexObservationName)
+sosInitDefaults <- function() {
+	
+	# List of the default parsing functions. The names of the list are the
+	# names of the respective XML documents set in Constants.R.
+	.sosDefaultParsers <- list(
+			parseSosCapabilities,
+			parseSensorML,
+			parseOM,
+			parseOM,
+			parseOwsExceptionReport,
+			#
+			parseMeasurement,
+			parseMember,
+			parseObservation,
+			parseObservationCollection,
+			parseResult,
+			parseDataArray,
+			parseElementType,
+			parseEncoding,
+			parseValues,
+			#
+			parseGeometryObservation,
+			parseCategoryObservation,
+			parseCountObservation,
+			parseTruthObservation,
+			parseTemporalObservation,
+			parseComplexObservation)
+	names(.sosDefaultParsers) <- list(
+			sosGetCapabilitiesName,
+			sosDescribeSensorName,
+			sosGetObservationName,
+			sosGetObservationByIdName,
+			sosOwsExceptionReportRootName,
+			#
+			omMeasurementName,
+			omMemberName,
+			omObservationName,
+			omObservationCollectionName,
+			omResultName,
+			sweDataArrayName,
+			sweElementTypeName,
+			sweEncodingName,
+			sweValuesName,
+			#
+			omGeometryObservationName,
+			omCategoryObservationName,
+			omCountObservationName,
+			omTruthObservationName,
+			omTemporalObservationName,
+			omComplexObservationName)
+	
+	# Using a different approach for the encoders here, because there is more than
+	# one way of encoding something (in contrast to parsing). So the different 
+	# objects (and versions) override the respective encoding functions. 
+	.sosDefaultEncoders <- list(
+			encodeRequestKVP,
+			encodeRequestXML,
+			encodeRequestSOAP)
+	names(.sosDefaultEncoders) <- list(
+			.sosConnectionMethodGet,
+			.sosConnectionMethodPost,
+			.sosConnectionMethodSOAP
+			)
+			
+	#
+	#
+	#
+	.sosDefaultFieldConverters <- list(
+			sosConvertTime,
+			sosConvertTime,
+			sosConvertDouble,
+			sosConvertDouble,
+			sosConvertDouble,
+			sosConvertDouble,
+			sosConvertDouble,
+			sosConvertDouble,
+			sosConvertDouble,
+			sosConvertDouble,
+			sosConvertString
+			)
+	names(.sosDefaultFieldConverters) <- list(
+			"urn:ogc:data:time:iso8601",
+			sosTimeName,
+			"%",
+			"Cel",
+			"lx",
+			"hPa",
+			"mm",
+			"deg",
+			"m/s",
+			"uom", # fallback if actual unit is not given
+			"urn:ogc:data:feature"
+			)
+			
+	return(list(.sosDefaultParsers, .sosDefaultEncoders,
+					.sosDefaultFieldConverters))
+}
 
-# Using a different approach for the encoders here, because there is more than
-# one way of encoding something (in contrast to parsing). So the different 
-# objects (and versions) override the respective encoding functions. 
-.sosDefaultEncoders <- list(
-		encodeRequestKVP,
-		encodeRequestXML,
-		encodeRequestSOAP)
-names(.sosDefaultEncoders) <- list(
-		.sosConnectionMethodGet,
-		.sosConnectionMethodPost,
-		.sosConnectionMethodSOAP
-		)
-		
-#
-#
-#
-.sosDefaultFieldConverter <- list(
-		sosConvertTime,
-		sosConvertNumber,
-		sosConvertNumber,
-		sosConvertString
-		)
-names(.sosDefaultFieldConverter) <- list(
-		"urn:ogc:data:time:iso8601",
-		"uom",
-		"urn:ogc:def:property:OGC::",
-		"urn:ogc:data:feature"
-		)
+# call it!
+.defaultMethods <- sosInitDefaults()
+# variables have to be there in order to be accessible outside of init method
+sosDefaultParsers <- .defaultMethods[[1]]
+sosDefaultEncoders <- .defaultMethods[[2]]
+sosDefaultFieldConverters <- .defaultMethods[[3]]
 
 ################################################################################
 # access methods
 
 SOSParsers <- function (..., include = character(0), exclude = character(0)) {
-	defaults <- .sosDefaultParsers
+	defaults <- sosDefaultParsers
 	els <- list(...)
 	.merge(els, defaults, include, exclude)
 }
 
 SOSEncoders <- function (..., include = character(0), exclude = character(0)) {
-	defaults <- .sosDefaultEncoders
+	defaults <- sosDefaultEncoders
 	els <- list(...)
 	.merge(els, defaults, include, exclude)
 }
@@ -131,8 +158,8 @@ SOSDefaultConnectionMethod <- function() {
 	return(.sosConnectionMethodPost)
 }
 
-SOSFieldConverter <- function (..., include = character(0), exclude = character(0)) {
-	defaults <- .sosDefaultFieldConverter
+SOSFieldConverters <- function (..., include = character(0), exclude = character(0)) {
+	defaults <- sosDefaultFieldConverters
 	els <- list(...)
 	.merge(els, defaults, include, exclude)
 }
@@ -204,3 +231,4 @@ sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
 sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'
 sosDefaultTimeParsingFormat <- "%Y-%m-%dT%H:%M:%OS"
+sosDefaultTempOpPropertyName <- "om:samplingTime"

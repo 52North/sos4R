@@ -27,6 +27,59 @@
 #                                                                              #
 ################################################################################
 
-# ogc:temporalOps needed in GetObservation Request
-
 # ogc:spatialOps needed in GetObservation Request
+# TODO implement spatial ops
+
+#
+# ogc:temporalOps needed in GetObservation Request:
+# 52N SOS only supports TimeInstant and TimePeriod for eventTime, see
+# HttpPostRequestDecoder.java, so time can be a GmlTimeGeometricPrimitive
+#
+setClass("OgcBinaryTemporalOpType",
+		representation(
+				propertyName = "character",
+				time = "GmlTimeGeometricPrimitive"),
+		prototype = list(propertyName = as.character(NA), time = NULL),
+		contains = c("VIRTUAL"),
+		validity = function(object) {
+			print("Entering validation: OgcBinaryTemporalOpType")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+setClass("TM_After",
+		contains = c("GmlTimeInstant"),
+		validity = function(object) {
+			print("Entering validation: TM_After")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+setClass("TM_Before",
+		contains = c("GmlTimeInstant"),
+		validity = function(object) {
+			print("Entering validation: TM_Before")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+setClass("TM_During",
+		contains = c("OgcBinaryTemporalOpType"),
+		validity = function(object) {
+			print("Entering validation: TM_During")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+setClass("TM_Equals",
+		contains = c("GmlTimePeriod"),
+		validity = function(object) {
+			print("Entering validation: TM_Equals")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)

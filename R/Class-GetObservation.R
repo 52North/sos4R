@@ -33,12 +33,12 @@
 setClass("GetObservation",
 		representation(
 				offering = "character",
-				observedProperty = "vector", # one or many
+				observedProperty = "list", # one or many
 				responseFormat = "character",
 				srsName = "character", # optional
-				eventTime = "vector", # zero or many # TODO how model temporalOps, maybe also accept POSIXt elements here?
-				procedure = "vector", # zero or many
-				featureOfInterest = "vector", # optional 
+				eventTime = "list", # zero or many # TODO how model temporalOps, maybe also accept POSIXt elements here?
+				procedure = "list", # zero or many
+				featureOfInterest = "list", # optional 
 				result = "character", # optional # TODO how to model comparison ops
 				resultModel = "character", # optional
 				responseMode = "character",

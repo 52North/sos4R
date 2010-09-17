@@ -38,7 +38,7 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 	# switch submethods based on name
 	.rootName <- xmlName(.root)
 	
-	.parsingFunction <- sos@parsers[[.rootName]]
+	.parsingFunction <- sosParsers(sos)[[.rootName]]
 	if(!is.null(.parsingFunction)) {
 		if(verbose) cat("Parsing O&M", .rootName, "\n") #, "with: "); print(.parsingFunction)
 		.om <- .parsingFunction(.root, sos, verbose)	
@@ -78,8 +78,8 @@ parseMember <- function(obj, sos, verbose = FALSE) {
 #
 parseMeasurement <- function(obj, sos, verbose = FALSE) {
 	
-	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]],
-			sosTimeFormat(sos))
+	.samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
+			timeFormat = sosTimeFormat(sos))
 	
 	# 52N SOS only returns om:Measurements (!) with procedure ids and observed 
 	# properties in xlink:href
@@ -110,8 +110,8 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 #
 parseObservation <- function(obj, sos, verbose = FALSE) {
 	
-	.samplingTime <- parseSamplingTime(obj[[omSamplingTimeName]],
-			sosTimeFormat(sos))
+	.samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
+			timeFormat = sosTimeFormat(sos = sos))
 	
 	# 52N SOS only returns om:Observation with procedure ids xlink:href
 	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
@@ -121,7 +121,7 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
 	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
 	
 	# result parser is exchangeable
-	.resultParsingFunction <- sos@parsers[[omResultName]]
+	.resultParsingFunction <- sosParsers(sos)[[omResultName]]
 	.result <- .resultParsingFunction(obj[[omResultName]], sos, verbose)
 	
 	# TODO optionals elements for OmObservation
@@ -204,7 +204,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 	}
 	else {
 		# data array parser is exchangeable
-		.dataArrayParsingFunction <- sos@parsers[[sweDataArrayName]]
+		.dataArrayParsingFunction <- sosParsers(sos)[[sweDataArrayName]]
 		.dataArray <- .noneText[[1]]
 		.result <- .dataArrayParsingFunction(.dataArray, sos, verbose)
 	}
@@ -224,13 +224,13 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
 	.elementCount <-  xmlValue(obj[["elementCount"]][["Count"]][["value"]])
 	if(verbose) cat("Parsing DataArray with", .elementCount, "elements.\n")
 	
-	.eTParser <- sos@parsers[[sweElementTypeName]]
+	.eTParser <- sosParsers(sos)[[sweElementTypeName]]
 	.fields <- .eTParser(obj[[sweElementTypeName]])
 	
-	.encParser <- sos@parsers[[sweEncodingName]]
+	.encParser <- sosParsers(sos)[[sweEncodingName]]
 	.encoding <- .encParser(obj[[sweEncodingName]])
 	
-	.valParser <- sos@parsers[[sweValuesName]]
+	.valParser <- sosParsers(sos)[[sweValuesName]]
 	.values <- .valParser(values = obj[[sweValuesName]], fields = .fields,
 			encoding = .encoding, sos = sos, verbose = verbose)
 	
@@ -241,55 +241,73 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
 #
 # values is XML and encoding holds a SweTextBlock with the required separators.
 #
-parseValues <- function(values, fields, encoding, sos,
-		converter = SOSFieldConverter(), verbose = FALSE) {
+parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	if(verbose) cat("Parsing swe:values using", toString(encoding), "and",
 				length(fields), "fields:", toString(names(fields)), "\n")
-	
 	if(!inherits(encoding, "SweTextBlock")) {
 		stop("Handling for given encoding not implemented!")
 	}
-	else {
-		.blockLines <- strsplit(x = xmlValue(values),
-				split = encoding@blockSeparator)
-		.tokenLines <- sapply(.blockLines, strsplit,
-				split = encoding@tokenSeparator)
+	
+	.converters <- sosFieldConverters(sos)
+	
+	.blockLines <- strsplit(x = xmlValue(values),
+			split = encoding@blockSeparator)
+	.tokenLines <- sapply(.blockLines, strsplit,
+			split = encoding@tokenSeparator)
 
-		# create data frame of correct length via temporal id
-		idCol = "tempID"
-		.data <- data.frame(idCol = seq(1,length(.tokenLines)))
+	# data frame of correct length to be able to use cbind for first column
+	.tempId = "tempID"
+	.data <- data.frame(seq(1,length(.tokenLines)))
+	names(.data) <- .tempId
+	
+	# do following for all fields
+	.fieldCount <- length(fields)
+	for (.currentFieldIdx in seq(1,.fieldCount)) {
+		# create list for each variable
+		.currentValues <- sapply(.tokenLines, "[[", .currentFieldIdx)
+		.currentField <- fields[[.currentFieldIdx]]			
 		
-		# do following for all fields
-		.fieldCount <- length(fields)
-		for (.currentField in seq(1,.fieldCount)) {
-			# create list for each variable
-			.currentValues <- sapply(.tokenLines, "[[", .currentField)
-			
-			# convert values to the correct types
-			.method <- converter[[fields[[.currentField]][["definition"]]]]
-			if(!is.null(.method)) {
-				.currentValues <- lapply(.currentValues, .method, sos)
-			}
+		# convert values to the correct types
+		.method <- .converters[[.currentField[["definition"]]]]
+		if(is.null(.method)) {
 			# could still be a unit of measurement given, use as
-			else if(!is.na(fields[[.currentField]]["uom"])) {
-				.method <- converter[["uom"]]
-				.currentValues <- lapply(.currentValues, .method, sos)
+			if(!is.na(.currentField["uom"])) {
+				.method <- .converters[[.currentField[["uom"]]]]
+				if(is.null(.method)) {
+					# fallback option
+					warning(paste("No converter for the unit of measurement ",
+								.currentField[["uom"]],
+								"! You can add one SOSFieldConverters()."))
+					.method <- .converters[["uom"]]	
+				}
 			}
 			else {
 				warning(paste("No converter found for the given field",
-								toString(fields[[.currentField]])))		
+								toString(.currentField)))		
 			}
-			
-			# add values with names to the data frame
-			.data[,fields[[.currentField]][["name"]]] <- .currentValues
+		}
+
+		if(verbose) {
+			cat("Using converter function: ")
+			show(.method)
 		}
 		
-		# remove id column
-		.dataClean <- .data[,!colnames(.data)%in%idCol]
-		.data <- NULL
+		# do the conversion
+		.currentValues <- .method(x = .currentValues, sos = sos)
 		
-		return(.dataClean)
+		# bind new and existing data
+		if(verbose) cat("Binding additional data.frame for",
+					.currentField[["name"]], "with values",
+					toString(.currentValues), "\n")
+		.newData <- data.frame(.currentValues)
+		names(.newData) <- .currentField[["name"]]
+		.data <- cbind(.data, .newData)
 	}
+	
+	# remove id column
+	.data <- .data[,!colnames(.data)%in%.tempId]
+	
+	return(.data)
 }
 
 parseElementType <- function(obj) {
@@ -409,8 +427,9 @@ parseFOI <- function(obj) {
 #
 # create according GmlTimeObject from om:samplingTime
 #
-parseSamplingTime <- function(obj, format) {
-	.timeObject <- parseAbstractTimeGeometricPrimitive(obj, format)
+parseSamplingTime <- function(obj, timeFormat) {
+	.timeObject <- parseAbstractTimeGeometricPrimitive(obj = obj,
+			format = timeFormat)
 	return(.timeObject)
 }
 

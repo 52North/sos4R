@@ -114,15 +114,15 @@ OwsServiceProvider <- function(providerName, providerSite = as.character(NA),
 			providerSite = providerSite, serviceContact = serviceContact)
 }
 
-OwsOperationsMetadata <- function(operations, parameters = c(NA),
-	constraints = c(NA), extendedCapabilities = xmlNode(NA)) {
+OwsOperationsMetadata <- function(operations, parameters = list(NA),
+	constraints = list(NA), extendedCapabilities = xmlNode(NA)) {
 	new("OwsOperationsMetadata", operations = operations,
 		parameters = parameters, constraints = constraints,
 		extendedCapabilities = extendedCapabilities)
 }
 
-OwsOperation <- function(name, DCPs, parameters = c(NA), constraints = c(NA),
-			metadata = c(NA)) {
+OwsOperation <- function(name, DCPs, parameters = list(NA),
+		constraints = list(NA), metadata = list(NA)) {
 	new("OwsOperation", name = name, DCPs = DCPs, parameters = parameters,
 		constraints = constraints, metadata = metadata)
 }
@@ -131,7 +131,8 @@ OwsContents <- function(xmlNode) {
 	new("OwsContents", xml = xmlNode)
 }
 
-OwsExceptionReport <- function(version, lang = as.character(NA), exceptions = list()) {
+OwsExceptionReport <- function(version, lang = as.character(NA),
+		exceptions = list(NA)) {
 	new("OwsExceptionReport", version = version, lang = lang,
 			exceptions = exceptions)
 }

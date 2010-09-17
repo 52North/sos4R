@@ -33,7 +33,8 @@
 setClass("SOS",
 		representation(url = "character", method = "character",
 				version = "character", capabilities = "OwsCapabilities",
-				parsers = "list", encoders = "list", curlHandle = "CURLHandle",
+				parsers = "list", encoders = "list",
+				dataFieldConverters = "list", curlHandle = "CURLHandle",
 				curlOptions = "ANY", timeFormat = "character",
 				verboseOutput = "logical"),
 		prototype = list(
@@ -132,6 +133,19 @@ setClass("SosContents",
 		contains = "OwsContents",
 		validity = function(object) {
 			#print("Entering validation: SosContents")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+#
+#
+#
+setClass("SosEventTime",
+		representation(temporalOps = "OgcBinaryTemporalOpType"),
+		prototype = list(temporalOps = NULL),
+		validity = function(object) {
+			print("Entering validation: SosEventTime")
 			# TODO implement validity function
 			return(TRUE)
 		}

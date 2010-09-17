@@ -125,8 +125,12 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	}
 	
 	if( !is.na(obj@eventTime)) {
+		.timeString <- encodeEventTimeKVP(obj = obj@eventTime[[1]],
+				verbose = verbose)
+		if(length(obj@eventTime) > 1)
+			warning("Only first event time used for KVP!")
 		.optionals <- paste(.optionals, paste("eventTime", 
-						.kvpEscapeSpecialCharacters(obj@eventTime), 
+						.kvpEscapeSpecialCharacters(.timeString), 
 						sep = "="), 
 				sep = "&")
 	}
@@ -210,9 +214,11 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 			obj@offering)
 	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
 	
-	if( !is.na(obj@eventTime)) {
+	if(!any(is.na(list(obj@eventTime)))) {
 		# .eventTimes <- .eventTimeNodeList(obj@eventTime)
 		# TODO model and implement
+		.eventTimeList <- lapply(obj@eventTime, encodeEventTimeXML)
+		addChildren(node = .xmlDoc, kids = .eventTimeList, append = TRUE)
 	}
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
@@ -229,10 +235,12 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	
 	if( !any(sapply(obj@featureOfInterest, "is.na"), na.rm = TRUE)) {
 		# TODO add foi with ogc:spatialOps and sos:ObjectID
+		warning("featureOfInterest not encoded yet!")
 	}
 	
 	if( !is.na(obj@result)) {
 		# TODO add result with ogc:comparisonOps
+		warning("comparisonOps not encoded yet!")
 	}
 	
 	.responseFormat <- xmlNode(name = "responseFormat",

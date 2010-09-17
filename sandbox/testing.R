@@ -136,7 +136,6 @@ er.xmltext3 <- "<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\
 str(parseOwsExceptionReport(xmgetlParseDoc(er.xmltext3)))
 # works from here!
 
-
 debug(parseOwsExceptionReport)
 debug(parseOwsException)
 
@@ -169,10 +168,20 @@ getURL(paste(url, request2, sep = "?"))
 ################################################################################
 # Parsing the capabilities file...
 
-weathersos.url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"
-weathersos = SOS(weathersos.url)
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 #caps <- getCapabilities(weathersos, verbose = TRUE)
 weathersos@capabilities
+
+# some error
+caps <- '...'
+xmlCaps <- xmlParseDoc(caps)
+debug(parseSosCapabilities)
+parsedCaps <- parseSosCapabilities(xmlCaps, weathersos)
+
+opXml <- xmlParseDoc('COPY HERE')
+debug(parseOwsOperation)
+parseOwsOperation(xmlRoot(opXml))
+
 
 ################################################################################
 # accessor functions
@@ -295,6 +304,60 @@ obsDoc2 <- xmlParseDoc('<?xml version="1.0" encoding="UTF-8"?><om:ObservationCol
 tempObs2 <- parseOM(obsDoc2, parsers = SOSParsers(), verbose = TRUE)
 # works!
 
+
+################################################################################
+# creating data frames with time classes
+value1 <- list(as.POSIXct("2008-01-01"), as.POSIXct("2009-02-02"),
+		as.POSIXct("2010-03-03"))
+value2 <- c("lala", "nana", "pooh")
+value3 <- c(10.1, 12.4, 17.42)
+value4 <- c("10.1", "12.4", "17.42")
+value5 <- c(strptime("2010-03-01T12:15:00.000+01:00", sosDefaultTimeParsingFormat),
+		strptime("2010-03-02T12:30:00.000+01:00", sosDefaultTimeParsingFormat))
+value6 <- c("2010-03-01T12:15:00.000+01:00", "2010-03-02T12:30:00.000+01:00")
+
+df <- data.frame(value1, value2, value3)
+df1 <- data.frame(time = value5, name = value2[2:3])
+df2 <- data.frame(temperature = value3)
+df2[,"lala"] <- values4
+
+timeDF <- data.frame(value5, stringsAsFactors = FALSE)
+str(timeDF)
+# WORKS, but only if value5 is NOT A LIST
+
+# procedure as in parsing method:
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST", verboseOutput = FALSE)
+rawTestCurrentValues <- list("2010-03-01T12:15:00.000+01:00",
+		"2010-03-02T12:30:00.000+01:00")
+testCurrentValues <- lapply(rawTestCurrentValues, sosConvertTime, sos = weathersos)
+str(testCurrentValues)
+str(data.frame(I(testCurrentValues)))
+
+# looks good... but columnList <- list(testCurrentValues, value2[2:3]) # does not do the trick
+cbind(tempTimeDF, tempValuesDF)
+str(cbind(tempTimeDF, tempValuesDF))
+# why is this not like the following?
+str(df1)
+
+str(sosConvertTime(x = rawTestCurrentValues, sos = weathersos))
+str(as.double(value4))
+# not bad, so just give whole list to conversion function instead of calling lapply
+str(sosConvertTime(rawTestCurrentValues, sos = weathersos))
+
+tempTimeDF <- data.frame(sosConvertTime(
+				x = list("2010-03-01T12:15:00.000+01:00",
+						"2010-03-02T12:30:00.000+01:00"),
+				sos = weathersos))
+# cannot set name with variable on creation of the data.frame
+names(tempTimeDF) <- "time"
+tempValuesDF <- data.frame("values" = sosConvertDouble(list("11.1", "12.4")))
+tempId = "tempId"
+tempData = data.frame(tempId = seq(1:2))
+tempData <- cbind(tempId, tempTimeDF, tempValuesDF); str(tempData)
+tempData[,!colnames(tempData)%in%tempId]
+# YEAH! WORKS!
+
+
 ################################################################################
 # parsing om:Observation
 
@@ -310,31 +373,15 @@ tempResult <- parseResult(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]][[
 tempDA <- parseDataArray(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]], sos = weathersos, verbose = TRUE)
 tempFields <- parseElementType(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweElementTypeName]])
 tempEncoding <- parseEncoding(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweEncodingName]])
-tempValues <- parseValues(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweValuesName]],
-		fields = tempFields, encoding = tempEncoding, sos = weathersos, verbose = TRUE)
+tempValues <- parseValues(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweValuesName]], fields = tempFields, encoding = tempEncoding, sos = weathersos, verbose = TRUE)
 
-# stuff about creating data frames:
-value1 <- c(as.POSIXct("2008-01-01"), as.POSIXct("2009-02-02"),
-		as.POSIXct("2010-03-03"))
-value2 <- c("lala", "nana", "pooh")
-value3 <- c(10.1, 12.4, 17.42)
-value4 <- c("10.1", "12.4", "17.42")
-df <- data.frame(value1, value2, value3)
-df1 <- data.frame(time = value1, name = value2)
-df2 <- data.frame(temperature = value3)
-df2[,"lala"] <- values4
-
-# test conversion for time:
-sosConvertTime(x = "2010-03-01T12:15:00.000+01:00", sos = weathersos)
-times <- c("2010-03-01T12:15:00.000+01:00", "2010-03-02T12:30:00.000+01:00")
-sapply(times, sosConvertTime, sos)
-
-tempObs <- parseObservation(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]], parsers = SOSParsers(), verbose = TRUE)
+tempObs <- parseObservation(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]], sos = weathersos, verbose = TRUE)
 
 # if the observation has a foi with a coordinate, add that to all data rows?
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+
 
 ################################################################################
 # GetObservationById
@@ -364,30 +411,42 @@ obs <- getObservationById(sos = weathersos, observationId = ids[[1]],
 # works!
 
 obs <- getObservationById(sos = weathersos, observationId = ids[[1]], verbose = TRUE)
+obs <- getObservationById(sos = weathersos, observationId = ids[[1]], resultModel = SosSupportedResultModels()[[2]], verbose = TRUE)
 # works!
 
-obs <- getObservationById(sos = weathersos, observationId = ids[[1]], resultModel = SosSupportedResultModels()[[2]], verbose = TRUE)
+################################################################################
+# temporal operations
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST")
 
+format(as.POSIXct("2010-07-01 12:00"), weathersos@timeFormat)
+
+t1 <- sosCreateTimeInstant(sos = weathersos, time = as.POSIXct("2010-07-01 12:00"))
+p1 <- sosCreateTimePeriod(sos = weathersos, begin = as.POSIXct("2010-03-01 12:15"),
+		end = as.POSIXct("2010-03-02 12:15"))
+# works!
+
+eventTime1 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_During"]], p1)
+encodeEventTimeXML(eventTime1)
+encodeEventTimeKVP(eventTime1)
+# TODO hier geht's weiter...
 
 ################################################################################
 # GetObservations
 
-sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST")
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST")
 
 # request:
-go.offering = sosOfferings(sos)[[6]]@id
-go.observedProperty = sosObservedProperties(sos)[[6]] # temp
-
-go.responseFormat = sosResponseFormats(sos)[[1]] # temp
-go.responseMode = sosResponseMode(sos)[[2]] # inline
+go.offering = sosOfferings(weathersos)[[3]]@id # ATHMOSPHERIC
+go.observedProperty = sosObservedProperties(weathersos)[[3]] # temp
+#go.responseFormat - leave to default
+go.responseMode = sosResponseMode(weathersos)[[2]] # inline
 go.eventTime = "2010-07-01T12:00/2010-07-10T12:00" 
-go.resultModel = sosResultModels(sos)[[3]] # om:Measurement
+go.resultModel = sosResultModels(weathersos)[[3]] # om:Measurement
 go.srsName = "urn:ogc:def:crs:EPSG:6.8:4326" # is "AnyValue" in capabilities... contacted Carsten about that
 
 # no event time -> latest
-getObservation(sos, offering = go.offering,
-		observedProperty =  go.observedProperty,
-		responseFormat = go.responseFormat)
+getObservation(sos = weathersos, offering = go.offering,
+		observedProperty =  go.observedProperty)
 
 # TODO bbox
 
@@ -399,6 +458,13 @@ getObservation(sos, offering = go.offering,
 
 # TODO ********************************************************* continue here!!
 
+
+################################################################################
+# PegelOnlineSOS
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+# works so far... :-)
+
+# AirQualitySOS
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")

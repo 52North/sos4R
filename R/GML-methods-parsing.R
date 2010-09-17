@@ -78,7 +78,7 @@ parsePoint <- function(obj) {
 #
 #
 parseTimeInstant <- function(obj, format) {
-	.timePos <- parseTimePosition(.ti, format)
+	.timePos <- parseTimePosition(obj = .ti, format = format)
 	
 	#optionals
 	.id = xmlGetAttr(node = obj, name = "id",
@@ -99,7 +99,7 @@ parseTimeInstant <- function(obj, format) {
 #
 #
 #
-parseTimeInstantProperty <- function(obj) {
+parseTimeInstantProperty <- function(obj, format) {
 	.timeProp <- NULL
 	
 	# check if reference or inline phenomenon
@@ -110,7 +110,7 @@ parseTimeInstantProperty <- function(obj) {
 	else {
 		.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
 				includeNamed = FALSE)
-		.time <- parseTimeInstant(.noneText[[1]])
+		.time <- parseTimeInstant(obj = .noneText[[1]], format = format)
 		.timeProp <- GmlTimeInstantProperty(time = .time)
 	}
 	
@@ -167,8 +167,9 @@ parseTimePeriod <- function(obj, format) {
 	
 	# begin and end
 	if(!is.null(obj[[gmlBeginName]]) || !is.null(obj[[gmlEndName]])) {
-		.begin <- parseTimeInstantProperty(obj[[gmlBeginName]])
-		.end <- parseTimeInstantProperty(obj[[gmlEndName]])
+		.begin <- parseTimeInstantProperty(obj = obj[[gmlBeginName]],
+				format = format)
+		.end <- parseTimeInstantProperty(obj[[gmlEndName]], format = format)
 		
 		.timeObject <- GmlTimePeriod(begin = .begin, end = .end, duration = .duration,
 				timeInterval = .timeInterval, id = .id,

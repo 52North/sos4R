@@ -64,7 +64,7 @@ format(t, "%Y-%m-%dT%H:%M:%OS3")
 #
 #
 parseMeasurement <- function(measurement, timeFormat = sosDefaultTimeParsingFormat) {
-	.samplingTime <- parseSamplingTime(m[["samplingTime"]], timeFormat)
+	.samplingTime <- parseSamplingTime(measurement[["samplingTime"]], sos)
 # [...]
 	
 # To replace the format, set the default...

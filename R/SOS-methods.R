@@ -32,7 +32,8 @@
 #
 SOS <- function(url, method = SOSDefaultConnectionMethod(),
 		version = "1.0.0", parsers = SOSParsers(), encoders = SOSEncoders(),
-		curlOpts = list(), curlHandle = getCurlHandle(),
+		dataFieldConverters = SOSFieldConverters(), curlOpts = list(),
+		curlHandle = getCurlHandle(),
 		timeFormat = sosDefaultTimeParsingFormat, verboseOutput = FALSE) {
 	if(method == .sosConnectionMethodPost)
 		.curlOpts <- curlOptions(url = url)
@@ -47,6 +48,7 @@ SOS <- function(url, method = SOSDefaultConnectionMethod(),
 					owsVersion = "1.1.0"),
 			parsers = parsers,
 			encoders = encoders,
+			dataFieldConverters = dataFieldConverters,
 			curlOptions = .curlOpts,
 			curlHandle = curlHandle,
 			timeFormat = timeFormat,
@@ -110,6 +112,9 @@ SosContents <- function(observationOfferings) {
 	new("SosContents", observationOfferings = observationOfferings)
 }
 
+SosEventTime <- function(temporalOps) {
+	new("SosEventTime", temporalOps = temporalOps)
+}
 
 #
 # main request method
@@ -257,8 +262,8 @@ if (!isGeneric("sosObservedProperties"))
 setMethod(f = "sosObservedProperties", signature = c(sos = "SOS"),
 		def = function(sos) {
 			.caps <- sosCaps(sos)
-			.getOb <- .caps@operations@operations[["GetObservation"]]
-			return(.getOb@parameters$observedProperty)
+			.getOb <- .caps@operations@operations[[sosGetObservationName]]
+			return(.getOb@parameters[[sosObservedPropertyName]])
 		})
 
 if (!isGeneric("sosOfferings"))
@@ -384,6 +389,143 @@ setMethod(f = "sosTimeFormat", signature = c(sos = "SOS"),
 			return(sos@timeFormat)
 		})
 
+if (!isGeneric("sosParsers"))
+	setGeneric(name = "sosParsers", def = function(sos) {
+				standardGeneric("sosParsers")
+			})
+setMethod(f = "sosParsers", signature = c(sos = "SOS"),
+		def = function(sos) {
+			return(sos@parsers)
+		})
+
+if (!isGeneric("sosFieldConverters"))
+	setGeneric(name = "sosFieldConverters", def = function(sos) {
+				standardGeneric("sosFieldConverters")
+			})
+setMethod(f = "sosFieldConverters", signature = c(sos = "SOS"),
+		def = function(sos) {
+			return(sos@dataFieldConverters)
+		})
+
+#
+# set parsers, encoders and convertes to default
+#
+if (!isGeneric("sosSetFunctionsToDefault"))
+	setGeneric(name = "sosSetFunctionsToDefault", def = function(sos) {
+				standardGeneric("sosSetFunctionsToDefault")
+			})
+setMethod(f = "sosSetFunctionsToDefault", signature = c(sos = "SOS"),
+		def = function(sos) {
+			.defaultMethods <- sosInitDefaults()
+			sos@parsers <- .defaultMethods[[1]]
+			sos@encoders <- .defaultMethods[[2]]
+			sos@dataFieldConverters <- .defaultMethods[[3]]
+		})
+
+################################################################################
+# convenience functions
+if (!isGeneric("sosCreateTimeInstant"))
+	setGeneric(name = "sosCreateTimeInstant", def = function(sos, time) {
+				standardGeneric("sosCreateTimeInstant")
+			})
+setMethod(f = "sosCreateTimeInstant",
+		signature = c(sos = "SOS", time = "POSIXt"),
+		def = function(sos, time) {
+			.time <- format(time, sos@timeFormat)
+			.timePos <- GmlTimePosition(time = strptime(.time, sos@timeFormat))
+			.ti <- GmlTimeInstant(timePosition = .timePos)
+			return(.ti)
+		})
+
+if (!isGeneric("sosCreateTimePeriod"))
+	setGeneric(name = "sosCreateTimePeriod",
+			def = function(sos, begin, end) {
+				standardGeneric("sosCreateTimePeriod")
+			})
+setMethod(f = "sosCreateTimePeriod",
+		signature = c(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
+		def = function(sos, begin, end) {
+			.beginPos <- GmlTimePosition(
+					time = strptime(
+							format(begin, sos@timeFormat),
+							sos@timeFormat)
+					)
+			.endPos <- GmlTimePosition(
+					time = strptime(
+							format(end, sos@timeFormat),
+							sos@timeFormat)
+			)
+			.tp <- GmlTimePeriod(beginPosition = .beginPos,
+					endPosition = .endPos)
+			return(.tp)
+		})
+
+#
+# sosCreateEventTime(SosSupportedTemporalOperators()[["TM_During"]], p1)
+#
+if (!isGeneric("sosCreateEventTime"))
+	setGeneric(name = "sosCreateEventTime",
+			def = function(operator, time) {
+				standardGeneric("sosCreateEventTime")
+			})
+setMethod(f = "sosCreateEventTime",
+		signature = c(operator = "character",
+				time = "GmlTimeGeometricPrimitive"),
+		def = function(operator, time) {
+			
+			if(operator == ogcTempOpTMAfterName) {
+				.tOps <- TM_After(time = time)
+			}
+			else if(operator == ogcTempOpTMBeforeName) {
+				.tOps <- TM_Before(time = time)
+			}
+			else if(operator == ogcTempOpTMDuringName) {
+				.tOps <- TM_During(time = time)
+			}
+			else if(operator == ogcTempOpTMEqualsName) {
+				.tOps <- TM_Equals(time = time)
+			}
+			else {
+				stop(paste("Given operator", operator, "is not supported,",
+								" choose one of",
+								SosSupportedTemporalOperators()))
+			}
+			
+			.et <- SosEventTime(.tOps)
+			return(.et)
+		})
+
+
+################################################################################
+# encoding functions
+
+#
+#
+#
+encodeEventTimeXML <- function(obj, verbose = FALSE) {
+	if(verbose) {
+		cat("ENCODE XML ", class(obj), "\n")
+	}
+	
+	.temporalOpsClass <- class(obj@temporalOps)
+	
+	if(!is.null(SosSupportedTemporalOperators()[[.temporalOpsClass]])) {
+		.temporalOpsXML <- encodeTemporalOps(obj@temporalOps)
+	}
+	else {
+		stop(paste("temporalOps type not supported: ",
+						.temporalOpsClass))
+	}
+}
+
+#
+#
+#
+encodeEventTimeKVP <- function(obj, verbose = FALSE) {
+	# TODO implement kvp encoding for event time
+	stop("METHOD NOT IMPLEMENTED!")
+}
+
 ################################################################################
 # functions for SOS operations
 
@@ -422,9 +564,8 @@ setMethod(f = "getCapabilities",
 				return(.handleExceptionReport(sos, .response))
 			}
 			else {
-				.parsingFunction <- sos@parsers[[sosGetCapabilitiesName]]
-				.caps <- .parsingFunction(obj = .response,
-						timeFormat = sosTimeFormat(sos))
+				.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
+				.caps <- .parsingFunction(obj = .response, sos = sos)
 				if (verbose) {
 					cat("done!\n")
 				} 
@@ -473,7 +614,7 @@ setMethod(f = "describeSensor",
 				return(.handleExceptionReport(sos, .response))
 			}
 			else {
-				.parsingFunction <- sos@parsers[[sosDescribeSensorName]]
+				.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
 				.sml <- .parsingFunction(obj = .response)
 				return(.sml)
 			}
@@ -523,8 +664,8 @@ setMethod(f = "getObservationById",
 				return(.handleExceptionReport(sos, .response))
 			}
 			else {
-				.parsingFunction <- sos@parsers[[sosGetObservationByIdName]]
-				.obs <- .parsingFunction(obj = .response, parsers = sos@parsers,
+				.parsingFunction <- sosParsers(sos)[[sosGetObservationByIdName]]
+				.obs <- .parsingFunction(obj = .response, parsers = sosParsers(sos),
 						verbose = verbose)
 				
 				if(verbose) {
@@ -543,11 +684,14 @@ setMethod(f = "getObservationById",
 
 if (!isGeneric("getObservation"))
 	setGeneric(name = "getObservation",
-			signature = signature("sos", "offering", "observedProperty",
-					"responseFormat", "srsName", "eventTime", "procedure",
-					"featureOfInterest", "result", "resultModel",
-					"responseMode", "BBOX", "verbose", "inspect"),
-			def = function(sos, offering, observedProperty,
+			signature = signature("sos", "offering", "offeringId",
+					"observedProperty", "responseFormat", "srsName",
+					"eventTime", "procedure", "featureOfInterest", "result",
+					"resultModel", "responseMode", "BBOX", "verbose",
+					"inspect"),
+			def = function(sos, offering = NA, offeringId = as.character(NA),
+					observedProperty,
+					# optional:
 					responseFormat = .sosDefaultGetObsResponseFormat,
 					srsName = as.character(NA), eventTime = as.character(NA), 
 					procedure = c(NA), featureOfInterest = c(NA), 
@@ -561,11 +705,12 @@ if (!isGeneric("getObservation"))
 #
 setMethod(f = "getObservation",
 		signature = c(sos = "SOS",
-				offering = "character",
 				observedProperty = "character",
-				# has default:
-				responseFormat = "character",
+				# one of the following two is needed:
+				offering = "SosObservationOffering",
+				offeringId = "character",
 				# optional:
+				responseFormat = "character",
 				srsName = "ANY", # "character",
 				eventTime = "ANY", # "character", 
 				procedure = "ANY", # "vector",
@@ -576,11 +721,18 @@ setMethod(f = "getObservation",
 				BBOX = "ANY", # "character",
 				verbose = "ANY",  # "logical"
 				inspect = "ANY"),
-		function(sos, offering, observedProperty, responseFormat, srsName,
-				eventTime,	procedure, featureOfInterest, result, resultModel,
-				responseMode, BBOX, verbose, inspect) {
+		function(sos, offering, offeringId, observedProperty, responseFormat,
+				srsName, eventTime,	procedure, featureOfInterest, result,
+				resultModel, responseMode, BBOX, verbose, inspect) {
+			
+			if(is.na(offering) && is.na(offeringId))
+				stop("Either offering or offeringId must be given!")
+			if(!is.na(offering))
+				.offeringId <- offering@id
+			else .offeringId <- offeringId
+					
 			.go <- GetObservation(service = sosService, version = sos@version, 
-					offering = offering, observedProperty =  observedProperty,
+					offering = .offeringId, observedProperty =  observedProperty,
 					responseFormat =  responseFormat, srsName = srsName,
 					eventTime = eventTime, procedure = procedure,
 					featureOfInterest = featureOfInterest, result = result,
@@ -598,8 +750,8 @@ setMethod(f = "getObservation",
 				return(.handleExceptionReport(sos, .response))
 			}
 			else {
-				.parsingFunction <- sos@parsers[[sosDescribeSensorName]]
-				.obs <- .parsingFunction(obj = .response, parsers = sos@parsers,
+				.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
+				.obs <- .parsingFunction(obj = .response, parsers = sosParsers(sos),
 						verbose = verbose)
 				
 				if(verbose || inspect) {
@@ -623,7 +775,7 @@ setMethod(f = "getObservation",
 .handleExceptionReport <- function(sos, obj) {
 	if(sos@verboseOutput) warning("Received ExceptionReport!")
 		
-	.parsingFunction <- sos@parsers[[sosOwsExceptionReportRootName]]
+	.parsingFunction <- sosParsers(sos)[[sosOwsExceptionReportRootName]]
 	.er <- .parsingFunction(obj)
 	if(class(.er) == "OwsExceptionReport")
 		warning(toString(.er))
@@ -633,12 +785,11 @@ setMethod(f = "getObservation",
 ################################################################################
 # conversion methods
 sosConvertTime <- function(x, sos) {
-	.t <- strptime(x = x, format = sosTimeFormat(sos = sos))
-	print(.t)
+	.t <- as.POSIXct(strptime(x = x, format = sosTimeFormat(sos = sos)))
 	return(.t)
 }
-sosConvertNumber <- function(x, sos) {
-	return(as.numeric(x = x))
+sosConvertDouble <- function(x, sos) {
+	return(as.double(x = x))
 }
 sosConvertString <- function(x, sos) {
 	return(as.character(x = x))

@@ -22,76 +22,36 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18                                                          #
+# Created: 2010-09-17                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
 #
+# samplingTime is the only time that's really used, so set it as default
 #
-#
-setClass("SwePhenomenon",
-		representation(id = "character", name = "character",
-				# optional:
-				description = "character"),
-		prototype = list(id = as.character(NA), name = as.character(NA)),
-		validity = function(object) {
-			#print("Entering validation: SwePhenomenon")
-			# TODO implement validity function
-			# one of parameters has to be set
-			return(TRUE)
-		}
-)
+"TM_After" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+	new("TM_After", propertyName = propertyName, time = time)
+}
+"TM_Before" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+	new("TM_Before", propertyName = propertyName, time = time)
+}
+"TM_During" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+	new("TM_During", propertyName = propertyName, time = time)
+}
+"TM_Equals" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+	new("TM_Equals", propertyName = propertyName, time = time)
+}
 
-#
-#
-#
-setClass("SwePhenomenonProperty",
-		representation(href = "character", phenomenon = "ANY"),
-		prototype = list(href = as.character(NA), phenomenon = NA),
-		validity = function(object) {
-			#print("Entering validation: SwePhenomenonProperty")
-			# TODO implement validity function
-			# one of parameters has to be set, phenomenon has to be SwePhenomenon if set
-			return(TRUE)
-		}
-)
-
-#
-# 52N SOS only supports/returns CompositePhenomenon, the intermediate
-# CompoundPhenomenon is intentionally left out for brevity
-#
-setClass("SweCompositePhenomenon",
-		representation(dimension = "integer", components = "list",
-				# optional:
-				base = "ANY"),
-		prototype = list(dimension = NA_integer_, components = list(NA)),
-		contains = "SwePhenomenon",
-		validity = function(object) {
-			#print("Entering validation: SweCompositePhenomenon")
-			# TODO implement validity function
-			# components needs to be a list of SwePhenomenonProperty instances
-			# base must be SwePhenomenonProperty
-			return(TRUE)
-		}
-)
-
-#
-#
-#
-setClass("SweTextBlock",
-		representation(tokenSeparator = "character",
-				blockSeparator = "character",
-				decimalSeparator = "character",
-				#optional:
-				id = "character"),
-		prototype = list(tokenSeparator = NA_character_,
-				blockSeparator = NA_character_,
-				decimalSeparator = NA_character_),
-		validity = function(object) {
-			#print("Entering validation: SweTextBlock")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
-
+if (!isGeneric("encodeTemporalOps"))
+	setGeneric(name = "encodeTemporalOps",
+			def = function(obj, verbose = FALSE) {
+				standardGeneric("encodeTemporalOps")
+			})
+setMethod(f = "encodeTemporalOps",
+		signature = c(obj = "OgcBinaryTemporalOpType", verbose = "ANY"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding temporalOps: ", toString(obj))
+			
+			# TODO implement method
+		})

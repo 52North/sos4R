@@ -33,66 +33,76 @@
 parseOwsOperation <- function(op) {
 	.name <- xmlGetAttr(op, "name")
 	
-	.dcpsXML <- .filterXmlChildren(op, "DCP")
-	.dcps <- c()
+	.dcpsXML <- .filterXmlChildren(op, owsDCPName)
+	.dcps <- list()
 	for(.dcp in .dcpsXML) {
-		.http <- .dcp[["HTTP"]]
+		.http <- .dcp[[owsHTTPName]]
 		.endpoints <- c(
-				.filterXmlChildren(.http, "Get"),
-				.filterXmlChildren(.http, "Post"))
+				.filterXmlChildren(.http, owsGetName),
+				.filterXmlChildren(.http, owsPostName))
 		
 		for(.ep in .endpoints) {
-			.newEndpoint <- c(xmlGetAttr(.ep, "href"))
+			.newEndpoint <- list(xmlGetAttr(.ep, "href"))
 			names(.newEndpoint) <- xmlName(.ep)
 			.dcps <- c(.dcps, .newEndpoint)
 		}
 	}
 	
-	.parametersXML <- .filterXmlChildren(op, "Parameter")
+	.parametersXML <- .filterXmlChildren(op, owsParameterName)
+	.parameters = list()
+	.names = list()
+	
 	if(length(.parametersXML) > 0) {
-		.parameters = list()
-		.names = list()
-		
-		
 		for(.p in .parametersXML) {
-			# put all alowed values in list
+			.allowedValues <- NULL
+			.ranges <- NULL
+			.allowedValuesAndRanges <- NULL
+			
 			# check for ows:AnyValue	
-			if(length(.p["AnyValue"]) > 0)
-				.allowedValues = c("AnyValue")
+			if(length(.p[owsAnyValueName]) > 0)
+				.allowedValuesAndRanges = list(owsAnyValueName)
 			else {
-				# list of allowed values				
-				.allowedValues <- sapply(
-						getNodeSet(
-								.p,
-								"ows:AllowedValues/ows:Value",
-								.owsNamespace
-						),
+				# list of allowed values
+				.xpathAllowedValues <- paste("./", .owsNamespacePrefix, ":",
+						owsAllowedValuesName, "/", .owsNamespacePrefix, ":",
+						owsValueName, sep = "")
+				.allowedValues <- lapply(
+						getNodeSet(doc = .p, path = .xpathAllowedValues,
+								namespaces = .owsNamespace),
 						xmlValue)
 				# list of ranges
+				.xpathRanges <- paste("./", .owsNamespacePrefix, ":",
+						owsAllowedValuesName, "/", .owsNamespacePrefix, ":",
+						owsRangeName, sep = "")
 				.ranges <-  sapply(
 						getNodeSet(
 								.p,
-								"ows:AllowedValues/ows:Range",
+								.xpathRanges,
 								.owsNamespace
 						),
 						parseOwsRange)
 				.allowedValuesAndRanges <- c(.allowedValues, .ranges)
 			}
 			
+#			cat("[", .name, "] Adding to parameters list for",
+#					xmlGetAttr(.p, "name"), ":",
+#					toString(.allowedValuesAndRanges), "\n")
+			
 			.names <- c(.names, xmlGetAttr(.p, "name"))
 			.parameters[[length(.parameters) + 1]] <- .allowedValuesAndRanges
+			# this does not work as it recursively concatenates the lists: .parameters <- c(.parameters, .allowedValuesAndRanges)
 		}
 		
 		names(.parameters) <- .names
 	}
 	
-	if(any(sapply(names(op), "==", "constraints")))
+	if(any(sapply(names(op), "==", owsConstraintName)))
 		warning("constraint elements are NOT processed!")
-	.constraints = c(NA)
+	.constraints = list(NA)
 	
-	if(any(sapply(names(op), "==", "metadata")))
+	if(any(sapply(names(op), "==", owsMetadataName)))
 		warning("metadata elements are NOT processed!")
-	.metadata = c(NA)
+	.metadata = list(NA)
 	
 	.op <- OwsOperation(name = .name, DCPs = .dcps,
 			parameters = .parameters, constraints = .constraints,
@@ -115,7 +125,7 @@ parseOwsExceptionReport <- function(document) {
 	.children <- xmlChildren(.docRoot) 
 	.exceptionsXML <- list()
 	for (x in .children) {
-		if(xmlName(x) == "Exception")
+		if(xmlName(x) == owsExceptionName)
 			.exceptionsXML = c(.exceptionsXML, x)
 		# else print(xmlName(x))
 	}
@@ -130,14 +140,13 @@ parseOwsExceptionReport <- function(document) {
 # parsing a single xml node that is an ows:Exception
 #
 parseOwsException <- function(node) {
-#	print("parsing e!")
-	.attrs <- xmlAttrs(node)
-	.code <- .attrs[["exceptionCode"]]
+	#	print("parsing e!")
+	.code <- xmlGetAttr(node = node, name = "exceptionCode")
 	.locator <- xmlGetAttr(node = node, name = "locator",
 			default = NA_character_)
 	
-	if(!is.na(xmlChildren(node)["ExceptionText"]))
-		.text <- xmlValue(xmlChildren(node)[["ExceptionText"]])
+	if(!is.na(xmlChildren(node)[owsExceptionTextName]))
+		.text <- xmlValue(xmlChildren(node)[[owsExceptionTextName]])
 	else .text <- as.character(NA)
 	
 	.exception <- OwsException(exceptionCode = .code, 
@@ -154,38 +163,38 @@ parseOwsServiceIdentification <- function(node) {
 #	print("parsing ows service identification!")
 	
 	.children <- xmlChildren(node)
-	.serviceType <- sapply(.filterXmlChildren(node, "ServiceType"),
+	.serviceType <- sapply(.filterXmlChildren(node, owsServiceTypeName),
 			xmlValue)
 	.serviceTypeVersion <- sapply(.filterXmlChildren(node,
-					"ServiceTypeVersion"),
+					owsServiceTypeVersionName),
 			xmlValue)
-	.title <- sapply(.filterXmlChildren(node, "Title"),
+	.title <- sapply(.filterXmlChildren(node, owsTitleName),
 			xmlValue)
 	
 	# optional:
-	if(!is.na(xmlChildren(node)["Profile"]))
-		.profile <- lapply(.filterXmlChildren(node, "Profile"), xmlValue)
+	if(!is.na(xmlChildren(node)[owsProfileName]))
+		.profile <- lapply(.filterXmlChildren(node, owsProfileName), xmlValue)
 	else .profile <- c(NA)
 	
-	if(!is.na(xmlChildren(node)["Abstract"]))
-		.abstract <- lapply(.filterXmlChildren(node, "Abstract"), xmlValue)
+	if(!is.na(xmlChildren(node)[owsAbstractName]))
+		.abstract <- lapply(.filterXmlChildren(node, owsAbstractName), xmlValue)
 	else .abstract <- c(NA)
 	
-	if(!is.na(xmlChildren(node)["Keywords"])) {
-		.keywordLists <- .filterXmlChildren(node, "Keywords")
+	if(!is.na(xmlChildren(node)[owsKeywordsName])) {
+		.keywordLists <- .filterXmlChildren(node, owsKeywordsName)
 		.keywords <- c(lapply(.keywordLists, FUN = xmlToList), recursive = TRUE)
 		.keywords <- lapply(.keywords, gsub, pattern = "^[[:space:]]+|[[:space:]]+$",
 				replacement = "") # http://finzi.psych.upenn.edu/R/Rhelp02a/archive/40714.html
 	}
 	else .keywords <- c(NA)
 	
-	if(!is.na(xmlChildren(node)["Fees"]))
-		.fees <- sapply(.filterXmlChildren(node, "Fees"), xmlValue)
+	if(!is.na(xmlChildren(node)[owsFeesName]))
+		.fees <- sapply(.filterXmlChildren(node, owsFeesName), xmlValue)
 	else .fees <- as.character(NA)
 	
-	if(!is.na(xmlChildren(node)["AccessConstraints"]))
+	if(!is.na(xmlChildren(node)[owsAccessConstraintsName]))
 		.accessConstraints <- lapply(.filterXmlChildren(node,
-						"AccessConstraints"),
+						owsAccessConstraintsName),
 				xmlValue)
 	else .accessConstraints <- c(NA)
 	
@@ -200,16 +209,16 @@ parseOwsServiceIdentification <- function(node) {
 #
 parseOwsServiceProvider <- function(node) {
 	#print("parsing ows service provider!")
-	.name <- xmlValue(node[["ProviderName"]])
+	.name <- xmlValue(node[[owsProviderNameName]])
 	
 	# optional:
-	if(!is.null(xmlChildren(node)[["ProviderSite"]]))
-		.site <- xmlGetAttr(node = node[["ProviderSite"]],
+	if(!is.null(xmlChildren(node)[[owsProviderSiteName]]))
+		.site <- xmlGetAttr(node = node[[owsProviderSiteName]],
 				name = "href", default = as.character(NA))
 	else .site <- as.character(NA)
 	
-	if(!is.null(xmlChildren(node)[["ServiceContact"]])) {
-		.contact <- node[["ServiceContact"]]
+	if(!is.null(xmlChildren(node)[[owsServiceContactName]])) {
+		.contact <- node[[owsServiceContactName]]
 		.sp <- OwsServiceProvider(providerName = .name, providerSite = .site,
 				serviceContact = .contact)
 	}
@@ -224,7 +233,7 @@ parseOwsServiceProvider <- function(node) {
 parseOwsRange <- function(node) {
 	.children <- xmlChildren(node)
 	
-	.minimumXml <- .children[["MinimumValue"]]
+	.minimumXml <- .children[[owsMinimumValueName]]
 	if(is.null(.minimumXml)) {
 		.minimum <- as.character(NA)
 	} else {
@@ -232,7 +241,7 @@ parseOwsRange <- function(node) {
 	}
 	
 	
-	.maximumXml <- .children[["MaximumValue"]]
+	.maximumXml <- .children[[owsMaximumValueName]]
 	if(is.null(.maximumXml)) {
 		.maximum <- as.character(NA)
 	} else {
@@ -244,7 +253,7 @@ parseOwsRange <- function(node) {
 		.closure <- as.character(NA)
 	}
 	
-	.spacingXml <- .children[["Spacing"]]
+	.spacingXml <- .children[[owsSpacingName]]
 	if(is.null(.spacingXml)) {
 		.spacing <- as.character(NA)
 	} else {
