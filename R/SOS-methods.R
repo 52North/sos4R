@@ -116,16 +116,15 @@ SosEventTime <- function(temporalOps) {
 	new("SosEventTime", temporalOps = temporalOps)
 }
 
+SosEventTimeLatest <- function() {
+	new("SosEventTimeLatest")
+}
+
 #
 # main request method
 #
-if (!isGeneric("sosRequest"))
-	setGeneric(name = "sosRequest",
-			def = function(sos, request, verbose = FALSE, inspect = FALSE) {
-				standardGeneric("sosRequest")
-			})
 setMethod(f = "sosRequest",
-		signature = c(sos = "SOS", request = "ANY", verbose = "logical",
+		signature = signature(sos = "SOS", request = "ANY", verbose = "logical",
 				inspect = "logical"),
 		def = function(sos, request, verbose = FALSE, inspect = FALSE) {
 			# check the request for consistency with service description
@@ -216,7 +215,7 @@ if (!isGeneric("sosCaps"))
 	setGeneric(name = "sosCaps", def = function(sos) {
 				standardGeneric("sosCaps")
 			})
-setMethod(f = "sosCaps", signature = c(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosCaps", signature = signature(sos = "SOS"), def = function(sos) {
 			return(sos@capabilities)
 		}
 )
@@ -225,7 +224,7 @@ if (!isGeneric("sosUrl"))
 	setGeneric(name = "sosUrl", def = function(sos) {
 				standardGeneric("sosUrl")
 			})
-setMethod(f = "sosUrl", signature = c(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosUrl", signature = signature(sos = "SOS"), def = function(sos) {
 			return(sos@url)
 		})
 
@@ -233,7 +232,7 @@ if (!isGeneric("sosVersion"))
 	setGeneric(name = "sosVersion", def = function(sos) {
 				standardGeneric("sosVersion")
 			})
-setMethod(f = "sosVersion", signature = c(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosVersion", signature = signature(sos = "SOS"), def = function(sos) {
 			return(sos@version)
 		})
 
@@ -241,7 +240,7 @@ if (!isGeneric("sosMethod"))
 	setGeneric(name = "sosMethod", def = function(sos) {
 				standardGeneric("sosMethod")
 			})
-setMethod(f = "sosMethod", signature = c(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosMethod", signature = signature(sos = "SOS"), def = function(sos) {
 			return(sos@method)
 		})
 
@@ -249,7 +248,7 @@ if (!isGeneric("sosProcedures"))
 	setGeneric(name = "sosProcedures", def = function(sos) {
 				standardGeneric("sosProcedures")
 			})
-setMethod(f = "sosProcedures", signature = c(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosProcedures", signature = signature(sos = "SOS"), def = function(sos) {
 			.caps <- sosCaps(sos)
 			.ds <- .caps@operations@operations[["GetObservation"]]
 			return(.ds@parameters$procedure)
@@ -259,7 +258,7 @@ if (!isGeneric("sosObservedProperties"))
 	setGeneric(name = "sosObservedProperties", def = function(sos) {
 				standardGeneric("sosObservedProperties")
 			})
-setMethod(f = "sosObservedProperties", signature = c(sos = "SOS"),
+setMethod(f = "sosObservedProperties", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.caps <- sosCaps(sos)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
@@ -270,7 +269,7 @@ if (!isGeneric("sosOfferings"))
 	setGeneric(name = "sosOfferings", def = function(sos) {
 				standardGeneric("sosOfferings")
 			})
-setMethod(f = "sosOfferings", signature = c(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosOfferings", signature = signature(sos = "SOS"), def = function(sos) {
 			.offerings <- sos@capabilities@contents@observationOfferings
 			return(.offerings)
 		})
@@ -278,7 +277,7 @@ if (!isGeneric("sosOffering"))
 	setGeneric(name = "sosOffering", def = function(sos, offeringId) {
 				standardGeneric("sosOffering")
 			})
-setMethod(f = "sosOffering", signature = c(sos = "SOS", 
+setMethod(f = "sosOffering", signature = signature(sos = "SOS", 
 				offeringId = "character"),
 		def = function(sos, offeringId) {
 			.offerings <- sos@capabilities@contents@observationOfferings
@@ -288,7 +287,7 @@ if (!isGeneric("sosOfferingIds"))
 	setGeneric(name = "sosOfferingIds", def = function(sos) {
 				standardGeneric("sosOfferingIds")
 			})
-setMethod(f = "sosOfferingIds", signature = c(sos = "SOS"),
+setMethod(f = "sosOfferingIds", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(names(sosOfferings(sos)))
 		})
@@ -297,7 +296,7 @@ if (!isGeneric("sosFOIs"))
 	setGeneric(name = "sosFOIs", def = function(sos) {
 				standardGeneric("sosFOIs")
 			})
-setMethod(f = "sosFOIs", signature = c(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosFOIs", signature = signature(sos = "SOS"), def = function(sos) {
 			.caps <- sosCaps(sos)
 			
 			# via GetFeatureOfInterest
@@ -315,7 +314,7 @@ if (!isGeneric("sosOperationInfo"))
 				standardGeneric("sosOperationInfo")
 			})
 setMethod(f = "sosOperationInfo",
-		signature = c(sos = "SOS", operationName = "character"),
+		signature = signature(sos = "SOS", operationName = "character"),
 		def = function(sos, operationName) {
 			.caps <- sosCaps(sos)
 			return(.caps@operations@operations[[operationName]])
@@ -325,7 +324,7 @@ if (!isGeneric("sosResponseFormats"))
 	setGeneric(name = "sosResponseFormats", def = function(sos) {
 				standardGeneric("sosResponseFormats")
 			})
-setMethod(f = "sosResponseFormats", signature = c(sos = "SOS"),
+setMethod(f = "sosResponseFormats", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.caps <- sosCaps(sos)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
@@ -336,7 +335,7 @@ if (!isGeneric("sosResponseMode"))
 	setGeneric(name = "sosResponseMode", def = function(sos) {
 				standardGeneric("sosResponseMode")
 			})
-setMethod(f = "sosResponseMode", signature = c(sos = "SOS"),
+setMethod(f = "sosResponseMode", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.caps <- sosCaps(sos)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
@@ -347,7 +346,7 @@ if (!isGeneric("sosSrsName"))
 	setGeneric(name = "sosSrsName", def = function(sos) {
 				standardGeneric("sosSrsName")
 			})
-setMethod(f = "sosSrsName", signature = c(sos = "SOS"),
+setMethod(f = "sosSrsName", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.caps <- sosCaps(sos)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
@@ -358,7 +357,7 @@ if (!isGeneric("sosResultModels"))
 	setGeneric(name = "sosResultModels", def = function(sos) {
 				standardGeneric("sosResultModels")
 			})
-setMethod(f = "sosResultModels", signature = c(sos = "SOS"),
+setMethod(f = "sosResultModels", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.caps <- sosCaps(sos)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
@@ -369,13 +368,13 @@ if (!isGeneric("sosTimePeriod"))
 	setGeneric(name = "sosTimePeriod", def = function(obj) {
 				standardGeneric("sosTimePeriod")
 			})
-setMethod(f = "sosTimePeriod", signature = c(obj = "SOS"),
+setMethod(f = "sosTimePeriod", signature = signature(obj = "SOS"),
 		def = function(obj) {
 			.caps <- sosCaps(obj)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
 			return(.getOb@parameters$eventTime)
 		})
-setMethod(f = "sosTimePeriod", signature = c(obj = "SosObservationOffering"),
+setMethod(f = "sosTimePeriod", signature = signature(obj = "SosObservationOffering"),
 		def = function(obj) {
 			return(obj@time)
 		})
@@ -384,7 +383,7 @@ if (!isGeneric("sosTimeFormat"))
 	setGeneric(name = "sosTimeFormat", def = function(sos) {
 				standardGeneric("sosTimeFormat")
 			})
-setMethod(f = "sosTimeFormat", signature = c(sos = "SOS"),
+setMethod(f = "sosTimeFormat", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(sos@timeFormat)
 		})
@@ -393,7 +392,7 @@ if (!isGeneric("sosParsers"))
 	setGeneric(name = "sosParsers", def = function(sos) {
 				standardGeneric("sosParsers")
 			})
-setMethod(f = "sosParsers", signature = c(sos = "SOS"),
+setMethod(f = "sosParsers", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(sos@parsers)
 		})
@@ -402,7 +401,7 @@ if (!isGeneric("sosFieldConverters"))
 	setGeneric(name = "sosFieldConverters", def = function(sos) {
 				standardGeneric("sosFieldConverters")
 			})
-setMethod(f = "sosFieldConverters", signature = c(sos = "SOS"),
+setMethod(f = "sosFieldConverters", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(sos@dataFieldConverters)
 		})
@@ -414,7 +413,7 @@ if (!isGeneric("sosSetFunctionsToDefault"))
 	setGeneric(name = "sosSetFunctionsToDefault", def = function(sos) {
 				standardGeneric("sosSetFunctionsToDefault")
 			})
-setMethod(f = "sosSetFunctionsToDefault", signature = c(sos = "SOS"),
+setMethod(f = "sosSetFunctionsToDefault", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.defaultMethods <- sosInitDefaults()
 			sos@parsers <- .defaultMethods[[1]]
@@ -425,53 +424,73 @@ setMethod(f = "sosSetFunctionsToDefault", signature = c(sos = "SOS"),
 ################################################################################
 # convenience functions
 if (!isGeneric("sosCreateTimeInstant"))
-	setGeneric(name = "sosCreateTimeInstant", def = function(sos, time) {
+	setGeneric(name = "sosCreateTimeInstant", def = function(sos, time,
+					frame = as.character(NA),
+					calendarEraName = as.character(NA),
+					indeterminatePosition = as.character(NA)) {
 				standardGeneric("sosCreateTimeInstant")
-			})
+			}
+	)
 setMethod(f = "sosCreateTimeInstant",
-		signature = c(sos = "SOS", time = "POSIXt"),
-		def = function(sos, time) {
+		signature = signature(sos = "SOS", time = "POSIXt"),
+		def = function(sos, time, frame, calendarEraName,
+				indeterminatePosition) {
 			.time <- format(time, sos@timeFormat)
-			.timePos <- GmlTimePosition(time = strptime(.time, sos@timeFormat))
+			.timePos <- GmlTimePosition(time = strptime(.time, sos@timeFormat),
+					frame = frame, calendarEraName = calendarEraName,
+					indeterminatePosition = indeterminatePosition)
 			.ti <- GmlTimeInstant(timePosition = .timePos)
 			return(.ti)
-		})
+		}
+)
 
 if (!isGeneric("sosCreateTimePeriod"))
 	setGeneric(name = "sosCreateTimePeriod",
-			def = function(sos, begin, end) {
+			def = function(sos, begin, end, frame = as.character(NA),
+					calendarEraName = as.character(NA),
+					indeterminatePosition = as.character(NA),
+					duration = as.character(NA),
+					timeInterval = NULL) {
 				standardGeneric("sosCreateTimePeriod")
-			})
+			}
+	)
 setMethod(f = "sosCreateTimePeriod",
-		signature = c(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
-		def = function(sos, begin, end) {
+		signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
+		def = function(sos, begin, end, frame, calendarEraName,
+				indeterminatePosition, duration, timeInterval) {
 			.beginPos <- GmlTimePosition(
 					time = strptime(
 							format(begin, sos@timeFormat),
-							sos@timeFormat)
+							sos@timeFormat),
+					frame = frame, calendarEraName = calendarEraName,
+					indeterminatePosition = indeterminatePosition
 					)
 			.endPos <- GmlTimePosition(
 					time = strptime(
 							format(end, sos@timeFormat),
-							sos@timeFormat)
+							sos@timeFormat),
+					frame = frame, calendarEraName = calendarEraName,
+					indeterminatePosition = indeterminatePosition
 			)
 			.tp <- GmlTimePeriod(beginPosition = .beginPos,
-					endPosition = .endPos)
+					endPosition = .endPos, duration = duration,
+					timeInterval = timeInterval)
 			return(.tp)
-		})
+		}
+)
 
 #
 # sosCreateEventTime(SosSupportedTemporalOperators()[["TM_During"]], p1)
 #
 if (!isGeneric("sosCreateEventTime"))
 	setGeneric(name = "sosCreateEventTime",
-			def = function(operator, time) {
+			def = function(time, operator = sosDefaultTemporalOperator) {
 				standardGeneric("sosCreateEventTime")
 			})
 setMethod(f = "sosCreateEventTime",
-		signature = c(operator = "character",
-				time = "GmlTimeGeometricPrimitive"),
-		def = function(operator, time) {
+		signature = signature(time = "GmlTimeGeometricPrimitive",
+				operator = "ANY"),
+		def = function(time, operator) {
 			
 			if(operator == ogcTempOpTMAfterName) {
 				.tOps <- TM_After(time = time)
@@ -491,9 +510,10 @@ setMethod(f = "sosCreateEventTime",
 								SosSupportedTemporalOperators()))
 			}
 			
-			.et <- SosEventTime(.tOps)
+			.et <- list(SosEventTime(.tOps))
 			return(.et)
-		})
+		}
+)
 
 
 ################################################################################
@@ -502,44 +522,79 @@ setMethod(f = "sosCreateEventTime",
 #
 #
 #
-encodeEventTimeXML <- function(obj, verbose = FALSE) {
-	if(verbose) {
-		cat("ENCODE XML ", class(obj), "\n")
-	}
-	
-	.temporalOpsClass <- class(obj@temporalOps)
-	
-	if(!is.null(SosSupportedTemporalOperators()[[.temporalOpsClass]])) {
-		.temporalOpsXML <- encodeTemporalOps(obj@temporalOps)
-	}
-	else {
-		stop(paste("temporalOps type not supported: ",
-						.temporalOpsClass))
-	}
-}
+setMethod("encodeXML", "SosEventTime", 
+		function(obj, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE XML", class(obj), "\n")
+			}
+			
+			.temporalOpsClass <- class(obj@temporalOps)
+			if(!is.null(SosSupportedTemporalOperators()[[.temporalOpsClass]])) {
+				.eventTime <- xmlNode(name = sosEventTimeName,
+						namespace = sosNamespacePrefix)
+				.temporalOpsXML <- encodeXML(obj@temporalOps, verbose)
+				.eventTime$children[[1]] <- .temporalOpsXML
+				
+				return(.eventTime)
+			}
+			else {
+				stop(paste("temporalOps type not supported:",
+								.temporalOpsClass))
+			}
+		}
+)
+setMethod("encodeXML", "SosEventTimeLatest", 
+		function(obj, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE XML", class(obj), "\n")
+			}
+			
+			.eventTime <- xmlNode(name = sosEventTimeName,
+					namespace = sosNamespacePrefix)
+			.tmEquals <- xmlNode(name = ogcTempOpTMEqualsName,
+					namespace = ogcNamespacePrefix)
+			.propertyName <- xmlNode(name = ogcPropertyNameName,
+					namespace = ogcNamespacePrefix)
+			xmlValue(.propertyName) <- sosDefaultTempOpPropertyName
+			.latestTime <- xmlNode(name = gmlTimeInstantName,
+					namespace = gmlNamespacePrefix)
+			.tpos <- xmlNode(name = gmlTimePositionName,
+					namespace = gmlNamespacePrefix)
+			xmlValue(.tpos) <- "latest"
+
+			.latestTime$children[[1]] <- .tpos
+			.tmEquals$children[[1]] <- .propertyName
+			.tmEquals$children[[2]] <- .latestTime
+			.eventTime$children[[1]] <- .tmEquals
+			
+			return(.eventTime)
+		}
+)
+
 
 #
+# 
 #
-#
-encodeEventTimeKVP <- function(obj, verbose = FALSE) {
-	# TODO implement kvp encoding for event time
-	stop("METHOD NOT IMPLEMENTED!")
-}
+setMethod("encodeKVP", "SosEventTime", 
+		function(obj, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE KVP ", class(obj), "\n")
+			}
+			
+			.temporalOpsKVP <- encodeKVP(obj@temporalOps)
+			return(.temporalOpsKVP)
+		}
+)
+
 
 ################################################################################
 # functions for SOS operations
 
-if (!isGeneric("getCapabilities"))
-	setGeneric(name = "getCapabilities",
-			signature = signature("sos", "verbose", "inspect"),
-			def = function(sos, verbose = FALSE, inspect = FALSE) {
-				standardGeneric("getCapabilities")	
-			})
 #
 #
 #
 setMethod(f = "getCapabilities",
-		signature = c(sos = "SOS", verbose = "ANY", inspect = "ANY"),
+		signature = signature(sos = "SOS"),
 		def = function(sos, verbose, inspect) {
 			if (verbose) {
 				cat("Requesting capabilities... ")
@@ -548,7 +603,7 @@ setMethod(f = "getCapabilities",
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
 			if(verbose) {
-				cat("REQUEST:\n")
+				cat("** REQUEST:\n")
 				print(.gc)
 			}
 			
@@ -567,7 +622,7 @@ setMethod(f = "getCapabilities",
 				.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
 				.caps <- .parsingFunction(obj = .response, sos = sos)
 				if (verbose) {
-					cat("done!\n")
+					cat("** DONE WITH PARSING!\n")
 				} 
 				return(.caps)
 			}
@@ -575,21 +630,11 @@ setMethod(f = "getCapabilities",
 )
 
 
-if (!isGeneric("describeSensor"))
-	setGeneric(name = "describeSensor",
-			signature = signature("sos", "procedure", "outputFormat", "verbose",
-							"inspect"),
-			def = function(sos, procedure,
-					outputFormat = sosDefaultDescribeSensorOutputFormat,
-					verbose = FALSE, inspect = FALSE) {
-				standardGeneric("describeSensor")	
-			})
 #
 #
 #
 setMethod(f = "describeSensor",
-		signature = c(sos = "SOS", procedure  ="character",
-				outputFormat = "ANY", verbose = "ANY", inspect = "ANY"), 
+		signature = signature(sos = "SOS", procedure  ="character"), 
 		def = function(sos, procedure, outputFormat, verbose, inspect) {
 			if(verbose) {
 				cat("DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
@@ -622,26 +667,11 @@ setMethod(f = "describeSensor",
 )
 
 
-
-if (!isGeneric("getObservationById"))
-	setGeneric(name = "getObservationById",
-			signature = signature("sos", "observationId", "responseFormat",
-					"srsName", "resultModel", "responseMode", "verbose", 
-					"inspect"),
-			def = function(sos, observationId,
-					responseFormat = SosDefaultGetObsResponseFormat(),
-					srsName = as.character(NA), resultModel = as.character(NA),
-					responseMode = as.character(NA), verbose = FALSE,
-					inspect = FALSE) {
-				standardGeneric("getObservationById")
-			})
 #
 # 
 #
 setMethod(f = "getObservationById",
-		signature = c(sos = "SOS", observationId = "character",
-				responseFormat = "ANY", srsName = "ANY", resultModel = "ANY",
-				responseMode = "ANY", verbose = "ANY", inspect = "ANY"), 
+		signature = signature(sos = "SOS", observationId = "character"), 
 		def = function(sos, observationId, responseFormat, srsName,
 				resultModel, responseMode, verbose, inspect) {
 			.go <- GetObservationById(service = sosService,
@@ -649,7 +679,8 @@ setMethod(f = "getObservationById",
 					responseFormat =  responseFormat, srsName = srsName,
 					resultModel = resultModel, responseMode = responseMode)
 			if(verbose) {
-				cat("REQUEST:\n"); print(.go)
+				cat("REQUEST:\n");
+				print(.go)
 			}
 			
 			.responseString = sosRequest(sos = sos, request = .go,
@@ -665,15 +696,18 @@ setMethod(f = "getObservationById",
 			}
 			else {
 				.parsingFunction <- sosParsers(sos)[[sosGetObservationByIdName]]
-				.obs <- .parsingFunction(obj = .response, parsers = sosParsers(sos),
+				.obs <- .parsingFunction(obj = .response, sos = sos,
 						verbose = verbose)
 				
+				# remove list if only one element
+				if(is.list(.obs) && length(.obs) == 1)
+					.obs <- .obs[[1]]
+				
 				if(verbose) {
-					cat("* getObservationById - parsed response:\n")
+					cat("** PARSED RESPONSE:\n")
 					print(.obs)
 				}
 				
-				# TODO parse and return data.frame? sptX class?
 				return(.obs)
 			}
 			
@@ -682,90 +716,66 @@ setMethod(f = "getObservationById",
 )
 
 
-if (!isGeneric("getObservation"))
-	setGeneric(name = "getObservation",
-			signature = signature("sos", "offering", "offeringId",
-					"observedProperty", "responseFormat", "srsName",
-					"eventTime", "procedure", "featureOfInterest", "result",
-					"resultModel", "responseMode", "BBOX", "verbose",
-					"inspect"),
-			def = function(sos, offering = NA, offeringId = as.character(NA),
-					observedProperty,
-					# optional:
-					responseFormat = .sosDefaultGetObsResponseFormat,
-					srsName = as.character(NA), eventTime = as.character(NA), 
-					procedure = c(NA), featureOfInterest = c(NA), 
-					result = as.character(NA), resultModel = as.character(NA),
-					responseMode = as.character(NA), BBOX = as.character(NA),
-					verbose = FALSE, inspect = FALSE) {
-				standardGeneric("getObservation")
-			})
 #
 #
 #
 setMethod(f = "getObservation",
-		signature = c(sos = "SOS",
-				observedProperty = "character",
-				# one of the following two is needed:
-				offering = "SosObservationOffering",
-				offeringId = "character",
-				# optional:
-				responseFormat = "character",
-				srsName = "ANY", # "character",
-				eventTime = "ANY", # "character", 
-				procedure = "ANY", # "vector",
-				featureOfInterest = "ANY", # "vector", 
-				result = "ANY", # "character",
-				resultModel = "ANY", # "character",
-				responseMode = "ANY", # "character",
-				BBOX = "ANY", # "character",
-				verbose = "ANY",  # "logical"
-				inspect = "ANY"),
-		function(sos, offering, offeringId, observedProperty, responseFormat,
-				srsName, eventTime,	procedure, featureOfInterest, result,
-				resultModel, responseMode, BBOX, verbose, inspect) {
+		signature = signature(sos = "SOS",
+				offering = "ANY", # SosObservationOffering or character
+				observedProperty = "list"),
+		def = function(sos, offering, observedProperty, responseFormat, srsName,
+				eventTime,	procedure, featureOfInterest, result, resultModel,
+				responseMode, BBOX, latest, verbose, inspect) {
 			
-			if(is.na(offering) && is.na(offeringId))
-				stop("Either offering or offeringId must be given!")
-			if(!is.na(offering))
-				.offeringId <- offering@id
-			else .offeringId <- offeringId
-					
+			if(is.character(offering))
+				.offeringId <- offering
+			else .offeringId <- offering@id
+			
+			if(latest) .eventTime <- list(.createLatestEventTime(verbose))
+			else .eventTime <- eventTime
+			
+			if(latest && !is.na(eventTime))
+				warning("'Latest' is set to TRUE > given eventTime is ignored!")
+			
 			.go <- GetObservation(service = sosService, version = sos@version, 
 					offering = .offeringId, observedProperty =  observedProperty,
 					responseFormat =  responseFormat, srsName = srsName,
-					eventTime = eventTime, procedure = procedure,
+					eventTime = .eventTime, procedure = procedure,
 					featureOfInterest = featureOfInterest, result = result,
 					resultModel = resultModel, responseMode = responseMode,
 					BBOX = BBOX)
-			if(verbose) {
-				cat("REQUEST:\n"); print(.go)
+			if(verbose  || inspect) {
+				cat("REQUEST:\n");
+				print(.go)
 			}
 			
 			.responseString = sosRequest(sos = sos, request = .go,
 					verbose = verbose, inspect = inspect)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
+			if(verbose || inspect) {
+				cat("** RESPONSE DOC:\n")
+				print(.response)
+			}
 			
 			if(.isExceptionReport(.response)) {
 				return(.handleExceptionReport(sos, .response))
 			}
 			else {
-				.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
-				.obs <- .parsingFunction(obj = .response, parsers = sosParsers(sos),
+				.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
+				.obs <- .parsingFunction(obj = .response, sos = sos,
 						verbose = verbose)
 				
-				if(verbose || inspect) {
-					cat("** RESPONSE DOC:\n")
+				# remove list if only one element
+				if(is.list(.obs) && length(.obs) == 1)
+					.obs <- .obs[[1]]
+				
+				if(verbose) {
+					cat("** PARSED RESPONSE:\n")
 					print(.obs)
 				}
 				
-				# TODO add a check whether there is handling for the given response method implemented
-				
-				# TODO parse and return data.frame? sptX class?
 				return(.obs)
 			}
-			
-			return(.response)
 		}
 )
 
@@ -780,6 +790,16 @@ setMethod(f = "getObservation",
 	if(class(.er) == "OwsExceptionReport")
 		warning(toString(.er))
 	return(.er)
+}
+
+#
+#
+#
+.createLatestEventTime <- function(verbose = FALSE) {
+	if(verbose) cat("Creating non-standard event time 'latest'\n")
+	
+	.et <- SosEventTimeLatest()
+	return(.et)
 }
 
 ################################################################################

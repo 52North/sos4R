@@ -47,11 +47,11 @@ setClass("GetObservation",
 				service = as.character(NA),
 				version = as.character(NA),
 				offering = as.character(NA),
-				observedProperty = c(NA),
+				observedProperty = list(NA),
 				responseFormat = as.character(NA)), # prototype should not pass validity
 		contains = "OwsServiceOperation",
 		validity = function(object) {
-			print("Entering validation: GetObservation")
+			#print("Entering validation: GetObservation")
 			# TODO implement validity function
 			
 			# service, version, offering, observedProperty, and responseFormat are mandatory
@@ -101,7 +101,7 @@ setClass("GetObservationById",
 				responseFormat = as.character(NA)), # prototype should not pass validity
 		contains = "OwsServiceOperation",
 		validity = function(object) {
-			print("Entering validation: GetObservationById")
+			#print("Entering validation: GetObservationById")
 			# TODO implement validity function
 			
 			# service, version, observationId, and responseFormat are mandatory

@@ -40,10 +40,10 @@ setClass("SaSamplingPoint",
 		prototype = list(sampledFeatures = list(NA), position = NULL),
 		contains = "GmlFeature",
 		validity = function(object) {
-			print("Entering validation: SaSamplingPoint")
+			#print("Entering validation: SaSamplingPoint")
 			# TODO implement validity function
 			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# realted observation must be OmObservationProperty
+			# related observation must be OmObservationProperty
 			return(TRUE)
 		}
 )
@@ -62,7 +62,7 @@ setClass("SaSamplingSurface",
 		prototype = list(sampledFeatures = list(NA), shape = NA),
 		contains = "GmlFeature",
 		validity = function(object) {
-			print("Entering validation: SaSamplingSurface")
+			#print("Entering validation: SaSamplingSurface")
 			# TODO implement validity function
 			# sampledFeatures list must contain > 0 gml:_Feature instances
 			# related observation must be of type OmObservationProperty

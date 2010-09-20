@@ -89,7 +89,7 @@ sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, verbose = FALSE) {
 setMethod("encodeRequestXML", "DescribeSensor", 
 		function(obj, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML ", class(obj), "\n")
+				cat("ENCODE XML", class(obj), "\n")
 			}
 			
 			if(obj@version == "1.0.0") {
@@ -138,7 +138,7 @@ setMethod("encodeRequestSOAP", "DescribeSensor",
 ################################################################################
 #
 setMethod(f = "checkRequest",
-		signature = c(service = "ANY", operation = "DescribeSensor",
+		signature = signature(service = "ANY", operation = "DescribeSensor",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			if(verbose) {

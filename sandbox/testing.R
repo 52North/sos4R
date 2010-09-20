@@ -381,8 +381,6 @@ tempObs <- parseObservation(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]]
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-
-
 ################################################################################
 # GetObservationById
 
@@ -402,13 +400,17 @@ getobsbyid
 encodeRequestXML(getobsbyid) # is valid!
 
 weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-		method = "POST", verboseOutput = FALSE)
+		method = "POST", verboseOutput = TRUE)
 ids = paste("o_33765", c(80:99), sep = "")
 obs <- getObservationById(sos = weathersos, observationId = ids[[1]],
-		responseFormat = sosDefaultGetObsResponseFormat,
-		srsName = as.character(NA), resultModel = as.character(NA),
-		responseMode = as.character(NA), verbose = TRUE)
-# works!
+		resultModel = SosSupportedResultModels()[[2]])
+str(obs@result)
+# om:Observation works!
+
+meas <- getObservationById(sos = weathersos, observationId = ids[[1]],
+		resultModel = SosSupportedResultModels()[[1]])
+str(meas@result)
+# om:Measurement works!
 
 obs <- getObservationById(sos = weathersos, observationId = ids[[1]], verbose = TRUE)
 obs <- getObservationById(sos = weathersos, observationId = ids[[1]], resultModel = SosSupportedResultModels()[[2]], verbose = TRUE)
@@ -418,53 +420,97 @@ obs <- getObservationById(sos = weathersos, observationId = ids[[1]], resultMode
 # temporal operations
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST")
 
-format(as.POSIXct("2010-07-01 12:00"), weathersos@timeFormat)
-
-t1 <- sosCreateTimeInstant(sos = weathersos, time = as.POSIXct("2010-07-01 12:00"))
+#format(as.POSIXct("2010-07-01 12:00"), weathersos@timeFormat)
+t1 <- sosCreateTimeInstant(sos = weathersos, time = as.POSIXct("2010-07-01 12:00"), frame = "frameLala", calendarEraName = "calName", indeterminatePosition = "YES")
 p1 <- sosCreateTimePeriod(sos = weathersos, begin = as.POSIXct("2010-03-01 12:15"),
-		end = as.POSIXct("2010-03-02 12:15"))
+		end = as.POSIXct("2010-03-02 12:15"), timeInterval = GmlTimeInterval(interval = "1d", unit = "day",
+				radix = as.integer(17), factor = as.integer(42)))
 # works!
 
 eventTime1 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_During"]], p1)
-encodeEventTimeXML(eventTime1)
-encodeEventTimeKVP(eventTime1)
-# TODO hier geht's weiter...
+eventTime2 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_Equals"]], t1)
+eventTime3 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_After"]], t1)
+eventTime4 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_Before"]], t1)
+encodeXML(eventTime3, v = T)
+encodeXML(eventTime4)
+encodeXML(eventTime2)
+encodeXML(eventTime1, v = T)
+encodeKVP(eventTime1)
+encodeKVP(eventTime2)
+# works!
 
 ################################################################################
 # GetObservations
 
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST")
 
-# request:
-go.offering = sosOfferings(weathersos)[[3]]@id # ATHMOSPHERIC
-go.observedProperty = sosObservedProperties(weathersos)[[3]] # temp
+go.offering = sosOfferings(weathersos)[[4]] # ATHMOSPHERIC_TEMPERATURE
+go.observedProperty = sosObservedProperties(weathersos)[[4]] # temp
 #go.responseFormat - leave to default
 go.responseMode = sosResponseMode(weathersos)[[2]] # inline
-go.eventTime = "2010-07-01T12:00/2010-07-10T12:00" 
 go.resultModel = sosResultModels(weathersos)[[3]] # om:Measurement
 go.srsName = "urn:ogc:def:crs:EPSG:6.8:4326" # is "AnyValue" in capabilities... contacted Carsten about that
 
-# no event time -> latest
-getObservation(sos = weathersos, offering = go.offering,
-		observedProperty =  go.observedProperty)
+# LATEST
+obs <- getObservation(sos = weathersos,
+		observedProperty = list(go.observedProperty),
+		procedure = list(sosProcedures(weathersos)[[1]]),
+		offering = go.offering@id, latest = TRUE, inspect = TRUE)
+obs@result
+# works!
+
+# TIME INTERVAL
+go.eventTime1 = sosCreateEventTime(
+		operator = SosSupportedTemporalOperators()[["TM_After"]],
+		sosCreateTimeInstant(sos = weathersos,
+				time = as.POSIXct("2010-09-20 18:00")))
+# TM_After does not seem to work, probably error in sos?!
+
+go.eventTime1a = sosCreateEventTime(
+		operator = SosSupportedTemporalOperators()[["TM_Equals"]],
+		sosCreateTimeInstant(sos = weathersos,
+				time = as.POSIXct("2010-09-20 18:00")))
+go.eventTime1b = sosCreateEventTime(
+		operator = SosSupportedTemporalOperators()[["TM_Equals"]],
+		sosCreateTimeInstant(sos = weathersos,
+				time = as.POSIXct("2010-09-20 18:15")))
+obs2 <- getObservation(sos = weathersos,
+		observedProperty = list(go.observedProperty),
+		procedure = list(sosProcedures(weathersos)[[1]]),
+		eventTime = list(go.eventTime1a, go.eventTime1b),
+		offering = go.offering@id, inspect = TRUE)
+obs2[[1]]@result
+# weird, as the sos returns two equal observations here...
+
+go.eventTime3 = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+				begin = as.POSIXct("2010-09-16 18:00"),
+				end = as.POSIXct("2010-09-20 18:00")))
+obs3 <- getObservation(sos = weathersos,
+		observedProperty = list(go.observedProperty),
+		procedure = list(sosProcedures(weathersos)[[1]]),
+		eventTime = go.eventTime3,
+		offering = go.offering@id)
+#obs3@result
+# heureka!
+summary(obs3@result) # finally!
+plot(x = obs3@result[["Time"]],
+		y = obs3@result[["urn:ogc:def:property:OGC::Temperature"]],
+		type = "l",
+		main = "Temperature in Münster",
+		xlab = "Time",
+		ylab = "Temperature (°C)")
+
 
 # TODO bbox
 
-# TODO time interval
 
+# TODO 
+#getData(sos, begin = , end = , observedProperty = )
+# return all possible procedures, in just one data.frame?
 
 ################################################################################
 # SOAP
-
 # TODO ********************************************************* continue here!!
-
-
-################################################################################
-# PegelOnlineSOS
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
-# works so far... :-)
-
-# AirQualitySOS
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")

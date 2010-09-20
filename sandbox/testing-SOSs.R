@@ -22,78 +22,31 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18                                                          #
+# Created: 2010-06-20                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
-#
-#
-#
-setClass("OmObservation",
-		representation(
-				samplingTime = "GmlTimeObject",	
-				procedure = "ANY",
-				observedProperty = "SwePhenomenonProperty",
-				featureOfInterest = "GmlFeatureProperty",
-				result = "ANY",
-				# optional:
-				metadata = "ANY",
-				resultTime = "ANY",
-				resultQuality = "ANY",
-				parameter = "ANY"),
-		prototype = list(samplingTime = NULL, procedure = as.character(NA),
-				observedProperty = NULL, featureOfInterest = NULL,
-				result = NULL),
-		validity = function(object) {
-			#print("Entering validation: OmObservation")
-			# TODO implement validity function
-			# result time should be GmlTimeObject
-			return(TRUE)
-		}
-)
+################################################################################
+source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 
-#
-#
-#
-setClass("OmObservationProperty",
-		representation(href = "character",	
-				obs = "OmObservation"),
-		#prototype = list(),
-		validity = function(object) {
-			#print("Entering validation: OmObservationProperty")
-			# TODO implement validity function
-			# one of parameters has to be set
-			return(TRUE)
-		}
-)
 
-#
-#
-#
-setClass("OmMeasure",
-		representation(value = "numeric",
-				uom = "character"),
-		prototype = list(value = as.numeric(NA), uom = as.character(NA)),
-		validity = function(object) {
-			#print("Entering validation: OmMeasure")
-			# TODO implement validity function
-			# both parameters are required!
-			return(TRUE)
-		}
-)
+################################################################################
+# WeatherSOS
+weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
-#
-#
-#
-setClass("OmMeasurement",
-		representation(result = "OmMeasure"),
-		contains = "OmObservation",
-		validity = function(object) {
-			#print("Entering validation: OmMeasurement")
-			print(object)
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
 
+################################################################################
+# PegelOnlineSOS
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+# works so far... :-)
+
+
+################################################################################
+# AirQualitySOS
+airsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/AirQualityEurope/sos")
+sosProcedures(airsos)
+sosOfferings(airsos)
+
+# the time is not given in observation offerings...
+sosOfferings(airsos)[[1]]@time

@@ -265,6 +265,17 @@ print.SosContents <- function(x, ...) {
 	invisible(x)
 }
 
+toString.SosEventTime <- function(x) {
+	.s <- paste("Object of class SosEventTime containing",
+			toString(x@temporalOps))
+	return(.s)
+}
+
+print.SosEventTime <- function(x) {
+	cat(toString.SosEventTime(x), "\n")
+	invisible(x)
+}
+
 toString.SensorML <- function(x) {
 	.s <- ("Object of class SensorML (wraps unparsed XML, see @xml for details).\n")
 	return(.s)
@@ -364,11 +375,11 @@ toString.OmMeasurement <- function(x) {
 	.s <- paste(
 			"Object of class OmMeasurement",
 			", procedure ",
-			x@procedure,
+			toString(x@procedure),
 			", observedProperty: ",
-			x@observedProperty,
+			toString(x@observedProperty),
 			", foi: ",
-			x@featureOfInterest,
+			toString(x@featureOfInterest),
 			"; samplingTime: ",
 			toString(x@samplingTime),
 			";\n\tresult: ",
@@ -385,7 +396,7 @@ print.OmMeasurement <- function(x, ...) {
 toString.OmObservation <- function(x) {
 	.s <- paste(
 			"Object of class OmObservation",
-			", procedure ",
+			"; procedure: ",
 			toString(x@procedure),
 			", observedProperty: ",
 			toString(x@observedProperty),
@@ -435,8 +446,8 @@ print.SwePhenomenonProperty <- function(x) {
 	invisible(x)
 }
 
-print.SwePhenomenon <- function(x) {
-	cat("Object of class SwePhenomenon",
+toString.SwePhenomenon <- function(x) {
+	.s <- paste("Object of class SwePhenomenon",
 		"; id: ",
 		x@id,
 		"; name: ",
@@ -444,6 +455,11 @@ print.SwePhenomenon <- function(x) {
 		"; description: ",
 		x@description,
 		sep = "")
+	invisible(x)
+}
+
+print.SwePhenomenon <- function(x) {
+	cat(toString(x), "\n")
 	invisible(x)
 }
 
@@ -560,7 +576,7 @@ toString.GmlTimePeriod <- function(x) {
 			"; duraction: ",
 			x@duration,
 			", timeInterval: ",
-			x@timeInterval,
+			toString(x@timeInterval),
 			";\n\tbegin: ",
 			toString(x@begin),
 			" -- end: ",
@@ -583,13 +599,13 @@ toString.GmlFeatureProperty <- function(x) {
 			", href: ",
 			x@href,
 			", feature: ",
-			x@feature,
-			"\n", sep = "")
+			toString(x@feature),
+			sep = "")
 	return(.s)
 }
 
 print.GmlFeatureProperty <- function(x) {
-	cat(toString.GmlFeatureProperty(x))
+	cat(toString.GmlFeatureProperty(x), "\n")
 	invisible(x)
 }
 
@@ -601,16 +617,16 @@ toString.GmlDirectPosition <- function(x) {
 			x@srsName,
 			", srsDimension: ",
 			x@srsDimension,
-			", srsDimension: ",
+			", srsAxisLabels: ",
 			x@axisLabels,
 			", uomLabels: ",
 			x@uomLabels,
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
 print.GmlDirectPosition <- function(x) {
-	cat(toString.GmlDirectPosition(x))
+	cat(toString.GmlDirectPosition(x), "\n")
 	invisible(x)
 }
 
@@ -626,12 +642,12 @@ toString.GmlPoint <- function(x) {
 			x@axisLabels,
 			", uomLabels: ",
 			x@uomLabels,
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
 print.GmlPoint <- function(x) {
-	cat(toString.GmlPoint(x))
+	cat(toString.GmlPoint(x), "\n")
 	invisible(x)
 }
 
@@ -641,12 +657,110 @@ toString.GmlPointProperty <- function(x) {
 			x@href,
 			"; point: ",
 			toString(x@point),
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
 print.GmlPointProperty <- function(x) {
-	cat(toString.GmlPointProperty(x))
+	cat(toString.GmlPointProperty(x), "\n")
+	invisible(x)
+}
+
+tempOpTypeToString <- function(obj) {
+	.s <- paste("propertyName:", obj@propertyName,
+			"time:", toString(obj@time))
+	return(.s)
+}
+
+toString.TM_After <- function(x) {
+	.s <- paste("Object of class TM_After;",
+			tempOpTypeToString(x))
+	return(.s)
+}
+
+print.TM_After <- function(x) {
+	cat(toString.TM_After(x), "\n")
+	invisible(x)
+}
+
+toString.TM_Before <- function(x) {
+	.s <- paste("Object of class TM_Before;",
+			tempOpTypeToString(x))
+	return(.s)
+}
+
+print.TM_Before <- function(x) {
+	cat(toString.TM_Before(x), "\n")
+	invisible(x)
+}
+
+toString.TM_During <- function(x) {
+	.s <- paste("Object of class TM_During;",
+			tempOpTypeToString(x))
+	return(.s)
+}
+
+print.TM_During <- function(x) {
+	cat(toString.TM_During(x), "\n")
+	invisible(x)
+}
+
+toString.TM_Equals <- function(x) {
+	.s <- paste("Object of class TM_Equals;",
+			tempOpTypeToString(x))
+	return(.s)
+}
+
+print.TM_Equals <- function(x) {
+	cat(toString.TM_Equals(x), "\n")
+	invisible(x)
+}
+
+toString.SaSamplingPoint <- function(x) {
+	.s <- paste("Object of class SaSamplingPoint",
+			"; id: ",
+			x@id,
+			"; position: ",
+			toString(x@position),
+			", relatedObservation: ",
+			toString(x@relatedObservation),
+			", relatedSamplingFeature: ",
+			toString(x@relatedSamplingFeature),
+			", surveyDetails: ",
+			toString(x@surveyDetails),
+			";\n\tsampledFeatures: ",
+			toString(x@sampledFeatures),
+			sep = "")
+	return(.s)
+}
+
+print.SaSamplingPoint <- function(x) {
+	cat(toString.SaSamplingPoint(x), "\n")
+	invisible(x)
+}
+
+toString.SaSamplingSurface <- function(x) {
+	.s <- paste("Object of class SaSamplingSurface",
+			"; id: ",
+			x@id,
+			"; shape: ",
+			toString(x@shape),
+			", relatedObservation: ",
+			toString(x@relatedObservation),
+			", relatedSamplingFeature: ",
+			toString(x@relatedSamplingFeature),
+			", surveyDetails: ",
+			toString(x@surveyDetails),
+			", position: ",
+			toString(x@position),
+			";\n\tsampledFeatures: ",
+			toString(x@sampledFeatures),
+			sep = "")
+	return(.s)
+}
+
+print.SaSamplingSurface <- function(x) {
+	cat(toString.SaSamplingSurface(x), "\n")
 	invisible(x)
 }
 
@@ -672,6 +786,7 @@ setMethod("show", "SOS", function(object) print.SOS(object))
 setMethod("show", "SosFilter_Capabilities", function(object) print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) print.SosObservationOffering(object))
 setMethod("show", "SosContents", function(object) print.SosContents(object))
+setMethod("show", "SosEventTime", function(object) print.SosEventTime(object))
 setMethod("show", "SensorML", function(object) print.SensorML(object))
 setMethod("show", "GetObservation", function(object) print.GetObservation(object))
 setMethod("show", "GetObservationById", function(object) print.GetObservationById(object))
@@ -699,6 +814,12 @@ setMethod("show", "GmlFeatureProperty", function(object) print.GmlFeaturePropert
 setMethod("show", "GmlDirectPosition", function(object) print.GmlDirectPosition(object))
 setMethod("show", "GmlPoint", function(object) print.GmlPoint(object))
 setMethod("show", "GmlPointProperty", function(object) print.GmlPointProperty(object))
+
+setMethod("show", "TM_After", function(object) print.TM_After(object))
+setMethod("show", "TM_Before", function(object) print.TM_After(object))
+setMethod("show", "TM_During", function(object) print.TM_After(object))
+setMethod("show", "TM_Equals", function(object) print.TM_After(object))
+
 
 ################################################################################
 # SUMMARY FUNCTIONS

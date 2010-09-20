@@ -1,0 +1,134 @@
+################################################################################
+# Copyright (C) 2010 by 52 North											   #
+# Initiative for Geospatial Open Source Software GmbH						   #
+# 																			   #
+# Contact: Andreas Wytzisk													   #
+# 52 North Initiative for Geospatial Open Source Software GmbH				   #
+# Martin-Luther-King-Weg 24													   #
+# 48155 Muenster, Germany													   #
+# info@52north.org															   #
+#																			   #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.													   #
+#																			   #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.									   #
+#																			   #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software		   #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.			   #
+#																			   #
+# Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
+# Created: 2010-09-20														   #
+# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+#                                                                              #
+################################################################################
+
+
+#
+#
+#
+if (!isGeneric("sosRequest"))
+	setGeneric(name = "sosRequest",
+			def = function(sos, request, verbose = sos@verboseOutput,
+					inspect = FALSE) {
+				standardGeneric("sosRequest")
+			})
+
+#
+#
+#
+if (!isGeneric("getCapabilities"))
+	setGeneric(name = "getCapabilities",
+			signature = signature("sos", "verbose", "inspect"),
+			def = function(sos, verbose = sos@verboseOutput, inspect = FALSE) {
+				standardGeneric("getCapabilities")	
+			})
+if (!isGeneric("describeSensor"))
+	setGeneric(name = "describeSensor",
+			signature = signature("sos", "procedure", "outputFormat", "verbose",
+					"inspect"),
+			def = function(sos, procedure,
+					outputFormat = sosDefaultDescribeSensorOutputFormat,
+					verbose = sos@verboseOutput, inspect = FALSE) {
+				standardGeneric("describeSensor")	
+			})
+if (!isGeneric("getObservationById"))
+	setGeneric(name = "getObservationById",
+			signature = signature("sos", "observationId", "responseFormat",
+					"srsName", "resultModel", "responseMode", "verbose", 
+					"inspect"),
+			def = function(sos, observationId,
+					responseFormat = sosDefaultGetObsResponseFormat,
+					srsName = as.character(NA), resultModel = as.character(NA),
+					responseMode = as.character(NA),
+					verbose = sos@verboseOutput, inspect = FALSE) {
+				standardGeneric("getObservationById")
+			})
+if (!isGeneric("getObservation"))
+	setGeneric(name = "getObservation",
+			signature = signature("sos", "offering", "observedProperty",
+					"responseFormat", "srsName", "eventTime", "procedure",
+					"featureOfInterest", "result", "resultModel",
+					"responseMode", "BBOX", "latest", "verbose", "inspect"),
+			def = function(sos, offering, observedProperty,
+					responseFormat = sosDefaultGetObsResponseFormat,
+					# optional:
+					srsName = as.character(NA), eventTime = list(NA), 
+					procedure = list(NA), featureOfInterest = list(NA), 
+					result = as.character(NA), resultModel = as.character(NA),
+					responseMode = as.character(NA), BBOX = as.character(NA),
+					latest = FALSE, verbose = sos@verboseOutput,
+					inspect = FALSE) {
+				standardGeneric("getObservation")
+			})
+
+
+#
+#
+#
+if (!isGeneric("checkRequest"))
+	setGeneric(name = "checkRequest",
+			def = function(service, operation, verbose) {
+				standardGeneric("checkRequest")
+			})
+if (!isGeneric("encodeRequestKVP"))
+	setGeneric(name = "encodeRequestKVP",
+			def = function(obj, verbose = FALSE) {
+				standardGeneric("encodeRequestKVP")
+			})
+if (!isGeneric("encodeRequestXML"))
+	setGeneric(name = "encodeRequestXML",
+			def = function(obj, verbose = FALSE) {
+				standardGeneric("encodeRequestXML")
+			})
+if (!isGeneric("encodeRequestSOAP"))
+	setGeneric(name = "encodeRequestSOAP",
+			def = function(obj, verbose = FALSE) {
+				standardGeneric("encodeRequestSOAP")
+			})
+
+#
+#
+#
+if (!isGeneric("owsMeaningOfCode"))
+	setGeneric(name = "owsMeaningOfCode", def = function(exceptionCode) {
+				standardGeneric("owsMeaningOfCode")
+			})
+
+#
+#
+#
+if (!isGeneric("encodeXML"))
+	setGeneric(name = "encodeXML",
+			def = function(obj, verbose = FALSE) {
+				standardGeneric("encodeXML")
+			})
+if (!isGeneric("encodeKVP"))
+	setGeneric(name = "encodeKVP",
+			def = function(obj, verbose = FALSE) {
+				standardGeneric("encodeKVP")
+			})

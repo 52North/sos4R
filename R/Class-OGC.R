@@ -42,43 +42,57 @@ setClass("OgcBinaryTemporalOpType",
 		prototype = list(propertyName = as.character(NA), time = NULL),
 		contains = c("VIRTUAL"),
 		validity = function(object) {
-			print("Entering validation: OgcBinaryTemporalOpType")
+			#print("Entering validation: OgcBinaryTemporalOpType")
 			# TODO implement validity function
 			return(TRUE)
 		}
 )
 
+#
+# after and before are only allowed with time instant
+#
 setClass("TM_After",
-		contains = c("GmlTimeInstant"),
-		validity = function(object) {
-			print("Entering validation: TM_After")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
-
-setClass("TM_Before",
-		contains = c("GmlTimeInstant"),
-		validity = function(object) {
-			print("Entering validation: TM_Before")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
-
-setClass("TM_During",
+		representation(
+				time = "GmlTimeInstant"),
 		contains = c("OgcBinaryTemporalOpType"),
 		validity = function(object) {
-			print("Entering validation: TM_During")
+			#print("Entering validation: TM_After")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+setClass("TM_Before",
+		representation(
+				time = "GmlTimeInstant"),
+		contains = c("OgcBinaryTemporalOpType"),
+		validity = function(object) {
+			#print("Entering validation: TM_Before")
 			# TODO implement validity function
 			return(TRUE)
 		}
 )
 
-setClass("TM_Equals",
-		contains = c("GmlTimePeriod"),
+#
+# during makes only sense with time period
+#
+setClass("TM_During",
+		representation(
+				time = "GmlTimePeriod"),
+		contains = c("OgcBinaryTemporalOpType"),
 		validity = function(object) {
-			print("Entering validation: TM_Equals")
+			#print("Entering validation: TM_During")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+#
+# equals allows both time instant and period
+#
+setClass("TM_Equals",
+		contains = c("OgcBinaryTemporalOpType"),
+		validity = function(object) {
+			#print("Entering validation: TM_Equals")
 			# TODO implement validity function
 			return(TRUE)
 		}

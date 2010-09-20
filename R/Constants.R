@@ -74,7 +74,8 @@ SosSupportedResponseModes <- function() {
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
 .sosNamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
 		om = "http://www.opengis.net/om/1.0",
-		ogc = "http://www.opengis.net/ogc")
+		ogc = "http://www.opengis.net/ogc",
+		gml = "http://www.opengis.net/gml")
 .sosNamespaceDefinitionsGetCap <- c(ows = "http://www.opengis.net/ows/1.1",
 		ogc = "http://www.opengis.net/ogc")
 
@@ -94,6 +95,7 @@ sosObservationOfferingListName <- "ObservationOfferingList"
 sosContentsName <- "Contents"
 sosFilterCapabilitiesName <- "Filter_Capabilities"
 sosCapabilitiesName <- "Capabilities"
+sosEventTimeName <- "eventTime"
 
 ################################################################################
 # O&M
@@ -127,6 +129,7 @@ gmlPosName <- "pos"
 gmlPointName <- "Point"
 gmlTimeInstantName <- "TimeInstant"
 gmlTimePeriodName <- "TimePeriod"
+gmlTimePositionName <- "timePosition"
 gmlRelatedTimeName <- "relatedTime"
 gmlNameName <- "name"
 gmlDescriptionName <- "description"
@@ -139,6 +142,10 @@ gmlBoundedByName <- "boundedBy"
 gmlEnvelopeName <- "Envelope"
 gmlLowerCornerName <- "lowerCorner"
 gmlUpperCornerName <- "upperCorner"
+gmlNamespacePrefix <- "gml"
+gmlTimeLengthName <- "timeLength"
+gmlDurationName <- "duration"
+gmlTimeIntervalName <- "timeInterval"
 
 ################################################################################
 # SWE
@@ -176,6 +183,9 @@ names(.ogcSupportedTempOps) <- .ogcSupportedTempOps
 SosSupportedTemporalOperators <- function() {
 	return(.ogcSupportedTempOps)
 }
+
+ogcNamespacePrefix <- "ogc"
+ogcPropertyNameName <- "PropertyName"
 
 ################################################################################
 # OWS

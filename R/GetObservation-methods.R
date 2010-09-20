@@ -37,9 +37,9 @@ GetObservation <- function(
 		observedProperty,
 		responseFormat, 
 		srsName = as.character(NA),
-		eventTime = as.character(NA), 
-		procedure = c(NA),
-		featureOfInterest = c(NA), 
+		eventTime = list(NA), 
+		procedure = list(NA),
+		featureOfInterest = list(NA), 
 		result = as.character(NA),
 		resultModel = as.character(NA),
 		responseMode = as.character(NA),
@@ -190,7 +190,7 @@ setMethod("encodeRequestKVP", "GetObservationById",
 setMethod("encodeRequestXML", "GetObservation", 
 	function(obj, verbose = FALSE) {
 		if(verbose) {
-			cat("ENCODE XML ", class(obj), "\n")
+			cat("ENCODE XML", class(obj), "\n")
 		}
 		
 		if(obj@version == "1.0.0") {
@@ -214,11 +214,10 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 			obj@offering)
 	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
 	
-	if(!any(is.na(list(obj@eventTime)))) {
-		# .eventTimes <- .eventTimeNodeList(obj@eventTime)
-		# TODO model and implement
-		.eventTimeList <- lapply(obj@eventTime, encodeEventTimeXML)
-		addChildren(node = .xmlDoc, kids = .eventTimeList, append = TRUE)
+	if(!any(is.na(obj@eventTime))) {
+		.eventTimeList <- lapply(obj@eventTime, encodeXML)
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = .eventTimeList,
+				append = TRUE)
 	}
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
@@ -280,7 +279,7 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 setMethod("encodeRequestXML", "GetObservationById", 
 		function(obj, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML ", class(obj), "\n")
+				cat("ENCODE XML", class(obj), "\n")
 			}
 			
 			if(obj@version == "1.0.0") {
@@ -353,7 +352,7 @@ setMethod("encodeRequestSOAP", "GetObservation",
 ################################################################################
 #
 setMethod(f = "checkRequest",
-		signature = c(service = "ANY", operation = "GetObservation",
+		signature = signature(service = "ANY", operation = "GetObservation",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
@@ -368,10 +367,11 @@ setMethod(f = "checkRequest",
 			# check if given responseFormat is supported by the service
 			
 			return(TRUE)
-		})
+		}
+)
 
 setMethod(f = "checkRequest",
-		signature = c(service = "ANY", operation = "GetObservationById",
+		signature = signature(service = "ANY", operation = "GetObservationById",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
@@ -385,4 +385,5 @@ setMethod(f = "checkRequest",
 			# see above!
 			
 			return(TRUE)
-		})
+		}
+)

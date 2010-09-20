@@ -148,8 +148,8 @@ setClass("GmlTimePeriod",
 				duration = "character",
 				timeInterval = "ANY"
 		),
-		prototype = list(begin = NA, beginPosition = NA, end = NA, 
-				endPosition = NA),
+		prototype = list(begin = NULL, beginPosition = NULL, end = NULL, 
+				endPosition = NULL),
 		contains = "GmlTimeGeometricPrimitive",
 		validity = function(object) {
 			#print("Entering validation: GmlTimeInstant")

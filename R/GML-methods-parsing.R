@@ -78,7 +78,11 @@ parsePoint <- function(obj) {
 #
 #
 parseTimeInstant <- function(obj, format) {
-	.timePos <- parseTimePosition(obj = .ti, format = format)
+	.timePosXML <- .filterXmlChildren(node = obj, 
+			childrenName = gmlTimePositionName, includeNamed = TRUE)[[1]]
+	
+	.timePos <- parseTimePosition(obj = .timePosXML,
+			format = format)
 	
 	#optionals
 	.id = xmlGetAttr(node = obj, name = "id",
@@ -163,7 +167,7 @@ parseTimePeriod <- function(obj, format) {
 	
 	# TODO parse gml:timeLength
 	.duration <- NA_character_
-	.timeInterval <- NA
+	.timeInterval <- NULL
 	
 	# begin and end
 	if(!is.null(obj[[gmlBeginName]]) || !is.null(obj[[gmlEndName]])) {
@@ -197,13 +201,23 @@ parseTimePeriod <- function(obj, format) {
 #
 #
 #
-parseAbstractTimeGeometricPrimitive <- function(obj, format) {
-	.ti <- xmlChildren(obj)[[gmlTimeInstantName]]
-	.tp <- xmlChildren(obj)[[gmlTimePeriodName]]
-	if(!is.null(.ti)) {
-		.timeObject <- parseTimeInstant(.ti, format)
+parseTimeGeometricPrimitiveFromParent <- function(obj, timeFormat) {
+	.tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
+	.tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
+	.timeObject <- NULL
+	if(!is.null(.tiXML)) {
+		.timeObject <- parseTimeInstant(obj = .tiXML, format = timeFormat)
 	}
-	else if(!is.null(.tp)) {
-		.timeObject <- parseTimePeriod(.tp, format)
+	else if(!is.null(.tpXML)) {
+		.timeObject <- parseTimePeriod(obj = .tpXML, format = timeFormat)
 	}
+	else {
+		warning(paste("Could not create time from given samplingTime,", 
+						" require gml:TimeInstant or gml:TimePeriod as children."))
+		.timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
+						time = as.POSIXct(x = NA)))
+	}
+	
+	return(.timeObject)
 }
+

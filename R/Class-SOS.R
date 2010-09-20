@@ -145,7 +145,20 @@ setClass("SosEventTime",
 		representation(temporalOps = "OgcBinaryTemporalOpType"),
 		prototype = list(temporalOps = NULL),
 		validity = function(object) {
-			print("Entering validation: SosEventTime")
+			#print("Entering validation: SosEventTime")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+#
+# class needed for the non-standard request for latest value
+#
+setClass("SosEventTimeLatest",
+		representation(temporalOps = "character"),
+		prototype = list(temporalOps = as.character(NA)),
+		validity = function(object) {
+			#print("Entering validation: SosEventTimeLatest")
 			# TODO implement validity function
 			return(TRUE)
 		}

@@ -43,15 +43,115 @@
 	new("TM_Equals", propertyName = propertyName, time = time)
 }
 
-if (!isGeneric("encodeTemporalOps"))
-	setGeneric(name = "encodeTemporalOps",
-			def = function(obj, verbose = FALSE) {
-				standardGeneric("encodeTemporalOps")
-			})
-setMethod(f = "encodeTemporalOps",
-		signature = c(obj = "OgcBinaryTemporalOpType", verbose = "ANY"),
+
+#
+#
+#
+setMethod(f = "encodeXML",
+		signature = signature(obj = "TM_After"),
 		def = function(obj, verbose) {
-			if(verbose) cat("Encoding temporalOps: ", toString(obj))
+			if(verbose) cat("Encoding XML TM_After with", toString(obj@time))
 			
-			# TODO implement method
-		})
+			.encoded <- .encodeTM(nodeName = ogcTempOpTMAfterName,
+					propertyName = obj@propertyName, time = obj@time,
+					verbose = verbose)
+			return(.encoded)
+		}
+)
+setMethod(f = "encodeXML",
+		signature = signature(obj = "TM_Before"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML TM_After with", toString(obj@time),
+						"\n")
+			
+			.encoded <- .encodeTM(nodeName = ogcTempOpTMBeforeName,
+					propertyName = obj@propertyName, time = obj@time,
+					verbose = verbose)
+			return(.encoded)
+		}
+)
+setMethod(f = "encodeXML",
+		signature = signature(obj = "TM_During"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML TM_During with", toString(obj@time),
+						"\n")
+			
+			.encoded <- .encodeTM(nodeName = ogcTempOpTMDuringName,
+					propertyName = obj@propertyName, time = obj@time,
+					verbose = verbose)
+			return(.encoded)
+		}
+)
+setMethod(f = "encodeXML",
+		signature = signature(obj = "TM_Equals"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML TM_Equals with", toString(obj@time),
+						"\n")
+			
+			.encoded <- .encodeTM(nodeName = ogcTempOpTMEqualsName,
+					propertyName = obj@propertyName, time = obj@time,
+					verbose = verbose)
+			return(.encoded)
+		}
+)
+
+.encodeTM <- function(nodeName, propertyName, time, verbose = FALSE) {
+	if(verbose) cat("Encoding TM element ", nodeName, "\n")
+	
+	.tm <- xmlNode(name = nodeName,
+			namespace = ogcNamespacePrefix)
+	.pn <- xmlNode(name = ogcPropertyNameName,
+			namespace = ogcNamespacePrefix)
+	xmlValue(.pn) <- propertyName
+	.tm$children[[1]] <- .pn
+	.time <- encodeXML(time, verbose)
+	.tm$children[[2]] <- .time
+	
+	return(.tm)
+}
+
+#
+# see: http://www.oostethys.org/best-practices/best-practices-get
+#
+setMethod(f = "encodeKVP",
+		signature = signature(obj = "OgcBinaryTemporalOpType"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding KVP temporalOps: ", toString(obj))
+			.time <- NULL
+			.tempOpTime <- obj@time
+			
+			if(class(.tempOpTime) == "GmlTimeInstant") {
+				.time <- format(.tempOpTime@timePosition@time,
+						sosDefaultKVPTimeFormat)
+			}
+			# ignore type, because temporal operators are not supportded by the
+			# GET binding
+			else if (class(.tempOpTime) == "GmlTimePeriod") {
+				if(!is.null(.tempOpTime@begin) && !is.null(.tempOpTime@end)) {
+					.begin <- format(.tempOpTime@begin@time@timePosition,
+							sosDefaultKVPTimeFormat)
+					.end <- format(.tempOpTime@end@time@timePosition,
+							sosDefaultKVPTimeFormat)
+					.time <- paste(.begin, "/", .end, sep = "")
+				}
+				else if(!is.null(.tempOpTime@beginPosition)
+						&& !is.null(.tempOpTime@endPosition)) {
+					.begin <- format(.tempOpTime@beginPosition@time,
+							sosDefaultKVPTimeFormat)
+					.end <- format(.tempOpTime@endPosition@time,
+							sosDefaultKVPTimeFormat)
+					.time <- paste(.begin, "/", .end, sep = "")
+				}
+				else {
+					stop(paste("Incomplete gml:TimePeriod:",
+									toString(.tempOpTime)))
+				}
+			}
+			else {
+				stop(paste("Cannot encode given object as KVP",
+								toString(.tempOpTime)))
+			}
+			
+			return(.time)
+		}
+)

@@ -156,13 +156,8 @@ OwsRange <- function(minimumValue = as.character(NA),
 ################################################################################
 # checking of operations before they are sent out
 #
-if (!isGeneric("checkRequest"))
-	setGeneric(name = "checkRequest",
-			def = function(service, operation, verbose) {
-				standardGeneric("checkRequest")
-			})
 setMethod(f = "checkRequest",
-		signature = c(service = "ANY", operation = "OwsGetCapabilities_1.1.0",
+		signature = signature(service = "ANY", operation = "OwsGetCapabilities_1.1.0",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			
@@ -171,7 +166,7 @@ setMethod(f = "checkRequest",
 			return(TRUE)
 		})
 setMethod(f = "checkRequest",
-		signature = c(service = "ANY", operation = "OwsGetCapabilities_2.0.0",
+		signature = signature(service = "ANY", operation = "OwsGetCapabilities_2.0.0",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			
@@ -228,12 +223,6 @@ setMethod(f = "checkRequest",
 ################################################################################
 # kvp encoding
 #
-if (!isGeneric("encodeRequestKVP"))
-	setGeneric(name = "encodeRequestKVP",
-			def = function(obj, verbose = FALSE) {
-				standardGeneric("encodeRequestKVP")
-			})
-
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
 		def = function(obj, verbose = FALSE) {
 			sosEncodeRequestKVPGetCapabilities(obj, verbose)
@@ -308,16 +297,10 @@ sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
 ################################################################################
 # XML encoding
 #
-if (!isGeneric("encodeRequestXML"))
-	setGeneric(name = "encodeRequestXML",
-			def = function(obj, verbose = FALSE) {
-				standardGeneric("encodeRequestXML")
-			})
-
 setMethod("encodeRequestXML", "OwsGetCapabilities", 
 		function(obj, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML ", class(obj), "\n")
+				cat("ENCODE XML", class(obj), "\n")
 			}
 			
 			# TODO use obj@version of generic request class...
@@ -333,7 +316,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities",
 		}
 )
 sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = sosGetCapabilitiesName, namespace = sosNamespacePrefix,
+	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName, namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetCap),
 			attrs=c(.xsiSchemaLocationAttribute,
@@ -341,36 +324,36 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	
 	# optional:
 	if( !is.na(obj@acceptVersions)) {
-		acceptVersions <- xmlNode(name = "AcceptVersions",
+		.acceptVersions <- xmlNode(name = "AcceptVersions",
 				namespace = .owsNamespacePrefix)
-		acceptVersions$children <- lapply(
+		.acceptVersions$children <- lapply(
 				obj@acceptVersions, "xmlNode", name="ows:Version")
-		xmlDoc$children[[1]] <- acceptVersions
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
 	}
 	
 	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-		sections <- xmlNode("ows:Sections")
-		sections$children <- lapply(obj@sections, "xmlNode", name="Section",
+		.sections <- xmlNode("ows:Sections")
+		.sections$children <- lapply(obj@sections, "xmlNode", name="Section",
 				namespace = .owsNamespacePrefix)
-		xmlDoc$children[[2]] <- sections
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
 	}
 	
 	if( !is.na(obj@updateSequence)) {
-		xmlDoc <- addAttributes(xmlDoc, updateSequence = obj@updateSequence)
+		.xmlDoc <- addAttributes(.xmlDoc, updateSequence = obj@updateSequence)
 	}
 	
 	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-		acceptFormats <- xmlNode(name = "AcceptFormats",
+		.acceptFormats <- xmlNode(name = "AcceptFormats",
 				namespace = .owsNamespacePrefix)
-		acceptFormats$children <- lapply(
+		.acceptFormats$children <- lapply(
 				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
-		xmlDoc$children[[3]] <- acceptFormats
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
 	}
 	
-	return(xmlDoc)
+	return(.xmlDoc)
 }
 sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
-	xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
+	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetCap),
@@ -379,52 +362,46 @@ sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	
 	# optional:
 	if( !is.na(obj@acceptVersions)) {
-		acceptVersions <- xmlNode(name = "AcceptVersions",
+		.acceptVersions <- xmlNode(name = "AcceptVersions",
 				namespace = .owsNamespacePrefix)
-		acceptVersions$children <- lapply(
+		.acceptVersions$children <- lapply(
 				obj@acceptVersions, "xmlNode", name = "ows:Version")
-		xmlDoc$children[[1]] <- acceptVersions
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
 	}
 	
 	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-		sections <- xmlNode("ows:Sections")
-		sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
+		.sections <- xmlNode("ows:Sections")
+		.sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
 				namespace = .owsNamespacePrefix)
-		xmlDoc$children[[2]] <- sections
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
 	}
 	
 	if( !is.na(obj@updateSequence)) {
-		xmlDoc <- addAttributes(xmlDoc, updateSequence = obj@updateSequence)
+		.xmlDoc <- addAttributes(.xmlDoc, updateSequence = obj@updateSequence)
 	}
 	
 	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-		acceptFormats <- xmlNode(name = "AcceptFormats",
+		.acceptFormats <- xmlNode(name = "AcceptFormats",
 				namespace = .owsNamespacePrefix)
-		acceptFormats$children <- lapply(
+		.acceptFormats$children <- lapply(
 				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
-		xmlDoc$children[[3]] <- acceptFormats
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
 	}
 	
 	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
-		acceptLanguages <- xmlNode(name = "AcceptLanguages",
+		.acceptLanguages <- xmlNode(name = "AcceptLanguages",
 				namespace = .owsNamespacePrefix)
-		acceptLanguages$children <- lapply(
+		.acceptLanguages$children <- lapply(
 				obj@acceptLanguages, "xmlNode", name="ows:Language")
-		xmlDoc$children[[4]] <- acceptLanguages
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptLanguages))
 	}
 	
-	return(xmlDoc)
+	return(.xmlDoc)
 }
 
 
 ################################################################################
 # SOAP encoding
-if (!isGeneric("encodeRequestSOAP"))
-	setGeneric(name = "encodeRequestSOAP",
-			def = function(obj, verbose = FALSE) {
-				standardGeneric("encodeRequestSOAP")
-			})
-
 setMethod("encodeRequestSOAP", "OwsGetCapabilities", 
 		function(obj, verbose = FALSE) {
 			if(verbose) {
@@ -440,10 +417,6 @@ setMethod("encodeRequestSOAP", "OwsGetCapabilities",
 # Helper functions for OWS exceptions, e.g. to get the meaning of an exception
 # code.
 #
-if (!isGeneric("owsMeaningOfCode"))
-	setGeneric(name = "owsMeaningOfCode", def = function(exceptionCode) {
-				standardGeneric("owsMeaningOfCode")
-			})
 setMethod(f = "owsMeaningOfCode", signature = c(exceptionCode = "character"),
 	def = function(exceptionCode) {
 		.meaning <- as.character(

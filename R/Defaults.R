@@ -232,3 +232,5 @@ sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
 sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'
 sosDefaultTimeParsingFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
+sosDefaultKVPTimeFormat <- "%Y-%m-%dT%H:%M:%OS" # "YYYY-MM-DDTHH:mm:ssZ"
+sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[["TM_During"]]

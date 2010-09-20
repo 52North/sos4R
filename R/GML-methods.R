@@ -36,9 +36,10 @@ GmlTimeInstant <- function(timePosition, id = as.character(NA),
 			relatedTimes = relatedTimes, frame = frame)
 }
 
-GmlTimePeriod <- function(begin = NA, beginPosition = NA, end = NA,
-		endPosition = NA, duration = as.character(NA), timeInterval = NA,
-		id = as.character(NA), relatedTimes = list(NA), frame = as.character(NA)) {
+GmlTimePeriod <- function(begin = NULL, beginPosition = NULL, end = NULL,
+		endPosition = NULL, duration = as.character(NA), timeInterval = NULL,
+		id = as.character(NA), relatedTimes = list(NA),
+		frame = as.character(NA)) {
 	new("GmlTimePeriod", begin = begin, beginPosition = beginPosition,
 			end = end, endPosition = endPosition, duration = duration,
 			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
@@ -46,19 +47,19 @@ GmlTimePeriod <- function(begin = NA, beginPosition = NA, end = NA,
 }
 
 GmlTimePeriod <- function(begin, end, duration = as.character(NA),
-		timeInterval = NA, id = as.character(NA), relatedTimes = list(NA),
+		timeInterval = NULL, id = as.character(NA), relatedTimes = list(NA),
 		frame = as.character(NA)) {
-	new("GmlTimePeriod", begin = begin, beginPosition = NA,
-			end = end, endPosition = NA, duration = duration,
+	new("GmlTimePeriod", begin = begin, beginPosition = NULL,
+			end = end, endPosition = NULL, duration = duration,
 			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
 			frame = frame)
 }
 
 GmlTimePeriod <- function(beginPosition, endPosition,
-		duration = as.character(NA), timeInterval = NA, id = as.character(NA),
+		duration = as.character(NA), timeInterval = NULL, id = as.character(NA),
 		relatedTimes = list(NA), frame = as.character(NA)) {
-	new("GmlTimePeriod", begin = NA, beginPosition = beginPosition,
-			end = NA, endPosition = endPosition, duration = duration,
+	new("GmlTimePeriod", begin = NULL, beginPosition = beginPosition,
+			end = NULL, endPosition = endPosition, duration = duration,
 			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
 			frame = frame)
 }
@@ -72,7 +73,7 @@ GmlTimePosition <- function(time, frame = as.character(NA),
 }
 
 GmlTimeInterval <- function(interval, unit, radix = NA, factor = NA) {
-	new("GmlTimeInteval", interval = interval, unit = unit, radix = radix,
+	new("GmlTimeInterval", interval = interval, unit = unit, radix = radix,
 			factor = factor)
 }
 
@@ -103,3 +104,131 @@ GmlPointProperty <- function(href = as.character(NA), point = NA) {
 GmlTimeInstantProperty <- function(href = as.character(NA), time = NA) {
 	new("GmlTimeInstantProperty", href = href, time = time)
 }
+
+################################################################################
+# encoding methods
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlTimeInstantProperty"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlTimeInstantProperty with", toString(obj))
+			
+			stop("Function not implemented yet!")
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlTimeInstant"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlTimeInstant with", toString(obj))
+			
+			.ti <- xmlNode(name = gmlTimeInstantName,
+					namespace = gmlNamespacePrefix)
+			.time <- encodeXML(obj@timePosition)
+			.ti$children[[1]] <- .time
+			
+			return(.ti)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlTimePosition"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlTimePosition with", toString(obj))
+			
+			.tpos <- xmlNode(name = gmlTimePositionName,
+					namespace = gmlNamespacePrefix)
+			
+			if( !is.na(obj@frame)) {
+				.tpos <- addAttributes(node = .tpos,
+						.attrs = c("frame" = obj@frame))
+			}
+			if( !is.na(obj@calendarEraName)) {
+				.tpos <- addAttributes(node = .tpos,
+						.attrs = c("calendarEraName" = obj@calendarEraName))
+			}
+			if( !is.na(obj@indeterminatePosition)) {
+				.tpos <- addAttributes(node = .tpos,
+						.attrs = c("indeterminatePosition" =
+										obj@indeterminatePosition))
+			}
+			
+			# FIXME take time format from sos, also for kvp stuff!
+			xmlValue(.tpos) <- format(x = obj@time,
+					format = sosDefaultKVPTimeFormat)
+			
+			return(.tpos)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlTimePeriod"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlTimePeriod with", toString(obj))
+			
+			.tp <- xmlNode(name = gmlTimePeriodName,
+					namespace = gmlNamespacePrefix)
+			
+			# switch cases: begin and end
+			if(!is.null(obj@begin) && !is.null(obj@end)) {
+				.begin <- xmlNode(name = gmlBeginName,
+						namespace = gmlNamespacePrefix)
+				.begin$children[[1]] <- encodeXML(obj@begin)
+				.end <- xmlNode(name = gmlEndName,
+						namespace = gmlNamespacePrefix)
+				.end$children[[1]] <- encodeXML(obj@end)
+				.tp <- addChildren(node = .tp, kids = list(.begin, .end))
+			}
+			# beginPosition and endPosition
+			else if(!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
+				.beginPosition <- encodeXML(obj@beginPosition)
+				xmlName(.beginPosition) <- gmlBeginPositionName
+				.endPosition <- encodeXML(obj@endPosition)
+				xmlName(.endPosition) <- gmlEndPositionName
+				.tp <- addChildren(node = .tp,
+						kids = list(.beginPosition, .endPosition))
+			}
+			
+			# time duration stuff: prefer duration over timeInterval
+			if( !is.na(obj@duration) && !is.null(obj@timeInterval))
+				warning("Can only add either duration or timeInterval to gml:TimePeriod, using durcation!")
+			if( !is.na(obj@duration)) {
+				.timeLength <- xmlNode(name = gmlTimeLengthName, 
+						namespace = gmlNamespacePrefix)
+				.duration <-  xmlNode(name = gmlDurationName, 
+						namespace = gmlNamespacePrefix)
+				xmlValue(.duration) <- obj@duration
+				.timeLength$children[[1]] <- .duration
+				.tp <- addChildren(node = .tp, kids = list(.timeLength))
+			}
+			else if( !is.null(obj@timeInterval)) {
+				.timeLength <- xmlNode(name = gmlTimeLengthName, 
+						namespace = gmlNamespacePrefix)
+				.timeInterval <-  xmlNode(name = gmlTimeIntervalName, 
+						namespace = gmlNamespacePrefix)
+				
+				print("lala here")
+				print(obj)
+				
+				xmlValue(.timeInterval) <- obj@timeInterval@interval
+				.timeInterval <- addAttributes(node = .timeInterval,
+						.attrs = list("unit" = obj@timeInterval@unit))
+				
+				if(!is.na(obj@timeInterval@radix)) {
+					.timeInterval <- addAttributes(node = .timeInterval,
+							.attrs = list("radix" = obj@timeInterval@radix),
+							append = TRUE)
+				}
+				if(!is.na(obj@timeInterval@factor)) {
+					.timeInterval <- addAttributes(node = .timeInterval,
+							.attrs = list("factor" = obj@timeInterval@factor),
+							append = TRUE)
+				}
+				
+				.timeLength$children[[1]] <- .timeInterval
+				.tp <- addChildren(node = .tp, kids = list(.timeLength))
+			}
+			
+			return(.tp)
+		}
+)
