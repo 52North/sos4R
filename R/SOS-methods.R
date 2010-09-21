@@ -331,9 +331,7 @@ setMethod(f = "getObservationById",
 #
 #
 setMethod(f = "getObservation",
-		signature = signature(sos = "SOS",
-				offering = "ANY", # SosObservationOffering or character
-				observedProperty = "list"),
+		signature = signature(sos = "SOS", offering = "ANY"),
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
 				responseMode, BBOX, latest, verbose, inspect) {
@@ -393,20 +391,6 @@ setMethod(f = "getObservation",
 			}
 		}
 )
-
-
-################################################################################
-# conversion methods
-sosConvertTime <- function(x, sos) {
-	.t <- as.POSIXct(strptime(x = x, format = sosTimeFormat(sos = sos)))
-	return(.t)
-}
-sosConvertDouble <- function(x, sos) {
-	return(as.double(x = x))
-}
-sosConvertString <- function(x, sos) {
-	return(as.character(x = x))
-}
 
 
 ################################################################################

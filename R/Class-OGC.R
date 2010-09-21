@@ -156,3 +156,18 @@ setClass("OgcOverlaps",
 			return(TRUE)
 		}
 )
+
+
+################################################################################
+# RESULT FILTERING
+
+#
+#
+#
+setClass("OgcComparisonOps",
+		#contains = c("VIRTUAL"),
+		validity = function(object) {
+			#print("Entering validation: OgcSpatialOps")
+			return(TRUE)
+		}
+)

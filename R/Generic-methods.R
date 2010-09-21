@@ -74,13 +74,18 @@ if (!isGeneric("getObservation"))
 					"responseFormat", "srsName", "eventTime", "procedure",
 					"featureOfInterest", "result", "resultModel",
 					"responseMode", "BBOX", "latest", "verbose", "inspect"),
-			def = function(sos, offering, observedProperty,
+			def = function(sos, offering,
+					observedProperty = sosObservedProperties(weathersos),
 					responseFormat = sosDefaultGetObsResponseFormat,
 					# optional:
-					srsName = as.character(NA), eventTime = list(NA), 
-					procedure = list(NA), featureOfInterest = NULL, 
-					result = as.character(NA), resultModel = as.character(NA),
-					responseMode = as.character(NA), BBOX = as.character(NA),
+					srsName = as.character(NA),
+					eventTime = list(NA), 
+					procedure = sosProcedures(weathersos),
+					featureOfInterest = NULL,
+					result = NULL,
+					resultModel = as.character(NA),
+					responseMode = as.character(NA),
+					BBOX = as.character(NA),
 					latest = FALSE, verbose = sos@verboseOutput,
 					inspect = FALSE) {
 				standardGeneric("getObservation")

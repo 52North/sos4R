@@ -89,7 +89,7 @@ GmlDirectPosition <- function(pos, srsName = as.character(NA),
 			uomLabels = uomLabels)
 }
 
-GmlDirectPosition <- function(lat, lon, srsName = as.character(NA),
+GmlDirectPositionLatLon <- function(lat, lon, srsName = as.character(NA),
 		srsDimension = NA_integer_, axisLabels = as.character(NA), 
 		uomLabels = as.character(NA)) {
 	new("GmlDirectPosition", pos = paste(lat, lon, sep = " "),

@@ -220,6 +220,26 @@ setMethod(f = "encodeXML",
 	return(.pN)
 }
 
+setMethod(f = "encodeXML",
+		signature = signature(obj = "OgcComparisonOps"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML OgcComparisonOps with",
+						toString(obj@time), "\n")
+			warning("Encoding of OgcComparisonOps not implemented yet! Returning obj as is...")
+			return(obj)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "OgcComparisonOps"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML OgcComparisonOps with",
+						toString(obj@time), "\n")
+			warning("Encoding of OgcComparisonOps not implemented yet! Returning obj as is...")
+			return(obj)
+		}
+)
+
 #
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #

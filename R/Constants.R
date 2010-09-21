@@ -97,6 +97,7 @@ sosFilterCapabilitiesName <- "Filter_Capabilities"
 sosCapabilitiesName <- "Capabilities"
 sosEventTimeName <- "eventTime"
 sosObjectIDName <- "ObjectID"
+sosResultName <- "result"
 
 ################################################################################
 # O&M
@@ -167,11 +168,19 @@ sweUomName <- "uom"
 
 ################################################################################
 # OGC
-# only the operators supported by 52N SOS
 ogcTempOpTMAfterName <- "TM_After"
 ogcTempOpTMBeforeName <- "TM_Before"
+ogcTempOpTMBeginsName <- "TM_Begins"
+ogcTempOpTMBegunByName <- "TM_BegunBy"
+ogcTempOpTMContainsName <- "TM_Contains"
 ogcTempOpTMDuringName <- "TM_During"
+ogcTempOpTMEndedByName <- "TM_EndedBy"
+ogcTempOpTMEndsName <- "TM_Ends"
 ogcTempOpTMEqualsName <- "TM_Equals"
+ogcTempOpTMMeetsName <- "TM_Meets"
+ogcTempOpTMMetByName <- "TM_MetBy"
+ogcTempOpTMOverlapsName <- "TM_Overalps"
+ogcTempOpTMTMOverlappedBy <- "TM_OverlappedBy"
 .ogcSupportedTemporalOps <- list(
 		ogcTempOpTMAfterName,
 		ogcTempOpTMBeforeName,
@@ -185,8 +194,15 @@ SosSupportedTemporalOperators <- function() {
 
 ogcSpatialOpBBOXName <- "BBOX"
 ogcSpatialOpContainsName <- "Contains"
-ogcSpatialOpIntersectsName <- "TM_During"
-ogcSpatialOpOverlapsName <- "TM_Equals"
+ogcSpatialOpIntersectsName <- "Intersects"
+ogcSpatialOpOverlapsName <- "Overlaps"
+ogcSpatialOpBeyondName <- "Beyond"
+ogcSpatialOpCrossesName <- "Crosses"
+ogcSpatialOpDWithinName <- "DWithin"
+ogcSpatialOpDisjointName <- "Disjoint"
+ogcSpatialOpEqualsName <- "Equals"
+ogcSpatialOpTouchesName <- "Touches"
+ogcSpatialOpWithinName <- "Within"
 .ogcSupportedSpatialOps <- list(
 		ogcSpatialOpBBOXName,
 		ogcSpatialOpContainsName,
@@ -212,6 +228,21 @@ ogcGeometryOperandLineStringName <- "gml:LineString"
 names(.ogcSupportedGeometryOperands) <- .ogcSupportedGeometryOperands
 SosSupportedGeometryOperands <- function() {
 	return(.ogcSupportedGeometryOperands)
+}
+
+ogcComparisonOpBetweenName <- "PropertyIsBetween"
+ogcComparisonOpEqualToName <- "PropertyIsEqualTo"
+ogcComparisonOpGreaterThanName <- "PropertyIsGreaterThan"
+ogcComparisonOpGreaterThanOrEqualToName <- "PropertyIsGreaterThanOrEqualTo"
+ogcComparisonOpLessThenName <- "PropertyIsLessThan"
+ogcComparisonOpLessThanOrEqualToName <- "PropertyIsLessThanOrEqualTo"
+ogcComparisonOpIsLikeName <- "PropertyIsLike"
+ogcComparisonOpIsNotEqualTo <- "PropertyIsNotEqualTo"
+ogcComparisonOpIsNull <- "PropertyIsNull"
+.ogcSupportedComparisonOperators <- list()
+names(.ogcSupportedComparisonOperators) <- .ogcSupportedComparisonOperators
+SosSupportedComparisonOperators <- function() {
+	return(.ogcSupportedComparisonOperators)
 }
 
 ogcNamespacePrefix <- "ogc"

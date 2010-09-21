@@ -39,7 +39,7 @@ setClass("GetObservation",
 				eventTime = "list", 
 				procedure = "list", 
 				featureOfInterest = "ANY", # SosFeatureOfInterest 
-				result = "character",
+				result = "ANY", # OgcComparisonOps
 				resultModel = "character",
 				responseMode = "character",
 				BBOX = "character"),
@@ -48,7 +48,7 @@ setClass("GetObservation",
 				version = as.character(NA),
 				offering = as.character(NA),
 				observedProperty = list(NA),
-				responseFormat = as.character(NA)), # prototype should not pass validity
+				responseFormat = as.character(NA)),
 		contains = "OwsServiceOperation",
 		validity = function(object) {
 			#print("Entering validation: GetObservation")
@@ -72,9 +72,9 @@ setClass("GetObservation",
 			
 			# eventTime is a list of ogc:temporalOps
 			
-			# featureOfInterest is a SosFeatureOfInterest element
+			# featureOfInterest is null or a SosFeatureOfInterest element
 			
-			# result is an ogc:comparisonOps element
+			# result is null or an ogc:comparisonOps element
 			
 			# responseFormat must be MIME content type
 			

@@ -444,7 +444,7 @@ source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R"
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
 go.offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]] # ATHMOSPHERIC_TEMPERATURE
-go.observedProperty = sosObservedProperties(weathersos)[[2]] # temp
+go.observedProperty = sosObservedProperties(weathersos)[[3]] # temp
 #go.responseFormat - leave to default
 go.responseMode = sosResponseMode(weathersos)[[2]] # inline
 go.resultModel = sosResultModels(weathersos)[[3]] # om:Measurement
@@ -454,7 +454,9 @@ go.srsName = "urn:ogc:def:crs:EPSG:6.8:4326" # is "AnyValue" in capabilities... 
 obs <- getObservation(sos = weathersos,
 		observedProperty = list(go.observedProperty),
 		procedure = list(sosProcedures(weathersos)[[1]]),
-		offering = go.offering@id, latest = TRUE, inspect = TRUE)
+		offering = go.offering@id,
+		latest = TRUE,
+		inspect = TRUE, verbose = TRUE)
 obs@result
 # works!
 
@@ -574,17 +576,103 @@ obs6 <- getObservation(sos = weathersos,
 						begin = as.POSIXct("2009-08-10 12:00"),
 						end = as.POSIXct("2009-08-17 12:00"))),
 		featureOfInterest = foiBBoxMSandK,
-		offering = sosOfferings(weathersos)[[3]]@id, inspect = TRUE)
+		offering = sosOfferings(weathersos)[[3]]@id, inspect = TRUE,
+		resultModel = SosSupportedResultModels()[[1]])
 str(obs6)
 # works!
 
 obs6@result[[1]][c(1,672)]; obs6@samplingTime#  both the same values - good!
+
+# testing with om:Measurement
+meas1 <- getObservation(sos = weathersos,
+		observedProperty = sosObservedProperties(weathersos),
+		procedure = sosProcedures(weathersos),
+		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+						begin = as.POSIXct("2009-08-10 12:00"),
+						end = as.POSIXct("2009-08-11 12:00"))),
+		offering = sosOfferings(weathersos)[[3]]@id, inspect = TRUE,
+		resultModel = SosSupportedResultModels()[[1]])
+# get values from measurements
+values1 <- sapply(sapply(meas1, slot, name = "result"), slot, name = "value")
+values1 <- as.double(values1)
+times1 <- lapply(sapply(sapply(meas1, slot, name = "samplingTime"), 
+				slot, name = "timePosition"), slot, name = "time")
+
+df.times1 <- as.data.frame(times1); names(df.times1) <- "time"
+df.values1 <- as.data.frame(values1); names(df.values1) <- "values"
+
+data.frame(times1, values1)
+plot(x = times1, y = values1)
+
+# TODO continue here with extraction of data...
+
+################################################################################
+# ogc:comparisonOps dummy classes and workaround for passing though XML
+manualResult <- '<sos:result><ogc:PropertyIsGreaterThan><ogc:PropertyName>urn:ogc:def:phenomenon:OGC:1.0.30:waterlevel</ogc:PropertyName><ogc:Literal>5</ogc:Literal></ogc:PropertyIsGreaterThan></sos:result>'
+manualResult1 <- xmlParseString(manualResult)
+class(manualResult1)
+# [1] "XMLInternalDocument" "XMLAbstractDocument" "oldClass"  
+
+manualResult2 <- xmlNode(name = sosResultName)
+manualResult2$children[[1]] <- xmlNode(name = ogcComparisonOpEqualToName)
+class(manualResult2)
+# [1] "XMLNode" "RXMLAbstractNode" "XMLAbstractNode"  "oldClass"
+
+manualResult3 <- xmlParse(manualResult)
+class(manualResult3)
+# [1] "XMLInternalDocument" "XMLAbstractDocument" "oldClass"
+
+encodeXML(manualResult1, verbose = TRUE)
+encodeXML(manualResult2, verbose = TRUE)
+encodeXML(manualResult3, verbose = TRUE)
+# works, warnings as well.
+
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+# this now even works with defaults for procedures and observerProperty, i.e.
+# just taking all available!
+lastTenHours <- sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+		begin = (Sys.time() - 36000), end = Sys.time()))
+obs1 <- getObservation(sos = weathersos, eventTime = lastTenHours,
+		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]])
+
+myResult1 <- xmlParseString('<sos:result><ogc:PropertyIsGreaterThan>
+<ogc:PropertyName>urn:ogc:def:property:OGC::Temperature</ogc:PropertyName>
+<ogc:Literal>20</ogc:Literal></ogc:PropertyIsGreaterThan></sos:result>')
+# results in problems with external pointers...
+
+pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+xmlValue(pn) <- "urn:ogc:def:property:OGC::Temperature"
+l <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
+xmlValue(l) <- "20"
+comp <- xmlNode(name = ogcComparisonOpGreaterThanName,
+		namespace = ogcNamespacePrefix, .children = list(pn, l))
+myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
+		.children = list(comp))
+
+obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
+		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
+		result = myResult2)
+
+length(obs1@result[[3]]); length(obs2@result[[3]])
+# 40
+# 16
+# WORKS!
 
 
 ################################################################################
 # TODO 
 #getData(sos, begin = , end = , observedProperty = )
 # return all possible procedures, in just one data.frame?
+
+################################################################################
+# Was I stupid?
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
+sensorMLtemplate <- makeClassTemplate(xnode = xmlRoot(sensor@xml))
+str(sensorMLtemplate)
+cat(sensorMLtemplate$def)
+cat(sensorMLtemplate$slots[["member"]])
+cat(sensorMLtemplate$coerce)
 
 ################################################################################
 # SOAP

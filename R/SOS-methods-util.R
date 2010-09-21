@@ -215,6 +215,19 @@ setMethod(f = "sosParsers", signature = signature(sos = "SOS"),
 			return(sos@parsers)
 		})
 
+################################################################################
+# conversion methods and accessor function
+sosConvertTime <- function(x, sos) {
+	.t <- as.POSIXct(strptime(x = x, format = sosTimeFormat(sos = sos)))
+	return(.t)
+}
+sosConvertDouble <- function(x, sos) {
+	return(as.double(x = x))
+}
+sosConvertString <- function(x, sos) {
+	return(as.character(x = x))
+}
+
 if (!isGeneric("sosFieldConverters"))
 	setGeneric(name = "sosFieldConverters", def = function(sos) {
 				standardGeneric("sosFieldConverters")
@@ -335,9 +348,9 @@ sosCreateFeatureOfInterest <- function(objectIDs = list(NA),
 	else if(!is.null(bbox)) {
 		if(is.matrix(bbox)) {
 			.env <- GmlEnvelope(
-					lowerCorner = GmlDirectPosition(lat = bbox[2,1],
+					lowerCorner = GmlDirectPositionLatLon(lat = bbox[2,1],
 							lon = bbox[1,1]),
-					upperCorner = GmlDirectPosition(lat = bbox[2,2],
+					upperCorner = GmlDirectPositionLatLon(lat = bbox[2,2],
 							lon = bbox[1,2]),
 					srsName = srsName)
 			.bbox <- OgcBBOX(envelope = .env)
@@ -427,3 +440,15 @@ setMethod(f = "sosSetFunctionsToDefault", signature = signature(sos = "SOS"),
 	.et <- SosEventTimeLatest()
 	return(.et)
 }
+
+#
+# encoding function that just passes given content along...
+#
+setMethod("encodeXML", "XMLAbstractNode", 
+		function(obj, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE XML from XMLAbstractNode\n")
+			}
+			return(obj)
+		}
+)

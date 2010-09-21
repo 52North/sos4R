@@ -40,7 +40,7 @@ GetObservation <- function(
 		eventTime = list(NA), 
 		procedure = list(NA),
 		featureOfInterest = NULL, 
-		result = as.character(NA),
+		result = NULL,
 		resultModel = as.character(NA),
 		responseMode = as.character(NA),
 		BBOX = as.character(NA)) {
@@ -194,14 +194,15 @@ setMethod("encodeRequestXML", "GetObservation",
 		}
 		
 		if(obj@version == "1.0.0") {
-			return(sosEncodeRequestXMLGetObservation_1.0.0(obj))		
+			return(sosEncodeRequestXMLGetObservation_1.0.0(obj,
+							verbose = verbose))		
 		}
 		else {
 			stop("Version not supported!")
 		}
 	}
 )
-sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
+sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	.xmlDoc <- xmlNode(name = sosGetObservationName,
 			namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
@@ -215,7 +216,7 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
 	
 	if(!any(is.na(obj@eventTime))) {
-		.eventTimeList <- lapply(obj@eventTime, encodeXML)
+		.eventTimeList <- lapply(obj@eventTime, encodeXML, verbose = verbose)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = .eventTimeList,
 				append = TRUE)
 	}
@@ -233,14 +234,15 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 			append = TRUE)
 	
 	if( !is.null(obj@featureOfInterest)) {
-		.foi <- encodeXML(obj@featureOfInterest)
+		.foi <- encodeXML(obj@featureOfInterest, verbose = verbose)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.foi),
 				append = TRUE)
 	}
 	
-	if( !is.na(obj@result)) {
-		# TODO add result with ogc:comparisonOps
-		warning("comparisonOps not encoded yet!")
+	if( !is.null(obj@result)) {
+		.result <- encodeXML(obj@result, verbose = verbose)
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.result),
+				append = TRUE)
 	}
 	
 	.responseFormat <- xmlNode(name = "responseFormat",
