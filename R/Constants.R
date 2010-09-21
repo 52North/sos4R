@@ -96,6 +96,7 @@ sosContentsName <- "Contents"
 sosFilterCapabilitiesName <- "Filter_Capabilities"
 sosCapabilitiesName <- "Capabilities"
 sosEventTimeName <- "eventTime"
+sosObjectIDName <- "ObjectID"
 
 ################################################################################
 # O&M
@@ -171,21 +172,54 @@ ogcTempOpTMAfterName <- "TM_After"
 ogcTempOpTMBeforeName <- "TM_Before"
 ogcTempOpTMDuringName <- "TM_During"
 ogcTempOpTMEqualsName <- "TM_Equals"
-
-.ogcSupportedTempOps <- list(
+.ogcSupportedTemporalOps <- list(
 		ogcTempOpTMAfterName,
 		ogcTempOpTMBeforeName,
 		ogcTempOpTMDuringName,
 		ogcTempOpTMEqualsName
 )
-names(.ogcSupportedTempOps) <- .ogcSupportedTempOps
-
+names(.ogcSupportedTemporalOps) <- .ogcSupportedTemporalOps
 SosSupportedTemporalOperators <- function() {
-	return(.ogcSupportedTempOps)
+	return(.ogcSupportedTemporalOps)
+}
+
+ogcSpatialOpBBOXName <- "BBOX"
+ogcSpatialOpContainsName <- "Contains"
+ogcSpatialOpIntersectsName <- "TM_During"
+ogcSpatialOpOverlapsName <- "TM_Equals"
+.ogcSupportedSpatialOps <- list(
+		ogcSpatialOpBBOXName,
+		ogcSpatialOpContainsName,
+		ogcSpatialOpIntersectsName,
+		ogcSpatialOpOverlapsName
+)
+names(.ogcSupportedSpatialOps) <- .ogcSupportedSpatialOps
+SosSupportedSpatialOperators <- function() {
+	return(.ogcSupportedSpatialOps)
+}
+
+ogcGeometryOperandEnvelopeName <- "gml:Envelope"
+ogcGeometryOperandPolygonName <- "gml:Polygon"
+ogcGeometryOperandPointName <- "gml:Point"
+ogcGeometryOperandLineStringName <- "gml:LineString"
+
+.ogcSupportedGeometryOperands <- list(
+		ogcGeometryOperandEnvelopeName,
+		ogcGeometryOperandPolygonName,
+		ogcGeometryOperandPointName,
+		ogcGeometryOperandLineStringName
+)
+names(.ogcSupportedGeometryOperands) <- .ogcSupportedGeometryOperands
+SosSupportedGeometryOperands <- function() {
+	return(.ogcSupportedGeometryOperands)
 }
 
 ogcNamespacePrefix <- "ogc"
 ogcPropertyNameName <- "PropertyName"
+ogcBBOXName <- "BBOX"
+ogcContainsName <- "Contains"
+ogcIntersectsName <- "Intersects"
+ogcOverlapsName <- "Overlaps"
 
 ################################################################################
 # OWS

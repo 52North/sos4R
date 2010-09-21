@@ -66,5 +66,6 @@ source(paste(.path, "R", "OGC-methods.R",  sep = "/"))
 
 source(paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
 
+source(paste(.path, "R", "SOS-methods-util.R",  sep = "/"))
 source(paste(.path, "R", "SOS-methods.R",  sep = "/"))
 source(paste(.path, "R", "Defaults.R",  sep = "/"))

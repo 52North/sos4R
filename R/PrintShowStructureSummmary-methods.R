@@ -276,6 +276,21 @@ print.SosEventTime <- function(x) {
 	invisible(x)
 }
 
+toString.SosFeatureOfInterest <- function(x) {
+	.s <- paste("Object of class SosFeatureOfInterest",
+			";\n\tobjectIDs: ",
+			toString(x@objectIDs),
+			";\n\tspatialOps: ",
+			toString(x@spatialOps),
+			sep = "")
+	return(.s)
+}
+
+print.SosFeatureOfInterest <- function(x) {
+	cat(toString.SosFeatureOfInterest(x), "\n")
+	invisible(x)
+}
+
 toString.SensorML <- function(x) {
 	.s <- ("Object of class SensorML (wraps unparsed XML, see @xml for details).\n")
 	return(.s)
@@ -303,26 +318,21 @@ toString.GetObservation <- function(x) {
 			# optionals:
 			"\nprocedure(s)",
 			paste(x@procedure),
-			"\nfeature(s) of interest",
-			paste(x@featureOfInterest),
-			", event time: ",
-			paste(x@eventTime),
-			"\nresult: ",
+			"\n\tfeature(s) of interest",
+			toString(x@featureOfInterest),
+			"\n\tevent time: ",
+			toString(x@eventTime),
+			"\n\tresult: ",
 			x@result,
 			"\nsrsName: ",
 			x@srsName,
-			"\nevent time: ",
-			x@eventTime,
 			"\nresultModel(s): ",
-			x@resultModel,
-			"\nbounding box: ",
-			paste(x@BBOX),
-			"\n")
+			x@resultModel)
 	return(.s)
 }
 
 print.GetObservation <- function(x, ...) {
-	cat(toString(x))
+	cat(toString(x), "\n")
 	invisible(x)
 }
 
@@ -347,7 +357,7 @@ toString.GetObservationById <- function(x) {
 }
 
 print.GetObservationById <- function(x, ...) {
-	cat(toString(x))
+	cat(toString(x), "\n")
 	invisible(x)
 }
 
@@ -361,13 +371,12 @@ toString.DescribeSensor <- function(x) {
 			", outputFormat: ",
 			x@outputFormat,
 			"\nProcedure: ",
-			x@procedure,
-			"\n")
+			x@procedure)
 	return(.s)
 }
 
 print.DescribeSensor <- function(x, ...) {
-	cat(toString(x))
+	cat(toString(x), "\n")
 	invisible(x)
 }
 
@@ -384,12 +393,12 @@ toString.OmMeasurement <- function(x) {
 			toString(x@samplingTime),
 			";\n\tresult: ",
 			toString(x@result),
-			"\n", sep = "")
+			sep = "")
 	return(.s)
 }
 
 print.OmMeasurement <- function(x, ...) {
-	cat(toString.OmMeasurement(x))
+	cat(toString.OmMeasurement(x), "\n")
 	invisible(x)
 }
 
@@ -666,15 +675,59 @@ print.GmlPointProperty <- function(x) {
 	invisible(x)
 }
 
-tempOpTypeToString <- function(obj) {
+.tempOpToString <- function(obj) {
 	.s <- paste("propertyName:", obj@propertyName,
 			"time:", toString(obj@time))
 	return(.s)
 }
 
+toString.GmlGeometry <- function(x) {
+	.s <- paste("Object of class GmlGeometry",
+			"; id: ",
+			x@id,
+			";\nsrsName: ",
+			x@srsName,
+			", srsDimension: ",
+			x@srsDimension,
+			", srsDimension: ",
+			x@axisLabels,
+			", uomLabels: ",
+			x@uomLabels,
+			sep = "")
+	return(.s)
+}
+
+print.GmlGeometry <- function(x) {
+	cat(toString.GmlGeometry(x), "\n")
+	invisible(x)
+}
+
+toString.GmlEnvelope <- function(x) {
+	.s <- paste("Object of class GmlEnvelope",
+			"; srsName: ",
+			x@srsName,
+			", srsDimension: ",
+			x@srsDimension,
+			", srsDimension: ",
+			x@axisLabels,
+			", uomLabels: ",
+			x@uomLabels,
+			";\n\tlowerCorner: ",
+			toString(x@lowerCorner),
+			";\n\tupperCorner: ",
+			toString(x@upperCorner),
+			sep = "")
+	return(.s)
+}
+
+print.GmlEnvelope <- function(x) {
+	cat(toString.GmlEnvelope(x), "\n")
+	invisible(x)
+}
+
 toString.TM_After <- function(x) {
 	.s <- paste("Object of class TM_After;",
-			tempOpTypeToString(x))
+			.tempOpToString(x))
 	return(.s)
 }
 
@@ -685,7 +738,7 @@ print.TM_After <- function(x) {
 
 toString.TM_Before <- function(x) {
 	.s <- paste("Object of class TM_Before;",
-			tempOpTypeToString(x))
+			.tempOpToString(x))
 	return(.s)
 }
 
@@ -696,7 +749,7 @@ print.TM_Before <- function(x) {
 
 toString.TM_During <- function(x) {
 	.s <- paste("Object of class TM_During;",
-			tempOpTypeToString(x))
+			.tempOpToString(x))
 	return(.s)
 }
 
@@ -707,12 +760,71 @@ print.TM_During <- function(x) {
 
 toString.TM_Equals <- function(x) {
 	.s <- paste("Object of class TM_Equals;",
-			tempOpTypeToString(x))
+			.tempOpToString(x))
 	return(.s)
 }
 
+
 print.TM_Equals <- function(x) {
 	cat(toString.TM_Equals(x), "\n")
+	invisible(x)
+}
+
+toString.OgcBBOX <- function(x) {
+	.s <- paste("Object of class OgcBBOX; propertyName: ",
+			x@propertyName,
+			"; envelope: ",
+			toString(x@envelope),
+			sep = "")
+	return(.s)
+}
+
+print.OgcContains <- function(x) {
+	cat(toString.OgcContains(x), "\n")
+	invisible(x)
+}
+
+.binSpatOpToString <- function(x) {
+	.s <- paste("propertyName:",
+			x@propertyName,
+			";\n\tgeometry: ",
+			toString(x@geometry),
+			";\n\tenvelope: ",
+			toString(x@envelope),
+			sep = "")
+	return(.s)
+}
+
+toString.OgcContains <- function(x) {
+	.s <- paste("Object of class OgcContains;",
+			.binSpatOpToString(x))
+	return(.s)
+}
+
+print.OgcContains <- function(x) {
+	cat(toString.OgcContains(x), "\n")
+	invisible(x)
+}
+
+toString.OgcIntersects <- function(x) {
+	.s <- paste("Object of class OgcIntersects;",
+			.binSpatOpToString(x))
+	return(.s)
+}
+
+print.OgcIntersects <- function(x) {
+	cat(toString.OgcIntersects(x), "\n")
+	invisible(x)
+}
+
+toString.OgcOverlaps <- function(x) {
+	.s <- paste("Object of class OgcOverlaps;",
+			.binSpatOpToString(x))
+	return(.s)
+}
+
+print.OgcOverlaps <- function(x) {
+	cat(toString.OgcOverlaps(x), "\n")
 	invisible(x)
 }
 
@@ -787,6 +899,7 @@ setMethod("show", "SosFilter_Capabilities", function(object) print.SosFilter_Cap
 setMethod("show", "SosObservationOffering", function(object) print.SosObservationOffering(object))
 setMethod("show", "SosContents", function(object) print.SosContents(object))
 setMethod("show", "SosEventTime", function(object) print.SosEventTime(object))
+setMethod("show", "SosFeatureOfInterest", function(object) print.SosFeatureOfInterest(object))
 setMethod("show", "SensorML", function(object) print.SensorML(object))
 setMethod("show", "GetObservation", function(object) print.GetObservation(object))
 setMethod("show", "GetObservationById", function(object) print.GetObservationById(object))
@@ -814,12 +927,17 @@ setMethod("show", "GmlFeatureProperty", function(object) print.GmlFeaturePropert
 setMethod("show", "GmlDirectPosition", function(object) print.GmlDirectPosition(object))
 setMethod("show", "GmlPoint", function(object) print.GmlPoint(object))
 setMethod("show", "GmlPointProperty", function(object) print.GmlPointProperty(object))
+setMethod("show", "GmlGeometry", function(object) print.GmlGeometry(object))
+setMethod("show", "GmlEnvelope", function(object) print.GmlEnvelope(object))
 
 setMethod("show", "TM_After", function(object) print.TM_After(object))
 setMethod("show", "TM_Before", function(object) print.TM_After(object))
 setMethod("show", "TM_During", function(object) print.TM_After(object))
 setMethod("show", "TM_Equals", function(object) print.TM_After(object))
-
+setMethod("show", "OgcBBOX", function(object) print.TM_After(object))
+setMethod("show", "OgcContains", function(object) print.TM_After(object))
+setMethod("show", "OgcIntersects", function(object) print.TM_After(object))
+setMethod("show", "OgcOverlaps", function(object) print.TM_After(object))
 
 ################################################################################
 # SUMMARY FUNCTIONS

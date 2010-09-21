@@ -130,7 +130,7 @@ setClass("SosObservationOffering",
 setClass("SosContents",
 		representation(observationOfferings = "vector"),
 		prototype = list(observationOfferings = c(NA), xml = xmlNode(NA)),
-		contains = "OwsContents",
+		contains = c("OwsContents"),
 		validity = function(object) {
 			#print("Entering validation: SosContents")
 			# TODO implement validity function
@@ -142,7 +142,7 @@ setClass("SosContents",
 #
 #
 setClass("SosEventTime",
-		representation(temporalOps = "OgcBinaryTemporalOpType"),
+		representation(temporalOps = "OgcBinaryTemporalOp"),
 		prototype = list(temporalOps = NULL),
 		validity = function(object) {
 			#print("Entering validation: SosEventTime")
@@ -160,6 +160,25 @@ setClass("SosEventTimeLatest",
 		validity = function(object) {
 			#print("Entering validation: SosEventTimeLatest")
 			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+#
+# 
+#
+setClass("SosFeatureOfInterest",
+		representation(
+				objectIDs = "list",
+				spatialOps = "ANY"), # OgcSpatialOps
+		prototype = list(
+				objectIDs = list(NA),
+				spatialOps = NULL),
+		validity = function(object) {
+			#print("Entering validation: GetObservationById")
+			# TODO implement validity function
+			# one of objectIDs or spatialOps has to be set
+			# spatialOps must be OgcSpatialOps
 			return(TRUE)
 		}
 )

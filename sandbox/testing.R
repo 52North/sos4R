@@ -81,38 +81,6 @@ go.responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;"
 go <- GetObservation(service = go.service, version = go.version, offering = go.offering, observedProperty =  go.observedProperty, responseFormat =  go.responseFormat)
 go.xml <- encode(go)
 
-# with service
-sos = SOS(climatesos)
-localsos = SOS("http://localhost:8080/ClimateSOS-local/sos")
-getObservation(localsos, offering = go.offering, observedProperty =  go.observedProperty, responseFormat = go.responseFormat)
-
-# optional:
-go.srsName = "urn:ogc:def:crs:EPSG:4326"
-go.eventTimeInstant = "2010-04-12T11:00:00Z"
-go.eventTimePeriod = "2008-04-10T10:00:00Z/2010-04-12T11:00:00Z"
-go.procedure = c("urn:ogc:object:feature:WMOStation:104380",
-		"urn:ogc:object:feature:WMOStation:226020",
-		"urn:ogc:object:feature:WMOStation:33020")
-go.foi = c("foi_id_1", "foi_id_2")
-go.result = "<noResult>lala</noResult>" # not implemented for GET, causes exception "The parameter result is not supported by this SOS."
-go.resultModel = "om:Observation" # om:CategoryObservation, om:Measurement, om:SpatialObservation, not mentioned by OOSTethys, but implemented in 52N SOS
-go.responseMode = "inline" # reslutTemplate, only for usage with GetResult, so not need for know, not mentioned by OOSTethys, but implemented in 52N SOS
-go.BBOX = "7.0,52.0,7.4,52.4"
-go.BBOX2 = "7.0,52.0,7.4,52.4,urn:ogc:def:crs:EPSG:6.5:4326"
-
-# timeperiod
-go <- GetObservation(service = go.service, version = go.version, 
-		offering = go.offering, observedProperty =  go.observedProperty,
-		responseFormat =  go.responseFormat,
-		srsName = go.srsName, eventTime = go.eventTimePeriod,
-		procedure = go.procedure, featureOfInterest = go.foi,
-		result = go.result,
-		resultModel = go.resultModel,
-		responseMode = go.responseMode, BBOX = go.BBOX)
-
-go.xml <- encode(go)
-
-
 ################################################################################
 # ExceptionReports
 
@@ -440,12 +408,43 @@ encodeKVP(eventTime2)
 # works!
 
 ################################################################################
+# spatial operations
+
+# valid foi ids for WeatherSOS:
+foiIDs <- list(
+		"urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93",
+		"urn:ogc:object:feature:OSIRIS-HWS:efeb807b-bd24-4128-a920-f6729bcdd111",
+		"id:02")
+foiObj <- sosCreateFeatureOfInterest(objectIDs = foiIDs[1:2])
+encodeXML(foiObj)
+# ok
+
+bbox1 <- sosCreateBBoxMatrix(lowLat = 50.0, lowLon = 7.0, uppLat = 53.0, uppLon = 10.0)
+foiBBox1 <- sosCreateFeatureOfInterest(bbox = bbox1, srsName = "urn:ogc:def:crs:EPSG:6.8:4326")
+encodeXML(foiBBox1, verbose = TRUE)
+# ok
+
+foiBBox2 <- sosCreateFeatureOfInterest(
+		spatialOps = sosCreateBBOX(lowLat = 50.0, lowLon = 7.0,
+				uppLat = 53.0, uppLon = 10.0, 
+				srsName = "urn:ogc:def:crs:EPSG:6.8:4326",
+				srsDimension = as.integer(2), axisLabels = "lat,lon",
+				uomLabels = "deg,deg",
+				propertyName = "lalaUndPooh"))
+encodeXML(foiBBox2)
+# ok!
+
+################################################################################
+source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+################################################################################
+
+################################################################################
 # GetObservations
 
-weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST")
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
-go.offering = sosOfferings(weathersos)[[4]] # ATHMOSPHERIC_TEMPERATURE
-go.observedProperty = sosObservedProperties(weathersos)[[4]] # temp
+go.offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]] # ATHMOSPHERIC_TEMPERATURE
+go.observedProperty = sosObservedProperties(weathersos)[[2]] # temp
 #go.responseFormat - leave to default
 go.responseMode = sosResponseMode(weathersos)[[2]] # inline
 go.resultModel = sosResultModels(weathersos)[[3]] # om:Measurement
@@ -501,9 +500,88 @@ plot(x = obs3@result[["Time"]],
 		ylab = "Temperature (°C)")
 
 
-# TODO bbox
+# two procedures
+obs4 <- getObservation(sos = weathersos,
+		observedProperty = sosObservedProperties(weathersos)[2],
+		procedure = sosProcedures(weathersos),
+		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+						begin = as.POSIXct("2009-08-10 12:00"),
+						end = as.POSIXct("2009-08-20 12:00"))),
+		#featureOfInterest = foiBBox,
+		offering = sosOfferings(weathersos)[[2]])
+str(obs4[[1]]@result)
+str(obs4[[2]]@result)
+# Can I automatically join these? No, not really, as time stamps differ!
+data.frame(obs4[[1]]@result["Time"][1:10,], obs4[[2]]@result["Time"][1:10,])
+
+# Attention: plots ignore the fact that the times do NOT perfectly match!
+x <- 700
+plot(x = obs4[[1]]@result[[1]][1:x], y = obs4[[1]]@result[[3]][1:x], type = "l",
+		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
+		xlab = "Time (00:00 o'clock)",
+		ylab = "Temperature (°C)",
+		xaxt="n") # do not plot x-axis
+r <- as.POSIXct(round(range(obs4[[1]]@result[[1]]), "days"))
+axis.POSIXct(side = 1, x = obs4[[1]]@result[[1]][1:x], format = "%d. %h",
+		at = seq(r[1], r[2], by="day"))
+lines(x = obs4[[2]]@result[[1]][1:x], y = obs4[[2]]@result[[3]][1:x],
+		col = "orange")
+legend("topleft", legend = c("Münster", "Kärnten"),
+		col = c("steelblue", "orange"), lty = 1, bty="n")
+
+savePlot(type = "png", filename = "/tmp/temp-MS-K.png")
+
+hist(obs4[[2]]@result[[3]])
+pairs(obs4[[2]]@result) # not really useful :-)
+
+# FOI with ids, varying @id and if procedures are given or not
+foiIDs <- sosCreateFeatureOfInterest(
+		objectIDs = list(
+				"urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93",
+				"urn:ogc:object:feature:OSIRIS-HWS:efeb807b-bd24-4128-a920-f6729bcdd111",
+				"id:02")[1:1])
+obs5 <- getObservation(sos = weathersos,
+		observedProperty = sosObservedProperties(weathersos)[2],
+		#procedure = sosProcedures(weathersos),
+		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+						begin = as.POSIXct("2009-08-10 12:00"),
+						end = as.POSIXct("2009-08-12 12:00"))),
+		featureOfInterest = foiIDs,
+		offering = sosOfferings(weathersos)[[2]], # @id not needed, works!
+		inspect = TRUE)
+str(obs5)
+# only returns the (one) selected feature
+# works!
+
+# BBOX, different variants, also testing more several phenomena, but in
+# WeatherSOS, there is only one observedProperty per offering
+foiBBoxMS <- sosCreateFeatureOfInterest(
+		bbox = sosCreateBBoxMatrix(lowLat = 50.0, lowLon = 7.0,
+				uppLat = 53.0, uppLon = 10.0),
+		srsName = "urn:ogc:def:crs:EPSG:4326")
+foiBBoxMSandK <- sosCreateFeatureOfInterest(
+		bbox = sosCreateBBoxMatrix(lowLat = 45.0, lowLon = 7.0,
+				uppLat = 53.0, uppLon = 15.0),
+		srsName = "urn:ogc:def:crs:EPSG:4326")
+foiBBoxNone <- sosCreateFeatureOfInterest(
+		bbox = sosCreateBBoxMatrix(lowLat = 0.0, lowLon = 0.0,
+				uppLat = 1.0, uppLon = 1.0),
+		srsName = "urn:ogc:def:crs:EPSG:4326")
+obs6 <- getObservation(sos = weathersos,
+		observedProperty = sosObservedProperties(weathersos)[2:5],
+		procedure = sosProcedures(weathersos),
+		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+						begin = as.POSIXct("2009-08-10 12:00"),
+						end = as.POSIXct("2009-08-17 12:00"))),
+		featureOfInterest = foiBBoxMSandK,
+		offering = sosOfferings(weathersos)[[3]]@id, inspect = TRUE)
+str(obs6)
+# works!
+
+obs6@result[[1]][c(1,672)]; obs6@samplingTime#  both the same values - good!
 
 
+################################################################################
 # TODO 
 #getData(sos, begin = , end = , observedProperty = )
 # return all possible procedures, in just one data.frame?

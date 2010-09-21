@@ -27,22 +27,21 @@
 #                                                                              #
 ################################################################################
 
-# ogc:spatialOps needed in GetObservation Request
-# TODO implement spatial ops
+################################################################################
+# TEMPORAL
 
 #
 # ogc:temporalOps needed in GetObservation Request:
 # 52N SOS only supports TimeInstant and TimePeriod for eventTime, see
 # HttpPostRequestDecoder.java, so time can be a GmlTimeGeometricPrimitive
 #
-setClass("OgcBinaryTemporalOpType",
-		representation(
-				propertyName = "character",
+setClass("OgcBinaryTemporalOp",
+		representation(propertyName = "character",
 				time = "GmlTimeGeometricPrimitive"),
 		prototype = list(propertyName = as.character(NA), time = NULL),
 		contains = c("VIRTUAL"),
 		validity = function(object) {
-			#print("Entering validation: OgcBinaryTemporalOpType")
+			#print("Entering validation: OgcBinaryTemporalOp")
 			# TODO implement validity function
 			return(TRUE)
 		}
@@ -52,9 +51,8 @@ setClass("OgcBinaryTemporalOpType",
 # after and before are only allowed with time instant
 #
 setClass("TM_After",
-		representation(
-				time = "GmlTimeInstant"),
-		contains = c("OgcBinaryTemporalOpType"),
+		representation(time = "GmlTimeInstant"),
+		contains = c("OgcBinaryTemporalOp"),
 		validity = function(object) {
 			#print("Entering validation: TM_After")
 			# TODO implement validity function
@@ -62,9 +60,8 @@ setClass("TM_After",
 		}
 )
 setClass("TM_Before",
-		representation(
-				time = "GmlTimeInstant"),
-		contains = c("OgcBinaryTemporalOpType"),
+		representation(time = "GmlTimeInstant"),
+		contains = c("OgcBinaryTemporalOp"),
 		validity = function(object) {
 			#print("Entering validation: TM_Before")
 			# TODO implement validity function
@@ -76,9 +73,8 @@ setClass("TM_Before",
 # during makes only sense with time period
 #
 setClass("TM_During",
-		representation(
-				time = "GmlTimePeriod"),
-		contains = c("OgcBinaryTemporalOpType"),
+		representation(time = "GmlTimePeriod"),
+		contains = c("OgcBinaryTemporalOp"),
 		validity = function(object) {
 			#print("Entering validation: TM_During")
 			# TODO implement validity function
@@ -90,10 +86,73 @@ setClass("TM_During",
 # equals allows both time instant and period
 #
 setClass("TM_Equals",
-		contains = c("OgcBinaryTemporalOpType"),
+		contains = c("OgcBinaryTemporalOp"),
 		validity = function(object) {
 			#print("Entering validation: TM_Equals")
 			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+
+################################################################################
+# SPATIAL
+
+#
+#
+#
+setClass("OgcSpatialOps",
+		contains = c("VIRTUAL"),
+		validity = function(object) {
+			#print("Entering validation: OgcSpatialOps")
+			return(TRUE)
+		}
+)
+setClass("OgcBBOX",
+		representation(propertyName = "character",
+				envelope = "GmlEnvelope"),
+		contains = c("OgcSpatialOps"),
+		validity = function(object) {
+			#print("Entering validation: OgcBBOX")
+			return(TRUE)
+		}
+)
+
+#
+#
+#
+setClass("OgcBinarySpatialOp",
+		representation(propertyName = "character",
+				geometry = "GmlGeometry",
+				envelope = "GmlEnvelope"),
+		contains = c("VIRTUAL", "OgcSpatialOps"),
+		prototype = list(propertyName = as.character(NA), geometry = NULL,
+				envelope = NULL),
+		validity = function(object) {
+			print("Entering validation: OgcBinarySpatialOp")
+			# TODO implement validity function
+			# only one of geometry of envelope can be set
+			return(TRUE)
+		}
+)
+setClass("OgcContains",
+		contains = c("OgcBinarySpatialOp"),
+		validity = function(object) {
+			print("Entering validation: OgcContains")
+			return(TRUE)
+		}
+)
+setClass("OgcIntersects",
+		contains = c("OgcBinarySpatialOp"),
+		validity = function(object) {
+			print("Entering validation: OgcIntersects")
+			return(TRUE)
+		}
+)
+setClass("OgcOverlaps",
+		contains = c("OgcBinarySpatialOp"),
+		validity = function(object) {
+			print("Entering validation: OgcOverlaps")
 			return(TRUE)
 		}
 )

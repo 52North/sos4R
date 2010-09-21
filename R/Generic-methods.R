@@ -78,7 +78,7 @@ if (!isGeneric("getObservation"))
 					responseFormat = sosDefaultGetObsResponseFormat,
 					# optional:
 					srsName = as.character(NA), eventTime = list(NA), 
-					procedure = list(NA), featureOfInterest = list(NA), 
+					procedure = list(NA), featureOfInterest = NULL, 
 					result = as.character(NA), resultModel = as.character(NA),
 					responseMode = as.character(NA), BBOX = as.character(NA),
 					latest = FALSE, verbose = sos@verboseOutput,

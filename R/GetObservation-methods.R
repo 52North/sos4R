@@ -39,7 +39,7 @@ GetObservation <- function(
 		srsName = as.character(NA),
 		eventTime = list(NA), 
 		procedure = list(NA),
-		featureOfInterest = list(NA), 
+		featureOfInterest = NULL, 
 		result = as.character(NA),
 		resultModel = as.character(NA),
 		responseMode = as.character(NA),
@@ -209,7 +209,7 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 			attrs=c(.xsiSchemaLocationAttribute, service = obj@service,
 					version = obj@version))
 	
-	# required and optional are mixed as schema requires a particular order:
+	# required and optional are mixed - schema requires a particular order:
 	.offering <- xmlNode(name = "offering", namespace = sosNamespacePrefix,
 			obj@offering)
 	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
@@ -232,9 +232,10 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj) {
 	.xmlDoc <- addChildren(node = .xmlDoc, kids = .observedProperties,
 			append = TRUE)
 	
-	if( !any(sapply(obj@featureOfInterest, "is.na"), na.rm = TRUE)) {
-		# TODO add foi with ogc:spatialOps and sos:ObjectID
-		warning("featureOfInterest not encoded yet!")
+	if( !is.null(obj@featureOfInterest)) {
+		.foi <- encodeXML(obj@featureOfInterest)
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.foi),
+				append = TRUE)
 	}
 	
 	if( !is.na(obj@result)) {

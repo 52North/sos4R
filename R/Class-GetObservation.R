@@ -33,16 +33,16 @@
 setClass("GetObservation",
 		representation(
 				offering = "character",
-				observedProperty = "list", # one or many
+				observedProperty = "list",
 				responseFormat = "character",
-				srsName = "character", # optional
-				eventTime = "list", # zero or many # TODO how model temporalOps, maybe also accept POSIXt elements here?
-				procedure = "list", # zero or many
-				featureOfInterest = "list", # optional 
-				result = "character", # optional # TODO how to model comparison ops
-				resultModel = "character", # optional
+				srsName = "character",
+				eventTime = "list", 
+				procedure = "list", 
+				featureOfInterest = "ANY", # SosFeatureOfInterest 
+				result = "character",
+				resultModel = "character",
 				responseMode = "character",
-				BBOX = "character"), # optional, not in spec, see http://www.oostethys.org/best-practices/best-practices-get
+				BBOX = "character"),
 		prototype = list(
 				service = as.character(NA),
 				version = as.character(NA),
@@ -72,7 +72,7 @@ setClass("GetObservation",
 			
 			# eventTime is a list of ogc:temporalOps
 			
-			# featureOfInterest is a sos:ObjectID OR an ogc:spatialOps element
+			# featureOfInterest is a SosFeatureOfInterest element
 			
 			# result is an ogc:comparisonOps element
 			
@@ -93,12 +93,12 @@ setClass("GetObservationById",
 		representation(
 				observationId = "character",
 				responseFormat = "character",
-				srsName = "character", # optional
-				resultModel = "character", # optional
-				responseMode = "character"), # optional
+				srsName = "character",
+				resultModel = "character",
+				responseMode = "character"),
 		prototype = list(
 				observationId = as.character(NA),
-				responseFormat = as.character(NA)), # prototype should not pass validity
+				responseFormat = as.character(NA)),
 		contains = "OwsServiceOperation",
 		validity = function(object) {
 			#print("Entering validation: GetObservationById")

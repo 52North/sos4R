@@ -234,3 +234,4 @@ sosDefaultTimeParsingFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultKVPTimeFormat <- "%Y-%m-%dT%H:%M:%OS" # "YYYY-MM-DDTHH:mm:ssZ"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[["TM_During"]]
+sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"

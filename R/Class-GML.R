@@ -210,24 +210,70 @@ setClass("GmlDirectPosition",
 )
 
 #
-# gml:coordinates and gml:coord are deprecated
 #
-setClass("GmlPoint",
-		representation(pos = "GmlDirectPosition",
-				# optional:
-				id = "character",
+#
+setClass("GmlGeometry",
+		representation(id = "character",
 				srsName = "character",
 				srsDimension = "integer",
 				axisLabels = "character",
 				uomLabels = "character"),
-		prototype = list(pos = NULL),
+		contains = c("VIRTUAL"),
 		validity = function(object) {
-			#print("Entering validation: GmlPoint")
+			#print("Entering validation: GmlGeometry")
 			# TODO implement validity function
 			# one of parameters has to be set
 			return(TRUE)
 		}
 )
+
+
+
+#
+# gml:coordinates and gml:coord are deprecated
+#
+setClass("GmlPoint",
+		representation(pos = "GmlDirectPosition"),
+		prototype = list(pos = NULL),
+		contains = c("GmlGeometry"),
+		validity = function(object) {
+			#print("Entering validation: GmlPoint")
+			# TODO implement validity function
+			# pos must be set
+			return(TRUE)
+		}
+)
+
+#
+# NOT IMPLEMENTED
+#
+setClass("GmlLineString",
+		representation(poss = "list", points = "list", posList = "ANY"),
+		prototype = list(),
+		contains = c("GmlGeometry"),
+		validity = function(object) {
+			#print("Entering validation: GmlLineString")
+			# TODO implement validity function
+			# one of the possible lists or posList has to be set
+			return(TRUE)
+		}
+)
+
+#
+# NOT IMPLEMENTED
+#
+setClass("GmlPolygon",
+		representation(exterior = "ANY", interior = "ANY"),
+		prototype = list(),
+		contains = c("GmlGeometry"),
+		validity = function(object) {
+			#print("Entering validation: GmlPolygon")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+
 
 #
 #
@@ -240,6 +286,26 @@ setClass("GmlPointProperty",
 			#print("Entering validation: GmlPointProperty")
 			# TODO implement validity function
 			# one of parameters has to be set, point has to be NA or GmlPoint
+			return(TRUE)
+		}
+)
+
+#
+#
+#
+setClass("GmlEnvelope",
+		representation(
+				lowerCorner = "GmlDirectPosition",
+				upperCorner = "GmlDirectPosition",
+				srsName = "character",
+				srsDimension = "integer",
+				axisLabels = "character",
+				uomLabels = "character"),
+		prototype = list(lowerCorner = NULL, upperCorner = NULL),
+		validity = function(object) {
+			#print("Entering validation: GmlEnvelope")
+			# TODO implement validity function
+			# srsDimension must be positive
 			return(TRUE)
 		}
 )

@@ -30,17 +30,40 @@
 #
 # samplingTime is the only time that's really used, so set it as default
 #
-"TM_After" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+TM_After <- function(propertyName = sosDefaultTempOpPropertyName, time) {
 	new("TM_After", propertyName = propertyName, time = time)
 }
-"TM_Before" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+TM_Before <- function(propertyName = sosDefaultTempOpPropertyName, time) {
 	new("TM_Before", propertyName = propertyName, time = time)
 }
-"TM_During" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+TM_During <- function(propertyName = sosDefaultTempOpPropertyName, time) {
 	new("TM_During", propertyName = propertyName, time = time)
 }
-"TM_Equals" <- function(propertyName = sosDefaultTempOpPropertyName, time) {
+TM_Equals <- function(propertyName = sosDefaultTempOpPropertyName, time) {
 	new("TM_Equals", propertyName = propertyName, time = time)
+}
+
+#
+#
+#
+OgcBBOX <- function(propertyName = sosDefaultSpatialOpPropertyName,
+		envelope) {
+	new("OgcBBOX", propertyName = propertyName, envelope = envelope)	
+}
+OgcContains <- function(propertyName = sosDefaultSpatialOpPropertyName,
+		geometry = NULL, envelope = NULL) {
+	new("OgcContains", propertyName = propertyName, geometry = geometry,
+			envelope = envelope)
+}
+OgcIntersects <- function(propertyName = sosDefaultSpatialOpPropertyName,
+		geometry = NULL, envelope = NULL) {
+	new("OgcIntersects", propertyName = propertyName, geometry = geometry,
+			envelope = envelope)
+}
+OgcOverlaps <- function(propertyName = sosDefaultSpatialOpPropertyName,
+		geometry = NULL, envelope = NULL) {
+	new("OgcOverlaps", propertyName = propertyName, geometry = geometry,
+			envelope = envelope)
 }
 
 
@@ -98,10 +121,8 @@ setMethod(f = "encodeXML",
 .encodeTM <- function(nodeName, propertyName, time, verbose = FALSE) {
 	if(verbose) cat("Encoding TM element ", nodeName, "\n")
 	
-	.tm <- xmlNode(name = nodeName,
-			namespace = ogcNamespacePrefix)
-	.pn <- xmlNode(name = ogcPropertyNameName,
-			namespace = ogcNamespacePrefix)
+	.tm <- xmlNode(name = nodeName, namespace = ogcNamespacePrefix)
+	.pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 	xmlValue(.pn) <- propertyName
 	.tm$children[[1]] <- .pn
 	.time <- encodeXML(time, verbose)
@@ -110,11 +131,100 @@ setMethod(f = "encodeXML",
 	return(.tm)
 }
 
+setMethod(f = "encodeXML",
+		signature = signature(obj = "OgcBBOX"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML OgcBBOX with", toString(obj@time),
+						"\n")
+			
+			.bbox <- xmlNode(name = ogcBBOXName, namespace = ogcNamespacePrefix)
+			
+			.pN <- .createPropertyName(node = .bbox,
+					propertyName = obj@propertyName)
+			.env <- encodeXML(obj@envelope)
+			.bbox <- addChildren(node = .bbox, kids = list(.pN, .env))
+			
+			return(.bbox)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "OgcContains"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML OgcContains with", toString(obj@time),
+						"\n")
+			
+			.contains <- .encodeBinarySpatialOp(opName = ogcContainsName,
+					propertyName = obj@propertyName, geometry = obj@geometry,
+					envelope = obj@envelope)
+			
+			return(.contains)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "OgcIntersects"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML OgcIntersects with",
+						toString(obj@time), "\n")
+			
+			.intersects <- .encodeBinarySpatialOp(opName = ogcIntersectsName,
+					propertyName = obj@propertyName, geometry = obj@geometry,
+					envelope = obj@envelope)
+			
+			return(.intersects)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "OgcOverlaps"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML OgcOverlaps with", toString(obj@time),
+						"\n")
+			
+			.overlaps <- .encodeBinarySpatialOp(opName = ogcOverlapsName,
+					propertyName = obj@propertyName, geometry = obj@geometry,
+					envelope = obj@envelope)
+			
+			return(.overlaps)
+		}
+)
+
+.encodeBinarySpatialOp <- function(opName, propertyName,
+		geometry, envelope) {
+	.spOp <- xmlNode(name = opName, namespace = ogcNamespacePrefix)
+	
+	.pN <- .createPropertyName(node = .spOp,
+			propertyName = propertyName)
+	
+	# switch between geometry and envelope
+	if(!is.null(geometry)) {
+		.geomOrEnv <- encodeXML(geometry)
+	}
+	else if(!is.null(envelope)) {
+		.geomOrEnv <- encodeXML(envelope)
+	}
+	else {
+		warning("At least one of geometry or envelope has to be set.")
+		.geomOrEnv <- NULL
+	}
+	
+	.spOp <- addChildren(node = .spOp, kids = list(.pN, .geomOrEnv))
+	
+	return(.spOp)
+}
+
+.createPropertyName <- function(node, propertyName) {
+	.pN <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+	xmlValue(.pN) <- propertyName
+	return(.pN)
+}
+
 #
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #
 setMethod(f = "encodeKVP",
-		signature = signature(obj = "OgcBinaryTemporalOpType"),
+		signature = signature(obj = "OgcBinaryTemporalOp"),
 		def = function(obj, verbose) {
 			if(verbose) cat("Encoding KVP temporalOps: ", toString(obj))
 			.time <- NULL

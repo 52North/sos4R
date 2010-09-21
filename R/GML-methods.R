@@ -82,15 +82,23 @@ GmlFeatureProperty <- function(href = as.character(NA), feature = NA) {
 }
 
 GmlDirectPosition <- function(pos, srsName = as.character(NA),
-		srsDimension = as.character(NA), axisLabels = as.character(NA), 
+		srsDimension = NA_integer_, axisLabels = as.character(NA), 
 		uomLabels = as.character(NA)) {
 	new("GmlDirectPosition", pos = pos, srsName = srsName,
 			srsDimension = srsDimension, axisLabels = axisLabels,
 			uomLabels = uomLabels)
 }
 
+GmlDirectPosition <- function(lat, lon, srsName = as.character(NA),
+		srsDimension = NA_integer_, axisLabels = as.character(NA), 
+		uomLabels = as.character(NA)) {
+	new("GmlDirectPosition", pos = paste(lat, lon, sep = " "),
+			srsName = srsName, srsDimension = srsDimension,
+			axisLabels = axisLabels, uomLabels = uomLabels)
+}
+
 GmlPoint <- function(pos, id = as.character(NA), srsName = as.character(NA),
-		srsDimension = as.character(NA), axisLabels = as.character(NA),
+		srsDimension = NA_integer_, axisLabels = as.character(NA),
 		uomLabels = as.character(NA)) {
 	new("GmlPoint", pos = pos, id = id, srsName = srsName,
 			srsDimension = srsDimension, axisLabels = axisLabels,
@@ -104,6 +112,15 @@ GmlPointProperty <- function(href = as.character(NA), point = NA) {
 GmlTimeInstantProperty <- function(href = as.character(NA), time = NA) {
 	new("GmlTimeInstantProperty", href = href, time = time)
 }
+
+GmlEnvelope <- function(lowerCorner, upperCorner, srsName = as.character(NA),
+		srsDimension = NA_integer_, axisLabels = as.character(NA),
+		uomLabels = as.character(NA)) {
+	new("GmlEnvelope", lowerCorner = lowerCorner, upperCorner = upperCorner,
+			srsName = srsName, srsDimension = srsDimension,
+			axisLabels = axisLabels, uomLabels = uomLabels)
+}
+
 
 ################################################################################
 # encoding methods
@@ -141,16 +158,18 @@ setMethod(f = "encodeXML",
 			
 			if( !is.na(obj@frame)) {
 				.tpos <- addAttributes(node = .tpos,
-						.attrs = c("frame" = obj@frame))
+						.attrs = c("frame" = obj@frame), append = TRUE)
 			}
 			if( !is.na(obj@calendarEraName)) {
 				.tpos <- addAttributes(node = .tpos,
-						.attrs = c("calendarEraName" = obj@calendarEraName))
+						.attrs = c("calendarEraName" = obj@calendarEraName),
+						append = TRUE)
 			}
 			if( !is.na(obj@indeterminatePosition)) {
 				.tpos <- addAttributes(node = .tpos,
 						.attrs = c("indeterminatePosition" =
-										obj@indeterminatePosition))
+										obj@indeterminatePosition),
+						append = TRUE)
 			}
 			
 			# FIXME take time format from sos, also for kvp stuff!
@@ -232,3 +251,117 @@ setMethod(f = "encodeXML",
 			return(.tp)
 		}
 )
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlEnvelope"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlEnvelope with", toString(obj))
+			
+			.env <- xmlNode(name = gmlEnvelopeName,
+					namespace = gmlNamespacePrefix)
+			
+			if( !is.na(obj@srsName)) {
+				.env <- addAttributes(node = .env,
+						.attrs = c("srsName" = obj@srsName), append = TRUE)
+			}
+			if( !is.na(obj@srsDimension)) {
+				.env <- addAttributes(node = .env,
+						.attrs = c("srsDimension" = obj@srsDimension),
+						append = TRUE)
+			}
+			if( !is.na(obj@axisLabels)) {
+				.env <- addAttributes(node = .env,
+						.attrs = c("axisLabels" = obj@axisLabels),
+						append = TRUE)
+			}
+			if( !is.na(obj@uomLabels)) {
+				.env <- addAttributes(node = .env,
+						.attrs = c("uomLabels" = obj@uomLabels),
+						append = TRUE)
+			}
+			
+			.lC <- encodeXML(obj@lowerCorner)
+			xmlName(.lC) <- gmlLowerCornerName
+			.uC <- encodeXML(obj@upperCorner)
+			xmlName(.uC) <- gmlUpperCornerName
+			
+			.env$children[[1]] <- .lC
+			.env$children[[2]] <- .uC
+			
+			return(.env)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlDirectPosition"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlDirectPosition with", toString(obj))
+			
+			.pos <- xmlNode(name = gmlPosName,
+					namespace = gmlNamespacePrefix)
+			xmlValue(.pos) <- obj@pos
+			
+			if( !is.na(obj@srsName)) {
+				.pos <- addAttributes(node = .pos,
+						.attrs = c("srsName" = obj@srsName), append = TRUE)
+			}
+			if( !is.na(obj@srsDimension)) {
+				.pos <- addAttributes(node = .pos,
+						.attrs = c("srsDimension" = obj@srsDimension),
+						append = TRUE)
+			}
+			if( !is.na(obj@axisLabels)) {
+				.pos <- addAttributes(node = .pos,
+						.attrs = c("axisLabels" = obj@axisLabels),
+						append = TRUE)
+			}
+			if( !is.na(obj@uomLabels)) {
+				.pos <- addAttributes(node = .pos,
+						.attrs = c("uomLabels" = obj@uomLabels), append = TRUE)
+			}
+			
+			return(.pos)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlPoint"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			
+			.point <- xmlNode(name = gmlPointName,
+					namespace = gmlNamespacePrefix)
+			.pos <- encodeXML(obj@pos)
+			.point$children[[1]] <- .pos
+					
+			return(.point)
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlLineString"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			
+			warning("FUNCTION NOT IMPLEMENTED!")
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlPolygon"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			
+			warning("FUNCTION NOT IMPLEMENTED!")
+		}
+)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "GmlPointProperty"),
+		def = function(obj, verbose) {
+			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			
+			warning("FUNCTION NOT IMPLEMENTED!")
+		}
+)
+
