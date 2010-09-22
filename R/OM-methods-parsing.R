@@ -229,8 +229,14 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
 	.eTParser <- sosParsers(sos)[[sweElementTypeName]]
 	.fields <- .eTParser(obj[[sweElementTypeName]])
 	
+	if(verbose) cat("-- Parsed field descriptions:", paste(.fields, sep="\n"),
+				"\n")
+	
 	.encParser <- sosParsers(sos)[[sweEncodingName]]
 	.encoding <- .encParser(obj[[sweEncodingName]])
+	
+	if(verbose) cat("-- Parsed encoding description:", toString(.encoding),
+				"\n")
 	
 	.valParser <- sosParsers(sos)[[sweValuesName]]
 	.values <- .valParser(values = obj[[sweValuesName]], fields = .fields,
@@ -250,7 +256,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		stop("Handling for given encoding not implemented!")
 	}
 	
-	.converters <- sosFieldConverters(sos)
+	.converters <- sosDataFieldConverters(sos)
 	
 	.blockLines <- strsplit(x = xmlValue(values),
 			split = encoding@blockSeparator)
@@ -264,23 +270,26 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	
 	# do following for all fields
 	.fieldCount <- length(fields)
-	for (.currentFieldIdx in seq(1,.fieldCount)) {
+	for (.currentFieldIdx in seq(1,.fieldCount)) {		
 		# create list for each variable
 		.currentValues <- sapply(.tokenLines, "[[", .currentFieldIdx)
-		.currentField <- fields[[.currentFieldIdx]]			
+		.currentField <- fields[[.currentFieldIdx]]
+		
+		if(verbose) cat("Parsing field", paste(.currentField))
 		
 		# convert values to the correct types
-		.method <- .converters[[.currentField[["definition"]]]]
+		.method <- .converters[[.currentField[[.sosParseFieldDefinition]]]]
 		if(is.null(.method)) {
 			# could still be a unit of measurement given, use as
-			if(!is.na(.currentField["uom"])) {
-				.method <- .converters[[.currentField[["uom"]]]]
+			if(!is.na(.currentField[.sosParseFieldUOM])) {
+				.method <- .converters[[.currentField[[.sosParseFieldUOM]]]]
 				if(is.null(.method)) {
 					# fallback option
 					warning(paste("No converter for the unit of measurement ",
-								.currentField[["uom"]],
-								"! You can add one SOSFieldConverters()."))
-					.method <- .converters[["uom"]]	
+								.currentField[[.sosParseFieldUOM]],
+								"! Trying a default, but you can add one using",
+								"SosDefaultFieldConvertingFunctions()."))
+					.method <- .converters[[.sosParseFieldUOM]]	
 				}
 			}
 			else {
@@ -297,12 +306,28 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		# do the conversion
 		.currentValues <- .method(x = .currentValues, sos = sos)
 		
-		# bind new and existing data
+		# bind new and existing data:
 		if(verbose) cat("Binding additional data.frame for",
-					.currentField[["name"]], "with values",
+					.currentField[[.sosParseFieldName]], "with values",
 					toString(.currentValues), "\n")
 		.newData <- data.frame(.currentValues)
-		names(.newData) <- .currentField[["name"]]
+		
+		# create the name of the new data:
+		.newDataName <- .currentField[[.sosParseFieldName]]
+		if(!is.na(.currentField[.sosParseFieldUOM]))
+			.newDataName <- paste(.newDataName, " [",
+					.currentField[[.sosParseFieldUOM]], "]", sep = "")
+		
+		if(!is.na(.currentField[.sosParseFieldCategoryName])) {
+			# assume if category name is given that other fields are there, too	
+			.newDataName <- paste(.newDataName, " [",
+					.currentField[[.sosParseFieldCategoryName]], ", ",
+					.currentField[[.sosParseFieldValue]], ", ",
+					.currentField[[.sosParseFieldCodeSpace]], ", ",
+					sep = "")
+		}
+		
+		names(.newData) <- .newDataName
 		.data <- cbind(.data, .newData)
 	}
 	
@@ -314,21 +339,25 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 
 parseElementType <- function(obj) {
 	# can only process swe:elementType containing a swe:SimpleDataRecord
-	.simpleDR <- obj[[sweSimpleDataRecordName]]
-	if(is.null(.simpleDR)) {
-		stop(paste("Cannot parse swe:elementType, only children of type",
-						sweSimpleDataRecordName, "is supported!"))
-	}
-	else {
-		.fields <- .filterXmlChildren(node = .simpleDR, childrenName = sweFieldName,
-			includeNamed = TRUE)
+	.simpleDataRecord <- obj[[sweSimpleDataRecordName]]
+	.dataRecord <- obj[[sweDataRecordName]]
+	if(!is.null(.simpleDataRecord) || !is.null(.dataRecord)) {
+		if(!is.null(.simpleDataRecord)) .dr <- .simpleDataRecord
+		else .dr <- .dataRecord
+		
+		.fields <- .filterXmlChildren(node = .dr, childrenName = sweFieldName,
+				includeNamed = TRUE)
 		
 		# extract the fields, naming with attribute 'name'
 		.parsedFields <- lapply(.fields, parseField)
 		.names <- sapply(.parsedFields, "[", "name")
 		names(.parsedFields) <- .names
-		
 		return(.parsedFields)
+	}
+	else {
+		stop(paste("Cannot parse swe:elementType, only children of type",
+						sweSimpleDataRecordName, "and", sweDataRecordName,
+						"are supported!"))
 	}
 }
 
@@ -348,6 +377,13 @@ parseEncoding <- function(obj) {
 ################################################################################
 # sub-parsing functions, not exchangeable via SosParsers
 
+.sosParseFieldName <- ".sosParseFieldName"
+.sosParseFieldDefinition <- ".sosParseFieldDefinition"
+.sosParseFieldUOM <- ".sosParseFieldUOM"
+.sosParseFieldCategoryName <- ".sosParseFieldCategoryName"
+.sosParseFieldValue <- ".sosParseFieldValue"
+.sosParseFieldCodeSpace <- ".sosParseFieldCodeSpace"
+
 parseField <- function(obj) {
 	.field <- NULL
 	
@@ -360,22 +396,48 @@ parseField <- function(obj) {
 
 	#cat("parsing ", .innerFieldName, "\n")
 	
-	# available options: Time, Text, Quantity
+	# Available options: Time, Text, Quantity, Category
+	# The parsed elements and fields are closely bound to 52N SOS (OMEncoder.java)
 	if(.innerFieldName == sweTimeName) {
 		.def <- xmlGetAttr(node = .innerField, name = "definition")
-		.field <- c(name = .name, definition = .def)
+		
+		.field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def)
 	}
 	else if (.innerFieldName == sweTextName) {
 		.def <- xmlGetAttr(node = .innerField, name = "definition")
-		.field <- c(name = .name, definition = .def)
+		
+		.field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def)
 	}
 	else if (.innerFieldName == sweQuantityName) {
 		.def <- xmlGetAttr(node = .innerField, name = "definition")
 		.uom <- xmlGetAttr(node = .innerField[[sweUomName]], name = "code")
-		.field <- c(name = .name, definition = .def, uom = .uom)
+		
+		.field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def,
+				.sosParseFieldUOM = .uom)
+	}
+	else if (.innerFieldName == sweCategoryName) {
+		.catName <- xmlGetAttr(node = .innerField, name = "name")
+		.value <- xmlValue(.innerField[[sweValueName]])
+		.codeSpace <- xmlGetAttr(node = .innerField[[sweCodeSpaceName]],
+				name = "type")
+		
+		.field <- c(.sosParseFieldName = .name,
+				.sosParseFieldCategoryName = .catName,
+				.sosParseFieldValue = .value,
+				.sosParseFieldCodeSpace = .codeSpace)
+	}
+	else if (.innerFieldName == sweBooleanName ||
+			.innerFieldName == sweCountName) {
+		warning("Parsing of the given swe:field", .innerFieldName,
+				"is not implemented! Please extend the parsing funtion of swe:elementType.")
+		.field <- c(name = .innerField)
+	}
+	else if (.innerFieldName == sweDataRecordName) {
+		stop(paste("Parsing of nested swe:DataRecords is not supported!", 
+				"Please extend the parsing funtion of swe:elementType."))
 	}
 	
-	# TODO implement other options: DataRecord with Position, Category, Count, Boolean
+	# correct the names of the list
 	
 	return(.field)
 }

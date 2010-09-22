@@ -28,6 +28,110 @@
 ################################################################################
 
 ################################################################################
+# TODO read data function
+# 
+# convenience function using non-SWE names for stuff
+#
+# parameters:
+#		sos:
+#				the sos to query
+#		
+# 		time = c():	
+#				either one time as POSIXt (or character which is tried to be
+#				parsed to POSIXt) and forms a time instant, or two times
+#				(character or POSIXt) that form an interval
+#		mergeResult = FALSE:
+#				boolean flag that turns on merging of the result into one
+#				dataframe, the single observations cannot be accesses,
+#				essentially only gives all [measurement,observation]@result
+#		addLocation = FALSE
+#				trigger if the location from the  should be added to the result
+#				table fom the featureOfInterest
+#
+# * Function does not include "offering", which is/are instead automatically
+#	detected... but what if one sensor is in several offerings?
+#
+# * Function returns data.frame, NOT OmObservation or OmMeasurement classes
+#
+# * if querying several procedures with different positions, put in them into 
+#	one data.frame?
+#
+if (!isGeneric("read.sos"))
+	setGeneric(name = "sosCaps", def = function(sos,
+					sensors,
+					phenomena,
+					bboxs, # one, or several?
+					times, # one, or several?
+					mergeResult,
+					addLocation,
+					verbose) {
+				standardGeneric("sosCaps")
+			}
+)
+setMethod(f = "read.sos", signature = signature(sos = "SOS"), def = function(sos) {
+			# TODO
+		}
+)
+
+#
+# convenience info function using non-SWE names for stuff
+#
+if (!isGeneric("info.sos"))
+	setGeneric(name = "info.sos", def = function(sos,
+					# select the info to return, if > 1 as named list
+					phenomena = TRUE,
+					bbox = TRUE,
+					timePeriod = TRUE,
+					# 
+					locations = FALSE,
+					all = FALSE,
+					sensors = FALSE,
+					offerings = FALSE,
+					features = FALSE,
+					metadata = FALSE,
+					operations = FALSE,
+					UOMs = FALSE,
+					# select "filters", only one at a time and
+					sensor = NA_character_,
+					phenomenon = NA_character_,
+					offering = NA_character_,
+					# data is an index of the list of the info.data operation
+					series = NA_integer_) {
+				standardGeneric("info.sos")
+			}
+)
+# TODO implement info function
+# sensors = procedure
+# phenomena = observedProperty
+# metadata: url, method, version, identification, provider, timeFormat
+# offerings: shortly the name, the bounding box, the time period - DEFAULT!
+# operations: just the names and how to get more info
+
+# info.sensor?
+# info.phenomenon?
+# info.feature?
+
+# method creates a list (whose items can are named and can be used to read data,
+# or just used in function read.sos)
+# for all available and valid combinations of off/foi/phen/proc
+if (!isGeneric("info.series"))
+	setGeneric(name = "info.series", def = function(sos) {
+				standardGeneric("info.series")
+			})
+
+#
+#
+#
+if (!isGeneric("info.sensors"))
+	setGeneric(name = "info.sensors", def = function(sos,
+					phenomena,
+					offerings,
+					UOMs) {
+				standardGeneric("info.sensors")
+			})
+
+
+################################################################################
 # accessor functions
 if (!isGeneric("sosCaps"))
 	setGeneric(name = "sosCaps", def = function(sos) {
@@ -68,7 +172,7 @@ if (!isGeneric("sosProcedures"))
 			})
 setMethod(f = "sosProcedures", signature = signature(sos = "SOS"), def = function(sos) {
 			.caps <- sosCaps(sos)
-			.ds <- .caps@operations@operations[["GetObservation"]]
+			.ds <- .caps@operations@operations[[sosGetObservationName]]
 			return(.ds@parameters$procedure)
 		})
 
@@ -118,7 +222,7 @@ setMethod(f = "sosFOIs", signature = signature(sos = "SOS"), def = function(sos)
 			.caps <- sosCaps(sos)
 			
 			# via GetFeatureOfInterest
-			.gfoi <- .caps@operations@operations[["GetFeatureOfInterest"]]
+			.gfoi <- .caps@operations@operations[[sosGetFeautureOfInterestName]]
 			if(!is.null(.gfoi)) {
 				return(.gfoi@parameters$featureOfInterestId)
 			}
@@ -182,17 +286,17 @@ setMethod(f = "sosResultModels", signature = signature(sos = "SOS"),
 			return(.getOb@parameters$resultModel)
 		})
 
-if (!isGeneric("sosTimePeriod"))
-	setGeneric(name = "sosTimePeriod", def = function(obj) {
+if (!isGeneric("sosEventTimePeriod"))
+	setGeneric(name = "sosEventTimePeriod", def = function(obj) {
 				standardGeneric("sosTimePeriod")
 			})
-setMethod(f = "sosTimePeriod", signature = signature(obj = "SOS"),
+setMethod(f = "sosEventTimePeriod", signature = signature(obj = "SOS"),
 		def = function(obj) {
 			.caps <- sosCaps(obj)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
 			return(.getOb@parameters$eventTime)
 		})
-setMethod(f = "sosTimePeriod", signature = signature(obj = "SosObservationOffering"),
+setMethod(f = "sosEventTimePeriod", signature = signature(obj = "SosObservationOffering"),
 		def = function(obj) {
 			return(obj@time)
 		})
@@ -215,6 +319,19 @@ setMethod(f = "sosParsers", signature = signature(sos = "SOS"),
 			return(sos@parsers)
 		})
 
+if (!isGeneric("sosResult"))
+	setGeneric(name = "sosResult", def = function(obj) {
+				standardGeneric("sosResult")
+			})
+setMethod(f = "sosResult", signature = signature(obj = "OmObservation"),
+		def = function(obj) {
+			return(obj@result)
+		})
+setMethod(f = "sosResult", signature = signature(obj = "OmMeasurement"),
+		def = function(obj) {
+			return(obj@result)
+		})
+
 ################################################################################
 # conversion methods and accessor function
 sosConvertTime <- function(x, sos) {
@@ -228,11 +345,11 @@ sosConvertString <- function(x, sos) {
 	return(as.character(x = x))
 }
 
-if (!isGeneric("sosFieldConverters"))
-	setGeneric(name = "sosFieldConverters", def = function(sos) {
-				standardGeneric("sosFieldConverters")
+if (!isGeneric("sosDataFieldConverters"))
+	setGeneric(name = "sosDataFieldConverters", def = function(sos) {
+				standardGeneric("sosDataFieldConverters")
 			})
-setMethod(f = "sosFieldConverters", signature = signature(sos = "SOS"),
+setMethod(f = "sosDataFieldConverters", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(sos@dataFieldConverters)
 		})
@@ -399,6 +516,25 @@ sosCreateBBoxMatrix <- function(lowLon, lowLat, uppLon, uppLat) {
 # OTHER
 
 #
+#
+#
+if (!isGeneric("sosCapabilitiesDocumentOriginal"))
+	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos) {
+				standardGeneric("sosCapabilitiesDocumentOriginal")
+			})
+setMethod(f = "sosCapabilitiesDocumentOriginal",
+		signature = signature(sos = "SOS"),
+		def = function(sos) {
+			.gc <- OwsGetCapabilities(service = sosService,
+					acceptVersions = c(sos@version))
+			.responseString = sosRequest(sos = sos, request = .gc,
+					verbose = sos@verboseOutput, inspect = FALSE)
+			.response <- xmlParseDoc(.responseString, asText = TRUE)
+			return(.response)
+		}
+)
+
+#
 # set parsers, encoders and convertes to default
 #
 if (!isGeneric("sosSetFunctionsToDefault"))
@@ -407,11 +543,11 @@ if (!isGeneric("sosSetFunctionsToDefault"))
 			})
 setMethod(f = "sosSetFunctionsToDefault", signature = signature(sos = "SOS"),
 		def = function(sos) {
-			.defaultMethods <- sosInitDefaults()
-			sos@parsers <- .defaultMethods[[1]]
-			sos@encoders <- .defaultMethods[[2]]
-			sos@dataFieldConverters <- .defaultMethods[[3]]
-		})
+			sos@parsers <- .sosDefaultParsers
+			sos@encoders <- .sosDefaultEncoders
+			sos@dataFieldConverters <- .sosDefaultFieldConverters
+		}
+)
 
 #
 # helper methods for exception response handling

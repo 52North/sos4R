@@ -76,11 +76,12 @@ setClass("SOS",
 #
 #
 setClass("SosFilter_Capabilities",
-		representation(xml = "XMLAbstractNode"),
+		representation(xml = "ANY"),
 		prototype = list(xml = NULL),
 		validity = function(object) {
 			#print("Entering validation: SosFilter_Capabilities")
 			# TODO implement validity function
+			# xml should be XMLAbstractNode
 			return(TRUE)
 		}
 )

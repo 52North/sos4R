@@ -75,5 +75,5 @@ myParseMeasurement <- function(measurement) {
 	return(parseMeasurement(measurement, "%Y/%m/%d"))
 }
 sos <- SOS(url = "http://v-swe.uni-muenster.de/WeatherSOS",
-		parsers = SOSParsers("Measurement" = myParseMeasurement))
+		parsers = SosParsingFunctions("Measurement" = myParseMeasurement))
 

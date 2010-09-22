@@ -206,15 +206,15 @@ myER <- function(xml) {
 	return("EXCEPTION! RUN!!!!1111")
 }
 # testing:
-myParsers <- SOSParsers("DescribeSensor" = myParseSensorML)
-SOSParsers("DescribeSensor" = myParseSensorML, "ExceptionReport" = myER)
-SOSParsers("DescribeSensor" = myParseSensorML, include = c("GetObservation", "DescribeSensor"))
-SOSParsers("DescribeSensor" = myParseSensorML, exclude = c("GetObservation", "DescribeSensor"))
+myParsers <- SosParsingFunctions("DescribeSensor" = myParseSensorML)
+SosParsingFunctions("DescribeSensor" = myParseSensorML, "ExceptionReport" = myER)
+SosParsingFunctions("DescribeSensor" = myParseSensorML, include = c("GetObservation", "DescribeSensor"))
+SosParsingFunctions("DescribeSensor" = myParseSensorML, exclude = c("GetObservation", "DescribeSensor"))
 
 
 weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 		method = "POST",
-		parsers = SOSParsers("DescribeSensor" = myParseSensorML, "ExceptionReport" = myER),
+		parsers = SosParsingFunctions("DescribeSensor" = myParseSensorML, "ExceptionReport" = myER),
 		verboseOutput = FALSE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]], inspect = TRUE)
 # WORKS! YEAH!
@@ -231,7 +231,7 @@ myPostEncoding <- function(object, v) {
 
 weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 		method = "POST",
-		encoders = SOSEncoders("POST" = myPostEncoding),
+		encoders = SosEncodingFunctions("POST" = myPostEncoding),
 		verboseOutput = TRUE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]],
 		inspect = TRUE)
@@ -241,7 +241,7 @@ sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]],
 # inspecting XML using dummy parsing function
 weathersos2 = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 		method = "POST",
-		parsers = SOSDisabledParsers,
+		parsers = SosDisabledParsers,
 		verboseOutput = FALSE)
 sensor2 <- describeSensor(weathersos2, sosProcedures(weathersos2)[[1]])
 sensor2 <- describeSensor(weathersos2, "lala")
@@ -257,11 +257,11 @@ measDoc <- xmlParseDoc(meas)
 
 # for partial testing
 tempM <- xmlChildren(xmlRoot(measDoc))[["member"]][["Measurement"]]
-parsedM <- parseMeasurement(tempM, SOSParsers(), verbose = T)
+parsedM <- parseMeasurement(tempM, SosParsingFunctions(), verbose = T)
 tempSP <- xmlChildren(tempM[["featureOfInterest"]])[[1]]
 parseSamplingPoint(tempSP)
 
-om <- parseOM(obj = measDoc, parsers = SOSParsers(), verbose = TRUE)
+om <- parseOM(obj = measDoc, parsers = SosParsingFunctions(), verbose = TRUE)
 str(om)
 # works!
 
@@ -269,7 +269,7 @@ str(om)
 # test handling two of a few not supported observation specializations:
 # category observation and geometry observation
 obsDoc2 <- xmlParseDoc('<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:CategoryObservation></om:CategoryObservation></om:member><om:member><om:GeometryObservation></om:GeometryObservation></om:member></om:ObservationCollection>')
-tempObs2 <- parseOM(obsDoc2, parsers = SOSParsers(), verbose = TRUE)
+tempObs2 <- parseOM(obsDoc2, parsers = SosParsingFunctions(), verbose = TRUE)
 # works!
 
 
@@ -606,6 +606,8 @@ plot(x = times1, y = values1)
 
 # TODO continue here with extraction of data...
 
+# two observedPropertys is not possible with weathersos, as the offerings contain only one phenomenon each
+
 ################################################################################
 # ogc:comparisonOps dummy classes and workaround for passing though XML
 manualResult <- '<sos:result><ogc:PropertyIsGreaterThan><ogc:PropertyName>urn:ogc:def:phenomenon:OGC:1.0.30:waterlevel</ogc:PropertyName><ogc:Literal>5</ogc:Literal></ogc:PropertyIsGreaterThan></sos:result>'
@@ -663,6 +665,39 @@ length(obs1@result[[3]]); length(obs2@result[[3]])
 # TODO 
 #getData(sos, begin = , end = , observedProperty = )
 # return all possible procedures, in just one data.frame?
+
+
+################################################################################
+# using attributes on data frame
+tempDataFrame <- sosResult(pegelObs)
+attributes(tempDataFrame)
+#$names
+#[1] "Time"             "feature"          "Wasserstand [cm]"
+#$class
+#[1] "data.frame"
+#$row.names
+#[1]    1    2    3    4    5    6    7    8    9   10   11   12   13   14
+
+attributes(tempDataFrame[,1])
+#$class
+#[1] "POSIXt"  "POSIXct"
+#$tzone
+#[1] ""
+
+attributes(tempDataFrame[,2])
+#$levels
+#[1] "Steinbach_2450010"
+#$class
+#[1] "factor"
+
+attributes(tempDataFrame[,3])
+#NULL
+
+tempDataFrame[1:2,]
+#				 Time           feature Wasserstand [cm]
+#1 2010-08-22 00:15:00 Steinbach_2450010              171
+#2 2010-08-22 00:30:00 Steinbach_2450010              170
+
 
 ################################################################################
 # Was I stupid?

@@ -95,3 +95,10 @@ setClass("SweTextBlock",
 		}
 )
 
+
+################################################################################
+#
+# Other SOS related SWE elements, like DataRecord, SimpleDataRecord, values, and
+# so forth are parsed directly into R structures.
+#
+

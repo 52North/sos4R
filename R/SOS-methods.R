@@ -29,9 +29,12 @@
 
 ################################################################################
 # construction functions
-SOS <- function(url, method = SOSDefaultConnectionMethod(),
-		version = "1.0.0", parsers = SOSParsers(), encoders = SOSEncoders(),
-		dataFieldConverters = SOSFieldConverters(), curlOpts = list(),
+SOS <- function(url, method = SosDefaultConnectionMethod(),
+		version = "1.0.0",
+		parsers = SosParsingFunctions(),
+		encoders = SosEncodingFunctions(),
+		dataFieldConverters = SosDefaultFieldConvertingFunctions(),
+		curlOpts = list(),
 		curlHandle = getCurlHandle(),
 		timeFormat = sosDefaultTimeParsingFormat, verboseOutput = FALSE) {
 	if(method == .sosConnectionMethodPost)
@@ -60,7 +63,7 @@ SOS <- function(url, method = SOSDefaultConnectionMethod(),
 	.caps <- getCapabilities(.sos, verbose = verboseOutput)
 	.sos@capabilities <- .caps
 	
-	cat("Created SOS class from URL", url, "\n")
+	cat("Created SOS for URL", url, "\n")
 	return(.sos)
 }
 
@@ -376,8 +379,19 @@ setMethod(f = "getObservation",
 						verbose = verbose)
 				
 				# remove list if only one element
-				if(is.list(.obs) && length(.obs) == 1)
+				if(is.list(.obs) && length(.obs) == 1) {
 					.obs <- .obs[[1]]
+					.resultLength <- length(sosResult(.obs))
+				}
+				
+				if (is.list(.obs)) {
+					# get the first element of the dim of every sosResult 
+					.resultLength <- sapply(lapply(lapply(list(.obs, .obs), sosResult),
+									dim), "[[", 1)
+				}
+				else {
+					.resultLength <- dim(sosResult(.obs))[[1]]
+				}
 				
 				if(verbose) {
 					cat("** PARSED RESPONSE:\n")
@@ -385,7 +399,8 @@ setMethod(f = "getObservation",
 				}
 				
 				cat("Finished getObservation to", sos@url, "- received",
-						length(.obs), "elements.\n")
+						length(.obs), "observation(s)/measurement(s) having",
+						paste(.resultLength), "elements.\n")
 				
 				return(.obs)
 			}

@@ -34,162 +34,164 @@
 # (http://www.omegahat.org/SSOAP/)
 #
 
-sosInitDefaults <- function() {
-	
-	# List of the default parsing functions. The names of the list are the
-	# names of the respective XML documents set in Constants.R.
-	.sosDefaultParsers <- list(
-			parseSosCapabilities,
-			parseSensorML,
-			parseOM,
-			parseOM,
-			parseOwsExceptionReport,
-			#
-			parseMeasurement,
-			parseMember,
-			parseObservation,
-			parseObservationCollection,
-			parseResult,
-			parseDataArray,
-			parseElementType,
-			parseEncoding,
-			parseValues,
-			#
-			parseGeometryObservation,
-			parseCategoryObservation,
-			parseCountObservation,
-			parseTruthObservation,
-			parseTemporalObservation,
-			parseComplexObservation)
-	names(.sosDefaultParsers) <- list(
-			sosGetCapabilitiesName,
-			sosDescribeSensorName,
-			sosGetObservationName,
-			sosGetObservationByIdName,
-			sosOwsExceptionReportRootName,
-			#
-			omMeasurementName,
-			omMemberName,
-			omObservationName,
-			omObservationCollectionName,
-			omResultName,
-			sweDataArrayName,
-			sweElementTypeName,
-			sweEncodingName,
-			sweValuesName,
-			#
-			omGeometryObservationName,
-			omCategoryObservationName,
-			omCountObservationName,
-			omTruthObservationName,
-			omTemporalObservationName,
-			omComplexObservationName)
-	
-	# Using a different approach for the encoders here, because there is more than
-	# one way of encoding something (in contrast to parsing). So the different 
-	# objects (and versions) override the respective encoding functions. 
-	.sosDefaultEncoders <- list(
-			encodeRequestKVP,
-			encodeRequestXML,
-			encodeRequestSOAP)
-	names(.sosDefaultEncoders) <- list(
-			.sosConnectionMethodGet,
-			.sosConnectionMethodPost,
-			.sosConnectionMethodSOAP
-			)
-			
-	#
-	#
-	#
-	.sosDefaultFieldConverters <- list(
-			sosConvertTime,
-			sosConvertTime,
-			sosConvertDouble,
-			sosConvertDouble,
-			sosConvertDouble,
-			sosConvertDouble,
-			sosConvertDouble,
-			sosConvertDouble,
-			sosConvertDouble,
-			sosConvertDouble,
-			sosConvertString
-			)
-	names(.sosDefaultFieldConverters) <- list(
-			"urn:ogc:data:time:iso8601",
-			sosTimeName,
-			"%",
-			"Cel",
-			"lx",
-			"hPa",
-			"mm",
-			"deg",
-			"m/s",
-			"uom", # fallback if actual unit is not given
-			"urn:ogc:data:feature"
-			)
-			
-	return(list(.sosDefaultParsers, .sosDefaultEncoders,
-					.sosDefaultFieldConverters))
-}
+# List of the default parsing functions. The names of the list are the
+# names of the respective XML documents set in Constants.R.
+.sosDefaultParsers <- list(
+		parseSosCapabilities,
+		parseSensorML,
+		parseOM,
+		parseOM,
+		parseOwsExceptionReport,
+		#
+		parseMeasurement,
+		parseMember,
+		parseObservation,
+		parseObservationCollection,
+		parseResult,
+		parseDataArray,
+		parseElementType,
+		parseEncoding,
+		parseValues,
+		#
+		parseGeometryObservation,
+		parseCategoryObservation,
+		parseCountObservation,
+		parseTruthObservation,
+		parseTemporalObservation,
+		parseComplexObservation)
+names(.sosDefaultParsers) <- list(
+		sosGetCapabilitiesName,
+		sosDescribeSensorName,
+		sosGetObservationName,
+		sosGetObservationByIdName,
+		sosOwsExceptionReportRootName,
+		#
+		omMeasurementName,
+		omMemberName,
+		omObservationName,
+		omObservationCollectionName,
+		omResultName,
+		sweDataArrayName,
+		sweElementTypeName,
+		sweEncodingName,
+		sweValuesName,
+		#
+		omGeometryObservationName,
+		omCategoryObservationName,
+		omCountObservationName,
+		omTruthObservationName,
+		omTemporalObservationName,
+		omComplexObservationName)
 
-# call it!
-.defaultMethods <- sosInitDefaults()
-# variables have to be there in order to be accessible outside of init method
-sosDefaultParsers <- .defaultMethods[[1]]
-sosDefaultEncoders <- .defaultMethods[[2]]
-sosDefaultFieldConverters <- .defaultMethods[[3]]
+# Using a different approach for the encoders here, because there is more than
+# one way of encoding something (in contrast to parsing). So the different 
+# objects (and versions) override the respective encoding functions. 
+.sosDefaultEncoders <- list(
+		encodeRequestKVP,
+		encodeRequestXML,
+		encodeRequestSOAP)
+names(.sosDefaultEncoders) <- list(
+		.sosConnectionMethodGet,
+		.sosConnectionMethodPost,
+		.sosConnectionMethodSOAP
+		)
+		
+#
+#
+#
+.sosDefaultFieldConverters <- list(
+		sosConvertTime,
+		sosConvertTime,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertString
+		)
+names(.sosDefaultFieldConverters) <- list(
+		"urn:ogc:data:time:iso8601",
+		sosTimeName,
+		"%",
+		"Cel",
+		"lx",
+		"hPa",
+		"m",
+		"mm",
+		"nm",
+		"cm",
+		"km",
+		"deg",
+		"m/s",
+		"g",
+		"kg",
+		"mg",
+		"uom", # fallback if actual unit is not given
+		"urn:ogc:data:feature"
+		)
+
 
 ################################################################################
 # access methods
 
-SOSParsers <- function (..., include = character(0), exclude = character(0)) {
-	defaults <- sosDefaultParsers
-	els <- list(...)
-	.merge(els, defaults, include, exclude)
+SosParsingFunctions <- function (..., include = character(0), exclude = character(0)) {
+	.merge(els = list(...), defaults = .sosDefaultParsers,
+			include = include, exclude)
 }
 
-SOSEncoders <- function (..., include = character(0), exclude = character(0)) {
-	defaults <- sosDefaultEncoders
-	els <- list(...)
-	.merge(els, defaults, include, exclude)
+SosEncodingFunctions <- function (..., include = character(0), exclude = character(0)) {
+	.merge(els = list(...), defaults = .sosDefaultEncoders,
+			include = include, exclude)
 }
 
-SOSDefaultConnectionMethod <- function() {
+SosDefaultConnectionMethod <- function() {
 	return(.sosConnectionMethodPost)
 }
 
-SOSFieldConverters <- function (..., include = character(0), exclude = character(0)) {
-	defaults <- sosDefaultFieldConverters
-	els <- list(...)
-	.merge(els, defaults, include, exclude)
+SosDefaultFieldConvertingFunctions <- function (..., include = character(0),
+		exclude = character(0)) {
+	.merge(els = list(...), defaults = .sosDefaultFieldConverters,
+			include = include, exclude = exclude)
 }
 
 #
 # Function originally written by Duncan Temple Lang for the package SSOAP
-# (http://www.omegahat.org/SSOAP/), slightly adapted here to include all
-# defaults by default, then overwrite if an element with the same name is given.
+# (http://www.omegahat.org/SSOAP/, file SOAP.S), adapted here to include add all
+# defaults if an element with the same name is not given.
 #
-# Order: first replacing defaults, THEN inclusion, THEN exclusion
+# Order: 	FIRST adding defaults for not given names,
+#			THEN inclusion, THEN exclusion
 #
 .merge <- function (els, defaults, include = NULL, exclude = NULL) {
 	if (length(els) > 0) {
-		which <- match(names(defaults), names(els))
-		if (any(!is.na(which))) {
-			# replace the defaults for all given elements
-			defaults[!is.na(which)] <- els[names(defaults)[!is.na(which)]]
-			els <- defaults
-			# original: els[names(defaults)[!is.na(which)]] <- defaults[!is.na(which)]
-		}
+		# which elements are given?
+		.which <- match(names(defaults), names(els))
+		# add defaults (including names) for all that are not given
+		.missing <- is.na(.which)
+		.missingNames <- names(defaults)[.missing]
+		#cat("missing names: "); print(.missingNames)
+		els[.missingNames] <- defaults[.missing]
 	}
+	# no replacements given, base in-/exclusion on all defaults
 	else els <- defaults
 	
 	if (length(include)) {
 		els <- els[include]
 	}
 	else if (length(exclude)) {
-		which <- match(exclude, names(els))
-		if (any(!is.na(which))) 
-			els <- els[-(which[!is.na(which)])]
+		.which <- match(exclude, names(els))
+		if (any(!is.na(.which))) 
+			els <- els[-(.which[!is.na(.which)])]
 	}
 	
 	return(els)
@@ -215,7 +217,7 @@ names(.sosDisabledParsers) <- list(
 		sosGetObservationName,
 		sosGetObservationByIdName,
 		sosOwsExceptionReportRootName)
-SOSDisabledParsers <- function() {
+SosDisabledParsers <- function() {
 	return(.sosDisabledParsers)
 }
 
