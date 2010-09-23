@@ -31,7 +31,7 @@
 # construction methods
 #
 OmObservation <- function(samplingTime, procedure, observedProperty,
-		featureOfInterest, result, metadata = NA, resultTime = NA,
+		featureOfInterest, result, metadata = NA, resultTime = NULL,
 		resultQuality = NA,	parameter = NA) {
 	new("OmObservation", samplingTime = samplingTime, procedure = procedure,
 			observedProperty = observedProperty,
@@ -41,7 +41,7 @@ OmObservation <- function(samplingTime, procedure, observedProperty,
 			parameter = parameter)
 }
 
-OmObservationProperty <- function(href = as.character(NA), obs = NA) {
+OmObservationProperty <- function(href = as.character(NA), obs = NULL) {
 	new("OmObservationProperty", href = href, obs = obs)
 }
 

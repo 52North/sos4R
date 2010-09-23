@@ -90,7 +90,8 @@ parseOwsOperation <- function(op) {
 			
 			.names <- c(.names, xmlGetAttr(.p, "name"))
 			.parameters[[length(.parameters) + 1]] <- .allowedValuesAndRanges
-			# this does not work as it recursively concatenates the lists: .parameters <- c(.parameters, .allowedValuesAndRanges)
+			# the following does NOT work as it recursively concatenates the
+			# lists: .parameters <- c(.parameters, .allowedValuesAndRanges)
 		}
 		
 		names(.parameters) <- .names
@@ -189,7 +190,7 @@ parseOwsServiceIdentification <- function(node) {
 	else .keywords <- c(NA)
 	
 	if(!is.na(xmlChildren(node)[owsFeesName]))
-		.fees <- sapply(.filterXmlChildren(node, owsFeesName), xmlValue)
+		.fees <- paste(sapply(.filterXmlChildren(node, owsFeesName), xmlValue))
 	else .fees <- as.character(NA)
 	
 	if(!is.na(xmlChildren(node)[owsAccessConstraintsName]))
@@ -290,4 +291,10 @@ parseOwsRange <- function(node) {
 	rm(.temp)
 	rm(.names)
 	return(.filtered)
+}
+
+.filterXmlOnlyNoneTexts <- function(node) {
+	.filterXmlChildren(
+			node = node,
+			childrenName = xmlTextNodeName, includeNamed = FALSE)
 }

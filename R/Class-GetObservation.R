@@ -38,8 +38,8 @@ setClass("GetObservation",
 				srsName = "character",
 				eventTime = "list", 
 				procedure = "list", 
-				featureOfInterest = "ANY", # SosFeatureOfInterest 
-				result = "ANY", # OgcComparisonOps
+				featureOfInterest = "SosFeatureOfInterestOrNULL", 
+				result = "OgcComparisonOpsOrNULL",
 				resultModel = "character",
 				responseMode = "character",
 				BBOX = "character"),
@@ -80,7 +80,7 @@ setClass("GetObservation",
 			
 			# resultModel must be a QName
 			
-			# TODO responseMode must be one of inline, out-of-band, attached, or resultTemplate
+			# responseMode must be one of inline, out-of-band, attached, or resultTemplate
 			
 			return(TRUE)
 		}
@@ -118,7 +118,7 @@ setClass("GetObservationById",
 			
 			# responseFormat must be MIME content type
 			# resultModel must be a QName
-			# TODO responseMode must be one of inline, out-of-band, attached, or resultTemplate
+			# responseMode must be one of inline, out-of-band, attached, or resultTemplate
 			
 			return(TRUE)
 		}

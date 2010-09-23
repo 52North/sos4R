@@ -46,6 +46,8 @@ setClass("OgcBinaryTemporalOp",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "OgcBinaryTemporalOpOrNULL",
+		members = c("OgcBinaryTemporalOp", "NULL"))
 
 #
 # after and before are only allowed with time instant
@@ -108,6 +110,9 @@ setClass("OgcSpatialOps",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "OgcSpatialOpsOrNULL",
+		members = c("OgcSpatialOps", "NULL"))
+
 setClass("OgcBBOX",
 		representation(propertyName = "character",
 				envelope = "GmlEnvelope"),
@@ -171,3 +176,5 @@ setClass("OgcComparisonOps",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "OgcComparisonOpsOrNULL",
+		members = c("OgcComparisonOps", "NULL"))

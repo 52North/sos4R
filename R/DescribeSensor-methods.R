@@ -48,29 +48,30 @@ DescribeSensor <- function(
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #
 setMethod("encodeRequestKVP", "DescribeSensor", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestKVPDescribeSensor_1.0.0(obj, verbose))
+				return(sosEncodeRequestKVPDescribeSensor_1.0.0(obj = obj,
+								sos = sos, verbose = verbose))
 			}
 			else {
 				stop("Version not supported!")
 			}
 		}
 )
-sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, verbose = FALSE) {
+sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	# mandatory:
 	.service <- paste("service",
-			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
-	.request <- paste("&request" , sosDescribeSensorName, sep = "=")
+			.kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
+	.request <- paste("request" , sosDescribeSensorName, sep = "=")
 	.version <- paste("version", 
-			.kvpEscapeSpecialCharacters(obj@version), sep = "=")
+			.kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
 	.procedure <- paste("procedure",
-			.kvpEscapeSpecialCharacters(obj@procedure), sep = "=")
+			.kvpEscapeSpecialCharacters(x = obj@procedure), sep = "=")
 	.format <- paste(
 			"outputFormat",
-			.kvpEscapeSpecialCharacters(
-					gsub(obj@outputFormat, pattern = "&quot;",
+			.kvpEscapeSpecialCharacters(x = gsub(obj@outputFormat,
+							pattern = "&quot;",
 							replacement = '"')),
 			sep = "=")
 	
@@ -87,13 +88,13 @@ sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, verbose = FALSE) {
 # encode as XML
 #
 setMethod("encodeRequestXML", "DescribeSensor", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
 			}
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
+				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj))
 			}
 			else {
 				stop("Version not supported!")
@@ -120,7 +121,7 @@ sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
 # encode for SOAP
 #
 setMethod("encodeRequestSOAP", "DescribeSensor", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}
@@ -138,7 +139,7 @@ setMethod("encodeRequestSOAP", "DescribeSensor",
 ################################################################################
 #
 setMethod(f = "checkRequest",
-		signature = signature(service = "ANY", operation = "DescribeSensor",
+		signature = signature(service = "SOS", operation = "DescribeSensor",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			if(verbose) {
@@ -154,7 +155,7 @@ setMethod(f = "checkRequest",
 				
 			# check if sensor in in listed in procedures
 			.procedures = sosProcedures(service)
-			.dsOperation <- sosOperationInfo(service, sosDescribeSensorName)
+			.dsOperation <- sosOperation(service, sosDescribeSensorName)
 
 			.procContained <- FALSE
 			for (x in .procedures) {

@@ -42,13 +42,15 @@ setClass("SwePhenomenon",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "SwePhenomenonOrNULL",
+		members = c("SwePhenomenon", "NULL"))
 
 #
 #
 #
 setClass("SwePhenomenonProperty",
-		representation(href = "character", phenomenon = "ANY"),
-		prototype = list(href = as.character(NA), phenomenon = NA),
+		representation(href = "character", phenomenon = "SwePhenomenonOrNULL"),
+		prototype = list(href = as.character(NA), phenomenon = NULL),
 		validity = function(object) {
 			#print("Entering validation: SwePhenomenonProperty")
 			# TODO implement validity function
@@ -56,6 +58,8 @@ setClass("SwePhenomenonProperty",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "SwePhenomenonPropertyOrNULL",
+		members = c("SwePhenomenonProperty", "NULL"))
 
 #
 # 52N SOS only supports/returns CompositePhenomenon, the intermediate
@@ -64,14 +68,13 @@ setClass("SwePhenomenonProperty",
 setClass("SweCompositePhenomenon",
 		representation(dimension = "integer", components = "list",
 				# optional:
-				base = "ANY"),
+				base = "SwePhenomenonPropertyOrNULL"),
 		prototype = list(dimension = NA_integer_, components = list(NA)),
 		contains = "SwePhenomenon",
 		validity = function(object) {
 			#print("Entering validation: SweCompositePhenomenon")
 			# TODO implement validity function
 			# components needs to be a list of SwePhenomenonProperty instances
-			# base must be SwePhenomenonProperty
 			return(TRUE)
 		}
 )

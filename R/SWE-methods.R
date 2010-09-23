@@ -35,13 +35,13 @@ SwePhenomenon <- function(id, name, description = as.character(NA)) {
 }
 
 SweCompositePhenomenon <- function(id, name, description = as.character(NA),
-		dimension, components, base = NA) {
+		dimension, components, base = NULL) {
 	new("SweCompositePhenomenon", id = id, name = name,
 			description = description, dimension = dimension,
 			components = components, base = base)	
 }
 
-SwePhenomenonProperty <- function(href = as.character(NA), phenomenon = NA) {
+SwePhenomenonProperty <- function(href = as.character(NA), phenomenon = NULL) {
 	new("SwePhenomenonProperty", href = href, phenomenon = phenomenon)
 }
 

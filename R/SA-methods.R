@@ -31,7 +31,7 @@
 # construction methods
 #
 SaSamplingPoint <- function(sampledFeatures, position,
-		relatedObservation = NA, relatedSamplingFeature = NA,
+		relatedObservation = list(NA), relatedSamplingFeature = list(NA),
 		surveyDetails = NA) {
 	new("SaSamplingPoint", sampledFeatures = sampledFeatures,
 			position = position, relatedObservation = relatedObservation,
@@ -41,8 +41,9 @@ SaSamplingPoint <- function(sampledFeatures, position,
 #
 #
 #
-SaSamplingSurface <- function(sampledFeatures, shape, relatedObservation = NA,
-		relatedSamplingFeature = NA, surveyDetails = NA, position = NA) {
+SaSamplingSurface <- function(sampledFeatures, shape,
+		relatedObservation = list(NA), relatedSamplingFeature = list(NA),
+		surveyDetails = NA, position = NA) {
 	new("SaSamplingSurface", sampledFeatures = sampledFeatures,
 			shape = shape, relatedObservation = relatedObservation,
 			relatedSamplingFeature = relatedSamplingFeature, 

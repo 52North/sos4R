@@ -41,7 +41,7 @@ sosDescribeSensorName <- "DescribeSensor"
 sosGetObservationName <- "GetObservation"
 sosGetObservationByIdName <- "GetObservationById"
 sosOwsExceptionReportRootName <- "ExceptionReport"
-sosGetFeautureOfInterestName <- "GetFeatureOfInterest"
+sosGetFeatureOfInterestName <- "GetFeatureOfInterest"
 
 ################################################################################
 # not exported SOS
@@ -50,7 +50,6 @@ sosGetFeautureOfInterestName <- "GetFeatureOfInterest"
 .sosConnectionMethodSOAP <- "SOAP"
 
 SosSupportedConnectionMethods <- function() {
-	# TODO add SOAP once it's implemented
 	return(c(.sosConnectionMethodGet, .sosConnectionMethodPost))
 }
 
@@ -84,6 +83,7 @@ SosSupportedResponseModes <- function() {
 
 ################################################################################
 # SOS
+sosIntendedApplicationName <- "intendedApplication"
 sosTimeName <- "time"
 sosProcedureName <- "procedure"
 sosObservedPropertyName <- "observedProperty"
@@ -149,6 +149,7 @@ gmlNamespacePrefix <- "gml"
 gmlTimeLengthName <- "timeLength"
 gmlDurationName <- "duration"
 gmlTimeIntervalName <- "timeInterval"
+gmlFeatureMemberName <- "featureMember"
 
 ################################################################################
 # SWE
@@ -258,6 +259,23 @@ ogcBBOXName <- "BBOX"
 ogcContainsName <- "Contains"
 ogcIntersectsName <- "Intersects"
 ogcOverlapsName <- "Overlaps"
+ogcSpatialCapabilitiesName <- "Spatial_Capabilities"
+ogcTemporalCapabilitiesName <- "Temporal_Capabilities"
+ogcScalarCapabilitiesName <- "Scalar_Capabilities"
+ogcIdCapabilities <- "Id_Capabilities"
+ogcGeometryOperandsName <- "GeometryOperands"
+ogcGeometryOperandName <- "GeometryOperand"
+ogcSpatialOperatorsName <- "SpatialOperators"
+ogcSpatialOperatorName <- "SpatialOperator"
+ogcTemporalOperandsName <- "TemporalOperands"
+ogcTemporalOperandName <- "TemporalOperand" 
+ogcTemporalOperatorsName <- "TemporalOperators"
+ogcTemporalOperatorName <- "TemporalOperator"
+ogcLogicalOperatorsName <- "LogicalOperators"
+ogcComparisonOperatorsName <- "ComparisonOperators"
+ogcArithmeticOperatorsName <- "ArithmeticOperators"
+ogcEIDName <- "EID"
+ogcFIDName <- "FID"
 
 ################################################################################
 # OWS

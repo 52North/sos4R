@@ -46,24 +46,6 @@ GmlTimePeriod <- function(begin = NULL, beginPosition = NULL, end = NULL,
 			frame = frame)
 }
 
-GmlTimePeriod <- function(begin, end, duration = as.character(NA),
-		timeInterval = NULL, id = as.character(NA), relatedTimes = list(NA),
-		frame = as.character(NA)) {
-	new("GmlTimePeriod", begin = begin, beginPosition = NULL,
-			end = end, endPosition = NULL, duration = duration,
-			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
-			frame = frame)
-}
-
-GmlTimePeriod <- function(beginPosition, endPosition,
-		duration = as.character(NA), timeInterval = NULL, id = as.character(NA),
-		relatedTimes = list(NA), frame = as.character(NA)) {
-	new("GmlTimePeriod", begin = NULL, beginPosition = beginPosition,
-			end = NULL, endPosition = endPosition, duration = duration,
-			timeInterval = timeInterval, id = id, relatedTimes = relatedTimes,
-			frame = frame)
-}
-
 GmlTimePosition <- function(time, frame = as.character(NA),
 		calendarEraName = as.character(NA),
 		indeterminatePosition = as.character(NA)) {
@@ -77,8 +59,12 @@ GmlTimeInterval <- function(interval, unit, radix = NA, factor = NA) {
 			factor = factor)
 }
 
-GmlFeatureProperty <- function(href = as.character(NA), feature = NA) {
+GmlFeatureProperty <- function(href = as.character(NA), feature = NULL) {
 	new("GmlFeatureProperty", href = href, feature = feature)	
+}
+
+GmlFeatureCollection <- function(featureMembers, id = as.character(NA)) {
+	new("GmlFeatureCollection", featureMembers = featureMembers, id = id)
 }
 
 GmlDirectPosition <- function(pos, srsName = as.character(NA),
@@ -109,7 +95,7 @@ GmlPointProperty <- function(href = as.character(NA), point = NA) {
 	new("GmlPointProperty", href = href, point = point)
 }
 
-GmlTimeInstantProperty <- function(href = as.character(NA), time = NA) {
+GmlTimeInstantProperty <- function(href = as.character(NA), time = NULL) {
 	new("GmlTimeInstantProperty", href = href, time = time)
 }
 
@@ -126,8 +112,8 @@ GmlEnvelope <- function(lowerCorner, upperCorner, srsName = as.character(NA),
 # encoding methods
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlTimeInstantProperty"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlTimeInstantProperty", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlTimeInstantProperty with", toString(obj))
 			
 			stop("Function not implemented yet!")
@@ -135,8 +121,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlTimeInstant"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlTimeInstant", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlTimeInstant with", toString(obj))
 			
 			.ti <- xmlNode(name = gmlTimeInstantName,
@@ -149,8 +135,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlTimePosition"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlTimePosition", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlTimePosition with", toString(obj))
 			
 			.tpos <- xmlNode(name = gmlTimePositionName,
@@ -172,17 +158,15 @@ setMethod(f = "encodeXML",
 						append = TRUE)
 			}
 			
-			# FIXME take time format from sos, also for kvp stuff!
-			xmlValue(.tpos) <- format(x = obj@time,
-					format = sosDefaultKVPTimeFormat)
+			xmlValue(.tpos) <- format(x = obj@time, format = sosTimeFormat(sos))
 			
 			return(.tpos)
 		}
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlTimePeriod"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlTimePeriod", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlTimePeriod with", toString(obj))
 			
 			.tp <- xmlNode(name = gmlTimePeriodName,
@@ -192,17 +176,17 @@ setMethod(f = "encodeXML",
 			if(!is.null(obj@begin) && !is.null(obj@end)) {
 				.begin <- xmlNode(name = gmlBeginName,
 						namespace = gmlNamespacePrefix)
-				.begin$children[[1]] <- encodeXML(obj@begin)
+				.begin$children[[1]] <- encodeXML(obj = obj@begin, sos = sos)
 				.end <- xmlNode(name = gmlEndName,
 						namespace = gmlNamespacePrefix)
-				.end$children[[1]] <- encodeXML(obj@end)
+				.end$children[[1]] <- encodeXML(obj = obj@end, sos)
 				.tp <- addChildren(node = .tp, kids = list(.begin, .end))
 			}
 			# beginPosition and endPosition
 			else if(!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
-				.beginPosition <- encodeXML(obj@beginPosition)
+				.beginPosition <- encodeXML(obj = obj@beginPosition, sos = sos)
 				xmlName(.beginPosition) <- gmlBeginPositionName
-				.endPosition <- encodeXML(obj@endPosition)
+				.endPosition <- encodeXML(obj = obj@endPosition, sos = sos)
 				xmlName(.endPosition) <- gmlEndPositionName
 				.tp <- addChildren(node = .tp,
 						kids = list(.beginPosition, .endPosition))
@@ -253,8 +237,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlEnvelope"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlEnvelope", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlEnvelope with", toString(obj))
 			
 			.env <- xmlNode(name = gmlEnvelopeName,
@@ -280,9 +264,9 @@ setMethod(f = "encodeXML",
 						append = TRUE)
 			}
 			
-			.lC <- encodeXML(obj@lowerCorner)
+			.lC <- encodeXML(obj = obj@lowerCorner, sos = sos)
 			xmlName(.lC) <- gmlLowerCornerName
-			.uC <- encodeXML(obj@upperCorner)
+			.uC <- encodeXML(obj = obj@upperCorner, sos = sos)
 			xmlName(.uC) <- gmlUpperCornerName
 			
 			.env$children[[1]] <- .lC
@@ -293,8 +277,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlDirectPosition"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlDirectPosition", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlDirectPosition with", toString(obj))
 			
 			.pos <- xmlNode(name = gmlPosName,
@@ -325,13 +309,13 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlPoint"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlPoint", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
 			
 			.point <- xmlNode(name = gmlPointName,
 					namespace = gmlNamespacePrefix)
-			.pos <- encodeXML(obj@pos)
+			.pos <- encodeXML(obj = obj@pos, sos = sos)
 			.point$children[[1]] <- .pos
 					
 			return(.point)
@@ -339,8 +323,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlLineString"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlLineString", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
 			
 			warning("FUNCTION NOT IMPLEMENTED!")
@@ -348,8 +332,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlPolygon"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlPolygon", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
 			
 			warning("FUNCTION NOT IMPLEMENTED!")
@@ -357,8 +341,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "GmlPointProperty"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "GmlPointProperty", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
 			
 			warning("FUNCTION NOT IMPLEMENTED!")

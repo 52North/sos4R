@@ -221,3 +221,43 @@ parseTimeGeometricPrimitiveFromParent <- function(obj, timeFormat) {
 	return(.timeObject)
 }
 
+#
+#
+#
+parseFeatureCollection <- function(obj) {
+	.members <- .filterXmlChildren(node = obj,
+			childrenName = gmlFeatureMemberName)
+	
+	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+	
+	if(length(.members) > 0) {
+		.members <- lapply(.members, .parseFeatureMember)
+		
+		.fc <- GmlFeatureCollection(featureMembers = .members, id = .id)
+		return(.fc)
+	}
+	else {
+		warning("gml:FeatureCollection could not be parsed, only gml:featureMember elements can be handled.")
+		return(NULL)
+	}
+}
+
+.parseFeatureMember <- function(obj) {
+	.noneTexts <- .filterXmlOnlyNoneTexts(obj)
+	.member <- .noneTexts[[1]]
+	
+	.name <- xmlName(.member)
+	
+	if(.name == saSamplingPointName) {
+		.sp <- parseSamplingPoint(.member)
+		.member.parsed <- GmlFeatureProperty(feature = .sp)
+	}
+	else if (.name == gmlFeatureCollectionName) {
+		.member.parsed <- parseFeatureCollection(.member)
+	}
+	else {
+		warning("No handling for given gml:featureMember available, only sa:SamplingPoint is supported!")
+	}
+	return(.member.parsed)
+}
+

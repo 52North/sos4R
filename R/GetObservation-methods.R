@@ -87,30 +87,30 @@ GetObservationById <- function(
 # encode as KVP
 #
 setMethod("encodeRequestKVP", "GetObservation", 
-	function(obj, verbose = FALSE) {
+	function(obj, sos, verbose = FALSE) {
 		if(obj@version == "1.0.0") {
-			return(sosEncodeRequestKVPGetObservation_1.0.0(obj, verbose))		
+			return(sosEncodeRequestKVPGetObservation_1.0.0(obj, sos, verbose))		
 		}
 		else {
 			stop("Version not supported!")
 		}
 	}
 )
-sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
+sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	# required:
-	.request <- pasete("request" , sosGetObservationName, sep = "=")
+	.request <- paste("request" , sosGetObservationName, sep = "=")
 	.service <- paste("service",
-			.kvpEscapeSpecialCharacters(obj@service), sep = "=")
+			.kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
 	.version <- paste("version",
-			.kvpEscapeSpecialCharacters(obj@version), sep = "=")
+			.kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
 	.offering <- paste("offering",
-			.kvpEscapeSpecialCharacters(obj@offering), sep = "=")
+			.kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
 	.observedProperty <- .kvpKeyAndValues("observedProperty", 
 			obj@observedProperty)
 	.responseFormat <- paste(
 			"responseFormat", 
-			.kvpEscapeSpecialCharacters(
-					gsub(obj@responseFormat, pattern = "&quot;",
+			.kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
+							pattern = "&quot;",
 							replacement = '"')),
 			sep = "=")
 	.mandatory <- paste(.service, .request, .version, .offering,
@@ -120,17 +120,18 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	.optionals = ""
 	if( !is.na(obj@srsName)) {
 		.optionals <- paste(.optionals, paste("srsName", 
-						.kvpEscapeSpecialCharacters(obj@srsName), sep = "="),
+						.kvpEscapeSpecialCharacters(x = obj@srsName),
+						sep = "="),
 				sep = "&")
 	}
 	
 	if( !is.na(obj@eventTime)) {
 		.timeString <- encodeEventTimeKVP(obj = obj@eventTime[[1]],
-				verbose = verbose)
+				sos = sos, verbose = verbose)
 		if(length(obj@eventTime) > 1)
 			warning("Only first event time used for KVP!")
 		.optionals <- paste(.optionals, paste("eventTime", 
-						.kvpEscapeSpecialCharacters(.timeString), 
+						.kvpEscapeSpecialCharacters(x = .timeString), 
 						sep = "="), 
 				sep = "&")
 	}
@@ -145,28 +146,27 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 						obj@featureOfInterest), sep = "&")
 	}
 	
-	if( !is.na(obj@result)) {
+	if( !is.null(obj@result)) {
 		warning("GetObservation contains result, but that is not supported for 'GET' - parameter is discarded, use another method to include it!")
-		
 	}
 	
 	if( !is.na(obj@resultModel)) {
 		.optionals <- paste(.optionals, paste("resultModel",
-						.kvpEscapeSpecialCharacters(obj@resultModel),
+						.kvpEscapeSpecialCharacters(x = obj@resultModel),
 						sep = "="),
 				sep = "&")
 	}
 	
 	if( !is.na(obj@responseMode)) {
 		.optionals <- paste(.optionals, paste("responseMode",
-						.kvpEscapeSpecialCharacters(obj@responseMode),
+						.kvpEscapeSpecialCharacters(x = obj@responseMode),
 						sep = "="),
 				sep = "&")
 	}
 	
 	if( !is.na(obj@BBOX)) {
 		.optionals <- paste(.optionals, paste("BBOX", 
-						.kvpEscapeSpecialCharacters(obj@BBOX), sep = "="),
+						.kvpEscapeSpecialCharacters(x = obj@BBOX), sep = "="),
 				sep = "&")
 	}
 	
@@ -179,7 +179,7 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 }
 
 setMethod("encodeRequestKVP", "GetObservationById", 
-		function(obj, verbose = TRUE) {
+		function(obj, sos, verbose = TRUE) {
 			stop("KVP encoding of operation 'GetObservationById' not supported!")
 		}
 )
@@ -188,21 +188,21 @@ setMethod("encodeRequestKVP", "GetObservationById",
 # encode as XML
 #
 setMethod("encodeRequestXML", "GetObservation", 
-	function(obj, verbose = FALSE) {
+	function(obj, sos, verbose = FALSE) {
 		if(verbose) {
 			cat("ENCODE XML", class(obj), "\n")
 		}
 		
 		if(obj@version == "1.0.0") {
-			return(sosEncodeRequestXMLGetObservation_1.0.0(obj,
-							verbose = verbose))		
+			return(sosEncodeRequestXMLGetObservation_1.0.0(obj = obj,
+							sos = sos, verbose = verbose))		
 		}
 		else {
 			stop("Version not supported!")
 		}
 	}
 )
-sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
+sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	.xmlDoc <- xmlNode(name = sosGetObservationName,
 			namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
@@ -216,7 +216,8 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 	.xmlDoc <- addChildren(node = .xmlDoc, .offering)
 	
 	if(!any(is.na(obj@eventTime))) {
-		.eventTimeList <- lapply(obj@eventTime, encodeXML, verbose = verbose)
+		.eventTimeList <- lapply(obj@eventTime, encodeXML, sos = sos,
+				verbose = verbose)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = .eventTimeList,
 				append = TRUE)
 	}
@@ -234,13 +235,13 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 			append = TRUE)
 	
 	if( !is.null(obj@featureOfInterest)) {
-		.foi <- encodeXML(obj@featureOfInterest, verbose = verbose)
+		.foi <- encodeXML(obj@featureOfInterest, sos = sos, verbose = verbose)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.foi),
 				append = TRUE)
 	}
 	
 	if( !is.null(obj@result)) {
-		.result <- encodeXML(obj@result, verbose = verbose)
+		.result <- encodeXML(obj@result, sos = sos, verbose = verbose)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.result),
 				append = TRUE)
 	}
@@ -280,20 +281,21 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, verbose = FALSE) {
 }
 
 setMethod("encodeRequestXML", "GetObservationById", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
 			}
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestXMLGetObservationById_1.0.0(obj))		
+				return(sosEncodeRequestXMLGetObservationById_1.0.0(obj = obj,
+								sos = sos))		
 			}
 			else {
 				stop("Version not supported!")
 			}
 		}
 )
-sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj) {
+sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
 	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetObs),
@@ -338,13 +340,13 @@ sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj) {
 # encode for SOAP
 #
 setMethod("encodeRequestSOAP", "GetObservation", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
+				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj))
 			}
 			else {
 				stop("Version not supported!")
@@ -355,7 +357,7 @@ setMethod("encodeRequestSOAP", "GetObservation",
 ################################################################################
 #
 setMethod(f = "checkRequest",
-		signature = signature(service = "ANY", operation = "GetObservation",
+		signature = signature(service = "SOS", operation = "GetObservation",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
@@ -365,7 +367,7 @@ setMethod(f = "checkRequest",
 				return(FALSE)
 			}
 			
-			# TODO add useful checks for GetObservation
+			# TODO implement checkRequest for GetObservation
 			
 			# check if given responseFormat is supported by the service
 			
@@ -374,7 +376,7 @@ setMethod(f = "checkRequest",
 )
 
 setMethod(f = "checkRequest",
-		signature = signature(service = "ANY", operation = "GetObservationById",
+		signature = signature(service = "SOS", operation = "GetObservationById",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			# check if operation is for SOS and operation is DescribeSensor
@@ -384,7 +386,7 @@ setMethod(f = "checkRequest",
 				return(FALSE)
 			}
 			
-			# TODO add useful checks for GetObservationById
+			# TODO implement checkRequest for GetObservationById
 			# see above!
 			
 			return(TRUE)

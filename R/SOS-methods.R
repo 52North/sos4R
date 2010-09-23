@@ -36,7 +36,7 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		dataFieldConverters = SosDefaultFieldConvertingFunctions(),
 		curlOpts = list(),
 		curlHandle = getCurlHandle(),
-		timeFormat = sosDefaultTimeParsingFormat, verboseOutput = FALSE) {
+		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE) {
 	if(method == .sosConnectionMethodPost)
 		.curlOpts <- curlOptions(url = url)
 	else .curlOpts <- curlOpts
@@ -45,7 +45,8 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 			url = url,
 			method = method,
 			version = version,
-			capabilities = new("OwsCapabilities", version = "NA", # dummy capabilities to be replaced below
+			# dummy capabilities to be replaced below
+			capabilities = new("OwsCapabilities", version = "NA",
 					updateSequence = as.character(NA),
 					owsVersion = "1.1.0"),
 			parsers = parsers,
@@ -56,11 +57,11 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 			timeFormat = timeFormat,
 			verboseOutput = verboseOutput)
 	
-	if(verboseOutput) {
-		warning("Verbose output is activated!", immediate. = TRUE)
+	.caps <- getCapabilities(.sos, verbose = verboseOutput)
+	if(!is(.caps, "OwsCapabilities")) {
+		stop("ERROR: Did not receive a Capabilities response!")
 	}
 	
-	.caps <- getCapabilities(.sos, verbose = verboseOutput)
 	.sos@capabilities <- .caps
 	
 	cat("Created SOS for URL", url, "\n")
@@ -68,12 +69,16 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 }
 
 
-SosFilter_Capabilities <- function(xmlNode) {
-	new("SosFilter_Capabilities", xml = xmlNode)
+SosFilter_Capabilities <- function(spatial = list(NA_character_),
+		temporal = list(NA_character_), scalar = list(NA_character_),
+		id = list(NA_character_)) {
+	new("SosFilter_Capabilities", spatial = spatial, temporal = temporal,
+			scalar = scalar, id = id)
 }
 
 SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
-		identification, provider, operations, filterCaps, contents) {
+		identification = NULL, provider = NULL, operations = NULL,
+		filterCaps = NULL, contents = NULL) {
 	if(owsVersion == "1.1.0") {
 		new("SosCapabilities_1.1.0",
 				version = version, updateSequence = updateSequence,
@@ -127,8 +132,8 @@ SosFeatureOfInterest <- function(objectIDs = list(NA), spatialOps = NULL) {
 # main request method
 #
 setMethod(f = "sosRequest",
-		signature = signature(sos = "SOS", request = "ANY", verbose = "logical",
-				inspect = "logical"),
+		signature = signature(sos = "SOS", request = "OwsServiceOperation",
+				verbose = "logical", inspect = "logical"),
 		def = function(sos, request, verbose = FALSE, inspect = FALSE) {
 			# check the request for consistency with service description
 			.checkResult <- checkRequest(service = sos, operation = request,
@@ -188,12 +193,17 @@ setMethod(f = "sosRequest",
 					print("SOAP! REQUEST:\n")
 				}
 				
-				# TODO implement SOAP stuff
+				# TODO SOAP request method
 				
 			}
 			else {
 				stop(paste("Unsupported method, has to be one",
 								SosSupportedConnectionMethods()))
+			}
+			
+			if(regexpr("<!DOCTYPE HTML", .response) > 0) {
+				cat(.response, "\n")
+				stop("ERROR: Got HTML response!")
 			}
 	
 			return(.response)
@@ -334,7 +344,8 @@ setMethod(f = "getObservationById",
 #
 #
 setMethod(f = "getObservation",
-		signature = signature(sos = "SOS", offering = "ANY"),
+		signature = signature(sos = "SOS",
+				offering = "SosObservationOfferingOrCharacter"),
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
 				responseMode, BBOX, latest, verbose, inspect) {
@@ -369,7 +380,7 @@ setMethod(f = "getObservation",
 				cat("** RESPONSE DOC:\n")
 				print(.response)
 			}
-			
+						
 			if(.isExceptionReport(.response)) {
 				return(.handleExceptionReport(sos, .response))
 			}
@@ -386,7 +397,7 @@ setMethod(f = "getObservation",
 				
 				if (is.list(.obs)) {
 					# get the first element of the dim of every sosResult 
-					.resultLength <- sapply(lapply(lapply(list(.obs, .obs), sosResult),
+					.resultLength <- sapply(lapply(lapply(.obs, sosResult),
 									dim), "[[", 1)
 				}
 				else {
@@ -412,7 +423,7 @@ setMethod(f = "getObservation",
 # encoding functions
 
 setMethod("encodeXML", "SosEventTime", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
 			}
@@ -433,7 +444,7 @@ setMethod("encodeXML", "SosEventTime",
 		}
 )
 setMethod("encodeXML", "SosEventTimeLatest", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
 			}
@@ -461,7 +472,7 @@ setMethod("encodeXML", "SosEventTimeLatest",
 )
 
 setMethod("encodeXML", "SosFeatureOfInterest", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
 			}
@@ -476,7 +487,7 @@ setMethod("encodeXML", "SosFeatureOfInterest",
 				.foi <- addChildren(node = .foi, kids = .ids)
 			}
 			else if (!is.null(obj@spatialOps)) {
-				.spOp <- encodeXML(obj@spatialOps)
+				.spOp <- encodeXML(obj = obj@spatialOps, sos = sos)
 				.foi <- addChildren(node = .foi, kids = list(.spOp))
 			}
 			
@@ -489,12 +500,13 @@ setMethod("encodeXML", "SosFeatureOfInterest",
 # 
 #
 setMethod("encodeKVP", "SosEventTime", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE KVP ", class(obj), "\n")
 			}
 			
-			.temporalOpsKVP <- encodeKVP(obj@temporalOps)
+			.temporalOpsKVP <- encodeKVP(obj = obj@temporalOps, sos = sos,
+					verbose = verbose)
 			return(.temporalOpsKVP)
 		}
 )

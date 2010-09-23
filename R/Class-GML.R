@@ -27,7 +27,11 @@
 #                                                                              #
 ################################################################################
 
-# TODO add reference to GML spec
+#
+# Classes are based on GML
+# 
+# http://www.opengeospatial.org/standards/gml
+#
 
 #
 # abstract super classes of the actually needed TimeInstant and TimePeriod
@@ -42,6 +46,8 @@ setClass("GmlTimeObject",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "GmlTimeObjectOrNULL",
+		members = c("GmlTimeObject", "NULL"))
 
 setClass("GmlTimePrimitive",
 		representation(# optional:
@@ -85,6 +91,8 @@ setClass("GmlTimePosition",
 			return(TRUE)
 		}		
 )
+setClassUnion(name = "GmlTimePositionOrNULL",
+		members = c("GmlTimePosition", "NULL"))
 
 #
 #
@@ -100,13 +108,15 @@ setClass("GmlTimeInstant",
 			return(TRUE)
 		}		
 )
+setClassUnion(name = "GmlTimeInstantOrNULL",
+		members = c("GmlTimeInstant", "NULL"))
 
 #
 #
 #
 setClass("GmlTimeInstantProperty",
-		representation(href = "character", time = "ANY"),
-		prototype = list(href = as.character(NA), time = NA),
+		representation(href = "character", time = "GmlTimeInstantOrNULL"),
+		prototype = list(href = as.character(NA), time = NULL),
 		contains = "GmlTimeGeometricPrimitive",
 		validity = function(object) {
 			#print("Entering validation: GmlTimeInstant")
@@ -115,6 +125,8 @@ setClass("GmlTimeInstantProperty",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "GmlTimeInstantPropertyOrNULL",
+		members = c("GmlTimeInstantProperty", "NULL"))
 
 #
 #
@@ -134,19 +146,21 @@ setClass("GmlTimeInterval",
 			return(TRUE)
 		}		
 )
+setClassUnion(name = "GmlTimeIntervalOrNULL",
+		members = c("GmlTimeInterval", "NULL"))
 
 #
 #
 #
 setClass("GmlTimePeriod",
-		representation(begin = "ANY",
-				beginPosition = "ANY",
-				end = "ANY",
-				endPosition = "ANY",
+		representation(begin = "GmlTimeInstantPropertyOrNULL",
+				beginPosition = "GmlTimePositionOrNULL",
+				end = "GmlTimeInstantPropertyOrNULL",
+				endPosition = "GmlTimePositionOrNULL",
 				# optional:
 				# for brevity, the TimeDurationType layer is removed here
 				duration = "character",
-				timeInterval = "ANY"
+				timeInterval = "GmlTimeIntervalOrNULL"
 		),
 		prototype = list(begin = NULL, beginPosition = NULL, end = NULL, 
 				endPosition = NULL),
@@ -156,8 +170,6 @@ setClass("GmlTimePeriod",
 			# TODO implement validity function
 			# either both begin and end, or beginPosition and endPosition need to be set.
 			# only one of the optional duration and timeInterval can be set!
-			# begin and end need to be of class GmlTimeInstantProperty
-			# beginPosition and endPosition need to be of class GmlTimePosition
 			return(TRUE)
 		}		
 )
@@ -174,18 +186,31 @@ setClass("GmlFeature",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "GmlFeatureOrNULL", members = c("GmlFeature", "NULL"))
 
 #
 #
 #
 setClass("GmlFeatureProperty",
 		representation(href = "character",	
-				feature = "ANY"),
-		prototype = list(href = as.character(NA), feature = NA),
+				feature = "GmlFeatureOrNULL"),
+		prototype = list(href = as.character(NA), feature = NULL),
 		validity = function(object) {
 			#print("Entering validation: GmlFeatureProperty")
 			# TODO implement validity function
 			# one of parameters has to be set
+			return(TRUE)
+		}
+)
+
+#
+#
+#
+setClass("GmlFeatureCollection",
+		representation(featureMembers = "list"),
+		contains = c("GmlFeature"),
+		validity = function(object) {
+			#print("Entering validation: GmlFeatureCollection")
 			return(TRUE)
 		}
 )

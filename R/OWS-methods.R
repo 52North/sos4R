@@ -37,7 +37,7 @@ OwsGetCapabilities <- function(
 		acceptFormats = sosDefaultGetCapAcceptFormats,
 		updateSequence = c(as.character(NA)),
 		owsVersion = sosDefaultGetCapOwsVersion,
-		acceptLanguages = c(as.character(NA))) {
+		acceptLanguages = c(NA)) {
 	if(owsVersion == "1.1.0") {
 		if(!any(sapply(acceptLanguages, "is.na"), na.rm = TRUE))
 			warning("Parameter 'acceptLanguages' is lost because it is not included in 1.1.0!")
@@ -59,10 +59,9 @@ OwsGetCapabilities <- function(
 	}
 	else {
 		new("OwsGetCapabilities",
-				request = sosGetCapabilitiesName,
-				version = "NONE",
-				service = service,
-				acceptVersions = acceptVersions, owsVersion = owsVersion)
+				request = sosGetCapabilitiesName, version = "NONE",
+				service = service, acceptVersions = acceptVersions,
+				owsVersion = owsVersion)
 	}
 }
 
@@ -70,11 +69,11 @@ OwsCapabilities <- function(
 		version, 
 		updateSequence = NA,
 		owsVersion = sosDefaultGetCapOwsVersion,
-		identification,
-		provider,
-		operations,
-		contents,
-		languages = NA) {
+		identification = NULL,
+		provider = NULL,
+		operations = NULL,
+		contents = NULL,
+		languages = NULL) {
 	if(owsVersion == "1.1.0") {
 		if(!is.na(languages))
 			warning("Parameter 'languages' is lost because it is not included in 1.1.0!")
@@ -157,20 +156,20 @@ OwsRange <- function(minimumValue = as.character(NA),
 # checking of operations before they are sent out
 #
 setMethod(f = "checkRequest",
-		signature = signature(service = "ANY", operation = "OwsGetCapabilities_1.1.0",
+		signature = signature(service = "SOS", operation = "OwsGetCapabilities_1.1.0",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			
-			# TODO implement useful checks for OwsGetCapabilities
+			# TODO implement checkRequest for OwsGetCapabilities
 			
 			return(TRUE)
 		})
 setMethod(f = "checkRequest",
-		signature = signature(service = "ANY", operation = "OwsGetCapabilities_2.0.0",
+		signature = signature(service = "SOS", operation = "OwsGetCapabilities_2.0.0",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			
-			# TODO implement useful checks for OwsGetCapabilities
+			# TODO implement checkRequest for OwsGetCapabilities
 			
 			return(TRUE)
 		})
@@ -190,14 +189,18 @@ setMethod(f = "checkRequest",
 		return(paste(key, valueList, sep = "="))
 	}
 	else {
-		return(paste(key, .kvpEscapeSpecialCharacters(value), sep = "="))
+		return(paste(key, .kvpEscapeSpecialCharacters(x = values), sep = "="))
 	}
 }
 
 #
-# http://www.ietf.org/rfc/rfc2396.txt 
-# via
-# http://www.oostethys.org/best-practices/best-practices-get
+# Method to excape characters within values (!) of a parameter. This function
+# cannot be called on the whole request string!
+#
+# See http://www.ietf.org/rfc/rfc2396.txt and 
+# http://www.oostethys.org/best-practices/best-practices-get and
+# http://www.opengeospatial.org/standards/common (Section 11.3)
+# and maybe also http://www.blooberry.com/indexdot/html/topics/urlencoding.htm
 #
 # Special character  	Escaped encoding
 # :					 	%3A
@@ -206,17 +209,16 @@ setMethod(f = "checkRequest",
 # ? 					%3F
 # = 					%3D
 #
-# TODO check if this is conform with chapter "Reserved and encoded characters in
-# HTTP GET URLs" in OWS Common.
-#
-.kvpEscapeSpecialCharacters <- function(valueString) {
-#	print(valueString)
-	.escaped <- gsub(valueString, pattern = ":", replacement = "%3A")
+.kvpEscapeSpecialCharacters <- function(x) {
+	.escaped <- gsub(x = x, pattern = ":", replacement = "%3A")
 	#.escaped <- gsub(.escaped, pattern = "/", replacement = "%2F")
-	.escaped <- gsub(.escaped, pattern = "#", replacement = "%23")
-	.escaped <- gsub(.escaped, pattern = "\\?", replacement = "%3F")
-	.escaped <- gsub(.escaped, pattern = "=", replacement = "%3D")
-#	print(.escaped)
+	.escaped <- gsub(x = .escaped, pattern = "#", replacement = "%23")
+	.escaped <- gsub(x = .escaped, pattern = "\\?", replacement = "%3F")
+	.escaped <- gsub(x = .escaped, pattern = "=", replacement = "%3D")
+	.escaped <- gsub(x = .escaped, pattern = "&", replacement = "%26")
+	.escaped <- gsub(x = .escaped, pattern = ",", replacement = "%2C")
+	.escaped <- gsub(x = .escaped, pattern = "\\+", replacement = "%2B")
+	.escaped <- gsub(x = .escaped, pattern = "@", replacement = "%40")
 	return(.escaped)
 }
 
@@ -224,17 +226,17 @@ setMethod(f = "checkRequest",
 # kvp encoding
 #
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
-		def = function(obj, verbose = FALSE) {
+		def = function(obj, sos, verbose = FALSE) {
 			sosEncodeRequestKVPGetCapabilities(obj, verbose)
 		})
 sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
 	.service <- paste(
 			"service",
-			.kvpEscapeSpecialCharacters(obj@service),
+			.kvpEscapeSpecialCharacters(x = obj@service),
 			sep = "=")
 	.request <- paste(
 			"request",
-			.kvpEscapeSpecialCharacters(obj@request),
+			.kvpEscapeSpecialCharacters(x = obj@request),
 			sep = "=")
 	
 	.kvpString <- paste(.service, .request, sep = "&")
@@ -246,7 +248,7 @@ sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
 }
 
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_1.1.0",
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			sosEncodeRequestKVPGetCapabilities_1.1.0(obj, verbose)
 		})
 sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
@@ -278,7 +280,7 @@ sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
 }
 
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			sosEncodeRequestKVPGetCapabilities_2.0.0(obj, verbose)
 		})
 sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
@@ -298,12 +300,11 @@ sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
 # XML encoding
 #
 setMethod("encodeRequestXML", "OwsGetCapabilities", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
 			}
 			
-			# TODO use obj@version of generic request class...
 			if(obj@version == "1.1.0") {
 				return(sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
 			}
@@ -403,7 +404,7 @@ sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 ################################################################################
 # SOAP encoding
 setMethod("encodeRequestSOAP", "OwsGetCapabilities", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}

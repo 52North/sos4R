@@ -28,18 +28,19 @@
 ################################################################################
 
 #
-#
+# The layer for swe:TimeObjectProperty for om:resultTime and om:samplingTime is
+# removed in this class, as is om:featureOfInterest where gml:_Feature is used.
 #
 setClass("OmObservation",
 		representation(
-				samplingTime = "GmlTimeObject",	
+				samplingTime = "GmlTimeObjectOrNULL",	
 				procedure = "ANY",
 				observedProperty = "SwePhenomenonProperty",
-				featureOfInterest = "GmlFeatureProperty",
+				featureOfInterest = "GmlFeature",
 				result = "ANY",
 				# optional:
 				metadata = "ANY",
-				resultTime = "ANY",
+				resultTime = "GmlTimeObjectOrNULL",
 				resultQuality = "ANY",
 				parameter = "ANY"),
 		prototype = list(samplingTime = NULL, procedure = as.character(NA),
@@ -52,13 +53,15 @@ setClass("OmObservation",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "OmObservationOrNULL",
+		members = c("OmObservation", "NULL"))
 
 #
 #
 #
 setClass("OmObservationProperty",
 		representation(href = "character",	
-				obs = "OmObservation"),
+				obs = "OmObservationOrNULL"),
 		#prototype = list(),
 		validity = function(object) {
 			#print("Entering validation: OmObservationProperty")

@@ -30,9 +30,29 @@
 #
 # This class is inspired by a suggestion from Duncan Murdoch
 # (https://stat.ethz.ch/pipermail/r-help/2010-July/245480.html)
-# and code of the package SSOAP by Duncan Temple Lang
-# (http://www.omegahat.org/SSOAP/)
 #
+
+#
+# A short list of some example services, no guarantee about compatibility with 
+# sos4R or quality of data, accessible using accessor/getter function.
+#
+.sosExampleServices <- list(
+		"http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
+		"http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos",
+		"http://v-sos.uni-muenster.de:8080/AirQualityEurope/sos",
+		"http://mmisw.org/oostethys/sos",
+		"http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi"
+		)
+names(.sosExampleServices) <- list(
+		"52°North SOS: Weather Data, station at IFGI, Muenster, Germany",
+		"52°North SOS: Water gauge data for Germany",
+		"52°North SOS: Air Quality Data for Europe",
+		"OOTethys SOS: Sensor Observation Service (SOS) for Marine Metadata Interoperability Initiative (MMI)",
+		"OOTethys SOS: Gulf of Maine Ocean Observing System SOS"
+		)
+SosExampleServices <- function() {
+	return(.sosExampleServices)
+}
 
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
@@ -232,8 +252,7 @@ sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
 sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'
-sosDefaultTimeParsingFormat <- "%Y-%m-%dT%H:%M:%OS"
+sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
-sosDefaultKVPTimeFormat <- "%Y-%m-%dT%H:%M:%OS" # "YYYY-MM-DDTHH:mm:ssZ"
-sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[["TM_During"]]
+sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"

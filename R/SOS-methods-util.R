@@ -57,7 +57,7 @@
 #	one data.frame?
 #
 if (!isGeneric("read.sos"))
-	setGeneric(name = "sosCaps", def = function(sos,
+	setGeneric(name = "read.sos", def = function(sos,
 					sensors,
 					phenomena,
 					bboxs, # one, or several?
@@ -65,13 +65,12 @@ if (!isGeneric("read.sos"))
 					mergeResult,
 					addLocation,
 					verbose) {
-				standardGeneric("sosCaps")
+				standardGeneric("read.sos")
 			}
 )
-setMethod(f = "read.sos", signature = signature(sos = "SOS"), def = function(sos) {
-			# TODO
-		}
-)
+#setMethod(f = "read.sos", signature = signature(sos = "SOS"), def = function(sos) {
+#		}
+#)
 
 #
 # convenience info function using non-SWE names for stuff
@@ -100,7 +99,8 @@ if (!isGeneric("info.sos"))
 				standardGeneric("info.sos")
 			}
 )
-# TODO implement info function
+
+#
 # sensors = procedure
 # phenomena = observedProperty
 # metadata: url, method, version, identification, provider, timeFormat
@@ -137,16 +137,62 @@ if (!isGeneric("sosCaps"))
 	setGeneric(name = "sosCaps", def = function(sos) {
 				standardGeneric("sosCaps")
 			})
-setMethod(f = "sosCaps", signature = signature(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosCaps", signature = signature(sos = "SOS"),
+		def = function(sos) {
 			return(sos@capabilities)
-		}
-)
+		})
+
+if (!isGeneric("sosFilter_Capabilities"))
+	setGeneric(name = "sosFilter_Capabilities", def = function(sos) {
+				standardGeneric("sosFilter_Capabilities")
+			})
+setMethod(f = "sosFilter_Capabilities", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@capabilities@filterCaps)
+		})
+
+if (!isGeneric("sosServiceIdentification"))
+	setGeneric(name = "sosServiceIdentification", def = function(sos) {
+				standardGeneric("sosServiceIdentification")
+			})
+setMethod(f = "sosServiceIdentification", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@capabilities@identification)
+		})
+
+if (!isGeneric("sosServiceProvider"))
+	setGeneric(name = "sosServiceProvider", def = function(sos) {
+				standardGeneric("sosServiceProvider")
+			})
+setMethod(f = "sosServiceProvider", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@capabilities@provider)
+		})
+
+if (!isGeneric("sosOperationsMetadata"))
+	setGeneric(name = "sosOperationsMetadata", def = function(sos) {
+				standardGeneric("sosOperationsMetadata")
+			})
+setMethod(f = "sosOperationsMetadata", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@capabilities@operations)
+		})
+
+if (!isGeneric("sosContents"))
+	setGeneric(name = "sosContents", def = function(sos) {
+				standardGeneric("sosContents")
+			})
+setMethod(f = "sosContents", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@contents)
+		})
 
 if (!isGeneric("sosUrl"))
 	setGeneric(name = "sosUrl", def = function(sos) {
 				standardGeneric("sosUrl")
 			})
-setMethod(f = "sosUrl", signature = signature(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosUrl", signature = signature(sos = "SOS"),
+		def = function(sos) {
 			return(sos@url)
 		})
 
@@ -154,7 +200,8 @@ if (!isGeneric("sosVersion"))
 	setGeneric(name = "sosVersion", def = function(sos) {
 				standardGeneric("sosVersion")
 			})
-setMethod(f = "sosVersion", signature = signature(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosVersion", signature = signature(sos = "SOS"),
+		def = function(sos) {
 			return(sos@version)
 		})
 
@@ -162,7 +209,8 @@ if (!isGeneric("sosMethod"))
 	setGeneric(name = "sosMethod", def = function(sos) {
 				standardGeneric("sosMethod")
 			})
-setMethod(f = "sosMethod", signature = signature(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosMethod", signature = signature(sos = "SOS"),
+		def = function(sos) {
 			return(sos@method)
 		})
 
@@ -170,7 +218,8 @@ if (!isGeneric("sosProcedures"))
 	setGeneric(name = "sosProcedures", def = function(sos) {
 				standardGeneric("sosProcedures")
 			})
-setMethod(f = "sosProcedures", signature = signature(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosProcedures", signature = signature(sos = "SOS"),
+		def = function(sos) {
 			.caps <- sosCaps(sos)
 			.ds <- .caps@operations@operations[[sosGetObservationName]]
 			return(.ds@parameters$procedure)
@@ -191,7 +240,8 @@ if (!isGeneric("sosOfferings"))
 	setGeneric(name = "sosOfferings", def = function(sos) {
 				standardGeneric("sosOfferings")
 			})
-setMethod(f = "sosOfferings", signature = signature(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosOfferings", signature = signature(sos = "SOS"),
+		def = function(sos) {
 			.offerings <- sos@capabilities@contents@observationOfferings
 			return(.offerings)
 		})
@@ -218,24 +268,25 @@ if (!isGeneric("sosFOIs"))
 	setGeneric(name = "sosFOIs", def = function(sos) {
 				standardGeneric("sosFOIs")
 			})
-setMethod(f = "sosFOIs", signature = signature(sos = "SOS"), def = function(sos) {
+setMethod(f = "sosFOIs", signature = signature(sos = "SOS"),
+		def = function(sos) {
 			.caps <- sosCaps(sos)
 			
 			# via GetFeatureOfInterest
-			.gfoi <- .caps@operations@operations[[sosGetFeautureOfInterestName]]
+			.gfoi <- .caps@operations@operations[[sosGetFeatureOfInterestName]]
 			if(!is.null(.gfoi)) {
-				return(.gfoi@parameters$featureOfInterestId)
+				return(.gfoi@parameters$featureOfInterestID)
 			}
 			else return("GetFeatureOfInterest-Operation not supported!")
 			
 			return(.fois)
 		})
 
-if (!isGeneric("sosOperationInfo"))
-	setGeneric(name = "sosOperationInfo", def = function(sos, operationName) {
-				standardGeneric("sosOperationInfo")
+if (!isGeneric("sosOperation"))
+	setGeneric(name = "sosOperation", def = function(sos, operationName) {
+				standardGeneric("sosOperation")
 			})
-setMethod(f = "sosOperationInfo",
+setMethod(f = "sosOperation",
 		signature = signature(sos = "SOS", operationName = "character"),
 		def = function(sos, operationName) {
 			.caps <- sosCaps(sos)
@@ -288,7 +339,7 @@ setMethod(f = "sosResultModels", signature = signature(sos = "SOS"),
 
 if (!isGeneric("sosEventTimePeriod"))
 	setGeneric(name = "sosEventTimePeriod", def = function(obj) {
-				standardGeneric("sosTimePeriod")
+				standardGeneric("sosEventTimePeriod")
 			})
 setMethod(f = "sosEventTimePeriod", signature = signature(obj = "SOS"),
 		def = function(obj) {
@@ -296,7 +347,8 @@ setMethod(f = "sosEventTimePeriod", signature = signature(obj = "SOS"),
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
 			return(.getOb@parameters$eventTime)
 		})
-setMethod(f = "sosEventTimePeriod", signature = signature(obj = "SosObservationOffering"),
+setMethod(f = "sosEventTimePeriod", signature = signature(
+				obj = "SosObservationOffering"),
 		def = function(obj) {
 			return(obj@time)
 		})
@@ -422,8 +474,7 @@ if (!isGeneric("sosCreateEventTime"))
 				standardGeneric("sosCreateEventTime")
 			})
 setMethod(f = "sosCreateEventTime",
-		signature = signature(time = "GmlTimeGeometricPrimitive",
-				operator = "ANY"),
+		signature = signature(time = "GmlTimeGeometricPrimitive"),
 		def = function(time, operator) {
 			
 			if(operator == ogcTempOpTMAfterName) {
@@ -440,8 +491,8 @@ setMethod(f = "sosCreateEventTime",
 			}
 			else {
 				stop(paste("Given operator", operator, "is not supported,",
-								" choose one of",
-								SosSupportedTemporalOperators()))
+								"choose one of",
+								toString(SosSupportedTemporalOperators())))
 			}
 			
 			.et <- list(SosEventTime(.tOps))
@@ -535,21 +586,6 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 )
 
 #
-# set parsers, encoders and convertes to default
-#
-if (!isGeneric("sosSetFunctionsToDefault"))
-	setGeneric(name = "sosSetFunctionsToDefault", def = function(sos) {
-				standardGeneric("sosSetFunctionsToDefault")
-			})
-setMethod(f = "sosSetFunctionsToDefault", signature = signature(sos = "SOS"),
-		def = function(sos) {
-			sos@parsers <- .sosDefaultParsers
-			sos@encoders <- .sosDefaultEncoders
-			sos@dataFieldConverters <- .sosDefaultFieldConverters
-		}
-)
-
-#
 # helper methods for exception response handling
 #
 .isExceptionReport <- function(document) {
@@ -581,7 +617,7 @@ setMethod(f = "sosSetFunctionsToDefault", signature = signature(sos = "SOS"),
 # encoding function that just passes given content along...
 #
 setMethod("encodeXML", "XMLAbstractNode", 
-		function(obj, verbose = FALSE) {
+		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML from XMLAbstractNode\n")
 			}

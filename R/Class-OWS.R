@@ -147,11 +147,14 @@ setClass("OwsOperationsMetadata",
 			#print("Entering validation: OwsOperationsMetadata")
 			# TODO implement validity function
 			
-			# operations must all be of class OwsOperation and at least one must be there
+			# operations must all be of class OwsOperation and at least one must
+			# be there
 			
 			return(TRUE)
 		}
 )
+setClassUnion(name = "OwsOperationsMetadataOrNULL",
+		members = c("OwsOperationsMetadata", "NULL"))
 
 #
 # See OGC 06-121r3, clause 7.4.6
@@ -197,6 +200,8 @@ setClass("OwsServiceIdentification",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "OwsServiceIdentificationOrNULL",
+		members = c("OwsServiceIdentification", "NULL"))
 
 #
 # See OGC 06-121r3, clause 7.4.5 or OGC 06-121r9, clause 7.4.4 (no changes
@@ -214,6 +219,8 @@ setClass("OwsServiceProvider",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "OwsServiceProviderOrNULL",
+		members = c("OwsServiceProvider", "NULL"))
 
 #
 # See OGC 06-121r3, clause 7.4.8
@@ -226,7 +233,8 @@ setClass("OwsContents",
 			return(TRUE)
 		}
 )
-
+setClassUnion(name = "OwsContentsOrNULL",
+		members = c("OwsContents", "NULL"))
 
 ################################################################################
 # Capabilities documents:
@@ -262,10 +270,10 @@ setClass("OwsCapabilities",
 # See OWS Common 1.1.0, OGC 06-121r3
 #
 setClass("OwsCapabilities_1.1.0",
-		representation(identification = "OwsServiceIdentification",
-				provider = "OwsServiceProvider",
-				operations = "OwsOperationsMetadata",
-				contents = "OwsContents"),
+		representation(identification = "OwsServiceIdentificationOrNULL",
+				provider = "OwsServiceProviderOrNULL",
+				operations = "OwsOperationsMetadataOrNULL",
+				contents = "OwsContentsOrNULL"),
 		prototype = list(owsVersion = "1.1.0",
 			identification = NULL, provider = NULL,
 			operations = NULL, contents = NULL),
@@ -284,7 +292,7 @@ setClass("OwsCapabilities_1.1.0",
 setClass("OwsCapabilities_2.0.0",
 		representation(languages = "XMLAbstractNode"),
 		prototype = list("GetCapabilities",
-				languages = NULL,
+				languages = xmlNode(NA),
 				owsVersion = "2.0.0"),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {
@@ -293,6 +301,7 @@ setClass("OwsCapabilities_2.0.0",
 			return(TRUE)
 		}
 )
+
 
 ################################################################################
 # Service Exceptions:

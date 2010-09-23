@@ -71,8 +71,8 @@ OgcOverlaps <- function(propertyName = sosDefaultSpatialOpPropertyName,
 #
 #
 setMethod(f = "encodeXML",
-		signature = signature(obj = "TM_After"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "TM_After", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML TM_After with", toString(obj@time))
 			
 			.encoded <- .encodeTM(nodeName = ogcTempOpTMAfterName,
@@ -82,8 +82,8 @@ setMethod(f = "encodeXML",
 		}
 )
 setMethod(f = "encodeXML",
-		signature = signature(obj = "TM_Before"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "TM_Before", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML TM_After with", toString(obj@time),
 						"\n")
 			
@@ -94,8 +94,8 @@ setMethod(f = "encodeXML",
 		}
 )
 setMethod(f = "encodeXML",
-		signature = signature(obj = "TM_During"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "TM_During", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML TM_During with", toString(obj@time),
 						"\n")
 			
@@ -106,34 +106,34 @@ setMethod(f = "encodeXML",
 		}
 )
 setMethod(f = "encodeXML",
-		signature = signature(obj = "TM_Equals"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "TM_Equals", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML TM_Equals with", toString(obj@time),
 						"\n")
 			
 			.encoded <- .encodeTM(nodeName = ogcTempOpTMEqualsName,
 					propertyName = obj@propertyName, time = obj@time,
-					verbose = verbose)
+					sos = sos, verbose = verbose)
 			return(.encoded)
 		}
 )
 
-.encodeTM <- function(nodeName, propertyName, time, verbose = FALSE) {
+.encodeTM <- function(nodeName, propertyName, time, sos, verbose = FALSE) {
 	if(verbose) cat("Encoding TM element ", nodeName, "\n")
 	
 	.tm <- xmlNode(name = nodeName, namespace = ogcNamespacePrefix)
 	.pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 	xmlValue(.pn) <- propertyName
 	.tm$children[[1]] <- .pn
-	.time <- encodeXML(time, verbose)
+	.time <- encodeXML(obj = time, sos = sos, verbose)
 	.tm$children[[2]] <- .time
 	
 	return(.tm)
 }
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "OgcBBOX"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "OgcBBOX", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML OgcBBOX with", toString(obj@time),
 						"\n")
 			
@@ -141,7 +141,7 @@ setMethod(f = "encodeXML",
 			
 			.pN <- .createPropertyName(node = .bbox,
 					propertyName = obj@propertyName)
-			.env <- encodeXML(obj@envelope)
+			.env <- encodeXML(obj = obj@envelope, sos = sos)
 			.bbox <- addChildren(node = .bbox, kids = list(.pN, .env))
 			
 			return(.bbox)
@@ -149,8 +149,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "OgcContains"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "OgcContains", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML OgcContains with", toString(obj@time),
 						"\n")
 			
@@ -163,8 +163,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "OgcIntersects"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "OgcIntersects", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML OgcIntersects with",
 						toString(obj@time), "\n")
 			
@@ -177,21 +177,21 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "OgcOverlaps"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "OgcOverlaps", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML OgcOverlaps with", toString(obj@time),
 						"\n")
 			
 			.overlaps <- .encodeBinarySpatialOp(opName = ogcOverlapsName,
 					propertyName = obj@propertyName, geometry = obj@geometry,
-					envelope = obj@envelope)
+					envelope = obj@envelope, sos = sos)
 			
 			return(.overlaps)
 		}
 )
 
-.encodeBinarySpatialOp <- function(opName, propertyName,
-		geometry, envelope) {
+.encodeBinarySpatialOp <- function(opName, propertyName, geometry, envelope,
+		sos) {
 	.spOp <- xmlNode(name = opName, namespace = ogcNamespacePrefix)
 	
 	.pN <- .createPropertyName(node = .spOp,
@@ -199,10 +199,10 @@ setMethod(f = "encodeXML",
 	
 	# switch between geometry and envelope
 	if(!is.null(geometry)) {
-		.geomOrEnv <- encodeXML(geometry)
+		.geomOrEnv <- encodeXML(obj = geometry, sos = sos)
 	}
 	else if(!is.null(envelope)) {
-		.geomOrEnv <- encodeXML(envelope)
+		.geomOrEnv <- encodeXML(obj = envelope, sos = sos)
 	}
 	else {
 		warning("At least one of geometry or envelope has to be set.")
@@ -221,8 +221,8 @@ setMethod(f = "encodeXML",
 }
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "OgcComparisonOps"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "OgcComparisonOps", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML OgcComparisonOps with",
 						toString(obj@time), "\n")
 			warning("Encoding of OgcComparisonOps not implemented yet! Returning obj as is...")
@@ -231,8 +231,8 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-		signature = signature(obj = "OgcComparisonOps"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "OgcComparisonOps", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding XML OgcComparisonOps with",
 						toString(obj@time), "\n")
 			warning("Encoding of OgcComparisonOps not implemented yet! Returning obj as is...")
@@ -244,32 +244,32 @@ setMethod(f = "encodeXML",
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #
 setMethod(f = "encodeKVP",
-		signature = signature(obj = "OgcBinaryTemporalOp"),
-		def = function(obj, verbose) {
+		signature = signature(obj = "OgcBinaryTemporalOp", sos = "SOS"),
+		def = function(obj, sos, verbose) {
 			if(verbose) cat("Encoding KVP temporalOps: ", toString(obj))
 			.time <- NULL
 			.tempOpTime <- obj@time
 			
 			if(class(.tempOpTime) == "GmlTimeInstant") {
 				.time <- format(.tempOpTime@timePosition@time,
-						sosDefaultKVPTimeFormat)
+						sosTimeFormat(sos))
 			}
 			# ignore type, because temporal operators are not supportded by the
 			# GET binding
 			else if (class(.tempOpTime) == "GmlTimePeriod") {
 				if(!is.null(.tempOpTime@begin) && !is.null(.tempOpTime@end)) {
 					.begin <- format(.tempOpTime@begin@time@timePosition,
-							sosDefaultKVPTimeFormat)
+							sosTimeFormat(sos))
 					.end <- format(.tempOpTime@end@time@timePosition,
-							sosDefaultKVPTimeFormat)
+							sosTimeFormat(sos))
 					.time <- paste(.begin, "/", .end, sep = "")
 				}
 				else if(!is.null(.tempOpTime@beginPosition)
 						&& !is.null(.tempOpTime@endPosition)) {
 					.begin <- format(.tempOpTime@beginPosition@time,
-							sosDefaultKVPTimeFormat)
+							sosTimeFormat(sos))
 					.end <- format(.tempOpTime@endPosition@time,
-							sosDefaultKVPTimeFormat)
+							sosTimeFormat(sos))
 					.time <- paste(.begin, "/", .end, sep = "")
 				}
 				else {

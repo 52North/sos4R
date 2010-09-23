@@ -116,14 +116,24 @@ er.xmltext4 <- "<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\
 input1 <- "urn:ogc:def:property:OGC:1.0:temperature_#_1"
 input2 <- "om:SpatialObservation"
 input3 <- "text/xml;subtype=\"OM/1.0.0\""
+input4 <- "urn@lala@home+home+home+lat,lon,lat,lon"
 
 .kvpEscapeSpecialCharacters(input1)
 .kvpEscapeSpecialCharacters(input2)
 .kvpEscapeSpecialCharacters(input3)
+.kvpEscapeSpecialCharacters(input4)
 
-# use test from above for kvp(...) method!
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
+		method = SosSupportedConnectionMethods()[[1]], verboseOutput = TRUE)
 
-############################
+describeSensor(sos = weathersos, procedure = "sos@home+street:name,one,two")
+getObservation(sos = weathersos, offering = sosOfferingIds(weathersos)[[1]])
+
+################################################################################
+source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+################################################################################
+
+################################################################################
 # problem with "/" character
 url = "http://localhost:8080/ClimateSOS-local/sos"
 request1 = "service=SOS&request=GetCapabilities&acceptVersions=1.0.0,2.0.0&sections=All&acceptFormats=text/xml"
@@ -280,8 +290,8 @@ value1 <- list(as.POSIXct("2008-01-01"), as.POSIXct("2009-02-02"),
 value2 <- c("lala", "nana", "pooh")
 value3 <- c(10.1, 12.4, 17.42)
 value4 <- c("10.1", "12.4", "17.42")
-value5 <- c(strptime("2010-03-01T12:15:00.000+01:00", sosDefaultTimeParsingFormat),
-		strptime("2010-03-02T12:30:00.000+01:00", sosDefaultTimeParsingFormat))
+value5 <- c(strptime("2010-03-01T12:15:00.000+01:00", sosDefaultTimeFormat),
+		strptime("2010-03-02T12:30:00.000+01:00", sosDefaultTimeFormat))
 value6 <- c("2010-03-01T12:15:00.000+01:00", "2010-03-02T12:30:00.000+01:00")
 
 df <- data.frame(value1, value2, value3)
@@ -440,21 +450,12 @@ source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R"
 
 ################################################################################
 # GetObservations
-
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
-
-go.offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]] # ATHMOSPHERIC_TEMPERATURE
-go.observedProperty = sosObservedProperties(weathersos)[[3]] # temp
-#go.responseFormat - leave to default
-go.responseMode = sosResponseMode(weathersos)[[2]] # inline
-go.resultModel = sosResultModels(weathersos)[[3]] # om:Measurement
-go.srsName = "urn:ogc:def:crs:EPSG:6.8:4326" # is "AnyValue" in capabilities... contacted Carsten about that
 
 # LATEST
 obs <- getObservation(sos = weathersos,
-		observedProperty = list(go.observedProperty),
-		procedure = list(sosProcedures(weathersos)[[1]]),
-		offering = go.offering@id,
+		observedProperty = sosObservedProperties(weathersos)[4],
+		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
 		latest = TRUE,
 		inspect = TRUE, verbose = TRUE)
 obs@result
@@ -662,12 +663,6 @@ length(obs1@result[[3]]); length(obs2@result[[3]])
 
 
 ################################################################################
-# TODO 
-#getData(sos, begin = , end = , observedProperty = )
-# return all possible procedures, in just one data.frame?
-
-
-################################################################################
 # using attributes on data frame
 tempDataFrame <- sosResult(pegelObs)
 attributes(tempDataFrame)
@@ -709,9 +704,7 @@ cat(sensorMLtemplate$def)
 cat(sensorMLtemplate$slots[["member"]])
 cat(sensorMLtemplate$coerce)
 
-################################################################################
-# SOAP
-# TODO ********************************************************* continue here!!
+
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")

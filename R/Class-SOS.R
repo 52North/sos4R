@@ -51,12 +51,6 @@ setClass("SOS",
 				return(paste("method has to be one of", paste(.allowedMethods,
 										sep = ", ", collapse = " ")))
 				
-			# version has to be one of the listed ones
-			.allowedVersions = c("1.0.0")
-			if(!any(sapply(.allowedVersions, "==", object@version), na.rm = TRUE))
-				return(paste("version has to be one of", paste(.allowedVersions,
-										sep = ", ", collapse = " ")))
-			
 			# url has to match an URL pattern
 			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
 			.result = regexpr(.urlPattern, object@url)
@@ -76,22 +70,25 @@ setClass("SOS",
 #
 #
 setClass("SosFilter_Capabilities",
-		representation(xml = "ANY"),
-		prototype = list(xml = NULL),
+		representation(spatial = "list", temporal = "list", scalar = "list",
+				id = "list"),
+		prototype = list(spatial = list(NA_character_),
+				temporal = list(NA_character_), scalar = list(NA_character_),
+				id = list(NA_character_)),
 		validity = function(object) {
 			#print("Entering validation: SosFilter_Capabilities")
 			# TODO implement validity function
-			# xml should be XMLAbstractNode
 			return(TRUE)
 		}
 )
+setClassUnion(name = "SosFilter_CapabilitiesOrNULL",
+		members = c("SosFilter_Capabilities", "NULL"))
 
 #
 # See OWS Common 1.1.0, OGC 06-121r3
 #
 setClass("SosCapabilities_1.1.0",
-		representation(filterCaps = "SosFilter_Capabilities"),
-		prototype = list(filterCaps = NULL),
+		representation(filterCaps = "SosFilter_CapabilitiesOrNULL"),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {
 			#print("Entering validation: SosCapabilities_1.1.0")
@@ -103,16 +100,18 @@ setClass("SosCapabilities_1.1.0",
 #
 # See OGC 06-009r6, clause 8.2.3.2
 #
+# Intermediate element swe:TimeGeometricPrimitiveProperty for time is left out.
+#
 setClass("SosObservationOffering",
 		representation(id = "character", name = "character",
-				time = "GmlTimeGeometricPrimitive", procedure = "vector",
-				observedProperty = "vector", featureOfInterest = "vector",
-				responseFormat = "vector", intendedApplication = "character",
-				resultModel = "vector", responseMode = "vector",
-				boundedBy = "vector"),
+				time = "GmlTimeGeometricPrimitive", procedure = "list",
+				observedProperty = "list", featureOfInterest = "list",
+				responseFormat = "list", intendedApplication = "list",
+				resultModel = "list", responseMode = "list",
+				boundedBy = "list"),
 		prototype = list(id = as.character(NA), time = NULL,
-				procedure = c(NA), observedProperty = c(NA),
-				featureOfInterest = c(NA), responseFormat = c(NA)),
+				procedure = list(NA), observedProperty = list(NA),
+				featureOfInterest = list(NA), responseFormat = list(NA)),
 		validity = function(object) {
 			#print("Entering validation: ObservationOffering")
 			# TODO implement validity function
@@ -123,14 +122,15 @@ setClass("SosObservationOffering",
 			return(TRUE)
 		}
 )
-
+setClassUnion(name = "SosObservationOfferingOrCharacter",
+		members = c("SosObservationOffering", "character"))
 
 #
 # See OGC 06-009r6, clause 8.2.3.2
 #
 setClass("SosContents",
-		representation(observationOfferings = "vector"),
-		prototype = list(observationOfferings = c(NA), xml = xmlNode(NA)),
+		representation(observationOfferings = "list"),
+		prototype = list(observationOfferings = list(NA), xml = xmlNode(NA)),
 		contains = c("OwsContents"),
 		validity = function(object) {
 			#print("Entering validation: SosContents")
@@ -138,6 +138,7 @@ setClass("SosContents",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "SosContentsOrNULL", members = c("SosContents", "NULL"))
 
 #
 #
@@ -171,7 +172,7 @@ setClass("SosEventTimeLatest",
 setClass("SosFeatureOfInterest",
 		representation(
 				objectIDs = "list",
-				spatialOps = "ANY"), # OgcSpatialOps
+				spatialOps = "OgcSpatialOpsOrNULL"),
 		prototype = list(
 				objectIDs = list(NA),
 				spatialOps = NULL),
@@ -179,7 +180,8 @@ setClass("SosFeatureOfInterest",
 			#print("Entering validation: GetObservationById")
 			# TODO implement validity function
 			# one of objectIDs or spatialOps has to be set
-			# spatialOps must be OgcSpatialOps
 			return(TRUE)
 		}
 )
+setClassUnion(name = "SosFeatureOfInterestOrNULL",
+		members = c("SosFeatureOfInterest", "NULL"))

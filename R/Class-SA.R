@@ -28,14 +28,20 @@
 ################################################################################
 
 #
-# TODO add schema references
+# Classes are based on Observations & Measurements - Part 2 - Sampling Features
+# 
+# http://www.opengeospatial.org/standards/om
+#
+
+#
+# 
 #
 setClass("SaSamplingPoint",
 		representation(sampledFeatures = "list",
 				position = "GmlPointProperty",
 				# optional:
-				relatedObservation = "ANY",
-				relatedSamplingFeature = "ANY",
+				relatedObservation = "list",
+				relatedSamplingFeature = "list",
 				surveyDetails = "ANY"),
 		prototype = list(sampledFeatures = list(NA), position = NULL),
 		contains = "GmlFeature",
@@ -43,7 +49,7 @@ setClass("SaSamplingPoint",
 			#print("Entering validation: SaSamplingPoint")
 			# TODO implement validity function
 			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observation must be OmObservationProperty
+			# related observations must be OmObservationProperty
 			return(TRUE)
 		}
 )
@@ -55,17 +61,17 @@ setClass("SaSamplingSurface",
 		representation(sampledFeatures = "list",
 				shape = "ANY",
 				# optional:
-				relatedObservation = "ANY",
-				relatedSamplingFeature = "ANY",
+				relatedObservation = "list",
+				relatedSamplingFeature = "list",
 				surveyDetails = "ANY",
-				position = "GmlPointProperty"),
-		prototype = list(sampledFeatures = list(NA), shape = NA),
+				area = "ANY"),
+		prototype = list(sampledFeatures = list(NA), shape = NULL),
 		contains = "GmlFeature",
 		validity = function(object) {
 			#print("Entering validation: SaSamplingSurface")
 			# TODO implement validity function
 			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observation must be of type OmObservationProperty
+			# related observations must be of type OmObservationProperty
 			return(TRUE)
 		}
 )

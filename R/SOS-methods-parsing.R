@@ -36,15 +36,15 @@ parseSosObservationOffering <- function(obj, sos) {
 	
 	.time <- parseTimeGeometricPrimitiveFromParent(obj = obj[[sosTimeName]],
 			timeFormat = sosTimeFormat(sos))
-	.procedure <- sapply(obj[sosProcedureName], xmlGetAttr, "href")
-	.observedProperty <- sapply(obj[sosObservedPropertyName], xmlGetAttr,
+	.procedure <- lapply(obj[sosProcedureName], xmlGetAttr, "href")
+	.observedProperty <- lapply(obj[sosObservedPropertyName], xmlGetAttr,
 			"href")
-	.featureOfInterest <- sapply(obj[sosFeatureOfInterestName], xmlGetAttr,
+	.featureOfInterest <- lapply(obj[sosFeatureOfInterestName], xmlGetAttr,
 			"href")
 	
-	.responseFormat <- sapply(obj[sosResponseFormatName], xmlValue)
-	.resultModel <- sapply(obj[sosResultModelName], xmlValue)
-	.responseMode <- sapply(obj[sosResponseFormatName], xmlValue)
+	.responseFormat <- lapply(obj[sosResponseFormatName], xmlValue)
+	.resultModel <- lapply(obj[sosResultModelName], xmlValue)
+	.responseMode <- lapply(obj[sosResponseFormatName], xmlValue)
 	
 	.env <- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
 	.boundedBy <- list(
@@ -52,11 +52,15 @@ parseSosObservationOffering <- function(obj, sos) {
 			lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
 			upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
 	
+	.intendedApplication <- lapply(obj[sosIntendedApplicationName], xmlValue)
+	
 	.ob <- SosObservationOffering(id = .id, name = .name, 
 			time = .time, procedure = .procedure,
 			observedProperty = .observedProperty,
 			featureOfInterest = .featureOfInterest,
-			responseFormat = .responseFormat, resultModel = .resultModel,
+			responseFormat = .responseFormat,
+			intendedApplication = .intendedApplication,
+			resultModel = .resultModel,
 			responseMode = .responseMode, boundedBy = .boundedBy)
 	
 	return(.ob)
@@ -74,38 +78,54 @@ parseSosCapabilities <- function(obj, sos) {
 	.caps.updateSequence <- xmlGetAttr(node = .caps.root,
 			name = "updateSequence", default = NA_character_)
 	
-	# as xml only: filter capabilities
-	.caps.fc <- SosFilter_Capabilities(.caps.root[[sosFilterCapabilitiesName]])
+	if(!is.null(.caps.root[[owsServiceIdentificationName]])) {
+		.caps.si <- parseOwsServiceIdentification(
+				.caps.root[[owsServiceIdentificationName]])
+	}
+	else .caps.si <- NULL
 	
-	# parsed parts:
-	.caps.si <- parseOwsServiceIdentification(
-			.caps.root[[owsServiceIdentificationName]])
-	.caps.sp <- parseOwsServiceProvider(.caps.root[[owsServiceProviderName]])
-	.operationsXML <- .filterXmlChildren(
-			node = .caps.root[[owsOperationsMetadataName]],
-			childrenName = owsOperationName)
+	if(!is.null(.caps.root[[owsServiceProviderName]])) {
+		.caps.sp <- parseOwsServiceProvider(.caps.root[[owsServiceProviderName]])
+	}
+	else .caps.sp <- NULL
 	
-	.operations <- lapply(.operationsXML, parseOwsOperation)
-	# add names for indexing of list
-	names(.operations) <- lapply(.operations,
-			function(obj) {
-				return(obj@name)
-			})
-	.caps.om <- OwsOperationsMetadata(operations = .operations)
+	if(!is.null(.caps.root[[owsOperationsMetadataName]])) {
+		.operationsXML <- .filterXmlChildren(
+				node = .caps.root[[owsOperationsMetadataName]],
+				childrenName = owsOperationName)
+		
+		.operations <- lapply(.operationsXML, parseOwsOperation)
+		# add names for indexing of list
+		names(.operations) <- lapply(.operations,
+				function(obj) {
+					return(obj@name)
+				})
+		.caps.om <- OwsOperationsMetadata(operations = .operations)
+	}
+	else .caps.om <- NULL
 	
-	.observationsXML <- .filterXmlChildren(
-			node = .caps.root[[sosContentsName]][[sosObservationOfferingListName]],
-			childrenName = sosObservationOfferingName)
-	.observations = sapply(.observationsXML, parseSosObservationOffering,
-			sos = sos)
-	# add names to list
-	names(.observations) <- lapply(.observations,
-			function(obj) {
-				return(obj@id)
-			})
+	if(!is.null(.caps.root[[sosContentsName]])) {
+		.observationsXML <- .filterXmlChildren(
+				node = .caps.root[[sosContentsName]][[sosObservationOfferingListName]],
+				childrenName = sosObservationOfferingName)
+		.observations = sapply(.observationsXML, parseSosObservationOffering,
+				sos = sos)
+		# add names to list
+		names(.observations) <- lapply(.observations,
+				function(obj) {
+					return(obj@id)
+				})
+		
+		.caps.contents <- SosContents(observationOfferings = .observations)
+	}
+	else .caps.contents <- NULL
 	
-	.caps.contents <- SosContents(observationOfferings = .observations)
-	
+	if(!is.null(.caps.root[[sosFilterCapabilitiesName]])) {
+		.caps.fc <- parseSosFilter_Capabilities(
+				.caps.root[[sosFilterCapabilitiesName]])
+	}
+	else .caps.fc <- NULL
+
 	.capabilities <- SosCapabilities(version = .caps.version,
 			updateSequence = .caps.updateSequence,
 			identification = .caps.si,
@@ -116,3 +136,48 @@ parseSosCapabilities <- function(obj, sos) {
 	
 	return(.capabilities)
 }
+
+parseSosFilter_Capabilities <- function(obj) {
+	.spatial.geom <- .filterXmlOnlyNoneTexts(
+			node = obj[[ogcSpatialCapabilitiesName]][[ogcGeometryOperandsName]])
+	.spatial.spat <- .filterXmlOnlyNoneTexts(
+			node = obj[[ogcSpatialCapabilitiesName]][[ogcSpatialOperatorsName]])
+	.spatial <- list(lapply(.spatial.geom, xmlValue),
+			lapply(.spatial.spat, xmlGetAttr, name = "name"))
+	names(.spatial) <- c(ogcGeometryOperandsName, ogcSpatialOperatorsName)
+	
+	.temporal.ands <- .filterXmlOnlyNoneTexts(
+			node = obj[[ogcTemporalCapabilitiesName]][[ogcTemporalOperandsName]])
+	.temporal.ators <- .filterXmlOnlyNoneTexts(
+			node = obj[[ogcTemporalCapabilitiesName]][[ogcTemporalOperatorsName]])
+	.temporal <- list(lapply(.temporal.ands, xmlValue),
+			lapply(.temporal.ators, xmlGetAttr, name = "name"))
+	names(.temporal) <- c(ogcTemporalOperandsName, ogcTemporalOperatorsName)
+	
+	.scalarXML <- obj[[ogcScalarCapabilitiesName]]
+	.scalar <- list()
+	if(!is.null(.scalarXML[[ogcLogicalOperatorsName]])) {
+		.scalar.logicalXML <- .filterXmlOnlyNoneTexts(
+				.scalarXML[[ogcLogicalOperatorsName]])
+		.scalar.logical <- lapply(.scalar.logicalXML, xmlValue)
+		.scalar <- c(.scalar, .scalar.logical)
+	}
+	if(!is.null(.scalarXML[[ogcComparisonOperatorsName]])) {
+		.scalar.compXML <- .filterXmlOnlyNoneTexts(
+				.scalarXML[[ogcComparisonOperatorsName]])
+		.scalar.comp <- lapply(.scalar.compXML, xmlValue)
+		.scalar <- c(.scalar, .scalar.comp)
+	}
+	if(!is.null(.scalarXML[[ogcArithmeticOperatorsName]])) {
+		.scalar.arithm <- xmlToList(
+				.scalarXML[[ogcArithmeticOperatorsName]])
+		.scalar <- c(.scalar, .scalar.arithm)
+	}
+	
+	.idXML <- .filterXmlOnlyNoneTexts(obj[[ogcIdCapabilities]])
+	.id <- lapply(.idXML, xmlName)
+	
+	.fc <- SosFilter_Capabilities(spatial = .spatial, temporal = .temporal,
+			scalar = .scalar, id = .id)
+}
+

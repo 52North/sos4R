@@ -102,17 +102,17 @@ if (!isGeneric("checkRequest"))
 			})
 if (!isGeneric("encodeRequestKVP"))
 	setGeneric(name = "encodeRequestKVP",
-			def = function(obj, verbose = FALSE) {
+			def = function(obj, sos, verbose = FALSE) {
 				standardGeneric("encodeRequestKVP")
 			})
 if (!isGeneric("encodeRequestXML"))
 	setGeneric(name = "encodeRequestXML",
-			def = function(obj, verbose = FALSE) {
+			def = function(obj, sos, verbose = FALSE) {
 				standardGeneric("encodeRequestXML")
 			})
 if (!isGeneric("encodeRequestSOAP"))
 	setGeneric(name = "encodeRequestSOAP",
-			def = function(obj, verbose = FALSE) {
+			def = function(obj, sos, verbose = FALSE) {
 				standardGeneric("encodeRequestSOAP")
 			})
 
@@ -129,11 +129,11 @@ if (!isGeneric("owsMeaningOfCode"))
 #
 if (!isGeneric("encodeXML"))
 	setGeneric(name = "encodeXML",
-			def = function(obj, verbose = FALSE) {
+			def = function(obj, sos = "SOS", verbose = FALSE) {
 				standardGeneric("encodeXML")
 			})
 if (!isGeneric("encodeKVP"))
 	setGeneric(name = "encodeKVP",
-			def = function(obj, verbose = FALSE) {
+			def = function(obj, sos = "SOS", verbose = FALSE) {
 				standardGeneric("encodeKVP")
 			})

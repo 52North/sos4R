@@ -70,59 +70,60 @@ print.OwsGetCapabilities <- function(x, ...) {
 }
 
 print.OwsOperationsMetadata <- function(x, ...) {
-	cat("Object of class OwsOperationsMetadata\n")
-	cat("operations:\n")
+	cat("Object of class OwsOperationsMetadata:\n")
+	cat("-- operations:\n")
 	print(x@operations)
-	cat("parameters:\n")
+	cat("-- parameters:\n")
 	print(x@parameters)
-	cat(",\nextendedCapabilities:\n")
+	cat("-- extendedCapabilities:\n")
 	print(x@extendedCapabilities)
 	invisible(x)
 }
 
 print.OwsOperation <- function(x, ...) {
-	cat("Object of class OwsOperation\n")
+	cat("Object of class OwsOperation: ")
 	cat("Name: ")
 	cat(x@name)
-	cat("\nParameters (names): ")
+	cat("\n\tParameters (names): ")
 	cat(paste(names(x@parameters)))
-	cat("\nDCPs (types): ")
-	print(paste(names(x@DCPs)))
-	cat("Constraints: ")
-	print(x@constraints)
-	cat("Metadata: ")
-	print(x@metadata)
+	cat("\n\tDCPs (types): ")
+	cat(paste(names(x@DCPs)))
+	cat("\n\tConstraints: ")
+	cat(toString(x@constraints))
+	cat("\n\tMetadata: ")
+	print(toString(x@metadata))
 	invisible(x)
 }
 
 print.OwsServiceIdentification <- function(x, ...) {
-	cat("Object of class OwsServiceIdentification")
-	cat(":\nServiceType: ")
+	cat("Object of class OwsServiceIdentification:")
+	cat("\n\tServiceType: ")
 	cat(x@serviceType)
 	cat("; serviceTypeVersion(s): ")
 	cat(paste(x@serviceTypeVersion, collapse = ", "))
-	cat("; title(s): ")
+	cat("\n\ttitle(s): ")
 	cat(paste(x@title, collapse = "; "))
 	# optional:
-	cat("\nProfile(s): ")
+	cat("\n\tProfile(s): ")
 	cat(paste(x@profile, collapse = "; "))
-	cat("\nAbstract(s): ")
+	cat("\n\tAbstract(s): ")
 	cat(paste(x@abstract, collapse = "; "))
-	cat("\nKeywords(s): ")
+	cat("\n\tKeywords(s): ")
 	cat(paste(x@keywords, collapse = "; "))
-	cat("\nAccessConstraints(s): ")
+	cat("\n\tAccessConstraints(s): ")
 	cat(paste(x@accessConstraints, collapse = "; "))
+	cat("\n")
 	invisible(x)
 }
 
 print.OwsServiceProvider <- function(x, ...) {
-	cat("Object of class OwsServiceProvider:\n")
-	cat("Provider name: ")
+	cat("Object of class OwsServiceProvider:")
+	cat("\n\tProvider name: ")
 	cat(x@providerName)
 	cat("; providerSite: ")
 	cat(x@providerSite)
-	cat("\nService contact:  (unparsed XML, see @serviceContact for details)")
-#	print(x@serviceContact)
+	cat("\n\tService contact:  (unparsed XML, see @serviceContact for details)")
+	cat("\n")
 	invisible(x)
 }
 
@@ -161,7 +162,8 @@ print.OwsCapabilities <- function(x, ...) {
 #		cat("\nFilter Capablities: ")
 #		print(x@filterCaps)
 #	}
-
+	
+	cat("\n")
 	invisible(x)
 }
 
@@ -173,7 +175,7 @@ toString.OwsExceptionReport <- function(x) {
 			", lang: ",
 			x@lang,
 			paste(", ", length(x@exceptions),
-					"exceptions: (code @ locator : text)"),
+					"exceptions (code @ locator : text):"),
 			sep = "")
 	for (e in x@exceptions) {
 		.e <- paste("\t", e@exceptionCode, " @ ", e@locator, " : ",
@@ -225,36 +227,51 @@ print.SOS <- function(x, ...) {
 	invisible(x)
 }
 
+toString.SosFilter_Capabilities <- function(x) {
+	.s <- paste("Object of class SosFilter_Capabilities;",
+			"\n\tSpatial_Capabilities:\t",
+			toString(x@spatial[[ogcGeometryOperandsName]]),
+			";",
+			toString(x@spatial[[ogcSpatialOperatorsName]]),
+			"\n\tTemporal_Capablities:\t",
+			toString(x@temporal[[ogcTemporalOperandsName]]),
+			";",
+			toString(x@spatial[[ogcTemporalOperatorsName]]),
+			"\n\tScalar_Capablities:\t\t",
+			toString(x@scalar),
+			"\n\tId_Capabilities\t\t\t",
+			toString(x@id))
+	return(.s)
+}
+
 print.SosFilter_Capabilities <- function(x, ...) {
-	cat("Object of class SosFilter_Capabilities (wraps unparsed XML, see @xml for details).\n")
-#	print("xml:")
-#	print(x@xml)
+	cat(toString.SosFilter_Capabilities(x), "\n")
 	invisible(x)
 }
 
 print.SosObservationOffering <- function(x, ...) {
-	cat("Object of class SosObservationOffering: ")
+	cat("Object of class SosObservationOffering; ")
 	cat("id: ")
 	cat(x@id)
 	cat(", name: ")
 	cat(x@name)
-	cat(", time class (inspect via @time): ")
-	cat(class(x@time))
-	cat("\nprocedure(s): ")
-	cat(x@procedure)
-	cat("\nobservedProperty(s): ")
-	cat(x@observedProperty)
-	cat("\nfeature(s)OfInterest: ")
-	cat(x@featureOfInterest)
-	cat("\nresponseFormat(s): ")
-	cat(x@responseFormat)
+	cat("\n\ttime: ")
+	cat(.addTabIndent(toString(x@time)))
+	cat("\n\tprocedure(s): ")
+	cat(paste(x@procedure))
+	cat("\n\tobservedProperty(s): ")
+	cat(paste(x@observedProperty))
+	cat("\n\tfeature(s)OfInterest: ")
+	cat(paste(x@featureOfInterest))
+	cat("\n\tresponseFormat(s): ")
+	cat(paste(x@responseFormat))
 	cat(", responseMode(s): ")
 	cat(paste(x@responseMode))
-	cat("\nintendedApplication: ")
-	cat(x@intendedApplication)
-	cat("\nresultModel(s): ")
-	cat(x@resultModel)
-	cat("\nboundedBy: ")
+	cat("\n\tintendedApplication: ")
+	cat(paste(x@intendedApplication))
+	cat("\n\tresultModel(s): ")
+	cat(paste(x@resultModel))
+	cat("\n\tboundedBy: ")
 	cat(paste(x@boundedBy))
 	invisible(x)
 }
@@ -407,14 +424,14 @@ toString.OmObservation <- function(x) {
 			"Object of class OmObservation",
 			"; procedure: ",
 			toString(x@procedure),
-			", observedProperty: ",
+			"\n\tobservedProperty: ",
 			toString(x@observedProperty),
-			", foi: ",
+			"\n\tfoi: ",
 			toString(x@featureOfInterest),
-			"; samplingTime: ",
-			toString(x@samplingTime),
-			";\n\tresult: ",
-			toString(x@result),
+			"\n\tsamplingTime: ",
+			.addTabIndent(toString(x@samplingTime)),
+			"\n\tresult dimensions: ",
+			toString(dim(x@result)),
 			sep = "")
 	return(.s)
 }
@@ -534,10 +551,10 @@ print.GmlTimePosition <- function(x) {
 }
 
 toString.GmlTimeInstant <- function(x) {
-	.s <- paste("Object of class GmlTimeInstant",
-			"; timePosition: ",
-			toString(x@timePosition),
-			sep = "")
+	.s <- paste(
+			#"Object of class GmlTimeInstant",
+			#"; timePosition:",
+			toString(x@timePosition))
 	return(.s)
 }
 
@@ -581,20 +598,25 @@ print.GmlTimeInterval <- function(x) {
 }
 
 toString.GmlTimePeriod <- function(x) {
-	.s <- paste("Object of class GmlTimePeriod",
-			"; duraction: ",
-			x@duration,
-			", timeInterval: ",
-			toString(x@timeInterval),
-			";\n\tbegin: ",
-			toString(x@begin),
-			" -- end: ",
-			toString(x@end),
-			";\n\tbeginPosition: ",
-			toString(x@beginPosition),
-			" -- endPosition: ",
-			toString(x@endPosition),
-			sep = "")
+	.s <- ""
+
+	if(!is.na(x@duration)) {
+		.s <- paste(.s, "; duration: ", x@duration)
+	}
+	if(!is.null(x@timeInterval)) {
+		.s <- paste(.s, ", timeInterval: ", toString(x@timeInterval), ";")
+	}
+	
+	if(!is.null(x@begin) && !is.null(x@end)) {
+		.s <- paste(.s, "begin: ", toString(x@begin), " -- end: ",
+				toString(x@end))
+	}
+	else {
+		.s <- paste("beginPosition: ", toString(x@beginPosition),
+				" -- endPosition: ", toString(x@endPosition))
+	}
+	
+	.s <- paste("Object of class GmlTimePeriod:", .s)
 	return(.s)
 }
 
@@ -615,6 +637,23 @@ toString.GmlFeatureProperty <- function(x) {
 
 print.GmlFeatureProperty <- function(x) {
 	cat(toString.GmlFeatureProperty(x), "\n")
+	invisible(x)
+}
+
+toString.GmlFeatureCollection <- function(x) {
+	.s <- paste("Object of class GmlFeatureCollection",
+			"; id: ",
+			x@id,
+			"; ",
+			length(x@featureMembers),
+			" featureMembers: ",
+			toString(x@featureMembers),
+			sep = "")
+	return(.s)
+}
+
+print.GmlFeatureCollection <- function(x) {
+	cat(toString.GmlFeatureCollection(x), "\n")
 	invisible(x)
 }
 
@@ -924,6 +963,7 @@ setMethod("show", "GmlTimeInstant", function(object) print.GmlTimeInstant(object
 setMethod("show", "GmlTimeInterval", function(object) print.GmlTimeInterval(object))
 setMethod("show", "GmlTimePeriod", function(object) print.GmlTimePeriod(object))
 setMethod("show", "GmlFeatureProperty", function(object) print.GmlFeatureProperty(object))
+setMethod("show", "GmlFeatureCollection", function(object) print.GmlFeatureCollection(object))
 setMethod("show", "GmlDirectPosition", function(object) print.GmlDirectPosition(object))
 setMethod("show", "GmlPoint", function(object) print.GmlPoint(object))
 setMethod("show", "GmlPointProperty", function(object) print.GmlPointProperty(object))
@@ -941,29 +981,14 @@ setMethod("show", "OgcOverlaps", function(object) print.TM_After(object))
 
 ################################################################################
 # SUMMARY FUNCTIONS
-summary.OwsGetCapabilities <- function(object, ...) {
-	obj = list()
-	obj[["class"]] = class(object)
-	obj[["service"]] = object@service
-	obj[["owsVersion"]] = object@owsVersion
-	obj[["request"]] = object@request
-	
-	if (is(object, "OwsGetCapabilities_1.1.0")) {
-		obj[["sections"]] = object@sections
-		obj[["acceptFormats"]] = object@acceptFormats
-		obj[["updateSequence"]] = object@updateSequence
-	}
-		
-	if (is(object, "OwsGetCapabilities_2.0.0")) {
-		obj[["acceptLanguages"]] = object@acceptLanguages
-	}
-	
-	class(obj) = "summary.OwsGetCapabilities"
-	return(obj)
-}
-setMethod("summary", "OwsGetCapabilities", summary.OwsGetCapabilities)
-
-# missing: OwsServiceOperation, OwsGetCapabilities
 
 ################################################################################
 # STR FUNCTIONS
+
+################################################################################
+# utils
+.addTabIndent <- function(str) {
+	.s <- gsub(pattern = "\t",  replacement = "\t\t", x = str)
+	return(.s)
+}
+
