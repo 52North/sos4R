@@ -97,6 +97,7 @@ sosContentsName <- "Contents"
 sosFilterCapabilitiesName <- "Filter_Capabilities"
 sosCapabilitiesName <- "Capabilities"
 sosEventTimeName <- "eventTime"
+sosEventTimeLatestValue <- "latest"
 sosObjectIDName <- "ObjectID"
 sosResultName <- "result"
 

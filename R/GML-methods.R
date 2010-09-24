@@ -127,7 +127,8 @@ setMethod(f = "encodeXML",
 			
 			.ti <- xmlNode(name = gmlTimeInstantName,
 					namespace = gmlNamespacePrefix)
-			.time <- encodeXML(obj@timePosition)
+			.time <- encodeXML(obj = obj@timePosition, sos = sos,
+					verbose = verbose)
 			.ti$children[[1]] <- .time
 			
 			return(.ti)

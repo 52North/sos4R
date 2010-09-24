@@ -283,13 +283,25 @@ print.SosContents <- function(x, ...) {
 }
 
 toString.SosEventTime <- function(x) {
-	.s <- paste("Object of class SosEventTime containing",
-			toString(x@temporalOps))
+	.s <- paste("Object of class SosEventTime: ",
+			class(x@temporalOps),": ",
+			toString(x@temporalOps@time), sep = "")
 	return(.s)
 }
 
 print.SosEventTime <- function(x) {
 	cat(toString.SosEventTime(x), "\n")
+	invisible(x)
+}
+
+toString.SosEventTimeLatest <- function(x) {
+	.s <- paste("Object of class SosEventTimeLatest; temporalOps value:",
+			x@temporalOps)
+	return(.s)
+}
+
+print.SosEventTime <- function(x) {
+	cat(toString.SosEventTimeLatest(x), "\n")
 	invisible(x)
 }
 
@@ -339,8 +351,8 @@ toString.GetObservation <- function(x) {
 			toString(x@featureOfInterest),
 			"\n\tevent time: ",
 			toString(x@eventTime),
-			"\n\tresult: [cannot be printed]", # cannot print this, as it's potentially just XML with external pointers...
-			#show(x@result),
+			"\n\tresult: ",
+			class(x@result),
 			"\nsrsName: ",
 			x@srsName,
 			"\nresultModel(s): ",
@@ -438,6 +450,21 @@ toString.OmObservation <- function(x) {
 
 print.OmObservation <- function(x, ...) {
 	cat(toString.OmObservation(x), "\n")
+	invisible(x)
+}
+
+toString.OmObservationProperty <- function(x) {
+	.s <- paste("Object of class OmObservationProperty",
+			"; href: ",
+			x@href,
+			"; observation: ",
+			toString(x@obs),
+			sep = "")
+	return(.s)
+}
+
+print.OmObservationProperty <- function(x) {
+	cat(toString.OmObservationProperty(x), "\n")
 	invisible(x)
 }
 
@@ -971,13 +998,13 @@ setMethod("show", "GmlGeometry", function(object) print.GmlGeometry(object))
 setMethod("show", "GmlEnvelope", function(object) print.GmlEnvelope(object))
 
 setMethod("show", "TM_After", function(object) print.TM_After(object))
-setMethod("show", "TM_Before", function(object) print.TM_After(object))
-setMethod("show", "TM_During", function(object) print.TM_After(object))
-setMethod("show", "TM_Equals", function(object) print.TM_After(object))
-setMethod("show", "OgcBBOX", function(object) print.TM_After(object))
-setMethod("show", "OgcContains", function(object) print.TM_After(object))
-setMethod("show", "OgcIntersects", function(object) print.TM_After(object))
-setMethod("show", "OgcOverlaps", function(object) print.TM_After(object))
+setMethod("show", "TM_Before", function(object) print.TM_Before(object))
+setMethod("show", "TM_During", function(object) print.TM_During(object))
+setMethod("show", "TM_Equals", function(object) print.TM_Equals(object))
+setMethod("show", "OgcBBOX", function(object) print.OgcBBOX(object))
+setMethod("show", "OgcContains", function(object) print.OgcContains(object))
+setMethod("show", "OgcIntersects", function(object) print.OgcIntersects(object))
+setMethod("show", "OgcOverlaps", function(object) print.OgcOverlaps(object))
 
 ################################################################################
 # SUMMARY FUNCTIONS

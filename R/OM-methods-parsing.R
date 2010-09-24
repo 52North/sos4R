@@ -44,7 +44,7 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 	.parsingFunction <- sosParsers(sos)[[.rootName]]
 	if(!is.null(.parsingFunction)) {
 		if(verbose) cat("Parsing O&M", .rootName, "\n") #, "with: "); print(.parsingFunction)
-		.om <- .parsingFunction(.root, sos, verbose)	
+		.om <- .parsingFunction(obj = .root, sos = sos, verbose = verbose)	
 		if(verbose) cat("Done Parsing", .rootName, ":",
 					substr(toString(.om), 0, 74), "...\n")
 	}
@@ -58,21 +58,31 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 #
 # Function extracts om:Obervation or om:Measurement from om:member.
 #
-parseMember <- function(obj, sos, verbose = FALSE) {
-	# a member can only have on child element, parse that, omit possible text nodes artefacts
-	if(xmlSize(obj) > 1) {
+parseObservationProperty <- function(obj, sos, verbose = FALSE) {
+	# a member can only have one child element, so omit text node artefacts
+	if(xmlSize(obj) >= 1) {
 		.noneTexts <- .filterXmlChildren(obj, xmlTextNodeName, includeNamed = FALSE)
 		.child <- .noneTexts[[1]]
+		#.child <- xmlChildren(obj)[[1]]
+		if(verbose) {
+			cat("Parsing child of member:", xmlName(.child), "\n")
+		}
+		.mResult <- parseOM(.child, sos, verbose)
 	}
 	else {
-		.child <- xmlChildren(obj)[[1]]
+		# no child, try href attribute
+		if(verbose) cat("Member has no direct child!\n")
+		
+		.href <- xmlGetAttr(node = obj, name = "href", default = NA_character_)
+		if(!is.na(.href)) {
+			.mResult <- OmObservationProperty(href = .href)
+			warning("Only reference to Observation was returned!")
+		}
+		else {
+			warning("No Observation found in response!")
+			.mResult <- OmObservationProperty()
+		}
 	}
-	
-	if(verbose) {
-		cat("Parsing child of member:", xmlName(.child), "\n")
-	}
-	
-	.mResult <- parseOM(.child, sos, verbose)
 	
 	return(.mResult)
 }

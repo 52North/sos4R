@@ -64,7 +64,7 @@ SosExampleServices <- function() {
 		parseOwsExceptionReport,
 		#
 		parseMeasurement,
-		parseMember,
+		parseObservationProperty,
 		parseObservation,
 		parseObservationCollection,
 		parseResult,

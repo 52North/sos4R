@@ -28,7 +28,7 @@
 ################################################################################
 
 ################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 ################################################################################
 
 ################################################################################
@@ -40,7 +40,6 @@ weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 # PegelOnlineSOS
 pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 print(object.size(pegelsos), units = c("Mb"))
-# works so far... :-)
 
 latestObs <- getObservation(sos = pegelsos,
 		observedProperty = sosObservedProperties(pegelsos),
@@ -49,18 +48,27 @@ latestObs <- getObservation(sos = pegelsos,
 		latest = TRUE) #, inspect = TRUE, verbose = TRUE)
 sosResult(latestObs)
 
+# if returning reference
+latestObs <- getObservation(sos = pegelsos,
+		observedProperty = sosObservedProperties(pegelsos),
+		offering = sosOfferings(pegelsos)[[2]],
+		procedure = sosProcedures(pegelsos)[11],
+		latest = TRUE, inspect = TRUE) # , verbose = TRUE)
+sosResult(latestObs)
+
 
 # three procedures, but only getting 1 element with one procedure...
 pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 pegelObs <- getObservation(sos = pegelsos,
 		observedProperty = sosObservedProperties(pegelsos)[3],
 		offering = sosOfferings(pegelsos)[[2]],
-		procedure = sosProcedures(pegelsos)[c(2503)], #[c(2501,2503,2505)],
+		procedure = sosProcedures(pegelsos)[c(2503,2505,2507)], #[c(2501,2503,2505)],
 		eventTime = sosCreateEventTimeList(time = sosCreateTimePeriod(
 						sos = pegelsos,
 						begin = Sys.time() - (3600 * 24), # * 360),
 						end = Sys.time())), verbose = TRUE)
-# Finished getObservation to http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos - received 2 observation(s)/measurement(s) having 1372 1372 elements.
+# Finished getObservation to http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos 
+#	- received 2 observation(s)/measurement(s) having 1372 1372 elements.
 # YEAH!
 
 # show parts of the data frame:
@@ -109,8 +117,10 @@ latestOzone <- getObservation(sos = pegelsos,
 		offering = ozone,
 		procedure = list(ozone@procedure),
 		latest = TRUE, inspect = TRUE)
-#Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  1 exceptions: (code @ locator : text)
-#InvalidParameterValue @ offering : The value (OZONE_(AIR)) of the parameter 'offering' is invalid 
+#Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  
+# 1 exceptions: (code @ locator : text)
+#InvalidParameterValue @ offering : The value (OZONE_(AIR)) of the parameter 
+# 'offering' is invalid 
 
 getObs <- airsos@capabilities@operations@operations[[sosGetObservationName]]
 getObs@parameters[["offering"]]
@@ -161,7 +171,9 @@ source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R"
 # Sensor Observation Service (SOS) for Marine Metadata Interoperability
 # Initiative (MMI)
 MBARI <- SOS("http://mmisw.org/oostethys/sos", method = "GET", verboseOutput = TRUE)
-# Using POST: InvalidRequest @ NA : Not able to understand the operation. This service supports the following operations: GetCapabilities, DescribeSensor and, GetObservation 
+# Using POST: InvalidRequest @ NA : Not able to understand the operation. This
+# service supports the following operations: GetCapabilities, DescribeSensor
+# and, GetObservation 
 # Using GET works!
 
 
@@ -180,7 +192,8 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 # --> Capabilities are shown when opening the link above in a browser, but it
 # has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
 # 
-# --> Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  1 exceptions (code @ locator : text):
+# --> Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  
+#	1 exceptions (code @ locator : text):
 #	MissingParamterValue @ service : No input parameters 
 
 

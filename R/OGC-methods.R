@@ -77,7 +77,7 @@ setMethod(f = "encodeXML",
 			
 			.encoded <- .encodeTM(nodeName = ogcTempOpTMAfterName,
 					propertyName = obj@propertyName, time = obj@time,
-					verbose = verbose)
+					sos = sos, verbose = verbose)
 			return(.encoded)
 		}
 )
@@ -89,7 +89,7 @@ setMethod(f = "encodeXML",
 			
 			.encoded <- .encodeTM(nodeName = ogcTempOpTMBeforeName,
 					propertyName = obj@propertyName, time = obj@time,
-					verbose = verbose)
+					sos = sos, verbose = verbose)
 			return(.encoded)
 		}
 )
@@ -101,7 +101,7 @@ setMethod(f = "encodeXML",
 			
 			.encoded <- .encodeTM(nodeName = ogcTempOpTMDuringName,
 					propertyName = obj@propertyName, time = obj@time,
-					verbose = verbose)
+					sos = sos, verbose = verbose)
 			return(.encoded)
 		}
 )
@@ -125,7 +125,7 @@ setMethod(f = "encodeXML",
 	.pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 	xmlValue(.pn) <- propertyName
 	.tm$children[[1]] <- .pn
-	.time <- encodeXML(obj = time, sos = sos, verbose)
+	.time <- encodeXML(obj = time, sos = sos, verbose = verbose)
 	.tm$children[[2]] <- .time
 	
 	return(.tm)

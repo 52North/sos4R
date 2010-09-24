@@ -88,7 +88,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		.currentValues <- sapply(.tokenLines, "[[", .currentFieldIdx)
 		.currentField <- fields[[.currentFieldIdx]]
 		
-		if(verbose) cat("Parsing field", paste(.currentField))
+		if(verbose) cat("Parsing field", paste(.currentField), " ")
 		
 		# convert values to the correct types
 		.method <- .converters[[.currentField[[.sosParseFieldDefinition]]]]
@@ -111,51 +111,52 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 			}
 		}
 		
-		if(verbose) {
-			cat("Using converter function: ")
-			show(.method)
-		}
+		if(verbose) cat("using converter function: "); show(.method)
 		
 		# do the conversion
 		.currentValues <- .method(x = .currentValues, sos = sos)
 		
 		# bind new and existing data:
 		if(verbose) cat("Binding additional data.frame for",
-					.currentField[[.sosParseFieldName]], "with values",
-					toString(.currentValues), "\n")
+					.currentField[[.sosParseFieldName]],
+					"-- value range", toString(range(.currentValues)), "\n")
 		.newData <- data.frame(.currentValues)
 		
-		# create the name of the new data:
+		# create the names of the new data:
 		.newDataName <- .currentField[[.sosParseFieldName]]
 		if(!is.na(.currentField[.sosParseFieldUOM]))
-			.newDataName <- paste(.newDataName, " [",
+			.newDataName <- paste(.newDataName, "[",
 					.currentField[[.sosParseFieldUOM]], "]", sep = "")
 		
 		if(!is.na(.currentField[.sosParseFieldCategoryName])) {
 			# assume if category name is given that other fields are there, too	
-			.newDataName <- paste(.newDataName, " [",
-					.currentField[[.sosParseFieldCategoryName]], ", ",
-					.currentField[[.sosParseFieldValue]], ", ",
-					.currentField[[.sosParseFieldCodeSpace]], ", ",
+			.newDataName <- paste(.newDataName, "[",
+					.currentField[[.sosParseFieldCategoryName]], ",",
+					.currentField[[.sosParseFieldValue]], ",",
+					.currentField[[.sosParseFieldCodeSpace]], ",",
 					sep = "")
 		}
 		
 		names(.newData) <- .newDataName
+		
+		if(verbose) cat("Added column name:", names(.newData), "\n")
 
 		# bind existing and new data column
 		.data <- cbind(.data, .newData)
 		
+		if(verbose) cat("The new bound data frame:\n"); str(.data)
+		
 		# add field information as attributes to the new column using human
 		# readable names
-		.attributes <- as.list(.currentField)
-		names(.attributes) <- .sosParseFieldReadable[names(.currentField)]
+		.addAttrs <- as.list(.currentField)
+		names(.addAttrs) <- .sosParseFieldReadable[names(.currentField)]
 		
-		str(.currentField)
+		.lastColumn <- dim(.data)[[2]]
+		.oldAttrs <- attributes(.data[,.lastColumn])
+		attributes(.data[,.lastColumn]) <- c(.oldAttrs, .addAttrs)
 		
-		str(.attributes)
-		
-		
-		attributes(.data[,dim(.data)[[2]]]) <- .attributes
+		if(verbose) cat("Added attribute to new data:", toString(.addAttrs),
+					"[ names: ", toString(names(.addAttrs)), "]", "\n")
 	}
 	
 	# remove id column

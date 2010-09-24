@@ -54,51 +54,47 @@
 # * Function returns data.frame, NOT OmObservation or OmMeasurement classes
 #
 # * if querying several procedures with different positions, put in them into 
-#	one data.frame?
+#	one data.frame, or a list?
 #
-if (!isGeneric("read.sos"))
-	setGeneric(name = "read.sos", def = function(sos,
-					sensors,
-					phenomena,
-					bboxs, # one, or several?
-					times, # one, or several?
-					mergeResult,
-					addLocation,
-					verbose) {
-				standardGeneric("read.sos")
-			}
-)
-#setMethod(f = "read.sos", signature = signature(sos = "SOS"), def = function(sos) {
-#		}
-#)
+read.sos <- function(sos,
+		sensors = NA_character_,
+		phenomena = NA_character_,
+		bbox = NA_character_, # one, or several?
+		times = c(NA), # one, or several?
+		mergeResult = FALSE,
+		addLocation = FALSE,
+		verbose = FALSE) {
+	warning("Method is not implemented yet!")
+}
+
 
 #
 # convenience info function using non-SWE names for stuff
 #
-if (!isGeneric("info.sos"))
-	setGeneric(name = "info.sos", def = function(sos,
-					# select the info to return, if > 1 as named list
-					phenomena = TRUE,
-					bbox = TRUE,
-					timePeriod = TRUE,
-					# 
-					locations = FALSE,
-					all = FALSE,
-					sensors = FALSE,
-					offerings = FALSE,
-					features = FALSE,
-					metadata = FALSE,
-					operations = FALSE,
-					UOMs = FALSE,
-					# select "filters", only one at a time and
-					sensor = NA_character_,
-					phenomenon = NA_character_,
-					offering = NA_character_,
-					# data is an index of the list of the info.data operation
-					series = NA_integer_) {
-				standardGeneric("info.sos")
-			}
-)
+info.sos <- function(sos,
+		# select the info to return, if > 1 as named list
+		phenomena = TRUE,
+		bbox = TRUE,
+		timePeriod = TRUE,
+		# 
+		locations = FALSE,
+		all = FALSE,
+		sensors = FALSE,
+		offerings = FALSE,
+		features = FALSE,
+		metadata = FALSE,
+		operations = FALSE,
+		UOMs = FALSE,
+		# select "filters", only one at a time and
+		sensor = NA_character_,
+		phenomenon = NA_character_,
+		offering = NA_character_,
+		# data is an index of the list of the info.data operation
+		series = NA_integer_) {
+	#standardGeneric("info.sos")
+	warning("Method is not implemented yet!")
+}
+
 
 #
 # sensors = procedure
@@ -107,28 +103,46 @@ if (!isGeneric("info.sos"))
 # offerings: shortly the name, the bounding box, the time period - DEFAULT!
 # operations: just the names and how to get more info
 
-# info.sensor?
-# info.phenomenon?
-# info.feature?
-
+#
 # method creates a list (whose items can are named and can be used to read data,
 # or just used in function read.sos)
 # for all available and valid combinations of off/foi/phen/proc
-if (!isGeneric("info.series"))
-	setGeneric(name = "info.series", def = function(sos) {
-				standardGeneric("info.series")
-			})
+#
+info.series <- function(sos) {
+	warning("Method is not implemented yet!")
+}
+
+#
+# method returns information about sensors (procedures) matching the given
+# criteria
+#
+info.sensors <- function(sos,
+		phenomena = c(NA_character_),
+		offerings = c(NA_character_),
+		UOMs = c(NA_character_)) {
+	warning("Method is not implemented yet!")
+}
 
 #
 #
 #
-if (!isGeneric("info.sensors"))
-	setGeneric(name = "info.sensors", def = function(sos,
-					phenomena,
-					offerings,
-					UOMs) {
-				standardGeneric("info.sensors")
-			})
+info.phenomena <- function(sos) {
+	warning("Method is not implemented yet!")
+}
+
+#
+#
+#
+info.features <- function(sos) {
+	warning("Method is not implemented yet!")
+}
+
+#
+#
+#
+info.offerings <- function(sos) {
+	warning("Method is not implemented yet!")
+}
 
 
 ################################################################################
@@ -383,6 +397,14 @@ setMethod(f = "sosResult", signature = signature(obj = "OmMeasurement"),
 		def = function(obj) {
 			return(obj@result)
 		})
+setMethod(f = "sosResult", signature = signature(obj = "OmObservationProperty"),
+		def = function(obj) {
+			if(!is.na(obj@href))
+				return(c(href = obj@href))
+			else if(!is.null(obj@obs))
+				return(obj@obs)
+			else return(NA)
+		})
 
 ################################################################################
 # conversion methods and accessor function
@@ -468,12 +490,12 @@ setMethod(f = "sosCreateTimePeriod",
 #
 # sosCreateEventTime(SosSupportedTemporalOperators()[["TM_During"]], p1)
 #
-if (!isGeneric("sosCreateEventTime"))
-	setGeneric(name = "sosCreateEventTime",
+if (!isGeneric("sosCreateEventTimeList"))
+	setGeneric(name = "sosCreateEventTimeList",
 			def = function(time, operator = sosDefaultTemporalOperator) {
-				standardGeneric("sosCreateEventTime")
+				standardGeneric("sosCreateEventTimeList")
 			})
-setMethod(f = "sosCreateEventTime",
+setMethod(f = "sosCreateEventTimeList",
 		signature = signature(time = "GmlTimeGeometricPrimitive"),
 		def = function(time, operator) {
 			

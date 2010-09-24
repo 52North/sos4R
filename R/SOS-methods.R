@@ -146,17 +146,20 @@ setMethod(f = "sosRequest",
 			.response = ""
 			
 			# get encoding function for the respective method
-			.encode <- sos@encoders[[sos@method]]
+			.encodingFunction <- sos@encoders[[sos@method]]
 			if(verbose) {
-				.f <- functionBody(.encode)
+				.f <- functionBody(.encodingFunction)
 				cat("ENCODING FUNCTION (beginning of function body): ",
 						substring(text = .f, first = 0, last = 60), " ... [",
 						max((length(.f) - 60), 0), " more characters].\n")
 			}
 			
+			# encode!
+			.encodedRequest = .encodingFunction(obj = request, sos = sos,
+					verbose = verbose)
+			
 			if(sos@method == .sosConnectionMethodGet) {
-				.kvpEncoding = .encode(request, verbose)
-				.url = paste(sos@url, .kvpEncoding, sep = "?")
+				.url = paste(sos@url, .encodedRequest, sep = "?")
 				if(verbose || inspect) {
 					cat("*** GET! REQUEST: ", .url, "\n")
 				}
@@ -169,15 +172,14 @@ setMethod(f = "sosRequest",
 				}
 			}
 			else if(sos@method == .sosConnectionMethodPost) {
-				.xmlEncoding <- .encode(request, verbose)
 				if(verbose || inspect) {
 					cat("*** POST! REQUEST:\n")
-					print(.xmlEncoding)
+					print(.encodedRequest)
 				}
 				
 				# using 'POST' for application/x-www-form-urlencoded content
 				.response <- postForm(uri = sos@url,
-						request = toString(.xmlEncoding),
+						request = toString(.encodedRequest),
 						style = "POST",
 						.encoding = sosDefaultCharacterEncoding)
 				
@@ -187,10 +189,9 @@ setMethod(f = "sosRequest",
 				}
 			}
 			else if(sos@method == .sosConnectionMethodSOAP) {
-				.soapEncoding <- .encode(request, verbose)
-				
 				if(verbose || inspect) {
 					print("SOAP! REQUEST:\n")
+					print(.encodedRequest)
 				}
 				
 				# TODO SOAP request method
@@ -221,15 +222,13 @@ setMethod(f = "getCapabilities",
 		signature = signature(sos = "SOS"),
 		def = function(sos, verbose, inspect) {
 			if (verbose) {
-				cat("Requesting capabilities... ")
+				cat("** GET CAPABILITIES of", sos@url, "\n")
 			}
 			
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
-			if(verbose) {
-				cat("** REQUEST:\n")
-				print(.gc)
-			}
+			if(verbose)
+				cat("** REQUEST:\n", toString(.gc), "\n")
 			
 			.responseString = sosRequest(sos = sos, request = .gc,
 					verbose = verbose, inspect = inspect)
@@ -261,15 +260,14 @@ setMethod(f = "describeSensor",
 		signature = signature(sos = "SOS", procedure  ="character"), 
 		def = function(sos, procedure, outputFormat, verbose, inspect) {
 			if(verbose) {
-				cat("DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
+				cat("** DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
 			}
 			
 			.ds <- DescribeSensor(service = sosService, version = sos@version,
 					procedure = procedure, outputFormat = outputFormat)
-			if(verbose) {
-				cat("REQUEST:\n")
-				print(.ds)
-			}
+			if(verbose)
+				cat("** REQUEST:\n", toString(.ds), "\n")
+			
 			
 			.responseString = sosRequest(sos = sos, request = .ds,
 					verbose = verbose, inspect = inspect)
@@ -298,14 +296,18 @@ setMethod(f = "getObservationById",
 		signature = signature(sos = "SOS", observationId = "character"), 
 		def = function(sos, observationId, responseFormat, srsName,
 				resultModel, responseMode, verbose, inspect) {
+			if(verbose) {
+				cat("** GET OBSERVATION BY ID: ", observationId, "\n")
+			}
+			
 			.go <- GetObservationById(service = sosService,
 					version = sos@version, observationId = observationId,
 					responseFormat =  responseFormat, srsName = srsName,
 					resultModel = resultModel, responseMode = responseMode)
-			if(verbose) {
-				cat("REQUEST:\n");
-				print(.go)
-			}
+			
+			if(verbose)
+				cat("** REQUEST:\n", toString(.go), "\n")
+			
 			
 			.responseString = sosRequest(sos = sos, request = .go,
 					verbose = verbose, inspect = inspect)
@@ -349,11 +351,14 @@ setMethod(f = "getObservation",
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
 				responseMode, BBOX, latest, verbose, inspect) {
-			if(verbose) cat("Starting getObservation to ", sos@url, "\n")
 			
 			if(is.character(offering))
 				.offeringId <- offering
 			else .offeringId <- offering@id
+			
+			if(verbose)
+				cat("** GET OBSERVATION to ", sos@url, " with offering ",
+						.offeringId, "\n")
 			
 			if(latest) .eventTime <- list(.createLatestEventTime(verbose))
 			else .eventTime <- eventTime
@@ -368,10 +373,9 @@ setMethod(f = "getObservation",
 					featureOfInterest = featureOfInterest, result = result,
 					resultModel = resultModel, responseMode = responseMode,
 					BBOX = BBOX)
-			if(verbose  || inspect) {
-				cat("REQUEST:\n");
-				print(.go)
-			}
+			
+			if(verbose)
+				cat("** REQUEST:\n", toString(.go), "\n")
 			
 			.responseString = sosRequest(sos = sos, request = .go,
 					verbose = verbose, inspect = inspect)
@@ -401,7 +405,14 @@ setMethod(f = "getObservation",
 									dim), "[[", 1)
 				}
 				else {
-					.resultLength <- dim(sosResult(.obs))[[1]]
+					# not a list
+					.dim <- dim(sosResult(.obs))
+					if(!is.null(.dim)) {
+						.resultLength <- .dim[[1]]
+					}
+					else {
+						.resultLength <- NA_character_
+					}
 				}
 				
 				if(verbose) {
@@ -422,7 +433,8 @@ setMethod(f = "getObservation",
 ################################################################################
 # encoding functions
 
-setMethod("encodeXML", "SosEventTime", 
+setMethod(f = "encodeXML",
+		signature = signature(obj = "SosEventTime", sos = "SOS"),
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
@@ -432,7 +444,8 @@ setMethod("encodeXML", "SosEventTime",
 			if(!is.null(SosSupportedTemporalOperators()[[.temporalOpsClass]])) {
 				.eventTime <- xmlNode(name = sosEventTimeName,
 						namespace = sosNamespacePrefix)
-				.temporalOpsXML <- encodeXML(obj@temporalOps, verbose)
+				.temporalOpsXML <- encodeXML(obj = obj@temporalOps,
+						sos = sos, verbose = verbose)
 				.eventTime$children[[1]] <- .temporalOpsXML
 				
 				return(.eventTime)
@@ -443,7 +456,8 @@ setMethod("encodeXML", "SosEventTime",
 			}
 		}
 )
-setMethod("encodeXML", "SosEventTimeLatest", 
+setMethod(f = "encodeXML",
+		signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
@@ -460,7 +474,7 @@ setMethod("encodeXML", "SosEventTimeLatest",
 					namespace = gmlNamespacePrefix)
 			.tpos <- xmlNode(name = gmlTimePositionName,
 					namespace = gmlNamespacePrefix)
-			xmlValue(.tpos) <- "latest"
+			xmlValue(.tpos) <- sosEventTimeLatestValue
 			
 			.latestTime$children[[1]] <- .tpos
 			.tmEquals$children[[1]] <- .propertyName
@@ -471,7 +485,8 @@ setMethod("encodeXML", "SosEventTimeLatest",
 		}
 )
 
-setMethod("encodeXML", "SosFeatureOfInterest", 
+setMethod(f = "encodeXML",
+		signature = signature(obj = "SosFeatureOfInterest", sos = "SOS"),
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
@@ -487,7 +502,8 @@ setMethod("encodeXML", "SosFeatureOfInterest",
 				.foi <- addChildren(node = .foi, kids = .ids)
 			}
 			else if (!is.null(obj@spatialOps)) {
-				.spOp <- encodeXML(obj = obj@spatialOps, sos = sos)
+				.spOp <- encodeXML(obj = obj@spatialOps, sos = sos,
+						verbose = verbose)
 				.foi <- addChildren(node = .foi, kids = list(.spOp))
 			}
 			
@@ -499,7 +515,8 @@ setMethod("encodeXML", "SosFeatureOfInterest",
 #
 # 
 #
-setMethod("encodeKVP", "SosEventTime", 
+setMethod(f = "encodeKVP",
+		signature = signature(obj = "SosEventTime", sos = "SOS"),
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE KVP ", class(obj), "\n")

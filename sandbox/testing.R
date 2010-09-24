@@ -9,7 +9,7 @@
 # info@52north.org                                                             #
 #                                                                              #
 # This program is free software; you can redistribute and/or modify it under   #
-# the terms of the GNU General Public License version 2 as published by the    #
+# the terms of the GNU General Publipc License version 2 as published by the    #
 # Free Software Foundation.                                                    #
 #                                                                              #
 # This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
@@ -405,17 +405,21 @@ p1 <- sosCreateTimePeriod(sos = weathersos, begin = as.POSIXct("2010-03-01 12:15
 				radix = as.integer(17), factor = as.integer(42)))
 # works!
 
-eventTime1 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_During"]], p1)
-eventTime2 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_Equals"]], t1)
-eventTime3 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_After"]], t1)
-eventTime4 <- sosCreateEventTime(SosSupportedTemporalOperators()[["TM_Before"]], t1)
-encodeXML(eventTime3, v = T)
-encodeXML(eventTime4)
-encodeXML(eventTime2)
-encodeXML(eventTime1, v = T)
-encodeKVP(eventTime1)
-encodeKVP(eventTime2)
+eventTime1 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_During"]], t = p1)
+eventTime2 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_Equals"]], t = t1)
+eventTime3 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_After"]], t = t1)
+eventTime4 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_Before"]], t = t1)
+encodeXML(eventTime3, sos = weathersos, v = TRUE)
+encodeXML(eventTime4, sos = weathersos)
+encodeXML(eventTime2, sos = weathersos)
+encodeXML(eventTime1, sos = weathersos, v = TRUE)
+encodeKVP(eventTime1, sos = weathersos)
+encodeKVP(eventTime2, sos = weathersos)
 # works!
+
+################################################################################
+source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+################################################################################
 
 ################################################################################
 # spatial operations
@@ -462,17 +466,17 @@ obs@result
 # works!
 
 # TIME INTERVAL
-go.eventTime1 = sosCreateEventTime(
+go.eventTime1 = sosCreateEventTimeList(
 		operator = SosSupportedTemporalOperators()[["TM_After"]],
 		sosCreateTimeInstant(sos = weathersos,
 				time = as.POSIXct("2010-09-20 18:00")))
 # TM_After does not seem to work, probably error in sos?!
 
-go.eventTime1a = sosCreateEventTime(
+go.eventTime1a = sosCreateEventTimeList(
 		operator = SosSupportedTemporalOperators()[["TM_Equals"]],
 		sosCreateTimeInstant(sos = weathersos,
 				time = as.POSIXct("2010-09-20 18:00")))
-go.eventTime1b = sosCreateEventTime(
+go.eventTime1b = sosCreateEventTimeList(
 		operator = SosSupportedTemporalOperators()[["TM_Equals"]],
 		sosCreateTimeInstant(sos = weathersos,
 				time = as.POSIXct("2010-09-20 18:15")))
@@ -484,7 +488,7 @@ obs2 <- getObservation(sos = weathersos,
 obs2[[1]]@result
 # weird, as the sos returns two equal observations here...
 
-go.eventTime3 = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+go.eventTime3 = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 				begin = as.POSIXct("2010-09-16 18:00"),
 				end = as.POSIXct("2010-09-20 18:00")))
 obs3 <- getObservation(sos = weathersos,
@@ -505,20 +509,20 @@ plot(x = obs3@result[["Time"]],
 
 # two procedures
 obs4 <- getObservation(sos = weathersos,
-		observedProperty = sosObservedProperties(weathersos)[2],
+		observedProperty = sosObservedProperties(weathersos)[5],
 		procedure = sosProcedures(weathersos),
-		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 						begin = as.POSIXct("2009-08-10 12:00"),
 						end = as.POSIXct("2009-08-20 12:00"))),
 		#featureOfInterest = foiBBox,
-		offering = sosOfferings(weathersos)[[2]])
+		offering = sosOfferings(weathersos)[[5]])
 str(obs4[[1]]@result)
 str(obs4[[2]]@result)
 # Can I automatically join these? No, not really, as time stamps differ!
 data.frame(obs4[[1]]@result["Time"][1:10,], obs4[[2]]@result["Time"][1:10,])
 
 # Attention: plots ignore the fact that the times do NOT perfectly match!
-x <- 700
+x <- 800
 plot(x = obs4[[1]]@result[[1]][1:x], y = obs4[[1]]@result[[3]][1:x], type = "l",
 		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
 		xlab = "Time (00:00 o'clock)",
@@ -546,7 +550,7 @@ foiIDs <- sosCreateFeatureOfInterest(
 obs5 <- getObservation(sos = weathersos,
 		observedProperty = sosObservedProperties(weathersos)[2],
 		#procedure = sosProcedures(weathersos),
-		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 						begin = as.POSIXct("2009-08-10 12:00"),
 						end = as.POSIXct("2009-08-12 12:00"))),
 		featureOfInterest = foiIDs,
@@ -573,7 +577,7 @@ foiBBoxNone <- sosCreateFeatureOfInterest(
 obs6 <- getObservation(sos = weathersos,
 		observedProperty = sosObservedProperties(weathersos)[2:5],
 		procedure = sosProcedures(weathersos),
-		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 						begin = as.POSIXct("2009-08-10 12:00"),
 						end = as.POSIXct("2009-08-17 12:00"))),
 		featureOfInterest = foiBBoxMSandK,
@@ -588,7 +592,7 @@ obs6@result[[1]][c(1,672)]; obs6@samplingTime#  both the same values - good!
 meas1 <- getObservation(sos = weathersos,
 		observedProperty = sosObservedProperties(weathersos),
 		procedure = sosProcedures(weathersos),
-		eventTime = sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 						begin = as.POSIXct("2009-08-10 12:00"),
 						end = as.POSIXct("2009-08-11 12:00"))),
 		offering = sosOfferings(weathersos)[[3]]@id, inspect = TRUE,
@@ -633,7 +637,7 @@ encodeXML(manualResult3, verbose = TRUE)
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 # this now even works with defaults for procedures and observerProperty, i.e.
 # just taking all available!
-lastTenHours <- sosCreateEventTime(sosCreateTimePeriod(sos = weathersos,
+lastTenHours <- sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 		begin = (Sys.time() - 36000), end = Sys.time()))
 obs1 <- getObservation(sos = weathersos, eventTime = lastTenHours,
 		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]])

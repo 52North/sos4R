@@ -235,13 +235,14 @@ sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 			append = TRUE)
 	
 	if( !is.null(obj@featureOfInterest)) {
-		.foi <- encodeXML(obj@featureOfInterest, sos = sos, verbose = verbose)
+		.foi <- encodeXML(obj = obj@featureOfInterest, sos = sos,
+				verbose = verbose)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.foi),
 				append = TRUE)
 	}
 	
 	if( !is.null(obj@result)) {
-		.result <- encodeXML(obj@result, sos = sos, verbose = verbose)
+		.result <- encodeXML(obj = obj@result, sos = sos, verbose = verbose)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.result),
 				append = TRUE)
 	}
