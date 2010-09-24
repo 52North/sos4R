@@ -19,7 +19,7 @@ exportMethods(
     "sosCapabilitiesDocumentOriginal",
     "sosCaps",
     "sosContents",
-    "sosCreateEventTime",
+    "sosCreateEventTimeList",
     "sosCreateTimeInstant",
     "sosCreateTimePeriod",
     "sosDataFieldConverters",
