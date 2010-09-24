@@ -292,8 +292,6 @@ setMethod(f = "sosFOIs", signature = signature(sos = "SOS"),
 				return(.gfoi@parameters$featureOfInterestID)
 			}
 			else return("GetFeatureOfInterest-Operation not supported!")
-			
-			return(.fois)
 		})
 
 if (!isGeneric("sosOperation"))
@@ -488,7 +486,7 @@ setMethod(f = "sosCreateTimePeriod",
 )
 
 #
-# sosCreateEventTime(SosSupportedTemporalOperators()[["TM_During"]], p1)
+#
 #
 if (!isGeneric("sosCreateEventTimeList"))
 	setGeneric(name = "sosCreateEventTimeList",
@@ -565,8 +563,10 @@ sosCreateBBOX <- function(lowLat, lowLon, uppLat, uppLon, srsName,
 		uomLabels = NA_character_,
 		propertyName = sosDefaultSpatialOpPropertyName) {
 	.env <- GmlEnvelope(
-			lowerCorner = GmlDirectPosition(lat = lowLat, lon = lowLon),
-			upperCorner = GmlDirectPosition(lat = uppLat, lon = uppLon),
+			lowerCorner = GmlDirectPosition(
+					pos = paste(lowLat, lowLon, sep = " ")),
+			upperCorner = GmlDirectPosition(
+					pos = paste(uppLat, uppLon, sep = " ")),
 			srsName = srsName, srsDimension = srsDimension,
 			axisLabels = axisLabels, uomLabels = uomLabels)
 	OgcBBOX(propertyName = propertyName, envelope = .env)

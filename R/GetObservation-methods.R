@@ -126,7 +126,7 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	}
 	
 	if( !is.na(obj@eventTime)) {
-		.timeString <- encodeEventTimeKVP(obj = obj@eventTime[[1]],
+		.timeString <- encodeKVP(obj = obj@eventTime[[1]],
 				sos = sos, verbose = verbose)
 		if(length(obj@eventTime) > 1)
 			warning("Only first event time used for KVP!")

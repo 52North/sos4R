@@ -497,7 +497,7 @@ setMethod(f = "encodeXML",
 			
 			# switch between objectIDs and spatialOps
 			if(!any(is.na(obj@objectIDs))) {
-				.ids <- lapply(X = foiIDs@objectIDs, FUN = xmlNode,
+				.ids <- lapply(X = obj@objectIDs, FUN = xmlNode,
 						name = sosObjectIDName, namespace = sosNamespacePrefix)
 				.foi <- addChildren(node = .foi, kids = .ids)
 			}

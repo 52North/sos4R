@@ -130,18 +130,11 @@ parseTimePosition <- function(obj, format) {
 	.time <- strptime(xmlValue(obj), format)
 	
 	# optional:
-	.frame = as.character(NA)
-	.calendarEraName = as.character(NA)
-	.indeterminatePosition = as.character(NA)
-	
-	if(!is.null(.attrs)) {
-		if(!is.na(.attrs["frame"]))
-			.frame <- .attrs[["frame"]]
-		if(!is.na(.attrs["calendarEraName"]))
-			.calendarEraName <- .attrs[["calendarEraName"]]
-		if(!is.na(.attrs["indeterminatePosition"]))
-			.indeterminatePosition <- attrs[["indeterminatePosition"]]
-	}
+	.frame <- xmlGetAttr(node = obj, name = "frame", default = NA_character_)
+	.calendarEraName <- xmlGetAttr(node = obj, name = "calendarEraName",
+			default = NA_character_)
+	.indeterminatePosition <- xmlGetAttr(node = obj,
+			name = "indeterminatePosition", default = NA_character_)
 	
 	.timePosition <- GmlTimePosition(time = .time, frame = .frame,
 			calendarEraName = .calendarEraName,

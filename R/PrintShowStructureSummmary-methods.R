@@ -845,7 +845,7 @@ toString.OgcBBOX <- function(x) {
 	return(.s)
 }
 
-print.OgcContains <- function(x) {
+print.OgcBBOX <- function(x) {
 	cat(toString.OgcContains(x), "\n")
 	invisible(x)
 }
