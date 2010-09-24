@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}OGC and Specifications}{1}{subsection.1.1}
+\contentsline {section}{\numberline {2}SOS Requests}{1}{section.2}
+\contentsline {subsection}{\numberline {2.1}GetCapabilities}{1}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}DescribeSensor}{1}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}GetObservation}{1}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}GetObservationById}{1}{subsection.2.4}
+\contentsline {section}{\numberline {3}Creating a SOS connection}{1}{section.3}
+\contentsline {section}{\numberline {4}Requesting Data}{1}{section.4}
+\contentsline {subsection}{\numberline {4.1}Using Metadata}{1}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Making the Request}{2}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Data Format}{2}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Using the Data}{2}{subsection.4.4}
+\contentsline {section}{\numberline {5}Changing Handling Functions}{2}{section.5}
+\contentsline {subsection}{\numberline {5.1}Parsing/Decoding}{2}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Encoding}{2}{subsection.5.2}
+\contentsline {section}{\numberline {6}Exception Handling}{2}{section.6}
+\contentsline {section}{\numberline {7}Developing sos4R}{2}{section.7}
