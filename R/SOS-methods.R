@@ -33,7 +33,7 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		version = "1.0.0",
 		parsers = SosParsingFunctions(),
 		encoders = SosEncodingFunctions(),
-		dataFieldConverters = SosDefaultFieldConvertingFunctions(),
+		dataFieldConverters = SosFieldConvertingFunctions(),
 		curlOpts = list(),
 		curlHandle = getCurlHandle(),
 		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE) {
@@ -151,7 +151,7 @@ setMethod(f = "sosRequest",
 				.f <- functionBody(.encodingFunction)
 				cat("ENCODING FUNCTION (beginning of function body): ",
 						substring(text = .f, first = 0, last = 60), " ... [",
-						max((length(.f) - 60), 0), " more characters].\n")
+						max((length(.f) - 60), 0), " more chrs].\n")
 			}
 			
 			# encode!
@@ -166,10 +166,8 @@ setMethod(f = "sosRequest",
 				
 				.response = getURL(.url)
 				
-				if(verbose) {
-					cat("*** RESPONSE:\n")
-					cat(.response)
-				}
+				if(verbose)
+					cat("*** RESPONSE:\n", .response, "\n")
 			}
 			else if(sos@method == .sosConnectionMethodPost) {
 				if(verbose || inspect) {
@@ -227,8 +225,7 @@ setMethod(f = "getCapabilities",
 			
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
-			if(verbose)
-				cat("** REQUEST:\n", toString(.gc), "\n")
+			if(verbose) cat("** REQUEST:\n", toString(.gc), "\n")
 			
 			.responseString = sosRequest(sos = sos, request = .gc,
 					verbose = verbose, inspect = inspect)

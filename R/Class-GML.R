@@ -202,6 +202,9 @@ setClass("GmlFeatureProperty",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "GmlFeatureOrGmlFeatureProperty",
+	members = c("GmlFeatureProperty", "GmlFeature"))
+
 
 #
 #

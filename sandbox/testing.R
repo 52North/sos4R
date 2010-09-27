@@ -527,7 +527,7 @@ plot(x = obs4[[1]]@result[[1]][1:x], y = obs4[[1]]@result[[3]][1:x], type = "l",
 		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
 		xlab = "Time (00:00 o'clock)",
 		ylab = "Temperature (°C)",
-		xaxt="n") # do not plot x-axis
+		xaxt="n") # do not ploplott x-axis
 r <- as.POSIXct(round(range(obs4[[1]]@result[[1]]), "days"))
 axis.POSIXct(side = 1, x = obs4[[1]]@result[[1]][1:x], format = "%d. %h",
 		at = seq(r[1], r[2], by="day"))

@@ -40,13 +40,14 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
 	if(verbose) cat("Parsing DataArray with", .elementCount, "elements.\n")
 	
 	.eTParser <- sosParsers(sos)[[sweElementTypeName]]
-	.fields <- .eTParser(obj[[sweElementTypeName]])
+	.fields <- .eTParser(obj = obj[[sweElementTypeName]], verbose = verbose)
 	
-	if(verbose) cat("-- Parsed field descriptions:", paste(.fields, sep="\n"),
-				"\n")
+	if(verbose) cat("-- Parsed field descriptions:", toString(.fields),
+		"\n")
 	
 	.encParser <- sosParsers(sos)[[sweEncodingName]]
-	.encoding <- .encParser(obj[[sweEncodingName]])
+	.encoding <- .encParser(obj = obj[[sweEncodingName]],
+		verbose = verbose)
 	
 	if(verbose) cat("-- Parsed encoding description:", toString(.encoding),
 				"\n")
@@ -88,7 +89,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		.currentValues <- sapply(.tokenLines, "[[", .currentFieldIdx)
 		.currentField <- fields[[.currentFieldIdx]]
 		
-		if(verbose) cat("Parsing field", paste(.currentField), " ")
+		if(verbose) cat("Parsing field", paste(.currentField), "\n")
 		
 		# convert values to the correct types
 		.method <- .converters[[.currentField[[.sosParseFieldDefinition]]]]
@@ -100,18 +101,23 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 					# fallback option
 					warning(paste("No converter for the unit of measurement ",
 									.currentField[[.sosParseFieldUOM]],
-									"! Trying a default, but you can add one using",
-									"SosDefaultFieldConvertingFunctions()."))
+									" with the definition ",
+									.currentField[[.sosParseFieldDefinition]],
+									"! Trying a default, but you can add one when creating a SOS using",
+									"SosFieldConvertingFunctions()."))
 					.method <- .converters[[.sosParseFieldUOM]]	
 				}
 			}
 			else {
 				warning(paste("No converter found for the given field",
-								toString(.currentField)))		
+								toString(.currentField)))
 			}
 		}
 		
-		if(verbose) cat("using converter function: "); show(.method)
+		if(verbose) {
+			cat("Using converter function: ")
+			show(.method)
+		}
 		
 		# do the conversion
 		.currentValues <- .method(x = .currentValues, sos = sos)
@@ -123,20 +129,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		.newData <- data.frame(.currentValues)
 		
 		# create the names of the new data:
-		.newDataName <- .currentField[[.sosParseFieldName]]
-		if(!is.na(.currentField[.sosParseFieldUOM]))
-			.newDataName <- paste(.newDataName, "[",
-					.currentField[[.sosParseFieldUOM]], "]", sep = "")
-		
-		if(!is.na(.currentField[.sosParseFieldCategoryName])) {
-			# assume if category name is given that other fields are there, too	
-			.newDataName <- paste(.newDataName, "[",
-					.currentField[[.sosParseFieldCategoryName]], ",",
-					.currentField[[.sosParseFieldValue]], ",",
-					.currentField[[.sosParseFieldCodeSpace]], ",",
-					sep = "")
-		}
-		
+		.newDataName <- .currentField[[.sosParseFieldName]]		
 		names(.newData) <- .newDataName
 		
 		if(verbose) cat("Added column name:", names(.newData), "\n")
@@ -144,7 +137,9 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		# bind existing and new data column
 		.data <- cbind(.data, .newData)
 		
-		if(verbose) cat("The new bound data frame:\n"); str(.data)
+		if(verbose) {
+			cat("The new bound data frame:\n"); str(.data)
+		}
 		
 		# add field information as attributes to the new column using human
 		# readable names
@@ -153,10 +148,17 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		
 		.lastColumn <- dim(.data)[[2]]
 		.oldAttrs <- attributes(.data[,.lastColumn])
-		attributes(.data[,.lastColumn]) <- c(.oldAttrs, .addAttrs)
 		
-		if(verbose) cat("Added attribute to new data:", toString(.addAttrs),
-					"[ names: ", toString(names(.addAttrs)), "]", "\n")
+		attributes(.data[,.lastColumn]) <- c(as.list(.oldAttrs),
+			.addAttrs)
+		
+		if(verbose) cat("Added attributes to new data:", toString(.addAttrs),
+					"[ names: ", toString(names(.addAttrs)), "]",
+					"\nOld attributes list is",
+					toString(.oldAttrs),
+					"\nNew attributes list is",
+					toString(attributes(.data[,.lastColumn])),
+					"\n")
 	}
 	
 	# remove id column
@@ -168,8 +170,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 #
 # Creates list of named character vectors with the information from swe:fields.
 #
-parseElementType <- function(obj) {
-	# can only process swe:elementType containing a swe:SimpleDataRecord
+parseElementType <- function(obj, verbose = FALSE) {
 	.simpleDataRecord <- obj[[sweSimpleDataRecordName]]
 	.dataRecord <- obj[[sweDataRecordName]]
 	if(!is.null(.simpleDataRecord) || !is.null(.dataRecord)) {
@@ -179,10 +180,16 @@ parseElementType <- function(obj) {
 		.fields <- .filterXmlChildren(node = .dr, childrenName = sweFieldName,
 				includeNamed = TRUE)
 		
+		if(verbose) cat("Got data record with", length(.fields),
+			"fields. \n")
+		
 		# extract the fields, naming with attribute 'name'
-		.parsedFields <- lapply(.fields, parseField)
-		.names <- sapply(.parsedFields, "[", "name")
+		.parsedFields <- lapply(.fields, parseField, verbose = verbose)
+		.names <- sapply(.parsedFields, "[", .sosParseFieldName)
 		names(.parsedFields) <- .names
+		
+		if(verbose) cat("Names of parsed fields:", names(.fields), "\n")
+			
 		return(.parsedFields)
 	}
 	else {
@@ -195,7 +202,7 @@ parseElementType <- function(obj) {
 #
 # swe:encoding
 #
-parseEncoding <- function(obj) {
+parseEncoding <- function(obj, verbose = FALSE) {
 	.textBlock <- obj[[sweTextBlockName]]
 	
 	if(is.null(.textBlock)) {
@@ -238,17 +245,15 @@ names(.sosParseFieldReadable) <- list(
 # Function creates a named character vector (using field names from variables
 # like ".sosParseFieldXYZ") with all information stored in a swe:field.
 #
-parseField <- function(obj) {
+parseField <- function(obj, verbose = FALSE) {
 	.field <- NULL
-	
 	.name <- xmlGetAttr(node = obj, name = "name")
-	
+	if(verbose) cat("Parsing field description of ", .name, "\n")
+
 	.noneText <- .filterXmlChildren(node = obj, childrenName = xmlTextNodeName,
 			includeNamed = FALSE)
 	.innerField <- .noneText[[1]]
 	.innerFieldName <- xmlName(.innerField)
-	
-	#cat("parsing ", .innerFieldName, "\n")
 	
 	# Available options: Time, Text, Quantity, Category
 	# The parsed elements and fields are closely bound to 52N SOS (OMEncoder.java)
@@ -264,8 +269,14 @@ parseField <- function(obj) {
 	}
 	else if (.innerFieldName == sweQuantityName) {
 		.def <- xmlGetAttr(node = .innerField, name = "definition")
-		.uom <- xmlGetAttr(node = .innerField[[sweUomName]], name = "code")
 		
+		if(!is.null(.innerField[[sweUomName]])) {
+			.uom <- xmlGetAttr(node = .innerField[[sweUomName]], name = "code")
+		}
+		else {
+			warning(paste("swe:Quantity given without unit of measurement:", .name))
+			.uom <- NA_character_
+		}
 		.field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def,
 				.sosParseFieldUOM = .uom)
 	}
@@ -291,7 +302,8 @@ parseField <- function(obj) {
 						"Please extend the parsing funtion of swe:elementType."))
 	}
 	
-	# correct the names of the list
+	# TODO old? correct the names of the list
+	if(verbose) cat("Parsed field", toString(.field), "\n")
 	
 	return(.field)
 }

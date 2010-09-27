@@ -40,33 +40,38 @@ print.OwsServiceOperation <- function(x, ...) {
 	invisible(x)
 }
 
-print.OwsGetCapabilities <- function(x, ...) {
-	cat("Object of class OwsGetCapabilities\n")
-	cat("service: ")
-	cat(x@service)
-	cat(", owsVersion: ")
-	cat(x@owsVersion)
-	cat(", acceptVersions: ")
-	cat(x@acceptVersions)
+toString.OwsGetCapabilities <- function(x) {
+	.s <- paste("Object of class OwsGetCapabilities; service: ",
+		x@service, ", request: ", x@request,
+		", owsVersion: ", x@owsVersion,
+		", acceptVersions: ", toString(x@acceptVersions), sep = " ")
 
 	if (is(x, "OwsGetCapabilities_1.1.0")) {
-		cat(", sections: ")
-		cat(x@sections)
-		cat(", acceptFormats: ")
-		cat(x@acceptFormats)
-		cat(", updateSequence: ")
-		cat(x@updateSequence)
+		.s <- paste(.s, "\n\t sections: ", toString(x@sections),
+			", acceptFormats: ", toString(x@acceptFormats),
+			", updateSequence: ", x@updateSequence, sep = " ")
+			
+		if (is(x, "OwsGetCapabilities_2.0.0")) {
+			.s <- paste(.s, "\n\tacceptLanguages: ", 
+				x@acceptLanguages, sep = " ")
+		}
 	}
 	
-	if (is(x, "OwsGetCapabilities_2.0.0")) {
-		cat(", acceptLanguages: ")
-		cat(x@acceptLanguages)
-	}
-	
-	cat(", request: ")
-	cat(x@request)
-	cat("\n")
+	return(.s)
+}
+
+
+toString.OwsGetCapabilities_1.1.0 <- function(x) {
+	return(toString.OwsGetCapabilities(x))
+}
+
+print.OwsGetCapabilities <- function(x, ...) {
+	cat(toString.(x))
 	invisible(x)
+}
+
+print.OwsGetCapabilities_1.1.0 <- function(x, ...) {
+	print.OwsGetCapabilities(x, ...)
 }
 
 print.OwsOperationsMetadata <- function(x, ...) {

@@ -36,7 +36,7 @@ setClass("OmObservation",
 				samplingTime = "GmlTimeObjectOrNULL",	
 				procedure = "ANY",
 				observedProperty = "SwePhenomenonProperty",
-				featureOfInterest = "GmlFeature",
+				featureOfInterest = "GmlFeatureOrGmlFeatureProperty",
 				result = "ANY",
 				# optional:
 				metadata = "ANY",

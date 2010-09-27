@@ -107,17 +107,23 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 			.kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
 	.observedProperty <- .kvpKeyAndValues("observedProperty", 
 			obj@observedProperty)
-	.responseFormat <- paste(
+			
+	.mandatory <- paste(.service, .request, .version, .offering,
+			.observedProperty, sep = "&")
+	
+	# optional:
+	.optionals = ""
+	# is optional for GET
+	if( !is.na(obj@responseFormat)) {
+		.responseFormat <- paste(
 			"responseFormat", 
 			.kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
 							pattern = "&quot;",
 							replacement = '"')),
 			sep = "=")
-	.mandatory <- paste(.service, .request, .version, .offering,
-			.observedProperty, .responseFormat, sep = "&")
+		optionals <- paste(.optionals, .responseFormat, sep = "&")
+	}
 	
-	# optional:
-	.optionals = ""
 	if( !is.na(obj@srsName)) {
 		.optionals <- paste(.optionals, paste("srsName", 
 						.kvpEscapeSpecialCharacters(x = obj@srsName),
@@ -141,7 +147,7 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 						obj@procedure), sep = "&")
 	}
 	
-	if( !any(sapply(obj@featureOfInterest, "is.na"), na.rm = TRUE)) {
+	if( !is.null(obj@featureOfInterest)) {
 		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest",
 						obj@featureOfInterest), sep = "&")
 	}
@@ -171,10 +177,7 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	}
 	
 	.kvpString <- paste(.mandatory, .optionals, sep = "")
-	
-	if(verbose)
-		cat(.kvpString)
-	
+		
 	return(.kvpString)
 }
 

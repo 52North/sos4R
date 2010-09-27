@@ -235,8 +235,18 @@ if (!isGeneric("sosProcedures"))
 setMethod(f = "sosProcedures", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.caps <- sosCaps(sos)
-			.ds <- .caps@operations@operations[[sosGetObservationName]]
-			return(.ds@parameters$procedure)
+			.go <- .caps@operations@operations[[sosGetObservationName]]
+			.p <- .go@parameters$procedure
+			if(is.null(.p)) {				
+				.p <- .caps@operations@operations[[sosDescribeSensorName]]@parameters$procedure
+			}
+			if(is.null(.p)) {
+				warning(paste("No procedures listed as parameters, ",
+					"for", sosGetObservationName, " or ",
+					sosDescribeSensorName, "!"))
+			}
+				
+			return(.p)
 		})
 
 if (!isGeneric("sosObservedProperties"))

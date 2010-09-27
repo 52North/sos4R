@@ -61,8 +61,9 @@ setClass("GetObservation",
 				return("version must be given")
 			if(is.na(object@offering))
 				return("offering parameter must be given")
-			if(is.na(object@responseFormat))
-				return("responseFormat parameter must be given")
+			# responseFormat is optional for GET
+			#if(is.na(object@responseFormat))
+			#	return("responseFormat parameter must be given")
 			if(length(object@observedProperty) < 1)
 				return("at least one observedProperty is mandatory")
 			

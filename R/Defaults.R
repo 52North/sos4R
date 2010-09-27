@@ -122,6 +122,7 @@ names(.sosDefaultEncoders) <- list(
 .sosDefaultFieldConverters <- list(
 		sosConvertTime,
 		sosConvertTime,
+		sosConvertTime,
 		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertDouble,
@@ -141,6 +142,7 @@ names(.sosDefaultEncoders) <- list(
 		)
 names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:time:iso8601",
+		"urn:ogc:phenomenon:time:iso8601",
 		sosTimeName,
 		"%",
 		"Cel",
@@ -178,7 +180,7 @@ SosDefaultConnectionMethod <- function() {
 	return(.sosConnectionMethodPost)
 }
 
-SosDefaultFieldConvertingFunctions <- function (..., include = character(0),
+SosFieldConvertingFunctions <- function (..., include = character(0),
 		exclude = character(0)) {
 	.merge(els = list(...), defaults = .sosDefaultFieldConverters,
 			include = include, exclude = exclude)

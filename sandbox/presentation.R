@@ -31,184 +31,139 @@
 source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 ################################################################################
 
-################################################################################
-# WeatherSOS
-weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
-
 
 ################################################################################
 # PegelOnlineSOS
 pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 print(object.size(pegelsos), units = c("Mb"))
 
-latestObs <- getObservation(sos = pegelsos,
-		observedProperty = sosObservedProperties(pegelsos),
-		offering = sosOfferings(pegelsos)[[2]],
-		procedure = sosProcedures(pegelsos)[11],
-		latest = TRUE) #, inspect = TRUE, verbose = TRUE)
-sosResult(latestObs)
+# what data do I get?
+names(sosOfferings(pegelsos)[2])
 
-# if returning reference
-latestObs <- getObservation(sos = pegelsos,
-		observedProperty = sosObservedProperties(pegelsos),
-		offering = sosOfferings(pegelsos)[[2]],
-		procedure = sosProcedures(pegelsos)[11],
-		latest = TRUE, inspect = TRUE) # , verbose = TRUE)
-sosResult(latestObs)
+# let's find interesting data
+procs <- sosProcedures(pegelsos)
+contain_Bake <- procs %in% grep("*Bake*", procs, value=TRUE)
+baken <- subset(procs, contain_Bake)
+baken
+# Bake_Z
+# http://www.pegelonline.wsv.de/gast/stammdaten?pegelnr=9510066
 
+# what?
+wasserstand <- sosObservedProperties(pegelsos)[3]
+wasserstand_roh <- sosOfferings(pegelsos)[[2]]
+
+# when?
+tPeriod <- sosCreateEventTimeList(
+	time = sosCreateTimePeriod(
+		sos = pegelsos,
+		begin = Sys.time() - (3600 * 24 * 30),
+		end = Sys.time()))
+str(tPeriod)
+encodeXML(tPeriod[[1]], pegelsos)
 
 # three procedures, but only getting 1 element with one procedure...
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 pegelObs <- getObservation(sos = pegelsos,
-		observedProperty = sosObservedProperties(pegelsos)[3],
-		offering = sosOfferings(pegelsos)[[2]],
-		procedure = sosProcedures(pegelsos)[c(2503,2505,2507)], #[c(2501,2503,2505)],
-		eventTime = sosCreateEventTimeList(time = sosCreateTimePeriod(
-						sos = pegelsos,
-						begin = Sys.time() - (3600 * 24), # * 360),
-						end = Sys.time())), verbose = TRUE)
-# Finished getObservation to http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos 
-#	- received 2 observation(s)/measurement(s) having 1372 1372 elements.
-# YEAH!
+		observedProperty = wasserstand,
+		offering = wasserstand_roh,
+		procedure = baken[c(7, 9, 11)],
+		eventTime = tPeriod)
 
 # show parts of the data frame:
-pegelObs[[1]]@result[1:5,]
+pegelObs[[1]]@result[1:2,]
+pegelObs[[2]]@result[1:2,]
+pegelObs[[3]]@result[1:2,]
 
 # not enough info? got field descriptions as attributes for each column:
-attributes(pegelObs[[1]]@result[,1])
-attributes(pegelObs[[1]]@result[,2])
-attributes(pegelObs[[1]]@result[,3])
+attributes(pegelObs[[1]]@result$Time) # TIME
+attributes(pegelObs[[1]]@result$Wasserstand) # actual value
+
+# do something with the data!
+r1 <- pegelObs[[1]]@result
+range(r1$Wasserstand)
+r1clean <- subset(r1, Wasserstand > 0)
+range(r1clean$Wasserstand)
+plot(r1clean$Time, r1clean$Wasserstand, type = "l", ylim=c(200,800))
+
+# Plot a quantile regression line with standard error bounds, using the quantreg package.
+library("ggplot2"); library("latticeExtra"); library("quantreg")
+r1plot <- xyplot(r1clean$Wasserstand ~ r1clean$Time, r1clean, type = "l", col = "orange")
+r1plot + layer(panel.quantile(x, y, tau = c(.95, .5, .05)))
 
 
-# TODO make plot out of two or three related stations
-range(pegelObs[[1]]@result[,3]); range(pegelObs[[2]]@result[,3])
-
-# Attention: plots ignore the fact that the times do NOT perfectly match!
-#x <- 700
-#plot(x = obs4[[1]]@result[[1]][1:x], y = obs4[[1]]@result[[3]][1:x], type = "l",
-#		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
-#		xlab = "Time (00:00 o'clock)",
-#		ylab = "Temperature (°C)",
-#		xaxt="n") # do not plot x-axis
-#r <- as.POSIXct(round(range(obs4[[1]]@result[[1]]), "days"))
-#axis.POSIXct(side = 1, x = obs4[[1]]@result[[1]][1:x], format = "%d. %h",
-#		at = seq(r[1], r[2], by="day"))
-#lines(x = obs4[[2]]@result[[1]][1:x], y = obs4[[2]]@result[[3]][1:x],
-#		col = "orange")
-#legend("topleft", legend = c("Münster", "Kärnten"),
-#		col = c("steelblue", "orange"), lty = 1, bty="n")
-
-plot(x = pegelObs[[1]]@result[,1], y = pegelObs[[2]]@result[,3], type = "l")
-
-# Good data?
-# Felix's tip: look at the coastal stations, much more interesting!
-
-
-################################################################################
-# AirQualitySOS
-airsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/AirQualityEurope/sos")
-
-ozone <- sosOfferings(airsos)[["OZONE_(AIR)"]]
-ozone@observedProperty
-ozone@procedure
-
-latestOzone <- getObservation(sos = pegelsos,
-		observedProperty = list(ozone@observedProperty),
-		offering = ozone,
-		procedure = list(ozone@procedure),
-		latest = TRUE, inspect = TRUE)
-#Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  
-# 1 exceptions: (code @ locator : text)
-#InvalidParameterValue @ offering : The value (OZONE_(AIR)) of the parameter 
-# 'offering' is invalid 
-
-getObs <- airsos@capabilities@operations@operations[[sosGetObservationName]]
-getObs@parameters[["offering"]]
-# OZONE_(AIR) is there...
-
-
-# the time is not given in observation offerings...
-sosOfferings(airsos)[[1]]@time
-
-################################################################################
-# ClimateSOS
-climatesos <- SOS("http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos")
-
-length(sosProcedures(climatesos))
-# 1440
-
-lapply(sosOfferings(climatesos), slot, "name")
-
-################################################################################
-# "catchall" SOS
-givsos <- SOS("http://giv-sos.uni-muenster.de:8080/52nSOSv3/sos")
-
-# TODO fix errors when requesting capabilities from givsos
-
-################################################################################
-# MoodSOS
+#latestObs <- getObservation(sos = pegelsos,
+#		observedProperty = wasserstand,
+#		offering = sosOfferings(pegelsos)[[2]],
+#		procedure = baken[11],
+#		latest = TRUE) #, inspect = TRUE, verbose = TRUE)
+#sosResult(latestObs)
+#attributes(sosResult(latestObs)$Wasserstand)
 #
-# offerings worth checking out: SummerVillerest, PatientCondition,
-# WaterColourNormal, FoamPresence, Microcystin
-
-moodsos <- SOS("http://giv-genesis.uni-muenster.de:8080/52nSOSv3-MoodSOS/sos")
-
-################################################################################
-# Umweltbundesamt SOS
-umweltsos <- SOS(url = "https://develop.umweltbundesamt.at/SOSsrv/sos")
-# https://develop.umweltbundesamt.at/SOSsrv/sos?service=SOS&request=GetCapabilities
-# --> 503 Service temporarily unavailable
-
+# if returning reference
+#latestObs <- getObservation(sos = pegelsos,
+#		observedProperty = sosObservedProperties(pegelsos),
+#		offering = sosOfferings(pegelsos)[[2]],
+#		procedure = sosProcedures(pegelsos)[11],
+#		latest = TRUE, inspect = TRUE) # , verbose = TRUE)
+#sosResult(latestObs)
 
 ################################################################################
 # OOSTethys SOS                                                                #
 # http://www.oostethys.org/development/web-services/web-services-summary       #
 ################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
-
-################################################################################
 # Sensor Observation Service (SOS) for Marine Metadata Interoperability
-# Initiative (MMI)
-MBARI <- SOS("http://mmisw.org/oostethys/sos", method = "GET", verboseOutput = TRUE)
-# Using POST: InvalidRequest @ NA : Not able to understand the operation. This
-# service supports the following operations: GetCapabilities, DescribeSensor
-# and, GetObservation 
-# Using GET works!
+# Initiative (MMI) # Using GET works!
+MBARI <- SOS("http://mmisw.org/oostethys/sos", method = "GET")
+
+MBARI
+sosOfferings(MBARI)
+paste(sosProcedures(MBARI))
+paste(sosObservedProperties(MBARI))
+
+myOff <- sosOfferings(MBARI)[[1]]
+myProc <- sosProcedures(MBARI)[3]
+
+mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+# responseFormat must be text/xml;subtype="sensorML/1.0.1"
+#mbariObs <- getObservation(sos = MBARI, offering = sosOfferings(MBARI)[[1]],
+#	procedure = sosProcedures(MBARI)[3],
+#	responseFormat = 'text/xml;subtype="sensorML/1.0.1"')
+# The responseFormat: text/xml;subtype="sensorML/1.0.1" is not supported.
+# It should be text/xml;subtype="sensorML/1.0.1"
+# without (even default) response format
+#mbariObs <- getObservation(sos = MBARI, offering = sosOfferings(MBARI)[[1]],
+#procedure = sosProcedures(MBARI)[3], responseFormat = NA_character_)
+
+# add converter for UOM C (which is not a valid unit)
+# http://www.unc.edu/~rowlett/units/dictC.html
+# C [1] the Roman numeral 100...
+# C [2] a symbol for international standard paper sizes...
+# C [3] a unit of relative current for batteries...
+myConverters <- SosFieldConvertingFunctions(
+	# mapping for UOM:
+	"C" = sosConvertDouble,
+	"S/m" = sosConvertDouble,
+	# mapping for definition:
+	"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
+MBARI <- SOS("http://mmisw.org/oostethys/sos", method = "GET",
+	dataFieldConverters = myConverters)
+mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+
+mbariObs@result[1:3,]
+attributes(mbariObs@result$Temperature)
+str(mbariObs@result)
+
+# quick plot
+plot(mbariObs)
+plot(mbariObs@result[,c("Temperature", "Salinity", "Conductivity")])
+
+# covariance, ...
+cov(mbariObs@result[, 5:7])
+# correlation
+cor(mbariObs@result[, 5:7])
 
 
-################################################################################
-# Ocean Process Analysis Laboratory, Institute for the Study of Earth, Oceans,
-# and Space, University of New Hampshire SOS
-COOA_UNH <- SOS("http://www.cooa.unh.edu/cgi-bin/sos/oostethys_sos")
-# --> 500 Internal Server Error, and
-# --> Capabilities are shown when opening the link above in a browser, but it
-# has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
 
 
-# Gulf of Maine Ocean Observing System SOS
-GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
-		version = "0.0.31", verboseOutput = TRUE)
-# --> Capabilities are shown when opening the link above in a browser, but it
-# has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
-# 
-# --> Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  
-#	1 exceptions (code @ locator : text):
-#	MissingParamterValue @ service : No input parameters 
+# still time left?
+# Explore SOS (TAB TAB)...
 
-
-################################################################################
-# others:
-################################################################################
-#
-# TAMU <- SOS("http://vastserver.nsstc.uah.edu/vastGC/adcp", verboseOutput = TRUE)
-# --> no response
-#
-# MVCO_WHOI <- SOS("http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos")
-# --> seems almost empty
-
-
-
-################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
