@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
-# Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
@@ -45,7 +45,7 @@ source(paste(.path, "R", "Class-OGC.R",  sep = "/"))
 source(paste(.path, "R", "Class-SOS.R",  sep = "/"))
 source(paste(.path, "R", "Class-DescribeSensor.R",  sep = "/"))
 source(paste(.path, "R", "Class-GetObservation.R",  sep = "/"))
-source(paste(.path, "R", "Class-SensorML.R",  sep = "/"))
+source(paste(.path, "R", "Class-SML.R",  sep = "/"))
 
 source(paste(.path, "R", "Generic-methods.R",  sep = "/"))
 source(paste(.path, "R", "OWS-methods.R",  sep = "/"))
@@ -58,7 +58,7 @@ source(paste(.path, "R", "OM-methods-parsing.R",  sep = "/"))
 source(paste(.path, "R", "SA-methods.R",  sep = "/"))
 source(paste(.path, "R", "GML-methods.R",  sep = "/"))
 source(paste(.path, "R", "SWE-methods.R",  sep = "/"))
-source(paste(.path, "R", "SensorML-methods.R",  sep = "/"))
+source(paste(.path, "R", "SML-methods.R",  sep = "/"))
 source(paste(.path, "R", "GML-methods-parsing.R",  sep = "/"))
 source(paste(.path, "R", "SA-methods-parsing.R",  sep = "/"))
 source(paste(.path, "R", "SWE-methods-parsing.R",  sep = "/"))

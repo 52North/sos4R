@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
-# Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
@@ -63,16 +63,16 @@ parseOwsOperation <- function(op) {
 				.allowedValuesAndRanges = list(owsAnyValueName)
 			else {
 				# list of allowed values
-				.xpathAllowedValues <- paste("./", .owsNamespacePrefix, ":",
-						owsAllowedValuesName, "/", .owsNamespacePrefix, ":",
+				.xpathAllowedValues <- paste("./", owsNamespacePrefix, ":",
+						owsAllowedValuesName, "/", owsNamespacePrefix, ":",
 						owsValueName, sep = "")
 				.allowedValues <- lapply(
 						getNodeSet(doc = .p, path = .xpathAllowedValues,
 								namespaces = .owsNamespace),
 						xmlValue)
 				# list of ranges
-				.xpathRanges <- paste("./", .owsNamespacePrefix, ":",
-						owsAllowedValuesName, "/", .owsNamespacePrefix, ":",
+				.xpathRanges <- paste("./", owsNamespacePrefix, ":",
+						owsAllowedValuesName, "/", owsNamespacePrefix, ":",
 						owsRangeName, sep = "")
 				.ranges <-  sapply(
 						getNodeSet(

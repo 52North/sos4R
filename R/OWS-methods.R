@@ -1,28 +1,28 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North											   #
-# Initiative for Geospatial Open Source Software GmbH						   #
-# 																			   #
-# Contact: Andreas Wytzisk													   #
-# 52 North Initiative for Geospatial Open Source Software GmbH				   #
-# Martin-Luther-King-Weg 24													   #
-# 48155 Muenster, Germany													   #
-# info@52north.org															   #
-#																			   #
+# Copyright (C) 2010 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
 # This program is free software; you can redistribute and/or modify it under   #
 # the terms of the GNU General Public License version 2 as published by the    #
-# Free Software Foundation.													   #
-#																			   #
+# Free Software Foundation.                                                    #
+#                                                                              #
 # This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
 # WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
-# General Public License for more details.									   #
-#																			   #
+# General Public License for more details.                                     #
+#                                                                              #
 # You should have received a copy of the GNU General Public License along with #
-# this program (see gpl-2.0.txt). If not, write to the Free Software		   #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
-# visit the Free Software Foundation web page, http://www.fsf.org.			   #
-#																			   #
-# Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
-# Created: 2010-06-18														   #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+# Created: 2010-06-18                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
@@ -326,7 +326,7 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	# optional:
 	if( !is.na(obj@acceptVersions)) {
 		.acceptVersions <- xmlNode(name = "AcceptVersions",
-				namespace = .owsNamespacePrefix)
+				namespace = owsNamespacePrefix)
 		.acceptVersions$children <- lapply(
 				obj@acceptVersions, "xmlNode", name="ows:Version")
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
@@ -335,7 +335,7 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
 		.sections <- xmlNode("ows:Sections")
 		.sections$children <- lapply(obj@sections, "xmlNode", name="Section",
-				namespace = .owsNamespacePrefix)
+				namespace = owsNamespacePrefix)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
 	}
 	
@@ -345,7 +345,7 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	
 	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
 		.acceptFormats <- xmlNode(name = "AcceptFormats",
-				namespace = .owsNamespacePrefix)
+				namespace = owsNamespacePrefix)
 		.acceptFormats$children <- lapply(
 				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
@@ -364,7 +364,7 @@ sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	# optional:
 	if( !is.na(obj@acceptVersions)) {
 		.acceptVersions <- xmlNode(name = "AcceptVersions",
-				namespace = .owsNamespacePrefix)
+				namespace = owsNamespacePrefix)
 		.acceptVersions$children <- lapply(
 				obj@acceptVersions, "xmlNode", name = "ows:Version")
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
@@ -373,7 +373,7 @@ sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
 		.sections <- xmlNode("ows:Sections")
 		.sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
-				namespace = .owsNamespacePrefix)
+				namespace = owsNamespacePrefix)
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
 	}
 	
@@ -383,7 +383,7 @@ sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	
 	if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
 		.acceptFormats <- xmlNode(name = "AcceptFormats",
-				namespace = .owsNamespacePrefix)
+				namespace = owsNamespacePrefix)
 		.acceptFormats$children <- lapply(
 				obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
@@ -391,7 +391,7 @@ sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	
 	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
 		.acceptLanguages <- xmlNode(name = "AcceptLanguages",
-				namespace = .owsNamespacePrefix)
+				namespace = owsNamespacePrefix)
 		.acceptLanguages$children <- lapply(
 				obj@acceptLanguages, "xmlNode", name="ows:Language")
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptLanguages))

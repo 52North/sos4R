@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
-# Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-20                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
@@ -199,3 +199,19 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 ################################################################################
+
+
+################################################################################
+# SOS @ CSIRO
+# The South Esk test bed
+bom <- SOS("http://wron.net.au/BOM_SOS/sos")
+csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos")
+dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos")
+
+# ??
+hutchins <- SOS("http://150.229.66.73/HutchinsSOS/sos")
+elliotwsn <- SOS("http://150.229.66.73/ElliotWSNSOS/sos")
+
+################################################################################
+# some french sos, 52N, but just one week of data....
+sandre <- SOS("http://services.sandre.eaufrance.fr/52nSOSv3/sos")

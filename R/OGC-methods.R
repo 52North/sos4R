@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
-# Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-09-17                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
