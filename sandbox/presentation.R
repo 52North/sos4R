@@ -38,7 +38,7 @@ pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 print(object.size(pegelsos), units = c("Mb"))
 
 # what data do I get?
-names(sosOfferings(pegelsos)[2])
+names(sosOfferings(pegelsos))
 
 # let's find interesting data
 procs <- sosProcedures(pegelsos)
@@ -153,7 +153,7 @@ attributes(mbariObs@result$Temperature)
 str(mbariObs@result)
 
 # quick plot
-plot(mbariObs)
+plot(mbariObs@result)
 plot(mbariObs@result[,c("Temperature", "Salinity", "Conductivity")])
 
 # covariance, ...
@@ -161,9 +161,4 @@ cov(mbariObs@result[, 5:7])
 # correlation
 cor(mbariObs@result[, 5:7])
 
-
-
-
-# still time left?
-# Explore SOS (TAB TAB)...
 
