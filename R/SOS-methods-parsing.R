@@ -35,7 +35,7 @@ parseSosObservationOffering <- function(obj, sos) {
 	.name <- xmlValue(obj[[gmlNameName]])
 	
 	.time <- parseTimeGeometricPrimitiveFromParent(obj = obj[[sosTimeName]],
-			timeFormat = sosTimeFormat(sos))
+			format = sosTimeFormat(sos))
 	.procedure <- lapply(obj[sosProcedureName], xmlGetAttr, "href")
 	.observedProperty <- lapply(obj[sosObservedPropertyName], xmlGetAttr,
 			"href")

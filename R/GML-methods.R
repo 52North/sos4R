@@ -54,7 +54,8 @@ GmlTimePosition <- function(time, frame = as.character(NA),
 			indeterminatePosition = indeterminatePosition)
 }
 
-GmlTimeInterval <- function(interval, unit, radix = NA, factor = NA) {
+GmlTimeInterval <- function(interval, unit, radix = NA_integer_,
+		factor = NA_integer_) {
 	new("GmlTimeInterval", interval = interval, unit = unit, radix = radix,
 			factor = factor)
 }

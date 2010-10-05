@@ -87,6 +87,9 @@ library("SoDA")
 ?promptClass
 ?promptPackage
 
+# for print methods
+promptMethods(f = "print", filename = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/man/print-methods.Rd")
+
 #
 #
 #

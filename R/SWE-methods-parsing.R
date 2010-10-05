@@ -170,7 +170,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 #
 # Creates list of named character vectors with the information from swe:fields.
 #
-parseElementType <- function(obj, verbose = FALSE) {
+parseElementType <- function(obj, sos, verbose = FALSE) {
 	.simpleDataRecord <- obj[[sweSimpleDataRecordName]]
 	.dataRecord <- obj[[sweDataRecordName]]
 	if(!is.null(.simpleDataRecord) || !is.null(.dataRecord)) {
@@ -184,7 +184,8 @@ parseElementType <- function(obj, verbose = FALSE) {
 			"fields. \n")
 		
 		# extract the fields, naming with attribute 'name'
-		.parsedFields <- lapply(.fields, parseField, verbose = verbose)
+		.parsedFields <- lapply(.fields, parseField, sos = sos,
+				verbose = verbose)
 		.names <- sapply(.parsedFields, "[", .sosParseFieldName)
 		names(.parsedFields) <- .names
 		
@@ -202,7 +203,7 @@ parseElementType <- function(obj, verbose = FALSE) {
 #
 # swe:encoding
 #
-parseEncoding <- function(obj, verbose = FALSE) {
+parseEncoding <- function(obj, sos, verbose = FALSE) {
 	.textBlock <- obj[[sweTextBlockName]]
 	
 	if(is.null(.textBlock)) {
@@ -245,7 +246,7 @@ names(.sosParseFieldReadable) <- list(
 # Function creates a named character vector (using field names from variables
 # like ".sosParseFieldXYZ") with all information stored in a swe:field.
 #
-parseField <- function(obj, verbose = FALSE) {
+parseField <- function(obj, sos, verbose = FALSE) {
 	.field <- NULL
 	.name <- xmlGetAttr(node = obj, name = "name")
 	if(verbose) cat("Parsing field description of ", .name, "\n")
@@ -325,7 +326,7 @@ parseTextBlock <- function(obj) {
 #
 #
 #
-parsePhenomenonProperty <- function(obj) {
+parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 	.obsProp <- NULL
 	
 	# check if reference or inline phenomenon
@@ -341,7 +342,8 @@ parsePhenomenonProperty <- function(obj) {
 		.name <- xmlName(.compPhen)
 		
 		if(.name == sweCompositePhenomenonName) {
-			.phen <- parseCompositePhenomenon(.compPhen)
+			.phen <- parseCompositePhenomenon(.compPhen, sos = sos,
+					verbose = verbose)
 			.obsProp <- SwePhenomenonProperty(phenomenon = .phen)
 		}
 		else {
@@ -355,13 +357,14 @@ parsePhenomenonProperty <- function(obj) {
 #
 #
 #
-parseCompositePhenomenon <- function(obj) {
+parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {
 	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
 	.dimension <- as.integer(
 			xmlGetAttr(node = obj, name = "dimension", default = NA_character_))
 	.name <- xmlValue(obj[[gmlNameName]])
 	
-	.components <- lapply(obj[sweComponentName], parseComponent)
+	.components <- lapply(obj[sweComponentName], parseComponent, sos = sos,
+			verbose = verbose)
 	
 	# optional:
 	.description <- NA_character_
@@ -383,7 +386,7 @@ parseCompositePhenomenon <- function(obj) {
 #
 #
 #
-parseComponent <- function(obj) {
+parseComponent <- function(obj, sos, verbose = FALSE) {
 	# 52N SOS only sets the href property on swe components, but still reuse function
 	.component <- parsePhenomenonProperty(obj)
 	return(.component)

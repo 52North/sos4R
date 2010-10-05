@@ -84,7 +84,7 @@ names(.sosDefaultParsers) <- list(
 		sosDescribeSensorName,
 		sosGetObservationName,
 		sosGetObservationByIdName,
-		sosOwsExceptionReportRootName,
+		owsExceptionReportName,
 		#
 		omMeasurementName,
 		omMemberName,
@@ -238,7 +238,7 @@ names(.sosDisabledParsers) <- list(
 		sosDescribeSensorName,
 		sosGetObservationName,
 		sosGetObservationByIdName,
-		sosOwsExceptionReportRootName)
+		owsExceptionReportName)
 SosDisabledParsers <- function() {
 	return(.sosDisabledParsers)
 }
@@ -253,7 +253,6 @@ sosDefaultGetCapSections <- c("All")
 sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
-sosDefaultSaveXmlPrefix <- '<?xml version="1.0"?>\n'
 sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]

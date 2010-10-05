@@ -524,3 +524,17 @@ setMethod(f = "encodeKVP",
 			return(.temporalOpsKVP)
 		}
 )
+
+#
+# 
+#
+setMethod(f = "encodeKVP",
+		signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
+		function(obj, sos, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE KVP ", class(obj), "\n")
+			}
+			# if eventTime is not given in GET binding, then the latest observation is returned
+			return(NA_character_)
+		}
+)

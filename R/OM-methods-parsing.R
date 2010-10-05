@@ -93,7 +93,7 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
 parseMeasurement <- function(obj, sos, verbose = FALSE) {
 	
 	.samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
-			timeFormat = sosTimeFormat(sos))
+			format = sosTimeFormat(sos))
 	
 	# 52N SOS only returns om:Measurements (!) with procedure ids and observed 
 	# properties in xlink:href
@@ -126,12 +126,13 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 parseObservation <- function(obj, sos, verbose = FALSE) {
 	
 	.samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
-			timeFormat = sosTimeFormat(sos = sos))
+			format = sosTimeFormat(sos = sos))
 	
 	# 52N SOS only returns om:Observation with procedure ids xlink:href
 	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
 	
-	.observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]])
+	.observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
+			sos = sos, verbose = verbose)
 	
 	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
 	
@@ -289,15 +290,15 @@ parseFOI <- function(obj) {
 #
 # create according GmlTimeObject from om:samplingTime
 #
-parseSamplingTime <- function(obj, timeFormat) {
+parseSamplingTime <- function(obj, format) {
 	.tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
 	.tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
 	.timeObject <- NULL
 	if(!is.null(.tiXML)) {
-		.timeObject <- parseTimeInstant(obj = .tiXML, format = timeFormat)
+		.timeObject <- parseTimeInstant(obj = .tiXML, format = format)
 	}
 	else if(!is.null(.tpXML)) {
-		.timeObject <- parseTimePeriod(obj = .tpXML, format = timeFormat)
+		.timeObject <- parseTimePeriod(obj = .tpXML, format = format)
 	}
 	else {
 		warning(paste("Could not create time from given samplingTime,", 

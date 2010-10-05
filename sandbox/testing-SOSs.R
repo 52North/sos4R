@@ -95,6 +95,18 @@ plot(x = pegelObs[[1]]@result[,1], y = pegelObs[[2]]@result[,3], type = "l")
 # Good data?
 # Felix's tip: look at the coastal stations, much more interesting!
 
+procedure <- "Wasserstand-Elster_501390"
+elster <- getObservation(sos = pegelsos, offering = sosOfferings(pegelsos)[[2]],
+		procedure = list(procedure))
+
+################################################################################
+# Elsterhochwasser, 30.09.2010
+elster@result[1:3,]
+range(elster@result$Wasserstand)
+elsterClean <- subset(elster@result, Wasserstand > 0)
+
+plot(x = elster@result$Time, y = elster@result$Wasserstand, ylim = c(100, 600),
+		type = "l")
 
 ################################################################################
 # AirQualitySOS
@@ -140,7 +152,6 @@ givsos <- SOS("http://giv-sos.uni-muenster.de:8080/52nSOSv3/sos")
 #
 # offerings worth checking out: SummerVillerest, PatientCondition,
 # WaterColourNormal, FoamPresence, Microcystin
-
 moodsos <- SOS("http://giv-genesis.uni-muenster.de:8080/52nSOSv3-MoodSOS/sos")
 
 ################################################################################

@@ -185,15 +185,8 @@ setMethod(f = "checkRequest",
 			}
 			
 			# check if method is supported
-			.methodSupported <- FALSE
-			if(service@method == .sosConnectionMethodPost) {
-				if(!is.na(.dsOperation@DCPs["Post"]))
-					.methodSupported <- TRUE
-			}
-			else if(service@method == .sosConnectionMethodGet) {
-				if(!is.na(.dsOperation@DCPs["Get"]))
-					.methodSupported <- TRUE
-			}
+			.methodSupported <- any(sapply(SosSupportedConnectionMethods(),
+							"==", service@method))
 			if(!.methodSupported)
 				warning("Requested method type ist not listed in capablities for this operation, service might return error!")
 			

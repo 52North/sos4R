@@ -132,14 +132,23 @@ sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	}
 	
 	if( !is.na(obj@eventTime)) {
+		if(length(obj@eventTime) > 1)
+			warning("Only first event time in the list is used for KVP!")
+		
 		.timeString <- encodeKVP(obj = obj@eventTime[[1]],
 				sos = sos, verbose = verbose)
-		if(length(obj@eventTime) > 1)
-			warning("Only first event time used for KVP!")
-		.optionals <- paste(.optionals, paste("eventTime", 
-						.kvpEscapeSpecialCharacters(x = .timeString), 
-						sep = "="), 
-				sep = "&")
+		# if the eventTime is a latest request, it returns NA, the GET binding
+		# says for the latest observation eventTime is omitted
+		if(!is.na(.timeString)) {
+			.optionals <- paste(.optionals, paste("eventTime", 
+							.kvpEscapeSpecialCharacters(x = .timeString), 
+							sep = "="), 
+					sep = "&")
+		}
+		else {
+			if(verbose) cat("encodeKVP returned NA for eventTime, omitting",
+						"parameter for request for latest observation.")
+		}
 	}
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
@@ -348,13 +357,15 @@ setMethod("encodeRequestSOAP", "GetObservation",
 			if(verbose) {
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}
-			
-			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj))
+			stop("Method not implemented yet!")
+		}
+)
+setMethod("encodeRequestSOAP", "GetObservationById", 
+		function(obj, sos, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE SOAP ", class(obj), "\n")
 			}
-			else {
-				stop("Version not supported!")
-			}
+			stop("Method not implemented yet!")
 		}
 )
 
@@ -374,6 +385,8 @@ setMethod(f = "checkRequest",
 			# TODO implement checkRequest for GetObservation
 			
 			# check if given responseFormat is supported by the service
+			
+			# check if temporal operator and operand are a valid combination according to filter capabilities
 			
 			return(TRUE)
 		}

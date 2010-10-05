@@ -626,7 +626,7 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 # helper methods for exception response handling
 #
 .isExceptionReport <- function(document) {
-	if(sosOwsExceptionReportRootName == xmlName(xmlRoot(document)))
+	if(owsExceptionReportName == xmlName(xmlRoot(document)))
 		return(TRUE)
 	else
 		return(FALSE)
@@ -634,7 +634,7 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 .handleExceptionReport <- function(sos, obj) {
 	if(sos@verboseOutput) warning("Received ExceptionReport!")
 	
-	.parsingFunction <- sosParsers(sos)[[sosOwsExceptionReportRootName]]
+	.parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
 	.er <- .parsingFunction(obj)
 	if(class(.er) == "OwsExceptionReport")
 		warning(toString(.er))
@@ -653,10 +653,10 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 #
 # encoding function that just passes given content along...
 #
-setMethod("encodeXML", "XMLAbstractNode", 
-		function(obj, sos, verbose = FALSE) {
+setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
+		def = function(obj, sos, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML from XMLAbstractNode\n")
+				cat("ENCODE XML from XMLNode\n")
 			}
 			return(obj)
 		}

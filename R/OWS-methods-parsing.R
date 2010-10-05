@@ -30,10 +30,10 @@
 #
 #
 #
-parseOwsOperation <- function(op) {
-	.name <- xmlGetAttr(op, "name")
+parseOwsOperation <- function(obj) {
+	.name <- xmlGetAttr(obj, "name")
 	
-	.dcpsXML <- .filterXmlChildren(op, owsDCPName)
+	.dcpsXML <- .filterXmlChildren(obj, owsDCPName)
 	.dcps <- list()
 	for(.dcp in .dcpsXML) {
 		.http <- .dcp[[owsHTTPName]]
@@ -48,7 +48,7 @@ parseOwsOperation <- function(op) {
 		}
 	}
 	
-	.parametersXML <- .filterXmlChildren(op, owsParameterName)
+	.parametersXML <- .filterXmlChildren(obj, owsParameterName)
 	.parameters = list()
 	.names = list()
 	
@@ -97,11 +97,11 @@ parseOwsOperation <- function(op) {
 		names(.parameters) <- .names
 	}
 	
-	if(any(sapply(names(op), "==", owsConstraintName)))
+	if(any(sapply(names(obj), "==", owsConstraintName)))
 		warning("constraint elements are NOT processed!")
 	.constraints = list(NA)
 	
-	if(any(sapply(names(op), "==", owsMetadataName)))
+	if(any(sapply(names(obj), "==", owsMetadataName)))
 		warning("metadata elements are NOT processed!")
 	.metadata = list(NA)
 	
@@ -114,8 +114,8 @@ parseOwsOperation <- function(op) {
 #
 # method for parsing an ows:ExceptionReport.
 #
-parseOwsExceptionReport <- function(document) {
-	.docRoot <- xmlRoot(document)
+parseOwsExceptionReport <- function(obj) {
+	.docRoot <- xmlRoot(obj)
 	## print(.docRoot)
 
 	.version <- xmlGetAttr(node = .docRoot, name = "version")
@@ -140,14 +140,14 @@ parseOwsExceptionReport <- function(document) {
 #
 # parsing a single xml node that is an ows:Exception
 #
-parseOwsException <- function(node) {
+parseOwsException <- function(obj) {
 	#	print("parsing e!")
-	.code <- xmlGetAttr(node = node, name = "exceptionCode")
-	.locator <- xmlGetAttr(node = node, name = "locator",
+	.code <- xmlGetAttr(node = obj, name = "exceptionCode")
+	.locator <- xmlGetAttr(node = obj, name = "locator",
 			default = NA_character_)
 	
-	if(!is.na(xmlChildren(node)[owsExceptionTextName]))
-		.text <- xmlValue(xmlChildren(node)[[owsExceptionTextName]])
+	if(!is.na(xmlChildren(obj)[owsExceptionTextName]))
+		.text <- xmlValue(xmlChildren(obj)[[owsExceptionTextName]])
 	else .text <- as.character(NA)
 	
 	.exception <- OwsException(exceptionCode = .code, 
@@ -160,41 +160,41 @@ parseOwsException <- function(node) {
 #
 #
 #
-parseOwsServiceIdentification <- function(node) {
+parseOwsServiceIdentification <- function(obj) {
 #	print("parsing ows service identification!")
 	
-	.children <- xmlChildren(node)
-	.serviceType <- sapply(.filterXmlChildren(node, owsServiceTypeName),
+	.children <- xmlChildren(obj)
+	.serviceType <- sapply(.filterXmlChildren(obj, owsServiceTypeName),
 			xmlValue)
-	.serviceTypeVersion <- sapply(.filterXmlChildren(node,
+	.serviceTypeVersion <- sapply(.filterXmlChildren(obj,
 					owsServiceTypeVersionName),
 			xmlValue)
-	.title <- sapply(.filterXmlChildren(node, owsTitleName),
+	.title <- sapply(.filterXmlChildren(obj, owsTitleName),
 			xmlValue)
 	
 	# optional:
-	if(!is.na(xmlChildren(node)[owsProfileName]))
-		.profile <- lapply(.filterXmlChildren(node, owsProfileName), xmlValue)
+	if(!is.na(xmlChildren(obj)[owsProfileName]))
+		.profile <- lapply(.filterXmlChildren(obj, owsProfileName), xmlValue)
 	else .profile <- c(NA)
 	
-	if(!is.na(xmlChildren(node)[owsAbstractName]))
-		.abstract <- lapply(.filterXmlChildren(node, owsAbstractName), xmlValue)
+	if(!is.na(xmlChildren(obj)[owsAbstractName]))
+		.abstract <- lapply(.filterXmlChildren(obj, owsAbstractName), xmlValue)
 	else .abstract <- c(NA)
 	
-	if(!is.na(xmlChildren(node)[owsKeywordsName])) {
-		.keywordLists <- .filterXmlChildren(node, owsKeywordsName)
+	if(!is.na(xmlChildren(obj)[owsKeywordsName])) {
+		.keywordLists <- .filterXmlChildren(obj, owsKeywordsName)
 		.keywords <- c(lapply(.keywordLists, FUN = xmlToList), recursive = TRUE)
 		.keywords <- lapply(.keywords, gsub, pattern = "^[[:space:]]+|[[:space:]]+$",
 				replacement = "") # http://finzi.psych.upenn.edu/R/Rhelp02a/archive/40714.html
 	}
 	else .keywords <- c(NA)
 	
-	if(!is.na(xmlChildren(node)[owsFeesName]))
-		.fees <- paste(sapply(.filterXmlChildren(node, owsFeesName), xmlValue))
+	if(!is.na(xmlChildren(obj)[owsFeesName]))
+		.fees <- paste(sapply(.filterXmlChildren(obj, owsFeesName), xmlValue))
 	else .fees <- as.character(NA)
 	
-	if(!is.na(xmlChildren(node)[owsAccessConstraintsName]))
-		.accessConstraints <- lapply(.filterXmlChildren(node,
+	if(!is.na(xmlChildren(obj)[owsAccessConstraintsName]))
+		.accessConstraints <- lapply(.filterXmlChildren(obj,
 						owsAccessConstraintsName),
 				xmlValue)
 	else .accessConstraints <- c(NA)
@@ -208,18 +208,18 @@ parseOwsServiceIdentification <- function(node) {
 #
 #
 #
-parseOwsServiceProvider <- function(node) {
+parseOwsServiceProvider <- function(obj) {
 	#print("parsing ows service provider!")
-	.name <- xmlValue(node[[owsProviderNameName]])
+	.name <- xmlValue(obj[[owsProviderNameName]])
 	
 	# optional:
-	if(!is.null(xmlChildren(node)[[owsProviderSiteName]]))
-		.site <- xmlGetAttr(node = node[[owsProviderSiteName]],
+	if(!is.null(xmlChildren(obj)[[owsProviderSiteName]]))
+		.site <- xmlGetAttr(node = obj[[owsProviderSiteName]],
 				name = "href", default = as.character(NA))
 	else .site <- as.character(NA)
 	
-	if(!is.null(xmlChildren(node)[[owsServiceContactName]])) {
-		.contact <- node[[owsServiceContactName]]
+	if(!is.null(xmlChildren(obj)[[owsServiceContactName]])) {
+		.contact <- obj[[owsServiceContactName]]
 		.sp <- OwsServiceProvider(providerName = .name, providerSite = .site,
 				serviceContact = .contact)
 	}
@@ -231,8 +231,8 @@ parseOwsServiceProvider <- function(node) {
 #
 # all elements are optional
 #
-parseOwsRange <- function(node) {
-	.children <- xmlChildren(node)
+parseOwsRange <- function(obj) {
+	.children <- xmlChildren(obj)
 	
 	.minimumXml <- .children[[owsMinimumValueName]]
 	if(is.null(.minimumXml)) {
@@ -249,7 +249,7 @@ parseOwsRange <- function(node) {
 		.maximum <- xmlValue(.maximumXml)
 	}
 	
-	.closure <- xmlGetAttr(node = node, name = "rangeClosure")
+	.closure <- xmlGetAttr(node = obj, name = "rangeClosure")
 	if(is.null(.closure)) {
 		.closure <- as.character(NA)
 	}

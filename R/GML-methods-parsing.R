@@ -194,15 +194,15 @@ parseTimePeriod <- function(obj, format) {
 #
 #
 #
-parseTimeGeometricPrimitiveFromParent <- function(obj, timeFormat) {
+parseTimeGeometricPrimitiveFromParent <- function(obj, format) {
 	.tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
 	.tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
 	.timeObject <- NULL
 	if(!is.null(.tiXML)) {
-		.timeObject <- parseTimeInstant(obj = .tiXML, format = timeFormat)
+		.timeObject <- parseTimeInstant(obj = .tiXML, format = format)
 	}
 	else if(!is.null(.tpXML)) {
-		.timeObject <- parseTimePeriod(obj = .tpXML, format = timeFormat)
+		.timeObject <- parseTimePeriod(obj = .tpXML, format = format)
 	}
 	else {
 		warning(paste("Could not create time from given samplingTime,", 
