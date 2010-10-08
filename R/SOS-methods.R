@@ -164,7 +164,9 @@ setMethod(f = "sosRequest",
 					cat("*** GET! REQUEST: ", .url, "\n")
 				}
 				
-				.response = getURL(.url)
+				.response = getURL(url = .url, .opts = sos@curlOptions,
+						curl = sos@curlHandle,
+						.encoding = sosDefaultCharacterEncoding)
 				
 				if(verbose)
 					cat("*** RESPONSE:\n", .response, "\n")
@@ -178,7 +180,8 @@ setMethod(f = "sosRequest",
 				# using 'POST' for application/x-www-form-urlencoded content
 				.response <- postForm(uri = sos@url,
 						request = toString(.encodedRequest),
-						style = "POST",
+						style = "POST", .opts = sos@curlOptions,
+						curl = sos@curlHandle,
 						.encoding = sosDefaultCharacterEncoding)
 				
 				if(verbose) {

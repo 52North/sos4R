@@ -51,7 +51,7 @@ setMethod("encodeRequestKVP", "DescribeSensor",
 		function(obj, sos, verbose = FALSE) {
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestKVPDescribeSensor_1.0.0(obj = obj,
+				return(.sosEncodeRequestKVPDescribeSensor_1.0.0(obj = obj,
 								sos = sos, verbose = verbose))
 			}
 			else {
@@ -59,7 +59,7 @@ setMethod("encodeRequestKVP", "DescribeSensor",
 			}
 		}
 )
-sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, sos, verbose = FALSE) {
+.sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	# mandatory:
 	.service <- paste("service",
 			.kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
@@ -94,14 +94,14 @@ setMethod("encodeRequestXML", "DescribeSensor",
 			}
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj))
+				return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj))
 			}
 			else {
 				stop("Version not supported!")
 			}
 		}
 )
-sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
+.sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
 	xmlDoc <- xmlNode(name = sosDescribeSensorName,
 			namespace = sosNamespacePrefix,
 			namespaceDefinitions = .sosNamespaceDefinitionsAll,
@@ -127,7 +127,7 @@ setMethod("encodeRequestSOAP", "DescribeSensor",
 			}
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
+				return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
 			}
 			else {
 				stop("Version not supported!")

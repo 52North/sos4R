@@ -44,9 +44,9 @@
 		"http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi"
 		)
 names(.sosExampleServices) <- list(
-		"52°North SOS: Weather Data, station at IFGI, Muenster, Germany",
-		"52°North SOS: Water gauge data for Germany",
-		"52°North SOS: Air Quality Data for Europe",
+		"52 North SOS: Weather Data, station at IFGI, Muenster, Germany",
+		"52 North SOS: Water gauge data for Germany",
+		"52 North SOS: Air Quality Data for Europe",
 		"OOTethys SOS: Sensor Observation Service (SOS) for Marine Metadata Interoperability Initiative (MMI)",
 		"OOTethys SOS: Gulf of Maine Ocean Observing System SOS"
 		)

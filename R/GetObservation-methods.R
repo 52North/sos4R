@@ -89,14 +89,14 @@ GetObservationById <- function(
 setMethod("encodeRequestKVP", "GetObservation", 
 	function(obj, sos, verbose = FALSE) {
 		if(obj@version == "1.0.0") {
-			return(sosEncodeRequestKVPGetObservation_1.0.0(obj, sos, verbose))		
+			return(.sosEncodeRequestKVPGetObservation_1.0.0(obj, sos, verbose))		
 		}
 		else {
 			stop("Version not supported!")
 		}
 	}
 )
-sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
+.sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	# required:
 	.request <- paste("request" , sosGetObservationName, sep = "=")
 	.service <- paste("service",
@@ -206,7 +206,7 @@ setMethod("encodeRequestXML", "GetObservation",
 		}
 		
 		if(obj@version == "1.0.0") {
-			return(sosEncodeRequestXMLGetObservation_1.0.0(obj = obj,
+			return(.sosEncodeRequestXMLGetObservation_1.0.0(obj = obj,
 							sos = sos, verbose = verbose))		
 		}
 		else {
@@ -214,7 +214,7 @@ setMethod("encodeRequestXML", "GetObservation",
 		}
 	}
 )
-sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
+.sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	.xmlDoc <- xmlNode(name = sosGetObservationName,
 			namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
@@ -300,7 +300,7 @@ setMethod("encodeRequestXML", "GetObservationById",
 			}
 			
 			if(obj@version == "1.0.0") {
-				return(sosEncodeRequestXMLGetObservationById_1.0.0(obj = obj,
+				return(.sosEncodeRequestXMLGetObservationById_1.0.0(obj = obj,
 								sos = sos))		
 			}
 			else {
@@ -308,7 +308,7 @@ setMethod("encodeRequestXML", "GetObservationById",
 			}
 		}
 )
-sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
+.sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
 	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetObs),

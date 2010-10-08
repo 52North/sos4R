@@ -92,7 +92,7 @@ GmlPoint <- function(pos, id = as.character(NA), srsName = as.character(NA),
 			uomLabels = uomLabels)
 }
 
-GmlPointProperty <- function(href = as.character(NA), point = NA) {
+GmlPointProperty <- function(href = as.character(NA), point = NULL) {
 	new("GmlPointProperty", href = href, point = point)
 }
 

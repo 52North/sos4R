@@ -2,6 +2,8 @@ import(XML)
 importFrom(RCurl, getURL, postForm)
 
 exportPattern("^[[:alpha:]]+")
+# export all who start with a letter (i.e. not .) except 'print.' or 'toString.'
+#exportPattern("(^[^(print\\.|toString\\.|\\.)][[:alpha:]]+)")
 exportMethods(
     "checkRequest",
     "describeSensor",
@@ -13,17 +15,20 @@ exportMethods(
     "getCapabilities",
     "getObservationById",
     "getObservation",
-    "owsMeaningOfCode",
     "saveXML",
     "show",
     "sosCapabilitiesDocumentOriginal",
     "sosCaps",
     "sosContents",
+    "sosCreateBBOX",
+    "sosCreateBBoxMatrix",
     "sosCreateEventTimeList",
+    "sosCreateFeatureOfInterest",
     "sosCreateTimeInstant",
     "sosCreateTimePeriod",
     "sosDataFieldConverters",
     "sosEventTimePeriod",
+    "sosExceptionCodeMeaning",
     "sosFilter_Capabilities",
     "sosFOIs",
     "sosMethod",

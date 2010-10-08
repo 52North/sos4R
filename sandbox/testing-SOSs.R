@@ -226,3 +226,13 @@ elliotwsn <- SOS("http://150.229.66.73/ElliotWSNSOS/sos")
 ################################################################################
 # some french sos, 52N, but just one week of data....
 sandre <- SOS("http://services.sandre.eaufrance.fr/52nSOSv3/sos")
+
+################################################################################
+# OCEAN STUFF, a lot of interesting data!
+#
+# http://www.openioos.org/real_time_data/gm_sos.html
+#
+oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py")
+ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos ")
+sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
+		

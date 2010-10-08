@@ -536,72 +536,101 @@ setMethod(f = "sosCreateEventTimeList",
 )
 
 #
-# new("SosFeatureOfInterest", objectIDs = objectIDs, spatialOps = spatialOps)
 #
-sosCreateFeatureOfInterest <- function(objectIDs = list(NA),
-		spatialOps = NULL, bbox = NULL, srsName = NA) {
-	
-	# switch cases, either objectIDs or one of the spatialOps shortcuts
-	if(!any(is.na(objectIDs))) {
-		.foi <- SosFeatureOfInterest(objectIDs = objectIDs)
-	}
-	else if (!is.null(spatialOps)) {
-		.foi <- SosFeatureOfInterest(spatialOps = spatialOps)
-	}
-	else if(!is.null(bbox)) {
-		if(is.matrix(bbox)) {
-			.env <- GmlEnvelope(
-					lowerCorner = GmlDirectPositionLatLon(lat = bbox[2,1],
-							lon = bbox[1,1]),
-					upperCorner = GmlDirectPositionLatLon(lat = bbox[2,2],
-							lon = bbox[1,2]),
-					srsName = srsName)
-			.bbox <- OgcBBOX(envelope = .env)
-			.foi <- SosFeatureOfInterest(spatialOps = .bbox)
+#
+if (!isGeneric("sosCreateFeatureOfInterest"))
+	setGeneric(name = "sosCreateFeatureOfInterest",
+			def = function(objectIDs = list(NA), spatialOps = NULL, bbox = NULL,
+					srsName = NA_character_) {
+				standardGeneric("sosCreateFeatureOfInterest")
+			})
+setMethod(f = "sosCreateFeatureOfInterest",
+		signature = signature(),
+		def = function(objectIDs, spatialOps, bbox, srsName) {
+			# switch cases, either objectIDs or one of the spatialOps shortcuts
+			if(!any(is.na(objectIDs))) {
+				.foi <- SosFeatureOfInterest(objectIDs = objectIDs)
+			}
+			else if (!is.null(spatialOps)) {
+				.foi <- SosFeatureOfInterest(spatialOps = spatialOps)
+			}
+			else if(!is.null(bbox)) {
+				if(is.matrix(bbox)) {
+					.env <- GmlEnvelope(
+							lowerCorner = GmlDirectPositionLatLon(lat = bbox[2,1],
+									lon = bbox[1,1]),
+							upperCorner = GmlDirectPositionLatLon(lat = bbox[2,2],
+									lon = bbox[1,2]),
+							srsName = srsName)
+					.bbox <- OgcBBOX(envelope = .env)
+					.foi <- SosFeatureOfInterest(spatialOps = .bbox)
+				}
+				else {
+					stop("bbox must be matrix!")
+				}
+			}
+			else {
+				stop("At least one of objectIDs or spatialOps has to be set!")
+			}
+			
+			return(.foi)
 		}
-		else {
-			stop("bbox must be matrix!")
+)
+		
+#
+#
+#
+if (!isGeneric("sosCreateBBOX"))
+	setGeneric(name = "sosCreateBBOX",
+			def = function(lowLat, lowLon, uppLat, uppLon, srsName,
+					srsDimension = NA_integer_, axisLabels = NA_character_,
+					uomLabels = NA_character_,
+					propertyName = sosDefaultSpatialOpPropertyName) {
+				standardGeneric("sosCreateBBOX")
+			})
+setMethod(f = "sosCreateBBOX",
+		signature = signature(lowLat = "numeric", lowLon = "numeric",
+				uppLat = "numeric", uppLon = "numeric"),
+		def = function(lowLat, lowLon, uppLat, uppLon, srsName,
+			srsDimension = NA_integer_, axisLabels = NA_character_,
+			uomLabels = NA_character_,
+			propertyName = sosDefaultSpatialOpPropertyName) {
+		.env <- GmlEnvelope(
+				lowerCorner = GmlDirectPosition(
+						pos = paste(lowLat, lowLon, sep = " ")),
+				upperCorner = GmlDirectPosition(
+						pos = paste(uppLat, uppLon, sep = " ")),
+				srsName = srsName, srsDimension = srsDimension,
+				axisLabels = axisLabels, uomLabels = uomLabels)
+		
+		.bbox <- OgcBBOX(propertyName = propertyName, envelope = .env)
+		return(.bbox)
 		}
-	}
-	else {
-		stop("At least one of objectIDs or spatialOps has to be set!")
-	}
-	
-	return(.foi)
-}
+)
 
 #
 #
 #
-sosCreateBBOX <- function(lowLat, lowLon, uppLat, uppLon, srsName,
-		srsDimension = NA_integer_, axisLabels = NA_character_,
-		uomLabels = NA_character_,
-		propertyName = sosDefaultSpatialOpPropertyName) {
-	.env <- GmlEnvelope(
-			lowerCorner = GmlDirectPosition(
-					pos = paste(lowLat, lowLon, sep = " ")),
-			upperCorner = GmlDirectPosition(
-					pos = paste(uppLat, uppLon, sep = " ")),
-			srsName = srsName, srsDimension = srsDimension,
-			axisLabels = axisLabels, uomLabels = uomLabels)
-	OgcBBOX(propertyName = propertyName, envelope = .env)
-}
-
-#
-#
-#
-sosCreateBBoxMatrix <- function(lowLon, lowLat, uppLon, uppLat) {
-	.m <- matrix(data = c(lowLon, lowLat, uppLon, uppLat),
-			nrow = 2, ncol = 2,
-			dimnames = list(
-					c("longitude", "latitude"),
-					c("lowerCorner", "upperCorner")))
-	return(.m)
-}
-
+if (!isGeneric("sosCreateBBoxMatrix"))
+	setGeneric(name = "sosCreateBBoxMatrix",
+			def = function(lowLat, lowLon, uppLat, uppLon) {
+				standardGeneric("sosCreateBBoxMatrix")
+			})
+setMethod(f = "sosCreateBBoxMatrix",
+		signature = signature(lowLat = "numeric", lowLon = "numeric",
+				uppLat = "numeric", uppLon = "numeric"),
+		def = function(lowLat, lowLon, uppLat, uppLon) {
+			.m <- matrix(data = c(lowLon, lowLat, uppLon, uppLat),
+					nrow = 2, ncol = 2,
+					dimnames = list(
+							c("longitude", "latitude"),
+							c("lowerCorner", "upperCorner")))
+			return(.m)
+		}
+)
 
 ################################################################################
-# OTHER
+# MISC
 
 #
 #
@@ -659,5 +688,20 @@ setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
 				cat("ENCODE XML from XMLNode\n")
 			}
 			return(obj)
+		}
+)
+
+################################################################################
+# Helper functions for OWS exceptions, e.g. to get the meaning of an exception
+# code.
+#
+setMethod(f = "sosExceptionCodeMeaning",
+		signature = c(exceptionCode = "character"),
+		def = function(exceptionCode) {
+			.meaning <- as.character(
+					.owsStandardExceptions[
+							.owsStandardExceptions$exceptionCode==exceptionCode,
+							2])
+			return(.meaning)
 		}
 )

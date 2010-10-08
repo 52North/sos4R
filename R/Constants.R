@@ -188,7 +188,7 @@ ogcTempOpTMEqualsName <- "TM_Equals"
 ogcTempOpTMMeetsName <- "TM_Meets"
 ogcTempOpTMMetByName <- "TM_MetBy"
 ogcTempOpTMOverlapsName <- "TM_Overalps"
-ogcTempOpTMTMOverlappedBy <- "TM_OverlappedBy"
+ogcTempOpTMOverlappedBy <- "TM_OverlappedBy"
 .ogcSupportedTemporalOps <- list(
 		ogcTempOpTMAfterName,
 		ogcTempOpTMBeforeName,
@@ -350,6 +350,9 @@ owsNamespacePrefix <- "ows"
 		httpStatusCode = .httpCode,
 		httpMessage = .httpMessage,
 		check.rows = TRUE, check.names = TRUE)
+OwsExceptionsData <- function() {
+	return(.owsStandardExceptions)
+}
 
 ################################################################################
 # others

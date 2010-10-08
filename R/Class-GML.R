@@ -83,7 +83,7 @@ setClass("GmlTimePosition",
 				calendarEraName = "character",
 				indeterminatePosition = "character"
 		),
-		prototype = list(timePosition = as.character(NA)),
+		prototype = list(time = as.POSIXct(NA)),
 		validity = function(object) {
 			#print("Entering validation: GmlTimePosition")
 			# TODO implement validity function
@@ -121,7 +121,7 @@ setClass("GmlTimeInstantProperty",
 		validity = function(object) {
 			#print("Entering validation: GmlTimeInstant")
 			# TODO implement validity function
-			# timePosition needs to be set			
+			# time needs to be set			
 			return(TRUE)
 		}
 )
@@ -236,6 +236,8 @@ setClass("GmlDirectPosition",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "GmlDirectPositionOrNULL",
+		members = c("GmlDirectPosition", "NULL"))
 
 #
 #
@@ -271,6 +273,7 @@ setClass("GmlPoint",
 			return(TRUE)
 		}
 )
+setClassUnion(name = "GmlPointOrNULL", members = c("GmlPoint", "NULL"))
 
 #
 # NOT IMPLEMENTED
@@ -308,7 +311,7 @@ setClass("GmlPolygon",
 #
 setClass("GmlPointProperty",
 		representation(href = "character",	
-				point = "ANY"),
+				point = "GmlPointOrNULL"),
 		#prototype = list(),
 		validity = function(object) {
 			#print("Entering validation: GmlPointProperty")

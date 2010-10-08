@@ -28,19 +28,21 @@
 ################################################################################
 
 ################################################################################
-# PRINTING FUNCTIONS
-print.OwsServiceOperation <- function(x, ...) {
-	cat("Object of class OwsServiceOperation\n")
-	cat("service: ")
-	cat(x@service)
-	cat(", version: ")
-	cat(x@version)
-	cat(", request: ")
-	cat(x@request)
+# ACTUAL TO STRING AND PRINTING FUNCTIONS
+
+.toString.OwsServiceOperation <- function(x, ...) {
+	.s <- paste("Object of class OwsServiceOperation;\n",
+			"service: ", x@service, ", version: ", x@version,
+			", request: ", x@request)
+	return(.s)
+}
+
+.print.OwsServiceOperation <- function(x, ...) {
+	cat(.toString.OwsServiceOperation(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OwsGetCapabilities <- function(x, ...) {
+.toString.OwsGetCapabilities <- function(x, ...) {
 	.s <- paste("Object of class OwsGetCapabilities; service: ",
 		x@service, ", request: ", x@request,
 		", owsVersion: ", x@owsVersion,
@@ -61,95 +63,92 @@ toString.OwsGetCapabilities <- function(x, ...) {
 }
 
 
-toString.OwsGetCapabilities_1.1.0 <- function(x, ...) {
-	return(toString.OwsGetCapabilities(x, ...))
+.toString.OwsGetCapabilities_1.1.0 <- function(x, ...) {
+	return(.toString.OwsGetCapabilities(x, ...), "\n")
 }
 
-print.OwsGetCapabilities <- function(x, ...) {
-	cat(toString.OwsGetCapabilities(x, ...))
+.print.OwsGetCapabilities <- function(x, ...) {
+	cat(.toString.OwsGetCapabilities(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsGetCapabilities_1.1.0 <- function(x, ...) {
-	cat(toString.OwsGetCapabilities(x, ...))
+.print.OwsGetCapabilities_1.1.0 <- function(x, ...) {
+	cat(.toString.OwsGetCapabilities(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsOperationsMetadata <- function(x, ...) {
-	cat("Object of class OwsOperationsMetadata:\n")
-	cat("-- operations:\n")
-	print(x@operations)
-	cat("-- parameters:\n")
-	print(x@parameters)
-	cat("-- extendedCapabilities:\n")
-	print(x@extendedCapabilities)
+.toString.OwsOperationsMetadata <- function(x, ...) {
+	.s <- paste("Object of class OwsOperationsMetadata:\n",
+			"-- operations:\n", toString(x@operations),
+			"-- parameters:\n", toString(x@parameters),
+			"-- extendedCapabilities:\n", toString(x@extendedCapabilities))
+	return(.s)
+}
+
+.print.OwsOperationsMetadata <- function(x, ...) {
+	cat(.toString.OwsOperationsMetadata(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsOperation <- function(x, ...) {
-	cat("Object of class OwsOperation: ")
-	cat("Name: ")
-	cat(x@name)
-	cat("\n\tParameters (names): ")
-	cat(paste(names(x@parameters)))
-	cat("\n\tDCPs (types): ")
-	cat(paste(names(x@DCPs)))
-	cat("\n\tConstraints: ")
-	cat(toString(x@constraints))
-	cat("\n\tMetadata: ")
-	print(toString(x@metadata))
+.toString.OwsOperation <- function(x, ...) {
+	.s <- paste("Object of class OwsOperation: Name: ", x@name,
+			"\n\tParameters (names): ", paste(names(x@parameters)),
+			"\n\tDCPs (types): ", paste(names(x@DCPs)),
+			"\n\tConstraints: ", toString(x@constraints),
+			"\n\tMetadata: ", toString(x@metadata))
+	return(.s)
+}
+
+.print.OwsOperation <- function(x, ...) {
+	cat(.toString.OwsOperation(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsServiceIdentification <- function(x, ...) {
-	cat("Object of class OwsServiceIdentification:")
-	cat("\n\tServiceType: ")
-	cat(x@serviceType)
-	cat("; serviceTypeVersion(s): ")
-	cat(paste(x@serviceTypeVersion, collapse = ", "))
-	cat("\n\ttitle(s): ")
-	cat(paste(x@title, collapse = "; "))
-	# optional:
-	cat("\n\tProfile(s): ")
-	cat(paste(x@profile, collapse = "; "))
-	cat("\n\tAbstract(s): ")
-	cat(paste(x@abstract, collapse = "; "))
-	cat("\n\tKeywords(s): ")
-	cat(paste(x@keywords, collapse = "; "))
-	cat("\n\tAccessConstraints(s): ")
-	cat(paste(x@accessConstraints, collapse = "; "))
-	cat("\n")
+.toString.OwsServiceIdentification <- function(x, ...) {
+	.s <- paste("Object of class OwsServiceIdentification:",
+			"\n\tServiceType: ", x@serviceType, "; serviceTypeVersion(s): ",
+			paste(x@serviceTypeVersion, collapse = ", "),
+			"\n\ttitle(s): ", paste(x@title, collapse = "; "),
+			# optional:
+			"\n\tProfile(s): ", paste(x@profile, collapse = "; "),
+			"\n\tAbstract(s): ", paste(x@abstract, collapse = "; "),
+			"\n\tKeywords(s): ", paste(x@keywords, collapse = "; "),
+			"\n\tAccessConstraints(s): ", paste(x@accessConstraints,
+					collapse = "; "))
+	return(.s)
+}
+
+.print.OwsServiceIdentification <- function(x, ...) {
+	cat(.toString.OwsServiceIdentification(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsServiceProvider <- function(x, ...) {
-	cat("Object of class OwsServiceProvider:")
-	cat("\n\tProvider name: ")
-	cat(x@providerName)
-	cat("; providerSite: ")
-	cat(x@providerSite)
-	cat("\n\tService contact:  (unparsed XML, see @serviceContact for details)")
-	cat("\n")
+.toString.OwsServiceProvider <- function(x, ...) {
+	.s <- paste("Object of class OwsServiceProvider:\n\tProvider name: ",
+			x@providerName,	"; providerSite: ", x@providerSite,
+			"\n\tService contact:  (unparsed XML, see @serviceContact for details)")
+	return(.s)
+}
+
+.print.OwsServiceProvider <- function(x, ...) {
+	cat(.toString.OwsServiceProvider(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsContents <- function(x, ...) {
-	cat("Object of class OwsContents (wraps unparsed XML, see @xml for details).\n")
-#	print("xml:")
-#	print(x@xml)
+.toString.OwsContents <- function(x, ...) {
+	return("Object of class OwsContents (wraps unparsed XML, see @xml for details).\n")
+}
+
+.print.OwsContents <- function(x, ...) {
+	cat(.toString.OwsContents(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsCapabilities <- function(x, ...) {
-	cat("Object of class ")
-	cat(class(x))
-	cat(" -- version: ")
-	cat(x@version)
-	cat(", owsVersion: ")
-	cat(x@owsVersion)
-	cat(", updateSequence: ")
-	cat(x@updateSequence)
-	
+.toString.OwsCapabilities <- function(x, ...) {
+	.s <- paste("Object of class ", class(x), " -- version: ", x@version,
+			", owsVersion: ", x@owsVersion, ", updateSequence: ", 
+			x@updateSequence)
+	return(.s)
 #	if (is(x, "OwsCapabilities_1.1.0")) {
 #		cat("\nIdentification: ")
 #		print(x@identification)
@@ -168,12 +167,14 @@ print.OwsCapabilities <- function(x, ...) {
 #		cat("\nFilter Capablities: ")
 #		print(x@filterCaps)
 #	}
-	
-	cat("\n")
+}
+
+.print.OwsCapabilities <- function(x, ...) {
+	cat(.toString.OwsCapabilities(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OwsExceptionReport <- function(x, ...) {
+.toString.OwsExceptionReport <- function(x, ...) {
 	.s <- paste(
 			"Object of class OwsExceptionReport",
 			"; version: ",
@@ -191,49 +192,57 @@ toString.OwsExceptionReport <- function(x, ...) {
 	return(paste(.s, "\n"))
 }
 
-print.OwsExceptionReport <- function(x, ...) {
-	cat(toString.OwsExceptionReport(x, ...), "\n")
+.print.OwsExceptionReport <- function(x, ...) {
+	cat(.toString.OwsExceptionReport(x, ...), "\n")
 	invisible(x)
 }
 
-print.OwsException <- function(x, ...) {
-	cat("Object of class OwsException")
-	cat("; exception code: ")
-	cat(x@exceptionCode)
-	cat(", locator: ")
-	cat(x@locator)
-	cat("\nException text(s):\n\t")
-	print(paste(x@exceptionText, sep = "\n\t"))
+.toString.OwsException <- function(x, ...) {
+	.s <- paste("Object of class OwsException; exception code: ",
+			x@exceptionCode,
+			", locator: ",
+			x@locator,
+			"\nException text(s):\n\t",
+			paste(x@exceptionText, sep = "\n\t"))
+	return(.s)
+}
+
+.print.OwsException <- function(x, ...) {
+	cat(.toString.OwsException, "\n")
 	invisible(x)
 }
 
-print.OwsRange <- function(x, ...) {
-	cat("Object of class OwsRange")
-	cat("; spacing: ")
-	cat(x@spacing)
-	cat(", rangeClosure: ")
-	cat(x@rangeClosure)
-	cat("\nFROM ")
-	cat(x@minimumValue)
-	cat(" TO ")
-	cat(x@maximumValue)
+.toString.OwsRange <- function(x, ...) {
+	.s <- paste("Object of class OwsRange; spacing: ",
+			x@spacing, ", rangeClosure: ",
+			x@rangeClosure,
+			"\nFROM ", x@minimumValue, " TO ",x@maximumValue)
+	return(.s)
+}
+
+.print.OwsRange <- function(x, ...) {
+	cat(.toString.OwsRange(x, ...), "\n")
 	invisible(x)
 }
 
-print.SOS <- function(x, ...) {
-	cat("Object of class SOS -- version: ")
-	cat(x@version)
-	cat(", method: ")
-	cat(x@method)
-	cat(", url: ")
-	cat(x@url)
-	cat("\n\tCapabilities: ")
-	print(x@capabilities)
-	cat("\n")
+.toString.SOS <- function(x, ...) {
+	.s <- paste("Object of class SOS -- version: ",
+			x@version,
+			", method: ",
+			x@method,
+			", url: ",
+			x@url,
+			"\n\tCapabilities: ",
+			toString(x@capabilities))
+	return(.s)
+}
+
+.print.SOS <- function(x, ...) {
+	cat(.toString.SOS(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SosFilter_Capabilities <- function(x, ...) {
+.toString.SosFilter_Capabilities <- function(x, ...) {
 	.s <- paste("Object of class SosFilter_Capabilities;",
 			"\n\tSpatial_Capabilities:\t",
 			toString(x@spatial[[ogcGeometryOperandsName]]),
@@ -250,68 +259,66 @@ toString.SosFilter_Capabilities <- function(x, ...) {
 	return(.s)
 }
 
-print.SosFilter_Capabilities <- function(x, ...) {
-	cat(toString.SosFilter_Capabilities(x, ...), "\n")
+.print.SosFilter_Capabilities <- function(x, ...) {
+	cat(.toString.SosFilter_Capabilities(x, ...), "\n")
 	invisible(x)
 }
 
-print.SosObservationOffering <- function(x, ...) {
-	cat("Object of class SosObservationOffering; ")
-	cat("id: ")
-	cat(x@id)
-	cat(", name: ")
-	cat(x@name)
-	cat("\n\ttime: ")
-	cat(.addTabIndent(toString(x@time)))
-	cat("\n\tprocedure(s): ")
-	cat(paste(x@procedure))
-	cat("\n\tobservedProperty(s): ")
-	cat(paste(x@observedProperty))
-	cat("\n\tfeature(s)OfInterest: ")
-	cat(paste(x@featureOfInterest))
-	cat("\n\tresponseFormat(s): ")
-	cat(paste(x@responseFormat))
-	cat(", responseMode(s): ")
-	cat(paste(x@responseMode))
-	cat("\n\tintendedApplication: ")
-	cat(paste(x@intendedApplication))
-	cat("\n\tresultModel(s): ")
-	cat(paste(x@resultModel))
-	cat("\n\tboundedBy: ")
-	cat(paste(x@boundedBy))
+.toString.SosObservationOffering <- function(x, ...) {
+	.s <- paste("Object of class SosObservationOffering; ",
+			"id: ", x@id, ", name: ", x@name,
+			"\n\ttime: ", .addTabIndent(toString(x@time)),
+			"\n\tprocedure(s): ", paste(x@procedure),
+			"\n\tobservedProperty(s): ", paste(x@observedProperty),
+			"\n\tfeature(s)OfInterest: ", paste(x@featureOfInterest),
+			"\n\tresponseFormat(s): ", paste(x@responseFormat),
+			", responseMode(s): ", paste(x@responseMode),
+			"\n\tintendedApplication: ", paste(x@intendedApplication),
+			"\n\tresultModel(s): ", paste(x@resultModel),
+			 "\n\tboundedBy: ", paste(x@boundedBy))
+	return(.s)
+}
+
+.print.SosObservationOffering <- function(x, ...) {
+	cat(.toString.SosObservationOffering(x, ...), "\n")
 	invisible(x)
 }
 
-print.SosContents <- function(x, ...) {
-	cat("Object of class SosContents with observation offerings (names): ")
-	cat(paste(names(x@observationOfferings)))
+.toString.SosContents <- function(x, ...) {
+	.s <- paste("Object of class SosContents with observation offerings (names): ",
+			paste(names(x@observationOfferings)))
+	return(.s)
+}
+
+.print.SosContents <- function(x, ...) {
+	cat(.toString.SosContents(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SosEventTime <- function(x, ...) {
+.toString.SosEventTime <- function(x, ...) {
 	.s <- paste("Object of class SosEventTime: ",
 			class(x@temporalOps),": ",
 			toString(x@temporalOps@time), sep = "")
 	return(.s)
 }
 
-print.SosEventTime <- function(x, ...) {
-	cat(toString.SosEventTime(x, ...), "\n")
+.print.SosEventTime <- function(x, ...) {
+	cat(.toString.SosEventTime(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SosEventTimeLatest <- function(x, ...) {
+.toString.SosEventTimeLatest <- function(x, ...) {
 	.s <- paste("Object of class SosEventTimeLatest; temporalOps value:",
 			x@temporalOps)
 	return(.s)
 }
 
-print.SosEventTime <- function(x, ...) {
-	cat(toString.SosEventTimeLatest(x, ...), "\n")
+.print.SosEventTimeLatest <- function(x, ...) {
+	cat(.toString.SosEventTimeLatest(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SosFeatureOfInterest <- function(x, ...) {
+.toString.SosFeatureOfInterest <- function(x, ...) {
 	.s <- paste("Object of class SosFeatureOfInterest",
 			";\n\tobjectIDs: ",
 			toString(x@objectIDs),
@@ -321,22 +328,22 @@ toString.SosFeatureOfInterest <- function(x, ...) {
 	return(.s)
 }
 
-print.SosFeatureOfInterest <- function(x, ...) {
-	cat(toString.SosFeatureOfInterest(x, ...), "\n")
+.print.SosFeatureOfInterest <- function(x, ...) {
+	cat(.toString.SosFeatureOfInterest(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SensorML <- function(x, ...) {
+.toString.SensorML <- function(x, ...) {
 	.s <- ("Object of class SensorML (wraps unparsed XML, see @xml for details).\n")
 	return(.s)
 }
 
-print.SensorML <- function(x, ...) {
-	cat(toString.SensorML(x, ...), "\n")
+.print.SensorML <- function(x, ...) {
+	cat(.toString.SensorML(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GetObservation <- function(x, ...) {
+.toString.GetObservation <- function(x, ...) {
 	.s <- paste("Object of class GetObservation: ",
 			"service: ",
 			x@service,
@@ -366,12 +373,12 @@ toString.GetObservation <- function(x, ...) {
 	return(.s)
 }
 
-print.GetObservation <- function(x, ...) {
-	cat(toString.GetObservation(x, ...), "\n")
+.print.GetObservation <- function(x, ...) {
+	cat(.toString.GetObservation(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GetObservationById <- function(x, ...) {
+.toString.GetObservationById <- function(x, ...) {
 	.s <- paste("Object of class GetObservationById: ",
 			"service: ",
 			x@service,
@@ -391,13 +398,13 @@ toString.GetObservationById <- function(x, ...) {
 	return(.s)
 }
 
-print.GetObservationById <- function(x, ...) {
-	cat(toString.GetObservationById(x, ...), "\n")
+.print.GetObservationById <- function(x, ...) {
+	cat(.toString.GetObservationById(x, ...), "\n")
 	invisible(x)
 }
 
 
-toString.DescribeSensor <- function(x, ...) {
+.toString.DescribeSensor <- function(x, ...) {
 	.s <- paste("Object of class DescribeSensor: ",
 			"service: ",
 			x@service,
@@ -410,12 +417,12 @@ toString.DescribeSensor <- function(x, ...) {
 	return(.s)
 }
 
-print.DescribeSensor <- function(x, ...) {
-	cat(toString.DescribeSensor(x, ...), "\n")
+.print.DescribeSensor <- function(x, ...) {
+	cat(.toString.DescribeSensor(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OmMeasurement <- function(x, ...) {
+.toString.OmMeasurement <- function(x, ...) {
 	.s <- paste(
 			"Object of class OmMeasurement",
 			", procedure ",
@@ -432,12 +439,12 @@ toString.OmMeasurement <- function(x, ...) {
 	return(.s)
 }
 
-print.OmMeasurement <- function(x, ...) {
-	cat(toString.OmMeasurement(x, ...), "\n")
+.print.OmMeasurement <- function(x, ...) {
+	cat(.toString.OmMeasurement(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OmObservation <- function(x, ...) {
+.toString.OmObservation <- function(x, ...) {
 	.s <- paste(
 			"Object of class OmObservation",
 			"; procedure: ",
@@ -454,12 +461,12 @@ toString.OmObservation <- function(x, ...) {
 	return(.s)
 }
 
-print.OmObservation <- function(x, ...) {
-	cat(toString.OmObservation(x, ...), "\n")
+.print.OmObservation <- function(x, ...) {
+	cat(.toString.OmObservation(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OmObservationProperty <- function(x, ...) {
+.toString.OmObservationProperty <- function(x, ...) {
 	.s <- paste("Object of class OmObservationProperty",
 			"; href: ",
 			x@href,
@@ -469,12 +476,12 @@ toString.OmObservationProperty <- function(x, ...) {
 	return(.s)
 }
 
-print.OmObservationProperty <- function(x, ...) {
-	cat(toString.OmObservationProperty(x, ...), "\n")
+.print.OmObservationProperty <- function(x, ...) {
+	cat(.toString.OmObservationProperty(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OmMeasure <- function(x, ...) {
+.toString.OmMeasure <- function(x, ...) {
 	.s <- paste(
 			"Object of class OmMeasure",
 			"; value: ",
@@ -485,12 +492,12 @@ toString.OmMeasure <- function(x, ...) {
 	return(.s)
 }
 
-print.OmMeasure <- function(x, ...) {
-	cat(toString.OmMeasure(x, ...), "\n")
+.print.OmMeasure <- function(x, ...) {
+	cat(.toString.OmMeasure(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SwePhenomenonProperty <- function(x, ...) {
+.toString.SwePhenomenonProperty <- function(x, ...) {
 	.s <- paste("Object of class SwePhenomenonProperty",
 			"; href: ",
 			x@href,
@@ -500,12 +507,12 @@ toString.SwePhenomenonProperty <- function(x, ...) {
 	return(.s)
 }
 
-print.SwePhenomenonProperty <- function(x, ...) {
-	cat(toString.SwePhenomenonProperty(x, ...), "\n")
+.print.SwePhenomenonProperty <- function(x, ...) {
+	cat(.toString.SwePhenomenonProperty(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SwePhenomenon <- function(x, ...) {
+.toString.SwePhenomenon <- function(x, ...) {
 	.s <- paste("Object of class SwePhenomenon",
 		"; id: ",
 		x@id,
@@ -517,12 +524,12 @@ toString.SwePhenomenon <- function(x, ...) {
 	invisible(x)
 }
 
-print.SwePhenomenon <- function(x, ...) {
-	cat(toString.SwePhenomenon(x, ...), "\n")
+.print.SwePhenomenon <- function(x, ...) {
+	cat(.toString.SwePhenomenon(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SweCompositePhenomenon <- function(x, ...) {
+.toString.SweCompositePhenomenon <- function(x, ...) {
 	.s <- paste("Object of class SweCompositePhenomenon",
 		"; id: ",
 		x@id,
@@ -540,12 +547,12 @@ toString.SweCompositePhenomenon <- function(x, ...) {
 	return(.s)
 }
 
-print.SweCompositePhenomenon <- function(x, ...) {
-	cat(toString.SweCompositePhenomenon(x, ...), "\n")
+.print.SweCompositePhenomenon <- function(x, ...) {
+	cat(.toString.SweCompositePhenomenon(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SweTextBlock <- function(x, ...) {
+.toString.SweTextBlock <- function(x, ...) {
 	.s <- paste("Object of class SweTextBlock",
 			" '",
 			x@tokenSeparator,
@@ -559,12 +566,12 @@ toString.SweTextBlock <- function(x, ...) {
 	return(.s)
 }
 
-print.SweTextBlock <- function(x, ...) {
-	cat(toString.SweTextBlock(x, ...), "\n")
+.print.SweTextBlock <- function(x, ...) {
+	cat(.toString.SweTextBlock(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlTimePosition <- function(x, ...) {
+.toString.GmlTimePosition <- function(x, ...) {
 	.s <- paste("Object of class GmlTimePosition",
 			"; time: ",
 			x@time,
@@ -578,12 +585,12 @@ toString.GmlTimePosition <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlTimePosition <- function(x, ...) {
-	cat(toString.GmlTimePosition(x, ...), "\n")
+.print.GmlTimePosition <- function(x, ...) {
+	cat(.toString.GmlTimePosition(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlTimeInstant <- function(x, ...) {
+.toString.GmlTimeInstant <- function(x, ...) {
 	.s <- paste(
 			#"Object of class GmlTimeInstant",
 			#"; timePosition:",
@@ -591,12 +598,12 @@ toString.GmlTimeInstant <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlTimeInstant <- function(x, ...) {
-	cat(toString.GmlTimeInstant(x, ...))
+.print.GmlTimeInstant <- function(x, ...) {
+	cat(.toString.GmlTimeInstant(x, ...))
 	invisible(x)
 }
 
-toString.GmlTimeInstantProperty <- function(x, ...) {
+.toString.GmlTimeInstantProperty <- function(x, ...) {
 	.s <- paste("Object of class GmlTimeInstantProperty",
 			"; href: ",
 			x@href,
@@ -606,12 +613,12 @@ toString.GmlTimeInstantProperty <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlTimeInstantProperty <- function(x, ...) {
-	cat(toString.GmlTimeInstantProperty(x, ...), "\n")
+.print.GmlTimeInstantProperty <- function(x, ...) {
+	cat(.toString.GmlTimeInstantProperty(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlTimeInterval <- function(x, ...) {
+.toString.GmlTimeInterval <- function(x, ...) {
 	.s <- paste("Object of class GmlTimeInterval",
 			"; interval: ",
 			x@interval,
@@ -625,12 +632,12 @@ toString.GmlTimeInterval <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlTimeInterval <- function(x, ...) {
-	cat(toString.GmlTimeInterval(x, ...), "\n")
+.print.GmlTimeInterval <- function(x, ...) {
+	cat(.toString.GmlTimeInterval(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlTimePeriod <- function(x, ...) {
+.toString.GmlTimePeriod <- function(x, ...) {
 	.s <- ""
 
 	if(!is.na(x@duration)) {
@@ -653,12 +660,12 @@ toString.GmlTimePeriod <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlTimePeriod <- function(x, ...) {
-	cat(toString.GmlTimePeriod(x, ...), "\n")
+.print.GmlTimePeriod <- function(x, ...) {
+	cat(.toString.GmlTimePeriod(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlFeatureProperty <- function(x, ...) {
+.toString.GmlFeatureProperty <- function(x, ...) {
 	.s <- paste("Object of class GmlFeatureProperty",
 			", href: ",
 			x@href,
@@ -668,12 +675,12 @@ toString.GmlFeatureProperty <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlFeatureProperty <- function(x, ...) {
-	cat(toString.GmlFeatureProperty(x, ...), "\n")
+.print.GmlFeatureProperty <- function(x, ...) {
+	cat(.toString.GmlFeatureProperty(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlFeatureCollection <- function(x, ...) {
+.toString.GmlFeatureCollection <- function(x, ...) {
 	.s <- paste("Object of class GmlFeatureCollection",
 			"; id: ",
 			x@id,
@@ -685,12 +692,12 @@ toString.GmlFeatureCollection <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlFeatureCollection <- function(x, ...) {
-	cat(toString.GmlFeatureCollection(x, ...), "\n")
+.print.GmlFeatureCollection <- function(x, ...) {
+	cat(.toString.GmlFeatureCollection(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlDirectPosition <- function(x, ...) {
+.toString.GmlDirectPosition <- function(x, ...) {
 	.s <- paste("Object of class GmlDirectPosition",
 			"; pos: ",
 			x@pos,
@@ -706,12 +713,12 @@ toString.GmlDirectPosition <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlDirectPosition <- function(x, ...) {
-	cat(toString.GmlDirectPosition(x, ...), "\n")
+.print.GmlDirectPosition <- function(x, ...) {
+	cat(.toString.GmlDirectPosition(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlPoint <- function(x, ...) {
+.toString.GmlPoint <- function(x, ...) {
 	.s <- paste("Object of class GmlPoint",
 			"; pos: ",
 			toString(x@pos),
@@ -727,12 +734,12 @@ toString.GmlPoint <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlPoint <- function(x, ...) {
-	cat(toString.GmlPoint(x, ...), "\n")
+.print.GmlPoint <- function(x, ...) {
+	cat(.toString.GmlPoint(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlPointProperty <- function(x, ...) {
+.toString.GmlPointProperty <- function(x, ...) {
 	.s <- paste("Object of class GmlPointProperty",
 			"; href: ",
 			x@href,
@@ -742,8 +749,8 @@ toString.GmlPointProperty <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlPointProperty <- function(x, ...) {
-	cat(toString.GmlPointProperty(x, ...), "\n")
+.print.GmlPointProperty <- function(x, ...) {
+	cat(.toString.GmlPointProperty(x, ...), "\n")
 	invisible(x)
 }
 
@@ -753,7 +760,7 @@ print.GmlPointProperty <- function(x, ...) {
 	return(.s)
 }
 
-toString.GmlGeometry <- function(x, ...) {
+.toString.GmlGeometry <- function(x, ...) {
 	.s <- paste("Object of class GmlGeometry",
 			"; id: ",
 			x@id,
@@ -769,12 +776,12 @@ toString.GmlGeometry <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlGeometry <- function(x, ...) {
-	cat(toString.GmlGeometry(x, ...), "\n")
+.print.GmlGeometry <- function(x, ...) {
+	cat(.toString.GmlGeometry(x, ...), "\n")
 	invisible(x)
 }
 
-toString.GmlEnvelope <- function(x, ...) {
+.toString.GmlEnvelope <- function(x, ...) {
 	.s <- paste("Object of class GmlEnvelope",
 			"; srsName: ",
 			x@srsName,
@@ -792,57 +799,57 @@ toString.GmlEnvelope <- function(x, ...) {
 	return(.s)
 }
 
-print.GmlEnvelope <- function(x, ...) {
-	cat(toString.GmlEnvelope(x, ...), "\n")
+.print.GmlEnvelope <- function(x, ...) {
+	cat(.toString.GmlEnvelope(x, ...), "\n")
 	invisible(x)
 }
 
-toString.TM_After <- function(x, ...) {
+.toString.TM_After <- function(x, ...) {
 	.s <- paste("Object of class TM_After;",
 			.tempOpToString(x))
 	return(.s)
 }
 
-print.TM_After <- function(x, ...) {
-	cat(toString.TM_After(x, ...), "\n")
+.print.TM_After <- function(x, ...) {
+	cat(.toString.TM_After(x, ...), "\n")
 	invisible(x)
 }
 
-toString.TM_Before <- function(x, ...) {
+.toString.TM_Before <- function(x, ...) {
 	.s <- paste("Object of class TM_Before;",
 			.tempOpToString(x))
 	return(.s)
 }
 
-print.TM_Before <- function(x, ...) {
-	cat(toString.TM_Before(x, ...), "\n")
+.print.TM_Before <- function(x, ...) {
+	cat(.toString.TM_Before(x, ...), "\n")
 	invisible(x)
 }
 
-toString.TM_During <- function(x, ...) {
+.toString.TM_During <- function(x, ...) {
 	.s <- paste("Object of class TM_During;",
 			.tempOpToString(x))
 	return(.s)
 }
 
-print.TM_During <- function(x, ...) {
-	cat(toString.TM_During(x, ...), "\n")
+.print.TM_During <- function(x, ...) {
+	cat(.toString.TM_During(x, ...), "\n")
 	invisible(x)
 }
 
-toString.TM_Equals <- function(x, ...) {
+.toString.TM_Equals <- function(x, ...) {
 	.s <- paste("Object of class TM_Equals;",
 			.tempOpToString(x))
 	return(.s)
 }
 
 
-print.TM_Equals <- function(x, ...) {
-	cat(toString.TM_Equals(x, ...), "\n")
+.print.TM_Equals <- function(x, ...) {
+	cat(.toString.TM_Equals(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OgcBBOX <- function(x, ...) {
+.toString.OgcBBOX <- function(x, ...) {
 	.s <- paste("Object of class OgcBBOX; propertyName: ",
 			x@propertyName,
 			"; envelope: ",
@@ -851,8 +858,8 @@ toString.OgcBBOX <- function(x, ...) {
 	return(.s)
 }
 
-print.OgcBBOX <- function(x, ...) {
-	cat(toString.OgcContains(x, ...), "\n")
+.print.OgcBBOX <- function(x, ...) {
+	cat(.toString.OgcBBOX(x, ...), "\n")
 	invisible(x)
 }
 
@@ -867,40 +874,40 @@ print.OgcBBOX <- function(x, ...) {
 	return(.s)
 }
 
-toString.OgcContains <- function(x, ...) {
+.toString.OgcContains <- function(x, ...) {
 	.s <- paste("Object of class OgcContains;",
 			.binSpatOpToString(x))
 	return(.s)
 }
 
-print.OgcContains <- function(x, ...) {
-	cat(toString.OgcContains(x, ...), "\n")
+.print.OgcContains <- function(x, ...) {
+	cat(.toString.OgcContains(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OgcIntersects <- function(x, ...) {
+.toString.OgcIntersects <- function(x, ...) {
 	.s <- paste("Object of class OgcIntersects;",
 			.binSpatOpToString(x))
 	return(.s)
 }
 
-print.OgcIntersects <- function(x, ...) {
-	cat(toString.OgcIntersects(x, ...), "\n")
+.print.OgcIntersects <- function(x, ...) {
+	cat(.toString.OgcIntersects(x, ...), "\n")
 	invisible(x)
 }
 
-toString.OgcOverlaps <- function(x, ...) {
+.toString.OgcOverlaps <- function(x, ...) {
 	.s <- paste("Object of class OgcOverlaps;",
 			.binSpatOpToString(x))
 	return(.s)
 }
 
-print.OgcOverlaps <- function(x, ...) {
-	cat(toString.OgcOverlaps(x, ...), "\n")
+.print.OgcOverlaps <- function(x, ...) {
+	cat(.toString.OgcOverlaps(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SaSamplingPoint <- function(x, ...) {
+.toString.SaSamplingPoint <- function(x, ...) {
 	.s <- paste("Object of class SaSamplingPoint",
 			"; id: ",
 			x@id,
@@ -918,12 +925,12 @@ toString.SaSamplingPoint <- function(x, ...) {
 	return(.s)
 }
 
-print.SaSamplingPoint <- function(x, ...) {
-	cat(toString.SaSamplingPoint(x, ...), "\n")
+.print.SaSamplingPoint <- function(x, ...) {
+	cat(.toString.SaSamplingPoint(x, ...), "\n")
 	invisible(x)
 }
 
-toString.SaSamplingSurface <- function(x, ...) {
+.toString.SaSamplingSurface <- function(x, ...) {
 	.s <- paste("Object of class SaSamplingSurface",
 			"; id: ",
 			x@id,
@@ -943,135 +950,193 @@ toString.SaSamplingSurface <- function(x, ...) {
 	return(.s)
 }
 
-print.SaSamplingSurface <- function(x, ...) {
-	cat(toString.SaSamplingSurface(x, ...), "\n")
+.print.SaSamplingSurface <- function(x, ...) {
+	cat(.toString.SaSamplingSurface(x, ...), "\n")
 	invisible(x)
 }
 
 ################################################################################
 # PRINT FUNCTIONS
-setMethod("print", "OwsServiceOperation", function(x, ...) print.OwsServiceOperation(x, ...))
-setMethod("print", "OwsGetCapabilities", function(x, ...) print.OwsGetCapabilities(x, ...))
-setMethod("print", "OwsGetCapabilities_1.1.0", function(x, ...) print.OwsGetCapabilities(x, ...))
-setMethod("print", "OwsGetCapabilities_2.0.0", function(x, ...) print.OwsGetCapabilities(x, ...))
-setMethod("print", "OwsOperationsMetadata", function(x, ...) print.OwsOperationsMetadata(x, ...))
-setMethod("print", "OwsOperation", function(x, ...) print.OwsOperation(x, ...))
-setMethod("print", "OwsServiceIdentification", function(x, ...) print.OwsServiceIdentification(x, ...))
-setMethod("print", "OwsServiceProvider", function(x, ...) print.OwsServiceProvider(x, ...))
-setMethod("print", "OwsContents", function(x, ...) print.OwsContents(x, ...))
-setMethod("print", "OwsCapabilities", function(x, ...) print.OwsCapabilities(x, ...))
-setMethod("print", "OwsCapabilities_1.1.0", function(x, ...) print.OwsCapabilities(x, ...))
-setMethod("print", "OwsCapabilities_2.0.0", function(x, ...) print.OwsCapabilities(x, ...))
-setMethod("print", "OwsExceptionReport", function(x, ...) print.OwsExceptionReport(x, ...))
-setMethod("print", "OwsException", function(x, ...) print.OwsException(x, ...))
-setMethod("print", "OwsRange", function(x, ...) print.OwsRange(x, ...))
-setMethod("print", "SOS", function(x, ...) print.SOS(x, ...))
-setMethod("print", "SosFilter_Capabilities", function(x, ...) print.SosFilter_Capabilities(x, ...))
-setMethod("print", "SosObservationOffering", function(x, ...) print.SosObservationOffering(x, ...))
-setMethod("print", "SosContents", function(x, ...) print.SosContents(x, ...))
-setMethod("print", "SosEventTime", function(x, ...) print.SosEventTime(x, ...))
-setMethod("print", "SosFeatureOfInterest", function(x, ...) print.SosFeatureOfInterest(x, ...))
-setMethod("print", "SensorML", function(x, ...) print.SensorML(x, ...))
-setMethod("print", "GetObservation", function(x, ...) print.GetObservation(x, ...))
-setMethod("print", "GetObservationById", function(x, ...) print.GetObservationById(x, ...))
-setMethod("print", "DescribeSensor", function(x, ...) print.DescribeSensor(x, ...))
-setMethod("print", "SaSamplingPoint", function(x, ...) print.SaSamplingPoint(x, ...))
-setMethod("print", "SaSamplingSurface", function(x, ...) print.SaSamplingSurface(x, ...))
-setMethod("print", "SwePhenomenon", function(x, ...) print.SwePhenomenon(x, ...))
-setMethod("print", "SwePhenomenonProperty", function(x, ...) print.SwePhenomenonProperty(x, ...))
-setMethod("print", "SweCompositePhenomenon", function(x, ...) print.SweCompositePhenomenon(x, ...))
-setMethod("print", "SweTextBlock", function(x, ...) print.SweTextBlock(x, ...))
-setMethod("print", "OmObservation", function(x, ...) print.OmObservation(x, ...))
-setMethod("print", "OmObservationProperty", function(x, ...) print.OmObservationProperty(x, ...))
-setMethod("print", "OmMeasure", function(x, ...) print.OmMeasure(x, ...))
-setMethod("print", "OmMeasurement", function(x, ...) print.OmMeasurement(x, ...))
-setMethod("print", "GmlTimePosition", function(x, ...) print.GmlTimePosition(x, ...))
-setMethod("print", "GmlTimeInstant", function(x, ...) print.GmlTimeInstant(x, ...))
-setMethod("print", "GmlTimeInterval", function(x, ...) print.GmlTimeInterval(x, ...))
-setMethod("print", "GmlTimePeriod", function(x, ...) print.GmlTimePeriod(x, ...))
-setMethod("print", "GmlFeatureProperty", function(x, ...) print.GmlFeatureProperty(x, ...))
-setMethod("print", "GmlFeatureCollection", function(x, ...) print.GmlFeatureCollection(x, ...))
-setMethod("print", "GmlDirectPosition", function(x, ...) print.GmlDirectPosition(x, ...))
-setMethod("print", "GmlPoint", function(x, ...) print.GmlPoint(x, ...))
-setMethod("print", "GmlPointProperty", function(x, ...) print.GmlPointProperty(x, ...))
-setMethod("print", "GmlGeometry", function(x, ...) print.GmlGeometry(x, ...))
-setMethod("print", "GmlEnvelope", function(x, ...) print.GmlEnvelope(x, ...))
-setMethod("print", "TM_After", function(x, ...) print.TM_After(x, ...))
-setMethod("print", "TM_Before", function(x, ...) print.TM_Before(x, ...))
-setMethod("print", "TM_During", function(x, ...) print.TM_During(x, ...))
-setMethod("print", "TM_Equals", function(x, ...) print.TM_Equals(x, ...))
-setMethod("print", "OgcBBOX", function(x, ...) print.OgcBBOX(x, ...))
-setMethod("print", "OgcContains", function(x, ...) print.OgcContains(x, ...))
-setMethod("print", "OgcIntersects", function(x, ...) print.OgcIntersects(x, ...))
-setMethod("print", "OgcOverlaps", function(x, ...) print.OgcOverlaps(x, ...))
+setMethod("print", "OwsServiceOperation", function(x, ...) .print.OwsServiceOperation(x, ...))
+setMethod("print", "OwsGetCapabilities", function(x, ...) .print.OwsGetCapabilities(x, ...))
+setMethod("print", "OwsGetCapabilities_1.1.0", function(x, ...) .print.OwsGetCapabilities(x, ...))
+setMethod("print", "OwsGetCapabilities_2.0.0", function(x, ...) .print.OwsGetCapabilities(x, ...))
+setMethod("print", "OwsOperationsMetadata", function(x, ...) .print.OwsOperationsMetadata(x, ...))
+setMethod("print", "OwsOperation", function(x, ...) .print.OwsOperation(x, ...))
+setMethod("print", "OwsServiceIdentification", function(x, ...) .print.OwsServiceIdentification(x, ...))
+setMethod("print", "OwsServiceProvider", function(x, ...) .print.OwsServiceProvider(x, ...))
+setMethod("print", "OwsContents", function(x, ...) .print.OwsContents(x, ...))
+setMethod("print", "OwsCapabilities", function(x, ...) .print.OwsCapabilities(x, ...))
+setMethod("print", "OwsCapabilities_1.1.0", function(x, ...) .print.OwsCapabilities(x, ...))
+setMethod("print", "OwsCapabilities_2.0.0", function(x, ...) .print.OwsCapabilities(x, ...))
+setMethod("print", "OwsExceptionReport", function(x, ...) .print.OwsExceptionReport(x, ...))
+setMethod("print", "OwsException", function(x, ...) .print.OwsException(x, ...))
+setMethod("print", "OwsRange", function(x, ...) .print.OwsRange(x, ...))
+setMethod("print", "SOS", function(x, ...) .print.SOS(x, ...))
+setMethod("print", "SosFilter_Capabilities", function(x, ...) .print.SosFilter_Capabilities(x, ...))
+setMethod("print", "SosObservationOffering", function(x, ...) .print.SosObservationOffering(x, ...))
+setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
+setMethod("print", "SosEventTime", function(x, ...) .print.SosEventTime(x, ...))
+setMethod("print", "SosFeatureOfInterest", function(x, ...) .print.SosFeatureOfInterest(x, ...))
+setMethod("print", "SensorML", function(x, ...) .print.SensorML(x, ...))
+setMethod("print", "GetObservation", function(x, ...) .print.GetObservation(x, ...))
+setMethod("print", "GetObservationById", function(x, ...) .print.GetObservationById(x, ...))
+setMethod("print", "DescribeSensor", function(x, ...) .print.DescribeSensor(x, ...))
+setMethod("print", "SaSamplingPoint", function(x, ...) .print.SaSamplingPoint(x, ...))
+setMethod("print", "SaSamplingSurface", function(x, ...) .print.SaSamplingSurface(x, ...))
+setMethod("print", "SwePhenomenon", function(x, ...) .print.SwePhenomenon(x, ...))
+setMethod("print", "SwePhenomenonProperty", function(x, ...) .print.SwePhenomenonProperty(x, ...))
+setMethod("print", "SweCompositePhenomenon", function(x, ...) .print.SweCompositePhenomenon(x, ...))
+setMethod("print", "SweTextBlock", function(x, ...) .print.SweTextBlock(x, ...))
+setMethod("print", "OmObservation", function(x, ...) .print.OmObservation(x, ...))
+setMethod("print", "OmObservationProperty", function(x, ...) .print.OmObservationProperty(x, ...))
+setMethod("print", "OmMeasure", function(x, ...) .print.OmMeasure(x, ...))
+setMethod("print", "OmMeasurement", function(x, ...) .print.OmMeasurement(x, ...))
+setMethod("print", "GmlTimePosition", function(x, ...) .print.GmlTimePosition(x, ...))
+setMethod("print", "GmlTimeInstant", function(x, ...) .print.GmlTimeInstant(x, ...))
+setMethod("print", "GmlTimeInstantProperty", function(x, ...) .print.GmlTimeInstantProperty(x, ...))
+setMethod("print", "GmlTimeInterval", function(x, ...) .print.GmlTimeInterval(x, ...))
+setMethod("print", "GmlTimePeriod", function(x, ...) .print.GmlTimePeriod(x, ...))
+setMethod("print", "GmlFeatureProperty", function(x, ...) .print.GmlFeatureProperty(x, ...))
+setMethod("print", "GmlFeatureCollection", function(x, ...) .print.GmlFeatureCollection(x, ...))
+setMethod("print", "GmlDirectPosition", function(x, ...) .print.GmlDirectPosition(x, ...))
+setMethod("print", "GmlPoint", function(x, ...) .print.GmlPoint(x, ...))
+setMethod("print", "GmlPointProperty", function(x, ...) .print.GmlPointProperty(x, ...))
+setMethod("print", "GmlGeometry", function(x, ...) .print.GmlGeometry(x, ...))
+setMethod("print", "GmlEnvelope", function(x, ...) .print.GmlEnvelope(x, ...))
+setMethod("print", "TM_After", function(x, ...) .print.TM_After(x, ...))
+setMethod("print", "TM_Before", function(x, ...) .print.TM_Before(x, ...))
+setMethod("print", "TM_During", function(x, ...) .print.TM_During(x, ...))
+setMethod("print", "TM_Equals", function(x, ...) .print.TM_Equals(x, ...))
+setMethod("print", "OgcBBOX", function(x, ...) .print.OgcBBOX(x, ...))
+setMethod("print", "OgcContains", function(x, ...) .print.OgcContains(x, ...))
+setMethod("print", "OgcIntersects", function(x, ...) .print.OgcIntersects(x, ...))
+setMethod("print", "OgcOverlaps", function(x, ...) .print.OgcOverlaps(x, ...))
 
+################################################################################
+# TO STRING FUNCTIONS
+setMethod("toString", "OwsServiceOperation", function(x, ...) .toString.OwsServiceOperation(x, ...))
+setMethod("toString", "OwsGetCapabilities", function(x, ...) .toString.OwsGetCapabilities(x, ...))
+setMethod("toString", "OwsGetCapabilities_1.1.0", function(x, ...) .toString.OwsGetCapabilities(x, ...))
+setMethod("toString", "OwsGetCapabilities_2.0.0", function(x, ...) .toString.OwsGetCapabilities(x, ...))
+setMethod("toString", "OwsOperationsMetadata", function(x, ...) .toString.OwsOperationsMetadata(x, ...))
+setMethod("toString", "OwsOperation", function(x, ...) .toString.OwsOperation(x, ...))
+setMethod("toString", "OwsServiceIdentification", function(x, ...) .toString.OwsServiceIdentification(x, ...))
+setMethod("toString", "OwsServiceProvider", function(x, ...) .toString.OwsServiceProvider(x, ...))
+setMethod("toString", "OwsContents", function(x, ...) .toString.OwsContents(x, ...))
+setMethod("toString", "OwsCapabilities", function(x, ...) .toString.OwsCapabilities(x, ...))
+setMethod("toString", "OwsCapabilities_1.1.0", function(x, ...) .toString.OwsCapabilities(x, ...))
+setMethod("toString", "OwsCapabilities_2.0.0", function(x, ...) .toString.OwsCapabilities(x, ...))
+setMethod("toString", "OwsExceptionReport", function(x, ...) .toString.OwsExceptionReport(x, ...))
+setMethod("toString", "OwsException", function(x, ...) .toString.OwsException(x, ...))
+setMethod("toString", "OwsRange", function(x, ...) .toString.OwsRange(x, ...))
+setMethod("toString", "SOS", function(x, ...) .toString.SOS(x, ...))
+setMethod("toString", "SosFilter_Capabilities", function(x, ...) .toString.SosFilter_Capabilities(x, ...))
+setMethod("toString", "SosObservationOffering", function(x, ...) .toString.SosObservationOffering(x, ...))
+setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, ...))
+setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
+setMethod("toString", "SosFeatureOfInterest", function(x, ...) .toString.SosFeatureOfInterest(x, ...))
+setMethod("toString", "SensorML", function(x, ...) .toString.SensorML(x, ...))
+setMethod("toString", "GetObservation", function(x, ...) .toString.GetObservation(x, ...))
+setMethod("toString", "GetObservationById", function(x, ...) .toString.GetObservationById(x, ...))
+setMethod("toString", "DescribeSensor", function(x, ...) .toString.DescribeSensor(x, ...))
+setMethod("toString", "SaSamplingPoint", function(x, ...) .toString.SaSamplingPoint(x, ...))
+setMethod("toString", "SaSamplingSurface", function(x, ...) .toString.SaSamplingSurface(x, ...))
+setMethod("toString", "SwePhenomenon", function(x, ...) .toString.SwePhenomenon(x, ...))
+setMethod("toString", "SwePhenomenonProperty", function(x, ...) .toString.SwePhenomenonProperty(x, ...))
+setMethod("toString", "SweCompositePhenomenon", function(x, ...) .toString.SweCompositePhenomenon(x, ...))
+setMethod("toString", "SweTextBlock", function(x, ...) .toString.SweTextBlock(x, ...))
+setMethod("toString", "OmObservation", function(x, ...) .toString.OmObservation(x, ...))
+setMethod("toString", "OmObservationProperty", function(x, ...) .toString.OmObservationProperty(x, ...))
+setMethod("toString", "OmMeasure", function(x, ...) .toString.OmMeasure(x, ...))
+setMethod("toString", "OmMeasurement", function(x, ...) .toString.OmMeasurement(x, ...))
+setMethod("toString", "GmlTimePosition", function(x, ...) .toString.GmlTimePosition(x, ...))
+setMethod("toString", "GmlTimeInstant", function(x, ...) .toString.GmlTimeInstant(x, ...))
+setMethod("toString", "GmlTimeInstantProperty", function(x, ...) .toString.GmlTimeInstantProperty(x, ...))
+setMethod("toString", "GmlTimeInterval", function(x, ...) .toString.GmlTimeInterval(x, ...))
+setMethod("toString", "GmlTimePeriod", function(x, ...) .toString.GmlTimePeriod(x, ...))
+setMethod("toString", "GmlFeatureProperty", function(x, ...) .toString.GmlFeatureProperty(x, ...))
+setMethod("toString", "GmlFeatureCollection", function(x, ...) .toString.GmlFeatureCollection(x, ...))
+setMethod("toString", "GmlDirectPosition", function(x, ...) .toString.GmlDirectPosition(x, ...))
+setMethod("toString", "GmlPoint", function(x, ...) .toString.GmlPoint(x, ...))
+setMethod("toString", "GmlPointProperty", function(x, ...) .toString.GmlPointProperty(x, ...))
+setMethod("toString", "GmlGeometry", function(x, ...) .toString.GmlGeometry(x, ...))
+setMethod("toString", "GmlEnvelope", function(x, ...) .toString.GmlEnvelope(x, ...))
+setMethod("toString", "TM_After", function(x, ...) .toString.TM_After(x, ...))
+setMethod("toString", "TM_Before", function(x, ...) .toString.TM_Before(x, ...))
+setMethod("toString", "TM_During", function(x, ...) .toString.TM_During(x, ...))
+setMethod("toString", "TM_Equals", function(x, ...) .toString.TM_Equals(x, ...))
+setMethod("toString", "OgcBBOX", function(x, ...) .toString.OgcBBOX(x, ...))
+setMethod("toString", "OgcContains", function(x, ...) .toString.OgcContains(x, ...))
+setMethod("toString", "OgcIntersects", function(x, ...) .toString.OgcIntersects(x, ...))
+setMethod("toString", "OgcOverlaps", function(x, ...) .toString.OgcOverlaps(x, ...))
 
 ################################################################################
 # SHOW FUNCTIONS
 #
 # TODO write actual shorter 'show' functions where appropriate.
 #
-setMethod("show", "OwsServiceOperation", function(object) print.OwsServiceOperation(object))
-setMethod("show", "OwsGetCapabilities", function(object) print.OwsGetCapabilities(object))
-setMethod("show", "OwsGetCapabilities_1.1.0", function(object) print.OwsGetCapabilities(object))
-setMethod("show", "OwsGetCapabilities_2.0.0", function(object) print.OwsGetCapabilities(object))
-setMethod("show", "OwsOperationsMetadata", function(object) print.OwsOperationsMetadata(object))
-setMethod("show", "OwsOperation", function(object) print.OwsOperation(object))
-setMethod("show", "OwsServiceIdentification", function(object) print.OwsServiceIdentification(object))
-setMethod("show", "OwsServiceProvider", function(object) print.OwsServiceProvider(object))
-setMethod("show", "OwsContents", function(object) print.OwsContents(object))
-setMethod("show", "OwsCapabilities", function(object) print.OwsCapabilities(object))
-setMethod("show", "OwsCapabilities_1.1.0", function(object) print.OwsCapabilities(object))
-setMethod("show", "OwsCapabilities_2.0.0", function(object) print.OwsCapabilities(object))
-setMethod("show", "OwsExceptionReport", function(object) print.OwsExceptionReport(object))
-setMethod("show", "OwsException", function(object) print.OwsException(object))
-setMethod("show", "OwsRange", function(object) print.OwsRange(object))
+setMethod("show", "OwsServiceOperation", function(object) .print.OwsServiceOperation(object))
+setMethod("show", "OwsGetCapabilities", function(object) .print.OwsGetCapabilities(object))
+setMethod("show", "OwsGetCapabilities_1.1.0", function(object) .print.OwsGetCapabilities(object))
+setMethod("show", "OwsGetCapabilities_2.0.0", function(object) .print.OwsGetCapabilities(object))
+setMethod("show", "OwsOperationsMetadata", function(object) .print.OwsOperationsMetadata(object))
+setMethod("show", "OwsOperation", function(object) .print.OwsOperation(object))
+setMethod("show", "OwsServiceIdentification", function(object) .print.OwsServiceIdentification(object))
+setMethod("show", "OwsServiceProvider", function(object) .print.OwsServiceProvider(object))
+setMethod("show", "OwsContents", function(object) .print.OwsContents(object))
+setMethod("show", "OwsCapabilities", function(object) .print.OwsCapabilities(object))
+setMethod("show", "OwsCapabilities_1.1.0", function(object) .print.OwsCapabilities(object))
+setMethod("show", "OwsCapabilities_2.0.0", function(object) .print.OwsCapabilities(object))
+setMethod("show", "OwsExceptionReport", function(object) .print.OwsExceptionReport(object))
+setMethod("show", "OwsException", function(object) .print.OwsException(object))
+setMethod("show", "OwsRange", function(object) .print.OwsRange(object))
 
-setMethod("show", "SOS", function(object) print.SOS(object))
-setMethod("show", "SosFilter_Capabilities", function(object) print.SosFilter_Capabilities(object))
-setMethod("show", "SosObservationOffering", function(object) print.SosObservationOffering(object))
-setMethod("show", "SosContents", function(object) print.SosContents(object))
-setMethod("show", "SosEventTime", function(object) print.SosEventTime(object))
-setMethod("show", "SosFeatureOfInterest", function(object) print.SosFeatureOfInterest(object))
-setMethod("show", "SensorML", function(object) print.SensorML(object))
-setMethod("show", "GetObservation", function(object) print.GetObservation(object))
-setMethod("show", "GetObservationById", function(object) print.GetObservationById(object))
-setMethod("show", "DescribeSensor", function(object) print.DescribeSensor(object))
+setMethod("show", "SOS", function(object) .print.SOS(object))
+setMethod("show", "SosFilter_Capabilities", function(object) .print.SosFilter_Capabilities(object))
+setMethod("show", "SosObservationOffering", function(object) .print.SosObservationOffering(object))
+setMethod("show", "SosContents", function(object) .print.SosContents(object))
+setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
+setMethod("show", "SosFeatureOfInterest", function(object) .print.SosFeatureOfInterest(object))
+setMethod("show", "SensorML", function(object) .print.SensorML(object))
+setMethod("show", "GetObservation", function(object) .print.GetObservation(object))
+setMethod("show", "GetObservationById", function(object) .print.GetObservationById(object))
+setMethod("show", "DescribeSensor", function(object) .print.DescribeSensor(object))
 
-setMethod("show", "SaSamplingPoint", function(object) print.SaSamplingPoint(object))
-setMethod("show", "SaSamplingSurface", function(object) print.SaSamplingSurface(object))
+setMethod("show", "SaSamplingPoint", function(object) .print.SaSamplingPoint(object))
+setMethod("show", "SaSamplingSurface", function(object) .print.SaSamplingSurface(object))
 
-setMethod("show", "SwePhenomenon", function(object) print.SwePhenomenon(object))
-setMethod("show", "SwePhenomenonProperty", function(object) print.SwePhenomenonProperty(object))
-setMethod("show", "SweCompositePhenomenon", function(object) print.SweCompositePhenomenon(object))
-setMethod("show", "SweTextBlock", function(object) print.SweTextBlock(object))
+setMethod("show", "SwePhenomenon", function(object) .print.SwePhenomenon(object))
+setMethod("show", "SwePhenomenonProperty", function(object) .print.SwePhenomenonProperty(object))
+setMethod("show", "SweCompositePhenomenon", function(object) .print.SweCompositePhenomenon(object))
+setMethod("show", "SweTextBlock", function(object) .print.SweTextBlock(object))
 
-setMethod("show", "OmObservation", function(object) print.OmObservation(object))
-setMethod("show", "OmObservationProperty", function(object) print.OmObservationProperty(object))
-setMethod("show", "OmMeasure", function(object) print.OmMeasure(object))
-setMethod("show", "OmMeasurement", function(object) print.OmMeasurement(object))
+setMethod("show", "OmObservation", function(object) .print.OmObservation(object))
+setMethod("show", "OmObservationProperty", function(object) .print.OmObservationProperty(object))
+setMethod("show", "OmMeasure", function(object) .print.OmMeasure(object))
+setMethod("show", "OmMeasurement", function(object) .print.OmMeasurement(object))
 
 # no show, print and toString fucntions for VIRTUAL classes
-setMethod("show", "GmlTimePosition", function(object) print.GmlTimePosition(object))
-setMethod("show", "GmlTimeInstant", function(object) print.GmlTimeInstant(object))
-setMethod("show", "GmlTimeInterval", function(object) print.GmlTimeInterval(object))
-setMethod("show", "GmlTimePeriod", function(object) print.GmlTimePeriod(object))
-setMethod("show", "GmlFeatureProperty", function(object) print.GmlFeatureProperty(object))
-setMethod("show", "GmlFeatureCollection", function(object) print.GmlFeatureCollection(object))
-setMethod("show", "GmlDirectPosition", function(object) print.GmlDirectPosition(object))
-setMethod("show", "GmlPoint", function(object) print.GmlPoint(object))
-setMethod("show", "GmlPointProperty", function(object) print.GmlPointProperty(object))
-setMethod("show", "GmlGeometry", function(object) print.GmlGeometry(object))
-setMethod("show", "GmlEnvelope", function(object) print.GmlEnvelope(object))
+setMethod("show", "GmlTimePosition", function(object) .print.GmlTimePosition(object))
+setMethod("show", "GmlTimeInstant", function(object) .print.GmlTimeInstant(object))
+setMethod("show", "GmlTimeInterval", function(object) .print.GmlTimeInterval(object))
+setMethod("show", "GmlTimePeriod", function(object) .print.GmlTimePeriod(object))
+setMethod("show", "GmlFeatureProperty", function(object) .print.GmlFeatureProperty(object))
+setMethod("show", "GmlFeatureCollection", function(object) .print.GmlFeatureCollection(object))
+setMethod("show", "GmlDirectPosition", function(object) .print.GmlDirectPosition(object))
+setMethod("show", "GmlPoint", function(object) .print.GmlPoint(object))
+setMethod("show", "GmlPointProperty", function(object) .print.GmlPointProperty(object))
+setMethod("show", "GmlGeometry", function(object) .print.GmlGeometry(object))
+setMethod("show", "GmlEnvelope", function(object) .print.GmlEnvelope(object))
 
-setMethod("show", "TM_After", function(object) print.TM_After(object))
-setMethod("show", "TM_Before", function(object) print.TM_Before(object))
-setMethod("show", "TM_During", function(object) print.TM_During(object))
-setMethod("show", "TM_Equals", function(object) print.TM_Equals(object))
-setMethod("show", "OgcBBOX", function(object) print.OgcBBOX(object))
-setMethod("show", "OgcContains", function(object) print.OgcContains(object))
-setMethod("show", "OgcIntersects", function(object) print.OgcIntersects(object))
-setMethod("show", "OgcOverlaps", function(object) print.OgcOverlaps(object))
+setMethod("show", "TM_After", function(object) .print.TM_After(object))
+setMethod("show", "TM_Before", function(object) .print.TM_Before(object))
+setMethod("show", "TM_During", function(object) .print.TM_During(object))
+setMethod("show", "TM_Equals", function(object) .print.TM_Equals(object))
+setMethod("show", "OgcBBOX", function(object) .print.OgcBBOX(object))
+setMethod("show", "OgcContains", function(object) .print.OgcContains(object))
+setMethod("show", "OgcIntersects", function(object) .print.OgcIntersects(object))
+setMethod("show", "OgcOverlaps", function(object) .print.OgcOverlaps(object))
 
 ################################################################################
 # SUMMARY FUNCTIONS

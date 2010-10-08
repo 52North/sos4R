@@ -119,9 +119,9 @@ if (!isGeneric("encodeRequestSOAP"))
 #
 #
 #
-if (!isGeneric("owsMeaningOfCode"))
-	setGeneric(name = "owsMeaningOfCode", def = function(exceptionCode) {
-				standardGeneric("owsMeaningOfCode")
+if (!isGeneric("sosExceptionCodeMeaning"))
+	setGeneric(name = "sosExceptionCodeMeaning", def = function(exceptionCode) {
+				standardGeneric("sosExceptionCodeMeaning")
 			})
 
 #

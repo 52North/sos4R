@@ -227,9 +227,9 @@ setMethod(f = "checkRequest",
 #
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
 		def = function(obj, sos, verbose = FALSE) {
-			sosEncodeRequestKVPGetCapabilities(obj, verbose)
+			.sosEncodeRequestKVPGetCapabilities(obj, verbose)
 		})
-sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
+.sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
 	.service <- paste(
 			"service",
 			.kvpEscapeSpecialCharacters(x = obj@service),
@@ -249,10 +249,10 @@ sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
 
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_1.1.0",
 		function(obj, sos, verbose = FALSE) {
-			sosEncodeRequestKVPGetCapabilities_1.1.0(obj, verbose)
+			.sosEncodeRequestKVPGetCapabilities_1.1.0(obj, verbose)
 		})
-sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
-	.mandatory <- sosEncodeRequestKVPGetCapabilities(obj, verbose)
+.sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
+	.mandatory <- .sosEncodeRequestKVPGetCapabilities(obj, verbose)
 	
 	.optionals = ""
 	if( !is.na(obj@acceptVersions)) {
@@ -281,10 +281,10 @@ sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
 
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
 		function(obj, sos, verbose = FALSE) {
-			sosEncodeRequestKVPGetCapabilities_2.0.0(obj, verbose)
+			.sosEncodeRequestKVPGetCapabilities_2.0.0(obj, verbose)
 		})
-sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
-	.kvpString <- sosEncodeRequestKVPGetCapabilities_1.1.0(obj)
+.sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
+	.kvpString <- .sosEncodeRequestKVPGetCapabilities_1.1.0(obj)
 	
 	if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
 		.kvpString <- paste(.kvpString, .kvpKeyAndValues("acceptLanguages", obj@acceptLanguages), sep = "&")
@@ -306,17 +306,17 @@ setMethod("encodeRequestXML", "OwsGetCapabilities",
 			}
 			
 			if(obj@version == "1.1.0") {
-				return(sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
+				return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
 			}
 			else if(obj@version == "2.0.0") {
-				return(sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
+				return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
 			}
 			else {
 				stop("Version not supported!")
 			}
 		}
 )
-sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
+.sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName, namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
 					.sosNamespaceDefinitionsGetCap),
@@ -353,7 +353,7 @@ sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	
 	return(.xmlDoc)
 }
-sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
+.sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
@@ -411,19 +411,4 @@ setMethod("encodeRequestSOAP", "OwsGetCapabilities",
 			
 			stop("Function not implemented yet...")
 		}
-)
-
-
-################################################################################
-# Helper functions for OWS exceptions, e.g. to get the meaning of an exception
-# code.
-#
-setMethod(f = "owsMeaningOfCode", signature = c(exceptionCode = "character"),
-	def = function(exceptionCode) {
-		.meaning <- as.character(
-				.owsStandardExceptions[
-						.owsStandardExceptions$exceptionCode==exceptionCode,
-						2])
-		return(.meaning)
-	}
 )

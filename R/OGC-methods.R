@@ -230,16 +230,6 @@ setMethod(f = "encodeXML",
 		}
 )
 
-setMethod(f = "encodeXML",
-		signature = signature(obj = "OgcComparisonOps", sos = "SOS"),
-		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML OgcComparisonOps with",
-						toString(obj@time), "\n")
-			warning("Encoding of OgcComparisonOps not implemented yet! Returning obj as is...")
-			return(obj)
-		}
-)
-
 #
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #

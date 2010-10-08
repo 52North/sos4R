@@ -1,12 +1,11 @@
 %
-% File builds upon sp.Rnw - Thanks go to Edzer J. Pebesma!
-%
 % http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes
 % (Code chunks with option eval=FALSE are not tested.)
+%
 
 \documentclass{article}
 
-% \VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
+%\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
 
 \usepackage{graphicx}
 \usepackage[colorlinks=true,urlcolor=blue]{hyperref}
@@ -17,14 +16,12 @@
 \newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \let\pkg=\strong
 
-\title{Accessing Data from Sensor Observation Services:\\ the {\tt sos4R} Package }
-\author{Daniel Nüst \footnote{Institute for Geoinformatics,
-University of Muenster, Weseler Strasse 253, 48151 M\"{u}nster, Germany.
-{\tt daniel.nuest@uni-muenster.de}}
+\begin{document}
+
+\title{Accessing Data from Sensor Observation Services:\\ the {\tt sos4R} Package}
+\author{Daniel N\"{u}st\footnote{Institute for Geoinformatics, University of M\"{u}nster, Germany.}\\ {\tt daniel.nuest@uni-muenster.de}}
 
 \date{Sep 2010}
-
-\begin{document}
 
 \maketitle
 \tableofcontents
@@ -68,9 +65,11 @@ Package {\tt sos4R} is loaded by
 
 \subsection{OGC and Specifications}
 
-TODO: Shortly mention and link to O&M, OWS Common, Sampling, Filtering, SensorML ...
+TODO: Shortly mention and link to O and M, OWS Common, Sampling, Filtering, SensorML ...
 
 TODO: Round-up of SOS specification
+
+TODO: Copy terms example from annex B of O and M to the vignette for explanation
 
 \section{SOS Requests}
 
@@ -84,29 +83,6 @@ TODO: Round-up of SOS specification
 
 
 \subsection{GetObservationById}
-
-%\begin{center}
-%\begin{tabular}{lllll}
-%data type & class                        & attributes  & contains \\ \hline
-%points    & {\tt SpatialPoints}          & No           &{\tt Spatial}* \\
-%points    & {\tt SpatialPointsDataFrame} & {\tt data.frame} &{\tt SpatialPoints}* \\
-%pixels    & {\tt SpatialPixels}          & No           &{\tt SpatialPoints}* \\
-%pixels    & {\tt SpatialPixelsDataFrame} & {\tt data.frame} &{\tt SpatialPixels}* \\
-%          &                              &              &{\tt SpatialPointsDataFrame}** \\
-%full grid & {\tt SpatialGrid  }          & No           &{\tt SpatialPixels}* \\
-%full grid & {\tt SpatialGridDataFrame}   & {\tt data.frame}  &{\tt SpatialGrid}* \\
-%line      & {\tt Line}                   & No           & \\
-%lines     & {\tt Lines}                  & No           & {\tt Line} list \\
-%lines     & {\tt SpatialLines}           & No           & {\tt Spatial}*, {\tt Lines} list \\
-%lines     & {\tt SpatialLinesDataFrame}  & {\tt data.frame} &{\tt SpatialLines}* \\
-%rings     & {\tt Polygon}                & No           &{\tt Line}* \\
-%rings     & {\tt Polygons}               & No           &{\tt Polygon} list \\
-%rings     & {\tt SpatialPolygons}        & No           &{\tt Spatial}*, {\tt Polygons} list \\
-%rings     & {\tt SpatialPolygonsDataFrame} & {\tt data.frame} &{\tt SpatialPolygons}* \\
-%\end{tabular}
-%\end{center}
-%* by direct extension; ** by setIs() relationship; 
-
 
 \section{Creating a SOS connection}
 
@@ -161,22 +137,6 @@ TODO: explain approach, mention available non-exchangeable functions in the subs
 TODO: Explain what part of the exception report means what, link to OWS Common
 
 
-%Note that {\tt Sr4} has the opposite direction (anti-clockwise) as the other three (clockwise);
-%it is meant to represent a hole in the {\tt Sr3} polygon. The default value for the hole colour {\tt pbg} is {\tt "transparent}, which will not show, but which often does not matter, because another polygon fills the hole --- here it is set to {\tt "white"}. Note that the {\tt Polygons} objects have to be given character ID values, and that these values must be unique for {\tt Polygons} objects combined in a {\tt SpatialPolygons} object.
-%<<fig=TRUE>>=
-%Sr1 = Polygon(cbind(c(2,4,4,1,2),c(2,3,5,4,2)))
-%Sr2 = Polygon(cbind(c(5,4,2,5),c(2,3,2,2)))
-%Sr3 = Polygon(cbind(c(4,4,5,10,4),c(5,3,2,5,5)))
-%Sr4 = Polygon(cbind(c(5,6,6,5,5),c(4,4,3,3,4)), hole = TRUE)
-%
-%Srs1 = Polygons(list(Sr1), "s1")
-%Srs2 = Polygons(list(Sr2), "s2")
-%Srs3 = Polygons(list(Sr3, Sr4), "s3/4")
-%SpP = SpatialPolygons(list(Srs1,Srs2,Srs3), 1:3)
-%plot(SpP, col = 1:3, pbg="white")
-%# plot(SpP)
-%@
-
 \section{Developing sos4R}
 
 explain 52 North
@@ -184,6 +144,10 @@ explain 52 North
 svn code repository
 
 shortly describe the class structure, .R file naming scheme, ...
+
+link to wiki developer page
+
+link to developer blog
 
 \section*{References}
 \begin{description}

@@ -409,12 +409,12 @@ eventTime1 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_D
 eventTime2 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_Equals"]], t = t1)
 eventTime3 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_After"]], t = t1)
 eventTime4 <- sosCreateEventTimeList(op = SosSupportedTemporalOperators()[["TM_Before"]], t = t1)
-encodeXML(eventTime3, sos = weathersos, v = TRUE)
-encodeXML(eventTime4, sos = weathersos)
-encodeXML(eventTime2, sos = weathersos)
-encodeXML(eventTime1, sos = weathersos, v = TRUE)
-encodeKVP(eventTime1, sos = weathersos)
-encodeKVP(eventTime2, sos = weathersos)
+encodeXML(eventTime3[[1]], sos = weathersos, v = TRUE)
+encodeXML(eventTime4[[1]], sos = weathersos)
+encodeXML(eventTime2[[1]], sos = weathersos)
+encodeXML(eventTime1[[1]], sos = weathersos, v = TRUE)
+encodeKVP(eventTime1[[1]], sos = weathersos)
+encodeKVP(eventTime2[[1]], sos = weathersos)
 # works!
 
 ################################################################################
@@ -445,7 +445,7 @@ foiBBox2 <- sosCreateFeatureOfInterest(
 				srsDimension = as.integer(2), axisLabels = "lat,lon",
 				uomLabels = "deg,deg",
 				propertyName = "lalaUndPooh"))
-encodeXML(foiBBox2)
+encodeXML(foiBBox2, weathersos)
 # ok!
 
 ################################################################################
@@ -608,8 +608,6 @@ df.values1 <- as.data.frame(values1); names(df.values1) <- "values"
 
 data.frame(times1, values1)
 plot(x = times1, y = values1)
-
-# TODO continue here with extraction of data...
 
 # two observedPropertys is not possible with weathersos, as the offerings contain only one phenomenon each
 

@@ -56,7 +56,7 @@ wasserstand_roh <- sosOfferings(pegelsos)[[2]]
 tPeriod <- sosCreateEventTimeList(
 	time = sosCreateTimePeriod(
 		sos = pegelsos,
-		begin = Sys.time() - (3600 * 24 * 30),
+		begin = Sys.time() - (3600 * 6), # 24 * 30),
 		end = Sys.time()))
 str(tPeriod)
 encodeXML(tPeriod[[1]], pegelsos)
@@ -66,7 +66,7 @@ pegelObs <- getObservation(sos = pegelsos,
 		observedProperty = wasserstand,
 		offering = wasserstand_roh,
 		procedure = baken[c(7, 9, 11)],
-		eventTime = tPeriod)
+		eventTime = tPeriod, inspect = TRUE)
 
 # show parts of the data frame:
 pegelObs[[1]]@result[1:2,]
