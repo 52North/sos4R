@@ -268,14 +268,14 @@
 	.s <- paste("Object of class SosObservationOffering; ",
 			"id: ", x@id, ", name: ", x@name,
 			"\n\ttime: ", .addTabIndent(toString(x@time)),
-			"\n\tprocedure(s): ", paste(x@procedure),
-			"\n\tobservedProperty(s): ", paste(x@observedProperty),
-			"\n\tfeature(s)OfInterest: ", paste(x@featureOfInterest),
-			"\n\tresponseFormat(s): ", paste(x@responseFormat),
-			", responseMode(s): ", paste(x@responseMode),
-			"\n\tintendedApplication: ", paste(x@intendedApplication),
-			"\n\tresultModel(s): ", paste(x@resultModel),
-			 "\n\tboundedBy: ", paste(x@boundedBy))
+			"\n\tprocedure(s): ", toString(paste(x@procedure)),
+			"\n\tobservedProperty(s): ", toString(paste(x@observedProperty)),
+			"\n\tfeature(s)OfInterest: ", toString(paste(x@featureOfInterest)),
+			"\n\tresponseFormat(s): ",  toString(paste(x@responseFormat)),
+			", responseMode(s): ",  toString(paste(x@responseMode)),
+			"\n\tintendedApplication: ", toString(x@intendedApplication),
+			"\n\tresultModel(s): ",  toString(paste(x@resultModel)),
+			 "\n\tboundedBy: ",  toString(paste(x@boundedBy)))
 	return(.s)
 }
 
@@ -286,7 +286,7 @@
 
 .toString.SosContents <- function(x, ...) {
 	.s <- paste("Object of class SosContents with observation offerings (names): ",
-			paste(names(x@observationOfferings)))
+			toString(paste(names(x@observationOfferings))))
 	return(.s)
 }
 
@@ -356,10 +356,10 @@
 			"\nresponseFormat(s): ",
 			x@responseFormat,
 			", responseMode(s): ",
-			paste(x@responseMode),
+			toString(paste(x@responseMode)),
 			# optionals:
 			"\nprocedure(s)",
-			paste(x@procedure),
+			toString(paste(x@procedure)),
 			"\n\tfeature(s) of interest",
 			toString(x@featureOfInterest),
 			"\n\tevent time: ",
@@ -389,7 +389,7 @@
 			"\nResponseFormat(s): ",
 			x@responseFormat,
 			", responseMode(s): ",
-			paste(x@responseMode),
+			toString(paste(x@responseMode)),
 			# optionals:
 			", srsName: ",
 			x@srsName,

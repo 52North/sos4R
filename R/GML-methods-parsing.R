@@ -67,9 +67,10 @@ parsePoint <- function(obj) {
 	.uomLabels <- xmlGetAttr(node = .pos, name = "uomLabels",
 			default = NA_character_)
 	
-	.point <- GmlDirectPosition(pos = .posString, srsName = .srsName,
+	.pos <- GmlDirectPosition(pos = .posString, srsName = .srsName,
 			srsDimension = .srsDimension, axisLabels = .axisLabels,
 			uomLabels = .uomLabels)
+	.point <- GmlPoint(pos = .pos)	
 	
 	return(.point)
 }
