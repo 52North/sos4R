@@ -48,15 +48,15 @@ baken
 # Bake_Z
 # http://www.pegelonline.wsv.de/gast/stammdaten?pegelnr=9510066
 
-# what?
-wasserstand <- sosObservedProperties(pegelsos)[3]
-wasserstand_roh <- sosOfferings(pegelsos)[[2]]
+# what? PROBLEM: order of result list is not alswas the same!
+wasserstand <- sosObservedProperties(pegelsos)[1] # Wasserstand
+wasserstand_roh <- sosOfferings(pegelsos)[[1]] # WASSERSTAND_ROHDATEN
 
 # when?
 tPeriod <- sosCreateEventTimeList(
 	time = sosCreateTimePeriod(
 		sos = pegelsos,
-		begin = Sys.time() - (3600 * 24 * 60),
+		begin = Sys.time() - (3600 * 24), # * 60),
 		end = Sys.time()))
 str(tPeriod)
 encodeXML(tPeriod[[1]], pegelsos)
@@ -65,7 +65,7 @@ encodeXML(tPeriod[[1]], pegelsos)
 pegelObs <- getObservation(sos = pegelsos,
 		observedProperty = wasserstand,
 		offering = wasserstand_roh,
-		procedure = baken[c(7)], #, 9, 11)],
+		procedure = baken[c(7, 9, 11)],
 		eventTime = tPeriod, inspect = TRUE)
 
 # show parts of the data frame:
@@ -122,7 +122,7 @@ paste(sosObservedProperties(MBARI))
 myOff <- sosOfferings(MBARI)[[1]]
 myProc <- sosProcedures(MBARI)[3]
 
-mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc, inspect = TRUE)
 # responseFormat must be text/xml;subtype="sensorML/1.0.1"
 #mbariObs <- getObservation(sos = MBARI, offering = sosOfferings(MBARI)[[1]],
 #	procedure = sosProcedures(MBARI)[3],

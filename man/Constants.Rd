@@ -89,6 +89,7 @@
 \alias{omFeatureOfInterestName}
 \alias{omProcedureName}
 \alias{omObservedPropertyName}
+\alias{omResultTimeName}
 \alias{omSamplingTimeName}
 \alias{omResultName}
 \alias{omCategoryObservationName}
@@ -191,7 +192,7 @@
 \alias{ogcTempOpTMOverlappedBy}
 \alias{owsNamespacePrefix}
   
-\title{Constants in \pkg{sos4R}}
+\title{Constants in sos4R}
 
 \description{
 The package \pkg{sos4R} comes with a set of constant character strings and fixed supported features, for example for names of XML elements, XML Namespace prefixes, or supported formats and models.}

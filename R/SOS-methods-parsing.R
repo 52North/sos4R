@@ -44,14 +44,19 @@ parseSosObservationOffering <- function(obj, sos) {
 	
 	.responseFormat <- lapply(obj[sosResponseFormatName], xmlValue)
 	.resultModel <- lapply(obj[sosResultModelName], xmlValue)
-	.responseMode <- lapply(obj[sosResponseFormatName], xmlValue)
+	.responseMode <- lapply(obj[sosResponseModeName], xmlValue)
 	
 	.env <- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
-	.boundedBy <- list(
-			srsName = xmlGetAttr(.env, "srsName"),
-			lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
-			upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
-	
+	if(!is.null(.env)) {
+		.boundedBy <- list(
+				srsName = xmlGetAttr(.env, "srsName"),
+				lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
+				upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+	}
+	else {
+		.boundedBy <- list()
+	}
+
 	.intendedApplication <- lapply(obj[sosIntendedApplicationName], xmlValue)
 	
 	.ob <- SosObservationOffering(id = .id, name = .name, 
@@ -73,8 +78,8 @@ parseSosCapabilities <- function(obj, sos) {
 	.caps.root <- xmlRoot(obj)
 	
 	# attributes:
-	.caps.attrs <- xmlAttrs(.caps.root)
-	.caps.version <- .caps.attrs[["version"]]
+	.caps.version <- xmlGetAttr(node = .caps.root, name = "version",
+			default = NA_character_)
 	.caps.updateSequence <- xmlGetAttr(node = .caps.root,
 			name = "updateSequence", default = NA_character_)
 	

@@ -44,9 +44,9 @@ print(object.size(pegelsos), units = c("Mb"))
 
 latestObs <- getObservation(sos = pegelsos,
 		observedProperty = sosObservedProperties(pegelsos),
-		offering = sosOfferings(pegelsos)[[2]],
+		offering = sosOfferings(pegelsos)[[1]],
 		procedure = sosProcedures(pegelsos)[11],
-		latest = TRUE) #, inspect = TRUE, verbose = TRUE)
+		latest = TRUE, inspect = TRUE) #, verbose = TRUE)
 sosResult(latestObs)
 
 
@@ -54,12 +54,12 @@ sosResult(latestObs)
 pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 pegelObs <- getObservation(sos = pegelsos,
 		observedProperty = sosObservedProperties(pegelsos)[3],
-		offering = sosOfferings(pegelsos)[[2]],
-		procedure = sosProcedures(pegelsos)[c(2503)], #[c(2501,2503,2505)],
+		offering = sosOfferings(pegelsos)[[1]],
+		procedure = sosProcedures(pegelsos)[c(2501,2503,2505)],
 		eventTime = sosCreateEventTimeList(time = sosCreateTimePeriod(
 						sos = pegelsos,
 						begin = Sys.time() - (3600 * 24), # * 360),
-						end = Sys.time())), verbose = TRUE)
+						end = Sys.time()))) #, inspect = TRUE)
 # Finished getObservation to http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos - received 2 observation(s)/measurement(s) having 1372 1372 elements.
 # YEAH!
 
@@ -223,9 +223,6 @@ dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos")
 hutchins <- SOS("http://150.229.66.73/HutchinsSOS/sos")
 elliotwsn <- SOS("http://150.229.66.73/ElliotWSNSOS/sos")
 
-################################################################################
-# some french sos, 52N, but just one week of data....
-sandre <- SOS("http://services.sandre.eaufrance.fr/52nSOSv3/sos")
 
 ################################################################################
 # OCEAN STUFF, a lot of interesting data!
@@ -236,3 +233,19 @@ oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py")
 ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos ")
 sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
 		
+
+################################################################################
+# some french sos, 52N, but just one week of data....
+sandre <- SOS("http://services.sandre.eaufrance.fr/52nSOSv3/sos")
+
+
+################################################################################
+# Sensor Observation Service for ADES database : French GroundWater level
+#
+ades <- SOS("http://sosades.brgm.fr/REST/sos", method = "GET")
+print(object.size(ades), units=c("Mb"))
+# 6.8 Mb, large capabilities file!
+
+testObsAdes <- getObservation(sos = ades, offering = sosOfferings(ades)[[1]],
+		procedure = sosProcedures(sosOfferings(ades)[[1]])[1], verbose =TRUE) # inspect = TRUE)
+# works!

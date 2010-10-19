@@ -71,9 +71,9 @@ sosCreateTimePeriod(sos, begin, end, frame = as.character(NA), calendarEraName =
 
 \section{Methods}{
 \describe{
-	\item{\code{signature(time = "GmlTimeGeometricPrimitive")}}{ ~~describe this method here }
-	\item{\code{signature(sos = "SOS", time = "POSIXt")}}{ ~~describe this method here }
-	\item{\code{signature(sos = "SOS", begin = "POSIXt", end = "POSIXt")}}{ ~~describe this method here }
+	\item{\code{signature(time = "GmlTimeGeometricPrimitive")}}{Create sos:time based on the given \code{GmlTimeGeometricPrimitive}.}
+	\item{\code{signature(sos = "SOS", time = "POSIXt")}}{Create sos:time with time instant based on the given time.}
+	\item{\code{signature(sos = "SOS", begin = "POSIXt", end = "POSIXt")}}{Create sos:time with time interval based on the given begin and end times.}
 }
 
 }

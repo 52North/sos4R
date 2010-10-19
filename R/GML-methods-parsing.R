@@ -126,8 +126,6 @@ parseTimeInstantProperty <- function(obj, format) {
 # 
 #
 parseTimePosition <- function(obj, format) {
-	.attrs <- xmlAttrs(obj)
-	
 	.time <- strptime(xmlValue(obj), format)
 	
 	# optional:
@@ -235,7 +233,6 @@ parseFeatureCollection <- function(obj) {
 		return(NULL)
 	}
 }
-
 .parseFeatureMember <- function(obj) {
 	.noneTexts <- .filterXmlOnlyNoneTexts(obj)
 	.member <- .noneTexts[[1]]
@@ -253,5 +250,15 @@ parseFeatureCollection <- function(obj) {
 		warning("No handling for given gml:featureMember available, only sa:SamplingPoint is supported!")
 	}
 	return(.member.parsed)
+}
+
+#
+#
+#
+parseMeasure <- function(obj) {
+	.value <- as.numeric(xmlValue(obj))
+	.uom <- xmlGetAttr(node = obj, name = "uom", default = NA_character_)
+	.result <- GmlMeasure(.value, .uom)
+	return(.result)
 }
 

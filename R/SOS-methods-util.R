@@ -229,12 +229,12 @@ setMethod(f = "sosMethod", signature = signature(sos = "SOS"),
 		})
 
 if (!isGeneric("sosProcedures"))
-	setGeneric(name = "sosProcedures", def = function(sos) {
+	setGeneric(name = "sosProcedures", def = function(obj) {
 				standardGeneric("sosProcedures")
 			})
-setMethod(f = "sosProcedures", signature = signature(sos = "SOS"),
-		def = function(sos) {
-			.caps <- sosCaps(sos)
+setMethod(f = "sosProcedures", signature = signature(obj = "SOS"),
+		def = function(obj) {
+			.caps <- sosCaps(obj)
 			.go <- .caps@operations@operations[[sosGetObservationName]]
 			.p <- .go@parameters$procedure
 			if(is.null(.p)) {				
@@ -247,6 +247,11 @@ setMethod(f = "sosProcedures", signature = signature(sos = "SOS"),
 			}
 				
 			return(.p)
+		})
+setMethod(f = "sosProcedures",
+		signature = signature(obj = "SosObservationOffering"),
+		def = function(obj) {
+			return(obj@procedure)
 		})
 
 if (!isGeneric("sosObservedProperties"))
@@ -413,10 +418,13 @@ setMethod(f = "sosResult", signature = signature(obj = "OmObservationProperty"),
 				return(obj@obs)
 			else return(NA)
 		})
-setMethod(f = "sosResult", signature = signature(obj = "list"),
+setMethod(f = "sosResult", signature = signature(obj = "OmObservationCollection"),
 		def = function(obj) {
-			.l <- lapply(obj, sosResult)
-			return(.l)
+			.l <- lapply(obj@members, sosResult)
+			# if list has only one element, return that
+			if(is.list(.l) && length(.l) == 1)
+				return(.l[[1]])
+			else return(.l)
 		})
 
 ################################################################################

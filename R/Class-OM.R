@@ -28,6 +28,20 @@
 ################################################################################
 
 #
+#
+#
+setClass("OmObservationCollection",
+		representation(members = "list"),
+		prototype = list(members = list()),
+		validity = function(object) {
+			#print("Entering validation: OmObservationCollection")
+			# TODO implement validity function
+			# members must be OmObservation or OmMeasurement
+			return(TRUE)
+		}
+)
+
+#
 # The layer for swe:TimeObjectProperty for om:resultTime and om:samplingTime is
 # removed in this class, as is om:featureOfInterest where gml:_Feature is used.
 #
@@ -36,7 +50,7 @@ setClass("OmObservation",
 				samplingTime = "GmlTimeObjectOrNULL",	
 				procedure = "ANY",
 				observedProperty = "SwePhenomenonProperty",
-				featureOfInterest = "GmlFeatureOrGmlFeatureProperty",
+				featureOfInterest = "GmlFeatureOrGmlFeaturePropertyOrNULL",
 				result = "ANY",
 				# optional:
 				metadata = "ANY",
@@ -74,23 +88,8 @@ setClass("OmObservationProperty",
 #
 #
 #
-setClass("OmMeasure",
-		representation(value = "numeric",
-				uom = "character"),
-		prototype = list(value = as.numeric(NA), uom = as.character(NA)),
-		validity = function(object) {
-			#print("Entering validation: OmMeasure")
-			# TODO implement validity function
-			# both parameters are required!
-			return(TRUE)
-		}
-)
-
-#
-#
-#
 setClass("OmMeasurement",
-		representation(result = "OmMeasure"),
+		representation(result = "GmlMeasure"),
 		contains = "OmObservation",
 		validity = function(object) {
 			#print("Entering validation: OmMeasurement")

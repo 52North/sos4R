@@ -80,6 +80,12 @@
 \alias{GmlTimePeriod}
 \alias{GmlTimePosition}
 
+\alias{GmlMeasure-class}
+\alias{print,GmlMeasure-method}
+\alias{toString,GmlMeasure-method}
+\alias{GmlMeasure}
+\alias{show,GmlMeasure-method}
+
 \title{Classes and Construction Functions from the GML Namespace}
 
 \description{
@@ -103,6 +109,7 @@ GmlTimeInstantProperty(href = as.character(NA), time = NULL)
 GmlTimeInterval(interval, unit, radix = NA, factor = NA)
 GmlTimePeriod(begin = NULL, beginPosition = NULL, end = NULL, endPosition = NULL, duration = as.character(NA), timeInterval = NULL, id = as.character(NA), relatedTimes = list(NA), frame = as.character(NA))
 GmlTimePosition(time, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA))
+GmlMeasure(value, uom)
 }
 
 \section{Extends}{
@@ -189,7 +196,9 @@ No objects may be created from the following virtual classes: \code{GmlFeature},
     \item{\code{timePosition}:}{Object of class \code{"GmlTimePosition"}: An object of class \code{GmlTimePosition-class} in a \code{GmlTimeInstant-class}.}
     \item{\code{unit}:}{Object of class \code{"character"}: Unit parameter for a \code{GmlTimeInterval-class}.}
     \item{\code{uomLabels}:}{Object of class \code{"character"}: Unit of measurement labels as an ordered character vector for the axes in a bounding box, e.g. \samp{"deg"}.}
-    \item{\code{upperCorner}:}{Object of class \code{"GmlDirectPosition"}: Object of class \code{GmlDirectPosition-class}, the upper (right) corner of an \code{GmlEnvelope-class}.}
+    \item{\code{upperCorner}:}{Object of class \code{"GmlDirectPosition"}: Object of class \code{GmlDirectPosition-class}, the upper (right) corner of an \code{GmlEnvelope-class}.}\item{\code{uom}:}{Object of class \code{"character"}: The unit of measurement in a \code{OmMeasure} object.}
+    \item{\code{uom}:}{Object of class \code{"character"}: The unit of measurement in a \code{GmlMeasure} object.}
+    \item{\code{value}:}{Object of class \code{"numeric"}: The actual value in a \code{GmlMeasure} object.}
   }
 }
 
@@ -230,6 +239,8 @@ No objects may be created from the following virtual classes: \code{GmlFeature},
   \item{unit}{See corresponding slot description.}
   \item{uomLabels}{See corresponding slot description.}
   \item{upperCorner}{See corresponding slot description.}
+  \item{value}{See slot description.}
+  \item{uom}{See slot description.}
 }
 
 \value{The construction functions return an object of the respective class.}

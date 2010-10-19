@@ -34,12 +34,12 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		parsers = SosParsingFunctions(),
 		encoders = SosEncodingFunctions(),
 		dataFieldConverters = SosFieldConvertingFunctions(),
-		curlOpts = list(),
+		curlOptions = list(),
 		curlHandle = getCurlHandle(),
 		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE) {
 	if(method == .sosConnectionMethodPost)
 		.curlOpts <- curlOptions(url = url)
-	else .curlOpts <- curlOpts
+	else .curlOpts <- curlOptions
 	
 	.sos <- new("SOS",
 			url = url,
@@ -131,86 +131,79 @@ SosFeatureOfInterest <- function(objectIDs = list(NA), spatialOps = NULL) {
 #
 # main request method
 #
+.sosRequest <- function(sos, request, verbose = FALSE, inspect = FALSE) {
+	# check the request for consistency with service description
+	.checkResult <- checkRequest(service = sos, operation = request,
+			verbose = verbose)
+	if(!.checkResult) {
+		warning("Check returned FALSE! Turn on verbose option for possible details.",
+				immediate. = TRUE)
+	}
+	
+	.response = ""
+	
+	# get encoding function for the respective method
+	.encodingFunction <- sos@encoders[[sos@method]]
+	if(verbose) {
+		.f <- functionBody(.encodingFunction)
+		cat("*** ENCODING FUNCTION (beginning of function body): ",
+				substring(text = .f, first = 0, last = 60), " ... [",
+				max((length(.f) - 60), 0), " more chrs].\n")
+	}
+	
+	# encode!
+	.encodedRequest = .encodingFunction(obj = request, sos = sos,
+			verbose = verbose)
+	
+	if(sos@method == .sosConnectionMethodGet) {
+		.url = paste(sos@url, .encodedRequest, sep = "?")
+		if(verbose || inspect) {
+			cat("*** GET! REQUEST: ", .url, "\n")
+		}
+		
+		.response = getURL(url = .url, .opts = sos@curlOptions,
+				curl = sos@curlHandle,
+				.encoding = sosDefaultCharacterEncoding)
+	}
+	else if(sos@method == .sosConnectionMethodPost) {
+		if(verbose || inspect) {
+			cat("*** POST! REQUEST:\n")
+			print(.encodedRequest)
+		}
+		
+		# using 'POST' for application/x-www-form-urlencoded content
+		.response <- postForm(uri = sos@url,
+				request = toString(.encodedRequest),
+				style = "POST", .opts = sos@curlOptions,
+				curl = sos@curlHandle,
+				.encoding = sosDefaultCharacterEncoding)
+	}
+	else if(sos@method == .sosConnectionMethodSOAP) {
+		if(verbose || inspect) {
+			print("SOAP! REQUEST:\n")
+			print(.encodedRequest)
+		}
+		
+		# TODO SOAP request method
+		
+	}
+	else {
+		stop(paste("Unsupported method, has to be one",
+						SosSupportedConnectionMethods()))
+	}
+	
+	if(regexpr("<!DOCTYPE HTML", .response) > 0) {
+		cat(.response, "\n")
+		stop("*** ERROR: Got HTML response!")
+	}
+	
+	return(.response)
+}
+
 setMethod(f = "sosRequest",
 		signature = signature(sos = "SOS", request = "OwsServiceOperation",
 				verbose = "logical", inspect = "logical"),
-		def = function(sos, request, verbose = FALSE, inspect = FALSE) {
-			# check the request for consistency with service description
-			.checkResult <- checkRequest(service = sos, operation = request,
-					verbose = verbose)
-			if(!.checkResult) {
-				warning("Check returned FALSE! Turn on verbose option for possible details.",
-						immediate. = TRUE)
-			}
-				
-			.response = ""
-			
-			# get encoding function for the respective method
-			.encodingFunction <- sos@encoders[[sos@method]]
-			if(verbose) {
-				.f <- functionBody(.encodingFunction)
-				cat("ENCODING FUNCTION (beginning of function body): ",
-						substring(text = .f, first = 0, last = 60), " ... [",
-						max((length(.f) - 60), 0), " more chrs].\n")
-			}
-			
-			# encode!
-			.encodedRequest = .encodingFunction(obj = request, sos = sos,
-					verbose = verbose)
-			
-			if(sos@method == .sosConnectionMethodGet) {
-				.url = paste(sos@url, .encodedRequest, sep = "?")
-				if(verbose || inspect) {
-					cat("*** GET! REQUEST: ", .url, "\n")
-				}
-				
-				.response = getURL(url = .url, .opts = sos@curlOptions,
-						curl = sos@curlHandle,
-						.encoding = sosDefaultCharacterEncoding)
-				
-				if(verbose)
-					cat("*** RESPONSE:\n", .response, "\n")
-			}
-			else if(sos@method == .sosConnectionMethodPost) {
-				if(verbose || inspect) {
-					cat("*** POST! REQUEST:\n")
-					print(.encodedRequest)
-				}
-				
-				# using 'POST' for application/x-www-form-urlencoded content
-				.response <- postForm(uri = sos@url,
-						request = toString(.encodedRequest),
-						style = "POST", .opts = sos@curlOptions,
-						curl = sos@curlHandle,
-						.encoding = sosDefaultCharacterEncoding)
-				
-				if(verbose) {
-					cat("*** RESPONSE:\n")
-					print(.response)
-				}
-			}
-			else if(sos@method == .sosConnectionMethodSOAP) {
-				if(verbose || inspect) {
-					print("SOAP! REQUEST:\n")
-					print(.encodedRequest)
-				}
-				
-				# TODO SOAP request method
-				
-			}
-			else {
-				stop(paste("Unsupported method, has to be one",
-								SosSupportedConnectionMethods()))
-			}
-			
-			if(regexpr("<!DOCTYPE HTML", .response) > 0) {
-				cat(.response, "\n")
-				stop("ERROR: Got HTML response!")
-			}
-	
-			return(.response)
-	}
-)
+		def = .sosRequest)
 
 
 ################################################################################
@@ -219,38 +212,41 @@ setMethod(f = "sosRequest",
 #
 #
 #
-setMethod(f = "getCapabilities",
-		signature = signature(sos = "SOS"),
-		def = function(sos, verbose, inspect) {
-			if (verbose) {
-				cat("** GET CAPABILITIES of", sos@url, "\n")
-			}
-			
-			.gc <- OwsGetCapabilities(service = sosService,
-					acceptVersions = c(sos@version))
-			if(verbose) cat("** REQUEST:\n", toString(.gc), "\n")
-			
-			.responseString = sosRequest(sos = sos, request = .gc,
-					verbose = verbose, inspect = inspect)
-			.response <- xmlParseDoc(.responseString, asText = TRUE)
-			if(verbose || inspect) {
-				cat("** RESPONSE DOC:\n")
-				print(.response)
-			}
-			
-			if(.isExceptionReport(.response)) {
-				return(.handleExceptionReport(sos, .response))
-			}
-			else {
-				.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
-				.caps <- .parsingFunction(obj = .response, sos = sos)
-				if (verbose) {
-					cat("** DONE WITH PARSING!\n")
-				} 
-				return(.caps)
-			}
-		}
-)
+.getCapabilities <- function(sos, verbose, inspect) {
+	if (verbose) {
+		cat("** GET CAPABILITIES of", sos@url, "\n")
+	}
+	
+	.gc <- OwsGetCapabilities(service = sosService,
+			acceptVersions = c(sos@version))
+	if(verbose) cat("** REQUEST:\n", toString(.gc), "\n")
+	
+	.responseString = sosRequest(sos = sos, request = .gc,
+			verbose = verbose, inspect = inspect)
+	if(verbose){
+		cat("*** RESPONSE:\n", .responseString , "\n")
+	}
+	
+	.response <- xmlParseDoc(file = .responseString, asText = TRUE)
+	if(verbose || inspect) {
+		cat("** RESPONSE DOC:\n")
+		print(.response)
+	}
+	
+	if(.isExceptionReport(.response)) {
+		return(.handleExceptionReport(sos, .response))
+	}
+	else {
+		.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
+		.caps <- .parsingFunction(obj = .response, sos = sos)
+		if (verbose) {
+			cat("** DONE WITH PARSING!\n")
+		} 
+		return(.caps)
+	}
+}
+setMethod(f = "getCapabilities", signature = signature(sos = "SOS"),
+		def = .getCapabilities)
 
 
 #
@@ -271,6 +267,10 @@ setMethod(f = "describeSensor",
 			
 			.responseString = sosRequest(sos = sos, request = .ds,
 					verbose = verbose, inspect = inspect)
+			if(verbose || inspect){
+				cat("*** RESPONSE:\n", .responseString , "\n")
+			}
+			
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			if(verbose || inspect) {
 				cat("** RESPONSE DOC:\n")
@@ -308,9 +308,12 @@ setMethod(f = "getObservationById",
 			if(verbose)
 				cat("** REQUEST:\n", toString(.go), "\n")
 			
-			
 			.responseString = sosRequest(sos = sos, request = .go,
 					verbose = verbose, inspect = inspect)
+			if(verbose || inspect){
+				cat("*** RESPONSE:\n", .responseString , "\n")
+			}
+			
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			if(verbose || inspect) {
 				cat("** RESPONSE DOC:\n")
@@ -379,6 +382,10 @@ setMethod(f = "getObservation",
 			
 			.responseString = sosRequest(sos = sos, request = .go,
 					verbose = verbose, inspect = inspect)
+			if(verbose || inspect){
+				cat("*** RESPONSE:\n", .responseString , "\n")
+			}
+			
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			if(verbose || inspect) {
 				cat("** RESPONSE DOC:\n")
@@ -392,27 +399,22 @@ setMethod(f = "getObservation",
 				.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
 				.obs <- .parsingFunction(obj = .response, sos = sos,
 						verbose = verbose)
-				
-				# remove list if only one element
-				if(is.list(.obs) && length(.obs) == 1) {
-					.obs <- .obs[[1]]
-					.resultLength <- length(sosResult(.obs))
-				}
-				
-				if (is.list(.obs)) {
-					# get the first element of the dim of every sosResult 
-					.resultLength <- sapply(lapply(lapply(.obs, sosResult),
-									dim), "[[", 1)
-				}
-				else {
-					# not a list
+
+				if(inherits(.obs, "OmObservationCollection")) {
 					.dim <- dim(sosResult(.obs))
 					if(!is.null(.dim)) {
-						.resultLength <- .dim[[1]]
+						# just one element
+						.resultLength = .dim[[1]]
 					}
+					# more than one element
 					else {
-						.resultLength <- NA_character_
+						.resultLength <- sapply(
+								lapply(sosResult(.obs),dim),
+								"[[", 1)
 					}
+				}
+				else {
+					.resultLength <- NA
 				}
 				
 				if(verbose) {
@@ -422,7 +424,7 @@ setMethod(f = "getObservation",
 				
 				cat("Finished getObservation to", sos@url, "- received",
 						length(.obs), "observation(s)/measurement(s) having",
-						paste(.resultLength), "elements.\n")
+						toString(.resultLength), "elements.\n")
 				
 				return(.obs)
 			}

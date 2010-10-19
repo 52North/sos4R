@@ -10,5 +10,11 @@
 2010-10-12		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-03
-* Some fixes in toString methods (recursive pastes)
+* Some fixes in toString methods (errorenous recursive paste calls)
 * Fixed bug in parsePoint, which returned a GmlDirectPosition
+* Fixed potential bug in parseSosCapabilities and getCapabilities (occured if no version attribute is given)
+* Fixed potential NULL access in parseSosObservationOffering(...)
+* Renamed curlOpts in SOS(...) to curlOptions
+* Added check for NULL for sampling time and feature of interest in parseObservation (also making parsing less restrictive as a workaround for not valid responses) and parsing of result time 
+* Moved class Measure to GML (as it is not SWE)
+* Added class OmObservationCollection

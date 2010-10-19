@@ -123,6 +123,7 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
+		sosConvertTime,
 		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertDouble,
@@ -142,6 +143,7 @@ names(.sosDefaultEncoders) <- list(
 		)
 names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:time:iso8601",
+		"urn:ogc:property:time:iso8601",
 		"urn:ogc:phenomenon:time:iso8601",
 		sosTimeName,
 		"%",

@@ -108,6 +108,10 @@ GmlEnvelope <- function(lowerCorner, upperCorner, srsName = as.character(NA),
 			axisLabels = axisLabels, uomLabels = uomLabels)
 }
 
+GmlMeasure <- function(value, uom) {
+	new("GmlMeasure", value = value, uom = uom)
+}
+
 
 ################################################################################
 # encoding methods

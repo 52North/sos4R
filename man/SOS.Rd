@@ -56,6 +56,7 @@
 \alias{sosProcedures}
 \alias{sosProcedures-methods}
 \alias{sosProcedures,SOS-method}
+\alias{sosProcedures,SosObservationOffering-method}
 \alias{sosResponseFormats}
 \alias{sosResponseFormats-methods}
 \alias{sosResponseFormats,SOS-method}
@@ -128,7 +129,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosOperation}{\code{signature(sos = "SOS", operationName = "character")}: ... }
     \item{sosOperationsMetadata}{\code{signature(sos = "SOS")}: ... }
     \item{sosParsers}{\code{signature(sos = "SOS")}: ... }
-    \item{sosProcedures}{\code{signature(sos = "SOS")}: ... }
+    \item{sosProcedures}{\code{signature(sos = "SOS")}: Accessor function for the procedures of a \code{\linkS4class{SOS}} (via list in capabilities of \code{GetObservation} operation) or a \code{\linkS4class{SosObservationOffering}}.}
     \item{sosResponseFormats}{\code{signature(sos = "SOS")}: ... }
     \item{sosResponseMode}{\code{signature(sos = "SOS")}: ... }
     \item{sosResultModels}{\code{signature(sos = "SOS")}: ... }
@@ -144,7 +145,7 @@ Object from the class can be used in calls to function for metadata retrieval of
 }
 
 \usage{
-SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(), dataFieldConverters = SosFieldConvertingFunctions(), curlOpts = list(), curlHandle = getCurlHandle(), timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE)
+SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(), dataFieldConverters = SosFieldConvertingFunctions(), curlOptions = list(), curlHandle = getCurlHandle(), timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE)
 }
 
 \arguments{
@@ -154,7 +155,7 @@ SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = Sos
   \item{parsers}{See the corresponding slot description.}
   \item{encoders}{See the corresponding slot description.}
   \item{dataFieldConverters}{See the corresponding slot description.}
-  \item{curlOpts}{See the corresponding slot description.}
+  \item{curlOptions}{See the corresponding slot description.}
   \item{curlHandle}{See the corresponding slot description.}
   \item{timeFormat}{See the corresponding slot description.}
   \item{verboseOutput}{See the corresponding slot description.}

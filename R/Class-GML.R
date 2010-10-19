@@ -202,8 +202,8 @@ setClass("GmlFeatureProperty",
 			return(TRUE)
 		}
 )
-setClassUnion(name = "GmlFeatureOrGmlFeatureProperty",
-	members = c("GmlFeatureProperty", "GmlFeature"))
+setClassUnion(name = "GmlFeatureOrGmlFeaturePropertyOrNULL",
+	members = c("GmlFeatureProperty", "GmlFeature", "NULL"))
 
 
 #
@@ -337,6 +337,23 @@ setClass("GmlEnvelope",
 			#print("Entering validation: GmlEnvelope")
 			# TODO implement validity function
 			# srsDimension must be positive
+			return(TRUE)
+		}
+)
+
+################################################################################
+#
+#
+#
+#
+setClass("GmlMeasure",
+		representation(value = "numeric",
+				uom = "character"),
+		prototype = list(value = as.numeric(NA), uom = as.character(NA)),
+		validity = function(object) {
+			#print("Entering validation: GmlMeasure")
+			# TODO implement validity function
+			# both parameters are required!
 			return(TRUE)
 		}
 )

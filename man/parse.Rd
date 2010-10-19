@@ -46,7 +46,7 @@
 \alias{parseValues}
 \alias{parseObservationProperty}
 
-\title{Parsing Functions for \verb{XML} Documents and Elements}
+\title{Parsing Functions for XML Documents and Elements}
 
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}
 

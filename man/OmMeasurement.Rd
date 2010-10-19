@@ -1,32 +1,25 @@
-\name{OmMeasure-class}
+\name{OmMeasurement}
 \Rdversion{1.1}
 
 \docType{class}
 
-\alias{OmMeasure-class}
 \alias{OmMeasurement-class}
-\alias{show,OmMeasure-method}
 \alias{show,OmMeasurement-method}
-\alias{print,OmMeasure-method}
 \alias{print,OmMeasurement-method}
-\alias{toString,OmMeasure-method}
 \alias{toString,OmMeasurement-method}
 \alias{sosResult,OmMeasurement-method}
 
-\alias{OmMeasure}
 \alias{OmMeasurement}
 
-\title{Classes and Construction Functions for om:Measurement Elements}
+\title{Class and Construction Function for om:Measurement Elements}
 
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification.}
 
 \section{Objects from the Class}{
-Objects can be created by calls to the construction functions of the form \code{OmMeasure(...)} and \code{OmMeasurement(...)}.
-OmMeasurement(samplingTime, procedure, observedProperty, featureOfInterest, result, metadata = NA, resultTime = NA, resultQuality = NA, parameter = NA)
+Objects can be created by calls to the construction function of the form \code{OmMeasurement(...)}.
 }
 
 \usage{
-OmMeasure(value, uom)
 OmMeasurement(samplingTime, procedure, observedProperty, featureOfInterest, result, metadata = NA, resultTime = NA, resultQuality = NA,	parameter = NA) 
 }
 
@@ -41,8 +34,6 @@ OmMeasurement(samplingTime, procedure, observedProperty, featureOfInterest, resu
     \item{\code{resultQuality}:}{Object of class \code{"ANY"}: Event specific quality of a result.}
     \item{\code{resultTime}:}{Object of class \code{"GmlTimeObjectOrNULL"}: The time when the procedure associated with the observation act was applied. For some observations these are identical, in which case the resultTime may be omitted. However, there are important cases where they differ.}
     \item{\code{samplingTime}:}{Object of class \code{"GmlTimeObjectOrNULL"}: The time that the result applies to the feature-of-interest. This is the time usually required for geospatial analysis of the result.}
-    \item{\code{uom}:}{Object of class \code{"character"}: The unit of measurement in a \code{OmMeasure} object.}
-    \item{\code{value}:}{Object of class \code{"numeric"}: The actual value in a \code{OmMeasure} object.}
   }
 }
 
@@ -54,15 +45,11 @@ Class \code{"\linkS4class{OmObservationOrNULL}"}, by class "OmObservation", dist
 
 \section{Methods}{
   \describe{
-%    \item{show}{\code{signature(object = "OmMeasure")}: ... }
-%    \item{show}{\code{signature(object = "OmMeasurement")}: ... }
     \item{sosResult}{\code{signature(obj = "OmMeasurement")}: ... }
 	 }
 }
 
 \arguments{
-  \item{value}{See slot description.}
-  \item{uom}{See slot description.}
   \item{samplingTime}{See slot description.}
   \item{procedure}{See slot description.}
   \item{observedProperty}{See slot description.}
@@ -75,7 +62,7 @@ Class \code{"\linkS4class{OmObservationOrNULL}"}, by class "OmObservation", dist
 }
 
 \details{
-A Measurement contains a Measure.
+A Measurement contains a \code{\linkS4class{GmlMeasure}}.
 }
 
 \value{The construction functions return an object of the respective class.}
@@ -87,13 +74,12 @@ A Measurement contains a Measure.
 %\note{}
 %\section{Warning}{}
 
-\seealso{See Also as \code{\link{OmObservation-class}}.}
+\seealso{See also \code{\link{OmObservation-class}}, \code{\linkS4class{GmlMeasure}}.}
 
 \examples{
-showClass("OmMeasure")
 showClass("OmMeasurement")
 
-# TBD examples for construction functions
+# TBD examples for construction function
 
 # TBD examples for sosResult
 }

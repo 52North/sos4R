@@ -56,6 +56,8 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
 	.values <- .valParser(values = obj[[sweValuesName]], fields = .fields,
 			encoding = .encoding, sos = sos, verbose = verbose)
 	
+	#TODO return object of class SweDataArray here and add coercion functions to data.frame
+	
 	return(.values)
 }
 
@@ -114,11 +116,13 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 			}
 		}
 		
+		if(is.null(.method)) stop("No converter found!")
+		
 		if(verbose) {
 			cat("Using converter function: ")
 			show(.method)
 		}
-		
+				
 		# do the conversion
 		.currentValues <- .method(x = .currentValues, sos = sos)
 		

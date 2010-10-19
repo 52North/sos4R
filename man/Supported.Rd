@@ -10,7 +10,7 @@
 \alias{SosSupportedSpatialOperators}
 \alias{SosSupportedTemporalOperators}
 
-\title{Functions to Access Supported Features of the Current \pkg{sos4R} Implementation}
+\title{Functions to Access Supported Features of the Current sos4R Implementation}
 
 \description{
 These functions can be used to access the supported parameters for a range of settings of a SOS connection.

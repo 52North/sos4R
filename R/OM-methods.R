@@ -30,6 +30,10 @@
 #
 # construction methods
 #
+OmObservationCollection <- function(members) {
+	new("OmObservationCollection", members = members)
+}
+
 OmObservation <- function(samplingTime, procedure, observedProperty,
 		featureOfInterest, result, metadata = NA, resultTime = NULL,
 		resultQuality = NA,	parameter = NA) {
@@ -45,10 +49,6 @@ OmObservationProperty <- function(href = as.character(NA), obs = NULL) {
 	new("OmObservationProperty", href = href, obs = obs)
 }
 
-OmMeasure <- function(value, uom) {
-	new("OmMeasure", value = value, uom = uom)
-}
-
 OmMeasurement <- function(samplingTime, procedure, observedProperty,
 		featureOfInterest, result, metadata = NA, resultTime = NA,
 		resultQuality = NA,	parameter = NA) {
@@ -59,3 +59,10 @@ OmMeasurement <- function(samplingTime, procedure, observedProperty,
 			resultQuality = resultQuality,
 			parameter = parameter)
 }
+
+.length.OmObservationCollection <- function(x) {
+	return(length(x@members))
+}
+
+setMethod(f = "length", signature = signature(x = "OmObservationCollection"),
+		def = .length.OmObservationCollection)

@@ -706,6 +706,11 @@ cat(sensorMLtemplate$def)
 cat(sensorMLtemplate$slots[["member"]])
 cat(sensorMLtemplate$coerce)
 
+################################################################################
+# Added OmObservationCollection
+sosResult(pegelObs)[[1]][1,]
+# is the same as
+sosResult(pegelObs@members[[1]])[1,]
 
 
 ################################################################################

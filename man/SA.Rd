@@ -18,7 +18,7 @@
 
 \alias{SaSamplingPoint}
 
-\title{Classes of the Namespace \code{sa}}
+\title{Classes of the Namespace sa}
 
 \description{
 Classes and construction functions for elements from the OGC specification \dQuote{Observations and Measurements – Part 2 - Sampling Features}.

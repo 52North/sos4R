@@ -43,9 +43,9 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 	
 	.parsingFunction <- sosParsers(sos)[[.rootName]]
 	if(!is.null(.parsingFunction)) {
-		if(verbose) cat("Parsing O&M", .rootName, "\n") #, "with: "); print(.parsingFunction)
-		.om <- .parsingFunction(obj = .root, sos = sos, verbose = verbose)	
-		if(verbose) cat("Done Parsing", .rootName, ":",
+		if(verbose) cat("* Parsing O&M", .rootName, "\n") #, "with: "); print(.parsingFunction)
+		.om <- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
+		if(verbose) cat("* Done Parsing", .rootName, ":",
 					substr(toString(.om), 0, 74), "...\n")
 	}
 	else {
@@ -104,7 +104,7 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 	
 	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
 	
-	# must be OmMeasure
+	# must be GmlMeasure
 	.result <- parseMeasure(obj[[omResultName]])
 	
 	# TODO optionals elements for OmMeasurement
@@ -124,25 +124,43 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 # om:Observation
 #
 parseObservation <- function(obj, sos, verbose = FALSE) {
-	
-	.samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
-			format = sosTimeFormat(sos = sos))
-	
 	# 52N SOS only returns om:Observation with procedure ids xlink:href
-	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
+	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href",
+			default = NA_character_)
 	
 	.observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
 			sos = sos, verbose = verbose)
 	
-	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
+	if(!is.null(obj[[omSamplingTimeName]])) {
+		.samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
+				format = sosTimeFormat(sos = sos))
+	} else {
+		warning("om:samplingTime is mandatory in om:Observation, but is missing!")
+		.samplingTime <- NULL
+	}
+	
+	if(!is.null(obj[[omFeatureOfInterestName]])) {
+		.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
+	} else {
+		warning("om:featureOfInterest is mandatory in om:Observation, but is missing!")
+		.featureOfInterest <- NULL
+	}
 	
 	# result parser is exchangeable
 	.resultParsingFunction <- sosParsers(sos)[[omResultName]]
 	.result <- .resultParsingFunction(obj[[omResultName]], sos, verbose)
 	
+	# optional elements
+	if(!is.null(obj[[omResultTimeName]])) {
+		.resultTime <- parseSamplingTime(obj = obj[[omResultTimeName]],
+				format = sosTimeFormat(sos = sos))
+	}
+	else {
+		.resultTime <- NULL
+	}
+	
 	# TODO optionals elements for OmObservation
 	#.metadata
-	#.resultTime
 	#.resultQuality
 	#.parameter
 	#.metadata
@@ -161,17 +179,25 @@ parseObservationCollection <- function(obj, sos, verbose) {
 	# remove nodes other than member
 	.members <- .filterXmlChildren(obj, omMemberName, includeNamed = TRUE)
 	
-	if(verbose) cat("Parsing", length(.members),
-				"element(s) in ObservationCollection:", names(.members), "\n")
+	if(verbose) cat("Parsing ObservationCollection with ", length(.members), 
+				"element(s).\n")
 	
 	.resultList <- lapply(.members, parseOM, sos, verbose)
+	
 	names(.resultList) <- lapply(.resultList, class)
 	
-	if(verbose)
-		cat("Parsed ObservationCollection with", length(.resultList),
-				"elements:", names(.resultList), "\n")
+	if(is.list(.resultList)) {
+		.obsColl <- OmObservationCollection(members = .resultList)
+	}
+	else {
+		.obsColl <- OmObservationCollection(members = list(.resultList))
+	}
 	
-	return(.resultList)
+	if(verbose)
+		cat("Parsed ObservationCollection with", length(.obsColl),
+				"elements:", names(sosResult(.obsColl)), "\n")
+	
+	return(.obsColl)
 }
 
 #
@@ -189,6 +215,8 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 						"can be parsed."))
 	}
 	else {
+		if(verbose) cat("Parsing result with swe:DataArray.")
+		
 		# data array parser is exchangeable
 		.dataArrayParsingFunction <- sosParsers(sos)[[sweDataArrayName]]
 		.dataArray <- .noneText[[1]]
@@ -235,18 +263,6 @@ parseComplexObservation <- function(obj, sos, verbose = FALSE) {
 
 ################################################################################
 # not exchangeable parsing functions:
-
-#
-#
-#
-parseMeasure <- function(obj) {
-	.value <- as.numeric(xmlValue(obj))
-	.uom <- xmlGetAttr(node = obj, name = "uom", default = NA_character_)
-	
-	.result <- OmMeasure(.value, .uom)
-	
-	return(.result)
-}
 
 #
 # parse sos:featureOfInterest to according Element of GML or SA

@@ -10,7 +10,7 @@
 \alias{SensorML}
 \alias{sml}
 
-\title{Classes of the Namespace \code{sml}}
+\title{Classes of the Namespace sml}
 
 \description{
 Classes and construction functions for elements from the OGC specification \dQuote{OpenGIS(R) Sensor Model Language (SensorML) Implementation Specification}.

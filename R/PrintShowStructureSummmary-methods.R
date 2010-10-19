@@ -444,10 +444,19 @@
 	invisible(x)
 }
 
+.toString.OmObservationCollection <- function(x, ...) {
+	.s <- paste("Object of class OmObservationCollection with",
+			length(x), "members.")
+	return(.s)
+}
+
+.print.OmObservationCollection <- function(x, ...) {
+	cat(.toString.OmObservationCollection(x, ...), "\n")
+	invisible(x)
+}
+
 .toString.OmObservation <- function(x, ...) {
-	.s <- paste(
-			"Object of class OmObservation",
-			"; procedure: ",
+	.s <- paste("Object of class OmObservation; procedure: ",
 			toString(x@procedure),
 			"\n\tobservedProperty: ",
 			toString(x@observedProperty),
@@ -481,9 +490,9 @@
 	invisible(x)
 }
 
-.toString.OmMeasure <- function(x, ...) {
+.toString.GmlMeasure <- function(x, ...) {
 	.s <- paste(
-			"Object of class OmMeasure",
+			"Object of class GmlMeasure",
 			"; value: ",
 			x@value,
 			"; uom: ",
@@ -492,8 +501,8 @@
 	return(.s)
 }
 
-.print.OmMeasure <- function(x, ...) {
-	cat(.toString.OmMeasure(x, ...), "\n")
+.print.GmlMeasure <- function(x, ...) {
+	cat(.toString.GmlMeasure(x, ...), "\n")
 	invisible(x)
 }
 
@@ -988,9 +997,10 @@ setMethod("print", "SwePhenomenon", function(x, ...) .print.SwePhenomenon(x, ...
 setMethod("print", "SwePhenomenonProperty", function(x, ...) .print.SwePhenomenonProperty(x, ...))
 setMethod("print", "SweCompositePhenomenon", function(x, ...) .print.SweCompositePhenomenon(x, ...))
 setMethod("print", "SweTextBlock", function(x, ...) .print.SweTextBlock(x, ...))
+setMethod("print", "OmObservationCollection", function(x, ...) .print.OmObservationCollection(x, ...))
 setMethod("print", "OmObservation", function(x, ...) .print.OmObservation(x, ...))
 setMethod("print", "OmObservationProperty", function(x, ...) .print.OmObservationProperty(x, ...))
-setMethod("print", "OmMeasure", function(x, ...) .print.OmMeasure(x, ...))
+setMethod("print", "GmlMeasure", function(x, ...) .print.GmlMeasure(x, ...))
 setMethod("print", "OmMeasurement", function(x, ...) .print.OmMeasurement(x, ...))
 setMethod("print", "GmlTimePosition", function(x, ...) .print.GmlTimePosition(x, ...))
 setMethod("print", "GmlTimeInstant", function(x, ...) .print.GmlTimeInstant(x, ...))
@@ -1046,9 +1056,10 @@ setMethod("toString", "SwePhenomenon", function(x, ...) .toString.SwePhenomenon(
 setMethod("toString", "SwePhenomenonProperty", function(x, ...) .toString.SwePhenomenonProperty(x, ...))
 setMethod("toString", "SweCompositePhenomenon", function(x, ...) .toString.SweCompositePhenomenon(x, ...))
 setMethod("toString", "SweTextBlock", function(x, ...) .toString.SweTextBlock(x, ...))
+setMethod("toString", "OmObservationCollection", function(x, ...) .toString.OmObservationCollection(x, ...))
 setMethod("toString", "OmObservation", function(x, ...) .toString.OmObservation(x, ...))
 setMethod("toString", "OmObservationProperty", function(x, ...) .toString.OmObservationProperty(x, ...))
-setMethod("toString", "OmMeasure", function(x, ...) .toString.OmMeasure(x, ...))
+setMethod("toString", "GmlMeasure", function(x, ...) .toString.GmlMeasure(x, ...))
 setMethod("toString", "OmMeasurement", function(x, ...) .toString.OmMeasurement(x, ...))
 setMethod("toString", "GmlTimePosition", function(x, ...) .toString.GmlTimePosition(x, ...))
 setMethod("toString", "GmlTimeInstant", function(x, ...) .toString.GmlTimeInstant(x, ...))
@@ -1111,9 +1122,10 @@ setMethod("show", "SwePhenomenonProperty", function(object) .print.SwePhenomenon
 setMethod("show", "SweCompositePhenomenon", function(object) .print.SweCompositePhenomenon(object))
 setMethod("show", "SweTextBlock", function(object) .print.SweTextBlock(object))
 
+setMethod("show", "OmObservationCollection", function(object) .print.OmObservationCollection(object))
 setMethod("show", "OmObservation", function(object) .print.OmObservation(object))
 setMethod("show", "OmObservationProperty", function(object) .print.OmObservationProperty(object))
-setMethod("show", "OmMeasure", function(object) .print.OmMeasure(object))
+setMethod("show", "GmlMeasure", function(object) .print.GmlMeasure(object))
 setMethod("show", "OmMeasurement", function(object) .print.OmMeasurement(object))
 
 # no show, print and toString fucntions for VIRTUAL classes
