@@ -149,24 +149,6 @@
 			", owsVersion: ", x@owsVersion, ", updateSequence: ", 
 			x@updateSequence)
 	return(.s)
-#	if (is(x, "OwsCapabilities_1.1.0")) {
-#		cat("\nIdentification: ")
-#		print(x@identification)
-#		cat("\nProvider: ")
-#		print(x@provider)
-#		cat("Operations (names): ")
-#		cat(paste(names(x@operations@operations)))
-#		cat("\nContents: ")
-#		print(x@contents)
-#	}
-#	if (is(x, "OwsCapabilities_2.0.0")) {
-#		cat("\nLanguages: ")
-#		print(x@languages)
-#	}
-#	if (is(x, "SosCapabilities_1.1.0")) {
-#		cat("\nFilter Capablities: ")
-#		print(x@filterCaps)
-#	}
 }
 
 .print.OwsCapabilities <- function(x, ...) {
@@ -226,7 +208,18 @@
 }
 
 .toString.SOS <- function(x, ...) {
-	.s <- paste("Object of class SOS -- version: ",
+	.s <- paste("Object of class SOS -- version: ", x@version,
+			"\n\tCapabilities: ", toString(x@capabilities))
+	return(.s)
+}
+
+.print.SOS <- function(x, ...) {
+	cat(.toString.SOS(x, ...), "\n")
+	invisible(x)
+}
+
+.toString.SOS_1.0.0 <- function(x, ...) {
+	.s <- paste("Object of class SOS_1.0.0 -- version: ",
 			x@version,
 			", method: ",
 			x@method,
@@ -237,8 +230,8 @@
 	return(.s)
 }
 
-.print.SOS <- function(x, ...) {
-	cat(.toString.SOS(x, ...), "\n")
+.print.SOS_1.0.0 <- function(x, ...) {
+	cat(.toString.SOS_1.0.0(x, ...), "\n")
 	invisible(x)
 }
 
@@ -982,6 +975,7 @@ setMethod("print", "OwsExceptionReport", function(x, ...) .print.OwsExceptionRep
 setMethod("print", "OwsException", function(x, ...) .print.OwsException(x, ...))
 setMethod("print", "OwsRange", function(x, ...) .print.OwsRange(x, ...))
 setMethod("print", "SOS", function(x, ...) .print.SOS(x, ...))
+setMethod("print", "SOS_1.0.0", function(x, ...) .print.SOS_1.0.0(x, ...))
 setMethod("print", "SosFilter_Capabilities", function(x, ...) .print.SosFilter_Capabilities(x, ...))
 setMethod("print", "SosObservationOffering", function(x, ...) .print.SosObservationOffering(x, ...))
 setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
@@ -1041,6 +1035,7 @@ setMethod("toString", "OwsExceptionReport", function(x, ...) .toString.OwsExcept
 setMethod("toString", "OwsException", function(x, ...) .toString.OwsException(x, ...))
 setMethod("toString", "OwsRange", function(x, ...) .toString.OwsRange(x, ...))
 setMethod("toString", "SOS", function(x, ...) .toString.SOS(x, ...))
+setMethod("toString", "SOS_1.0.0", function(x, ...) .toString.SOS_1.0.0(x, ...))
 setMethod("toString", "SosFilter_Capabilities", function(x, ...) .toString.SosFilter_Capabilities(x, ...))
 setMethod("toString", "SosObservationOffering", function(x, ...) .toString.SosObservationOffering(x, ...))
 setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, ...))
@@ -1102,8 +1097,8 @@ setMethod("show", "OwsCapabilities_2.0.0", function(object) .print.OwsCapabiliti
 setMethod("show", "OwsExceptionReport", function(object) .print.OwsExceptionReport(object))
 setMethod("show", "OwsException", function(object) .print.OwsException(object))
 setMethod("show", "OwsRange", function(object) .print.OwsRange(object))
-
 setMethod("show", "SOS", function(object) .print.SOS(object))
+setMethod("show", "SOS_1.0.0", function(object) .print.SOS_1.0.0(object))
 setMethod("show", "SosFilter_Capabilities", function(object) .print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) .print.SosObservationOffering(object))
 setMethod("show", "SosContents", function(object) .print.SosContents(object))
@@ -1113,22 +1108,17 @@ setMethod("show", "SensorML", function(object) .print.SensorML(object))
 setMethod("show", "GetObservation", function(object) .print.GetObservation(object))
 setMethod("show", "GetObservationById", function(object) .print.GetObservationById(object))
 setMethod("show", "DescribeSensor", function(object) .print.DescribeSensor(object))
-
 setMethod("show", "SaSamplingPoint", function(object) .print.SaSamplingPoint(object))
 setMethod("show", "SaSamplingSurface", function(object) .print.SaSamplingSurface(object))
-
 setMethod("show", "SwePhenomenon", function(object) .print.SwePhenomenon(object))
 setMethod("show", "SwePhenomenonProperty", function(object) .print.SwePhenomenonProperty(object))
 setMethod("show", "SweCompositePhenomenon", function(object) .print.SweCompositePhenomenon(object))
 setMethod("show", "SweTextBlock", function(object) .print.SweTextBlock(object))
-
 setMethod("show", "OmObservationCollection", function(object) .print.OmObservationCollection(object))
 setMethod("show", "OmObservation", function(object) .print.OmObservation(object))
 setMethod("show", "OmObservationProperty", function(object) .print.OmObservationProperty(object))
 setMethod("show", "GmlMeasure", function(object) .print.GmlMeasure(object))
 setMethod("show", "OmMeasurement", function(object) .print.OmMeasurement(object))
-
-# no show, print and toString fucntions for VIRTUAL classes
 setMethod("show", "GmlTimePosition", function(object) .print.GmlTimePosition(object))
 setMethod("show", "GmlTimeInstant", function(object) .print.GmlTimeInstant(object))
 setMethod("show", "GmlTimeInterval", function(object) .print.GmlTimeInterval(object))
@@ -1140,7 +1130,6 @@ setMethod("show", "GmlPoint", function(object) .print.GmlPoint(object))
 setMethod("show", "GmlPointProperty", function(object) .print.GmlPointProperty(object))
 setMethod("show", "GmlGeometry", function(object) .print.GmlGeometry(object))
 setMethod("show", "GmlEnvelope", function(object) .print.GmlEnvelope(object))
-
 setMethod("show", "TM_After", function(object) .print.TM_After(object))
 setMethod("show", "TM_Before", function(object) .print.TM_Before(object))
 setMethod("show", "TM_During", function(object) .print.TM_During(object))

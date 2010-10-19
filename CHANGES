@@ -17,4 +17,7 @@
 * Renamed curlOpts in SOS(...) to curlOptions
 * Added check for NULL for sampling time and feature of interest in parseObservation (also making parsing less restrictive as a workaround for not valid responses) and parsing of result time 
 * Moved class Measure to GML (as it is not SWE)
-* Added class OmObservationCollection
+* Added class OmObservationCollection with indexing functions [ and [[
+* Renamed SosCapabilities_1.1.0 to SosCapabilities_1.0.0
+* Introduced abstract class SOS and class SOS_1.0.0
+* Added first coercion functions

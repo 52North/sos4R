@@ -299,21 +299,13 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
 ################################################################################
 # XML encoding
 #
-setMethod("encodeRequestXML", "OwsGetCapabilities", 
+setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0", 
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
 				cat("ENCODE XML", class(obj), "\n")
 			}
 			
-			if(obj@version == "1.1.0") {
-				return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
-			}
-			else if(obj@version == "2.0.0") {
-				return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
-			}
-			else {
-				stop("Version not supported!")
-			}
+			return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
 		}
 )
 .sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
@@ -353,6 +345,19 @@ setMethod("encodeRequestXML", "OwsGetCapabilities",
 	
 	return(.xmlDoc)
 }
+
+#
+#
+#
+setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0", 
+		function(obj, sos, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE XML", class(obj), "\n")
+			}
+			
+			return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
+		}
+)
 .sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,

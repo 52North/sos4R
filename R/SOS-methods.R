@@ -37,35 +37,39 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		curlOptions = list(),
 		curlHandle = getCurlHandle(),
 		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE) {
-	if(method == .sosConnectionMethodPost)
-		.curlOpts <- curlOptions(url = url)
-	else .curlOpts <- curlOptions
-	
-	.sos <- new("SOS",
-			url = url,
-			method = method,
-			version = version,
-			# dummy capabilities to be replaced below
-			capabilities = new("OwsCapabilities", version = "NA",
-					updateSequence = as.character(NA),
-					owsVersion = "1.1.0"),
-			parsers = parsers,
-			encoders = encoders,
-			dataFieldConverters = dataFieldConverters,
-			curlOptions = .curlOpts,
-			curlHandle = curlHandle,
-			timeFormat = timeFormat,
-			verboseOutput = verboseOutput)
-	
-	.caps <- getCapabilities(.sos, verbose = verboseOutput)
-	if(!is(.caps, "OwsCapabilities")) {
-		stop("ERROR: Did not receive a Capabilities response!")
+	if(version == "1.0.0") {
+		if(method == .sosConnectionMethodPost)
+			.curlOpts <- curlOptions(url = url)
+		else .curlOpts <- curlOptions
+		
+		.sos <- new("SOS_1.0.0",
+				url = url,
+				method = method,
+				version = version,
+				# dummy capabilities to be replaced below
+				capabilities = new("OwsCapabilities", version = "NA",
+						updateSequence = as.character(NA),
+						owsVersion = "1.1.0"),
+				parsers = parsers,
+				encoders = encoders,
+				dataFieldConverters = dataFieldConverters,
+				curlOptions = .curlOpts,
+				curlHandle = curlHandle,
+				timeFormat = timeFormat,
+				verboseOutput = verboseOutput)
+		
+		.caps <- getCapabilities(.sos, verbose = verboseOutput)
+		if(!is(.caps, "OwsCapabilities")) {
+			stop("ERROR: Did not receive a Capabilities response!")
+		}
+		
+		.sos@capabilities <- .caps
+		
+		cat("Created SOS for URL", url, "\n")
+		return(.sos)
 	}
+	else stop("Service version not supported!")
 	
-	.sos@capabilities <- .caps
-	
-	cat("Created SOS for URL", url, "\n")
-	return(.sos)
 }
 
 
@@ -78,14 +82,14 @@ SosFilter_Capabilities <- function(spatial = list(NA_character_),
 
 SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
 		identification = NULL, provider = NULL, operations = NULL,
-		filterCaps = NULL, contents = NULL) {
+		filterCapabilities = NULL, contents = NULL) {
 	if(owsVersion == "1.1.0") {
-		new("SosCapabilities_1.1.0",
+		new("SosCapabilities_1.0.0",
 				version = version, updateSequence = updateSequence,
 				owsVersion = owsVersion,
 				identification = identification,
 				provider = provider, operations = operations,
-				filterCaps = filterCaps, contents = contents)
+				filterCapabilities = filterCapabilities, contents = contents)
 	}
 	else if(owsVersion == "2.0.0") {
 		stop("Version 2.0.0 not supported!")
@@ -131,7 +135,7 @@ SosFeatureOfInterest <- function(objectIDs = list(NA), spatialOps = NULL) {
 #
 # main request method
 #
-.sosRequest <- function(sos, request, verbose = FALSE, inspect = FALSE) {
+.sosRequest_1.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
 	# check the request for consistency with service description
 	.checkResult <- checkRequest(service = sos, operation = request,
 			verbose = verbose)
@@ -201,9 +205,13 @@ SosFeatureOfInterest <- function(objectIDs = list(NA), spatialOps = NULL) {
 }
 
 setMethod(f = "sosRequest",
-		signature = signature(sos = "SOS", request = "OwsServiceOperation",
+		signature = signature(sos = "SOS_1.0.0", request = "OwsServiceOperation",
 				verbose = "logical", inspect = "logical"),
-		def = .sosRequest)
+		def = function(sos, request, verbose, inspect) {
+			.sosRequest_1.0.0(sos = sos, request = request, verbose = verbose,
+					inspect = inspect)
+		}
+)
 
 
 ################################################################################
@@ -212,7 +220,7 @@ setMethod(f = "sosRequest",
 #
 #
 #
-.getCapabilities <- function(sos, verbose, inspect) {
+.getCapabilities_1.0.0 <- function(sos, verbose, inspect) {
 	if (verbose) {
 		cat("** GET CAPABILITIES of", sos@url, "\n")
 	}
@@ -245,46 +253,55 @@ setMethod(f = "sosRequest",
 		return(.caps)
 	}
 }
-setMethod(f = "getCapabilities", signature = signature(sos = "SOS"),
-		def = .getCapabilities)
+setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
+		def = function(sos, verbose, inspect) {
+			return(.getCapabilities_1.0.0(sos = sos, verbose = verbose,
+							inspect = inspect))
+		}
+)
 
 
 #
 #
 #
+.describeSensor_1.0.0 <- function(sos, procedure, outputFormat, verbose, inspect) {
+	if(verbose) {
+		cat("** DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
+	}
+	
+	.ds <- DescribeSensor(service = sosService, version = sos@version,
+			procedure = procedure, outputFormat = outputFormat)
+	if(verbose)
+		cat("** REQUEST:\n", toString(.ds), "\n")
+	
+	
+	.responseString = sosRequest(sos = sos, request = .ds,
+			verbose = verbose, inspect = inspect)
+	if(verbose || inspect){
+		cat("*** RESPONSE:\n", .responseString , "\n")
+	}
+	
+	.response <- xmlParseDoc(.responseString, asText = TRUE)
+	if(verbose || inspect) {
+		cat("** RESPONSE DOC:\n")
+		print(.response)
+	}
+	
+	if(.isExceptionReport(.response)) {
+		return(.handleExceptionReport(sos, .response))
+	}
+	else {
+		.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
+		.sml <- .parsingFunction(obj = .response)
+		return(.sml)
+	}
+}
 setMethod(f = "describeSensor",
-		signature = signature(sos = "SOS", procedure  ="character"), 
+		signature = signature(sos = "SOS_1.0.0", procedure  = "character"), 
 		def = function(sos, procedure, outputFormat, verbose, inspect) {
-			if(verbose) {
-				cat("** DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
-			}
-			
-			.ds <- DescribeSensor(service = sosService, version = sos@version,
-					procedure = procedure, outputFormat = outputFormat)
-			if(verbose)
-				cat("** REQUEST:\n", toString(.ds), "\n")
-			
-			
-			.responseString = sosRequest(sos = sos, request = .ds,
-					verbose = verbose, inspect = inspect)
-			if(verbose || inspect){
-				cat("*** RESPONSE:\n", .responseString , "\n")
-			}
-			
-			.response <- xmlParseDoc(.responseString, asText = TRUE)
-			if(verbose || inspect) {
-				cat("** RESPONSE DOC:\n")
-				print(.response)
-			}
-			
-			if(.isExceptionReport(.response)) {
-				return(.handleExceptionReport(sos, .response))
-			}
-			else {
-				.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
-				.sml <- .parsingFunction(obj = .response)
-				return(.sml)
-			}
+			return(.describeSensor_1.0.0(sos = sos, procedure = procedure,
+							outputFormat = outputFormat, verbose = verbose,
+							inspect = inspect))
 		}
 )
 
@@ -293,7 +310,7 @@ setMethod(f = "describeSensor",
 # 
 #
 setMethod(f = "getObservationById",
-		signature = signature(sos = "SOS", observationId = "character"), 
+		signature = signature(sos = "SOS_1.0.0", observationId = "character"), 
 		def = function(sos, observationId, responseFormat, srsName,
 				resultModel, responseMode, verbose, inspect) {
 			if(verbose) {
@@ -349,7 +366,7 @@ setMethod(f = "getObservationById",
 #
 #
 setMethod(f = "getObservation",
-		signature = signature(sos = "SOS",
+		signature = signature(sos = "SOS_1.0.0",
 				offering = "SosObservationOfferingOrCharacter"),
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,

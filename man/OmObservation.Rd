@@ -20,6 +20,8 @@
 \alias{sosResult,OmObservationProperty-method}
 \alias{sosResult,OmObservation-method}
 
+\alias{as.data.frame.OmObservation}
+
 \title{Classes for om:Observation Elements}
 
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification.}

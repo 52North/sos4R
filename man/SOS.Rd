@@ -9,6 +9,12 @@
 \alias{print,SOS-method}
 \alias{toString,SOS-method}
 
+\alias{SOS_1.0.0}
+\alias{SOS_1.0.0-class}
+\alias{show,SOS_1.0.0-method}
+\alias{print,SOS_1.0.0-method}
+\alias{toString,SOS_1.0.0-method}
+
 \alias{sosCapabilitiesDocumentOriginal}
 \alias{sosCapabilitiesDocumentOriginal,SOS-method}
 \alias{sosCaps}
@@ -32,6 +38,7 @@
 \alias{sosMethod}
 \alias{sosMethod-methods}
 \alias{sosMethod,SOS-method}
+\alias{sosMethod,SOS_1.0.0-method}
 \alias{sosObservedProperties}
 \alias{sosObservedProperties-methods}
 \alias{sosObservedProperties,SOS-method}
@@ -81,6 +88,7 @@
 \alias{sosUrl}
 \alias{sosUrl-methods}
 \alias{sosUrl,SOS-method}
+\alias{sosUrl,SOS_1.0.0-method}
 \alias{sosVersion}
 \alias{sosVersion-methods}
 \alias{sosVersion,SOS-method}

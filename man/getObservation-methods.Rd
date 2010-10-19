@@ -5,9 +5,11 @@
 \alias{getObservation}
 \alias{getObservation-methods}
 \alias{getObservation,SOS,SosObservationOfferingOrCharacter-method}
+\alias{getObservation,SOS_1.0.0,SosObservationOfferingOrCharacter-method}
 \alias{getObservationById}
 \alias{getObservationById-methods}
 \alias{getObservationById,SOS,character-method}
+\alias{getObservationById,SOS_1.0.0,character-method}
 
 \title{Request Observations}
 

@@ -31,16 +31,23 @@
 #
 #
 setClass("SOS",
+		representation(version = "character",
+				capabilities = "OwsCapabilities", parsers = "list",
+				encoders = "list", dataFieldConverters = "list",
+				timeFormat = "character", verboseOutput = "logical"),
+		contains = c("VIRTUAL"))
+
+#
+#
+#
+setClass("SOS_1.0.0",
 		representation(url = "character", method = "character",
-				version = "character", capabilities = "OwsCapabilities",
-				parsers = "list", encoders = "list",
-				dataFieldConverters = "list", curlHandle = "CURLHandle",
-				curlOptions = "ANY", timeFormat = "character",
-				verboseOutput = "logical"),
+				curlHandle = "CURLHandle", curlOptions = "ANY"),
 		prototype = list(
 				url = as.character(NA),
 				method = as.character(NA),
 				version = as.character(NA)),
+		contains = c("SOS"),
 		validity = function(object) {
 			#print("Entering validation: SOS")
 			
@@ -87,11 +94,11 @@ setClassUnion(name = "SosFilter_CapabilitiesOrNULL",
 #
 # See OWS Common 1.1.0, OGC 06-121r3
 #
-setClass("SosCapabilities_1.1.0",
-		representation(filterCaps = "SosFilter_CapabilitiesOrNULL"),
+setClass("SosCapabilities_1.0.0",
+		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {
-			#print("Entering validation: SosCapabilities_1.1.0")
+			#print("Entering validation: SosCapabilities_1.0.0")
 			# TODO implement validity function
 			return(TRUE)
 		}

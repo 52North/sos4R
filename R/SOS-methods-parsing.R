@@ -136,7 +136,7 @@ parseSosCapabilities <- function(obj, sos) {
 			identification = .caps.si,
 			provider = .caps.sp,
 			operations = .caps.om,
-			filterCaps = .caps.fc,
+			filterCapabilities = .caps.fc,
 			contents = .caps.contents)
 	
 	return(.capabilities)

@@ -5,6 +5,7 @@
 \alias{getCapabilities}
 \alias{getCapabilities-methods}
 \alias{getCapabilities,SOS-method}
+\alias{getCapabilities,SOS_1.0.0-method}
 
 \title{Request Capabilities from a SOS}
 

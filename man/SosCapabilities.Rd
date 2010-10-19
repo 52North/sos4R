@@ -1,12 +1,12 @@
-\name{SosCapabilities_1.1.0-class}
+\name{SosCapabilities_1.0.0-class}
 \Rdversion{1.1}
 
 \docType{class}
 
-\alias{SosCapabilities_1.1.0-class}
+\alias{SosCapabilities_1.0.0-class}
 \alias{SosCapabilities}
 
-\title{Class and Construction Function for "SosCapabilities_1.1.0"}
+\title{Class and Construction Function for "SosCapabilities_1.0.0"}
 
 \description{
 The service metadata document of a Sensor Observation Service.
@@ -18,7 +18,7 @@ Objects can be created by calls to the construction function of the form \code{S
 
 \section{Slots}{
   \describe{
-    \item{\code{filterCaps}:}{Object of class \code{"SosFilter_CapabilitiesOrNULL"} ~~ }
+    \item{\code{filterCapabilities}:}{Object of class \code{"SosFilter_CapabilitiesOrNULL"} ~~ }
     \item{\code{identification}:}{Object of class \code{"OwsServiceIdentificationOrNULL"} ~~ }
     \item{\code{provider}:}{Object of class \code{"OwsServiceProviderOrNULL"} ~~ }
     \item{\code{operations}:}{Object of class \code{"OwsOperationsMetadataOrNULL"} ~~ }
@@ -35,11 +35,11 @@ Class \code{"\linkS4class{OwsCapabilities}"}, by class "OwsCapabilities_1.1.0", 
 }
 
 \section{Methods}{
-No methods defined with class "SosCapabilities_1.1.0" in the signature.
+No methods defined with class "SosCapabilities_1.0.0" in the signature.
 }
 
 \usage{
-SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", identification = NULL, provider = NULL, operations = NULL, filterCaps = NULL, contents = NULL)
+SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", identification = NULL, provider = NULL, operations = NULL, filterCapabilities = NULL, contents = NULL)
 }
 
 \arguments{
@@ -49,7 +49,7 @@ SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", identificati
   \item{identification}{The identification section of a capabilities document, object of class \code{OwsServiceIdentification}.}
   \item{provider}{The provider section of a capabilities document, object of class \code{OwsServiceProvider}.}
   \item{operations}{A list of objects of class \code{OwsOperation} in a \code{OperationsMetadata} object. The provider section of a capabilities document.}
-  \item{filterCaps}{An object of class \code{SosFilter_Capabilities} contaning the filter capabilities of a service.}
+  \item{filterCapabilities}{An object of class \code{SosFilter_Capabilities} contaning the filter capabilities of a service.}
   \item{contents}{The provider section of a capabilities document, object of class \code{SosContents}.}
 }
 
@@ -71,7 +71,7 @@ The portions of the GetCapabilities response document that are defined in the OW
 }
 
 \examples{
-showClass("SosCapabilities_1.1.0")
+showClass("SosCapabilities_1.0.0")
 }
 \keyword{classes}
 

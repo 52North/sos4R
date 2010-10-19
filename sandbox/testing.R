@@ -708,9 +708,35 @@ cat(sensorMLtemplate$coerce)
 
 ################################################################################
 # Added OmObservationCollection
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelObs <- getObservation(sos = pegelsos,
+		observedProperty = sosObservedProperties(pegelsos)[3],
+		offering = sosOfferings(pegelsos)[[1]],
+		procedure = sosProcedures(pegelsos)[c(2501,2503,2505)],
+		eventTime = sosCreateEventTimeList(time = sosCreateTimePeriod(
+						sos = pegelsos,
+						begin = Sys.time() - (3600 * 24), # * 360),
+						end = Sys.time())))
+
 sosResult(pegelObs)[[1]][1,]
 # is the same as
 sosResult(pegelObs@members[[1]])[1,]
+
+length(pegelObs)
+
+# added indexing functions
+pegelObs[1]
+str(pegelObs[1])
+str(pegelObs[1:2])
+str(pegelObs[c(3,4)])
+str(pegelObs[c(3:6)])
+
+
+################################################################################
+# coercion
+str(as.list(pegelObs)[3:5])
+str(as.data.frame(pegelObs[[1]]))
+# works!
 
 
 ################################################################################

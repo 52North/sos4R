@@ -162,7 +162,7 @@ if (!isGeneric("sosFilter_Capabilities"))
 			})
 setMethod(f = "sosFilter_Capabilities", signature = signature(sos = "SOS"),
 		def = function(sos) {
-			return(sos@capabilities@filterCaps)
+			return(sos@capabilities@filterCapabilities)
 		})
 
 if (!isGeneric("sosServiceIdentification"))
@@ -205,7 +205,7 @@ if (!isGeneric("sosUrl"))
 	setGeneric(name = "sosUrl", def = function(sos) {
 				standardGeneric("sosUrl")
 			})
-setMethod(f = "sosUrl", signature = signature(sos = "SOS"),
+setMethod(f = "sosUrl", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
 			return(sos@url)
 		})
@@ -223,7 +223,7 @@ if (!isGeneric("sosMethod"))
 	setGeneric(name = "sosMethod", def = function(sos) {
 				standardGeneric("sosMethod")
 			})
-setMethod(f = "sosMethod", signature = signature(sos = "SOS"),
+setMethod(f = "sosMethod", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
 			return(sos@method)
 		})

@@ -10,6 +10,9 @@
 \alias{sosResult,OmObservationCollection-method}
 \alias{print,OmObservationCollection-method}
 \alias{toString,OmObservationCollection-method}
+\alias{[,OmObservationCollection-method}
+\alias{[[,OmObservationCollection,ANY,missing-method}
+\alias{as.list.OmObservationCollection}
 
 \title{Class "OmObservationCollection"}
 \description{

@@ -3,7 +3,7 @@
 
 \alias{sosRequest}
 \alias{sosRequest-methods}
-\alias{sosRequest,SOS,OwsServiceOperation,logical,logical-method}
+\alias{sosRequest,SOS_1.0.0,OwsServiceOperation,logical,logical-method}
 
 \title{Send Request to SOS}
 
@@ -11,7 +11,6 @@
 This is the main request function for sending and receiving requests respectively documents from a Sensor Observation Service. It's intended for internal use.
 
 Please use the methods for the SOS operations as long as possible: \code{\link{getCapabilities-methods}}, \code{\link{describeSensor-methods}}, \code{\link{getObservation-methods}}, and \code{\link{getObservationById-methods}}.
-
 }
 
 \section{Methods}{

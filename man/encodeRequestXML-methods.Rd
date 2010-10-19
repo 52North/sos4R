@@ -8,6 +8,8 @@
 \alias{encodeRequestXML,GetObservation-method}
 \alias{encodeRequestXML,GetObservationById-method}
 \alias{encodeRequestXML,OwsGetCapabilities-method}
+\alias{encodeRequestXML,OwsGetCapabilities_1.1.0-method}
+\alias{encodeRequestXML,OwsGetCapabilities_2.0.0-method}
 \alias{encodeRequestXML,SosEventTimeLatest,SOS-method}
 \alias{encodeRequestXML,SosEventTime,SOS-method}
 \alias{encodeRequestXML,SosFeatureOfInterest,SOS-method}
