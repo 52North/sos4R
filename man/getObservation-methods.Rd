@@ -4,8 +4,8 @@
 
 \alias{getObservation}
 \alias{getObservation-methods}
-\alias{getObservation,SOS,SosObservationOfferingOrCharacter-method}
-\alias{getObservation,SOS_1.0.0,SosObservationOfferingOrCharacter-method}
+\alias{getObservation,SOS,SosObservationOffering-method}
+\alias{getObservation,SOS_1.0.0,SosObservationOffering-method}
 \alias{getObservationById}
 \alias{getObservationById-methods}
 \alias{getObservationById,SOS,character-method}
@@ -19,7 +19,7 @@ This method sends a GetObservation request to the given SOS.
 
 \section{Methods}{
 \describe{
-	\item{\code{signature(sos = "SOS", offering = "SosObservationOfferingOrCharacter")}}{Request observation data from the given SOS for the given offering (either ID or an object of class \code{SosObservationOffering}).}
+	\item{\code{signature(sos = "SOS", offering = "SosObservationOffering")}}{Request observation data from the given SOS for the given offering (either ID or an object of class \code{SosObservationOffering}).}
 	\item{\code{signature(sos = "SOS", observationId = "character")}}{Request observation data from the given SOS for the given observation identifier.}
 }
 }

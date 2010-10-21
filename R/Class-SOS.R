@@ -109,16 +109,21 @@ setClass("SosCapabilities_1.0.0",
 #
 # Intermediate element swe:TimeGeometricPrimitiveProperty for time is left out.
 #
+# If possible, character vectors are used for slots if elements can be
+# represented by character strings, e.g. procedure is gml:ReferenceType,
+# resultModel is QName, intendedApplication is xs:token, and so forth.
+#
 setClass("SosObservationOffering",
 		representation(id = "character", name = "character",
-				time = "GmlTimeGeometricPrimitive", procedure = "list",
+				time = "GmlTimeGeometricPrimitive", procedure = "character",
 				observedProperty = "list", featureOfInterest = "list",
-				responseFormat = "list", intendedApplication = "list",
-				resultModel = "list", responseMode = "list",
+				responseFormat = "character", intendedApplication = "character",
+				resultModel = "character", responseMode = "character",
 				boundedBy = "list"),
 		prototype = list(id = as.character(NA), time = NULL,
-				procedure = list(NA), observedProperty = list(NA),
-				featureOfInterest = list(NA), responseFormat = list(NA)),
+				procedure = as.character(NA), observedProperty = list(NA),
+				featureOfInterest = list(NA),
+				responseFormat =  as.character(NA)),
 		validity = function(object) {
 			#print("Entering validation: ObservationOffering")
 			# TODO implement validity function
@@ -129,8 +134,6 @@ setClass("SosObservationOffering",
 			return(TRUE)
 		}
 )
-setClassUnion(name = "SosObservationOfferingOrCharacter",
-		members = c("SosObservationOffering", "character"))
 
 #
 # See OGC 06-009r6, clause 8.2.3.2

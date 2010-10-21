@@ -738,6 +738,17 @@ str(as.list(pegelObs)[3:5])
 str(as.data.frame(pegelObs[[1]]))
 # works!
 
+################################################################################
+# sosFeaturesOfInterest and sosOfferings
+str(sosFeaturesOfInterest(sosOfferings(weathersos)[[1]]))
+sosOfferings(weathersos, c("WIND_DIRECTION", "ATMOSPHERIC_PRESSURE"))
+sosOfferingIds(weathersos)
+
+tempIds <- sosOfferingIds(weathersos)
+tempOfferings <- sosOfferings(weathersos)
+sosObservedProperties(sosOfferings(weathersos)[[1]])
+sosObservedProperties(weathersos)
+
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")

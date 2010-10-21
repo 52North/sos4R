@@ -20,7 +20,7 @@
 \description{Classes (and their construction functions) to request observations from a Sensor Observation Service.}
 
 \usage{
-GetObservation(service, version, offering, observedProperty, responseFormat, srsName = as.character(NA), eventTime = list(NA), procedure = list(NA), featureOfInterest = NULL, result = NULL, resultModel = as.character(NA), responseMode = as.character(NA), BBOX = as.character(NA))
+GetObservation(service, version, offering, observedProperty, responseFormat, srsName = as.character(NA), eventTime = list(NA), procedure = as.character(NA), featureOfInterest = NULL, result = NULL, resultModel = as.character(NA), responseMode = as.character(NA), BBOX = as.character(NA))
 GetObservationById(service, version, observationId, responseFormat, srsName = as.character(NA), resultModel = as.character(NA), responseMode = as.character(NA))
 }
 

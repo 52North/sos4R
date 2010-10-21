@@ -21,3 +21,11 @@
 * Renamed SosCapabilities_1.1.0 to SosCapabilities_1.0.0
 * Introduced abstract class SOS and class SOS_1.0.0
 * Added first coercion functions
+* Named converters consistently by changing SosFieldConvertingFunctions(...) to  SosDataFieldConvertingFunctions(...)
+* Changed sosFOIs(...) to sosFeaturesOfInterest(...) and added method for offering
+* Changed default values of getObservation, now uses sosFeaturesOfInterest(sos) and sosEventTimePeriod(offering)
+* Changed sosOffering(...) to sosOfferings(...)
+* Changed slot types to "character" where reasonable in class SosObservationOffering, a whole lot of fixes for that...
+* Added sosObservedProperties(SosObservationOffering)
+* Accessor functions now operate based on the offering, not the allowed parameter values
+* ...

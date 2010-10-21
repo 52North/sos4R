@@ -83,7 +83,7 @@ else {
 }
 
 # Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
-myConverters <- SosFieldConvertingFunctions(
+myConverters <- SosDataFieldConvertingFunctions(
 	"myNumericUnit" = sosConvertDouble,
 mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)

@@ -236,11 +236,13 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeKVP",
 		signature = signature(obj = "OgcBinaryTemporalOp", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding KVP temporalOps: ", toString(obj))
+			if(verbose) cat("Encoding KVP temporalOps: ", toString(obj), "\n")
 			.time <- NULL
 			.tempOpTime <- obj@time
 			
 			if(class(.tempOpTime) == "GmlTimeInstant") {
+				if(verbose)
+					cat("Encoding instant.\n")
 				.time <- format(.tempOpTime@timePosition@time,
 						sosTimeFormat(sos))
 			}
@@ -248,6 +250,8 @@ setMethod(f = "encodeKVP",
 			# GET binding
 			else if (class(.tempOpTime) == "GmlTimePeriod") {
 				if(!is.null(.tempOpTime@begin) && !is.null(.tempOpTime@end)) {
+					if(verbose)
+						cat("Encoding period with begin and end.\n")
 					.begin <- format(.tempOpTime@begin@time@timePosition,
 							sosTimeFormat(sos))
 					.end <- format(.tempOpTime@end@time@timePosition,
@@ -256,6 +260,8 @@ setMethod(f = "encodeKVP",
 				}
 				else if(!is.null(.tempOpTime@beginPosition)
 						&& !is.null(.tempOpTime@endPosition)) {
+					if(verbose)
+						cat("Encoding period with beginPosition and endPosition.\n")
 					.begin <- format(.tempOpTime@beginPosition@time,
 							sosTimeFormat(sos))
 					.end <- format(.tempOpTime@endPosition@time,

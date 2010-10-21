@@ -38,7 +38,7 @@ GetObservation <- function(
 		responseFormat, 
 		srsName = as.character(NA),
 		eventTime = list(NA), 
-		procedure = list(NA),
+		procedure = as.character(NA),
 		featureOfInterest = NULL, 
 		result = NULL,
 		resultModel = as.character(NA),
@@ -137,6 +137,7 @@ setMethod("encodeRequestKVP", "GetObservation",
 		
 		.timeString <- encodeKVP(obj = obj@eventTime[[1]],
 				sos = sos, verbose = verbose)
+		
 		# if the eventTime is a latest request, it returns NA, the GET binding
 		# says for the latest observation eventTime is omitted
 		if(!is.na(.timeString)) {
@@ -157,12 +158,15 @@ setMethod("encodeRequestKVP", "GetObservation",
 	}
 	
 	if( !is.null(obj@featureOfInterest)) {
-		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest",
-						obj@featureOfInterest), sep = "&")
+#		print(obj@featureOfInterest)
+#		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest",
+#						obj@featureOfInterest), sep = "&")
+		warning("'featureOfInterest' is not supported for 'GET' - parameter is discarded, use another method to include it!")
+	
 	}
 	
 	if( !is.null(obj@result)) {
-		warning("GetObservation contains result, but that is not supported for 'GET' - parameter is discarded, use another method to include it!")
+		warning("'result' is not supported for 'GET' - parameter is discarded, use another method to include it!")
 	}
 	
 	if( !is.na(obj@resultModel)) {
@@ -186,7 +190,9 @@ setMethod("encodeRequestKVP", "GetObservation",
 	}
 	
 	.kvpString <- paste(.mandatory, .optionals, sep = "")
-		
+	
+	if(verbose) cat("Finished KVP string creation: ", .kvpString, "\n")
+	
 	return(.kvpString)
 }
 

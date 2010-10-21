@@ -8,7 +8,6 @@
 \alias{sosEventTimePeriod,SosObservationOffering-method}
 \alias{print,SosObservationOffering-method}
 \alias{toString,SosObservationOffering-method}
-\alias{SosObservationOfferingOrCharacter-class}
 \alias{SosObservationOffering}
 
 \title{Classes and Related Functions for "SosObservationOffering"}
@@ -17,8 +16,6 @@
 
 \section{Objects from the Class}{
 Objects can be created by calls to the construction functions of the form \code{SosObservationOffering(...)}.
-
-\code{SosObservationOfferingOrCharacter} is a virtual class: No objects may be created from it.
 }
 
 \usage{
@@ -39,10 +36,6 @@ SosObservationOffering(id, name = as.character(NA), time, procedure, observedPro
     \item{\code{resultModel}:}{Object of class \code{"list"}: Indicates the namespace-qualified name of the result element that will be included in the document returned from a call to GetObservation for this offering, e.g. \samp{"om:Observation"} or \samp{"om:Measurement"}.}
     \item{\code{time}:}{Object of class \code{"GmlTimeGeometricPrimitive"}: Time period for which observations can be obtained. This supports the advertisement of historical as well as real-time observations.}
   }
-}
-
-\section{Extends}{
-Class \code{"\linkS4class{SosObservationOfferingOrCharacter}"}, directly.
 }
 
 \section{Methods}{
@@ -67,8 +60,6 @@ Class \code{"\linkS4class{SosObservationOfferingOrCharacter}"}, directly.
 
 \details{
 ObservationOffering provides a mechanism for factoring groups of related observations within a single service instance. A functionally equivalent outcome could be obtained by factoring between different service instances.
-
-The class \code{SosObservationOfferingOrCharacter} is used to allow the method \code{\link{getObservation-methods}} to accept both actual objects of class \code{SosObservationOffering} or just their identifier.
 }
 
 \value{The construction functions return an object of the respective class, e.g. \code{SosObservationOffering}.}
@@ -86,10 +77,7 @@ See section 6.3, \dQuote{Observation Offerings}, of the SOS specification: Na, A
 
 \examples{
 showClass("SosObservationOffering")
-showClass("SosObservationOfferingOrCharacter")
-
 # TBD examples for construction functions
-
 }
 
 \keyword{classes}

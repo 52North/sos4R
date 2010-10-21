@@ -42,25 +42,28 @@ pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 print(object.size(pegelsos), units = c("Mb"))
 # works so far... :-)
 
-latestObs <- getObservation(sos = pegelsos,
-		observedProperty = sosObservedProperties(pegelsos),
-		offering = sosOfferings(pegelsos)[[1]],
-		procedure = sosProcedures(pegelsos)[11],
-		latest = TRUE, inspect = TRUE) #, verbose = TRUE)
-sosResult(latestObs)
+sosFeaturesOfInterest(pegelsos)
 
+off <- sosOfferings(pegelsos)[[1]]
+latestObs <- getObservation(sos = pegelsos,
+		offering = off,
+#		observedProperty = sosObservedProperties(offering),
+		procedure = sosProcedures(off)[11:13],
+		latest = TRUE,
+		inspect = TRUE) #, verbose = TRUE)
+sosResult(latestObs)
 
 # three procedures, but only getting 1 element with one procedure...
 pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 pegelObs <- getObservation(sos = pegelsos,
-		observedProperty = sosObservedProperties(pegelsos)[3],
+		observedProperty = sosObservedProperties(sosOfferings(pegelsos)[[1]])[3],
 		offering = sosOfferings(pegelsos)[[1]],
-		procedure = sosProcedures(pegelsos)[c(2501,2503,2505)],
+		procedure = sosProcedures(sosOfferings(pegelsos)[[1]])[c(2501,2503,2505)],
 		eventTime = sosCreateEventTimeList(time = sosCreateTimePeriod(
 						sos = pegelsos,
 						begin = Sys.time() - (3600 * 24), # * 360),
 						end = Sys.time()))) #, inspect = TRUE)
-# Finished getObservation to http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos - received 2 observation(s)/measurement(s) having 1372 1372 elements.
+# Parsing response (size  352 ) ...Finished getObservation to http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos - received 3 observation(s)/measurement(s) having 87, 2, 2 elements.
 # YEAH!
 
 # show parts of the data frame:
@@ -90,22 +93,22 @@ range(pegelObs[[1]]@result[,3]); range(pegelObs[[2]]@result[,3])
 #legend("topleft", legend = c("Münster", "Kärnten"),
 #		col = c("steelblue", "orange"), lty = 1, bty="n")
 
-plot(x = pegelObs[[1]]@result[,1], y = pegelObs[[2]]@result[,3], type = "l")
+plot(x = pegelObs[[1]]@result[,1], y = pegelObs[[1]]@result[,3], type = "l")
 
 # Good data?
 # Felix's tip: look at the coastal stations, much more interesting!
 
 procedure <- "Wasserstand-Elster_501390"
-elster <- getObservation(sos = pegelsos, offering = sosOfferings(pegelsos)[[2]],
-		procedure = list(procedure))
+elster <- getObservation(sos = pegelsos, offering = sosOfferings(pegelsos)[[1]],
+		procedure = procedure)
 
 ################################################################################
 # Elsterhochwasser, 30.09.2010
-elster@result[1:3,]
-range(elster@result$Wasserstand)
-elsterClean <- subset(elster@result, Wasserstand > 0)
+elster[[1]]@result[1:3,]
+range(elster[[1]]@result$Wasserstand)
+elsterClean <- subset(elster[[1]]@result, Wasserstand > 0)
 
-plot(x = elster@result$Time, y = elster@result$Wasserstand, ylim = c(100, 600),
+plot(x = elster[[1]]@result$Time, y = elster[[1]]@result$Wasserstand, ylim = c(100, 600),
 		type = "l")
 
 ################################################################################
@@ -137,7 +140,7 @@ sosOfferings(airsos)[[1]]@time
 climatesos <- SOS("http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos")
 
 length(sosProcedures(climatesos))
-# 1440
+# 6
 
 lapply(sosOfferings(climatesos), slot, "name")
 
@@ -249,3 +252,56 @@ print(object.size(ades), units=c("Mb"))
 testObsAdes <- getObservation(sos = ades, offering = sosOfferings(ades)[[1]],
 		procedure = sosProcedures(sosOfferings(ades)[[1]])[1], verbose =TRUE) # inspect = TRUE)
 # works!
+
+
+################################################################################
+# various
+var01.converters <- SosDataFieldConvertingFunctions("urn:terrestris:foss4g:temperature" = sosConvertDouble)
+var01 <- SOS(":8280/52nSOSv3_WAR/sos", dataFieldConverters = var01.converters)
+time01 <- sosEventTimePeriod(sosOfferings(var01)[[1]])
+time01.part <- sosCreateTimePeriod(var01,
+		begin = as.POSIXct("2010-08-06"),
+		end = as.POSIXct("2010-08-07"))
+obs01 <- getObservation(var01, offering = sosOfferings(var01)[[1]],
+#		observedProperty = sosObservedProperties(var01),
+#		procedure = sosProcedures(var01),
+		eventTime = sosCreateEventTimeList(time = time01),
+		featureOfInterest = sosCreateFeatureOfInterest(list("8242", "8245")),
+		verbose = TRUE)
+# feature filter neccessary, otherwise too much data -> works!
+
+var02 <- SOS(":82/cgi-bin/mapserv?map=/tmp/umn/umn_sos.map",
+		method = "GET",
+		verboseOutput = TRUE)
+# no getcapabilities possible:
+# 1. url already contains a "?", so if "GET" the error is --- msEvalRegex(): Regular expression error. String failed expression test.
+#	-> fixed that case, but then the same error as with "POST"...
+# 2. error with "POST" gives HTML page --- Unable to access file. (/tmp/umn/umn_sos.map) 
+
+var03.converters <- SosDataFieldConvertingFunctions(
+		"urn:terrestris:foss4g:temperature" = sosConvertDouble,
+		"urn:terrestris:foss4g:feature" = sosConvertString)
+var03 <- SOS(":8280/deegree-sos-cite100/services",
+		dataFieldConverters = var03.converters,
+#		method = "POST",
+		method = "GET")
+#		verboseOutput = TRUE)
+var03.off <- sosOfferings(var03)[[1]]
+obs03 <- getObservation(sos = var03, offering = var03.off,
+		procedure = NA_character_, # must be set, otherwise InvalidParameterValue...
+		eventTime = list(NA))
+# connection works with GET
+# works!
+result <- sosResult(obs03)
+str(result)
+plot(x = result["timestamp"], y = result["val"])
+# looks weird because it plots all features
+
+result995 <- subset(x = result, subset = (plz == "995.0\n"),
+		select = c(timestamp, val))
+plot(x = result995[["timestamp"]], y = result995[["val"]], type = "l")
+# works!
+
+# connection with post returns HEX: "3c 3f 78 6d 6c 20 76 65 72 73 "
+#  -> translate with http://home2.paulschou.net/tools/xlate/
+#  -> ist exception report --- Unable to determine the subcontroller for request type <sos:GetCapabilities...

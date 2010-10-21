@@ -241,9 +241,6 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
 	
 	.kvpString <- paste(.service, .request, sep = "&")
 	
-	if(verbose)
-		cat(.kvpString)
-	
 	return(.kvpString)
 }
 
@@ -273,8 +270,7 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_1.1.0",
 	
 	.kvpString <- paste(.mandatory, .optionals, sep = "")
 	
-	if(verbose)
-		cat(.kvpString)
+	if(verbose) cat("ENCODED OwsGetCapabilities_1.1.0:", .kvpString, "\n")
 	
 	return(.kvpString)
 }
@@ -290,8 +286,7 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
 		.kvpString <- paste(.kvpString, .kvpKeyAndValues("acceptLanguages", obj@acceptLanguages), sep = "&")
 	}
 	
-	if(verbose)
-		cat(.kvpString)
+	if(verbose) cat("ENCODED OwsGetCapabilities_2.0.0:", .kvpString, "\n")
 	
 	return(.kvpString)
 }

@@ -32,9 +32,11 @@
 \alias{sosFilter_Capabilities}
 \alias{sosFilter_Capabilities-methods}
 \alias{sosFilter_Capabilities,SOS-method}
-\alias{sosFOIs}
-\alias{sosFOIs-methods}
-\alias{sosFOIs,SOS-method}
+\alias{sosFeaturesOfInterest}
+\alias{sosFeaturesOfInterest-methods}
+\alias{sosFeaturesOfInterest,SOS-method}
+\alias{sosFeaturesOfInterest,SOS,character-method}
+\alias{sosFeaturesOfInterest,SosObservationOffering-method}
 \alias{sosMethod}
 \alias{sosMethod-methods}
 \alias{sosMethod,SOS-method}
@@ -42,15 +44,14 @@
 \alias{sosObservedProperties}
 \alias{sosObservedProperties-methods}
 \alias{sosObservedProperties,SOS-method}
-\alias{sosOffering}
-\alias{sosOffering-methods}
-\alias{sosOffering,SOS,character-method}
+\alias{sosObservedProperties,SosObservationOffering-method}
 \alias{sosOfferingIds}
 \alias{sosOfferingIds-methods}
 \alias{sosOfferingIds,SOS-method}
 \alias{sosOfferings}
 \alias{sosOfferings-methods}
 \alias{sosOfferings,SOS-method}
+\alias{sosOfferings,SOS,character-method}
 \alias{sosOperation}
 \alias{sosOperation-methods}
 \alias{sosOperation,SOS,character-method}
@@ -113,7 +114,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{capabilities}:}{Object of class \code{"OwsCapabilities"} ~~ }
     \item{\code{parsers}:}{Object of class \code{"list"} ~~ }
     \item{\code{encoders}:}{Object of class \code{"list"} ~~ }
-    \item{\code{dataFieldConverters}:}{Object of class \code{"list"}: A list of named functions to be used by the parsing methods to convert data values to the correct \R type, see \code{\link{SosFieldConvertingFunctions}} for the default functions and how to add your own converters.}
+    \item{\code{dataFieldConverters}:}{Object of class \code{"list"}: A list of named functions to be used by the parsing methods to convert data values to the correct \R type, see \code{\link{SosDataFieldConvertingFunctions}} for the default functions and how to add your own converters.}
     \item{\code{curlHandle}:}{Object of class \code{"CURLHandle"}: The curl options to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
     \item{\code{curlOptions}:}{Object of class \code{"ANY"}: The curl handle to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
     \item{\code{timeFormat}:}{Object of class \code{"character"}: The time format to be used or decoding and encoding time character strings to and from \code{POSIXt} classes.}
@@ -153,7 +154,7 @@ Object from the class can be used in calls to function for metadata retrieval of
 }
 
 \usage{
-SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(), dataFieldConverters = SosFieldConvertingFunctions(), curlOptions = list(), curlHandle = getCurlHandle(), timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE)
+SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(), dataFieldConverters = SosDataFieldConvertingFunctions(), curlOptions = list(), curlHandle = getCurlHandle(), timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE)
 }
 
 \arguments{

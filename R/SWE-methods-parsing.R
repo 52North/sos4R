@@ -106,7 +106,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 									" with the definition ",
 									.currentField[[.sosParseFieldDefinition]],
 									"! Trying a default, but you can add one when creating a SOS using",
-									"SosFieldConvertingFunctions()."))
+									"SosDataFieldConvertingFunctions()."))
 					.method <- .converters[[.sosParseFieldUOM]]	
 				}
 			}
@@ -166,6 +166,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	}
 	
 	# remove id column
+	if(verbose) cat("Removing temporary first column")
 	.data <- .data[,!colnames(.data)%in%.tempId]
 	
 	return(.data)

@@ -16,18 +16,20 @@ pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 names(sosOfferings(pegelsos))
 
 # set up parameters for request
-procedures <- sosProcedures(pegelsos)
+wasserstand_roh <- sosOfferings(pegelsos)[[1]] # <- Should be "WASSERSTAND_ROHDATEN"
+procedures <- sosProcedures(wasserstand_roh)
 procedures <- subset(procedures, procedures %in% grep("*Bake*", procedures, value=TRUE))
 # Watch out here because order of elements can change! The correct value is given in the comment.
-wasserstand <- sosObservedProperties(pegelsos)[1] # <- Should be "Wasserstand"
-wasserstand_roh <- sosOfferings(pegelsos)[[1]] # <- Should be "WASSERSTAND_ROHDATEN"
+wasserstand <- sosObservedProperties(wasserstand_roh)[1] # <- Should be "Wasserstand"
 lastSixtyDays <- sosCreateEventTimeList(time = sosCreateTimePeriod(
 	sos = pegelsos,
 	begin = Sys.time() - (3600 * 24 * 60),
 	end = Sys.time()))
 
-pegelObs <- getObservation(sos = pegelsos, offering = wasserstand_roh,
-		observedProperty = wasserstand, procedure = procedures[7],
+pegelObs <- getObservation(sos = pegelsos,
+		offering = wasserstand_roh,
+		observedProperty = wasserstand,
+		procedure = procedures[1], # "Wasserstand-Bake_C_-_Scharhoern_9510060"
 		eventTime = lastSixtyDays)
 data <- sosResult(pegelObs)
 
@@ -82,8 +84,8 @@ plot(bakeA.arma)
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
 # set up request parameters
-stationMuenster <- sosProcedures(weathersos)[1]
 temperatureOffering <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
+stationMuenster <- sosProcedures(temperatureOffering)[1] # "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"
 temperature <- sosObservedProperties(weathersos)[5] # "urn:ogc:def:property:OGC::Temperature"
 september <- sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 				begin = as.POSIXct("2010-09-01 00:00"),
@@ -99,10 +101,10 @@ obsSept <- getObservation(sos = weathersos,
 summary(sosResult(obsSept))
 sosResult(obsSept)[1:2,]
 names(sosResult(obsSept))
-data <- sosResult(obsSept)
 
 # create time series from data and plot
 library("xts")
+data <- sosResult(obsSept)
 tempSept <- xts(x = data[["urn:ogc:def:property:OGC::Temperature"]],
 	order.by = data[["Time"]])
 plot(tempSept, main = "Temperature in Münster",
@@ -136,8 +138,8 @@ plot(fcastArima)
 # create connection to SOS
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 # set up request parameters
-stationMuenster <- sosProcedures(weathersos)[1]
 temperatureOffering <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
+stationMuenster <- sosProcedures(temperatureOffering)[1] # "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"
 temperature <- sosObservedProperties(weathersos)[5] # "urn:ogc:def:property:OGC::Temperature"
 timeperiod2009 <- sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 				begin = as.POSIXct("2009-01-01 00:00"),

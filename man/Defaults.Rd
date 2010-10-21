@@ -17,7 +17,7 @@
 \alias{SosParsingFunctions}
 \alias{SosEncodingFunctions}
 \alias{SosDisabledParsers}
-\alias{SosFieldConvertingFunctions}
+\alias{SosDataFieldConvertingFunctions}
 \alias{SosExampleServices}
 
 \title{Default Parameter Settings and Handling Functions}
@@ -41,7 +41,7 @@ SosDefaultConnectionMethod()
 
 SosParsingFunctions(..., include = character(0), exclude = character(0))
 SosEncodingFunctions(..., include = character(0), exclude = character(0))
-SosFieldConvertingFunctions(..., include = character(0), exclude = character(0))
+SosDataFieldConvertingFunctions(..., include = character(0), exclude = character(0))
 
 SosDisabledParsers()
 
@@ -130,7 +130,7 @@ sos = SOS(url = "http://mysos.com/sos",
 		encoders = SosEncodingFunctions("POST" = myPostEncoding))
 
 # Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
-myConverters <- SosFieldConvertingFunctions(
+myConverters <- SosDataFieldConvertingFunctions(
 	"myNumericUnit" = sosConvertDouble,
 mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)

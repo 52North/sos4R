@@ -33,7 +33,7 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		version = "1.0.0",
 		parsers = SosParsingFunctions(),
 		encoders = SosEncodingFunctions(),
-		dataFieldConverters = SosFieldConvertingFunctions(),
+		dataFieldConverters = SosDataFieldConvertingFunctions(),
 		curlOptions = list(),
 		curlHandle = getCurlHandle(),
 		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE) {
@@ -160,7 +160,12 @@ SosFeatureOfInterest <- function(objectIDs = list(NA), spatialOps = NULL) {
 			verbose = verbose)
 	
 	if(sos@method == .sosConnectionMethodGet) {
-		.url = paste(sos@url, .encodedRequest, sep = "?")
+		if(isTRUE(grep(pattern = "[\\?]", x = sos@url) > 0)) {
+			warning("Given url already contains a '?', appending arguments!")
+			.url = paste(sos@url, .encodedRequest, sep = "&")
+		}
+		else .url = paste(sos@url, .encodedRequest, sep = "?")
+		
 		if(verbose || inspect) {
 			cat("*** GET! REQUEST: ", .url, "\n")
 		}
@@ -196,9 +201,8 @@ SosFeatureOfInterest <- function(objectIDs = list(NA), spatialOps = NULL) {
 						SosSupportedConnectionMethods()))
 	}
 	
-	if(regexpr("<!DOCTYPE HTML", .response) > 0) {
-		cat(.response, "\n")
-		stop("*** ERROR: Got HTML response!")
+	if(regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) {
+		stop(paste("*** ERROR: Got HTML response!:\n", .response, "\n\n"))
 	}
 	
 	return(.response)
@@ -365,86 +369,100 @@ setMethod(f = "getObservationById",
 #
 #
 #
+.getObservation_1.0.0 <- function(sos, offering, observedProperty,
+		responseFormat, srsName, eventTime,	procedure, featureOfInterest,
+		result, resultModel, responseMode, BBOX, latest, verbose, inspect) {
+	
+	if(is.character(offering))
+		.offeringId <- offering
+	else .offeringId <- offering@id
+	
+	if(verbose)
+		cat("** GET OBSERVATION to ", sos@url, " with offering ",
+				.offeringId, "\n")
+	
+	if(latest) .eventTime <- list(.createLatestEventTime(verbose))
+	else .eventTime <- eventTime
+	
+	if(latest && !is.na(eventTime))
+		warning("'Latest' is set to TRUE > given eventTime is ignored!")
+	
+	.go <- GetObservation(service = sosService, version = sos@version, 
+			offering = .offeringId, observedProperty = observedProperty,
+			responseFormat =  responseFormat, srsName = srsName,
+			eventTime = .eventTime, procedure = procedure,
+			featureOfInterest = featureOfInterest, result = result,
+			resultModel = resultModel, responseMode = responseMode,
+			BBOX = BBOX)
+	
+	if(verbose)
+		cat("** REQUEST:\n", toString(.go), "\n")
+	
+	.responseString = sosRequest(sos = sos, request = .go,
+			verbose = verbose, inspect = inspect)
+	if(verbose || inspect){
+		cat("*** RESPONSE ( size:", object.size(.responseString) , "\n", .responseString , "\n")
+	}
+	
+	.response <- xmlParseDoc(.responseString, asText = TRUE)
+	if(verbose || inspect) {
+		cat("** RESPONSE DOC:\n")
+		print(.response)
+	}
+	
+	if(.isExceptionReport(.response)) {
+		return(.handleExceptionReport(sos, .response))
+	}
+	else {
+		.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
+		.obs <- .parsingFunction(obj = .response, sos = sos,
+				verbose = verbose)
+		
+		if(inherits(.obs, "OmObservationCollection")) {
+			.dim <- dim(sosResult(.obs))
+			if(!is.null(.dim)) {
+				# just one element
+				.resultLength = .dim[[1]]
+			}
+			# more than one element
+			else {
+				.resultLength <- sapply(
+						lapply(sosResult(.obs),dim),
+						"[[", 1)
+			}
+		}
+		else {
+			.resultLength <- NA
+		}
+		
+		if(verbose) {
+			cat("** PARSED RESPONSE:\n")
+			print(.obs)
+		}
+		
+		cat("Finished getObservation to", sos@url, "- received",
+				length(.obs), "observation(s)/measurement(s) having",
+				toString(.resultLength), "elements.\n")
+		
+		return(.obs)
+	}
+}
 setMethod(f = "getObservation",
 		signature = signature(sos = "SOS_1.0.0",
-				offering = "SosObservationOfferingOrCharacter"),
+				offering = "SosObservationOffering"),
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
 				responseMode, BBOX, latest, verbose, inspect) {
-			
-			if(is.character(offering))
-				.offeringId <- offering
-			else .offeringId <- offering@id
-			
-			if(verbose)
-				cat("** GET OBSERVATION to ", sos@url, " with offering ",
-						.offeringId, "\n")
-			
-			if(latest) .eventTime <- list(.createLatestEventTime(verbose))
-			else .eventTime <- eventTime
-			
-			if(latest && !is.na(eventTime))
-				warning("'Latest' is set to TRUE > given eventTime is ignored!")
-			
-			.go <- GetObservation(service = sosService, version = sos@version, 
-					offering = .offeringId, observedProperty =  observedProperty,
-					responseFormat =  responseFormat, srsName = srsName,
-					eventTime = .eventTime, procedure = procedure,
-					featureOfInterest = featureOfInterest, result = result,
-					resultModel = resultModel, responseMode = responseMode,
-					BBOX = BBOX)
-			
-			if(verbose)
-				cat("** REQUEST:\n", toString(.go), "\n")
-			
-			.responseString = sosRequest(sos = sos, request = .go,
-					verbose = verbose, inspect = inspect)
-			if(verbose || inspect){
-				cat("*** RESPONSE:\n", .responseString , "\n")
-			}
-			
-			.response <- xmlParseDoc(.responseString, asText = TRUE)
-			if(verbose || inspect) {
-				cat("** RESPONSE DOC:\n")
-				print(.response)
-			}
-						
-			if(.isExceptionReport(.response)) {
-				return(.handleExceptionReport(sos, .response))
-			}
-			else {
-				.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
-				.obs <- .parsingFunction(obj = .response, sos = sos,
-						verbose = verbose)
-
-				if(inherits(.obs, "OmObservationCollection")) {
-					.dim <- dim(sosResult(.obs))
-					if(!is.null(.dim)) {
-						# just one element
-						.resultLength = .dim[[1]]
-					}
-					# more than one element
-					else {
-						.resultLength <- sapply(
-								lapply(sosResult(.obs),dim),
-								"[[", 1)
-					}
-				}
-				else {
-					.resultLength <- NA
-				}
-				
-				if(verbose) {
-					cat("** PARSED RESPONSE:\n")
-					print(.obs)
-				}
-				
-				cat("Finished getObservation to", sos@url, "- received",
-						length(.obs), "observation(s)/measurement(s) having",
-						toString(.resultLength), "elements.\n")
-				
-				return(.obs)
-			}
+			return(.getObservation_1.0.0(sos = sos, offering = offering,
+							observedProperty = observedProperty,
+							responseFormat = responseFormat,
+							srsName = srsName, eventTime = eventTime,
+							procedure = procedure,
+							featureOfInterest = featureOfInterest,
+							result = result, resultModel = resultModel,
+							responseMode = responseMode, BBOX = BBOX,
+							latest = latest, verbose = verbose,
+							inspect = inspect))
 		}
 )
 

@@ -75,18 +75,19 @@ if (!isGeneric("getObservation"))
 					"featureOfInterest", "result", "resultModel",
 					"responseMode", "BBOX", "latest", "verbose", "inspect"),
 			def = function(sos, offering,
-					observedProperty = sosObservedProperties(sos),
+					observedProperty = sosObservedProperties(obj = offering),
 					responseFormat = sosDefaultGetObsResponseFormat,
 					# optional:
 					srsName = as.character(NA),
-					eventTime = list(NA), 
-					procedure = sosProcedures(sos),
+					eventTime = list(NA), # sosCreateEventTimeList(time = sosEventTimePeriod(obj = offering))
+					procedure = as.character(NA), # sosProcedures(obj = offering),
 					featureOfInterest = NULL,
 					result = NULL,
 					resultModel = as.character(NA),
 					responseMode = as.character(NA),
 					BBOX = as.character(NA),
-					latest = FALSE, verbose = sos@verboseOutput,
+					latest = FALSE,
+					verbose = sos@verboseOutput,
 					inspect = FALSE) {
 				standardGeneric("getObservation")
 			})

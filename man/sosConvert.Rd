@@ -25,7 +25,7 @@ The methods are automatically called from the given SOS's list of conversion fun
 
 If you want to provide you own conversion functions, follow the example below. Always include the common parameters \code{x} and \code{sos}.
 
-There are functions to access the converters of a SOS (\code{\link{sosDataFieldConverters-methods}}) and to combine default and your own converters (\code{\link{SosFieldConvertingFunctions}}).
+There are functions to access the converters of a SOS (\code{\link{sosDataFieldConverters-methods}}) and to combine default and your own converters (\code{\link{SosDataFieldConvertingFunctions}}).
 
 }
 
@@ -33,7 +33,7 @@ There are functions to access the converters of a SOS (\code{\link{sosDataFieldC
 
 \author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
 
-\seealso{\code{\link{sosDataFieldConverters-methods}}, \code{\link{SosFieldConvertingFunctions}}}
+\seealso{\code{\link{sosDataFieldConverters-methods}}, \code{\link{SosDataFieldConvertingFunctions}}}
 
 \examples{
 
@@ -42,7 +42,7 @@ one <- sosConvertDouble("1", sos)
 class(one)
 
 # add conversion rules, also possible to override default ones
-myConverters <- SosFieldConvertingFunctions(
+myConverters <- SosDataFieldConvertingFunctions(
 	"C" = sosConvertDouble,
 	"S/m" = sosConvertDouble)
 sos <- SOS(url = SosExampleServices()[[2]], dataFieldConverters = myConverters)

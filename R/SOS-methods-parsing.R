@@ -36,15 +36,23 @@ parseSosObservationOffering <- function(obj, sos) {
 	
 	.time <- parseTimeGeometricPrimitiveFromParent(obj = obj[[sosTimeName]],
 			format = sosTimeFormat(sos))
-	.procedure <- lapply(obj[sosProcedureName], xmlGetAttr, "href")
+	
+	# can be references or containes, so use lists
 	.observedProperty <- lapply(obj[sosObservedPropertyName], xmlGetAttr,
 			"href")
 	.featureOfInterest <- lapply(obj[sosFeatureOfInterestName], xmlGetAttr,
 			"href")
 	
-	.responseFormat <- lapply(obj[sosResponseFormatName], xmlValue)
-	.resultModel <- lapply(obj[sosResultModelName], xmlValue)
-	.responseMode <- lapply(obj[sosResponseModeName], xmlValue)
+	# can be transformed to character vectors
+	.procedure <- sapply(obj[sosProcedureName], xmlGetAttr, "href")
+	.responseFormat <- sapply(obj[sosResponseFormatName], xmlValue)
+	.responseMode <- sapply(obj[sosResponseModeName], xmlValue)
+	
+	# optional, so check if list is empty!
+	.resultModel <- sapply(obj[sosResultModelName], xmlValue)
+	if(length(.resultModel) == 0) .resultModel <- NA_character_
+	.intendedApplication <- sapply(obj[sosIntendedApplicationName], xmlValue)
+	if(length(.intendedApplication) == 0) .intendedApplication <- NA_character_
 	
 	.env <- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
 	if(!is.null(.env)) {
@@ -57,8 +65,6 @@ parseSosObservationOffering <- function(obj, sos) {
 		.boundedBy <- list()
 	}
 
-	.intendedApplication <- lapply(obj[sosIntendedApplicationName], xmlValue)
-	
 	.ob <- SosObservationOffering(id = .id, name = .name, 
 			time = .time, procedure = .procedure,
 			observedProperty = .observedProperty,

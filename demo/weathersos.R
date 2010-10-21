@@ -3,33 +3,27 @@
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
 
-# establish a connection to a SOS instance
+# establish a connection to a SOS instance with default settings
 weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
 
 # get the latest observation (not standard conform!)
-obs <- getObservation(sos = weathersos,
-		observedProperty = sosObservedProperties(weathersos)[4],
-		procedure = sosProcedures(weathersos)[1],
-		offering = sosOfferings(weathersos)[[4]],
-		latest = TRUE)
+off <- sosOfferings(weathersos)[[4]]
+obs <- getObservation(sos = weathersos, offering = off, latest = TRUE)
 
 # show the result
-obs@result
+sosResult(obs)
 
 
 # Two procedures, including plot
 #
 # Attention: plots ignore the fact that the times do NOT perfectly match!
 #
-obs <- getObservation(sos = weathersos,
-		observedProperty = sosObservedProperties(weathersos)[5],
-		procedure = sosProcedures(weathersos),
+obs <- getObservation(sos = weathersos, offering = off,
+		procedure = sosProcedures(off),
 		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
 						begin = as.POSIXct("2009-08-10 12:00"),
-						end = as.POSIXct("2009-08-20 12:00"))),
-		#featureOfInterest = foiBBox,
-		offering = sosOfferings(weathersos)[[5]])
+						end = as.POSIXct("2009-08-20 12:00"))))
 str(obs[[1]]@result)
 str(obs[[2]]@result)
 
