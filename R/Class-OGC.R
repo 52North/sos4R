@@ -178,3 +178,4 @@ setClass("OgcComparisonOps",
 )
 setClassUnion(name = "OgcComparisonOpsOrNULL",
 		members = c("OgcComparisonOps", "NULL"))
+		

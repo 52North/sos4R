@@ -75,3 +75,4 @@ setClass("SaSamplingSurface",
 			return(TRUE)
 		}
 )
+

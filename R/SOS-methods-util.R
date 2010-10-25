@@ -234,75 +234,79 @@ if (!isGeneric("sosProcedures"))
 			})
 setMethod(f = "sosProcedures", signature = signature(obj = "SOS"),
 		def = function(obj) {
-			.offerings <- sosOfferings(obj)
-			.p <- lapply(.offerings, sosProcedures)
-			names(.p) <- names(.offerings)
+			.caps <- sosCaps(obj)
+			.go <- .caps@operations@operations[[sosGetObservationName]]
+			.p <- .go@parameters$procedure
+			if(is.null(.p)) {				
+				.p <- .caps@operations@operations[[sosDescribeSensorName]]@parameters$procedure
+			}
+			if(is.null(.p)) {
+				warning(paste("No procedures listed as parameters, ",
+					"for", sosGetObservationName, " or ",
+					sosDescribeSensorName, "!"))
+			}
+				
 			return(.p)
 		})
 setMethod(f = "sosProcedures",
 		signature = signature(obj = "SosObservationOffering"),
 		def = function(obj) {
-			.p <- as.character(obj@procedure)
-			return(.p)
+			return(obj@procedure)
 		})
 
 if (!isGeneric("sosObservedProperties"))
-	setGeneric(name = "sosObservedProperties", def = function(obj) {
+	setGeneric(name = "sosObservedProperties", def = function(sos) {
 				standardGeneric("sosObservedProperties")
 			})
-setMethod(f = "sosObservedProperties", signature = signature(obj = "SOS"),
-		def = function(obj) {
-			.op <- lapply(sosOfferings(obj), sosObservedProperties)
-			return(.op)
-		})
-setMethod(f = "sosObservedProperties", signature = signature(
-				obj = "SosObservationOffering"),
-		def = function(obj) {
-			.op <- obj@observedProperty
-			return(.op)
+setMethod(f = "sosObservedProperties", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			.caps <- sosCaps(sos)
+			.getOb <- .caps@operations@operations[[sosGetObservationName]]
+			return(.getOb@parameters[[sosObservedPropertyName]])
 		})
 
 if (!isGeneric("sosOfferings"))
-	setGeneric(name = "sosOfferings", def = function(obj, ...) {
+	setGeneric(name = "sosOfferings", def = function(sos) {
 				standardGeneric("sosOfferings")
 			})
-setMethod(f = "sosOfferings", signature = signature(obj = "SOS"),
-		def = function(obj) {
-			.offerings <- obj@capabilities@contents@observationOfferings
+setMethod(f = "sosOfferings", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			.offerings <- sos@capabilities@contents@observationOfferings
 			return(.offerings)
 		})
-setMethod(f = "sosOfferings", signature = signature(obj = "SOS"),
-		def = function(obj, offeringIDs) {
-			.offerings <- obj@capabilities@contents@observationOfferings
-			return(.offerings[offeringIDs])
+if (!isGeneric("sosOffering"))
+	setGeneric(name = "sosOffering", def = function(sos, offeringId) {
+				standardGeneric("sosOffering")
+			})
+setMethod(f = "sosOffering", signature = signature(sos = "SOS", 
+				offeringId = "character"),
+		def = function(sos, offeringId) {
+			.offerings <- sos@capabilities@contents@observationOfferings
+			return(.offerings[[offeringId]])
 		})
-
 if (!isGeneric("sosOfferingIds"))
 	setGeneric(name = "sosOfferingIds", def = function(sos) {
 				standardGeneric("sosOfferingIds")
 			})
 setMethod(f = "sosOfferingIds", signature = signature(sos = "SOS"),
 		def = function(sos) {
-			return(sapply(sosOfferings(sos), slot, name = "id"))
+			return(names(sosOfferings(sos)))
 		})
 
-if (!isGeneric("sosFeaturesOfInterest"))
-	setGeneric(name = "sosFeaturesOfInterest", def = function(obj, ...) {
-				standardGeneric("sosFeaturesOfInterest")
+if (!isGeneric("sosFOIs"))
+	setGeneric(name = "sosFOIs", def = function(sos) {
+				standardGeneric("sosFOIs")
 			})
-setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SOS"),
-		def = function(obj, offerings = sosOfferingIds(obj)) {
-			# via observation offering
-			.offerings <- sosOfferings(obj)
-			.offerings <- .offerings[offerings]
-			.wantedOfferings <- lapply(.offerings, slot,
-					name = "featureOfInterest")
-			return(.wantedOfferings)
-		})
-setMethod(f = "sosFeaturesOfInterest",
-		signature = signature(obj = "SosObservationOffering"),
-		def = function(obj) {
-			return(obj@featureOfInterest)
+setMethod(f = "sosFOIs", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			.caps <- sosCaps(sos)
+			
+			# via GetFeatureOfInterest
+			.gfoi <- .caps@operations@operations[[sosGetFeatureOfInterestName]]
+			if(!is.null(.gfoi)) {
+				return(.gfoi@parameters$featureOfInterestID)
+			}
+			else return("GetFeatureOfInterest-Operation not supported!")
 		})
 
 if (!isGeneric("sosOperation"))
@@ -434,6 +438,9 @@ sosConvertDouble <- function(x, sos) {
 }
 sosConvertString <- function(x, sos) {
 	return(as.character(x = x))
+}
+sosConvertLogical <- function(x, sos) {
+	return(as.logical(x = x))
 }
 
 if (!isGeneric("sosDataFieldConverters"))

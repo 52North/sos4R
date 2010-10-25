@@ -67,7 +67,7 @@ setClassUnion(name = "SwePhenomenonPropertyOrNULL",
 #
 setClass("SweCompositePhenomenon",
 		representation(dimension = "integer", components = "list",
-				# optional:
+				# optional: 
 				base = "SwePhenomenonPropertyOrNULL"),
 		prototype = list(dimension = NA_integer_, components = list(NA)),
 		contains = "SwePhenomenon",
