@@ -3,7 +3,7 @@
 
 \alias{checkRequest}
 \alias{checkRequest-methods}
-\alias{checkRequest,SOS,DescribeSensor,logical-method}
+\alias{checkRequest,SOS,SosDescribeSensor,logical-method}
 \alias{checkRequest,SOS,SosGetObservationById,logical-method}
 \alias{checkRequest,SOS,SosGetObservation,logical-method}
 \alias{checkRequest,SOS,OwsGetCapabilities_1.1.0,logical-method}

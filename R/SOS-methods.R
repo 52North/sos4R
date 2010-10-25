@@ -345,7 +345,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 		cat("** DESCRIBE SENSOR: ", procedure, "@", sos@url, "\n")
 	}
 	
-	.ds <- DescribeSensor(service = sosService, version = sos@version,
+	.ds <- SosDescribeSensor(service = sosService, version = sos@version,
 			procedure = procedure, outputFormat = outputFormat)
 	if(verbose)
 		cat("** REQUEST:\n", toString(.ds), "\n")

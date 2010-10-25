@@ -52,9 +52,6 @@ exportMethods(
     "sosVersion" 
 )
 exportClasses(
-    "DescribeSensor",
-     "GetObservation",
-     "GetObservationById",
      "GmlDirectPosition",
      "GmlEnvelope",
      "GmlFeature",
@@ -122,6 +119,9 @@ exportClasses(
      "SosCapabilities_1.0.0",
      "SosContents",
      "SosContentsOrNULL",
+     "SosDescribeSensor",
+     "SosGetObservation",
+     "SosGetObservationById",
      "SosEventTime",
      "SosEventTimeLatest",
      "SosFeatureOfInterest",

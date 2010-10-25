@@ -1,4 +1,4 @@
-\name{DescribeSensor-class}
+\name{DescribeSensor}
 \Rdversion{1.1}
 
 \docType{class}
@@ -23,7 +23,7 @@ This functions should not be called directly, but instead using the function \co
 \section{Objects from the Class}{Objects can be created by calling the construction function of the form \code{DescribeSensor(...)}. The contain the procedure identifier that is to be described by a service.}
 
 \usage{
-DescribeSensor(service, version, procedure, outputFormat)
+SosDescribeSensor(service, version, procedure, outputFormat)
 }
 
 \arguments{
@@ -33,7 +33,7 @@ DescribeSensor(service, version, procedure, outputFormat)
   \item{outputFormat}{The value of the output format element in the request, e.g. \samp{text/xml;subtype="sensorML/1.0.1"}}
 }
 
-\value{The value of the construction function is an object of class \link{DescribeSensor-class}}
+\value{The value of the construction function is an object of class \link{SosDescribeSensor-class}}
 
 \section{Slots}{
   \describe{
@@ -69,10 +69,10 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 \seealso{See Also \code{\link{SensorML}} and \link{describeSensor}.}
 
 \examples{
-showClass("DescribeSensor")
+showClass("SosDescribeSensor")
 
 # example for construction function
-describeSensorRequest <- DescribeSensor(service = "SOS", version = "1.0.0",
+describeSensorRequest <- SosDescribeSensor(service = "SOS", version = "1.0.0",
 	procedure = "urn:procedure:42", outputFormat = "text/xml")
 print(describeSensorRequest)
 

@@ -3,6 +3,7 @@
 \alias{sosConvertString}
 \alias{sosConvertDouble}
 \alias{sosConvertTime}
+\alias{sosConvertLogical}
 
 \title{SOS Conversion functions for Observation Results}
 \description{
@@ -13,6 +14,7 @@ These functions are called by the parsers of om:Observation and om:Measurement d
 sosConvertString(x, sos)
 sosConvertDouble(x, sos)
 sosConvertTime(x, sos)
+sosConvertLogical(x, sos)
 }
 
 \arguments{

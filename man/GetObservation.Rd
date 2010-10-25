@@ -5,11 +5,12 @@
 
 \alias{GetObservation}
 \alias{SosGetObservation}
-\alias{GetObservation-class}
+\alias{SosGetObservation-class}
 \alias{show,SosGetObservation-method}
 \alias{toString,SosGetObservation-method}
 \alias{print,SosGetObservation-method}
 \alias{GetObservationById}
+\alias{SosGetObservationById}
 \alias{SosGetObservationById-class}
 \alias{show,SosGetObservationById-method}
 \alias{print,SosGetObservationById-method}
