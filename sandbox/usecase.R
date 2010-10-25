@@ -1,6 +1,6 @@
 ################################################################################
 # weathersos
-#library("sos4R")
+library("sos4R")
 
 # create connection to SOS
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
@@ -33,6 +33,8 @@ tempSept <- xts(x = data[["urn:ogc:def:property:OGC::Temperature"]],
 		order.by = data[["Time"]])
 plot(tempSept, main = "Temperature in Münster",
 		xlab = "Time", ylab = "Temperature (°C)", major.ticks = "weeks")
+x = loess(Temp~as.numeric(Time),na.omit(data),enp.target=10)
+lines(data$Time, x$fitted, col = 'red')
 
 
 ################################################################################
