@@ -4,9 +4,9 @@
 
 \alias{encodeRequestKVP}
 \alias{encodeRequestKVP-methods}
-\alias{encodeRequestKVP,DescribeSensor-method}
-\alias{encodeRequestKVP,GetObservation-method}
-\alias{encodeRequestKVP,GetObservationById-method}
+\alias{encodeRequestKVP,SosDescribeSensor-method}
+\alias{encodeRequestKVP,SosGetObservation-method}
+\alias{encodeRequestKVP,SosGetObservationById-method}
 \alias{encodeRequestKVP,OwsGetCapabilities-method}
 \alias{encodeRequestKVP,OwsGetCapabilities_1.1.0-method}
 \alias{encodeRequestKVP,OwsGetCapabilities_2.0.0-method}
@@ -20,9 +20,9 @@ These methods encode objects representing requests to a Sensor Observation Servi
 
 \section{Methods}{
 	\describe{
-		\item{\code{signature(obj = "DescribeSensor")}}{Encode a DescribeSensor request.}
-		\item{\code{signature(obj = "GetObservation")}}{Encode a GetObservation request.}
-		\item{\code{signature(obj = "GetObservationById")}}{Encode GetObservationById request.}
+		\item{\code{signature(obj = "SosDescribeSensor")}}{Encode a DescribeSensor request.}
+		\item{\code{signature(obj = "SosGetObservation")}}{Encode a GetObservation request.}
+		\item{\code{signature(obj = "SosGetObservationById")}}{Encode GetObservationById request.}
 		\item{\code{signature(obj = "OwsGetCapabilities")}}{Dispatching method, checks the version attribute and forwards the encoding to the appropriate method. This method should be called rather than calling the versioned methods directly!}
 		\item{\code{signature(obj = "OwsGetCapabilities_1.1.0")}}{Encode GetCapabilities request with OWS version 1.1.0.}
 		\item{\code{signature(obj = "OwsGetCapabilities_2.0.0")}}{Encode GetCapabilities request with OWS version 2.0.0.}

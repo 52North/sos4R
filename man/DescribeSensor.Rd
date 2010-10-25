@@ -4,12 +4,13 @@
 \docType{class}
 
 \alias{DescribeSensor}
-\alias{DescribeSensor-class}
-\alias{show,DescribeSensor-method}
-\alias{print,DescribeSensor-method}
-\alias{toString,DescribeSensor-method}
+\alias{SosDescribeSensor}
+\alias{SosDescribeSensor-class}
+\alias{show,SosDescribeSensor-method}
+\alias{print,SosDescribeSensor-method}
+\alias{toString,SosDescribeSensor-method}
 
-\title{Class and Construction Function for "DescribeSensor"}
+\title{Class and Construction Function for "SosDescribeSensor"}
 
 \description{
 The DescribeSensor Operatiosn of a Sensor Observation Service can be used to retrieve metadata of procedures that are available from a SOS. This sensor description is normally encoded in \verb{SensorML}.
@@ -58,7 +59,7 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 	 }
 }
 
-\references{See OGC 06-009r6 section 8.4, or the XSD schema file at \url{http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd}.}
+\references{See OGC 06-009r6 section 8.4, or the XSD schema file at \url{http://schemas.opengis.net/sos/1.0.0/sosDescribeSensor.xsd}.}
 
 \author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
 

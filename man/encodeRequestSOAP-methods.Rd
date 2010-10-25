@@ -4,9 +4,9 @@
 
 \alias{encodeRequestSOAP}
 \alias{encodeRequestSOAP-methods}
-\alias{encodeRequestSOAP,DescribeSensor-method}
-\alias{encodeRequestSOAP,GetObservation-method}
-\alias{encodeRequestSOAP,GetObservationById-method}
+\alias{encodeRequestSOAP,SosDescribeSensor-method}
+\alias{encodeRequestSOAP,SosGetObservation-method}
+\alias{encodeRequestSOAP,SosGetObservationById-method}
 \alias{encodeRequestSOAP,OwsGetCapabilities-method}
 
 \title{Methods for Encoding Requests to SOS in SOAP Format}
@@ -17,9 +17,9 @@ These methods encode objects representing requests to a Sensor Observation Servi
 
 \section{Methods}{
 	\describe{
-		\item{\code{signature(obj = "DescribeSensor")}}{Encode a DescribeSensor operation.}
-		\item{\code{signature(obj = "GetObservation")}}{Encode a GetObservation operation.}
-		\item{\code{signature(obj = "GetObservationById")}}{Encode a GetObservationById operation.}
+		\item{\code{signature(obj = "SosDescribeSensor")}}{Encode a DescribeSensor operation.}
+		\item{\code{signature(obj = "SosGetObservation")}}{Encode a GetObservation operation.}
+		\item{\code{signature(obj = "SosGetObservationById")}}{Encode a GetObservationById operation.}
 		\item{\code{signature(obj = "OwsGetCapabilities")}}{Encode a GetCapabilities operation.}
 	}
 }

@@ -3,29 +3,29 @@
 
 \docType{class}
 
-\alias{GetObservation-class}
-\alias{show,GetObservation-method}
-\alias{toString,GetObservation-method}
-\alias{print,GetObservation-method}
-\alias{GetObservationById-class}
-\alias{show,GetObservationById-method}
-\alias{print,GetObservationById-method}
-\alias{toString,GetObservationById-method}
-
 \alias{GetObservation}
+\alias{SosGetObservation}
+\alias{GetObservation-class}
+\alias{show,SosGetObservation-method}
+\alias{toString,SosGetObservation-method}
+\alias{print,SosGetObservation-method}
 \alias{GetObservationById}
+\alias{SosGetObservationById-class}
+\alias{show,SosGetObservationById-method}
+\alias{print,SosGetObservationById-method}
+\alias{toString,SosGetObservationById-method}
 
 \title{GetObservation and GetObservationById Request Objects}
 
 \description{Classes (and their construction functions) to request observations from a Sensor Observation Service.}
 
 \usage{
-GetObservation(service, version, offering, observedProperty, responseFormat, srsName = as.character(NA), eventTime = list(NA), procedure = as.character(NA), featureOfInterest = NULL, result = NULL, resultModel = as.character(NA), responseMode = as.character(NA), BBOX = as.character(NA))
-GetObservationById(service, version, observationId, responseFormat, srsName = as.character(NA), resultModel = as.character(NA), responseMode = as.character(NA))
+SosGetObservation(service, version, offering, observedProperty, responseFormat, srsName = as.character(NA), eventTime = list(NA), procedure = as.character(NA), featureOfInterest = NULL, result = NULL, resultModel = as.character(NA), responseMode = as.character(NA), BBOX = as.character(NA))
+SosGetObservationById(service, version, observationId, responseFormat, srsName = as.character(NA), resultModel = as.character(NA), responseMode = as.character(NA))
 }
 
 \section{Objects from the Class}{
-Objects can be created by calls to the construction functions of the form \code{GetObservationById(...)} or \code{GetObservationById(...)}.
+Objects can be created by calls to the construction functions of the form \code{SosGetObservationById(...)} or \code{SosGetObservationById(...)}.
 }
 
 \section{Slots}{
@@ -49,10 +49,10 @@ Objects can be created by calls to the construction functions of the form \code{
 }
 
 \section{Extends}{
-\bold{GetObservation:}
+\bold{SosGetObservation:}
 Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 
-\bold{GetObservationById:}
+\bold{SosGetObservationById:}
 Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 }
 
@@ -75,11 +75,10 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 
 \section{Methods}{
   \describe{
-    \item{checkRequest}{\code{signature(service = "SOS", operation = "GetObservationById", verbose = "logical")} or \code{signature(service = "SOS", operation = "GetObservation", verbose = "logical")}: Check the request for validity and for compliance with the metadata available in from the given SOS.}
-    \item{encodeRequestKVP}{\code{signature(obj = "GetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to key-value pair format, see \code{\link{encodeKVP}}.}
-    \item{encodeRequestXML}{\code{signature(obj = "GetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to XML format, see \code{\link{encodeXML}}.}
-%    \item{show}{\code{signature(object = "GetObservationById")} or \code{signature(object = "GetObservation")}: Show the object in human readable manner.}
-    \item{encodeRequestSOAP}{\code{signature(obj = "GetObservation")}: Transform the information to XML format for SOAP requests.}
+    \item{checkRequest}{\code{signature(service = "SOS", operation = "SosGetObservationById", verbose = "logical")} or \code{signature(service = "SOS", operation = "GetObservation", verbose = "logical")}: Check the request for validity and for compliance with the metadata available in from the given SOS.}
+    \item{encodeRequestKVP}{\code{signature(obj = "SosGetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to key-value pair format, see \code{\link{encodeKVP}}.}
+    \item{encodeRequestXML}{\code{signature(obj = "SosGetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to XML format, see \code{\link{encodeXML}}.}
+    \item{encodeRequestSOAP}{\code{signature(obj = "SosGetObservation")}: Transform the information to XML format for SOAP requests.}
 	 }
 }
 
@@ -87,7 +86,7 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 Please consult the specification for details on possible contents of the request.
 }
 
-\value{An object of class \link{GetObservation-class} or \link{GetObservationById-class} respectively.}
+\value{An object of class \link{SosGetObservation-class} or \link{SosGetObservationById-class} respectively.}
 
 \references{
 See OGC 06-009r6 section 8.4, or the XSD schema file at \url{http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd}.
@@ -97,16 +96,16 @@ See OGC 06-009r6 section 10.1, or the XSD schema file at \url{http://schemas.ope
 
 \author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
 
-\seealso{\code{\link{GetObservation-class}}, \code{\link{GetObservationById-class}}}
+\seealso{\code{\link{SosGetObservation-class}}, \code{\link{SosGetObservationById-class}}}
 
 \examples{
-showClass("GetObservation")
-showClass("GetObservationById")
+showClass("SosGetObservation")
+showClass("SosGetObservationById")
 
-observationRequest <- GetObservation(service = "SOS", version = "1.0.0", offering = "temperatures", observedProperty = list("urn:property:AirTemperature"), responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
+observationRequest <- SosGetObservation(service = "SOS", version = "1.0.0", offering = "temperatures", observedProperty = list("urn:property:AirTemperature"), responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
 print(observationRequest)
 
-observationByIdRequest <- GetObservationById(service = "SOS", version = "1.0.0", observationId = "o_12345", responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
+observationByIdRequest <- SosGetObservationById(service = "SOS", version = "1.0.0", observationId = "o_12345", responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
 print(observationByIdRequest)
 
 \dontrun{

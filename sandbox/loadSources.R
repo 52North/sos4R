@@ -32,7 +32,7 @@ library("XML")
 library("RCurl")
 
 # load required source files for testing
-.path = "/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R"
+.path = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R"
 
 source(paste(.path, "R", "Constants.R",  sep = "/"))
 
@@ -43,15 +43,11 @@ source(paste(.path, "R", "Class-OM.R",  sep = "/"))
 source(paste(.path, "R", "Class-SA.R",  sep = "/"))
 source(paste(.path, "R", "Class-OGC.R",  sep = "/"))
 source(paste(.path, "R", "Class-SOS.R",  sep = "/"))
-source(paste(.path, "R", "Class-DescribeSensor.R",  sep = "/"))
-source(paste(.path, "R", "Class-GetObservation.R",  sep = "/"))
 source(paste(.path, "R", "Class-SML.R",  sep = "/"))
 
 source(paste(.path, "R", "Generic-methods.R",  sep = "/"))
 source(paste(.path, "R", "OWS-methods.R",  sep = "/"))
 source(paste(.path, "R", "OWS-methods-parsing.R",  sep = "/"))
-source(paste(.path, "R", "DescribeSensor-methods.R",  sep = "/"))
-source(paste(.path, "R", "GetObservation-methods.R",  sep = "/"))
 source(paste(.path, "R", "SOS-methods-parsing.R",  sep = "/"))
 source(paste(.path, "R", "OM-methods.R",  sep = "/"))
 source(paste(.path, "R", "OM-methods-parsing.R",  sep = "/"))

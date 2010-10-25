@@ -56,7 +56,7 @@ Specifies the feature for which observations are requested. This can either be r
 %\section{Warning }{}
 
 \seealso{
-See also \code{\linkS4class{GetObservation}}, and the convenience creation function \code{\link{sosCreateFeatureOfInterest-methods}}.
+See also \code{\linkS4class{SosGetObservation}}, and the convenience creation function \code{\link{sosCreateFeatureOfInterest-methods}}.
 }
 
 \examples{

@@ -78,7 +78,7 @@ go.observedProperty = c("urn:ogc:def:property:OGC:1.0:temperature", "urn:ogc:def
 go.responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;"
 
 # creation method
-go <- GetObservation(service = go.service, version = go.version, offering = go.offering, observedProperty =  go.observedProperty, responseFormat =  go.responseFormat)
+go <- SosGetObservation(service = go.service, version = go.version, offering = go.offering, observedProperty =  go.observedProperty, responseFormat =  go.responseFormat)
 go.xml <- encode(go)
 
 ################################################################################

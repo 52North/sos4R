@@ -336,8 +336,8 @@
 	invisible(x)
 }
 
-.toString.GetObservation <- function(x, ...) {
-	.s <- paste("Object of class GetObservation: ",
+.toString.SosGetObservation <- function(x, ...) {
+	.s <- paste("Object of class SosGetObservation: ",
 			"service: ",
 			x@service,
 			", version: ",
@@ -366,13 +366,13 @@
 	return(.s)
 }
 
-.print.GetObservation <- function(x, ...) {
-	cat(.toString.GetObservation(x, ...), "\n")
+.print.SosGetObservation <- function(x, ...) {
+	cat(.toString.SosGetObservation(x, ...), "\n")
 	invisible(x)
 }
 
-.toString.GetObservationById <- function(x, ...) {
-	.s <- paste("Object of class GetObservationById: ",
+.toString.SosGetObservationById <- function(x, ...) {
+	.s <- paste("Object of class SosGetObservationById: ",
 			"service: ",
 			x@service,
 			", version: ",
@@ -391,14 +391,14 @@
 	return(.s)
 }
 
-.print.GetObservationById <- function(x, ...) {
-	cat(.toString.GetObservationById(x, ...), "\n")
+.print.SosGetObservationById <- function(x, ...) {
+	cat(.toString.SosGetObservationById(x, ...), "\n")
 	invisible(x)
 }
 
 
-.toString.DescribeSensor <- function(x, ...) {
-	.s <- paste("Object of class DescribeSensor: ",
+.toString.SosDescribeSensor <- function(x, ...) {
+	.s <- paste("Object of class SosDescribeSensor: ",
 			"service: ",
 			x@service,
 			", version: ",
@@ -410,8 +410,8 @@
 	return(.s)
 }
 
-.print.DescribeSensor <- function(x, ...) {
-	cat(.toString.DescribeSensor(x, ...), "\n")
+.print.SosDescribeSensor <- function(x, ...) {
+	cat(.toString.SosDescribeSensor(x, ...), "\n")
 	invisible(x)
 }
 
@@ -982,9 +982,9 @@ setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
 setMethod("print", "SosEventTime", function(x, ...) .print.SosEventTime(x, ...))
 setMethod("print", "SosFeatureOfInterest", function(x, ...) .print.SosFeatureOfInterest(x, ...))
 setMethod("print", "SensorML", function(x, ...) .print.SensorML(x, ...))
-setMethod("print", "GetObservation", function(x, ...) .print.GetObservation(x, ...))
-setMethod("print", "GetObservationById", function(x, ...) .print.GetObservationById(x, ...))
-setMethod("print", "DescribeSensor", function(x, ...) .print.DescribeSensor(x, ...))
+setMethod("print", "SosGetObservation", function(x, ...) .print.SosGetObservation(x, ...))
+setMethod("print", "SosGetObservationById", function(x, ...) .print.SosGetObservationById(x, ...))
+setMethod("print", "SosDescribeSensor", function(x, ...) .print.SosDescribeSensor(x, ...))
 setMethod("print", "SaSamplingPoint", function(x, ...) .print.SaSamplingPoint(x, ...))
 setMethod("print", "SaSamplingSurface", function(x, ...) .print.SaSamplingSurface(x, ...))
 setMethod("print", "SwePhenomenon", function(x, ...) .print.SwePhenomenon(x, ...))
@@ -1042,9 +1042,9 @@ setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, .
 setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
 setMethod("toString", "SosFeatureOfInterest", function(x, ...) .toString.SosFeatureOfInterest(x, ...))
 setMethod("toString", "SensorML", function(x, ...) .toString.SensorML(x, ...))
-setMethod("toString", "GetObservation", function(x, ...) .toString.GetObservation(x, ...))
-setMethod("toString", "GetObservationById", function(x, ...) .toString.GetObservationById(x, ...))
-setMethod("toString", "DescribeSensor", function(x, ...) .toString.DescribeSensor(x, ...))
+setMethod("toString", "SosGetObservation", function(x, ...) .toString.SosGetObservation(x, ...))
+setMethod("toString", "SosGetObservationById", function(x, ...) .toString.SosGetObservationById(x, ...))
+setMethod("toString", "SosDescribeSensor", function(x, ...) .toString.SosDescribeSensor(x, ...))
 setMethod("toString", "SaSamplingPoint", function(x, ...) .toString.SaSamplingPoint(x, ...))
 setMethod("toString", "SaSamplingSurface", function(x, ...) .toString.SaSamplingSurface(x, ...))
 setMethod("toString", "SwePhenomenon", function(x, ...) .toString.SwePhenomenon(x, ...))
@@ -1105,9 +1105,9 @@ setMethod("show", "SosContents", function(object) .print.SosContents(object))
 setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
 setMethod("show", "SosFeatureOfInterest", function(object) .print.SosFeatureOfInterest(object))
 setMethod("show", "SensorML", function(object) .print.SensorML(object))
-setMethod("show", "GetObservation", function(object) .print.GetObservation(object))
-setMethod("show", "GetObservationById", function(object) .print.GetObservationById(object))
-setMethod("show", "DescribeSensor", function(object) .print.DescribeSensor(object))
+setMethod("show", "SosGetObservation", function(object) .print.SosGetObservation(object))
+setMethod("show", "SosGetObservationById", function(object) .print.SosGetObservationById(object))
+setMethod("show", "SosDescribeSensor", function(object) .print.SosDescribeSensor(object))
 setMethod("show", "SaSamplingPoint", function(object) .print.SaSamplingPoint(object))
 setMethod("show", "SaSamplingSurface", function(object) .print.SaSamplingSurface(object))
 setMethod("show", "SwePhenomenon", function(object) .print.SwePhenomenon(object))

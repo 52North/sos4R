@@ -71,7 +71,7 @@ It is recommended to use the creation functions as shown in the examples.
 %\note{  }
 %\section{Warning }{}
 
-\seealso{See also \code{\link{GetObservation-class}}, \code{\link{sosCreateEventTimeList-methods}}.}
+\seealso{See also \code{\link{SosGetObservation-class}}, \code{\link{sosCreateEventTimeList-methods}}.}
 
 \examples{
 showClass("SosEventTime")

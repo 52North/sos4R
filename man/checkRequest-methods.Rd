@@ -4,8 +4,8 @@
 \alias{checkRequest}
 \alias{checkRequest-methods}
 \alias{checkRequest,SOS,DescribeSensor,logical-method}
-\alias{checkRequest,SOS,GetObservationById,logical-method}
-\alias{checkRequest,SOS,GetObservation,logical-method}
+\alias{checkRequest,SOS,SosGetObservationById,logical-method}
+\alias{checkRequest,SOS,SosGetObservation,logical-method}
 \alias{checkRequest,SOS,OwsGetCapabilities_1.1.0,logical-method}
 \alias{checkRequest,SOS,OwsGetCapabilities_2.0.0,logical-method}
 
@@ -27,8 +27,8 @@ A function to check request prior to sending them to a service. This function is
 			\item{\code{operation@method} must be supported by the package implemenations. See \link{SosBindings}.}
 		}
 	}
-	\item{\code{signature(service = "SOS", operation = "GetObservationById", verbose = "logical")}}{Checking a GetObservationById request. \strong{Warning: Function not implemented yet.}}
-	\item{\code{signature(service = "SOS", operation = "GetObservation", verbose = "logical")}}{Checking a GetObservation request. \strong{Warning: Function not implemented yet.}}
+	\item{\code{signature(service = "SOS", operation = "SosGetObservationById", verbose = "logical")}}{Checking a GetObservationById request. \strong{Warning: Function not implemented yet.}}
+	\item{\code{signature(service = "SOS", operation = "SosGetObservation", verbose = "logical")}}{Checking a GetObservation request. \strong{Warning: Function not implemented yet.}}
 	\item{\code{signature(service = "SOS", operation = "OwsGetCapabilities_1.1.0", verbose = "logical")}}{Checking a GetCapabilities request. \strong{Warning: Function not implemented yet.}}
 	\item{\code{signature(service = "SOS", operation = "OwsGetCapabilities_2.0.0", verbose = "logical")}}{Checking a GetCapabilities request. \strong{Warning: Function not implemented yet.}}
 }

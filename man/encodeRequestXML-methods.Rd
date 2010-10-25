@@ -4,9 +4,9 @@
 
 \alias{encodeRequestXML}
 \alias{encodeRequestXML-methods}
-\alias{encodeRequestXML,DescribeSensor-method}
-\alias{encodeRequestXML,GetObservation-method}
-\alias{encodeRequestXML,GetObservationById-method}
+\alias{encodeRequestXML,SosDescribeSensor-method}
+\alias{encodeRequestXML,SosGetObservation-method}
+\alias{encodeRequestXML,SosGetObservationById-method}
 \alias{encodeRequestXML,OwsGetCapabilities-method}
 \alias{encodeRequestXML,OwsGetCapabilities_1.1.0-method}
 \alias{encodeRequestXML,OwsGetCapabilities_2.0.0-method}
@@ -23,9 +23,9 @@ These methods encode objects representing requests to a Sensor Observation Servi
 
 \section{Methods}{
 	\describe{
-		\item{\code{signature(obj = "DescribeSensor")}}{Encode a DescribeSensor request.}
-		\item{\code{signature(obj = "GetObservation")}}{Encode a GetObservation request.}
-		\item{\code{signature(obj = "GetObservationById")}}{Encode a GetObservationById request.}
+		\item{\code{signature(obj = "SosDescribeSensor")}}{Encode a DescribeSensor request.}
+		\item{\code{signature(obj = "SosGetObservation")}}{Encode a GetObservation request.}
+		\item{\code{signature(obj = "SosGetObservationById")}}{Encode a GetObservationById request.}
 		\item{\code{signature(obj = "OwsGetCapabilities")}}{Encode a GetCapabilities request.}
 	}
 }

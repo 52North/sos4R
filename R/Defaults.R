@@ -182,7 +182,7 @@ SosDefaultConnectionMethod <- function() {
 	return(.sosConnectionMethodPost)
 }
 
-SosFieldConvertingFunctions <- function (..., include = character(0),
+SosDataFieldConvertingFunctions <- function (..., include = character(0),
 		exclude = character(0)) {
 	.merge(els = list(...), defaults = .sosDefaultFieldConverters,
 			include = include, exclude = exclude)

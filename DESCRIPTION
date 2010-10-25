@@ -17,10 +17,9 @@ URL: http://www.nordholmen.net/sos4r/
 Encoding: UTF-8
 LazyLoad: yes
 Collate: Constants.R Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R
-	Class-OGC.R Class-SOS.R Class-DescribeSensor.R Class-GetObservation.R
-	Class-SML.R Generic-methods.R OWS-methods.R OWS-methods-parsing.R
-	DescribeSensor-methods.R GetObservation-methods.R SOS-methods-parsing.R
-	OM-methods.R OM-methods-coercion.R OM-methods-parsing.R SA-methods.R
+	Class-OGC.R Class-SOS.R Class-SML.R Generic-methods.R OWS-methods.R
+	OWS-methods-parsing.R SOS-methods-parsing.R OM-methods.R
+	OM-methods-coercion.R OM-methods-parsing.R SA-methods.R
 	GML-methods.R SWE-methods.R SML-methods.R GML-methods-parsing.R
 	SA-methods-parsing.R SWE-methods-parsing.R OGC-methods.R
 	PrintShowStructureSummmary-methods.R SOS-methods-util.R SOS-methods.R

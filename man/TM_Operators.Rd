@@ -81,7 +81,7 @@ See the schema file: \url{http://schemas.opengis.net/sos/1.0.0/ogc4sos.xsd}.
 
 \author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
 
-\seealso{\code{\link{GetObservation}}}
+\seealso{\code{\link{SosGetObservation}}}
 
 \examples{
 showClass("TM_After")
