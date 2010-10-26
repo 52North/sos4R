@@ -429,10 +429,12 @@ elliotwsn <- SOS("http://150.229.66.73/ElliotWSNSOS/sos")
 #
 # http://www.openioos.org/real_time_data/gm_sos.html
 #
-oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py")
-ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos ")
+oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
+		method = "GET", verboseOutput = TRUE)
+ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos")
+
 sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
-		
+# takes forever...		
 
 ################################################################################
 # some french sos, 52N, but just one week of data....
@@ -449,6 +451,8 @@ print(object.size(ades), units=c("Mb"))
 testObsAdes <- getObservation(sos = ades, offering = sosOfferings(ades)[[1]],
 		procedure = sosProcedures(sosOfferings(ades)[[1]])[1], verbose =TRUE) # inspect = TRUE)
 # works!
+
+# this one could be great for mapping the features
 
 
 ################################################################################

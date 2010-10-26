@@ -46,7 +46,15 @@ parseSosObservationOffering <- function(obj, sos) {
 	# can be transformed to character vectors
 	.procedure <- sapply(obj[sosProcedureName], xmlGetAttr, "href")
 	.responseFormat <- sapply(obj[sosResponseFormatName], xmlValue)
-	.responseMode <- sapply(obj[sosResponseModeName], xmlValue)
+	
+	# not optional, but potentially missing in some instances...
+	if(!length(obj[sosResponseModeName]) < 1) {
+		.responseMode <- sapply(obj[sosResponseModeName], xmlValue)
+	}
+	else {
+		.responseMode <- NA_character_
+		warning(paste("'responseMode' missing in offering", .id))
+	}
 	
 	# optional, so check if list is empty!
 	.resultModel <- sapply(obj[sosResultModelName], xmlValue)

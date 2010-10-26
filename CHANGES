@@ -30,3 +30,9 @@
 * Accessor functions now operate based on the offering, not the allowed parameter values
 * Renamed functions from SosSpec to SosDescribeSensor, SosGetObservation and SosGetObservationById and moved according files to SOS-class.R and SOS-methods.R
 
+2010-10-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version X.X-XX
+* Fixed sosContents(...)
+* Added handling for missing responseFormat (although it's not optional) in parsing of observation offerings
+* ...

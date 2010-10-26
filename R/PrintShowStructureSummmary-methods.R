@@ -110,9 +110,9 @@
 			paste(x@serviceTypeVersion, collapse = ", "),
 			"\n\ttitle(s): ", paste(x@title, collapse = "; "),
 			# optional:
-			"\n\tProfile(s): ", paste(x@profile, collapse = "; "),
-			"\n\tAbstract(s): ", paste(x@abstract, collapse = "; "),
-			"\n\tKeywords(s): ", paste(x@keywords, collapse = "; "),
+			"\n\tProfile(s): ", toString(x@profile),
+			"\n\tAbstract(s): ", toString(x@abstract),
+			"\n\tKeywords(s): ", toString(x@keywords),
 			"\n\tAccessConstraints(s): ", paste(x@accessConstraints,
 					collapse = "; "))
 	return(.s)
@@ -219,14 +219,16 @@
 }
 
 .toString.SOS_1.0.0 <- function(x, ...) {
-	.s <- paste("Object of class SOS_1.0.0 -- version: ",
+	.s <- paste("Object of class SOS_1.0.0 -- version:",
 			x@version,
-			", method: ",
+			", method:",
 			x@method,
-			", url: ",
+			", url:",
 			x@url,
-			"\n\tCapabilities: ",
-			toString(x@capabilities))
+#			"\n\tCapabilities: ",
+#			toString(x@capabilities)
+			"\n\tTitle:", toString(sosServiceIdentification(x)@title),
+			" -- Abstract:", toString(sosServiceIdentification(x)@abstract))
 	return(.s)
 }
 

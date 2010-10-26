@@ -198,7 +198,7 @@ if (!isGeneric("sosContents"))
 			})
 setMethod(f = "sosContents", signature = signature(sos = "SOS"),
 		def = function(sos) {
-			return(sos@contents)
+			return(sosCaps(sos)@contents)
 		})
 
 if (!isGeneric("sosUrl"))
