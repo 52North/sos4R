@@ -715,7 +715,7 @@ setMethod("encodeRequestXML", "SosGetObservation",
 .sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
 	.xmlDoc <- xmlNode(name = sosGetObservationName,
 			namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 					.sosNamespaceDefinitionsGetObs),
 			attrs=c(.xsiSchemaLocationAttribute, service = obj@service,
 					version = obj@version))
@@ -752,7 +752,13 @@ setMethod("encodeRequestXML", "SosGetObservation",
 	}
 	
 	if( !is.null(obj@result)) {
-		.result <- encodeXML(obj = obj@result, sos = sos, verbose = verbose)
+		if(is.character(obj@result)) {
+			.result <- encodeXML(obj = obj@result, sos = sos,
+					addNamespaces = TRUE, verbose = verbose)
+		}
+		else {
+			.result <- encodeXML(obj = obj@result, sos = sos, verbose = verbose)
+		}
 		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.result),
 				append = TRUE)
 	}
@@ -808,7 +814,7 @@ setMethod("encodeRequestXML", "SosGetObservationById",
 )
 .sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
 	.xmlDoc <- xmlNode(name = "SosGetObservationById", namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 					.sosNamespaceDefinitionsGetObs),
 			attrs=c(.xsiSchemaLocationAttribute,
 					service = obj@service, version = obj@version))
@@ -868,7 +874,7 @@ setMethod("encodeRequestXML", "SosDescribeSensor",
 .sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
 	xmlDoc <- xmlNode(name = sosDescribeSensorName,
 			namespace = sosNamespacePrefix,
-			namespaceDefinitions = .sosNamespaceDefinitionsAll,
+			namespaceDefinitions = .sosNamespaceDefinitionsForAll,
 			attrs=c(.xsiSchemaLocationAttribute,
 					service = obj@service,
 					outputFormat = obj@outputFormat,

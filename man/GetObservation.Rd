@@ -42,7 +42,7 @@ Objects can be created by calls to the construction functions of the form \code{
     \item{\code{responseFormat}:}{Object of class \code{"character"}, specifies the desired resultFormat MIME content type for transport of the results.}
     \item{\code{responseMode}:}{Object of class \code{"character"}, specifies whether results are requested in-line, outof-band, as an attachment, or if this is a request for an observation template that will be used for subsequent calls to GetResult.}
     \item{\code{resultModel}:}{Object of class \code{"character"}, specifies the QName of the root element of an O&M Observation or element in the appropriate substitution group.}
-    \item{\code{result}:}{Object of class \code{"OgcComparisonOpsOrNULL"}, provides a place to put in OGC filter expressions based on property values. This instructs the SOS to only return observations where the result matches this expression.}
+    \item{\code{result}:}{Object of class \code{"OgcComparisonOpsOrXMLOrNULL"}, provides a place to put in OGC filter expressions based on property values. This instructs the SOS to only return observations where the result matches this expression.}
     \item{\code{service}:}{Object of class \code{"character"}, service type identifier.}
     \item{\code{srsName}:}{Object of class \code{"character"}, defines the spatial reference system that should be used for any geometries that are returned in the response. This must be one of the advertised values in the offering specified in gml:srsName elements.}
     \item{\code{version}:}{Object of class \code{"character"}, specification version for operation.}

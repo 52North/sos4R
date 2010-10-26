@@ -688,7 +688,7 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 }
 
 #
-# encoding function that just passes given content along...
+# encoding functions that just pass given content along...
 #
 setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
 		def = function(obj, sos, verbose = FALSE) {
@@ -696,6 +696,44 @@ setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
 				cat("ENCODE XML from XMLNode\n")
 			}
 			return(obj)
+		}
+)
+setMethod(f = "encodeXML", signature = signature(obj = "XMLInternalElementNode", sos = "SOS"),
+		def = function(obj, sos, verbose = FALSE) {
+			if(verbose) {
+				cat("ENCODE XML from XMLInternalElementNode\n")
+			}
+			return(obj)
+		}
+)
+setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS"),
+		def = function(obj, sos, addNamespaces = FALSE, verbose = FALSE) {
+			if(verbose) cat("ENCODE XML from character string\n")
+			
+			if(isXMLString(obj)) {
+				#FIXME this just won't work, see testing.R, section "encode xml character string (again)"
+				if(addNamespaces) {
+					if(verbose) cat("Namespace hack for character string, trying to replace 'result>'!\n")
+					.hack <- 'result xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">'
+					.hackedString <- sub(pattern = "result>",
+							replacement = .hack,
+							x = obj)
+					.xml <- xmlTreeParse(.hackedString, asText = TRUE,
+							useInternalNodes = FALSE)
+				}
+				else {
+					.xml <- xmlParseString(obj)
+				}
+								
+				if(verbose) {
+					cat("Created XML from string:\n", toString(.xml))
+				}
+				return(.xml)
+			}
+			else {
+				warning(paste("Could not encode given character string as XML!",
+								" Character string: '", obj, "'", sep = ""))
+			}
 		}
 )
 

@@ -29,4 +29,4 @@
 * Added sosObservedProperties(SosObservationOffering)
 * Accessor functions now operate based on the offering, not the allowed parameter values
 * Renamed functions from SosSpec to SosDescribeSensor, SosGetObservation and SosGetObservationById and moved according files to SOS-class.R and SOS-methods.R
-* ...
+

@@ -69,7 +69,7 @@ SosSupportedResponseModes <- function() {
 	return(.sosSupportedResponseModes)
 }
 
-.sosNamespaceDefinitionsAll <- c(sos = "http://www.opengis.net/sos/1.0",
+.sosNamespaceDefinitionsForAll <- c(sos = "http://www.opengis.net/sos/1.0",
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
 .sosNamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
 		om = "http://www.opengis.net/om/1.0",

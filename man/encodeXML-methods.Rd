@@ -27,6 +27,8 @@
 \alias{encodeXML,TM_During,SOS-method}
 \alias{encodeXML,TM_Equals,SOS-method}
 \alias{encodeXML,XMLNode,SOS-method}
+\alias{encodeXML,character,SOS-method}
+\alias{encodeXML,XMLInternalElementNode,SOS-method}
 
 \title{Encode Classes as XML}
 

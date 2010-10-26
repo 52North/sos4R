@@ -130,7 +130,7 @@ if (!isGeneric("sosExceptionCodeMeaning"))
 #
 if (!isGeneric("encodeXML"))
 	setGeneric(name = "encodeXML",
-			def = function(obj, sos = "SOS", verbose = FALSE) {
+			def = function(obj, sos = "SOS", verbose = FALSE, ...) {
 				standardGeneric("encodeXML")
 			})
 if (!isGeneric("encodeKVP"))

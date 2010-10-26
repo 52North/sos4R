@@ -176,6 +176,6 @@ setClass("OgcComparisonOps",
 			return(TRUE)
 		}
 )
-setClassUnion(name = "OgcComparisonOpsOrNULL",
-		members = c("OgcComparisonOps", "NULL"))
+setClassUnion(name = "OgcComparisonOpsOrXMLOrNULL",
+		members = c("OgcComparisonOps", "XMLNode", "NULL", "XMLAbstractNode"))
 		

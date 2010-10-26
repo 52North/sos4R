@@ -749,6 +749,90 @@ tempOfferings <- sosOfferings(weathersos)
 sosObservedProperties(sosOfferings(weathersos)[[1]])
 sosObservedProperties(weathersos)
 
+################################################################################
+# encode xml character string (again)
+isXMLString('<lala name="horst"><pooh /></lala>')
+xmlParseString('<lala name="horst"><pooh /></lala>')
+# ok... put into encodeXML
+
+xml1 <- encodeXML('<lala name="horst"><pooh /></lala>', weathersos)
+str(xml1)
+# good
+
+pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+xmlValue(pn) <- "urn:ogc:def:property:OGC::Temperature"
+l <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
+xmlValue(l) <- "3"
+comp <- xmlNode(name = ogcComparisonOpLessThanOrEqualToName,
+		namespace = ogcNamespacePrefix, .children = list(pn, l))
+myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
+		.children = list(comp))
+str(myResult2)
+class(myResult2)
+lastTenHours <- sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
+				begin = (Sys.time() - 36000), end = Sys.time()))
+obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
+		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
+		result = myResult2, inspect = TRUE)
+# works!
+
+
+sosResultString <- '<sos:result><ogc:PropertyIsGreaterThan>
+		<ogc:PropertyName>urn:ogc:def:property:OGC::Temperature</ogc:PropertyName>
+		<ogc:Literal>20</ogc:Literal></ogc:PropertyIsGreaterThan></sos:result>'
+myResult1 <- xmlParseString(sosResultString, clean = FALSE)
+# namespace prefixes not found
+
+shouldWorkString <- '<sos:result xmlns:sos="http://www.opengis.net/sos/1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:ows="http://www.opengis.net/ows/1.1"
+		xmlns:om="http://www.opengis.net/om/1.0"
+		xmlns:ogc="http://www.opengis.net/ogc"
+		xmlns:gml="http://www.opengis.net/gml">
+		<ogc:PropertyIsGreaterThan>
+		<ogc:PropertyName>urn:ogc:def:property:OGC::Temperature</ogc:PropertyName>
+		<ogc:Literal>20</ogc:Literal></ogc:PropertyIsGreaterThan></sos:result>'
+xmlParseString(shouldWorkString)
+str(encodeXML(shouldWorkString, weathersos))
+
+# try automatic namespace adding with encodeXML
+namespacedResult <- xmlNode(name = sosResultName,
+		namespace = sosNamespacePrefix,
+		namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
+				.sosNamespaceDefinitionsGetObs))
+namespacedString <- sub(pattern = result, replacement = paste("result"))
+# all good.
+
+# some trick with handlers  could work ...
+xmlParse(sosResultString, asText = TRUE, handlers=list("result"=function(x, ...){xmlParse(x)}))
+# but doesn't right now
+
+.hack <- 'result xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">'
+hackedString <- sub(pattern = "result", replacement = .hack, x = sosResultString)
+xmlParseString(hackedString, clean = FALSE)
+# all better
+
+# move hack to encodeXML
+encodeXML(obj = sosResultString, sos = weathersos)
+.result <- encodeXML(obj = sosResultString, sos = weathersos, addNamespaces = TRUE)
+# cannot attach .result this to anything!
+n <- xmlNode("lala")
+n[[1]] <- list(.result)
+n <- addChildren(node = n, kids = list(.result))
+#Fehler in as.vector(x, "list") : 
+#		cannot coerce type 'externalptr' to vector of type 'list'
+
+lastTenHours <- sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
+				begin = (Sys.time() - 36000), end = Sys.time()))
+obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
+		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
+		result = sosResultString, inspect = TRUE)
+# STILL extrnlpntr problem
+debug(.sosEncodeRequestXMLGetObservation_1.0.0)
+
+obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
+		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
+		result = xmlParseString(hackedString), inspect = TRUE)
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")

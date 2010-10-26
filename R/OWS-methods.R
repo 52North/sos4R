@@ -305,7 +305,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
 )
 .sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName, namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 					.sosNamespaceDefinitionsGetCap),
 			attrs=c(.xsiSchemaLocationAttribute,
 					service=obj@service))
@@ -356,7 +356,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
 .sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sosNamespaceDefinitionsAll,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 					.sosNamespaceDefinitionsGetCap),
 			attrs=c(.xsiSchemaLocationAttribute,
 					service=obj@service))
