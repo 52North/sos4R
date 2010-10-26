@@ -7,7 +7,7 @@
 * Release of version 0.1-02
 * Finished documentation
 
-2010-10-12		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-10-26		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-03
 * Some fixes in toString methods (errorenous recursive paste calls)
