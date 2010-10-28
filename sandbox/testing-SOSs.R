@@ -310,27 +310,7 @@ stl(tempSeries2009)
 
 ################################################################################
 # AirQualitySOS
-airsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/AirQualityEurope/sos")
-
-ozone <- sosOfferings(airsos)[["OZONE_(AIR)"]]
-ozone@observedProperty
-ozone@procedure
-
-latestOzone <- getObservation(sos = pegelsos,
-		observedProperty = list(ozone@observedProperty),
-		offering = ozone,
-		procedure = list(ozone@procedure),
-		latest = TRUE, inspect = TRUE)
-#Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  1 exceptions: (code @ locator : text)
-#InvalidParameterValue @ offering : The value (OZONE_(AIR)) of the parameter 'offering' is invalid 
-
-getObs <- airsos@capabilities@operations@operations[[sosGetObservationName]]
-getObs@parameters[["offering"]]
-# OZONE_(AIR) is there...
-
-
-# the time is not given in observation offerings...
-sosOfferings(airsos)[[1]]@time
+# see also testing-aq.R
 
 ################################################################################
 # ClimateSOS

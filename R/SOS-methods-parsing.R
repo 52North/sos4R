@@ -72,6 +72,20 @@ parseSosObservationOffering <- function(obj, sos) {
 	else {
 		.boundedBy <- list()
 	}
+	
+	# warn if time or envelope is missing -> probably sensor without data.
+	.warningText <- ""
+	if(length(.boundedBy) < 1) {
+		.warningText <- "\t'gml:boundedBy' is NA/empty.\n"
+	}
+	if(extends(class(.time), "GmlTimeInstant") && is.na(.time@timePosition@time)) {
+		.warningText <- paste(.warningText, "\t'sos:time' is NA/empty.\n")
+	}
+	if(length(.warningText) > 1) {
+		warning(paste("Error when parsing offering '", .id, "':\n",
+						.warningText, sep = ""))
+	}
+		
 
 	.ob <- SosObservationOffering(id = .id, name = .name, 
 			time = .time, procedure = .procedure,

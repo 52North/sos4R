@@ -35,4 +35,7 @@
 * Version X.X-XX
 * Fixed sosContents(...)
 * Added handling for missing responseFormat (although it's not optional) in parsing of observation offerings
+* Moved warning when parsing offerings with missing time or envelope
+* Added sosBoundedBy(offering)
+* Renamed sosEventTimePeriod(...) to sosTime(...)
 * ...

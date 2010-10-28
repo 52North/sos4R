@@ -261,6 +261,33 @@ setMethod(f = "sosObservedProperties", signature = signature(
 			.op <- obj@observedProperty
 			return(.op)
 		})
+if (!isGeneric("sosBoundedBy"))
+	setGeneric(name = "sosBoundedBy", def = function(obj) {
+				standardGeneric("sosBoundedBy")
+			})
+setMethod(f = "sosBoundedBy", signature = signature(
+				obj = "SosObservationOffering"),
+		def = function(obj) {
+			.bb <- obj@boundedBy
+			# TODO create matrix as accepted by sp
+#			.m <- matrix(c(min1, min2, max1, max2), ncol = 2,
+#					dimnames = list(c("", ""), c("min", "max")))
+			return(.bb)
+		})
+
+if (!isGeneric("sosBoundedBy"))
+	setGeneric(name = "sosBoundedBy", def = function(obj) {
+				standardGeneric("sosBoundedBy")
+			})
+setMethod(f = "sosBoundedBy", signature = signature(
+				obj = "SosObservationOffering"),
+		def = function(obj) {
+			.bb <- obj@boundedBy
+			# TODO create matrix as accepted by sp
+#			.m <- matrix(c(min1, min2, max1, max2), ncol = 2,
+#					dimnames = list(c("", ""), c("min", "max")))
+			return(.bb)
+		})
 
 if (!isGeneric("sosOfferings"))
 	setGeneric(name = "sosOfferings", def = function(obj, ...) {
@@ -361,17 +388,17 @@ setMethod(f = "sosResultModels", signature = signature(sos = "SOS"),
 			return(.getOb@parameters$resultModel)
 		})
 
-if (!isGeneric("sosEventTimePeriod"))
-	setGeneric(name = "sosEventTimePeriod", def = function(obj) {
-				standardGeneric("sosEventTimePeriod")
+if (!isGeneric("sosTime"))
+	setGeneric(name = "sosTime", def = function(obj) {
+				standardGeneric("sosTime")
 			})
-setMethod(f = "sosEventTimePeriod", signature = signature(obj = "SOS"),
+setMethod(f = "sosTime", signature = signature(obj = "SOS"),
 		def = function(obj) {
 			.caps <- sosCaps(obj)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
 			return(.getOb@parameters$eventTime)
 		})
-setMethod(f = "sosEventTimePeriod", signature = signature(
+setMethod(f = "sosTime", signature = signature(
 				obj = "SosObservationOffering"),
 		def = function(obj) {
 			return(obj@time)

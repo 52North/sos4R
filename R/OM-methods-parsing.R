@@ -317,7 +317,7 @@ parseSamplingTime <- function(obj, format) {
 		.timeObject <- parseTimePeriod(obj = .tpXML, format = format)
 	}
 	else {
-		warning(paste("Could not create time from given samplingTime,", 
+		warning(paste("Could not create GmlTimeObject from given samplingTime,", 
 					" require gml:TimeInstant or gml:TimePeriod as children."))
 		.timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
 						time = as.POSIXct(x = NA)))
