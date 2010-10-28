@@ -1,7 +1,7 @@
 Package: sos4R
 Type: Package
 Title: A client for the OGC Sensor Observation Service
-Version: 0.1-03
+Version: 0.1-04
 Date: 2010-09-23
 Author: Daniel Nuest
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
