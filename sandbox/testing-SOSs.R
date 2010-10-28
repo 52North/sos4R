@@ -439,7 +439,7 @@ testObsAdes <- getObservation(sos = ades, offering = sosOfferings(ades)[[1]],
 # various
 var01.converters <- SosDataFieldConvertingFunctions("urn:terrestris:foss4g:temperature" = sosConvertDouble)
 var01 <- SOS(":8280/52nSOSv3_WAR/sos", dataFieldConverters = var01.converters)
-time01 <- sosEventTimePeriod(sosOfferings(var01)[[1]])
+time01 <- sosTime(sosOfferings(var01)[[1]])
 time01.part <- sosCreateTimePeriod(var01,
 		begin = as.POSIXct("2010-08-06"),
 		end = as.POSIXct("2010-08-07"))

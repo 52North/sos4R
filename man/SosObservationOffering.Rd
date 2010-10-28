@@ -5,7 +5,8 @@
 
 \alias{SosObservationOffering-class}
 \alias{show,SosObservationOffering-method}
-\alias{sosEventTimePeriod,SosObservationOffering-method}
+\alias{sosTime,SosObservationOffering-method}
+\alias{sosBoundedBy,SosObservationOffering-method}
 \alias{print,SosObservationOffering-method}
 \alias{toString,SosObservationOffering-method}
 \alias{SosObservationOffering}
@@ -40,7 +41,7 @@ SosObservationOffering(id, name = as.character(NA), time, procedure, observedPro
 
 \section{Methods}{
   \describe{
-    \item{sosEventTimePeriod}{\code{signature(obj = "SosObservationOffering")}: Accessor function for the time slot, or to be more precise: the time period for which this offering provides data.}
+    \item{sosTime}{\code{signature(obj = "SosObservationOffering")}: Accessor function for the time slot, or to be more precise: the time period for which this offering provides data.}
 	 }
 }
 

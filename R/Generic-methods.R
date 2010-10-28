@@ -79,7 +79,7 @@ if (!isGeneric("getObservation"))
 					responseFormat = sosDefaultGetObsResponseFormat,
 					# optional:
 					srsName = as.character(NA),
-					eventTime = list(NA), # sosCreateEventTimeList(time = sosEventTimePeriod(obj = offering))
+					eventTime = list(NA), # sosCreateEventTimeList(time = sosTime(obj = offering))
 					procedure = as.character(NA), # sosProcedures(obj = offering),
 					featureOfInterest = NULL,
 					result = NULL,

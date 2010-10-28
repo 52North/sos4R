@@ -26,9 +26,9 @@
 \alias{sosDataFieldConverters}
 \alias{sosDataFieldConverters-methods}
 \alias{sosDataFieldConverters,SOS-method}
-\alias{sosEventTimePeriod}
-\alias{sosEventTimePeriod-methods}
-\alias{sosEventTimePeriod,SOS-method}
+\alias{sosTime}
+\alias{sosTime-methods}
+\alias{sosTime,SOS-method}
 \alias{sosFilter_Capabilities}
 \alias{sosFilter_Capabilities-methods}
 \alias{sosFilter_Capabilities,SOS-method}
@@ -95,6 +95,8 @@
 \alias{sosVersion,SOS-method}
 \alias{sosExceptionCodeMeaning}
 \alias{sosExceptionCodeMeaning,character-method}
+\alias{sosBoundedBy}
+\alias{sosBoundedBy-method}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -127,7 +129,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosCaps}{\code{signature(sos = "SOS")}: ... }
     \item{sosContents}{\code{signature(sos = "SOS")}: ... }
     \item{sosDataFieldConverters}{\code{signature(sos = "SOS")}: ... }
-    \item{sosEventTimePeriod}{\code{signature(obj = "SOS")}: ... }
+    \item{sosTime}{\code{signature(obj = "SOS")}: ... }
     \item{sosFilter_Capabilities}{\code{signature(sos = "SOS")}: ... }
     \item{sosFOIs}{\code{signature(sos = "SOS")}: ... }
     \item{sosMethod}{\code{signature(sos = "SOS")}: ... }
@@ -148,7 +150,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosTimeFormat}{\code{signature(sos = "SOS")}: ... }
     \item{sosUrl}{\code{signature(sos = "SOS")}: ... }
     \item{sosVersion}{\code{signature(sos = "SOS")}: ... }
-    \item{sosEventTimePeriod}{\code{signature(obj = "SOS")}: Accessor function for the event time period from the GetObservation operations metadata.}
+    \item{sosTime}{\code{signature(obj = "SOS")}: Accessor function for the event time period from the GetObservation operations metadata.}
     \item{sosFilter_Capabilities}{\code{signature(sos = "SOS")}: Accessor function for the filter capabilities of a SOS object.}
 	 }
 }

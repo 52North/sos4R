@@ -46,7 +46,8 @@ airsos.offerings <- sosOfferings(airsos)
 # 	urn:ogc:def:phenomenon:OGC:1.0.30:PM10 ! Trying a default, but you can add
 #	one when creating a SOS using SosDataFieldConvertingFunctions().
 eea.converters <- SosDataFieldConvertingFunctions(
-		"urn:ogc:def:phenomenon:OGC:1.0.30:PM10" = sosConvertDouble)
+		"urn:ogc:def:phenomenon:OGC:1.0.30:PM10" = sosConvertDouble,
+		"urn:ogc:def:phenomenon:OGC:1.0.30:NO2" = sosConvertDouble)
 eeasos <- SOS(url = "http://discomap-test.eea.europa.eu/swe/sos",
 		dataFieldConverters = eea.converters)
 
@@ -137,7 +138,20 @@ observation.pm10.year <- getObservation(sos = eeasos,
 ###################
 # OBSERVATIONS: NO2
 observation.no2.year <- getObservation(sos = eeasos,
-		offering = eea.off.pm10,
+		offering = eea.off.no2,
+#		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
+		eventTime = lastYear,
+		procedure = sosProcedures(eea.off.no2), # all of the offering
+		inspect = TRUE)
+# Not too much data:
+# Finished getObservation to http://discomap-test.eea.europa.eu/swe/sos - received 107 observation(s)/measurement(s) having 3, 16, 24, 23, 8, 37, 42, 24, 24, 6, 25, 3, 59, 20, 58, 4, 27, 24, 28, 9, 1, 19, 73, 15, 79, 24, 4, 64, 15, 17, 27, 20, 23, 4, 1, 68, 23, 24, 24, 14, 24, 24, 6, 24, 26, 8, 13, 24, 17, 15, 24, 1, 37, 8, 19, 4, 24, 329, 30, 22, 15, 21, 1, 11, 24, 25, 63, 25, 16, 17, 25, 24, 26, 16, 25, 8, 1, 16, 20, 18, 60, 24, 85, 24, 24, 21, 127, 2, 24, 7, 7, 24, 13, 1, 9, 77, 63, 2, 10, 25, 22, 52, 3, 24, 27, 36, 12 elements.
+observation.no2.year.count <- sum(sapply(sapply(sosResult(observation.no2.year), dim), "[", 1))
+observation.no2.year.count
+
+# all observations
+timePeriod.no2 <- sosTime(eea.off.no2)
+observation.no2.all <- getObservation(sos = eeasos,
+		offering = eea.off.no2,
 #		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastYear,
 		procedure = sosProcedures(eea.off.no2))

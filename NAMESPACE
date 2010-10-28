@@ -27,7 +27,6 @@ exportMethods(
     "sosCreateTimeInstant",
     "sosCreateTimePeriod",
     "sosDataFieldConverters",
-    "sosEventTimePeriod",
     "sosExceptionCodeMeaning",
     "sosFilter_Capabilities",
     "sosFeaturesOfInterest",
@@ -47,6 +46,7 @@ exportMethods(
     "sosServiceIdentification",
     "sosServiceProvider",
     "sosSrsName",
+    "sosTime",
     "sosTimeFormat",
     "sosUrl",
     "sosVersion" 
