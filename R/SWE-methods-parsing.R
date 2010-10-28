@@ -66,7 +66,7 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
 # values is XML and encoding holds a SweTextBlock with the required separators.
 #
 parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
-	if(verbose) cat("Parsing swe:values using", toString(encoding), "and",
+	if(verbose) cat("[parseValues] Parsing swe:values using", toString(encoding), "and",
 				length(fields), "fields:", toString(names(fields)), "\n")
 	if(!inherits(encoding, "SweTextBlock")) {
 		stop("Handling for given encoding not implemented!")
@@ -79,6 +79,9 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	.tokenLines <- sapply(.blockLines, strsplit,
 			split = encoding@tokenSeparator)
 	
+	if(verbose)
+		cat("[parseValues] Parsing values from lines: ", toString(.tokenLines), "\n")
+	
 	# data frame of correct length to be able to use cbind for first column
 	.tempId = "tempID"
 	.data <- data.frame(seq(1,length(.tokenLines)))
@@ -86,12 +89,18 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	
 	# do following for all fields
 	.fieldCount <- length(fields)
-	for (.currentFieldIdx in seq(1,.fieldCount)) {		
+	for (.currentFieldIdx in seq(1,.fieldCount)) {
+		if(verbose)
+			cat("[parseValues] Processing field index", .currentFieldIdx , "of", .fieldCount,"\n")
+		
 		# create list for each variable
 		.currentValues <- sapply(.tokenLines, "[[", .currentFieldIdx)
+		if(verbose)
+			cat("[parseValues] Current values: ", toString(.currentValues), "\n")
 		.currentField <- fields[[.currentFieldIdx]]
 		
-		if(verbose) cat("Parsing field", paste(.currentField), "\n")
+		if(verbose)
+			cat("[parseValues] Parsing field", paste(.currentField), "\n")
 		
 		# convert values to the correct types
 		.method <- .converters[[.currentField[[.sosParseFieldDefinition]]]]
@@ -119,7 +128,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		if(is.null(.method)) stop("No converter found!")
 		
 		if(verbose) {
-			cat("Using converter function: ")
+			cat("[parseValues] Using converter function: ")
 			show(.method)
 		}
 				
@@ -127,7 +136,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		.currentValues <- .method(x = .currentValues, sos = sos)
 		
 		# bind new and existing data:
-		if(verbose) cat("Binding additional data.frame for",
+		if(verbose) cat("[parseValues] Binding additional data.frame for",
 					.currentField[[.sosParseFieldName]],
 					"-- value range", toString(range(.currentValues)), "\n")
 		.newData <- data.frame(.currentValues)
@@ -136,14 +145,13 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		.newDataName <- .currentField[[.sosParseFieldName]]		
 		names(.newData) <- .newDataName
 		
-		if(verbose) cat("Added column name:", names(.newData), "\n")
+		if(verbose) cat("[parseValues] Added column name:", names(.newData), "\n")
 
 		# bind existing and new data column
 		.data <- cbind(.data, .newData)
 		
-		if(verbose) {
-			cat("The new bound data frame:\n"); str(.data)
-		}
+		if(verbose)
+			cat("[parseValues] The new bound data frame:\n"); str(.data)
 		
 		# add field information as attributes to the new column using human
 		# readable names
@@ -156,7 +164,8 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		attributes(.data[,.lastColumn]) <- c(as.list(.oldAttrs),
 			.addAttrs)
 		
-		if(verbose) cat("Added attributes to new data:", toString(.addAttrs),
+		if(verbose) cat("[parseValues] Added attributes to new data:",
+					toString(.addAttrs),
 					"[ names: ", toString(names(.addAttrs)), "]",
 					"\nOld attributes list is",
 					toString(.oldAttrs),
@@ -166,7 +175,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	}
 	
 	# remove id column
-	if(verbose) cat("Removing temporary first column")
+	if(verbose) cat("[parseValues] Removing temporary first column")
 	.data <- .data[,!colnames(.data)%in%.tempId]
 	
 	return(.data)
