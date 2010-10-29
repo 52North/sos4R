@@ -330,8 +330,6 @@ parseField <- function(obj, sos, verbose = FALSE) {
 #
 parseTextBlock <- function(obj) {
 	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
-	if(verbose) cat("[parseTextBlock] id", .id)
-	
 	.tS <- xmlGetAttr(node = obj, name = "tokenSeparator")
 	.bS <- xmlGetAttr(node = obj, name = "blockSeparator")
 	.dS <- xmlGetAttr(node = obj, name = "decimalSeparator")
