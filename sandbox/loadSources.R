@@ -32,7 +32,8 @@ library("XML")
 library("RCurl")
 
 # load required source files for testing
-.path = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R"
+if(!exists(".path"))
+	.path = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R"
 
 source(paste(.path, "R", "Constants.R",  sep = "/"))
 

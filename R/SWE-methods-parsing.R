@@ -37,26 +37,25 @@
 #
 parseDataArray <- function(obj, sos, verbose = FALSE) {
 	.elementCount <-  xmlValue(obj[["elementCount"]][["Count"]][["value"]])
-	if(verbose) cat("Parsing DataArray with", .elementCount, "elements.\n")
+	if(verbose) cat("[parseDataArray] Parsing DataArray with", .elementCount,
+				"elements.\n")
 	
 	.eTParser <- sosParsers(sos)[[sweElementTypeName]]
 	.fields <- .eTParser(obj = obj[[sweElementTypeName]], verbose = verbose)
 	
-	if(verbose) cat("-- Parsed field descriptions:", toString(.fields),
-		"\n")
+	if(verbose) cat("[parseDataArray]  Parsed field descriptions:",
+				toString(.fields), "\n")
 	
 	.encParser <- sosParsers(sos)[[sweEncodingName]]
 	.encoding <- .encParser(obj = obj[[sweEncodingName]],
 		verbose = verbose)
 	
-	if(verbose) cat("-- Parsed encoding description:", toString(.encoding),
-				"\n")
+	if(verbose) cat("[parseDataArray]  Parsed encoding description:",
+				toString(.encoding), "\n")
 	
 	.valParser <- sosParsers(sos)[[sweValuesName]]
 	.values <- .valParser(values = obj[[sweValuesName]], fields = .fields,
 			encoding = .encoding, sos = sos, verbose = verbose)
-	
-	#TODO return object of class SweDataArray here and add coercion functions to data.frame
 	
 	return(.values)
 }
@@ -150,8 +149,10 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		# bind existing and new data column
 		.data <- cbind(.data, .newData)
 		
-		if(verbose)
-			cat("[parseValues] The new bound data frame:\n"); str(.data)
+		if(verbose) {
+			cat("[parseValues] The new bound data frame:\n")
+			str(.data)
+		}
 		
 		# add field information as attributes to the new column using human
 		# readable names
@@ -194,8 +195,8 @@ parseElementType <- function(obj, sos, verbose = FALSE) {
 		.fields <- .filterXmlChildren(node = .dr, childrenName = sweFieldName,
 				includeNamed = TRUE)
 		
-		if(verbose) cat("Got data record with", length(.fields),
-			"fields. \n")
+		if(verbose) cat("[parseElementType] Got data record with",
+					length(.fields), "fields. \n")
 		
 		# extract the fields, naming with attribute 'name'
 		.parsedFields <- lapply(.fields, parseField, sos = sos,
@@ -203,7 +204,8 @@ parseElementType <- function(obj, sos, verbose = FALSE) {
 		.names <- sapply(.parsedFields, "[", .sosParseFieldName)
 		names(.parsedFields) <- .names
 		
-		if(verbose) cat("Names of parsed fields:", names(.fields), "\n")
+		if(verbose) cat("[parseElementType] Names of parsed fields:",
+					names(.fields), "\n")
 			
 		return(.parsedFields)
 	}
@@ -263,7 +265,7 @@ names(.sosParseFieldReadable) <- list(
 parseField <- function(obj, sos, verbose = FALSE) {
 	.field <- NULL
 	.name <- xmlGetAttr(node = obj, name = "name")
-	if(verbose) cat("Parsing field description of ", .name, "\n")
+	if(verbose) cat("[parseField] Parsing field description of ", .name, "\n")
 
 	.noneText <- .filterXmlChildren(node = obj, childrenName = xmlTextNodeName,
 			includeNamed = FALSE)
@@ -289,7 +291,8 @@ parseField <- function(obj, sos, verbose = FALSE) {
 			.uom <- xmlGetAttr(node = .innerField[[sweUomName]], name = "code")
 		}
 		else {
-			warning(paste("swe:Quantity given without unit of measurement:", .name))
+			warning(paste("swe:Quantity given without unit of measurement:",
+							.name))
 			.uom <- NA_character_
 		}
 		.field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def,
@@ -317,8 +320,7 @@ parseField <- function(obj, sos, verbose = FALSE) {
 						"Please extend the parsing funtion of swe:elementType."))
 	}
 	
-	# TODO old? correct the names of the list
-	if(verbose) cat("Parsed field", toString(.field), "\n")
+	if(verbose) cat("[parseField] Parsed field", toString(.field), "\n")
 	
 	return(.field)
 }
@@ -328,6 +330,8 @@ parseField <- function(obj, sos, verbose = FALSE) {
 #
 parseTextBlock <- function(obj) {
 	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+	if(verbose) cat("[parseTextBlock] id", .id)
+	
 	.tS <- xmlGetAttr(node = obj, name = "tokenSeparator")
 	.bS <- xmlGetAttr(node = obj, name = "blockSeparator")
 	.dS <- xmlGetAttr(node = obj, name = "decimalSeparator")
@@ -346,6 +350,8 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 	# check if reference or inline phenomenon
 	.href <- xmlGetAttr(node = obj, name = "href")
 	if(!is.null(.href)) {
+		if(verbose) cat("[parsePhenomenonProperty] with reference", .href)
+		
 		.obsProp <- SwePhenomenonProperty(href = .href)
 	}
 	else {
@@ -354,6 +360,7 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 		.compPhen <- .noneText[[1]]
 		# 52N SOS only returns swe:CompositePhenomenon
 		.name <- xmlName(.compPhen)
+		if(verbose) cat("[parsePhenomenonProperty] inline with name ", .name)
 		
 		if(.name == sweCompositePhenomenonName) {
 			.phen <- parseCompositePhenomenon(.compPhen, sos = sos,
@@ -373,6 +380,9 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 #
 parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {
 	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+	
+	if(verbose) cat("[parseCompositePhenomenon] with id", .id)
+	
 	.dimension <- as.integer(
 			xmlGetAttr(node = obj, name = "dimension", default = NA_character_))
 	.name <- xmlValue(obj[[gmlNameName]])
