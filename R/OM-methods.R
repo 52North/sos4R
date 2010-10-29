@@ -63,11 +63,13 @@ OmMeasurement <- function(samplingTime, procedure, observedProperty,
 
 ################################################################################
 #
-setMethod(f = "length", signature = signature(x = "OmObservationCollection"),
-		def = function(x) {
-			return(length(x@members))
-		}
-)
+# Some problem with this function: Could not find function "getGeneric" ...
+#setMethod(f = "length", signature = signature(x = "OmObservationCollection"),
+#		def = function(x) {
+#			.l <- length(x@members)
+#			return(.l)
+#		}
+#)
 
 setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 				i = "ANY", j = "missing"), 
@@ -76,7 +78,7 @@ setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 		}
 )
 
-setMethod(f = "[", signature = signature("OmObservationCollection", 
+setMethod(f = "[", signature = signature(x= "OmObservationCollection", 
 				i = "ANY", j = "ANY"),
 		def = function(x, i, j, ...) {
 			if (missing(j))

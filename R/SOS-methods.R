@@ -513,7 +513,7 @@ setMethod(f = "getObservationById",
 		}
 		
 		cat("Finished getObservation to", sos@url, "- received",
-				length(.obs), "observation(s)/measurement(s) having",
+				length(.resultLength), "observation(s)/measurement(s) having",
 				toString(.resultLength), "elements.\n")
 		
 		return(.obs)
