@@ -76,7 +76,7 @@ eea.obsProp.pm10; eea.obsProp[["PM10"]][1]
 
 ##############
 # BOUNDING BOX
-sosBoundedBy(eea.off.pm10) # or eea.off.pm10@boundedBy
+#sosBoundedBy(eea.off.pm10) # or eea.off.pm10@boundedBy
 # *** Here the format could definitly be improved, i.e. matrix as in sp, even with a proj4string based on srsName?
 
 #############
@@ -106,7 +106,8 @@ observation.pm10.week <- getObservation(sos = eeasos,
 #		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastWeek,
 		procedure = sosProcedures(eea.off.pm10)[c(1:42)],
-		inspect = TRUE)
+#		inspect = TRUE
+)
 # in my case just 3 observations
 
 # explore the returned observation collection:
