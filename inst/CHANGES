@@ -38,4 +38,6 @@
 * Moved warning when parsing offerings with missing time or envelope
 * Added sosBoundedBy(offering)
 * Renamed sosEventTimePeriod(...) to sosTime(...)
+* Corrected calculation of length in .getObservation_1.0.0
+* Fixed length.OmObservationCollection(x)
 * ...

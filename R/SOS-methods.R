@@ -490,22 +490,10 @@ setMethod(f = "getObservationById",
 		.obs <- .parsingFunction(obj = .response, sos = sos,
 				verbose = verbose)
 		
-		if(inherits(.obs, "OmObservationCollection")) {
-			.dim <- dim(sosResult(.obs))
-			if(!is.null(.dim)) {
-				# just one element
-				.resultLength = .dim[[1]]
-			}
-			# more than one element
-			else {
-				.resultLength <- sapply(
-						lapply(sosResult(.obs),dim),
-						"[[", 1)
-			}
-		}
-		else {
-			.resultLength <- NA
-		}
+		# calculate result length vector
+		if(inherits(.obs, "OmObservationCollection"))
+			.resultLength <- sapply(sosResult(.obs), nrow)
+		else .resultLength <- NA
 		
 		if(verbose) {
 			cat("** PARSED RESPONSE:\n")

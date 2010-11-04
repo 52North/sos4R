@@ -70,6 +70,9 @@ OmMeasurement <- function(samplingTime, procedure, observedProperty,
 #			return(.l)
 #		}
 #)
+length.OmObservationCollection <- function(x) {
+	length(x@members)
+}
 
 setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 				i = "ANY", j = "missing"), 
