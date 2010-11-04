@@ -8,6 +8,7 @@
 \alias{print,OmMeasurement-method}
 \alias{toString,OmMeasurement-method}
 \alias{sosResult,OmMeasurement-method}
+\alias{sosProcedures,OmMeasurement-method}
 
 \alias{OmMeasurement}
 

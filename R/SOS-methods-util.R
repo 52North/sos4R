@@ -245,6 +245,24 @@ setMethod(f = "sosProcedures",
 			.p <- as.character(obj@procedure)
 			return(.p)
 		})
+setMethod(f = "sosProcedures",
+		signature = signature(obj = "OmObservationCollection"),
+		def = function(obj) {
+			.p <- sapply(obj@members, sosProcedures)
+			return(.p)
+		})
+setMethod(f = "sosProcedures",
+		signature = signature(obj = "OmObservation"),
+		def = function(obj) {
+			.p <- as.character(obj@procedure)
+			return(.p)
+		})
+setMethod(f = "sosProcedures",
+		signature = signature(obj = "OmMeasurement"),
+		def = function(obj) {
+			.p <- as.character(obj@procedure)
+			return(.p)
+		})
 
 if (!isGeneric("sosObservedProperties"))
 	setGeneric(name = "sosObservedProperties", def = function(obj) {
@@ -331,6 +349,14 @@ setMethod(f = "sosFeaturesOfInterest",
 		def = function(obj) {
 			return(obj@featureOfInterest)
 		})
+setMethod(f = "sosFeaturesOfInterest",
+		signature = signature(obj = "OmObservation"),
+		def = function(obj) {
+			.foi <- obj@featureOfInterest
+			if(is.list(.foi) && length(.foi) == 1)
+				return(.foi[[1]])
+			return(.foi)
+		})
 
 
 if (!isGeneric("sosOperation"))
@@ -364,17 +390,6 @@ setMethod(f = "sosResponseMode", signature = signature(sos = "SOS"),
 			.caps <- sosCaps(sos)
 			.getOb <- .caps@operations@operations[[sosGetObservationName]]
 			return(.getOb@parameters$responseMode)
-		})
-
-if (!isGeneric("sosSrsName"))
-	setGeneric(name = "sosSrsName", def = function(sos) {
-				standardGeneric("sosSrsName")
-			})
-setMethod(f = "sosSrsName", signature = signature(sos = "SOS"),
-		def = function(sos) {
-			.caps <- sosCaps(sos)
-			.getOb <- .caps@operations@operations[[sosGetObservationName]]
-			return(.getOb@parameters$srsName)
 		})
 
 if (!isGeneric("sosResultModels"))
@@ -450,6 +465,110 @@ setMethod(f = "sosResult", signature = signature(obj = "OmObservationCollection"
 				return(.l[[1]])
 			else return(.l)
 		})
+
+if (!isGeneric("sosCoordinates"))
+	setGeneric(name = "sosCoordinates", def = function(obj) {
+				standardGeneric("sosCoordinates")
+			})
+setMethod(f = "sosCoordinates",
+		signature = signature(obj = "OmObservationCollection"),
+		def = function(obj) {
+			.coords <- sosCoordinates(obj = obj@members)
+			return(.coords)
+		})
+setMethod(f = "sosCoordinates", signature = signature(obj = "OmObservation"),
+		def = function(obj) {
+			.coords <- sosCoordinates(obj = obj@featureOfInterest)
+			return(.coords)
+		})
+setMethod(f = "sosCoordinates",
+		signature = signature(obj = "GmlFeatureCollection"),
+		def = function(obj) {
+			.list <- lapply(obj@featureMembers, sosCoordinates)
+			.coords <- do.call(rbind, .list)
+			return(.coords)
+		})
+setMethod(f = "sosCoordinates",
+		signature = signature(obj = "GmlFeatureProperty"),
+		def = function(obj) {
+			if(!is.null(obj@feature)) {
+				.coords <- sosCoordinates(obj = obj@feature)
+				return(.coords)
+			}
+			else {
+				warning("[sosCoordinates] Can only return coordinates if GmlFeatureProperty directly contains a feature.")
+				return(NA)
+			}
+		})
+setMethod(f = "sosCoordinates", signature = signature(obj = "SaSamplingPoint"),
+		def = function(obj) {
+			.coords <- sosCoordinates(obj = obj@position)
+			.names <- names(.coords)
+			.coords[, ncol(.coords)+1] <- sosId(obj)
+			names(.coords) <- c(.names, "foi_id")
+			return(.coords)
+		})
+setMethod(f = "sosCoordinates", signature = signature(obj = "GmlPointProperty"),
+		def = function(obj) {
+			.coords <- sosCoordinates(obj = obj@point)
+			return(.coords)
+		})
+setMethod(f = "sosCoordinates", signature = signature(obj = "GmlPoint"),
+		def = function(obj) {
+			.coords <- sosCoordinates(obj = obj@pos)
+			return(.coords)
+		})
+setMethod(f = "sosCoordinates",
+		signature = signature(obj = "GmlDirectPosition"),
+		def = function(obj) {
+			.coordinateDoubles <- as.double(
+					strsplit(x = obj@pos, split = " ")[[1]])
+			.coords <- as.data.frame(list(.coordinateDoubles[[1]],
+							.coordinateDoubles[[2]], sosSrsName(obj)))
+			names(.coords) <- c("lat", "lon", "SRS")
+			return(.coords)
+		})
+setMethod(f = "sosCoordinates",
+		signature = signature(obj = "list"),
+		def = function(obj) {
+			.list <- lapply(obj, sosCoordinates)
+			.coords <- do.call(rbind, .list)
+			return(.coords)
+		})
+
+if (!isGeneric("sosSrsName"))
+	setGeneric(name = "sosSrsName", def = function(obj) {
+				standardGeneric("sosSrsName")
+			})
+setMethod(f = "sosSrsName", signature = signature(obj = "SOS"),
+		def = function(obj) {
+			.caps <- sosCaps(obj)
+			.getOb <- .caps@operations@operations[[sosGetObservationName]]
+			return(.getOb@parameters$srsName)
+		})
+setMethod(f = "sosSrsName",
+		signature = signature(obj = "GmlDirectPosition"),
+		def = function(obj) {
+			return(obj@srsName)
+		})
+setMethod(f = "sosSrsName",
+		signature = signature(obj = "GmlPoint"),
+		def = function(obj) {
+			.self <- obj@srsName
+			if(is.na(.self)) {
+				return(sosSrsName(obj@pos))
+			}
+			return(.self)
+		})
+if (!isGeneric("sosId"))
+	setGeneric(name = "sosId", def = function(obj) {
+				standardGeneric("sosId")
+			})
+setMethod(f = "sosId", signature = signature(obj = "GmlFeature"),
+		def = function(obj) {
+			return(obj@id)
+		})
+
 
 ################################################################################
 # conversion methods and accessor function

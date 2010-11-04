@@ -86,6 +86,18 @@
 \alias{GmlMeasure}
 \alias{show,GmlMeasure-method}
 
+
+\alias{sosCoordinates,GmlDirectPosition-method}
+\alias{sosCoordinates,GmlFeatureCollection-method}
+\alias{sosCoordinates,GmlFeatureProperty-method}
+\alias{sosCoordinates,GmlPoint-method}
+\alias{sosCoordinates,GmlPointProperty-method}
+
+\alias{sosId,GmlFeature-method}
+
+\alias{sosSrsName,GmlDirectPosition-method}
+\alias{sosSrsName,GmlPoint-method}
+
 \title{Classes and Construction Functions from the GML Namespace}
 
 \description{

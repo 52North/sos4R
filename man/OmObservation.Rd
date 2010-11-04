@@ -14,6 +14,7 @@
 \alias{OmObservationProperty-class}
 \alias{show,OmObservationProperty-method}
 \alias{OmObservationProperty}
+\alias{sosProcedures,OmObservation-method}
 
 \alias{sosResult}
 \alias{sosResult,list-method}
@@ -21,6 +22,8 @@
 \alias{sosResult,OmObservation-method}
 
 \alias{as.data.frame.OmObservation}
+\alias{sosCoordinates,OmObservation-method}
+\alias{sosFeaturesOfInterest,OmObservation-method}
 
 \title{Classes for om:Observation Elements}
 

@@ -32,10 +32,10 @@
 #
 SaSamplingPoint <- function(sampledFeatures, position,
 		relatedObservation = list(NA), relatedSamplingFeature = list(NA),
-		surveyDetails = NA) {
+		surveyDetails = NA, id = NA_character_) {
 	new("SaSamplingPoint", sampledFeatures = sampledFeatures,
 			position = position, relatedObservation = relatedObservation,
-			surveyDetails = surveyDetails)
+			surveyDetails = surveyDetails, id = id)
 }
 
 #

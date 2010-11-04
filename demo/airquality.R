@@ -1,43 +1,16 @@
-################################################################################
-# Copyright (C) 2010 by 52 North                                               #
-# Initiative for Geospatial Open Source Software GmbH                          #
-#                                                                              #
-# Contact: Andreas Wytzisk                                                     #
-# 52 North Initiative for Geospatial Open Source Software GmbH                 #
-# Martin-Luther-King-Weg 24                                                    #
-# 48155 Muenster, Germany                                                      #
-# info@52north.org                                                             #
-#                                                                              #
-# This program is free software; you can redistribute and/or modify it under   #
-# the terms of the GNU General Publipc License version 2 as published by the    #
-# Free Software Foundation.                                                    #
-#                                                                              #
-# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
-# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
-# General Public License for more details.                                     #
-#                                                                              #
-# You should have received a copy of the GNU General Public License along with #
-# this program (see gpl-2.0.txt). If not, write to the Free Software           #
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
-# visit the Free Software Foundation web page, http://www.fsf.org.             #
-#                                                                              #
-# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-10-28                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
-#                                                                              #
-################################################################################
+# Copyright (C) 2010 by 52 North Initiative for Geospatial Open Source Software GmbH, Contact: info@52north.org
+# This program is free software; you can redistribute and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program (see gpl-2.0.txt). If not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the Free Software Foundation web page, http://www.fsf.org.
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
+# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
 
-# load package from source
-# source("<YOUR PATH>/sos4R/sandbox/loadSources.R")
-
-################################################################################
+##############################################################################
 # AirQuality
 airsos <- SOS(url = "http://giv-sos.uni-muenster.de:8080/AirQualitySOS/sos")
 
 airsos.offerings <- sosOfferings(airsos)
 names(airsos.offerings)
 
-################################################################################
+##############################################################################
 # EEA SOS
 
 # Preview: some units are not supported out of the box (saw this when I first did
@@ -106,7 +79,7 @@ observation.pm10.week <- getObservation(sos = eeasos,
 #		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastWeek,
 		procedure = sosProcedures(eea.off.pm10)[1:100],
-		inspect = TRUE
+#		inspect = TRUE
 )
 length(observation.pm10.week)
 
@@ -123,9 +96,9 @@ as.data.frame(observation.pm10.week[[1]])
 attributes(result01)
 
 # get station position
-obs <- observation.pm10.week[[1]]
-obs.pos <- obs@featureOfInterest@featureMembers[[1]]@feature@position@point@pos@pos
-obs.pos
+sosCoordinates(observation.pm10.week[[1]])
+sosCoordinates(observation.pm10.week[1:3])
+sosCoordinates(observation.pm10.week)
 
 #
 plot(result01[["Time"]], result01[["PM10"]])

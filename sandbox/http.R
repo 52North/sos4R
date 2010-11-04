@@ -250,7 +250,7 @@ w = processWSDL(
 		useInternalNodes = FALSE)
 
 
-# ********************** HIER GEHT'S WEITER ********************************** #
+# ********************** TODO CONTINUE HERE ********************************** #
 
 
 iface = genSOAPClientInterface(def = sosWsdl, verbose = TRUE)

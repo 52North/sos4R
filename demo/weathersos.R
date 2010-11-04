@@ -6,19 +6,15 @@
 # establish a connection to a SOS instance with default settings
 weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
-
 # get the latest observation (not standard conform!)
-off <- sosOfferings(weathersos)[[4]]
+off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
 obs <- getObservation(sos = weathersos, offering = off, latest = TRUE)
 
 # show the result
 sosResult(obs)
 
-
 # Two procedures, including plot
-#
 # Attention: plots ignore the fact that the times do NOT perfectly match!
-#
 obs <- getObservation(sos = weathersos, offering = off,
 		procedure = sosProcedures(off),
 		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
@@ -42,11 +38,37 @@ lines(x = obs[[2]]@result[[1]][1:x], y = obs[[2]]@result[[3]][1:x],
 legend("topleft", legend = c("Münster", "Kärnten"),
 		col = c("steelblue", "orange"), lty = 1, bty="n")
 
+################################################################################
+# Time series analysis
+library("xts")
 
-#
-# TODO using zoo with data from SOS
-#
+# set up request parameters
+station <- sosProcedures(weathersos)[[1]]
+temperatureOffering <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
+temperature <- sosObservedProperties(temperatureOffering)[1]
+september <- sosCreateTimePeriod(sos = weathersos,
+		begin = as.POSIXct("2010-09-01 00:00"),
+		end = as.POSIXct("2010-09-30 00:00"))
+# make the request
+obsSept <- getObservation(sos = weathersos, observedProperty = temperature,
+		procedure = station, eventTime = sosCreateEventTimeList(september),
+		offering = temperatureOffering)
+data <- sosResult(obsSept)
 
-#
-# TODO using sp with data from SOS
-#
+# inspect data
+summary(data); data[1:2,]; names(data)
+
+# create time series from data and plot
+tempSept <- xts(x = data[["urn:ogc:def:property:OGC::Temperature"]], order.by = data[["Time"]])
+# calculate regression (polynomial fitting)
+temp <- data[["urn:ogc:def:property:OGC::Temperature"]]
+time <- as.numeric(data[["Time"]])
+x = loess(temp~time,
+		na.omit(data),enp.target=10)
+
+# create plot
+plot(tempSept, main = "Temperature at Station One",
+		xlab = "Time", ylab = paste("Temperature in", attributes(temp)[["unit of measurement"]]),
+		major.ticks = "weeks")
+lines(data$Time, x$fitted, col = 'red', lwd=3)
+#savePlot(type = "png", filename = "usecase.png")

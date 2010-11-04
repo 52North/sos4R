@@ -17,6 +17,7 @@
 \alias{toString,SaSamplingSurface-method}
 
 \alias{SaSamplingPoint}
+\alias{sosCoordinates,SaSamplingPoint-method}
 
 \title{Classes of the Namespace sa}
 
@@ -55,7 +56,7 @@ Class \code{"\linkS4class{GmlFeatureOrNULL}"}, by class "GmlFeature", distance 2
 }
 
 \usage{
-SaSamplingPoint(sampledFeatures, position, relatedObservation = list(NA), relatedSamplingFeature = list(NA), surveyDetails = NA)
+SaSamplingPoint(sampledFeatures, position, relatedObservation = list(NA), relatedSamplingFeature = list(NA), surveyDetails = NA, id = NA_character_)
 }
 
 \arguments{
@@ -64,6 +65,7 @@ SaSamplingPoint(sampledFeatures, position, relatedObservation = list(NA), relate
   \item{relatedObservation}{ ~~ }
   \item{relatedSamplingFeature}{ ~~ }
   \item{surveyDetails}{ ~~ }
+  \item{id}{ ~~ }
 }
 
 \value{Construction functions: An object of the respective class.}

@@ -97,6 +97,15 @@
 \alias{sosExceptionCodeMeaning,character-method}
 \alias{sosBoundedBy}
 \alias{sosBoundedBy-method}
+\alias{sosCoordinates}
+\alias{sosCoordinates-method}
+\alias{sosCoordinates,list-method}
+
+\alias{sosId}
+\alias{sosId-method}
+\alias{sosSrsName}
+\alias{sosSrsName-method}
+
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 

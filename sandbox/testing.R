@@ -28,6 +28,11 @@
 ################################################################################
 
 ################################################################################
+# This file is the main development basis for the package sos4R. Examples should
+# eventually be moved to a Vignette.
+################################################################################
+
+################################################################################
 source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 
 
@@ -833,6 +838,39 @@ debug(.sosEncodeRequestXMLGetObservation_1.0.0)
 obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
 		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
 		result = xmlParseString(hackedString), inspect = TRUE)
+
+################################################################################
+# accessing feature and it's coordinates
+obs <- pegelObs[[1]]
+obs@featureOfInterest@featureMembers[[1]]@feature@position@point@pos@pos
+
+str(sosFeaturesOfInterest(obs))
+
+sosCoordinates(obs@featureOfInterest@featureMembers[[1]]@feature@position@point@pos)
+sosCoordinates(obs@featureOfInterest@featureMembers[[1]]@feature@position@point)
+sosCoordinates(obs@featureOfInterest@featureMembers[[1]]@feature@position)
+sosCoordinates(obs@featureOfInterest@featureMembers[[1]]@feature)
+sosCoordinates(obs@featureOfInterest@featureMembers[[1]])
+sosCoordinates(obs@featureOfInterest@featureMembers)
+sosCoordinates(obs@featureOfInterest)
+sosCoordinates(obs)
+
+sosCoordinates(pegelObs)
+sosCoordinates(pegelObs[[1]])
+sosCoordinates(pegelObs[[3]])
+
+sosCoordinates(observation.pm10.week[1:2])
+sosCoordinates(observation.pm10.week)
+# good so far
+
+# add the feature, id is in sampling point
+foiid <- str(observation.pm10.week[[1]]@featureOfInterest@featureMembers[[1]]@feature@id)
+foiid
+sosId(observation.pm10.week[[1]]@featureOfInterest@featureMembers[[1]]@feature)
+
+#
+sosSrsName(obs@featureOfInterest@featureMembers[[1]]@feature@position@point@pos)
+sosSrsName(obs@featureOfInterest@featureMembers[[1]]@feature@position@point)
 
 ################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")

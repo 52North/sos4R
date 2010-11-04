@@ -30,7 +30,7 @@
 * Accessor functions now operate based on the offering, not the allowed parameter values
 * Renamed functions from SosSpec to SosDescribeSensor, SosGetObservation and SosGetObservationById and moved according files to SOS-class.R and SOS-methods.R
 
-2010-10-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-11-02		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-04
 * Fixed sosContents(...)
@@ -38,6 +38,13 @@
 * Moved warning when parsing offerings with missing time or envelope
 * Added sosBoundedBy(offering)
 * Renamed sosEventTimePeriod(...) to sosTime(...)
+
+2010-11-04		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.1-05
 * Corrected calculation of length in .getObservation_1.0.0
 * Fixed length.OmObservationCollection(x)
-* ...
+* Moved examples from presentation.R (deleted!) and testing-SOS.R to demo scripts
+* Moved usecase.R into weathersos demo and deleted the file
+* Added sosProcedures(...) for OmMeasurement, OmObservation and OmObservationCollection
+* Added sosCoordinates(...)

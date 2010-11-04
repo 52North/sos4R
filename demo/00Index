@@ -1,1 +1,4 @@
-weathersos		demo script for ifgi WeatherSOS
+weathersos		time series analysis demo with weather data by ifgi
+airquality		demo script for air quality SOS by ifgi and EEA
+pegel			demo script for water gauge data in Germany by Pegelonline
+marinemeta		demo script for SOS by Marine Metadata Interoperability Initiative
