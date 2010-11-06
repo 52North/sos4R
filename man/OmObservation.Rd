@@ -24,6 +24,8 @@
 \alias{as.data.frame.OmObservation}
 \alias{sosCoordinates,OmObservation-method}
 \alias{sosFeaturesOfInterest,OmObservation-method}
+\alias{sosFeatureIds,OmObservation-methods}
+\alias{sosObservedProperties,OmObservation-methods}
 
 \title{Classes for om:Observation Elements}
 

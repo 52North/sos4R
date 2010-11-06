@@ -78,30 +78,50 @@ observation.pm10.week <- getObservation(sos = eeasos,
 		offering = eea.off.pm10,
 #		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastWeek,
-		procedure = sosProcedures(eea.off.pm10)[1:100],
+		procedure = sosProcedures(eea.off.pm10),
 #		inspect = TRUE
 )
-length(observation.pm10.week)
 
 # explore the returned observation collection:
 observation.pm10.week
 observation.pm10.week[[1]]
 
-sosResult(observation.pm10.week)
-result01 <- sosResult(observation.pm10.week[[1]])
-# sosResult currently does the same as as.data.frame:
-as.data.frame(observation.pm10.week[[1]])
+# sosResult currently does the same as as.data.frame for single observations
+# and binds the observation together for observation collections:
+as.data.frame(observation.pm10.week[[1]]); sosResult(observation.pm10.week[[1]])
+result.pm10.week <- sosResult(observation.pm10.week)
+
+# sort 
+sort_df(result.pm10.week, names(result.pm10.week)[3])
+sort_df(result.pm10.week, "Time")
+
+# subset that data frame
+subset(result.pm10.week, feature=="foi_AT10001")
+subset(result.pm10.week, feature==features[2:5] & PM10 > 10)
+
+# subset the observation collection based on features, observed properties and 
+# procedures
+features <- levels(result.pm10.week$feature)
+features
+observation.pm10.week[features[1:4]]
+observation.pm10.week[sosObservedProperties(observation.pm10.week)[2]]
+observation.pm10.week[sosProcedures(observation.pm10.week)[2:4]]
 
 # get observation metadata
+result01 <- sosResult(observation.pm10.week[[1]])
 attributes(result01)
 
 # get station position
 sosCoordinates(observation.pm10.week[[1]])
 sosCoordinates(observation.pm10.week[1:3])
 sosCoordinates(observation.pm10.week)
+str(sosCoordinates(observation.pm10.week))
 
-#
+# create some plots
 plot(result01[["Time"]], result01[["PM10"]])
+library(lattice)
+xyplot(PM10~Time|feature, sosResult(observation.pm10.week[1:50]), type='l',
+		par.strip.text=list(cex=.7))
 
 ###
 # getting data for a whole year and many procedures, still quite fast as not much data.
@@ -118,17 +138,14 @@ observation.pm10.year <- getObservation(sos = eeasos,
 ###################
 # OBSERVATIONS: NO2
 
-# ! DN: There is some problem here if requestion a lot of procedures (> 100) at once, I'm looking into that.
+# ! DN: There is some problem here if requestion a lot of procedures (> about 177) at once, I'm looking into that.
 
 observation.no2.year <- getObservation(sos = eeasos,
 		offering = eea.off.no2,
 #		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastYear,
-		procedure = sosProcedures(eea.off.no2)[100:120])
-# Not too much data:
-# Finished getObservation to http://discomap-test.eea.europa.eu/swe/sos - received 107 observation(s)/measurement(s) having 3, 16, 24, 23, 8, 37, 42, 24, 24, 6, 25, 3, 59, 20, 58, 4, 27, 24, 28, 9, 1, 19, 73, 15, 79, 24, 4, 64, 15, 17, 27, 20, 23, 4, 1, 68, 23, 24, 24, 14, 24, 24, 6, 24, 26, 8, 13, 24, 17, 15, 24, 1, 37, 8, 19, 4, 24, 329, 30, 22, 15, 21, 1, 11, 24, 25, 63, 25, 16, 17, 25, 24, 26, 16, 25, 8, 1, 16, 20, 18, 60, 24, 85, 24, 24, 21, 127, 2, 24, 7, 7, 24, 13, 1, 9, 77, 63, 2, 10, 25, 22, 52, 3, 24, 27, 36, 12 elements.
-observation.no2.year.count <- sum(sapply(sosResult(observation.pm10.week), nrow))
-observation.no2.year.count
+		procedure = sosProcedures(eea.off.no2)[1:180],
+		verbose = TRUE)
 
 # observations from complete time period
 timePeriod.no2 <- sosTime(eea.off.no2)

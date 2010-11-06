@@ -106,6 +106,12 @@
 \alias{sosSrsName}
 \alias{sosSrsName-method}
 
+\alias{sosFeatureIds}
+\alias{sosFeatureIds-methods}
+\alias{sosFeatureIds,list-methods}
+\alias{sosObservedProperties,list-methods}
+\alias{sosFeaturesOfInterest,list-methods}
+
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 

@@ -873,4 +873,62 @@ sosSrsName(obs@featureOfInterest@featureMembers[[1]]@feature@position@point@pos)
 sosSrsName(obs@featureOfInterest@featureMembers[[1]]@feature@position@point)
 
 ################################################################################
+# indexing OmObservationCollection with observed properties and procedures
+.getObservationsWithProcedure(observation.pm10.week,
+		sosProcedures(observation.pm10.week)[[5]])
+.getObservationsWithProcedure(observation.pm10.week,
+		sosProcedures(observation.pm10.week)[2:4])
+
+observation.pm10.week[which(sosProcedures(observation.pm10.week) %in% 
+				c("urn:x-eea:object:sensor:airquality:PL0014A",
+						"urn:x-eea:object:sensor:airquality:AT30599"))]
+observation.pm10.week[which(sosProcedures(observation.pm10.week) %in% 
+						"urn:x-eea:object:sensor:airquality:AT30599")]
+
+length(.getObservationsWithObservedProperty(observation.pm10.week,
+		sosObservedProperties(observation.pm10.week)))
+
+observation.pm10.week["urn:x-eea:object:sensor:airquality:CZ0HHKB"]
+observation.pm10.week[sosProcedures(observation.pm10.week)[4:6]]
+observation.pm10.week[sosObservedProperties(observation.pm10.week)[1]]
+# works!
+
+.getObservationsWithFoiId(observation.pm10.week, "foi_CZ0UDCM")
+
+observation.pm10.week[sosProcedures(observation.pm10.week)[1]]
+observation.pm10.week[sosProcedures(observation.pm10.week)[[1]]]
+observation.pm10.week["foi_CZ0UDCM"]
+
+################################################################################
+# binding result data frames from a observation collection
+sosResult(observation.pm10.week[1:3])
+
+# try that with different observed properties
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+
+sosOfferings(pegelsos)
+offering.wasserstand <- sosOfferings(pegelsos)[["WASSERSTAND_ROHDATEN"]]
+
+lastHour <- sosCreateEventTimeList(sosCreateTimePeriod(sos = pegelsos,
+				begin = (Sys.time() - 3600), end = Sys.time()))
+pegelObs.10 <- getObservation(sos = pegelsos,
+		observedProperty = sosObservedProperties(offering.wasserstand)[5],
+		offering = wasserstand_roh,
+		procedure = c("Wasserstand-Bake_Z_9510066",
+				"Wasserstand-Bake_A_9510063"),
+		eventTime = lastHour,
+		verbose = TRUE)
+# this does not return the requested observed property, but just wasserstand...
+
+
+myOff <- sosOfferings(MBARI)[[1]]
+myProc <- sosProcedures(MBARI)[[1]]
+mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+sosResult(mbariObs[[1]])[1:2,]
+one <- sosResult(mbariObs[[1]])
+two <- one[,1:5]
+do.call(rbind, list(one, two))[1:2,]
+# does NOT work with different number of columns!
+
+################################################################################
 source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")

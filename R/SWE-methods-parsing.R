@@ -127,7 +127,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		if(is.null(.method)) stop("No converter found!")
 		
 		if(verbose) {
-			cat("[parseValues] Using converter function: ")
+			cat("[parseValues] Using converter function:\n")
 			show(.method)
 		}
 				
@@ -176,7 +176,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	}
 	
 	# remove id column
-	if(verbose) cat("[parseValues] Removing temporary first column")
+	if(verbose) cat("[parseValues] Removing temporary first column\n")
 	.data <- .data[,!colnames(.data)%in%.tempId]
 	
 	return(.data)

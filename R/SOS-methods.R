@@ -473,7 +473,7 @@ setMethod(f = "getObservationById",
 	.responseString = sosRequest(sos = sos, request = .go,
 			verbose = verbose, inspect = inspect)
 	if(verbose || inspect){
-		cat("*** RESPONSE ( size:", object.size(.responseString) , "\n", .responseString , "\n")
+		cat("*** RESPONSE size:", object.size(.responseString) , ")\n")
 	}
 	
 	.response <- xmlParseDoc(.responseString, asText = TRUE)
@@ -492,7 +492,7 @@ setMethod(f = "getObservationById",
 		
 		# calculate result length vector
 		if(inherits(.obs, "OmObservationCollection"))
-			.resultLength <- sapply(sosResult(.obs), nrow)
+			.resultLength <- sapply(sosResult(.obs, bind = FALSE), nrow)
 		else .resultLength <- NA
 		
 		if(verbose) {
@@ -501,8 +501,9 @@ setMethod(f = "getObservationById",
 		}
 		
 		cat("Finished getObservation to", sos@url, "- received",
-				length(.resultLength), "observation(s)/measurement(s) having",
-				toString(.resultLength), "elements.\n")
+				length(.obs), "observation(s)/measurement(s) having",
+				sum(.resultLength), "elements [", toString(.resultLength),
+				"].\n")
 		
 		return(.obs)
 	}

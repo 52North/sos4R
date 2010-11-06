@@ -11,15 +11,15 @@ pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 
 # what data do I get?
 cat("\nNames of offerings:\n")
-names(sosOfferings(pegelsos))
+print(names(sosOfferings(pegelsos)))
 
 # let's find interesting data
 # Bake_Z: http://www.pegelonline.wsv.de/gast/stammdaten?pegelnr=9510066
 procs <- sosProcedures(pegelsos)[["WASSERSTAND_ROHDATEN"]]
-contain_bake <- procs %in% grep("*Bake*", procs, value=TRUE)
+contain_bake <- procs %in% grep("*Wasserstand-Bake*", procs, value=TRUE)
 baken <- subset(procs, contain_bake)
 cat("\nGauges in Northern Sea:\n")
-baken
+print(baken)
 
 # what?
 wasserstand_roh <- sosOfferings(pegelsos)[["WASSERSTAND_ROHDATEN"]]
@@ -41,27 +41,36 @@ cat("\nRequesting data... \n")
 pegelObs <- getObservation(sos = pegelsos,
 		observedProperty = wasserstand,
 		offering = wasserstand_roh,
-		procedure = baken[c(7, 9, 11)],
+		procedure = baken[c(1, 3, 5)],
 		eventTime = tPeriod)
 
 # show parts of the data frame:
 cat("\nData excerpts:\n")
-pegelObs[[1]]@result[1:2,]
-pegelObs[[2]]@result[1:2,]
-pegelObs[[3]]@result[1:2,]
+sosResult(pegelObs[[1]])[1:2,]
+sosResult(pegelObs)[1:10,]
 
 # not enough info? got field descriptions as attributes for each column:
 cat("\nMetadata for two values:\n")
-attributes(pegelObs[[1]]@result$Time) # TIME
-attributes(pegelObs[[1]]@result$Wasserstand) # actual value
+attributes(sosResult(pegelObs[[1]])$Time) # TIME
+attributes(sosResult(pegelObs[[1]])$Wasserstand) # actual value
 
 # do something with the data!
-r1 <- pegelObs[[1]]@result
+r1 <- sosResult(pegelObs[[1]])
 range(r1$Wasserstand)
 r1clean <- subset(r1, Wasserstand > 0)
 range(r1clean$Wasserstand)
+
+r2 <- sosResult(pegelObs[[2]])
+range(r2$Wasserstand)
+r2clean <- subset(r2, Wasserstand > 0)
+range(r2clean$Wasserstand)
+
 plot(r1clean$Time, r1clean$Wasserstand, type = "l", ylim=c(200,800),
-		main = paste("Water level at", sosProcedures(pegelObs[[1]])))
+		lty = "solid", col = "blue",
+		main = paste("Water level at", sosProcedures(pegelObs[c(1,2)])))
+lines(r2clean$Time, r2clean$Wasserstand, type = "l", col = "orange",
+		lty = "twodash",
+		main = paste("Water level at", sosProcedures(pegelObs[[2]])))
 par(ask = TRUE)
 
 # Plot a quantile regression line with standard error bounds, using the quantreg package.

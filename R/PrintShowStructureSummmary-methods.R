@@ -451,16 +451,12 @@
 }
 
 .toString.OmObservation <- function(x, ...) {
-	.s <- paste("Object of class OmObservation; procedure: ",
+	.s <- paste("Object of class OmObservation;\n\tprocedure: ",
 			toString(x@procedure),
-			"\n\tobservedProperty: ",
-			toString(x@observedProperty),
-			"\n\tfoi: ",
-			toString(x@featureOfInterest),
-			"\n\tsamplingTime: ",
-			.addTabIndent(toString(x@samplingTime)),
-			"\n\tresult dimensions: ",
-			toString(dim(x@result)),
+			"\n\tobservedProperty: ", toString(sosObservedProperties(x)),
+			"\n\tfoi: ", toString(sosFeatureIds(x)),
+			"\n\tsamplingTime: ", .addTabIndent(toString(x@samplingTime)),
+			"\n\tresult dimensions: ", toString(dim(x@result)),
 			sep = "")
 	return(.s)
 }
@@ -576,16 +572,24 @@
 }
 
 .toString.GmlTimePosition <- function(x, ...) {
-	.s <- paste("Object of class GmlTimePosition",
-			"; time: ",
-			x@time,
-			"; frame: ",
-			x@frame,
-			"; calendarEraName: ",
-			x@calendarEraName,
-			"; indeterminatePosition: ",
-			x@indeterminatePosition,
-			sep = "")
+	.s <- paste("GmlTimePosition [",
+			" time: ", x@time, sep = "")
+	
+	if(!is.na(x@frame)) {
+		.s <- paste(.s, "; frame: ", x@frame, sep = "")
+	}
+	if(!is.na(x@frame)) {
+		.s <- paste(.s, "; frame: ", x@frame, sep = "")
+	}
+	if(!is.na(x@calendarEraName)) {
+		.s <- paste(.s, "; calendarEraName: ", x@calendarEraName, sep = "")
+	}
+	if(!is.na(x@indeterminatePosition)) {
+		.s <- paste(.s, "; indeterminatePosition: ", x@indeterminatePosition,
+				sep = "")
+	}
+	
+	.s <- paste(.s, "]")
 	return(.s)
 }
 
@@ -652,15 +656,13 @@
 	}
 	
 	if(!is.null(x@begin) && !is.null(x@end)) {
-		.s <- paste(.s, "begin: ", toString(x@begin), " -- end: ",
-				toString(x@end))
+		.s <- paste(toString(x@begin), " --> ", toString(x@end))
 	}
 	else {
-		.s <- paste("beginPosition: ", toString(x@beginPosition),
-				" -- endPosition: ", toString(x@endPosition))
+		.s <- paste(toString(x@beginPosition), " --> ", toString(x@endPosition))
 	}
 	
-	.s <- paste("Object of class GmlTimePeriod:", .s)
+	.s <- paste("GmlTimePeriod: [", .s, "]")
 	return(.s)
 }
 

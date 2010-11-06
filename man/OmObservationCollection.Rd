@@ -17,6 +17,9 @@
 
 \alias{sosCoordinates,OmObservationCollection-method}
 \alias{sosProcedures,OmObservationCollection-method}
+\alias{sosFeatureIds,OmObservationCollection-methods}
+\alias{sosObservedProperties,OmObservationCollection-methods}
+\alias{sosFeaturesOfInterest,OmObservationCollection-methods}
 
 \title{Class "OmObservationCollection"}
 

@@ -77,15 +77,81 @@ length.OmObservationCollection <- function(x) {
 setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 				i = "ANY", j = "missing"), 
 		def = function(x, i, j, ...) {
-			x@members[[i]]
+			if(is.numeric(i)) {
+				return(x@members[[i]])
+			}
+			else {
+				warning("Indexing only supported with numeric values!")
+			}
 		}
 )
+
+.getObservationsWithObservedProperty <- function(coll, obsProp) {
+	.obsProperties <- sosObservedProperties(coll, removeDuplicates = FALSE)
+	.idx <- c()
+	
+	
+	for (i in seq(1:length(.obsProperties))) {
+		.current <- .obsProperties[[i]]
+#		cat(i, ": current:", .current, "\n")
+		if(any(.current == obsProp)) {
+			.idx <- c(.idx, i)
+			cat("found index: ", i, ": ", .idx, "\n")
+		}
+	}
+#	cat("Found observed property ", obsProp, " at indices", .idx, "\n")
+	if(length(.idx) == 0)
+		return(list())
+	else
+		return(coll[.idx])
+}
+.getObservationsWithProcedure <- function(coll, procedure) {
+	.procedures <- sosProcedures(coll)
+	.idx <- which(.procedures %in% procedure)
+#	cat("Found procedure ", procedure, " at indices", .idx, "\n")
+	if(length(.idx) == 0)
+		return(list())
+	else
+		return(coll[.idx])
+}
+.getObservationsWithFoiId <- function(coll, foiId) {
+	.featureIds <- sosFeatureIds(coll)
+	.idx <- which(.featureIds %in% foiId)
+#	cat("Found foi ", foiId, " at indices", .idx, "\n")
+	if(length(.idx) == 0)
+		return(list())
+	else
+		return(coll[.idx])
+}
 
 setMethod(f = "[", signature = signature(x= "OmObservationCollection", 
 				i = "ANY", j = "ANY"),
 		def = function(x, i, j, ...) {
-			if (missing(j))
-				return(x@members[i])
+			if (missing(j)) {
+				if(is.numeric(i)) {
+					return(x@members[i])
+				}
+				else {
+#					cat("Try subsetting with", i, "\n")
+					# subset the collection by procedure or observed property
+					.byProc <- .getObservationsWithProcedure(x, i)
+#					cat("by procedures: ", toString(.byProc), "\n")
+					if(length(.byProc) > 0)
+						return(.byProc)
+					
+					.byObsProp <- .getObservationsWithObservedProperty(x, i)
+#					cat("by obs prop: ", toString(.byObsProp), "\n")
+					if(length(.byObsProp) > 0)
+						return(.byObsProp)
+					
+					.byFoiId <- .getObservationsWithFoiId(x, i)
+#					cat("by foi id: ", toString(.byObsProp), "\n")
+					if(length(.byFoiId) > 0)
+						return(.byFoiId)
+					
+					return(list())
+				}
+			}
 			else return(x@members[i:j])
 		}
 )

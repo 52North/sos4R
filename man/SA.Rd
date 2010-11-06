@@ -18,6 +18,7 @@
 
 \alias{SaSamplingPoint}
 \alias{sosCoordinates,SaSamplingPoint-method}
+\alias{sosFeatureIds,SaSamplingPoint-methods}
 
 \title{Classes of the Namespace sa}
 

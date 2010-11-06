@@ -28,6 +28,8 @@
 \alias{SwePhenomenon}
 \alias{SwePhenomenonProperty}
 \alias{SweTextBlock}
+\alias{sosObservedProperties,SweCompositePhenomenon-methods}
+\alias{sosObservedProperties,SwePhenomenonProperty-methods}
 
 \title{Classes and Construction Functions for the SWE Namespace}
 
