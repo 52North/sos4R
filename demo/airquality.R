@@ -5,86 +5,92 @@
 
 ##############################################################################
 # AirQuality
-airsos <- SOS(url = "http://giv-sos.uni-muenster.de:8080/AirQualitySOS/sos")
+airsos.converters <- SosDataFieldConvertingFunctions(
+		"urn:ogc:def:phenomenon:OGC:1.0.30:PM10" = sosConvertDouble,
+		"urn:ogc:def:phenomenon:OGC:1.0.30:NO2" = sosConvertDouble)
+airsos <- SOS(url = "http://giv-sos.uni-muenster.de:8080/AirQualitySOS/sos",
+		dataFieldConverters = airsos.converters)
 
 airsos.offerings <- sosOfferings(airsos)
 names(airsos.offerings)
 
 ##############################################################################
-# EEA SOS
+# airsos SOS
 
 # Preview: some units are not supported out of the box (saw this when I first did
 # a getObservation call):
 # 	No converter for the unit of measurement  µg/m^3  with the definition 
 # 	urn:ogc:def:phenomenon:OGC:1.0.30:PM10 ! Trying a default, but you can add
 #	one when creating a SOS using SosDataFieldConvertingFunctions().
-eea.converters <- SosDataFieldConvertingFunctions(
+airsos.converters <- SosDataFieldConvertingFunctions(
 		"urn:ogc:def:phenomenon:OGC:1.0.30:PM10" = sosConvertDouble,
 		"urn:ogc:def:phenomenon:OGC:1.0.30:NO2" = sosConvertDouble)
-eeasos <- SOS(url = "http://discomap-test.eea.europa.eu/swe/sos",
-		dataFieldConverters = eea.converters)
+sos = NA
+airsos2 <- SOS(url = sos2, dataFieldConverters = airsos.converters)
 
 ###########
 # OFFERINGS
 # get the available offerings
-eea.offerings <- sosOfferings(eeasos)
-eea.offerings
+airsos.offerings <- sosOfferings(airsossos)
+airsos.offerings
 # extract one offering
-eea.off.pm10 <- eea.offerings[["PM10"]]
-eea.off.pm10
-eea.off.no2 <- eea.offerings[["NO2"]]
+airsos.off.pm10 <- airsos.offerings[["PM10"]]
+airsos.off.pm10
+airsos.off.no2 <- airsos.offerings[["NO2"]]
 
 #####################
 # OBSERVED PROPERTIES
 # get the observed properties of all offerings
-eea.obsProp <- sosObservedProperties(eeasos)
+airsos.obsProp <- sosObservedProperties(airsossos)
 # (be aware that this is a list of character vectors
-str(eea.obsProp)
+str(airsos.obsProp)
 
 # get the observed properties
-eea.obsProp.pm10 <- sosObservedProperties(eea.off.pm10)
-eea.obsProp.no2 <- sosObservedProperties(eea.off.no2)
+airsos.obsProp.pm10 <- sosObservedProperties(airsos.off.pm10)
+airsos.obsProp.no2 <- sosObservedProperties(airsos.off.no2)
 # both the same:
-eea.obsProp.pm10; eea.obsProp[["PM10"]][1]
+airsos.obsProp.pm10; airsos.obsProp[["PM10"]][1]
 
 ##############
 # BOUNDING BOX
-#sosBoundedBy(eea.off.pm10) # or eea.off.pm10@boundedBy
+#sosBoundedBy(airsos.off.pm10) # or airsos.off.pm10@boundedBy
 # *** Here the format could definitly be improved, i.e. matrix as in sp, even with a proj4string based on srsName?
 
 #############
 # TIME PERIOD
 # for all data based on eventTime parameter in GetObservation metadata
-sosTime(eeasos)
+sosTime(airsossos)
 
 # for one offering
-sosTime(eea.off.pm10)
+sosTime(airsos.off.pm10)
 # *** Just name what format would work best here! Or coercion to some R format?
 
 ############
 # PROCEDURES
-sosProcedures(eeasos) # list of vectors
-sosProcedures(eea.off.pm10) # still a long vector!
+sosProcedures(airsossos) # list of vectors
+sosProcedures(airsos.off.pm10) # still a long vector!
 
 ####################
 # OBSERVATIONS: PM10
 # *** The event time handling is not really nice yet...
-lastWeek = sosCreateEventTimeList(sosCreateTimePeriod(sos = eeasos,
+lastWeek = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsossos,
 				begin = as.POSIXct(Sys.time() - 3600*24*7),
 				end = as.POSIXct(Sys.time())))
 
 # if you want to see what get's in and out, just set "inspect" flag to TRUE
-observation.pm10.week <- getObservation(sos = eeasos,
-		offering = eea.off.pm10,
-#		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
+observation.pm10.week <- getObservation(sos = airsossos,
+		offering = airsos.off.pm10,
+#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastWeek,
-		procedure = sosProcedures(eea.off.pm10),
+		procedure = sosProcedures(airsos.off.pm10),
 #		inspect = TRUE
 )
 
 # explore the returned observation collection:
 observation.pm10.week
 observation.pm10.week[[1]]
+features <- levels(result.pm10.week$feature)
+features
 
 # sosResult currently does the same as as.data.frame for single observations
 # and binds the observation together for observation collections:
@@ -97,15 +103,16 @@ sort_df(result.pm10.week, "Time")
 
 # subset that data frame
 subset(result.pm10.week, feature=="foi_AT10001")
-subset(result.pm10.week, feature==features[2:5] & PM10 > 10)
+subset(result.pm10.week, feature=="foi_AT10001" & PM10 > 12)
 
 # subset the observation collection based on features, observed properties and 
 # procedures
-features <- levels(result.pm10.week$feature)
-features
 observation.pm10.week[features[1:4]]
 observation.pm10.week[sosObservedProperties(observation.pm10.week)[2]]
 observation.pm10.week[sosProcedures(observation.pm10.week)[2:4]]
+
+#
+result.pm10.week.split = split(result.pm10.week, result.pm10.week$feature)
 
 # get observation metadata
 result01 <- sosResult(observation.pm10.week[[1]])
@@ -125,14 +132,14 @@ xyplot(PM10~Time|feature, sosResult(observation.pm10.week[1:50]), type='l',
 
 ###
 # getting data for a whole year and many procedures, still quite fast as not much data.
-lastYear = sosCreateEventTimeList(sosCreateTimePeriod(sos = eeasos,
+lastYear = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsossos,
 				begin = as.POSIXct(Sys.time() - 3600*24*365),
 				end = as.POSIXct(Sys.time())))
-observation.pm10.year <- getObservation(sos = eeasos,
-		offering = eea.off.pm10,
-#		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
+observation.pm10.year <- getObservation(sos = airsossos,
+		offering = airsos.off.pm10,
+#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastYear,
-		procedure = sosProcedures(eea.off.pm10)[c(1:100)])
+		procedure = sosProcedures(airsos.off.pm10)[c(1:100)])
 
 
 ###################
@@ -140,18 +147,18 @@ observation.pm10.year <- getObservation(sos = eeasos,
 
 # ! DN: There is some problem here if requestion a lot of procedures (> about 177) at once, I'm looking into that.
 
-observation.no2.year <- getObservation(sos = eeasos,
-		offering = eea.off.no2,
-#		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
+observation.no2.year <- getObservation(sos = airsossos,
+		offering = airsos.off.no2,
+#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastYear,
-		procedure = sosProcedures(eea.off.no2)[1:180],
+		procedure = sosProcedures(airsos.off.no2)[1:180],
 		verbose = TRUE)
 
 # observations from complete time period
-timePeriod.no2 <- sosTime(eea.off.no2)
-observation.no2.all <- getObservation(sos = eeasos,
-		offering = eea.off.no2,
-#		observedProperty = eea.obsProp.pm10, # not needed, taken from the offering as default
+timePeriod.no2 <- sosTime(airsos.off.no2)
+observation.no2.all <- getObservation(sos = airsossos,
+		offering = airsos.off.no2,
+#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = sosCreateEventTimeList(timePeriod.no2),
-		procedure = sosProcedures(eea.off.no2)[1:20])
+		procedure = sosProcedures(airsos.off.no2)[1:20])
 
