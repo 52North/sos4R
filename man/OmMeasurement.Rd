@@ -9,8 +9,8 @@
 \alias{toString,OmMeasurement-method}
 \alias{sosResult,OmMeasurement-method}
 \alias{sosProcedures,OmMeasurement-method}
-\alias{sosFeatureIds,OmMeasurement-methods}
-\alias{sosFeaturesOfInterest,OmMeasurement-methods}
+\alias{sosFeatureIds,OmMeasurement-method}
+\alias{sosFeaturesOfInterest,OmMeasurement-method}
 
 \alias{OmMeasurement}
 

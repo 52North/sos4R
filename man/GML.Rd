@@ -95,16 +95,16 @@
 \alias{sosId,GmlFeature-method}
 \alias{sosSrsName,GmlDirectPosition-method}
 \alias{sosSrsName,GmlPoint-method}
-\alias{sosFeatureIds,GmlFeatureCollection-methods}
-\alias{sosFeatureIds,GmlFeatureProperty-methods}
+\alias{sosFeatureIds,GmlFeatureCollection-method}
+\alias{sosFeatureIds,GmlFeatureProperty-method}
 
-\alias{sosFeaturesOfInterest,GmlFeatureCollection-methods}
+\alias{sosFeaturesOfInterest,GmlFeatureCollection-method}
 
 
 \title{Classes and Construction Functions from the GML Namespace}
 
 \description{
-Classes for \code{GML} elements and their respecive construction functions. See the referenced specification for details.
+Classes for \code{GML} elements and their respective construction functions. See the referenced specification for details.
 }
 
 \section{Objects from this classes}{

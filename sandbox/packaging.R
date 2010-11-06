@@ -91,6 +91,10 @@ promptClass(clName = "OmObservationCollection",
 		filename = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/man/OmObservationCollection.Rd")
 
 #
+promptMethods(f = "sosFeatureIds", filename = "/tmp/sosFeatureIds-methods.Rd")
+
+
+#
 #
 #
 library("tools")

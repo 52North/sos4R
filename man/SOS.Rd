@@ -64,6 +64,7 @@
 \alias{sosProcedures}
 \alias{sosProcedures-methods}
 \alias{sosProcedures,SOS-method}
+\alias{sosProcedures,list-method}
 \alias{sosProcedures,SosObservationOffering-method}
 \alias{sosResponseFormats}
 \alias{sosResponseFormats-methods}
@@ -108,9 +109,9 @@
 
 \alias{sosFeatureIds}
 \alias{sosFeatureIds-methods}
-\alias{sosFeatureIds,list-methods}
-\alias{sosObservedProperties,list-methods}
-\alias{sosFeaturesOfInterest,list-methods}
+\alias{sosFeatureIds,list-method}
+\alias{sosObservedProperties,list-method}
+\alias{sosFeaturesOfInterest,list-method}
 
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
