@@ -931,4 +931,36 @@ do.call(rbind, list(one, two))[1:2,]
 # does NOT work with different number of columns!
 
 ################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+# plotting offerings
+library(sp)
+
+weathersos <- SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+weathersos.offerings <- sosOfferings(weathersos)
+
+off.ids <- sosId(weathersos.offerings)
+off.bounds <- sosBoundedBy(weathersos.offerings)
+
+ll <- as.numeric(strsplit(off.bounds[[1]]$lowerCorner, " ")[[1]])
+uu <- as.numeric(strsplit(off.bounds[[1]]$upperCorner, " ")[[1]])
+ll; uu
+
+off.1.poly <- cbind(c(ll[[2]], ll[[2]], uu[[2]], uu[[2]], ll[[2]]),
+				c(ll[[1]], uu[[1]], uu[[1]], ll[[1]], ll[[1]]))
+off.1.spatPoly <- SpatialPolygons(list(Polygons(
+						list(Polygon(off.1.poly)), off.ids[[1]])))
+
+off.1.epsg <- strsplit(off.bounds[[1]]$srsName, ":")[[1]]
+off.1.epsg <- off.1.epsg[[length(off.1.epsg)]]
+
+proj4string(off.1.spatPoly) <- paste("+init=epsg:", off.1.epsg, sep = "")
+
+off.1.spdf <- SpatialPolygonsDataFrame(off.1.spatPoly,
+		as.data.frame(c(42), row.names = c(off.ids[[1]])))
+
+off.1.spatPoly
+off.1.spdf
+
+plot(off.1.spdf)
+# plots bbox!
+
+

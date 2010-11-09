@@ -341,20 +341,12 @@ setMethod(f = "sosBoundedBy", signature = signature(
 #					dimnames = list(c("", ""), c("min", "max")))
 			return(.bb)
 		})
-
-if (!isGeneric("sosBoundedBy"))
-	setGeneric(name = "sosBoundedBy", def = function(obj) {
-				standardGeneric("sosBoundedBy")
-			})
-setMethod(f = "sosBoundedBy", signature = signature(
-				obj = "SosObservationOffering"),
+setMethod(f = "sosBoundedBy", signature = signature(obj = "list"),
 		def = function(obj) {
-			.bb <- obj@boundedBy
-			# TODO create matrix as accepted by sp
-#			.m <- matrix(c(min1, min2, max1, max2), ncol = 2,
-#					dimnames = list(c("", ""), c("min", "max")))
+			.bb <- lapply(obj, sosBoundedBy)
 			return(.bb)
 		})
+
 
 if (!isGeneric("sosOfferings"))
 	setGeneric(name = "sosOfferings", def = function(obj, ...) {
@@ -699,7 +691,14 @@ setMethod(f = "sosId", signature = signature(obj = "GmlFeature"),
 		def = function(obj) {
 			return(obj@id)
 		})
-
+setMethod(f = "sosId", signature = signature(obj = "SosObservationOffering"),
+		def = function(obj) {
+			return(obj@id)
+		})
+setMethod(f = "sosId", signature = signature(obj = "list"),
+		def = function(obj) {
+			return(sapply(obj, sosId))
+		})
 
 ################################################################################
 # conversion methods and accessor function
