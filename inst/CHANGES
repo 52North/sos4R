@@ -49,12 +49,11 @@
 * Added sosProcedures(...) for OmMeasurement, OmObservation and OmObservationCollection
 * Added sosCoordinates(...)
 
-2010-11-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-11-13		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-06
 * added sosFeatureIds(...)
 * added sosObservedProperties(...) for OM Classes
 * added subsetting of observation collection by procedure, observed property and feature id
-* improved toString of OmObservation
+* improved toString(...) of OmObservation
 * changed behaviour of sosResult(...) for OmObservationCollection, now binds the data.frames of the contained observations
-* ...

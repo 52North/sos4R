@@ -98,12 +98,15 @@
 \alias{sosExceptionCodeMeaning,character-method}
 \alias{sosBoundedBy}
 \alias{sosBoundedBy-method}
+\alias{sosBoundedBy,list-method}
 \alias{sosCoordinates}
 \alias{sosCoordinates-method}
 \alias{sosCoordinates,list-method}
 
 \alias{sosId}
 \alias{sosId-method}
+\alias{sosId,list-method}
+\alias{sosId,SosObservationOffering-method}
 \alias{sosSrsName}
 \alias{sosSrsName-method}
 
