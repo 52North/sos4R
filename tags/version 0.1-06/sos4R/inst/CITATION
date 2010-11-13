@@ -1,0 +1,11 @@
+citHeader("To cite package sos4R in publications use:")
+
+citEntry(entry="misc",
+  author       = "Daniel Nuest",
+  title        = "sos4R - The OGC SOS Client for the R project",
+  year         = 2010,
+  url          = "http://www.nordholmen.net/sos4r/",
+  textVersion = 
+  paste("Nuest, D. 2010. sos4R - The OGC SOS Client for the R project.", 
+  	"http://www.nordholmen.net/sos4r/.")
+)

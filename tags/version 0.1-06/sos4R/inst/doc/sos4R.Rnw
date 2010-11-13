@@ -1,0 +1,169 @@
+%
+% http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes
+% (Code chunks with option eval=FALSE are not tested.)
+%
+
+\documentclass{article}
+
+%\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
+
+\usepackage{graphicx}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+
+\usepackage{color}
+
+\usepackage{Sweave}
+\newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\let\pkg=\strong
+
+\begin{document}
+
+\title{Accessing Data from Sensor Observation Services:\\ the {\tt sos4R} Package}
+\author{Daniel N\"{u}st\footnote{Institute for Geoinformatics, University of M\"{u}nster, Germany.}\\ {\tt daniel.nuest@uni-muenster.de}}
+
+\date{Sep 2010}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+The {\tt sos4R} package provides classes and methods for dealing with
+%spatial data in S (R and S-Plus\footnote{our primary efforts target R;
+%depending on the needs, we will address S-Plus as well}). The spatial
+%data structures implemented include points, lines, polygons and grids;
+%each of them with or without attribute data.  We have chosen to use S4
+%classes and methods style (Chambers, 1998) to allow validation of objects
+%created. Although we mainly aim at using spatial data in the geographical
+%(two-dimensional) domain, the data structures that have a straightforward
+%implementation in higher dimensions (points, grids) do allow this.
+%
+%The motivation to write this package was born on a
+%\href{http://spatial.nhh.no/meetings/vienna/index.html}{pre-conference
+%spatial data workshop} during
+%\href{http://www.ci.tuwien.ac.at/Conferences/DSC-2003/}{DSC 2003}.
+%At that time, the advantage of having multiple R packages for spatial
+%statistics seemed to be hindered by a lack of a uniform interface for
+%handling spatial data. Each package had its own conventions on how
+%spatial data were stored and returned. With this package, and packages
+%supporting the classes provided here, we hope that R will become a more
+%coherent tool for analyzing different types of spatial data.
+%
+%The package is available, or will be available soon on CRAN. From the
+%package home page, \url{http://r-spatial.sourceforge.net/}, a graph
+%gallery with R code, and the development source tree are available.
+%
+%This vignette describes the classes, methods and functions provided
+%by sp. Instead of manipulating the class slots (components) directly,
+%we provide methods and functions to create the classes from elementary
+%types such as matrices, data.frames or lists and to convert them back
+%to any of these types. Also, coercion (type casting) from one class to
+%the other is provided, where relevant.
+
+Package {\tt sos4R} is loaded by 
+<<echo=TRUE,print=FALSE>>= 
+#library(sos4R)
+@
+
+
+\subsection{OGC and Specifications}
+
+TODO: Shortly mention and link to O and M, OWS Common, Sampling, Filtering, SensorML ...
+
+TODO: Round-up of SOS specification
+
+TODO: Copy terms example from annex B of O and M to the vignette for explanation
+
+
+\section{Creation Methods}
+
+explain concept, reference to Genolini
+
+\section{SOS Requests}
+
+\subsection{GetCapabilities}
+
+
+\subsection{DescribeSensor}
+
+
+\subsection{GetObservation}
+
+
+\subsection{GetObservationById}
+
+\section{Creating a SOS connection}
+
+%\begin{itemize}
+%\item \verb|[| select "rows" (items) and/or columns in the data attribute
+%table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
+%with the first two points and an attribute table with only variable "zinc".
+%\item \verb|[[| select a column from the data attribute table
+%\item \verb|[[<-| assign or replace values to a column in the data attribute
+%table.
+%\end{itemize}
+
+
+\section{Requesting Data}
+
+\subsection{Using Metadata}
+
+How can one extract the metadata from a SOS connection and reuse it for queries?
+
+accessor functions, elements of the capabilities, ...
+
+
+\subsection{Making the Request}
+
+\subsection{Data Format}
+
+explain why the returned data.frame is how it looks like
+
+how to extract metadata
+
+
+\subsection{Using the Data}
+
+show/explain conversion to zoo, sp etc.
+
+exporting
+
+show example
+
+\section{Changing Handling Functions}
+
+TODO: explain approach, mention available non-exchangeable functions in the subsections
+
+\subsection{Parsing/Decoding}
+
+\subsection{Encoding}
+
+
+
+\section{Exception Handling}
+
+TODO: Explain what part of the exception report means what, link to OWS Common
+
+
+\section{Developing sos4R}
+
+explain 52 North
+
+svn code repository
+
+shortly describe the class structure, .R file naming scheme, ...
+
+link to wiki developer page
+
+link to developer blog
+
+\section*{References}
+\begin{description}
+\item Chambers, J.M., 2008, Software for Data Analysis, Programming with R.
+Springer, New York.
+\item specs!
+\item ...
+\end{description}
+
+\end{document}
+

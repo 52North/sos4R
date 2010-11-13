@@ -1,0 +1,502 @@
+################################################################################
+# Copyright (C) 2010 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.                                                    #
+#                                                                              #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.                                     #
+#                                                                              #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+# Created: 2010-06-20                                                          #
+# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+#                                                                              #
+################################################################################
+
+################################################################################
+source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+################################################################################
+
+################################################################################
+# WeatherSOS
+weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+
+
+################################################################################
+# PegelOnlineSOS
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+print(object.size(pegelsos), units = c("Mb"))
+# works so far... :-)
+
+sosFeaturesOfInterest(pegelsos)
+
+off <- sosOfferings(pegelsos)[[1]]
+latestObs <- getObservation(sos = pegelsos,
+		offering = off,
+#		observedProperty = sosObservedProperties(offering),
+		procedure = sosProcedures(off)[11:13],
+		latest = TRUE,
+		inspect = TRUE) #, verbose = TRUE)
+sosResult(latestObs)
+
+# three procedures, but only getting 1 element with one procedure...
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelObs <- getObservation(sos = pegelsos,
+		observedProperty = sosObservedProperties(sosOfferings(pegelsos)[[1]])[3],
+		offering = sosOfferings(pegelsos)[[1]],
+		procedure = sosProcedures(sosOfferings(pegelsos)[[1]])[c(2501,2503,2505)],
+		eventTime = sosCreateEventTimeList(time = sosCreateTimePeriod(
+						sos = pegelsos,
+						begin = Sys.time() - (3600 * 24), # * 360),
+						end = Sys.time()))) #, inspect = TRUE)
+# Parsing response (size  352 ) ...Finished getObservation to http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos - received 3 observation(s)/measurement(s) having 87, 2, 2 elements.
+# YEAH!
+
+# show parts of the data frame:
+pegelObs[[1]]@result[1:5,]
+
+# not enough info? got field descriptions as attributes for each column:
+attributes(pegelObs[[1]]@result[,1])
+attributes(pegelObs[[1]]@result[,2])
+attributes(pegelObs[[1]]@result[,3])
+
+
+# TODO make plot out of two or three related stations
+range(pegelObs[[1]]@result[,3]); range(pegelObs[[2]]@result[,3])
+
+# Attention: plots ignore the fact that the times do NOT perfectly match!
+#x <- 700
+#plot(x = obs4[[1]]@result[[1]][1:x], y = obs4[[1]]@result[[3]][1:x], type = "l",
+#		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
+#		xlab = "Time (00:00 o'clock)",
+#		ylab = "Temperature (°C)",
+#		xaxt="n") # do not plot x-axis
+#r <- as.POSIXct(round(range(obs4[[1]]@result[[1]]), "days"))
+#axis.POSIXct(side = 1, x = obs4[[1]]@result[[1]][1:x], format = "%d. %h",
+#		at = seq(r[1], r[2], by="day"))
+#lines(x = obs4[[2]]@result[[1]][1:x], y = obs4[[2]]@result[[3]][1:x],
+#		col = "orange")
+#legend("topleft", legend = c("Münster", "Kärnten"),
+#		col = c("steelblue", "orange"), lty = 1, bty="n")
+
+plot(x = pegelObs[[1]]@result[,1], y = pegelObs[[1]]@result[,3], type = "l")
+
+# Good data?
+# Felix's tip: look at the coastal stations, much more interesting!
+
+################################################################################
+# Elsterhochwasser, 30.09.2010
+procedure <- "Wasserstand-Elster_501390"
+offering = sosOfferings(pegelsos)[[2]]
+elster <- getObservation(sos = pegelsos, offering = sosOfferings(pegelsos)[[1]],
+		procedure = procedure, observedProperty = )
+elster[[1]]@result[1:3,]
+range(elster[[1]]@result$Wasserstand)
+elsterClean <- subset(elster[[1]]@result, Wasserstand > 0)
+
+plot(x = elster[[1]]@result$Time, y = elster[[1]]@result$Wasserstand, ylim = c(100, 600),
+		type = "l")
+
+# optional: install the package
+#install.packages("sos4R")
+
+# load the sos4R package
+#library("sos4R")
+#source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+
+################################################################################
+# pegelonlinesos
+# not so nice: not exactly reproducible because data is only stored for 30 days!
+
+# create connection to SOS
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+
+# what data do I get?
+names(sosOfferings(pegelsos))
+
+# set up parameters for request
+procedures <- sosProcedures(pegelsos)
+procedures <- subset(procedures, procedures %in% grep("*Bake*", procedures, value=TRUE))
+# Watch out here because order of elements can change! The correct value is given in the comment.
+wasserstand <- sosObservedProperties(pegelsos)[1] # <- Should be "Wasserstand"
+wasserstand_roh <- sosOfferings(pegelsos)[[1]] # <- Should be "WASSERSTAND_ROHDATEN"
+lastSixtyDays <- sosCreateEventTimeList(time = sosCreateTimePeriod(
+				sos = pegelsos,
+				begin = Sys.time() - (3600 * 24 * 60),
+				end = Sys.time()))
+
+pegelObs <- getObservation(sos = pegelsos, offering = wasserstand_roh,
+		observedProperty = wasserstand, procedure = procedures[7],
+		eventTime = lastSixtyDays)
+data <- sosResult(pegelObs)
+
+# inspect data
+summary(data)
+data[1:2,]
+names(data)
+attributes(data[,3])
+
+# clean up data (remove negative values)
+data <- subset(data, data[,3]>0)
+
+# create time series from data and plot
+library("xts")
+bakeA <- xts(x = data[["Wasserstand"]], order.by = data[["Time"]])
+plot(bakeA, main = "Water Level at Bake A", xlab = "Time", ylab = "Water Level (cm)", major.ticks = "days")
+
+library("forecast")
+# time series plots
+tsdisplay(bakeA)
+# check the periodicity
+periodicity(bakeA)
+
+# fit autoregressive model, selcting complexity by AIC
+bakeA.ar <- ar(bakeA)
+# forecast and plot
+bakeA.ar.fcast <- forecast(bakeA.ar, h = 60 * 48) # 48 hrs
+plot(bakeA.ar.fcast)
+summary(bakeA.ar.fcast) # overview of forecast
+accuracy(bakeA.ar.fcast) # check goodness of fit
+# looks interesting! save figure1.png
+savePlot(type = "png", filename = "figure1.png")
+
+# TODO add filtered lines
+
+# try out ets
+bakeA.ets <- ets(bakeA)
+bakeA.ets.fcast <- forecast(bakeA.ets, h = 60 * 24) # 12 hrs
+plot(bakeA.ets.fcast)
+# not useful
+
+# fit ARMA model by conditional least squares and plot it
+bakeA.arma <- arma(bakeA)
+plot(bakeA.arma)
+
+
+################################################################################
+# weathersos
+#library("sos4R")
+
+# create connection to SOS
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+
+# set up request parameters
+stationMuenster <- sosProcedures(weathersos)[[1]]
+temperatureOffering <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
+temperature <- sosObservedProperties(weathersos)[5] # "urn:ogc:def:property:OGC::Temperature"
+september <- sosCreateTimePeriod(sos = weathersos,
+		begin = as.POSIXct("2010-09-01 00:00"),
+		end = as.POSIXct("2010-09-30 00:00"))
+# make the request
+obsSept <- getObservation(sos = weathersos,
+		observedProperty = temperature,
+		procedure = stationMuenster,
+		eventTime = sosCreateEventTimeList(september),
+		offering = temperatureOffering)
+
+# inspect data
+summary(sosResult(obsSept))
+sosResult(obsSept)[1:2,]
+names(sosResult(obsSept))
+data <- sosResult(obsSept)
+
+# create time series from data and plot
+library("xts")
+tempSept <- xts(x = data[["urn:ogc:def:property:OGC::Temperature"]],
+		order.by = data[["Time"]])
+plot(tempSept, main = "Temperature in Münster",
+		xlab = "Time", ylab = "Temperature (°C)", major.ticks = "weeks")
+
+# time series plots
+tsdisplay(tempSept)
+# check the periodicity
+periodicity(tempSept)
+# create models
+tempSeptArima <- Arima(tempSept)
+tempSeptETS <- ets(tempSept)
+# auto-regressive
+tempSeptAR <- ar(tempSept)
+
+# create forecasts
+library("forecast")
+# based on exponential smoothing
+fcastETS <- forecast(tempSeptETS, h = 1000)
+summary(fcastETS) # overview of forecast
+accuracy(fcastETS) # check goodness of fit
+plot(fcastETS)
+# based on ARIMA model
+fcastArima <- forecast(tempSeptArima)
+accuracy(fcastArima) # check goodness of fit
+plot(fcastArima)
+
+
+################################################################################
+# one year
+# create connection to SOS
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+# set up request parameters
+stationMuenster <- sosProcedures(weathersos)[1]
+temperatureOffering <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
+temperature <- sosObservedProperties(weathersos)[5] # "urn:ogc:def:property:OGC::Temperature"
+timeperiod2009 <- sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
+				begin = as.POSIXct("2009-01-01 00:00"),
+				end = as.POSIXct("2009-12-31 00:00")))
+# make the request
+temp2009 <- getObservation(sos = weathersos,
+		observedProperty = temperature,
+		procedure = stationMuenster,
+		eventTime = timeperiod2009,
+		offering = temperatureOffering)
+
+# inspect data
+summary(sosResult(temp2009))
+sosResult(temp2009)[1:2,]
+names(sosResult(temp2009))
+
+# create time series from data and plot
+library("xts")
+tempSeries2009 <- xts(x = sosResult(temp2009)[["urn:ogc:def:property:OGC::Temperature"]],
+		order.by = sosResult(temp2009)[["Time"]])
+plot(tempSeries2009, main = "Temperature in Münster", xlab = "Time", ylab = "Temperature (°C)", major.ticks = "months")
+
+# time series plots
+tsdisplay(tempSeries2009)
+
+# check the periodicity
+periodicity(tempSeries2009)
+
+# create models
+temp2009Arima <- Arima(tempSeries2009)
+temp2009ETS <- ets(tempSeries2009)
+temp2009AR <- ar(tempSeries2009)
+# diagnose model
+tsdiag(temp2009ETS)
+
+# create forecasts
+library("forecast")
+
+# based on exponential smoothing
+fcast2009ETS <- forecast(temp2009ETS, h = 300)
+summary(fcast2009ETS) # overview of forecast
+accuracy(fcast2009ETS) # check goodness of fit
+plot(fcast2009ETS)
+plot(fcast2009ETS, xlim=c(26000,30500), xlab=) # last part of the year
+# Save figure1.png
+savePlot(type = "png", filename = "figure2.png")
+
+# autoregressive model
+plot(temp2009AR)
+
+# data is apparently not period enough...
+stl(tempSeries2009)
+#Fehler in stl(tempSept) : 
+#  Zeitreihe ist nicht periodisch oder umfasst weniger als zwei Perioden
+
+
+
+################################################################################
+# AirQualitySOS
+# see also testing-aq.R
+
+################################################################################
+# ClimateSOS
+climatesos <- SOS("http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos")
+
+length(sosProcedures(climatesos))
+# 6
+
+lapply(sosOfferings(climatesos), slot, "name")
+
+################################################################################
+# "catchall" SOS
+givsos <- SOS("http://giv-sos.uni-muenster.de:8080/52nSOSv3/sos")
+
+# TODO fix errors when requesting capabilities from givsos
+
+################################################################################
+# MoodSOS
+#
+# offerings worth checking out: SummerVillerest, PatientCondition,
+# WaterColourNormal, FoamPresence, Microcystin
+moodsos <- SOS("http://giv-genesis.uni-muenster.de:8080/52nSOSv3-MoodSOS/sos")
+
+################################################################################
+# Umweltbundesamt SOS
+umweltsos <- SOS(url = "https://develop.umweltbundesamt.at/SOSsrv/sos")
+# https://develop.umweltbundesamt.at/SOSsrv/sos?service=SOS&request=GetCapabilities
+# --> 503 Service temporarily unavailable
+
+
+################################################################################
+# OOSTethys SOS                                                                #
+# http://www.oostethys.org/development/web-services/web-services-summary       #
+################################################################################
+source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+################################################################################
+
+################################################################################
+# Sensor Observation Service (SOS) for Marine Metadata Interoperability
+# Initiative (MMI)
+MBARI <- SOS("http://mmisw.org/oostethys/sos", method = "GET", verboseOutput = TRUE)
+# Using POST: InvalidRequest @ NA : Not able to understand the operation. This service supports the following operations: GetCapabilities, DescribeSensor and, GetObservation 
+# Using GET works!
+
+
+################################################################################
+# Ocean Process Analysis Laboratory, Institute for the Study of Earth, Oceans,
+# and Space, University of New Hampshire SOS
+COOA_UNH <- SOS("http://www.cooa.unh.edu/cgi-bin/sos/oostethys_sos")
+# --> 500 Internal Server Error, and
+# --> Capabilities are shown when opening the link above in a browser, but it
+# has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
+
+
+# Gulf of Maine Ocean Observing System SOS
+GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
+		version = "0.0.31", verboseOutput = TRUE)
+# --> Capabilities are shown when opening the link above in a browser, but it
+# has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
+# 
+# --> Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  1 exceptions (code @ locator : text):
+#	MissingParamterValue @ service : No input parameters 
+
+
+################################################################################
+# others:
+################################################################################
+#
+# TAMU <- SOS("http://vastserver.nsstc.uah.edu/vastGC/adcp", verboseOutput = TRUE)
+# --> no response
+#
+# MVCO_WHOI <- SOS("http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos")
+# --> seems almost empty
+
+
+
+################################################################################
+source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
+################################################################################
+
+
+################################################################################
+# SOS @ CSIRO
+# The South Esk test bed
+bom <- SOS("http://wron.net.au/BOM_SOS/sos")
+csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos")
+dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos")
+
+# ??
+hutchins <- SOS("http://150.229.66.73/HutchinsSOS/sos")
+elliotwsn <- SOS("http://150.229.66.73/ElliotWSNSOS/sos")
+
+
+################################################################################
+# OCEAN STUFF, a lot of interesting data!
+#
+# http://www.openioos.org/real_time_data/gm_sos.html
+#
+oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
+		method = "GET", verboseOutput = TRUE)
+ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos")
+
+sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
+# takes forever...		
+
+################################################################################
+# some french sos, 52N, but just one week of data....
+sandre <- SOS("http://services.sandre.eaufrance.fr/52nSOSv3/sos")
+
+
+################################################################################
+# Sensor Observation Service for ADES database : French GroundWater level
+#
+ades <- SOS("http://sosades.brgm.fr/REST/sos", method = "GET")
+print(object.size(ades), units=c("Mb"))
+# 6.8 Mb, large capabilities file!
+
+testObsAdes <- getObservation(sos = ades, offering = sosOfferings(ades)[[1]],
+		procedure = sosProcedures(sosOfferings(ades)[[1]])[1], verbose =TRUE) # inspect = TRUE)
+# works!
+
+# this one could be great for mapping the features
+
+
+################################################################################
+# various
+var01.converters <- SosDataFieldConvertingFunctions("urn:terrestris:foss4g:temperature" = sosConvertDouble)
+var01 <- SOS(":8280/52nSOSv3_WAR/sos", dataFieldConverters = var01.converters)
+time01 <- sosTime(sosOfferings(var01)[[1]])
+time01.part <- sosCreateTimePeriod(var01,
+		begin = as.POSIXct("2010-08-06"),
+		end = as.POSIXct("2010-08-07"))
+obs01 <- getObservation(var01, offering = sosOfferings(var01)[[1]],
+#		observedProperty = sosObservedProperties(var01),
+#		procedure = sosProcedures(var01),
+		eventTime = sosCreateEventTimeList(time = time01),
+		featureOfInterest = sosCreateFeatureOfInterest(list("8242", "8245")),
+		verbose = TRUE)
+# feature filter neccessary, otherwise too much data -> works!
+
+var02 <- SOS(":82/cgi-bin/mapserv?map=/tmp/umn/umn_sos.map",
+		method = "GET",
+		verboseOutput = TRUE)
+# no getcapabilities possible:
+# 1. url already contains a "?", so if "GET" the error is --- msEvalRegex(): Regular expression error. String failed expression test.
+#	-> fixed that case, but then the same error as with "POST"...
+# 2. error with "POST" gives HTML page --- Unable to access file. (/tmp/umn/umn_sos.map) 
+
+var03.converters <- SosDataFieldConvertingFunctions(
+		"urn:terrestris:foss4g:temperature" = sosConvertDouble,
+		"urn:terrestris:foss4g:feature" = sosConvertString)
+var03 <- SOS(":8280/deegree-sos-cite100/services",
+		dataFieldConverters = var03.converters,
+#		method = "POST",
+		method = "GET")
+#		verboseOutput = TRUE)
+var03.off <- sosOfferings(var03)[[1]]
+obs03 <- getObservation(sos = var03, offering = var03.off,
+		procedure = NA_character_, # must be set, otherwise InvalidParameterValue...
+		eventTime = list(NA))
+# connection works with GET
+# works!
+result <- sosResult(obs03)
+str(result)
+plot(x = result["timestamp"], y = result["val"])
+# looks weird because it plots all features
+
+result995 <- subset(x = result, subset = (plz == "995.0\n"),
+		select = c(timestamp, val))
+plot(x = result995[["timestamp"]], y = result995[["val"]], type = "l")
+# works!
+
+# connection with post returns HEX: "3c 3f 78 6d 6c 20 76 65 72 73 "
+#  -> translate with http://home2.paulschou.net/tools/xlate/
+#  -> ist exception report --- Unable to determine the subcontroller for request type <sos:GetCapabilities...
+
+
+################################################################################
+#
+ise <- SOS("http://sos.ise.cnr.it/sos")
+ise
+
+ise.offerings <- sosOfferings(ise)
+ise.rain <- getObservation(sos = ise, offering = ise.offerings[["rain"]])
+ise.rain
+
+ise.rain.data <- sosResult(ise.rain)
+
+summary(ise.rain.data)
