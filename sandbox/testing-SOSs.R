@@ -486,3 +486,17 @@ plot(x = result995[["timestamp"]], y = result995[["val"]], type = "l")
 # connection with post returns HEX: "3c 3f 78 6d 6c 20 76 65 72 73 "
 #  -> translate with http://home2.paulschou.net/tools/xlate/
 #  -> ist exception report --- Unable to determine the subcontroller for request type <sos:GetCapabilities...
+
+
+################################################################################
+#
+ise <- SOS("http://sos.ise.cnr.it/sos")
+ise
+
+ise.offerings <- sosOfferings(ise)
+ise.rain <- getObservation(sos = ise, offering = ise.offerings[["rain"]])
+ise.rain
+
+ise.rain.data <- sosResult(ise.rain)
+
+summary(ise.rain.data)

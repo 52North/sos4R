@@ -5,6 +5,7 @@
 
 \alias{SosCapabilities_1.0.0-class}
 \alias{SosCapabilities}
+\alias{SosCapabilities-class}
 
 \title{Class and Construction Function for "SosCapabilities_1.0.0"}
 
