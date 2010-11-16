@@ -489,14 +489,25 @@ plot(x = result995[["timestamp"]], y = result995[["val"]], type = "l")
 
 
 ################################################################################
-#
-ise <- SOS("http://sos.ise.cnr.it/sos")
+# SOS at ISE, Verbania, Italy
+
+# add a conversion function for the field definition "...temp"
+ise.converters <- SosDataFieldConvertingFunctions("urn:ogc:def:property:OGC:1.0.30:air_temp" = sosConvertDouble)
+ise <- SOS("http://sos.ise.cnr.it/sos", dataFieldConverters = ise.converters)
 ise
-
+# Offering
 ise.offerings <- sosOfferings(ise)
-ise.rain <- getObservation(sos = ise, offering = ise.offerings[["rain"]])
+
+# rain data
+ise.rain <- getObservation(sos = ise, offering = ise.offerings[["rain"]], inspect = TRUE)
 ise.rain
-
 ise.rain.data <- sosResult(ise.rain)
-
 summary(ise.rain.data)
+
+# getObservation in SOS
+ise_air_temp <- getObservation(sos = ise,
+		offering = ise.offerings[["air_temperature"]], inspect = TRUE)
+ise_air_temp
+ise_air_temp.result <- sosResult(ise_air_temp)
+summary(ise_air_temp.result)
+

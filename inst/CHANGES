@@ -57,3 +57,9 @@
 * added subsetting of observation collection by procedure, observed property and feature id
 * improved toString(...) of OmObservation
 * changed behaviour of sosResult(...) for OmObservationCollection, now binds the data.frames of the contained observations
+
+2010-11-XX
+
+* Version 0.1-XX
+* Added more units of measurement to default list based on http://aurora.regenstrief.org/~ucum/ucum.html
+* ...

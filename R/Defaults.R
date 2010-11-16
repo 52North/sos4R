@@ -139,6 +139,47 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
 		sosConvertString
 		)
 names(.sosDefaultFieldConverters) <- list(
@@ -146,18 +187,59 @@ names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:property:time:iso8601",
 		"urn:ogc:phenomenon:time:iso8601",
 		sosTimeName,
-		"%",
-		"Cel",
-		"lx",
+		"m", # meter
+		"s", # second
+		"g", # gram
+		"rad", # radian
+		"K", # Kelvin
+		"C", # Coulomb
+		"cd", # candela
+		"%", # percent
+		"ppth", # parts per thousand
+		"ppm", # parts per million
+		"ppb", # parts per billion
+		"pptr", # parts per trillion
+		"mol", # mole
+		"sr", # steradian
+		"Hz", # Hertz
+		"N", # Newton
+		"Pa", # Pascal (pressure)
+		"J", # Joule (energy)
+		"W", # Watt (power)
+		"A", # Ampere (electric current)
+		"V", # Volt
+		"F", # Farad
+		"Ohm", # Ohm
+		"S", # Siemens
+		"Wb", # Weber
+		"Cel", # degree Celsius
+		"T", # Tesla (magnetic flux density)
+		"H", # Henry (inductance)
+		"lm", # lumen (luminous flux)
+		"lx", # lux (illuminance)
+		"Bq", # Becquerel (radioactivity)
+		"Gy", # Gray (energy dose)
+		"Sv", # Sievert (dose equivalent)
+		"gon", # gon, grade
+		"deg", # degree
+		"'", # minute
+		"''", # second
+		"l", # liter
+		"L", # liter
+		"ar", # are (area)
+		"t", # tonne (mass) 
+		"bar", # bar (pressure) 
+		"u", # unified atomic mass unit (mass)
+		"eV", # electronvolt (energy)
+		"AU", # astronomic unit (length)
+		"pc", # parsec (length)
+		"degF", # degree Fahrenheit 
 		"hPa",
-		"m",
 		"mm",
 		"nm",
 		"cm",
 		"km",
-		"deg",
 		"m/s",
-		"g",
 		"kg",
 		"mg",
 		"uom", # fallback if actual unit is not given
