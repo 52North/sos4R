@@ -511,3 +511,20 @@ ise_air_temp
 ise_air_temp.result <- sosResult(ise_air_temp)
 summary(ise_air_temp.result)
 
+# request with features of interest
+ise.rain.features <- sosFeaturesOfInterest(ise.offerings[["rain"]])
+
+# feature id
+ise.rain2 <- getObservation(sos = ise,
+		offering = ise.offerings[["rain"]],
+		featureOfInterest =  SosFeatureOfInterest(objectIDs = ise.rain.features),
+		inspect = TRUE)
+
+# spatial filtering: check out ?sos4R::OGC
+bbox <- sosCreateBBOX(lowLat = 10.0, lowLon = 2.0, uppLat = 30.0, uppLon = 5.0,
+			srsName = "urn:ogc:def:crs:EPSG:4326")
+ise.rain3 <- getObservation(sos = ise,
+		offering = ise.offerings[["rain"]],
+		featureOfInterest = SosFeatureOfInterest(spatialOps = bbox),
+		inspect = TRUE)
+

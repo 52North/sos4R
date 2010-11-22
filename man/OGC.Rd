@@ -8,9 +8,12 @@
 
 \alias{OgcBBOX-class}
 \alias{show,OgcBBOX-method}
+\alias{OgcBinarySpatialOp}
 \alias{OgcBinarySpatialOp-class}
+\alias{OgcBinaryTemporalOp}
 \alias{OgcBinaryTemporalOp-class}
 \alias{OgcBinaryTemporalOpOrNULL-class}
+\alias{OgcComparisonOps}
 \alias{OgcComparisonOps-class}
 \alias{OgcComparisonOpsOrXMLOrNULL-class}
 \alias{OgcContains-class}
@@ -19,6 +22,7 @@
 \alias{show,OgcIntersects-method}
 \alias{OgcOverlaps-class}
 \alias{show,OgcOverlaps-method}
+\alias{OgcSpatialOps}
 \alias{OgcSpatialOps-class}
 \alias{OgcSpatialOpsOrNULL-class}
 \alias{OgcBBOX}

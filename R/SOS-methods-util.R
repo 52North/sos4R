@@ -628,7 +628,7 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SaSamplingPoint"),
 			.coords <- sosCoordinates(obj = obj@position)
 			.names <- names(.coords)
 			.coords[, ncol(.coords)+1] <- sosId(obj)
-			names(.coords) <- c(.names, "foi_id")
+			names(.coords) <- c(.names, sosDefaultColumnNameFeatureIdentifier)
 			return(.coords)
 		})
 setMethod(f = "sosCoordinates", signature = signature(obj = "GmlPointProperty"),
@@ -648,7 +648,9 @@ setMethod(f = "sosCoordinates",
 					strsplit(x = obj@pos, split = " ")[[1]])
 			.coords <- as.data.frame(list(.coordinateDoubles[[1]],
 							.coordinateDoubles[[2]], sosSrsName(obj)))
-			names(.coords) <- c("lat", "lon", "SRS")
+			names(.coords) <- c(sosDefaultColumnNameLat,
+					sosDefaultColumnNameLon,
+					sosDefaultColumnNameSRS)
 			return(.coords)
 		})
 setMethod(f = "sosCoordinates",

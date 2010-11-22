@@ -341,3 +341,10 @@ sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"
+
+# use for the names created data.frames
+sosDefaultColumnNameFeatureIdentifier <- "feature"
+sosDefaultColumnNameLat <- "lat"
+sosDefaultColumnNameLon <- "lon"
+sosDefaultColumnNameSRS <- "SRS"
+
