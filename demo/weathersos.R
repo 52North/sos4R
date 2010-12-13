@@ -67,7 +67,7 @@ x = loess(temp~time,
 		na.omit(data),enp.target=10)
 
 # create plot
-plot(tempSept, main = "Temperature at Station One",
+plot(tempSept, main = "Temperature at WeatherSOS-Station in Münster",
 		xlab = "Time", ylab = paste("Temperature in", attributes(temp)[["unit of measurement"]]),
 		major.ticks = "weeks")
 lines(data$Time, x$fitted, col = 'red', lwd=3)
