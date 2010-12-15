@@ -65,4 +65,6 @@
 * Added sosDefaultColumnNameFeatureIdentifier as default and used it in sosCoordinates() and set it to "features" so that it automatically matches the field name in 52N SOSs
 * Added column names for lat, lon and SRS name as defaults
 * Added file for questions on the mailing list.
+* Added SosSupportedServiceVersions()
+* Fixed check for DescribeSensor
 * ...

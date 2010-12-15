@@ -7,7 +7,7 @@ library("ggplot2"); library("latticeExtra"); library("quantreg")
 
 ##############################################################################
 # PegelOnlineSOS
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://v-wsos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 
 # what data do I get?
 cat("\nNames of offerings:\n")

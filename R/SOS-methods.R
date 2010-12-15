@@ -1042,7 +1042,7 @@ setMethod(f = "checkRequest",
 			}
 			
 			# check if sensor in in listed in procedures
-			.procedures = sosProcedures(service)
+			.procedures = unique(unlist(sosProcedures(service)))
 			.dsOperation <- sosOperation(service, sosDescribeSensorName)
 			
 			.procContained <- FALSE

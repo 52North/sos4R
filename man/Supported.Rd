@@ -9,6 +9,7 @@
 \alias{SosSupportedResultModels}
 \alias{SosSupportedSpatialOperators}
 \alias{SosSupportedTemporalOperators}
+\alias{SosSupportedServiceVersions}
 
 \title{Functions to Access Supported Features of the Current sos4R Implementation}
 
@@ -25,6 +26,7 @@ SosSupportedResponseModes()
 SosSupportedResultModels()
 SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
+SosSupportedServiceVersions()
 }
 
 \details{

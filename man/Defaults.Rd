@@ -14,6 +14,10 @@
 \alias{sosDefaultTempOpPropertyName}
 \alias{sosDefaultTemporalOperator}
 \alias{sosDefaultTimeFormat}
+\alias{sosDefaultColumnNameFeatureIdentifier}
+\alias{sosDefaultColumnNameLat}
+\alias{sosDefaultColumnNameLon}
+\alias{sosDefaultColumnNameSRS}
 \alias{SosParsingFunctions}
 \alias{SosEncodingFunctions}
 \alias{SosDisabledParsers}

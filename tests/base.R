@@ -27,6 +27,7 @@
 #                                                                              #
 ################################################################################
 
+# TODO implement tests
 
 # use assertions with stopifnot(), identical(), all.equal() … 
 # (page 103 Chambers), do not use .Rout.save (!)
