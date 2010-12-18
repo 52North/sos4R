@@ -49,7 +49,9 @@ sosGetFeatureOfInterestName <- "GetFeatureOfInterest"
 .sosConnectionMethodSOAP <- "SOAP"
 
 SosSupportedConnectionMethods <- function() {
-	return(c(.sosConnectionMethodGet, .sosConnectionMethodPost))
+	.supported <- c(.sosConnectionMethodGet, .sosConnectionMethodPost)
+	names(.supported) <- c(.sosConnectionMethodGet, .sosConnectionMethodPost)
+	return(.supported)
 }
 
 .sosSupportedResponseFormats <- c(

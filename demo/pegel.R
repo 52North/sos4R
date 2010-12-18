@@ -7,7 +7,7 @@ library("ggplot2"); library("latticeExtra"); library("quantreg")
 
 ##############################################################################
 # PegelOnlineSOS
-pegelsos <- SOS(url = "http://v-wsos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 
 # what data do I get?
 cat("\nNames of offerings:\n")
@@ -31,7 +31,7 @@ wasserstand <- sosObservedProperties(wasserstand_roh)[1]
 tPeriod <- sosCreateEventTimeList(
 		time = sosCreateTimePeriod(
 				sos = pegelsos,
-				begin = Sys.time() - (3600 * 24 * 30),
+				begin = Sys.time() - (3600 * 24 * 3), # 30),
 				end = Sys.time()))
 #tPeriod # str(tPeriod)
 #encodeXML(tPeriod[[1]], pegelsos)

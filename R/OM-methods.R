@@ -155,3 +155,24 @@ setMethod(f = "[", signature = signature(x= "OmObservationCollection",
 			else return(x@members[i:j])
 		}
 )
+
+################################################################################
+#
+names.OmObservation <- function(x) {
+	.name <- paste(sosProcedures(x), sosObservedProperties(x), sosFeatureIds(x),
+			sep = "_")
+	names(.name) <- "proc_obsProp_foiID"
+	return(.name)
+}
+
+names.OmMeasurement <- function(x) {
+	.name <- paste(sosProcedures(x), sosObservedProperties(x), sosFeatureIds(x),
+			sep = "_")
+	names(.name) <- "proc_obsProp_foiID"
+	return(.name)
+}
+
+names.OmObservationCollection <- function(x) {
+	.names <- sapply(x@members, names)
+	return(.names)
+}

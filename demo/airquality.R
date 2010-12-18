@@ -31,7 +31,7 @@ airsos2 <- SOS(url = sos2, dataFieldConverters = airsos.converters)
 ###########
 # OFFERINGS
 # get the available offerings
-airsos.offerings <- sosOfferings(airsossos)
+airsos.offerings <- sosOfferings(airsos)
 airsos.offerings
 # extract one offering
 airsos.off.pm10 <- airsos.offerings[["PM10"]]
@@ -41,11 +41,11 @@ airsos.off.no2 <- airsos.offerings[["NO2"]]
 #####################
 # OBSERVED PROPERTIES
 # get the observed properties of all offerings
-airsos.obsProp <- sosObservedProperties(airsossos)
+airsos.obsProp <- sosObservedProperties(airsos)
 # (be aware that this is a list of character vectors
 str(airsos.obsProp)
 
-# get the observed properties
+# get the obseairsos.obsProp.pm10rved properties
 airsos.obsProp.pm10 <- sosObservedProperties(airsos.off.pm10)
 airsos.obsProp.no2 <- sosObservedProperties(airsos.off.no2)
 # both the same:
@@ -53,13 +53,13 @@ airsos.obsProp.pm10; airsos.obsProp[["PM10"]][1]
 
 ##############
 # BOUNDING BOX
-#sosBoundedBy(airsos.off.pm10) # or airsos.off.pm10@boundedBy
+sosBoundedBy(airsos.off.pm10) # or airsos.off.pm10@boundedBy
 # *** Here the format could definitly be improved, i.e. matrix as in sp, even with a proj4string based on srsName?
 
 #############
 # TIME PERIOD
 # for all data based on eventTime parameter in GetObservation metadata
-sosTime(airsossos)
+sosTime(airsos)
 
 # for one offering
 sosTime(airsos.off.pm10)
@@ -67,22 +67,22 @@ sosTime(airsos.off.pm10)
 
 ############
 # PROCEDURES
-sosProcedures(airsossos) # list of vectors
+sosProcedures(airsos) # list of vectors
 sosProcedures(airsos.off.pm10) # still a long vector!
 
 ####################
 # OBSERVATIONS: PM10
 # *** The event time handling is not really nice yet...
-lastWeek = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsossos,
+lastWeek = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsos,
 				begin = as.POSIXct(Sys.time() - 3600*24*7),
 				end = as.POSIXct(Sys.time())))
 
 # if you want to see what get's in and out, just set "inspect" flag to TRUE
-observation.pm10.week <- getObservation(sos = airsossos,
+observation.pm10.week <- getObservation(sos = airsos,
 		offering = airsos.off.pm10,
 #		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
 		eventTime = lastWeek,
-		procedure = sosProcedures(airsos.off.pm10),
+		procedure = sosProcedures(airsos.off.pm10)
 #		inspect = TRUE
 )
 
@@ -144,6 +144,14 @@ observation.pm10.year <- getObservation(sos = airsossos,
 
 ###################
 # OBSERVATIONS: NO2
+
+observation.no2.week <- getObservation(sos = airsos,
+		offering = airsos.off.no2,
+#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
+		eventTime = lastWeek,
+		procedure = sosProcedures(airsos.off.no2)
+#		inspect = TRUE
+)
 
 # ! DN: There is some problem here if requestion a lot of procedures (> about 177) at once, I'm looking into that.
 

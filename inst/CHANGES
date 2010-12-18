@@ -67,4 +67,7 @@
 * Added file for questions on the mailing list.
 * Added SosSupportedServiceVersions()
 * Fixed check for DescribeSensor
+* Fix in .getObservation_1.0.0 if empty observation collection is returned (error summing up the result lengths)
+* Added names function for OmObservation, OmMeasurement, and OmObservationCollection
+* Added URLs/skeletons for new demos
 * ...
