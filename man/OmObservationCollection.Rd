@@ -14,6 +14,7 @@
 \alias{[[,OmObservationCollection,ANY,missing-method}
 \alias{as.list.OmObservationCollection}
 \alias{length.OmObservationCollection}
+\alias{names.OmObservationCollection}
 
 \alias{sosCoordinates,OmObservationCollection-method}
 \alias{sosProcedures,OmObservationCollection-method}

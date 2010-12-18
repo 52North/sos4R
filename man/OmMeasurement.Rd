@@ -3,6 +3,7 @@
 
 \docType{class}
 
+\alias{OmMeasurement}
 \alias{OmMeasurement-class}
 \alias{show,OmMeasurement-method}
 \alias{print,OmMeasurement-method}
@@ -11,8 +12,8 @@
 \alias{sosProcedures,OmMeasurement-method}
 \alias{sosFeatureIds,OmMeasurement-method}
 \alias{sosFeaturesOfInterest,OmMeasurement-method}
+\alias{names.OmMeasurement}
 
-\alias{OmMeasurement}
 
 \title{Class and Construction Function for om:Measurement Elements}
 

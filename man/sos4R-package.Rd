@@ -15,7 +15,7 @@
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
-	Version: \tab 0.1-02\cr
+	Version: \tab 0.1-07\cr
 	Date: \tab 2010-10-08\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr

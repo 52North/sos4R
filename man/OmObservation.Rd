@@ -15,6 +15,7 @@
 \alias{show,OmObservationProperty-method}
 \alias{OmObservationProperty}
 \alias{sosProcedures,OmObservation-method}
+\alias{names.OmObservation}
 
 \alias{sosResult}
 \alias{sosResult,list-method}
