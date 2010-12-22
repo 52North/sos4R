@@ -61,8 +61,14 @@ pkgName = "sos4R_0.1-07.tar.gz"
 download.file(url = paste(
 				"http://www.nordholmen.net/sos4r/download/", pkgName, sep =""),
 		destfile = pkgName)
+#download.file(url = "http://ifgi.uni-muenster.de/~d_nues01/pub/sos4R_0.1-07.tar.gz",
+#		destfile = pkgName)
 # Package installieren
+# Dependencies werden nicht aufgelöst wenn von Datei installiert wird:
+install.packages("RCurl")
+install.packages("XML")
 install.packages(paste(getwd(), "/", pkgName, sep = ""))
+
 # Package laden
 library("sos4R")
 # Unterstützte Features (werden hoffentlich in Zukunft mehr)
@@ -144,12 +150,14 @@ attributes()
 
 
 ##### Temporäre Ausschnitte ####################################################
+#SosSupportedTemporalOperators()
 
 sosCreateEventTimeList()
 sosCreateTimeInstant()
 sosCreateTimePeriod()
 
 ##### Räumliche Ausschnitte ####################################################
+#SosSupportedSpatialOperators()
 
 sosCreateBBOX()
 sosCreateBBoxMatrix()
