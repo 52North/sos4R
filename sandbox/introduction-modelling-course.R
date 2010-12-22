@@ -192,7 +192,7 @@ obs.temp.latest.data
 ##### Temporäre Ausschnitte ####################################################
 # Erstellen der event time für GetObservation requests:
 period.august09 <- sosCreateEventTimeList(
-		sosCreateTimePeriod(sos = weathersos,
+		sosCreateTimePeriod(sos = mySOS,
 				begin = as.POSIXct("2009-08-01 00:00"),
 				end = as.POSIXct("2009-08-31 12:00")))
 #sosCreateTimeInstant()
@@ -200,7 +200,7 @@ period.august09 <- sosCreateEventTimeList(
 str(period.august09)
 #SosSupportedTemporalOperators()
 
-obs.august09 <- getObservation(sos = weathersos, offering = off.temp,
+obs.august09 <- getObservation(sos = mySOS, offering = off.temp,
 		procedure = sosProcedures(off.temp),
 		eventTime = period.august09)
 
@@ -236,7 +236,7 @@ off.temp.fois <- sosFeaturesOfInterest(off.temp)
 request.fois <- sosCreateFeatureOfInterest(objectIDs = list(off.temp.fois[[1]]))
 #encodeXML(sosCreateFeatureOfInterest(objectIDs = list(off.temp.fois[[1]])), mySOS)
 
-obs.august09.fois <- getObservation(sos = weathersos, offering = off.temp,
+obs.august09.fois <- getObservation(sos = mySOS, offering = off.temp,
 		featureOfInterest = request.fois,
 		eventTime = period.august09)
 obs.august09.fois
@@ -278,8 +278,8 @@ mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
 demo(package = "sos4R")
 # Demos laufen lassen (enhalten weiterführende Beispiele mit plots usw.):
 demo("weathersos")
-demo("pegel")
-demo("airquality")
+demo("pegel")		# Möglicherweise SOS defekt/offline/langsam
+demo("airquality")	# Möglicherweise SOS defekt/offline/langsam
 demo("marinemeta")
 
 
