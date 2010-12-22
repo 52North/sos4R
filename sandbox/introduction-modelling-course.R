@@ -56,7 +56,7 @@ cities <- read.csv(paste(getwd(), "/cities.csv", sep = ""))
 # --> Vorteile vom SOS ausnutzen: Wohldefiniertes Markup, Queries
 
 # Was ist sos4R?
-# - Webseite (downloads, news): http://www.nordholmen.net/sos4R
+# - Webseite (downloads, news): http://www.nordholmen.net/sos4r
 # - Funktionalität
 # 	- Core Profile (plug GetObservationById)
 #		- GetCapabilities
@@ -116,6 +116,7 @@ sosFilter_Capabilities(mySOS)
 sosServiceIdentification(mySOS)
 sosServiceProvider(mySOS) # @serviceContact
 
+# Wichtig:
 sosOfferings(mySOS)
 off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
 sosOfferingIds(mySOS)
@@ -141,11 +142,11 @@ off.temp.time@beginPosition@time
 class(off.temp.time@beginPosition@time)
 
 ##### Sensor Metadaten abfragen ################################################
-describeSensor(mySOS, "meinTollerSensor")
+describeSensor(sos = mySOS, procedure = "meinTollerSensor")
 # Warnung! Und: Antwort ist OwsExceptionReport!
 
 # TIPP: verbose option in service operation functions
-describeSensor(mySOS, "lala", verbose = TRUE)
+describeSensor(sos = mySOS, procedure = "lala", verbose = TRUE)
 
 sensor2 <- describeSensor(mySOS, sosProcedures(off.temp)[[2]])
 sensor2
@@ -170,13 +171,14 @@ obs.temp.latest[2:5]
 
 # Koordinaten, Features und BoundingBox abfragen
 sosCoordinates(obs.temp.latest)
+sosCoordinates(obs.temp.latest[[1]])
 sosFeatureIds(obs.temp.latest)
 sosBoundedBy(obs.temp.latest)
 
 
 ##### Daten erforschen #########################################################
 # sosResult(...) ist die wichtigste Methode
-sosResult(obs.temp.latest[[1]])
+sosResult(obs.temp.latest[[2]])
 obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
 
 # Nur ein ganz normaler data.frame ... Attribute enthalten Metadaten. Diese 
@@ -200,11 +202,13 @@ period.august09 <- sosCreateEventTimeList(
 str(period.august09)
 #SosSupportedTemporalOperators()
 
-obs.august09 <- getObservation(sos = mySOS, offering = off.temp,
+obs.august09 <- getObservation(sos = mySOS,
+		offering = off.temp,
 		procedure = sosProcedures(off.temp),
 		eventTime = period.august09)
 
 obs.temp.august09.result <- sosResult(obs.august09)
+summary(obs.temp.august09.result)
 str(obs.temp.august09.result)
 obs.temp.august09.result[100:103,]
 
@@ -219,7 +223,8 @@ request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 7.0,
 request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
 request.bbox.foi
 
-obs.august09.bbox <- getObservation(sos = mySOS, offering = off.temp,
+obs.august09.bbox <- getObservation(sos = mySOS,
+		offering = off.temp,
 		featureOfInterest = request.bbox.foi,
 		eventTime = period.august09,
 		inspect = TRUE)
@@ -234,7 +239,6 @@ sosCoordinates(obs.august09.bbox)
 # Mit feature of interest:
 off.temp.fois <- sosFeaturesOfInterest(off.temp)
 request.fois <- sosCreateFeatureOfInterest(objectIDs = list(off.temp.fois[[1]]))
-#encodeXML(sosCreateFeatureOfInterest(objectIDs = list(off.temp.fois[[1]])), mySOS)
 
 obs.august09.fois <- getObservation(sos = mySOS, offering = off.temp,
 		featureOfInterest = request.fois,
@@ -250,7 +254,8 @@ MBARI <- SOS("http://mmisw.org/oostethys/sos",
 		method = SosSupportedConnectionMethods()[["GET"]])
 myOff <- sosOfferings(MBARI)[[1]]
 myProc <- sosProcedures(MBARI)[[1]]
-mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc,
+		inspect = TRUE)
 # Warnmeldungen!
 
 ?SosDataFieldConvertingFunctions
@@ -269,7 +274,9 @@ myOff <- sosOfferings(MBARI)[[1]]
 myProc <- sosProcedures(MBARI)[[1]]
 mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
 
-##### Daten -> sp ##############################################################
+sosResult(mbariObs)
+
+##### Daten -> sp/gstat ########################################################
 
 # Typisch für das Geoinformatikerleben: Anwenden von Software anderer Leute...
 # Viel Erfolg!
@@ -284,7 +291,8 @@ demo("marinemeta")
 
 
 ##### Fragen? ##################################################################
-# Mailingliste: http://52north.org/resources/mailing-list-and-forums/ (guide!)
+# Mailingliste: http://52north.org/resources/mailing-list-and-forums/
+# 				Bitte den Posting-Guide beachten!
 # Forum: http://geostatistics.forum.52north.org/
 # Kontakt: daniel.nuest@uni-muenster.de
 
