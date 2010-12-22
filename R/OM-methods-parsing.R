@@ -182,15 +182,28 @@ parseObservationCollection <- function(obj, sos, verbose) {
 	if(verbose) cat("Parsing ObservationCollection with ", length(.members), 
 				"element(s).\n")
 	
+	.env <- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
+	if(!is.null(.env)) {
+		.boundedBy <- list(
+				srsName = xmlGetAttr(.env, "srsName"),
+				lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
+				upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+	}
+	else {
+		.boundedBy <- list()
+	}
+	
 	.resultList <- lapply(.members, parseOM, sos, verbose)
 	
 	names(.resultList) <- lapply(.resultList, class)
 	
 	if(is.list(.resultList)) {
-		.obsColl <- OmObservationCollection(members = .resultList)
+		.obsColl <- OmObservationCollection(members = .resultList,
+				boundedBy = .boundedBy)
 	}
 	else {
-		.obsColl <- OmObservationCollection(members = list(.resultList))
+		.obsColl <- OmObservationCollection(members = list(.resultList),
+				boundedBy = .boundedBy)
 	}
 	
 	if(verbose)

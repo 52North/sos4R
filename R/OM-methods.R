@@ -30,8 +30,8 @@
 #
 # construction methods
 #
-OmObservationCollection <- function(members) {
-	new("OmObservationCollection", members = members)
+OmObservationCollection <- function(members, boundedBy) {
+	new("OmObservationCollection", members = members, boundedBy = boundedBy)
 }
 
 OmObservation <- function(samplingTime, procedure, observedProperty,

@@ -346,6 +346,12 @@ setMethod(f = "sosBoundedBy", signature = signature(obj = "list"),
 			.bb <- lapply(obj, sosBoundedBy)
 			return(.bb)
 		})
+setMethod(f = "sosBoundedBy",
+		signature = signature(obj = "OmObservationCollection"),
+		def = function(obj) {
+			.bb <- obj@boundedBy
+			return(.bb)
+		})
 
 
 if (!isGeneric("sosOfferings"))

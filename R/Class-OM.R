@@ -31,7 +31,7 @@
 #
 #
 setClass("OmObservationCollection",
-		representation(members = "list"),
+		representation(members = "list", boundedBy = "list"),
 		prototype = list(members = list()),
 		validity = function(object) {
 			#print("Entering validation: OmObservationCollection")

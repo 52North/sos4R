@@ -15,6 +15,7 @@
 \alias{as.list.OmObservationCollection}
 \alias{length.OmObservationCollection}
 \alias{names.OmObservationCollection}
+\alias{sosBoundedBy,OmObservationCollection-method}
 
 \alias{sosCoordinates,OmObservationCollection-method}
 \alias{sosProcedures,OmObservationCollection-method}
