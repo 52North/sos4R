@@ -374,6 +374,13 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 # --> Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  1 exceptions (code @ locator : text):
 #	MissingParamterValue @ service : No input parameters 
 
+################################################################################
+# iSpace - NPBG
+# TODO
+npbg <- SOS("http://ispacevm09.researchstudio.at/geoservices/npbg", method = "GET", verboseOutput = TRUE)
+# requires the attribute "version" in GetCapabilities - but that does not make sense...
+# wrote email to provider on that issue.
+
 
 ################################################################################
 # others:
