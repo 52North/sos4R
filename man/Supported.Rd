@@ -10,6 +10,7 @@
 \alias{SosSupportedSpatialOperators}
 \alias{SosSupportedTemporalOperators}
 \alias{SosSupportedServiceVersions}
+\alias{SosSupportedOperations}
 
 \title{Functions to Access Supported Features of the Current sos4R Implementation}
 
@@ -18,6 +19,7 @@ These functions can be used to access the supported parameters for a range of se
 }
 
 \usage{
+SosSupportedOperations()
 SosSupportedComparisonOperators()
 SosSupportedConnectionMethods()
 SosSupportedGeometryOperands()
@@ -47,6 +49,9 @@ It is encouraged to rather use these methods than manually set character values 
 \seealso{See \code{\link{Defaults}} for default values of parameters.}
 
 \examples{
+# The supported operations of the specification
+SosSupportedOperations()
+
 # HTTP connection methods supported by this sos4R implementation
 SosSupportedConnectionMethods()
 myConnectionType <- SosSupportedConnectionMethods()[[1]]

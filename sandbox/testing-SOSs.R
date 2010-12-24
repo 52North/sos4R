@@ -535,3 +535,9 @@ ise.rain3 <- getObservation(sos = ise,
 		featureOfInterest = SosFeatureOfInterest(spatialOps = bbox),
 		inspect = TRUE)
 
+################################################################################
+# .NET implementation from http://ogc.codeplex.com/ (http://sensordatabus.org/)
+ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOutput = TRUE)
+# http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
+# Seems not to work with additional request parameters...
+

@@ -84,6 +84,7 @@ library("sos4R")
 # sessionInfo()
 
 # Unterstützte Features (werden hoffentlich in Zukunft mehr)
+SosSupportedOperations()
 SosSupportedServiceVersions()
 SosSupportedConnectionMethods()
 SosSupportedResponseFormats()
@@ -91,6 +92,12 @@ SosSupportedResponseModes()
 SosSupportedResultModels()
 SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
+
+# Default Features
+SosDefaultConnectionMethod()
+SosDataFieldConvertingFunctions()
+SosDefaults() # TODO named list with defaults
+
 
 ##### Verbindung zu einem SOS erstellen ########################################
 mySOS = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")

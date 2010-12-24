@@ -8,18 +8,21 @@
 %\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
 
 \usepackage{graphicx}
-\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
-
 \usepackage{color}
-
 \usepackage{Sweave}
+\usepackage{csquotes}
+
+
 \newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\fivetwon}{$52\,^{\circ}{\rm North}$ }
 \let\pkg=\strong
+
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue]{hyperref}
 
 \begin{document}
 
 \title{Accessing Data from Sensor Observation Services:\\ the {\tt sos4R} Package}
-\author{Daniel N\"{u}st\footnote{Institute for Geoinformatics, University of M\"{u}nster, Germany.}\\ {\tt daniel.nuest@uni-muenster.de}}
+\author{Daniel N\"{u}st\footnote{Institute for Geoinformatics, University of Muenster, Germany.}\\ {\tt daniel.nuest@uni-muenster.de}}
 
 \date{Sep 2010}
 
@@ -28,71 +31,210 @@
 
 \section{Introduction}
 
-The {\tt sos4R} package provides classes and methods for dealing with
-%spatial data in S (R and S-Plus\footnote{our primary efforts target R;
-%depending on the needs, we will address S-Plus as well}). The spatial
-%data structures implemented include points, lines, polygons and grids;
-%each of them with or without attribute data.  We have chosen to use S4
-%classes and methods style (Chambers, 1998) to allow validation of objects
-%created. Although we mainly aim at using spatial data in the geographical
-%(two-dimensional) domain, the data structures that have a straightforward
-%implementation in higher dimensions (points, grids) do allow this.
-%
-%The motivation to write this package was born on a
-%\href{http://spatial.nhh.no/meetings/vienna/index.html}{pre-conference
-%spatial data workshop} during
-%\href{http://www.ci.tuwien.ac.at/Conferences/DSC-2003/}{DSC 2003}.
-%At that time, the advantage of having multiple R packages for spatial
-%statistics seemed to be hindered by a lack of a uniform interface for
-%handling spatial data. Each package had its own conventions on how
-%spatial data were stored and returned. With this package, and packages
-%supporting the classes provided here, we hope that R will become a more
-%coherent tool for analyzing different types of spatial data.
-%
-%The package is available, or will be available soon on CRAN. From the
-%package home page, \url{http://r-spatial.sourceforge.net/}, a graph
-%gallery with R code, and the development source tree are available.
-%
-%This vignette describes the classes, methods and functions provided
-%by sp. Instead of manipulating the class slots (components) directly,
-%we provide methods and functions to create the classes from elementary
-%types such as matrices, data.frames or lists and to convert them back
-%to any of these types. Also, coercion (type casting) from one class to
-%the other is provided, where relevant.
+The {\tt sos4R} package provides classes and methods for retrieving data from an OGC Sensor Observation Service (Na, 2007). The goal of this package is to provide easy access with a low entry threshold for everyone to information available via SOSs. The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possiblities for advanced users. At the current state, the output is limited to a standard data.frame with attributed columns for metadata.
+In future releases a tighter integration is planned with upcoming space-time packages regarding data structures and classes. This package uses S4 classes and methods style (Chambers, 1998). 
 
-Package {\tt sos4R} is loaded by 
-<<echo=TRUE,print=FALSE>>= 
-#library(sos4R)
+The motivation to write this package was born out of perceiving a missing link between the Sensor Web community (known as Sensor Web Enablement (SWE) Initiative\footnote{\url{http://www.opengeospatial.org/projects/groups/sensorweb}} in the OGC realm) and the community of (geo-)statisticians. While the relatively young SWE standards get slowly adopted more by some data owners (like governmental organizations), we see a very high potential for more freely available data and analyses based on it. {\tt sos4R} is hoped to enable this.
+
+The project was generously supported by the \fivetwon Student Innovation Price 2010. It is know part of the geostatistics community\footnote{\url{http://52north.org/communities/geostatistics/}} of the \fivetwon Initiative for Geospatial Open Source Software.
+{\tt sos4R} is available, or will be available soon on CRAN.
+
+On the package home page, \url{http://www.nordholmen.net/sos4r/}, you can stay updated with the development blog, find example codes and SOS instances, as well as download source packages.
+
+This software is released under a GPL 2 license\footnote{\url{http://www.gnu.org/licenses/gpl-2.0.html}} and contributions are very welcome. Please consult section~\ref{sec:developing} for details.
+
+The package {\tt sos4R} is loaded by 
+<<load,echo=TRUE,print=FALSE>>= 
+library("sos4R")
 @
 
+This document was build for \textbf{package version}
+<<load,echo=FALSE,print=FALSE>>= 
+cat(sessionInfo()$otherPkgs$sos4R$Version)
+@
 
-\subsection{OGC and Specifications}
+\subsection*{Related Specifications}
 
-TODO: Shortly mention and link to O and M, OWS Common, Sampling, Filtering, SensorML ...
+The Open Geospatial Consortium\footnote{\url{http://www.opengeospatial.org/}} (OGC) is an organisation which provides standards for handling geospatial data on the internet, thereby ensuring interoperability.
 
-TODO: Round-up of SOS specification
+The Sensor Observation Service (SOS) is such a standard and provides a well-defined interface for data warehousing of measurements and observations made by all kinds of sensors. This vignette describes the classes, methods and functions provided by {\tt sos4R} to query these observations.
 
-TODO: Copy terms example from annex B of O and M to the vignette for explanation
+Storing and providing data in web services is more powerful than local file copies (with issues like outdating, redundancy, ...). Flexible filtering of data on the service side reduces download size. That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain. For example \enquote{Provide only measurements from sensor MySensor-001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees}.
+
+In general, the SOS supports two methods of requesting data, HTTP GET and POST, but always returns eXtensible Markup Language (XML) documents.
+
+Standards that are referenced respectively used by SOS are as follows.
+
+\begin{description}
+\item[Observations & Measurements (O&M)] O&M defines the markup of sensor measurements results. An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result.
+\item[Sensor Model Language (SensorML)] SensorML is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer).
+\item[Geography Markup Language (GML)] ...
+\item[SweCommon] Data markup.
+\item[Filter Encoding] Filtering...
+\item[OWS Common] OGC Web Services Common models service related elements that are reusable across several service specifications, like excheption handling.
+\end{description}
+
+\subsection{Terms and Definitions}
+
+The OGC has a particular set of well-defined terms that might differ from usage of words in specific domains. The most important are as follows.
 
 
-\section{Creation Methods}
+\begin{description}
+\item[Feature of Interest (FOI)] .
+\item[Observation] .
+\item[Offering] .
+\item[Phenomenon] .
+\item[Procedure] .
+\end{description}
 
-explain concept, reference to Genolini
+ 	Das ~ repräsentiert das Geoobjekt, für das die Messwerte gelten und das von Sensoren gemessen wird. Über das FeatureOfInterest erfolgt in der Regel die Verortung (Georeferenzierung) der Messpunkte, d. h. das Geoobjekt besitzt Koordinaten (z. B. Länge/Breite und Höhe über NN). Die Festlegung des FOI hängt sehr stark vom Projekt ab und muss je nach Struktur gewählt werden.
+ 	Eine ~ liefert einen Messwert (Result) für die Eigenschaft (Phenomenon) eines observierten Objekts (FeatureOfInterest). Der Wert selbst wird durch einen Sensor oder Prozeduren erzeugt (Procedure). Ferner wurde das Phänomen zu einem bestimmten Zeitpunkt erfasst (SamplingTime) und der Wert an einem bestimmten Zeitpunkt erzeugt (ResultTime). Häufig stimmen die Werte überein, weshalb in der Praxis dann die SamplingTime als Zeitpunkt der Observation verwendet wird.
+ 	Ein ~ ist eine logische Gruppierung von miteinander in Bezug stehenden Observationen, welche gemeinsam von einem Dienst angeboten werden.
+ 	Ein ~ (Phänomen) stellt eine Eigenschaft (physikalische Größe) eines Geoobjekts dar. (Lufttemperatur, Windgeschwindigkeit, Schadstoffkonzentration der Atmosphäre, Reflektierte Strahlung in bestimmten Frequenzband, etc.)
+ 	Eine ~ (Prozedur) erzeugt den Messwert einer Observation. Dieses kann durch das Auslesen eines Sensors, Simulation oder auch einen numerischen Prozess geschehen.
 
-\section{SOS Requests}
+
+TODO: Copy terms example from annex B of OandM to the vignette for explanation
+
+\section{Supported Features}
+
+The package provides accessor functions for the supported parameters. It is recommended to access options from the lists returned by these functions instead of hardcoding them into scripts.
+
+<<supported,echo=TRUE,print=TRUE>>=
+SosSupportedOperations()
+SosSupportedServiceVersions()
+SosSupportedConnectionMethods()
+SosSupportedResponseFormats()
+SosSupportedResponseModes()
+SosSupportedResultModels()
+SosSupportedSpatialOperators()
+SosSupportedTemporalOperators()
+@
+
+\section{Default Options}
+
+Two kinds of default values can be found in (function calls in) {\tt sos4R}: (i) default depending on other function parameters, and (ii) global defaults. Global defaults can be inspected (not set!) using the following functions. If you want to use a different value please adapt the respective argument in function calls.
+
+<<default,echo=TRUE,print=TRUE>>=
+SosDefaultConnectionMethod()
+SosDefaults()
+@
+
+The package comes with a set of predefined converters (see section XXYY for details) based on the unit of measurement\footnote{\url{http://en.wikipedia.org/wiki/Units_of_measurement}} code.
+
+<<converterFunc,echo=TRUE,eval=FALSE>>=
+SosDataFieldConvertingFunctions()
+@
+
+<<converterFuncNames,echo=TRUE,print=TRUE>>=
+names(SosDataFieldConvertingFunctions())
+@
+
+\section{Creating a SOS connection}
+
+To create a SOS connection you only need the URL of the service. The operations prints out a short statement when the connection was successful.
+
+<<conn,echo=TRUE,print=FALSE>>= 
+mySOS = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+@
+
+options...
+
+%\begin{itemize}
+%\item \verb|[| select "rows" (items) and/or columns in the data attribute
+%table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
+%with the first two points and an attribute table with only variable "zinc".
+%\item \verb|[[| select a column from the data attribute table
+%\end{itemize}
+
+<<getObsById,echo=TRUE,print=TRUE>>= 
+sosUrl(mySOS)
+sosVersion(mySOS)
+sosTimeFormat(mySOS)
+sosMethod(mySOS)
+@
+
+The default connection method is HTTP POST, but since not all SOS support this a GET connection is possible was well (though limited regarding the filtering operations). Section~\ref{subsec:converters}} contains an exmample of such a connection.
+
+
+\section{SOS Operations}
+
+{\tt sos4R} supports the core profile of version 1.0.0 of the specification comprising the operations GetCapabilities, DescribeSensor and GetObservation. This document focusses on the practical usage of the operations, so the reader is refered to the specification document for details.
 
 \subsection{GetCapabilities}
 
+The GetCapabilities operations is automatically conducted during the connecting to a SOS instance. If you want to inspect the original capabilities document it can be re-requested using
+
+<<capsOriginal,echo=TRUE,eval=FALSE>>= 
+sosCapabilitiesDocumentOriginal(sos = mySOS)
+@
+
+The actual operation can be started with the following function. It returns an object of class \texttt{SosCapabilities} which can be accessed later on by the function \texttt{sosCaps()} from an object of class \texttt{SOS}.
+
+<<getCap,echo=TRUE,eval=FALSE>>= 
+getCapabilities(sos = mySOS)
+@
+
+options...
+
+%\begin{itemize}
+%\item \verb|[| select "rows" (items) and/or columns in the data attribute
+%table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
+%with the first two points and an attribute table with only variable "zinc".
+%\item \verb|[[| select a column from the data attribute table
+%\end{itemize}
+
+\subsection{Metadata Extraction for Request Building}
+How can one extract the metadata from a SOS connection and reuse it for queries?
+
+accessor functions, elements of the capabilities, ...
+
+<<getObsById,echo=TRUE,print=TRUE>>= 
+sosContents(mySOS)
+sosFilter_Capabilities(mySOS)
+sosServiceIdentification(mySOS)
+sosServiceProvider(mySOS) # @serviceContact
+
+sosOfferings(mySOS)
+off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
+sosOfferingIds(mySOS)
+names(sosOfferings(mySOS))
+
+sosId(off.temp)
+sosOfferings(mySOS)[1:3]
+
+sosProcedures(mySOS)
+sosProcedures(off.temp)
+
+sosObservedProperties(mySOS)
+sosObservedProperties(off.temp)
+
+sosBoundedBy(off.temp)
+str(sosBoundedBy(off.temp)) # Nicht so schön ...
+
+sosTime(mySOS)
+off.temp.time <- sosTime(off.temp)
+str(off.temp.time) # modelliert XML
+# "wirklichen" Startzeitpunkt abfragen
+off.temp.time@beginPosition@time
+class(off.temp.time@beginPosition@time)
+@
+ 
 
 \subsection{DescribeSensor}
 
+<<getObsById,echo=TRUE,print=TRUE>>= 
+describeSensor(mySOS, sosProcedures(off.temp)[[2]])
+# sensor2@xml
+@
 
 \subsection{GetObservation}
 
+\subsubsection{Basic Request}
 
-\subsection{GetObservationById}
-
-\section{Creating a SOS connection}
+<<getObsById,eval=FALSE,echo=TRUE>>= 
+getObservation(sos = mySOS, ...)
+@
 
 %\begin{itemize}
 %\item \verb|[| select "rows" (items) and/or columns in the data attribute
@@ -102,67 +244,153 @@ explain concept, reference to Genolini
 %\item \verb|[[<-| assign or replace values to a column in the data attribute
 %table.
 %\end{itemize}
+% eplain non-standardizest "latest" request
 
 
-\section{Requesting Data}
+The returned data is a XML document of type OmObservation, OmMeasurement, or OmObservationCollection which holds a list of the former two and is the usual case.
 
-\subsection{Using Metadata}
+<<getObsById,eval=FALSE,echo=TRUE>>= 
+# ObservationCollection behaves like a list in most cases
+length(obs.temp.latest)
+obs.temp.latest[[1]]
+obs.temp.latest[2:5]
 
-How can one extract the metadata from a SOS connection and reuse it for queries?
+# Koordinaten, Features und BoundingBox abfragen
+sosCoordinates(obs.temp.latest)
+sosCoordinates(obs.temp.latest[[1]])
+sosFeatureIds(obs.temp.latest)
+sosBoundedBy(obs.temp.latest)
+@
 
-accessor functions, elements of the capabilities, ...
+show/explain conversion to zoo, sp?
 
+<<getObsById,eval=FALSE,echo=TRUE>>= 
+# sosResult(...) ist die wichtigste Methode
+sosResult(obs.temp.latest[[2]])
+obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
 
-\subsection{Making the Request}
+# Nur ein ganz normaler data.frame ... Attribute enthalten Metadaten. Diese 
+# gehen nach dem "merge" verloren!
+attributes(obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
 
-\subsection{Data Format}
+# Kombination der results mit den Koordinaten
+obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
+obs.temp.latest.data <- merge(x = obs.temp.latest.result,
+		y = obs.temp.latest.coords)
+obs.temp.latest.data
+@
 
-explain why the returned data.frame is how it looks like
+\subsubsection{Temporal Filtering}
 
-how to extract metadata
+\subsubsection{Spatial Filtering}
 
+\subsubsection{Feature Filtering}
 
-\subsection{Using the Data}
+\subsubsection{Value Filtering}
 
-show/explain conversion to zoo, sp etc.
+TBD
 
-exporting
+\subsection{GetObservationById}
 
-show example
+The operation GetObservationById is not part of the core profile, but implemented as it is quite simple. The response is the same as described in the previous section. Optional parameters are the same as in GetObservation requests.
+
+<<getObsById,eval=FALSE,echo=TRUE>>= 
+getObservationById(sos = mySOS, observationId = "o001")
+@
+
 
 \section{Changing Handling Functions}
 
 TODO: explain approach, mention available non-exchangeable functions in the subsections
 
+fixed order, exchangeable components
+
+
 \subsection{Parsing/Decoding}
 
 \subsection{Encoding}
 
+\subsection{Data Converters}
+\label{subsec:converters}
+
+# GET Verbindung
+MBARI <- SOS("http://mmisw.org/oostethys/sos",
+		method = SosSupportedConnectionMethods()[["GET"]])
+myOff <- sosOfferings(MBARI)[[1]]
+myProc <- sosProcedures(MBARI)[[1]]
+mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc,
+		inspect = TRUE)
+# Warnmeldungen!
+
+?SosDataFieldConvertingFunctions
+
+# So geht es:
+myConverters <- SosDataFieldConvertingFunctions(
+		# mapping for UOM:
+		"C" = sosConvertDouble,
+		"S/m" = sosConvertDouble,
+		# mapping for definition:
+		"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
+MBARI <- SOS("http://mmisw.org/oostethys/sos",
+		method = SosSupportedConnectionMethods()[["GET"]],
+		dataFieldConverters = myConverters)
+myOff <- sosOfferings(MBARI)[[1]]
+myProc <- sosProcedures(MBARI)[[1]]
+mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+
+sosResult(mbariObs)
 
 
 \section{Exception Handling}
 
-TODO: Explain what part of the exception report means what, link to OWS Common
+Explain what part of the exception report means what, link to OWS Common
 
+explain verbose option and verboseOutput
+
+\section{Getting Started}
+
+The demos are a good way to get started with the package. Please be aware that the used SOSs might be unavailable temporarily.
+
+<<demo,echo=TRUE,eval=FALSE>>= 
+demo(package = "sos4R")
+@
+
+Additionally, there is a list of services on the project homepage (\url{http://www.nordholmen.net/sos4r/data/}) and a few SOS URLs are available via the function \texttt{SosExampleServices()}.
+
+<<exampleServices,echo=TRUE,print=TRUE>>= 
+SosExampleServices()
+@
+
+\section{Getting Support}
+
+If you want to ask questions about using the software, please go first to the \fivetwon forum for the geostatistics community at \url{http://geostatistics.forum.52north.org/} and check if a solution is described there. If you are a frequent user please consider subscribing to the geostatistics mailing list (\url{http://list.52north.org/mailman/listinfo/geostatistics}) which is linked to the forum.
 
 \section{Developing sos4R}
+\label{sec:developing}
 
-explain 52 North
+\subsection*{Code Repository}
 
-svn code repository
+You can download and browse the source of the sos4R package directly from the \fivetwon repository:
 
-shortly describe the class structure, .R file naming scheme, ...
+\begin{itemize}
+\item \textbf{SVN resource URL}: \url{https://svn.52north.org/svn/geostatistics/main/sos4R}. Please read the documentation of 52N repositories\footnote{http://52north.org/resources/source-repositories/}. Anonymous access for download is possible.
+\item \textbf{Web access}: \url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
+\end{itemize}
 
-link to wiki developer page
+See the \textbf{developer documentation} at the \fivetwon Wiki for detailed information on how to use the checked out source project: \url{https://wiki.52north.org/bin/view/Geostatistics/Sos4R }. You will find a detailed description of the folder and class structure, the file naming scheme, and an extensive list of tasks for future development.
 
-link to developer blog
+Please get in touch with the community lead\footnote{\url{http://52north.org/communities/geostatistics/community-contact}} of the geostatistics community if you want to \textbf{become a contributor}.
 
 \section*{References}
+
 \begin{description}
-\item Chambers, J.M., 2008, Software for Data Analysis, Programming with R.
-Springer, New York.
-\item specs!
-\item ...
+\item Botts, M., 2007, OGC Implementation Specification 07-000: OpenGIS Sensor Model Language (SensorML)- Open Geospatial Consortium, Tech. Rep.
+\item Chambers, J.M., 2008, Software for Data Analysis, Programming with R. Springer, New York.
+\item Cox, S., 2007, OGC Implementation Specification 07-022r1: Observations and Measurements - Part 1 - Observation schema. Open Geospatial Consortium. Tech. Rep.
+\item Cox, S., 2007, OGC Implementation Specification 07-022r3: Observations and Measurements - Part 2 - Sampling Features. Open Geospatial Consortium. Tech. Rep.
+\item Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, \url{http://portal.opengeospatial.org/files/?artifact_id=26667}, Open Geospatial Consortium, Tech. Rep. 
+\item Portele, C., 2003, OpenGIS Geography Markup Language (GML) Encoding Standard, version: 3.00.
+\item Vretanos, P.A., 2005, OpenGIS Filter Encoding Implementation Specification. Open Geospatial Consortium, Tech. Rep.
 \end{description}
 
 \end{document}

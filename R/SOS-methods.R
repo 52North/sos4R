@@ -58,7 +58,7 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 				timeFormat = timeFormat,
 				verboseOutput = verboseOutput)
 		
-		.caps <- getCapabilities(.sos, verbose = verboseOutput)
+		.caps <- getCapabilities(sos = .sos, verbose = verboseOutput)
 		if(!is(.caps, "OwsCapabilities")) {
 			stop("ERROR: Did not receive a Capabilities response!")
 		}

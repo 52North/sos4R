@@ -23,6 +23,7 @@
 \alias{SosDisabledParsers}
 \alias{SosDataFieldConvertingFunctions}
 \alias{SosExampleServices}
+\alias{SosDefaults}
 
 \title{Default Parameter Settings and Handling Functions}
 
@@ -31,16 +32,6 @@ These values are default parameters and handling functions for connections and r
 }
 
 \usage{
-sosDefaultCharacterEncoding
-sosDefaultDescribeSensorOutputFormat
-sosDefaultGetCapAcceptFormats
-sosDefaultGetCapOwsVersion
-sosDefaultGetCapSections
-sosDefaultGetObsResponseFormat
-sosDefaultSpatialOpPropertyName
-sosDefaultTempOpPropertyName
-sosDefaultTemporalOperator
-sosDefaultTimeFormat
 SosDefaultConnectionMethod()
 
 SosParsingFunctions(..., include = character(0), exclude = character(0))
@@ -50,6 +41,8 @@ SosDataFieldConvertingFunctions(..., include = character(0), exclude = character
 SosDisabledParsers()
 
 SosExampleServices()
+
+SosDefaults()
 }
 
 \arguments{
@@ -146,6 +139,9 @@ describeSensor(sos, sosProcedures(sos)[[1]])
 
 # a list of example services
 SosExampleServices()
+
+# a named list of defaults
+SosDefaults()
 
 }
 

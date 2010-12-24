@@ -42,6 +42,12 @@ sosGetObservationName <- "GetObservation"
 sosGetObservationByIdName <- "GetObservationById"
 sosGetFeatureOfInterestName <- "GetFeatureOfInterest"
 
+SosSupportedOperations <- function() {
+	.supported <- c(sosGetCapabilitiesName, sosDescribeSensorName, 
+			sosGetObservationName ,sosGetObservationByIdName)
+	return(.supported)
+}
+
 ################################################################################
 # not exported SOS
 .sosConnectionMethodGet <- "GET"

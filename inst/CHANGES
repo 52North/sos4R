@@ -58,7 +58,7 @@
 * improved toString(...) of OmObservation
 * changed behaviour of sosResult(...) for OmObservationCollection, now binds the data.frames of the contained observations
 
-2010-11-22		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-12-22		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-07
 * Added more units of measurement to default list based on http://aurora.regenstrief.org/~ucum/ucum.html
@@ -71,3 +71,11 @@
 * Added names function for OmObservation, OmMeasurement, and OmObservationCollection
 * Added URLs/skeletons for new demos
 * Added @boundedBy for OmObservationCollection
+
+2010-12-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.1-08
+* Added package vignette
+* Added SosDefaults()
+* Added SosSupportedOperations()
+* ...

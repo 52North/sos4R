@@ -234,14 +234,14 @@ names(.sosDefaultFieldConverters) <- list(
 		"AU", # astronomic unit (length)
 		"pc", # parsec (length)
 		"degF", # degree Fahrenheit 
-		"hPa",
-		"mm",
-		"nm",
-		"cm",
-		"km",
-		"m/s",
-		"kg",
-		"mg",
+		"hPa", # hektopascal
+		"mm", # millimeter
+		"nm", # nanometer
+		"cm", # centimeter
+		"km", # kilometer
+		"m/s", # meter per second
+		"kg", # kilogramm
+		"mg", # milligram
 		"uom", # fallback if actual unit is not given
 		"urn:ogc:data:feature"
 		)
@@ -331,7 +331,6 @@ SosDisabledParsers <- function() {
 # other defaults
 
 sosDefaultCharacterEncoding <- "UTF-8"
-
 sosDefaultDescribeSensorOutputFormat <- SosSupportedResponseFormats()[2]
 sosDefaultGetCapSections <- c("All")
 sosDefaultGetCapAcceptFormats <- c("text/xml")
@@ -347,4 +346,36 @@ sosDefaultColumnNameFeatureIdentifier <- "feature"
 sosDefaultColumnNameLat <- "lat"
 sosDefaultColumnNameLon <- "lon"
 sosDefaultColumnNameSRS <- "SRS"
+
+SosDefaults <- function() {
+	.defaults <- list(sosDefaultCharacterEncoding,
+			sosDefaultDescribeSensorOutputFormat,
+			sosDefaultGetCapSections,
+			sosDefaultGetCapAcceptFormats,
+			sosDefaultGetCapOwsVersion,
+			sosDefaultGetObsResponseFormat,
+			sosDefaultTimeFormat,
+			sosDefaultTempOpPropertyName,
+			sosDefaultTemporalOperator,
+			sosDefaultSpatialOpPropertyName,
+			sosDefaultColumnNameFeatureIdentifier,
+			sosDefaultColumnNameLat,
+			sosDefaultColumnNameLon,
+			sosDefaultColumnNameSRS)
+	names(.defaults) <- list("sosDefaultCharacterEncoding",
+			"sosDefaultDescribeSensorOutputFormat",
+			"sosDefaultGetCapSections",
+			"sosDefaultGetCapAcceptFormats",
+			"sosDefaultGetCapOwsVersion",
+			"sosDefaultGetObsResponseFormat",
+			"sosDefaultTimeFormat",
+			"sosDefaultTempOpPropertyName",
+			"sosDefaultTemporalOperator",
+			"sosDefaultSpatialOpPropertyName",
+			"sosDefaultColumnNameFeatureIdentifier",
+			"sosDefaultColumnNameLat",
+			"sosDefaultColumnNameLon",
+			"sosDefaultColumnNameSRS")
+	return(.defaults)
+}
 
