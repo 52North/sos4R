@@ -124,7 +124,11 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 			}
 		}
 		
-		if(is.null(.method)) stop("No converter found!")
+		if(is.null(.method)) {
+			warning(paste("No converter found! Skipping field ",
+							as.character(fields[[.currentFieldIdx]])))
+			next;
+		}
 		
 		if(verbose) {
 			cat("[parseValues] Using converter function:\n")

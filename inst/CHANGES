@@ -79,4 +79,5 @@
 * Added SosDefaults()
 * Added SosSupportedOperations()
 * Added sosGetCRS(...)
+* Changed behaviour of parsing function: If a converter is missing, it does not stop but only warn. The output data.frame then lacks that attribute.
 * ...
