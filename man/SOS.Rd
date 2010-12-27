@@ -111,10 +111,14 @@
 \alias{sosSrsName-method}
 
 \alias{sosFeatureIds}
-\alias{sosFeatureIds-methods}
+\alias{sosFeatureIds-method}
 \alias{sosFeatureIds,list-method}
 \alias{sosObservedProperties,list-method}
 \alias{sosFeaturesOfInterest,list-method}
+
+\alias{sosGetCRS}
+\alias{sosGetCRS-method}
+\alias{sosGetCRS,character-method}
 
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
@@ -226,6 +230,10 @@ SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)
 # get the meaning of an exception code
 sosExceptionCodeMeaning(ex@exceptionCode)
 }
+
+# create a CRS object from a URN CRS string
+sosGetCRS("urn:ogc:def:crs:EPSG:4217")
+
 
 }
 

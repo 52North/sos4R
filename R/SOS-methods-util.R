@@ -1035,3 +1035,38 @@ setMethod(f = "sosExceptionCodeMeaning",
 			return(.meaning)
 		}
 )
+
+################################################################################
+#
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "character"),
+		def = function(obj) {
+			require("sp")
+			
+			# get the position of EPSG
+			.split <- strsplit(as.character(obj), split = ":")
+			.idx <- which(.split[[1]]=="EPSG")
+			if(length(.idx) == 0) {
+				warning(paste("Could not create CRS from the given object:", obj))
+				return(NULL)
+			}
+			.epsg <- .split[[1]][[.idx +1]]
+			
+			.initString <- paste("+init=epsg", .epsg, sep = ":")
+			.crs <- CRS(.initString)
+			return(.crs)
+		}
+)
+
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "OmObservation"),
+		def = function(obj) {
+			.char <- as.vector(sosCoordinates(obj)[[sosDefaultColumnNameSRS]])
+			.l <- sapply(X = .char, FUN = sosGetCRS)
+			.l <- unique(.l)
+			
+			if(length(.l) == 1)
+				return(.l[[1]])
+			else return(.l)
+		}
+)

@@ -28,6 +28,8 @@
 \alias{sosFeatureIds,OmObservation-method}
 \alias{sosObservedProperties,OmObservation-method}
 
+\alias{sosGetCRS,OmObservation-method}
+
 \title{Classes for om:Observation Elements}
 
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification.}
@@ -55,7 +57,6 @@ OmObservationProperty(href = as.character(NA), obs = NULL)
     \item{\code{resultQuality}:}{Object of class \code{"ANY"}: Event specific quality of a result.}
     \item{\code{parameter}:}{Object of class \code{"ANY"}: A general event-specific parameter. This will typically be used to record environmental parameters, or event-specific sampling parameters that are not tightly bound to either the feature-of-interest or the procedure.}
     \item{\code{href}:}{Object of class \code{"character"}: Referenced observation in a \code{OmObservationProperty}.}
-    \item{\code{obs}:}{Object of class \code{"OmObservationOrNULL"}: Directly contained observation in a \code{OmObservationProperty}.}
   }
 }
 

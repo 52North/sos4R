@@ -138,3 +138,12 @@ if (!isGeneric("encodeKVP"))
 			def = function(obj, sos = "SOS", verbose = FALSE) {
 				standardGeneric("encodeKVP")
 			})
+
+#
+#
+#
+if (!isGeneric("sosGetCRS"))
+	setGeneric(name = "sosGetCRS",
+			def = function(obj) {
+				standardGeneric("sosGetCRS")
+			})

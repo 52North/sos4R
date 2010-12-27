@@ -78,4 +78,5 @@
 * Added package vignette
 * Added SosDefaults()
 * Added SosSupportedOperations()
+* Added sosGetCRS(...)
 * ...
