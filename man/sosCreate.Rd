@@ -11,6 +11,9 @@
 \alias{sosCreateEventTimeList}
 \alias{sosCreateEventTimeList-methods}
 \alias{sosCreateEventTimeList,GmlTimeGeometricPrimitive-method}
+\alias{sosCreateEventTime}
+\alias{sosCreateEventTime-methods}
+\alias{sosCreateEventTime,GmlTimeGeometricPrimitive-method}
 \alias{sosCreateFeatureOfInterest}
 \alias{sosCreateFeatureOfInterest-methods}
 \alias{sosCreateFeatureOfInterest,ANY-method}
@@ -31,6 +34,7 @@ These methods can be seen as convenience functions or shortcuts to regularly use
 sosCreateBBOX(lowLat, lowLon, uppLat, uppLon, srsName, srsDimension = NA_integer_, axisLabels = NA_character_, uomLabels = NA_character_, propertyName = sosDefaultSpatialOpPropertyName)
 sosCreateBBoxMatrix(lowLat, lowLon, uppLat, uppLon)
 sosCreateFeatureOfInterest(objectIDs = list(NA), spatialOps = NULL, bbox = NULL, srsName = NA_character_)
+sosCreateEventTime(time, operator)
 sosCreateEventTimeList(time, operator)
 sosCreateTimeInstant(sos, time, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA))
 sosCreateTimePeriod(sos, begin, end, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA), duration = as.character(NA), timeInterval = NULL)
@@ -94,6 +98,10 @@ print(foiBBox)
 bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 7.0, uppLat = 53.0, uppLon = 10.0, srsName = "urn:ogc:def:crs:EPSG:6.8:4326", srsDimension = as.integer(2), axisLabels = "lat,lon", uomLabels = "deg,deg", propertyName = "bboxName")
 foiBBox2 <- sosCreateFeatureOfInterest(spatialOps = bbox)
 print(foiBBox2)
+
+\dontrun{
+# time examples TBD
+}
 
 }
 

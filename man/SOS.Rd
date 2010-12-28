@@ -154,7 +154,9 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosDataFieldConverters}{\code{signature(sos = "SOS")}: ... }
     \item{sosTime}{\code{signature(obj = "SOS")}: ... }
     \item{sosFilter_Capabilities}{\code{signature(sos = "SOS")}: ... }
-    \item{sosFOIs}{\code{signature(sos = "SOS")}: ... }
+    \item{sosFeatureIds}{\code{signature(obj = "list")}: ... }
+    \item{sosFeaturesOfInterest}{\code{signature(obj = "list")}: ... }
+    \item{sosGetCRS}{\code{signature(obj = "character")}: Get an object of class \code{CRS} for a given OGC URN depicting a reference system, like \code{urn:ogc:def:crs:EPSG:1000}.}
     \item{sosMethod}{\code{signature(sos = "SOS")}: ... }
     \item{sosObservedProperties}{\code{signature(sos = "SOS")}: ... }
     \item{sosOffering}{\code{signature(sos = "SOS", offeringId = "character")}: ... }

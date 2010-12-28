@@ -39,6 +39,7 @@ There are functions to access the converters of a SOS (\code{\link{sosDataFieldC
 
 \examples{
 
+\dontrun{
 sos <- SOS(url = SosExampleServices()[[2]])
 one <- sosConvertDouble("1", sos)
 class(one)
@@ -51,6 +52,7 @@ sos <- SOS(url = SosExampleServices()[[2]], dataFieldConverters = myConverters)
 
 # show converters
 sosDataFieldConverters(sos)
+}
 
 }
 

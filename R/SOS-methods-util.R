@@ -803,6 +803,18 @@ if (!isGeneric("sosCreateEventTimeList"))
 setMethod(f = "sosCreateEventTimeList",
 		signature = signature(time = "GmlTimeGeometricPrimitive"),
 		def = function(time, operator) {
+			.et <- list(sosCreateEventTime(time = time, operator = operator))
+			return(.et)
+		}
+)
+if (!isGeneric("sosCreateEventTime"))
+	setGeneric(name = "sosCreateEventTime",
+			def = function(time, operator = sosDefaultTemporalOperator) {
+				standardGeneric("sosCreateEventTime")
+			})
+setMethod(f = "sosCreateEventTime",
+		signature = signature(time = "GmlTimeGeometricPrimitive"),
+		def = function(time, operator) {
 			
 			if(operator == ogcTempOpTMAfterName) {
 				.tOps <- TM_After(time = time)
@@ -822,7 +834,7 @@ setMethod(f = "sosCreateEventTimeList",
 								toString(SosSupportedTemporalOperators())))
 			}
 			
-			.et <- list(SosEventTime(.tOps))
+			.et <- SosEventTime(.tOps)
 			return(.et)
 		}
 )

@@ -280,7 +280,7 @@
 }
 
 .toString.SosContents <- function(x, ...) {
-	.s <- paste("Object of class SosContents with observation offerings (names): ",
+	.s <- paste("Object of class SosContents with observation offerings (names):\n\t",
 			toString(paste(names(x@observationOfferings))))
 	return(.s)
 }

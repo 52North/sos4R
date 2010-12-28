@@ -503,9 +503,9 @@ setMethod(f = "getObservationById",
 			print(.obs)
 		}
 		
-		cat("Finished getObservation to", sos@url, "- received",
-				length(.obs), "observation(s)/measurement(s) having",
-				sum(.resultLength), "elements [", toString(.resultLength),
+		cat("Finished getObservation to", sos@url, "\n\t--> received",
+				length(.obs), "observation(s) having",
+				sum(.resultLength), "result values [", toString(.resultLength),
 				"].\n")
 		
 		return(.obs)

@@ -378,4 +378,3 @@ SosDefaults <- function() {
 			"sosDefaultColumnNameSRS")
 	return(.defaults)
 }
-
