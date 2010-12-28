@@ -64,12 +64,9 @@ The package \pkg{sos4R} is loaded by
 library("sos4R")
 @
 
-This document was build for \textbf{package version}
-<<load,echo=FALSE,print=FALSE>>= 
-cat(sessionInfo()$otherPkgs$sos4R$Version)
-@
+This document was build for \textbf{package version \Sexpr{sessionInfo()[["otherPkgs"]][["sos4R"]][["Version"]]}}.
 
-\subsection*{Related Specifications}
+\subsection{Related Specifications}
 
 The Open Geospatial Consortium\footnote{\url{http://www.opengeospatial.org/}} (OGC) is an organisation which provides standards for handling geospatial data on the internet, thereby ensuring interoperability.
 
@@ -77,9 +74,9 @@ The Sensor Observation Service (SOS) is such a standard and provides a well-defi
 
 Storing and providing data in web services is more powerful than local file copies (with issues like outdating, redundancy, \ldots). Flexible filtering of data on the service side reduces download size. That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain. For example \enquote{Provide only measurements from sensor MySensor-001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees}.
 
-In general, the SOS supports two methods of requesting data, HTTP GET and POST, but always returns eXtensible Markup Language (XML) documents.
+In general, the SOS supports two methods of requesting data: (i) HTTP GET as defined in the OOSTethys best practice document\footnote{\url{http://www.oostethys.org/best-practices/best-practices-get}}, and (ii) POST as defined in the standard document. Both request types always returns eXtensible Markup Language (XML) documents as response.
 
-Standards that are referenced respectively used by SOS are as follows.
+Standards that are referenced, respectively used, by SOS are as follows.
 
 \begin{description}
 \item[Observations and Measurements (O\&M)] O\&M (Cox, 2007) defines the markup of sensor measurements results. An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result.
@@ -90,7 +87,7 @@ Standards that are referenced respectively used by SOS are as follows.
 \item[OWS Common] OGC Web Services Common (Whiteside, 2007) models service related elements that are reusable across several service specifications, like excheption handling.
 \end{description}
 
-\subsection*{Terms and Definitions}
+\subsection{Terms and Definitions}
 
 The OGC has a particular set of well-defined terms that might differ from usage of words in specific domains. The most important are as follows\footnote{Based on \url{http://de.wikipedia.org/wiki/Sensor_Observation_Service}}.
 
@@ -114,7 +111,6 @@ A more extensive discussion is available in the the O\&M specification (Cox, 200
   Observation::featureOfInterest & troposphere & media (air, water, \ldots) & Global Change Master Directory "Topic" \\
 \end{tabular}
 \end{tiny}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Supported Features}
@@ -145,6 +141,18 @@ SosSupportedTemporalOperators()
 print(SosSupportedTemporalOperators())
 @
 
+
+\subsection{Supported Services and Implementations}
+
+\pkg{sos4R} supports the core profile of the SOS specification. But the possible markups for observations is extremely manifold due to the flexibility of the O\&M specification. Sadly, there is no common application profile for certain types of observations, like simple measurements.
+
+Therefore, the undocumented profile of the \textbf{\fivetwon SOS implementation}\footnote{\url{http://52north.org/communities/sensorweb/sos/}} was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.
+
+In the author's experience, \textbf{OOSThetys SOS implementations}\footnote{\url{http://www.oostethys.org/}} utilize the same or at least very similar profile, so responses of these service instances are also probably parsed without further work.
+
+Please share your experiences with other SOS implementations with the developers and users of \pkg{sos4R} (see section \ref{\label{sec:support}}). 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Default Options}
 \label{sec:default}
 
@@ -221,7 +229,7 @@ The default connection method is HTTP POST, but since not all SOS support this a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{SOS Operations}
 
-\pkg{sos4R} supports the core profile of version 1.0.0 of the specification comprising the operations GetCapabilities, DescribeSensor and GetObservation. This document focusses on the practical usage of the operations, so the reader is refered to the specification document for details.
+\pkg{sos4R} implements the SOS core profile of version 1.0.0 comprising the operations GetCapabilities, DescribeSensor and GetObservation. This document focusses on the practical usage of the operations, so the reader is refered to the specification document for details.
 
 The methods mirroring the SOS operations all contain debugging parameters \code{inspect} and \code{verbose} as described in section \ref{subsec:inspect}.
 
@@ -239,7 +247,11 @@ The actual operation can be started with the following function. It returns an o
 getCapabilities(sos = mySOS)
 @
 
-The \code{getCapabilities()} method does not take more than the common parameters.
+\begin{itemize}
+    \item \code{sos}: The SOS connection to request the capabilities document from.
+    \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
+\end{itemize}
+
 
 \subsection{DescribeSensor}
 
@@ -249,15 +261,27 @@ The DescribeSensor operation is specified in clause 8.3 of the SOS specification
 The DescribeSensor operation is useful for obtaining detailed information of sensor characteristics encoded in either SensorML or TML. The sensor characteristics can include lists and definitions of observables supported by the sensor. [...]
 \end{quotation}
 
+The parameters of the operation are the following:
+
+\begin{itemize}
+    \item \code{sos}: The SOS connection to request a sensor description from.
+    \item \code{procedure}: The identifier of the sensor, so one of the character strings returned by \code{sosProcedures(...)}.
+    \item \code{outputFormat}: The format in which the sensor description is to be returned by the service. The default value is \texttt{\Sexpr{sosDefaultDescribeSensorOutputFormat}}.
+    \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
+\end{itemize}
+
 <<describeSensor,echo=TRUE,print=TRUE>>= 
-describeSensor(sos = mySOS,
+sensor.1.1 <- describeSensor(sos = mySOS,
 		procedure = sosProcedures(obj = mySOS)[[1]][[1]])
-# Inspect complete sensor description document: sensor2@xml
+# Inspect complete sensor description document:
+#sensor.1.1@xml
 @
 
 \subsection{GetObservation}
 
-explain sosCreate.. functions!
+A few utility functions exist to minize a user's amount of work to create usual requests. They accept normal R types as input and return the respective class from \pkg{sos4R} with useful default settings. These function's names start with \code{sosCreate...()} and exist for spatial and temporal filters.
+
+In this section, all matters around requesting data are explained --- from extracting query parameters from metadata, and sending the request, till finally extracting data values and coordinates from the response.
 
 \subsubsection{Metadata Extraction for Request Building}
 
@@ -278,6 +302,8 @@ sosServiceProvider(mySOS)
 
 #sosOfferings(mySOS)
 off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
+# the order of offerings can change in between requests
+
 sosOfferingIds(mySOS)
 # Names of offerings list are the Ids (same output as last call)
 # names(sosOfferings(mySOS))
@@ -286,9 +312,11 @@ sosOfferings(mySOS)[1:2]
 
 sosProcedures(mySOS)
 sosProcedures(off.temp)
+# the order of procedures can change in between requests
 
 sosObservedProperties(mySOS)
 sosObservedProperties(off.temp)
+# the order of observed properties can change in between requests
 
 sosBoundedBy(off.temp)
 str(sosBoundedBy(off.temp)) # Nicht so schön ...
@@ -302,8 +330,7 @@ class(off.temp.time@beginPosition@time)
 @
  
 
-
-\subsubsection{Basic Request}
+\subsubsection{Basic Request and Result Extraction}
 
 <<getObservation,eval=FALSE,echo=TRUE>>= 
 getObservation(sos = mySOS, ...)
@@ -314,14 +341,18 @@ getObservation(sos = mySOS, ...)
 %table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
 %with the first two points and an attribute table with only variable "zinc".
 %\item \verb|[[| select a column from the data attribute table
-%\item \verb|[[<-| assign or replace values to a column in the data attribute
-%table.
-%\end{itemize}
+  \item \code{latest}: A boolean parameter to request the latest observation only (see example below) --- this is not standard conform.
+\end{itemize}
 
-% explain non-standardizest "latest" request
+A request to retrieve the latest measured value is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \dquote{latest}.
 
+<<getLatest,eval=TRUE,echo=TRUE>>= 
+obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp, latest = TRUE)
+@
 
-The returned data is a XML document of type OmObservation, OmMeasurement, or OmObservationCollection which holds a list of the former two and is the usual case.
+The returned data is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely \code{OmObservation}, \code{OmMeasurement}, or \code{OmObservationCollection}.
+
+The elements in an \code{OmObservationCollection} can be accessed just like a normal list (in fact, it just wraps at list of observations at this point).
 
 <<getObs1,eval=FALSE,echo=TRUE>>= 
 # ObservationCollection behaves like a list in most cases
@@ -329,20 +360,24 @@ length(obs.temp.latest)
 obs.temp.latest[[1]]
 obs.temp.latest[2:5]
 
-# Koordinaten, Features und BoundingBox abfragen
-sosCoordinates(obs.temp.latest)
-sosCoordinates(obs.temp.latest[[1]])
-sosFeatureIds(obs.temp.latest)
 sosBoundedBy(obs.temp.latest)
 @
 
-sosResult erklären, OmObservationCollection erklären
 %\begin{itemize}
 %\item \verb|[| select "rows" (items) and/or columns in the data attribute
 %table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
 %with the first two points and an attribute table with only variable "zinc".
 %\item \verb|[[| select a column from the data attribute table
 %\end{itemize}
+
+<<getObs1,eval=FALSE,echo=TRUE>>= 
+# ObservationCollection behaves like a list in most cases
+length(obs.temp.latest)
+obs.temp.latest[[1]]
+obs.temp.latest[2:5]
+@
+
+\textbf{Data Values} ... sosResult erklären, 
 
 <<getObs2,eval=FALSE,echo=TRUE>>= 
 # sosResult(...) ist die wichtigste Methode
@@ -360,6 +395,18 @@ obs.temp.latest.data <- merge(x = obs.temp.latest.result,
 obs.temp.latest.data
 @
 
+\textbf{Spatial Information} can be stored in an observation in several ways.
+
+...
+
+<<getObsSpatial,eval=FALSE,echo=TRUE>>= 
+# Koordinaten, Features und BoundingBox abfragen
+sosCoordinates(obs.temp.latest)
+sosCoordinates(obs.temp.latest[[1]])
+sosFeatureIds(obs.temp.latest)
+sosBoundedBy(obs.temp.latest)
+@
+
 \subsubsection{Temporal Filtering}
 
 The possibly most typical temporal filter is a period of time for which measurements are of interest.
@@ -373,14 +420,14 @@ lastWeek.eventTime <- sosCreateEventTimeList(lastWeek.period)
 
 Please note that the create function also wraps the created objects in a list as expected by the method \code{getObservation(...)}.
 
-What was the average temperature last week?
+What was the average temperature during the last week?
 		
 <<temporalFiltering2,eval=TRUE,echo=TRUE>>= 
 obs.lastWeek <- getObservation(sos = mySOS, offering = off.temp,
 		procedure = sosProcedures(off.temp), eventTime = lastWeek.eventTime)
 
 obs.temp.lastWeek.result <- sosResult(obs.lastWeek)
-summary(obs.temp.lastWeek.result)
+summary(obs.temp.lastWeek.result)[4,"urn:ogc:def:property:OGC::Temperature"]
 @
 
 The default temporal operator is \enquote{during}, but others are supported as well (see section \ref{sec:supported}). The next example shows how to create a temporal filter for all observations taken \textbf{after} a certain point in time. Here the creation function creates just one object of class \code{SosEventTime} which must be added to a list manually before passing it to \code{getObservation(...)}.
@@ -434,7 +481,7 @@ print(sosFeaturesOfInterest(obs.lastWeek.fois))
 
 Value Filtering is realized via the slot \code{result} in a GetObservation request. The filtering in the request is based on comparison operators and operands specified by OGC Filter Encoding (Vretanos, 2005).
 
-The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the \pkg{XML} package.
+The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the package \pkg{XML}.
 
 The following code example uses a literal comparison of a property:
 
@@ -459,7 +506,9 @@ Please consult to the extensive documentation of the \pkg{XML} package for detai
 print(filter.result)
 @
 
-The object of class \code{OgcComparisonOpsOrXMLOrNULL} can be used in the GetObservation request.
+Any object of class \code{OgcComparisonOpsOrXMLOrNULL}, which includes the class of the object returned by \code{xmlNode(...)}, i.e. \code{XMLNode}. These object can be used in the GetObservation request as the \code{result} parameter.
+
+First, we request the unfiltered values for comparison, then again with the filter applied. The length of the returned results is compared in the end.
 
 <<valueFiltering3,eval=TRUE,echo=TRUE,print=TRUE>>= 
 # request  values for the last week.
@@ -472,8 +521,8 @@ obs.lastWeek.filter <- getObservation(sos = mySOS,
 		eventTime = lastWeek.eventTime,
 		offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]],
 		result = filter.result)
-print(paste("Filtered:", dim(sosResult(obs.lastWeek.filter))[[1]], 
-				"-vs.- Unfiltered:", dim(sosResult(obs.lastWeek))[[1]]))
+paste("Filtered:", dim(sosResult(obs.lastWeek.filter))[[1]], 
+				"-vs.- Unfiltered:", dim(sosResult(obs.lastWeek))[[1]])
 @
 
 \subsubsection{Result Exporting}
@@ -656,7 +705,7 @@ getObservation(sos = mySOS,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Getting Started}
 
-The \textbf{demos} are a good way to get started with the package. Please be aware that the used SOSs might be unavailable temporarily.
+The \textbf{demos} are a good way to get started with the package. Please be aware that the used SOSs might be temporarily unavailable.
 
 <<demo,echo=TRUE,eval=FALSE>>= 
 demo(package = "sos4R")
@@ -671,6 +720,7 @@ SosExampleServices()
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Getting Support}
+\label{sec:support}
 
 If you want to ask questions about using the software, please go first to the \fivetwon \textbf{forum} for the geostatistics community at \url{http://geostatistics.forum.52north.org/} and check if a solution is described there. If you are a frequent user please consider subscribing to the geostatistics \textbf{mailing list} (\url{http://list.52north.org/mailman/listinfo/geostatistics}) which is linked to the forum.
 
@@ -679,7 +729,7 @@ If you want to ask questions about using the software, please go first to the \f
 
 \subsection*{Code Repository}
 
-You can download and browse the source of \pkg{sos4R} directly from the \fivetwon repository:
+You can download (and also browse) the source code of \pkg{sos4R} directly from the \fivetwon repository:
 
 \begin{itemize}
 \item \textbf{SVN resource URL}: \url{https://svn.52north.org/svn/geostatistics/main/sos4R}. Please read the documentation (especially the posting guide) of the \fivetwon repositories\footnote{http://52north.org/resources/source-repositories/}. Anonymous access for download is possible.

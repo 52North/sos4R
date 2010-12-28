@@ -1062,7 +1062,7 @@ setMethod(f = "sosGetCRS",
 				warning(paste("Could not create CRS from the given object:", obj))
 				return(NULL)
 			}
-			.epsg <- .split[[1]][[.idx +1]]
+			.epsg <- .split[[1]][[length(.split[[1]])]]
 			
 			.initString <- paste("+init=epsg", .epsg, sep = ":")
 			.crs <- CRS(.initString)
