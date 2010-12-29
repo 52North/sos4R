@@ -492,7 +492,8 @@ setMethod(f = "getObservationById",
 		
 		# calculate result length vector
 		if(inherits(.obs, "OmObservationCollection")) {
-			.resultLength <- sapply(sosResult(.obs, bind = FALSE), nrow)
+			.resultLength <- sapply(sosResult(.obs, bind = FALSE,
+							coordinates = FALSE), nrow)
 			if(length(.resultLength) == 0) # nothing
 				.resultLength = 0
 		}

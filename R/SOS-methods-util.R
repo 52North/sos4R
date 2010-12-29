@@ -561,36 +561,48 @@ setMethod(f = "sosParsers", signature = signature(sos = "SOS"),
 		})
 
 if (!isGeneric("sosResult"))
-	setGeneric(name = "sosResult", def = function(obj, ...) {
+	setGeneric(name = "sosResult", def = function(obj, coordinates = FALSE,
+					...) {
 				standardGeneric("sosResult")
 			})
 setMethod(f = "sosResult", signature = signature(obj = "OmObservation"),
-		def = function(obj) {
+		def = function(obj, coordinates = FALSE) {
+			if(coordinates){
+				.coords <- sosCoordinates(objt)
+				.data <- merge(x = obj@result, y = .coords)
+				return(.data)
+			}
 			return(obj@result)
 		})
 setMethod(f = "sosResult", signature = signature(obj = "OmMeasurement"),
-		def = function(obj) {
-			return(obj@result)
+		def = function(obj, coordinates = FALSE) {
+			if(coordinates){
+				.coords <- sosCoordinates(objt)
+				.data <- merge(x = obj@result, y = .coords)
+				return(.data)
+			}
+			else return(obj@result)
 		})
 setMethod(f = "sosResult", signature = signature(obj = "OmObservationProperty"),
-		def = function(obj) {
+		def = function(obj, coordinates = FALSE) {
 			if(!is.na(obj@href))
 				return(c(href = obj@href))
 			else if(!is.null(obj@obs))
-				return(obj@obs)
+				return(sosResult(obj = obj@obs, coordinates = coordinates))
 			else return(NA)
 		})
-setMethod(f = "sosResult", signature = signature(obj = "OmObservationCollection"),
-		def = function(obj, bind = TRUE) {
-			.l <- lapply(obj@members, sosResult)
+setMethod(f = "sosResult",
+		signature = signature(obj = "OmObservationCollection"),
+		def = function(obj, coordinates = FALSE, bind = TRUE) {
+			.l <- lapply(obj@members, sosResult, coordinates = coordinates)
 			if(bind)
 				.result <- do.call(rbind, .l)
 			else .result <- .l
 			return(.result)
 		})
 setMethod(f = "sosResult", signature = signature(obj = "list"),
-		def = function(obj) {
-			.l <- lapply(obj, sosResult)
+		def = function(obj, coordinates = FALSE) {
+			.l <- lapply(obj, sosResult, coordinates = coordinates)
 			.result <- do.call(rbind, .l)
 			return(.result)
 		})

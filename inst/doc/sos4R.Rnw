@@ -19,6 +19,7 @@
 
 \usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue]{hyperref}
 
+% otherwise removes line breaks etc.
 \SweaveOpts{keep.source=TRUE}
 
 \begin{document}
@@ -209,19 +210,15 @@ The following slots are best described in section \ref{sec:exchangeability}.
 
 <<connDetails2,echo=TRUE,eval=FALSE>>= 
 sosParsers(mySOS)
+# Print out the element names for which the parsing functions are registered:
+#names(sosParsers(mySOS))
 @
-%<<connDetails3,echo=FALSE,eval=TRUE,print=TRUE>>= 
-%# Print out the element names for which the parsing functions are registered:
-%names(sosParsers(mySOS))
-%@
 
 <<connDetails4,echo=TRUE,eval=FALSE>>= 
 sosDataFieldConverters(mySOS)
+# Print out the elements for which the conversion functions are registered:
+#names(sosDataFieldConverters(mySOS))
 @
-%<<connDetails5,echo=FALSE,eval=TRUE,print=TRUE>>= 
-%# Print out the elements for which the conversion functions are registered:
-%names(sosDataFieldConverters(mySOS))
-%@
 
 The default connection method is HTTP POST, but since not all SOS support this a GET connection is possible was well. The latter is partly limited, for example regarding filtering operations. Section~\ref{subsec:converters} contains an example of such a connection.
 
@@ -266,7 +263,7 @@ The parameters of the operation are the following:
 \begin{itemize}
     \item \code{sos}: The SOS connection to request a sensor description from.
     \item \code{procedure}: The identifier of the sensor, so one of the character strings returned by \code{sosProcedures(...)}.
-    \item \code{outputFormat}: The format in which the sensor description is to be returned by the service. The default value is \texttt{\Sexpr{sosDefaultDescribeSensorOutputFormat}}.
+    \item \code{outputFormat}: The format in which the sensor description is to be returned by the service. The default value is $\Sexpr{sosDefaultDescribeSensorOutputFormat}$.
     \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
 \end{itemize}
 
@@ -336,7 +333,7 @@ class(off.temp.time@beginPosition@time)
 getObservation(sos = mySOS, ...)
 @
 
-%\begin{itemize}
+\begin{itemize}
 %\item \verb|[| select "rows" (items) and/or columns in the data attribute
 %table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
 %with the first two points and an attribute table with only variable "zinc".
@@ -344,67 +341,85 @@ getObservation(sos = mySOS, ...)
   \item \code{latest}: A boolean parameter to request the latest observation only (see example below) --- this is not standard conform.
 \end{itemize}
 
-A request to retrieve the latest measured value is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \dquote{latest}.
+A request to retrieve the latest measured value is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \enquote{latest}.
 
 <<getLatest,eval=TRUE,echo=TRUE>>= 
-obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp, latest = TRUE)
+obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
+		latest = TRUE)
 @
 
 The returned data is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely \code{OmObservation}, \code{OmMeasurement}, or \code{OmObservationCollection}.
 
-The elements in an \code{OmObservationCollection} can be accessed just like a normal list (in fact, it just wraps at list of observations at this point).
+\textbf{Result subsetting} of elements in an \code{OmObservationCollection} can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators \code{[} and \code{[[}.
 
-<<getObs1,eval=FALSE,echo=TRUE>>= 
-# ObservationCollection behaves like a list in most cases
+<<getObs1,eval=TRUE,echo=TRUE>>=
 length(obs.temp.latest)
 obs.temp.latest[[1]]
-obs.temp.latest[2:5]
+obs.temp.latest[2:3]
+@
 
+Addionally, indexing is also possible via procedure, observed property, and feature of interest identifiers.
+
+<<getObs1,eval=FALSE,echo=TRUE>>=
+index.foiId <- sosFeatureIds(obs.temp.latest)[[1]]
+obs.temp.latest[index.foiId]
+
+index.obsProp <- sosObservedProperties(off.temp)
+obs.temp.latest[index.obsProp]
+
+index.proc <- sosProcedures(obs.temp.latest)[1:4]
+index.proc.alternative <- sosProcedures(off.temp)[1:4]
+#index.proc.alternative <- sosProcedures(mySOS)
+obs.temp.latest[index.proc]
+@
+
+\textbf{Data Values} can be extracted from observations and observation collections with the function \code{sosResult(...)}.  The function returns an object of class \code{data.frame}. In the case of collections, it automatically binds the data frames (you can turn this off by adding \code{bind = FALSE} as a parameter). Additional metadata, like units or definitions, is accessible via \code{attributes(...)} for every column of the data frame. 
+
+<<getObs2,eval=FALSE,echo=TRUE>>= 
+obs.temp.latest.result.2 <- sosResult(obs.temp.latest[[2]])
+obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
+
+temperature.attrs <- attributes(obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
+@
+
+\textbf{Spatial Information} can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result \code{data.frame}, (ii) within a feature collection in the observation. In the latter case the utility functions \code{sosCoordinates(...)} and \code{sosFeatureIds(...)} can be used to extract the coordinates respectively the identifiers from \code{OmObservationCollection} or \code{OmObservation} classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by \code{sosCoordinates(...)}.
+
+<<getObsSpatial1,eval=TRUE,echo=TRUE>>= 
+obs.temp.latest.foiIDs <- sosFeatureIds(obs.temp.latest)
+obs.temp.latest.coordinates.all <- sosCoordinates(obs.temp.latest)
+obs.temp.latest.coordinates.1 <- sosCoordinates(obs.temp.latest[[1]])
+@
+
+An observation collection also contains a bounding box of the contained observations, which can be extracted with the function \code{sosBoundedBy(...)}. The 
+
+<<getObsSpatial1,eval=TRUE,echo=TRUE>>= 
 sosBoundedBy(obs.temp.latest)
 @
 
-%\begin{itemize}
-%\item \verb|[| select "rows" (items) and/or columns in the data attribute
-%table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
-%with the first two points and an attribute table with only variable "zinc".
-%\item \verb|[[| select a column from the data attribute table
-%\end{itemize}
+The combination of data values and coordinates strongly depends on the use case and existing spatial information. In the case of coordinates encoded in the features, a matching of the two data frames can easily be accomplished with the function \code{merge()}.
 
-<<getObs1,eval=FALSE,echo=TRUE>>= 
-# ObservationCollection behaves like a list in most cases
-length(obs.temp.latest)
-obs.temp.latest[[1]]
-obs.temp.latest[2:5]
-@
-
-\textbf{Data Values} ... sosResult erklären, 
-
-<<getObs2,eval=FALSE,echo=TRUE>>= 
-# sosResult(...) ist die wichtigste Methode
-sosResult(obs.temp.latest[[2]])
-obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
-
-# Nur ein ganz normaler data.frame ... Attribute enthalten Metadaten. Diese 
-# gehen nach dem "merge" verloren!
-attributes(obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
-
-# Kombination der results mit den Koordinaten
+<<getObsSpatial2,eval=FALSE,echo=TRUE>>= 
 obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
 obs.temp.latest.data <- merge(x = obs.temp.latest.result,
 		y = obs.temp.latest.coords)
 obs.temp.latest.data
 @
 
-\textbf{Spatial Information} can be stored in an observation in several ways.
+The default column name for the feature identifiers is \code{\Sexpr{sosDefaultColumnNameFeatureIdentifier}}. If the name of the feature identifier attribute in the data table matches (which is the case for \fivetwon SOS), \code{merge} does not need additional information. In that case, the merging reduces to the following simple code.
 
-...
+<<getObsSpatial3,eval=FALSE,echo=TRUE>>= 
+names(obs.temp.latest.result)
+names(obs.temp.latest.coords)
+obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
+obs.temp.latest.data <- merge(x = obs.temp.latest.result,
+		y = obs.temp.latest.coords)
+obs.temp.latest.data
+@
 
-<<getObsSpatial,eval=FALSE,echo=TRUE>>= 
-# Koordinaten, Features und BoundingBox abfragen
-sosCoordinates(obs.temp.latest)
-sosCoordinates(obs.temp.latest[[1]])
-sosFeatureIds(obs.temp.latest)
-sosBoundedBy(obs.temp.latest)
+In that case, you can even save that step by specifying the attribute \code{coordinates} of the function \code{sosResult} which includes the merge of data values and coordinates.
+
+<<getObsSpatial4,eval=FALSE,echo=FALSE,print=FALSE>>= 
+sosResult(obs.temp.latest, coordinates = TRUE)
 @
 
 \subsubsection{Temporal Filtering}
@@ -457,7 +472,7 @@ obs.lastWeek.bbox <- getObservation(sos = mySOS,
 print(sosCoordinates(obs.lastWeek.bbox))
 @
 
-More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented.
+More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented. This could be implemented by implementing subclasses for \code{GmlGeometry} (including encoders) which must be wrapped in \code{OgcBinarySpatialOp} which extends \code{OgcSpatialOps} and can therefore be added to an object of class \code{SosFeatureOfInterest} as the spatial parameter.
 
 \subsubsection{Feature Filtering}
 

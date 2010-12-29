@@ -88,15 +88,28 @@ setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 
 .getObservationsWithObservedProperty <- function(coll, obsProp) {
 	.obsProperties <- sosObservedProperties(coll, removeDuplicates = FALSE)
+	
+	if(any(is.na(sosObservedProperties(obs.temp.latest)))) {
+		warning("Aborted indexing because of NA values.")
+		return(list())
+	}
+	
 	.idx <- c()
 	
-	
 	for (i in seq(1:length(.obsProperties))) {
-		.current <- .obsProperties[[i]]
-#		cat(i, ": current:", .current, "\n")
-		if(any(.current == obsProp)) {
-			.idx <- c(.idx, i)
-			cat("found index: ", i, ": ", .idx, "\n")
+		if(is.list(.obsProperties[[i]])) {
+			.current <- .obsProperties[[i]]
+#			cat(i, ": current:", .current, "\n")
+			if(any(.current == obsProp)) {
+				.idx <- c(.idx, i)
+#				cat("found index: ", i, ": ", .idx, "\n")
+			}
+		}
+		else {
+			if(.obsProperties[[i]] == obsProp) {
+				.idx <- c(.idx, i)
+#				cat("found index: ", i, ": ", .idx, "\n")
+			}
 		}
 	}
 #	cat("Found observed property ", obsProp, " at indices", .idx, "\n")
