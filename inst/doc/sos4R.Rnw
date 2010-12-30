@@ -1,8 +1,3 @@
-%
-% http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes
-% (Code chunks with option eval=FALSE are not tested.)
-%
-
 \documentclass[nogin,a4paper]{article}
 
 %\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
@@ -73,9 +68,9 @@ The Open Geospatial Consortium\footnote{\url{http://www.opengeospatial.org/}} (O
 
 The Sensor Observation Service (SOS) is such a standard and provides a well-defined interface for data warehousing of measurements and observations made by all kinds of sensors. This vignette describes the classes, methods and functions provided by \pkg{sos4R} to query these observations.
 
-Storing and providing data in web services is more powerful than local file copies (with issues like outdating, redundancy, \ldots). Flexible filtering of data on the service side reduces download size. That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain. For example \enquote{Provide only measurements from sensor MySensor-001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees}.
+Storing and providing data in web services is more powerful than local file copies (with issues like being outdated, redundancy, \ldots). Flexible filtering of data on the service side reduces download size. That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain. For example \enquote{Provide only measurements from sensor MySensor-001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees}.
 
-In general, the SOS supports two methods of requesting data: (i) HTTP GET as defined in the OOSTethys best practice document\footnote{\url{http://www.oostethys.org/best-practices/best-practices-get}}, and (ii) POST as defined in the standard document. Both request types always returns eXtensible Markup Language (XML) documents as response.
+In general, the SOS supports two methods of requesting data: (i) HTTP GET as defined in the OOSTethys best practice document\footnote{\url{http://www.oostethys.org/best-practices/best-practices-get}} with key-value-pair (KVP) encoding of request, and (ii) POST as defined in the standard document with requests encoded in eXtensible Markup Language (XML). Both request types always returns XML documents as response.
 
 Standards that are referenced, respectively used, by SOS are as follows.
 
@@ -85,7 +80,7 @@ Standards that are referenced, respectively used, by SOS are as follows.
 \item[Geography Markup Language (GML)] (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots).
 \item[SweCommon] SWE Common describes data markup and is contained in the SensorML specification.
 \item[Filter Encoding] Filter Encoding (Vretanos, 2005) defines operators and operands for filtering values.
-\item[OWS Common] OGC Web Services Common (Whiteside, 2007) models service related elements that are reusable across several service specifications, like excheption handling.
+\item[OWS Common] OGC Web Services Common (Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.
 \end{description}
 
 \subsection{Terms and Definitions}
@@ -96,28 +91,37 @@ The OGC has a particular set of well-defined terms that might differ from usage 
 \item[Feature of Interest (FOI)] The FOI represents the geo-object, for which measurements are made by sensors. It is ordinarily used for the spatial referencing of measuring points, i.e. the geoobject has coordinates like latitude, longitude and height. The feature is project specific and can be anything from a point (e.g. the position of a measuring station) or a real-world object (e.g. the region that is observed).
 \item[Observation] The observation delivers a measurement (result) for a property (phenomenon) of an observed object (FOI). The actual value is created by a sensor or procedure. The phenomenon was measured at a specific time (sampling time) and the value was generated at a specific point in time (result time). These often coincide so in practice the sampling time is often used as the point in time of an obsrevation.
 \item[Offering] The offering is a logical collection of related observations (similar to a layer in mapping applications) which a service offers together.
-\item[Phenomenon] A phenomenon is a property (physical value) of a geographical object, e.g. air temperature, wind speed, concentration of a pollutant in the athmosephere, reflected radiation in a specific frequency band (colours).
+\item[Phenomenon] A phenomenon is a property (physical value) of a geographical object, e.g. air temperature, wind speed, concentration of a pollutant in the atmosphere, reflected radiation in a specific frequency band (colours).
 \item[Procedure] A procedure creates the measurement value of an observation. The source can be a reading from a sensor, simulation or a numerical process.
 \end{description}
 
-A more extensive discussion is available in the the O\&M specification (Cox, 2007). The Annex B of that document shows the following examples of applicating some terms to a specific domain, earth observations, which are repeated here for elaboration.
+A more extensive discussion is available in the the O\&M specification (Cox, 2007). The Annex B of that document contains the examples of applicating some terms to specific domains, aerosol analysis and earth observations, which are repeated here for elaboration in table~\ref{tab:terms}.
 
-\begin{tiny}
-\begin{tabular}{ l || c | r | }
-  O\&M & Particulate Matter 2.5 Concentrations & EO \\
-  \hline
-  Observation::result & 35 ug/m3 & observation value, measurement value \\
-  Observation::procedure & U.S. EPA Federal Reference Method for PM 2.5 & method, sensor \\
-  Observation::observedProperty & Particulate Matter 2.5 & parameter, variable \\
-  Observation::featureOfInterest & troposphere & media (air, water, \ldots) & Global Change Master Directory "Topic" \\
+\begin{center}
+\begin{table}[h]
+\begin{tabular}{lp{4cm}p{4cm}}
+	\textbf{O\&M} & \textbf{Particulate Matter\newline 2.5 Concentrations} & \textbf{Earth Observations} \\
+	\hline
+	\hline\noalign{\smallskip}
+	Observation::result & 35 ug/m3 & observation value,\newline measurement value \\
+	\hline\noalign{\smallskip}
+	Observation::procedure & U.S. EPA Federal\newline Reference Method for PM 2.5 & method, sensor \\
+	\hline\noalign{\smallskip}
+	Observation::observedProperty & Particulate Matter 2.5 & parameter, variable \\
+	\hline\noalign{\smallskip}
+	Observation::featureOfInterest & troposphere & media (air, water, \ldots),\newline Global Change\newline Master Directory \enquote{Topic} \\
+	\hline
 \end{tabular}
-\end{tiny}
+\caption{Domain specific variants of O\&M terms.}
+\label{tab:terms}
+\end{table}
+\end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Supported Features}
 \label{sec:supported}
 
-The package provides accessor functions for the supported parameters. It is recommended to access options from the lists returned by these functions instead of hardcoding them into scripts.
+The package provides accessor functions for the supported parameters. It is recommended to access options from the lists returned by these functions instead of hard-coding them into scripts.
 
 <<supported,echo=TRUE,print=TRUE>>=
 SosSupportedOperations()
@@ -128,18 +132,20 @@ SosSupportedResponseModes()
 SosSupportedResultModels()
 @
 
-<<supported,echo=TRUE,eval=FALSE>>=
+The output of the following calls are named lists which are simplified here for brevity using \code{toString()}.
+
+<<supported,echo=TRUE,eval=FALSE,print=FALSE>>=
 SosSupportedSpatialOperators()
 @
 <<supported,echo=FALSE,eval=TRUE,print=TRUE>>=
-print(SosSupportedSpatialOperators())
+toString(SosSupportedSpatialOperators())
 @
 
-<<supported,echo=TRUE,eval=FALSE>>=
+<<supported,echo=TRUE,eval=FALSE,print=FALSE>>=
 SosSupportedTemporalOperators()
 @
 <<supported,echo=FALSE,eval=TRUE,print=TRUE>>=
-print(SosSupportedTemporalOperators())
+toString(SosSupportedTemporalOperators())
 @
 
 
@@ -149,9 +155,9 @@ print(SosSupportedTemporalOperators())
 
 Therefore, the undocumented profile of the \textbf{\fivetwon SOS implementation}\footnote{\url{http://52north.org/communities/sensorweb/sos/}} was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.
 
-In the author's experience, \textbf{OOSThetys SOS implementations}\footnote{\url{http://www.oostethys.org/}} utilize the same or at least very similar profile, so responses of these service instances are also probably parsed without further work.
+In the author's experience, \textbf{OOSThetys SOS implementations}\footnote{\url{http://www.oostethys.org/}} utilise the same or at least very similar profile, so responses of these service instances are also probably parsed without further work.
 
-Please share your experiences with other SOS implementations with the developers and users of \pkg{sos4R} (see section \ref{\label{sec:support}}). 
+Please share your experiences with other SOS implementations with the developers and users of \pkg{sos4R} (see section \ref{sec:support}). 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Default Options}
@@ -206,6 +212,8 @@ sosTimeFormat(mySOS)
 sosMethod(mySOS)
 @
 
+The default connection method is HTTP POST, but since not all SOS support this a GET connection is possible was well. The latter is less powerful, especially regarding filtering operations. Section~\ref{subsec:converters} contains an example of such a connection.
+
 The following slots are best described in section \ref{sec:exchangeability}.
 
 <<connDetails2,echo=TRUE,eval=FALSE>>= 
@@ -220,9 +228,6 @@ sosDataFieldConverters(mySOS)
 #names(sosDataFieldConverters(mySOS))
 @
 
-The default connection method is HTTP POST, but since not all SOS support this a GET connection is possible was well. The latter is partly limited, for example regarding filtering operations. Section~\ref{subsec:converters} contains an example of such a connection.
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{SOS Operations}
 
@@ -231,8 +236,9 @@ The default connection method is HTTP POST, but since not all SOS support this a
 The methods mirroring the SOS operations all contain debugging parameters \code{inspect} and \code{verbose} as described in section \ref{subsec:inspect}.
 
 \subsection{GetCapabilities}
+\label{subsec:getcap}
 
-The GetCapabilities operations is automatically conducted during the connecting to a SOS instance. If you want to inspect the original capabilities document it can be re-requested using
+The GetCapabilities operations is automatically conducted during the connecting to a SOS instance. The response is the \textbf{capabilities document}, which contains a detailed description of the services capabilities. It's sections describe: service identification, service provider, operations metadata (parameter names, \ldots), filter capabilities, contents (lists offering descriptions). Please see section 8.2.3 of the SOS specification for details. If you want to inspect the original capabilities document it can be re-requested using
 
 <<capsOriginal,echo=TRUE,eval=FALSE>>= 
 sosCapabilitiesDocumentOriginal(sos = mySOS)
@@ -240,17 +246,53 @@ sosCapabilitiesDocumentOriginal(sos = mySOS)
 
 The actual operation can be started with the following function. It returns an object of class \code{SosCapabilities} which can be accessed later on by the function \code{sosCaps()} from an object of class \code{SOS}.
 
-<<getCap,echo=TRUE,eval=FALSE>>= 
+<<getCap1,echo=TRUE,eval=FALSE>>= 
 getCapabilities(sos = mySOS)
 @
+
+The parameters of the operation are:
 
 \begin{itemize}
     \item \code{sos}: The SOS connection to request the capabilities document from.
     \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
 \end{itemize}
 
+The respective parts of the capabilities document are modelled as R classes and can be inspected using accessor functions:
+
+<<getCap2,echo=TRUE,eval=FALSE>>= 
+sosFilter_Capabilities(mySOS)
+sosServiceIdentification(mySOS)
+sosServiceProvider(mySOS)
+sosContents(mySOS)
+@
+
+The contents part is described in detail in section~\ref{subsubsec:metadataExtraction}.
+
+The function \code{sosTime(...)} returns the time period for which observations are available within the service. To be precise, it accesses the ows:Range element of the parameter eventTime in the operations description of the GetObservation description.
+
+<<getCap3,echo=TRUE,eval=TRUE>>= 
+sosTime(mySOS)
+@
+
+The operations supported by the SOS are listed in the ows:OperationsMetadata element, which is modelled as an R class, \code{OwsOperationsMetadata}, which contains a list of objects of class \code{OwsOperation} which in turn describe the allowed parameter values for calls to the operation. The metadata element and single observations can be inspected with the following functions. This is rarely needed for users of the package so we abstrain from further details at this point.
+
+<<getCap4,echo=TRUE,eval=FALSE>>= 
+sosOperationsMetadata(mySOS)
+sosOperation(mySOS, "GetCapabilities")
+sosOperation(mySOS, sosGetCapabilitiesName)
+sosOperation(mySOS, sosDescribeSensorName)
+sosOperation(mySOS, "GetResult")
+@
+
+% TODO überarbeiten, weil nur abhängig von GetObservation!
+<<getCap5,echo=TRUE,eval=TRUE>>= 
+sosResponseFormats(mySOS)
+sosResponseMode(mySOS)
+sosResultModels(mySOS)
+@
 
 \subsection{DescribeSensor}
+\label{sub:describesensor}
 
 The DescribeSensor operation is specified in clause 8.3 of the SOS specification and their response is modeled in Sensor Model Language\footnote{http://www.opengeospatial.org/standards/sensorml} (SensorML) and Transducer Markup Language\footnote{http://www.opengeospatial.org/standards/tml} (TML) specifications.
 
@@ -258,12 +300,16 @@ The DescribeSensor operation is specified in clause 8.3 of the SOS specification
 The DescribeSensor operation is useful for obtaining detailed information of sensor characteristics encoded in either SensorML or TML. The sensor characteristics can include lists and definitions of observables supported by the sensor. [...]
 \end{quotation}
 
-The parameters of the operation are the following:
+The parameters of the operation are as follows. Please see section~\ref{sec:supported} of this document for supported values of request parameters.
+
+<<defaultValue,echo=FALSE,print=FALSE,eval=TRUE>>=
+defaultOutputFormatDescribeSensor <- gsub(pattern = "&quot;", replacement = "'", x = sosDefaultDescribeSensorOutputFormat)
+@
 
 \begin{itemize}
     \item \code{sos}: The SOS connection to request a sensor description from.
     \item \code{procedure}: The identifier of the sensor, so one of the character strings returned by \code{sosProcedures(...)}.
-    \item \code{outputFormat}: The format in which the sensor description is to be returned by the service. The default value is $\Sexpr{sosDefaultDescribeSensorOutputFormat}$.
+    \item \code{outputFormat}: The format in which the sensor description is to be returned. The default is \code{\Sexpr{defaultOutputFormatDescribeSensor}}.
     \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
 \end{itemize}
 
@@ -275,70 +321,134 @@ sensor.1.1 <- describeSensor(sos = mySOS,
 @
 
 \subsection{GetObservation}
+\label{sub:getobservation}
 
 A few utility functions exist to minize a user's amount of work to create usual requests. They accept normal R types as input and return the respective class from \pkg{sos4R} with useful default settings. These function's names start with \code{sosCreate...()} and exist for spatial and temporal filters.
 
 In this section, all matters around requesting data are explained --- from extracting query parameters from metadata, and sending the request, till finally extracting data values and coordinates from the response.
 
 \subsubsection{Metadata Extraction for Request Building}
+\label{subsubsec:metadataExtraction}
 
-How can one extract the metadata from a SOS connection and reuse it for queries?
+It is recommended to extract the identifiers of procedures et cetera that are to be used for queries from the metadata description provided by the service, the capabilities document (see section \ref{subsec:getcap}. This often ensures forward compatiblity and minimizes typing errors. The offerings are the \enquote{index} of the service and therefore we concentrate on the contents section of the capabilities here.
 
-accessor functions, elements of the capabilities, ...
+The class \code{SosContents} simply contains a list of objects of the class \code{SosObservationOffering} which one can get directly from the connection object:
 
-TODO: jedes statement einzeln und erklaeren...
-
-<<metadataExtraction,echo=TRUE,eval=TRUE>>= 
-sosContents(mySOS)
+<<metadataExtraction1,echo=TRUE,eval=FALSE>>= 
+sosOfferings(mySOS)
 @
 
-<<metadataExtraction,echo=TRUE,eval=TRUE,print=TRUE>>= 
-sosFilter_Capabilities(mySOS)
-sosServiceIdentification(mySOS)
-sosServiceProvider(mySOS)
+The output when printing this list is quite extensive, so we concentrate on just on element of it in the following.
 
-#sosOfferings(mySOS)
-off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
-# the order of offerings can change in between requests
+The offerings list is named with the offering identifier, so the following statements return the same list.
 
+<<metadataExtraction2,echo=TRUE,eval=FALSE>>= 
 sosOfferingIds(mySOS)
-# Names of offerings list are the Ids (same output as last call)
-# names(sosOfferings(mySOS))
-sosId(off.temp)
-sosOfferings(mySOS)[1:2]
+names(sosOfferings(mySOS))
+@
 
-sosProcedures(mySOS)
-sosProcedures(off.temp)
-# the order of procedures can change in between requests
+The offering identifier is is used in the example below to extract the offering description of temperature measurements. The offerings list is a standard R list, so all subsetting operations are possible.
 
-sosObservedProperties(mySOS)
-sosObservedProperties(off.temp)
-# the order of observed properties can change in between requests
+\textbf{Note:} The order of the offering list (as all other lists, e.g. procedures or observed properties) is not guaranteed to be the same upon every connection to a service. So indexing by name (though counteracting the mentioned forward compatibility, as names might change) is recommended at at least one point in the analysis so that changes in the contents of a service result in an error.
 
-sosBoundedBy(off.temp)
-str(sosBoundedBy(off.temp)) # Nicht so schön ...
+<<metadataExtraction3,echo=TRUE,eval=TRUE,print=TRUE>>= 
+off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
+@
 
-sosTime(mySOS)
+Metadata about the whole \textbf{offering} are identifier, name, and spatial and temporal extends.
+
+<<metadataExtraction4,echo=TRUE,eval=TRUE,print=TRUE>>= 
+off.temp.id <- sosId(off.temp)
+off.temp.name <- sosName(off.temp)
+off.temp.boundedBy <- sosBoundedBy(off.temp)
+@
+
+The structure of bounding box is not re-usable out of the box, as it simple returns a named list of lower and upper corner.
+
+<<metadataExtraction5,echo=TRUE,eval=TRUE,print=TRUE>>= 
+str(sosBoundedBy(off.temp))
+@
+
+The optional attribute \code{bbox} can be used to obtain a bounding box matrix as used by package \pkg{sp}.
+
+<<metadataExtraction6,echo=TRUE,eval=TRUE,print=TRUE>>= 
+off.temp.boundedBy.bbox <- sosBoundedBy(off.temp, bbox = TRUE)
+@
+
+The \textbf{temporal} extend is modeled as an object of the respective class of the element in the offering description, which normally is a gml:TimePeriod, but does not have to be. The last two statements in the following snipped show how one can access the actual data and what their class is.
+
+<<metadataExtraction7,echo=TRUE,eval=TRUE,print=TRUE>>= 
 off.temp.time <- sosTime(off.temp)
 str(off.temp.time)
-# "wirklichen" Startzeitpunkt abfragen
-off.temp.time@beginPosition@time
-class(off.temp.time@beginPosition@time)
-@
- 
 
-\subsubsection{Basic Request and Result Extraction}
+off.temp.time@beginPosition@time
+off.temp.time@endPosition@time
+class(off.temp.time@endPosition@time)
+@
+
+The structure of these elements is very flexible and also not self-explanatory. Therefore the parameter \code{convert} can be used to try to create R objects and return these instead. Please be aware that this might not work for all services.
+
+<<metadataExtraction8,echo=TRUE,eval=TRUE,print=TRUE>>= 
+off.temp.time.converted <- sosTime(off.temp, convert = TRUE)
+str(off.temp.time.converted)
+@
+
+Furthermore the offering comprises \textbf{lists of procedures, observed properties, and features of interest}. In our example the feature and procedure identifiers are the same --- this does not have to be the case.
+
+\textbf{Note:} The order of these lists is not guaranteed to be the same upon every connection to a service.
+
+<<metadataExtraction9,echo=TRUE,eval=TRUE,print=TRUE>>= 
+sosProcedures(off.temp)
+sosObservedProperties(off.temp)
+sosFeaturesOfInterest(off.temp)
+@
+
+All of the above can not only be requested for single offerings but also for complete SOS connections or for lists of offerings. The following examples only print out a part of the returned lists.
+
+<<metadataExtraction10,echo=TRUE,eval=TRUE,print=FALSE>>= 
+sosProcedures(mySOS)[1:2]
+sosObservedProperties(mySOS)[1:2]
+sosFeaturesOfInterest(mySOS)[1:2]
+@
+
+For (parts of a) list of offerings:
+
+<<metadataExtraction10,echo=TRUE,eval=TRUE,print=FALSE>>= 
+sosProcedures(sosOfferings(mySOS)[4:5])
+sosObservedProperties(sosOfferings(mySOS)[4:5])
+sosFeaturesOfInterest(sosOfferings(mySOS)[4:5])
+@
+
+The results of these calls are lengthy and not included here. Please carefully inspect the structure in each case, as these functions will return named lists of lists and not combine procedures from different offerings. Consequently, some procedures could appear several times, but the association to the offering is still intact which is preferred at this stage.
+
+\subsubsection{Basic Request}
 
 <<getObservation,eval=FALSE,echo=TRUE>>= 
 getObservation(sos = mySOS, ...)
 @
 
+The mandatory attributes are \code{sos}, \code{offering}, \code{observedProperty} and \code{responseFormat}. The other parameters are set to \code{NA} and not used when building the request.
+
+Please see section 8.4.2 of the SOS specification for details and section~\ref{sec:supported} of this document for supported values of request parameters.
+
+<<defaultValue,echo=FALSE,print=FALSE,eval=TRUE>>=
+defaultResponseFormatGetObs <- gsub(pattern = "&quot;", replacement = "'", x = sosDefaultGetObsResponseFormat)
+@
+
 \begin{itemize}
-%\item \verb|[| select "rows" (items) and/or columns in the data attribute
-%table; e.g. {\tt meuse[1:2, "zinc"]} returns a {\tt SpatialPointsDataFrame}
-%with the first two points and an attribute table with only variable "zinc".
-%\item \verb|[[| select a column from the data attribute table
-  \item \code{latest}: A boolean parameter to request the latest observation only (see example below) --- this is not standard conform.
+  \item \code{sos}: The service connection to be used, an object of class \code{SOS}.
+  \item \code{offering}: The offering to be used, either the identifier as a character string or an object of class \code{SosObservationOffering}.
+  \item \code{observedProperty}: The observed property of the desired observations. The default is all observed property of the offering, \code{sosObservedProperties(obj = offering)}.
+  \item \code{responseFormat}: The format of the response document. The default is \Sexpr{defaultResponseFormatGetObs}.
+  \item \code{srsName}: The name of the spatial reference system that should be used for the geometries in the response.
+  \item \code{eventTime}: A list of objects of class \code{SosEventTime} which specify the time period(s) for which observations are requested. See section~\ref{subsubsec:temporalfiltering} for more information.
+  \item \code{procedure}: A list of procedure identifiers for which observations are requested. See section~\ref{subsubsec:spatialfiltering} for more information.
+  \item \code{featureOfInterest}: An object of class \code{SosFeatureOfInterest} which specifies the feature for which observations are requested. See sections~\ref{subsubsec:featurefiltering} and \ref{subsubsec:spatialfiltering} for more information.
+  \item \code{result}: An object of class \code{OgcComparisonOps} for result filtering with filter expressions from Filter Encoding.  See section~\ref{subsubsec:valuefiltering} for more information.
+  \item \code{resultModel}: The qualified XML name of the root element of the response, e.g. \code{om:Measurement}. The available models of a service can be found in the service metadata using \code{sosResultModel(...)}.
+  \item \code{responseMode}: The response mode defines the form of the response, e.g. inline, out-of-band, or attached. The available models of a service can be found in the service metadata using \code{sosResponseMode(...)}.
+  \item \code{BBOX}: A bounding box to be used only in HTTP GET connections (parameter is discarded for POST connections). The format must one character string with \code{minlon,minlat,maxlon,maxlat,srsURI?}, the spatial reference system is optional.
+  \item \code{latest}: A boolean parameter to request the latest observation only (see example below) --- this is not standard conform but only supported by \fivetwon SOS.
 \end{itemize}
 
 A request to retrieve the latest measured value is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \enquote{latest}.
@@ -350,7 +460,9 @@ obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
 
 The returned data is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely \code{OmObservation}, \code{OmMeasurement}, or \code{OmObservationCollection}.
 
-\textbf{Result subsetting} of elements in an \code{OmObservationCollection} can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators \code{[} and \code{[[}.
+\subsubsection{Response Subsetting}
+
+Subsetting of elements in an \code{OmObservationCollection} can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators \code{[} and \code{[[}.
 
 <<getObs1,eval=TRUE,echo=TRUE>>=
 length(obs.temp.latest)
@@ -358,28 +470,35 @@ obs.temp.latest[[1]]
 obs.temp.latest[2:3]
 @
 
-Addionally, indexing is also possible via procedure, observed property, and feature of interest identifiers.
+Addionally, indexing is also possible via identifiers of procedure, observed property, and feature of interest.
 
-<<getObs1,eval=FALSE,echo=TRUE>>=
+<<getObs1,eval=TRUE,echo=TRUE>>=
 index.foiId <- sosFeatureIds(obs.temp.latest)[[1]]
+index.foiId
 obs.temp.latest[index.foiId]
 
 index.obsProp <- sosObservedProperties(off.temp)
 obs.temp.latest[index.obsProp]
 
 index.proc <- sosProcedures(obs.temp.latest)[1:4]
-index.proc.alternative <- sosProcedures(off.temp)[1:4]
-#index.proc.alternative <- sosProcedures(mySOS)
+index.proc.alternative1 <- sosProcedures(off.temp)[1:4]
+index.proc.alternative2 <- sosProcedures(mySOS)
 obs.temp.latest[index.proc]
 @
 
-\textbf{Data Values} can be extracted from observations and observation collections with the function \code{sosResult(...)}.  The function returns an object of class \code{data.frame}. In the case of collections, it automatically binds the data frames (you can turn this off by adding \code{bind = FALSE} as a parameter). Additional metadata, like units or definitions, is accessible via \code{attributes(...)} for every column of the data frame. 
+\subsubsection{Result Extraction}
 
-<<getObs2,eval=FALSE,echo=TRUE>>= 
+\textbf{Data Values} can be extracted from observations, measurements and observation collections with the function \code{sosResult(...)}.  The function returns an object of class \code{data.frame}. In the case of collections, it automatically binds the data frames (you can turn this off by adding \code{bind = FALSE} as a parameter). Additional metadata, like units or definitions, is accessible via \code{attributes(...)} for every column of the data frame. 
+
+<<getObs2,eval=TRUE,echo=TRUE,print=TRUE>>= 
 obs.temp.latest.result.2 <- sosResult(obs.temp.latest[[2]])
+obs.temp.latest.result.2
 obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
+obs.temp.latest.result
 
-temperature.attrs <- attributes(obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
+temperature.attrs <- attributes(
+	obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
+#temperature.attrs
 @
 
 \textbf{Spatial Information} can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result \code{data.frame}, (ii) within a feature collection in the observation. In the latter case the utility functions \code{sosCoordinates(...)} and \code{sosFeatureIds(...)} can be used to extract the coordinates respectively the identifiers from \code{OmObservationCollection} or \code{OmObservation} classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by \code{sosCoordinates(...)}.
@@ -390,109 +509,137 @@ obs.temp.latest.coordinates.all <- sosCoordinates(obs.temp.latest)
 obs.temp.latest.coordinates.1 <- sosCoordinates(obs.temp.latest[[1]])
 @
 
-An observation collection also contains a bounding box of the contained observations, which can be extracted with the function \code{sosBoundedBy(...)}. The 
+An observation collection also contains a bounding box of the contained observations, which can be extracted with the function \code{sosBoundedBy(...)}. The optional attribute \code{bbox} can be used to obtain a bounding box matrix as used by package \pkg{sp}.
 
 <<getObsSpatial1,eval=TRUE,echo=TRUE>>= 
 sosBoundedBy(obs.temp.latest)
+sosBoundedBy(obs.temp.latest, bbox = TRUE)
 @
 
 The combination of data values and coordinates strongly depends on the use case and existing spatial information. In the case of coordinates encoded in the features, a matching of the two data frames can easily be accomplished with the function \code{merge()}.
 
-<<getObsSpatial2,eval=FALSE,echo=TRUE>>= 
+<<getObsSpatial2,eval=TRUE,echo=TRUE,print=FALSE>>= 
 obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
-obs.temp.latest.data <- merge(x = obs.temp.latest.result,
-		y = obs.temp.latest.coords)
-obs.temp.latest.data
+result.names <- names(obs.temp.latest.result)
+coords.names <- names(obs.temp.latest.coords)
+print(toString(result.names))
+print(toString(coords.names))
+
+# Manually merging though not neccessary:
+obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
+obs.temp.latest.data <- merge(
+	x = obs.temp.latest.result,
+	y = obs.temp.latest.coords,
+	by.x = result.names[[2]],
+	by.y = coords.names[[4]])
 @
 
-The default column name for the feature identifiers is \code{\Sexpr{sosDefaultColumnNameFeatureIdentifier}}. If the name of the feature identifier attribute in the data table matches (which is the case for \fivetwon SOS), \code{merge} does not need additional information. In that case, the merging reduces to the following simple code.
+The default column name for the feature identifiers is \code{\Sexpr{sosDefaultColumnNameFeatureIdentifier}}. If the name of the feature identifier attribute in the data table matches (which is the case for \fivetwon SOS), \code{merge} does not need additional information. In that case, the merging reduces to the following code:
 
-<<getObsSpatial3,eval=FALSE,echo=TRUE>>= 
-names(obs.temp.latest.result)
-names(obs.temp.latest.coords)
-obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
+<<getObsSpatial3,eval=TRUE,echo=TRUE>>=
 obs.temp.latest.data <- merge(x = obs.temp.latest.result,
-		y = obs.temp.latest.coords)
-obs.temp.latest.data
+	y = obs.temp.latest.coords)
+print(obs.temp.latest.data)
 @
 
-In that case, you can even save that step by specifying the attribute \code{coordinates} of the function \code{sosResult} which includes the merge of data values and coordinates.
+And in that case, you can even save that step by specifying the attribute \code{coordinates} of the function \code{sosResult} which includes the merge of data values and coordinates.
 
-<<getObsSpatial4,eval=FALSE,echo=FALSE,print=FALSE>>= 
+<<getObsSpatial4,eval=FALSE,echo=TRUE,print=FALSE>>= 
 sosResult(obs.temp.latest, coordinates = TRUE)
 @
 
 \subsubsection{Temporal Filtering}
+\label{subsubsec:temporalfiltering}
 
 The possibly most typical temporal filter is a period of time for which measurements are of interest.
 
 <<temporalFiltering1,eval=TRUE,echo=TRUE>>= 
 # temporal interval creation based on POSIXt classes 
 lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
-		begin = (Sys.time() - 3600 * 24 * 7), end = Sys.time())
+	begin = (Sys.time() - 3600 * 24 * 7), end = Sys.time())
 lastWeek.eventTime <- sosCreateEventTimeList(lastWeek.period)
 @
 
-Please note that the create function also wraps the created objects in a list as expected by the method \code{getObservation(...)}.
+Please note that the create function \code{sosCreateEventTimeList()} also wraps the created objects in a list as expected by the method \code{getObservation(...)}.
 
 What was the average temperature during the last week?
 		
 <<temporalFiltering2,eval=TRUE,echo=TRUE>>= 
-obs.lastWeek <- getObservation(sos = mySOS, offering = off.temp,
-		procedure = sosProcedures(off.temp), eventTime = lastWeek.eventTime)
+obs.lastWeek <- getObservation(sos = mySOS,
+	offering = off.temp,
+	procedure = sosProcedures(off.temp),
+	eventTime = lastWeek.eventTime)
 
 obs.temp.lastWeek.result <- sosResult(obs.lastWeek)
-summary(obs.temp.lastWeek.result)[4,"urn:ogc:def:property:OGC::Temperature"]
+summary(obs.temp.lastWeek.result)[
+	4,"urn:ogc:def:property:OGC::Temperature"]
 @
 
 The default temporal operator is \enquote{during}, but others are supported as well (see section \ref{sec:supported}). The next example shows how to create a temporal filter for all observations taken \textbf{after} a certain point in time. Here the creation function creates just one object of class \code{SosEventTime} which must be added to a list manually before passing it to \code{getObservation(...)}.
 
 <<temporalFiltering3,eval=TRUE,echo=TRUE>>=
 lastDay.instant <- sosCreateTimeInstant(
-		time = as.POSIXct(Sys.time() - 3600 * 24), sos = mySOS)
+	time = as.POSIXct(Sys.time() - 3600 * 24), sos = mySOS)
 lastDay.eventTime <- sosCreateEventTime(time = lastDay.instant,
-		operator = SosSupportedTemporalOperators()[["TM_After"]])
+	operator = SosSupportedTemporalOperators()[["TM_After"]])
 print(lastDay.eventTime)
 #print(encodeXML(obj = lastDay.eventTime[[1]], sos = mySOS))
 @
 
 \subsubsection{Spatial Filtering}
+\label{subsubsec:spatialfiltering}
 
 The possibly most typical spatial filter is a bounding box\footnote{\url{http://en.wikipedia.org/wiki/Bounding_box}} within which measurements of interest must have been made. Here the creation function returns an object of class \code{OgcBBOX}, which can be wrapped in an object of class \code{SosFeatureOfInterest}, which is passed into the get-observation call.
 
 <<spatialFiltering1,eval=TRUE,echo=TRUE>>=
-request.bbox <- sosCreateBBOX(lowLat = 10.0, lowLon = 2.0,
-		uppLat = 50.0, uppLon = 15.0, srsName = "urn:ogc:def:crs:EPSG:4326")
-request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
-
-obs.lastWeek.bbox <- getObservation(sos = mySOS,
+sept09.period <- sosCreateTimePeriod(sos = mySOS,
+	begin = as.POSIXct("2009-09-01 00:00"),
+	end = as.POSIXct("2009-09-30 00:00"))
+sept09.eventTimeList <- sosCreateEventTimeList(sept09.period)
+obs.sept09 <- getObservation(sos = mySOS,
 		offering = off.temp,
-		featureOfInterest = request.bbox.foi,
-		eventTime = list(lastDay.eventTime))
-print(sosCoordinates(obs.lastWeek.bbox))
+		eventTime = sept09.eventTimeList)
+
+request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 5.0,
+		uppLat = 55.0, uppLon = 10.0,
+		srsName = "urn:ogc:def:crs:EPSG:4326")
+request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
+obs.sept09.bbox <- getObservation(sos = mySOS,
+	offering = off.temp,
+	featureOfInterest = request.bbox.foi,
+	eventTime = sept09.eventTimeList)
+@
+
+Unfiltered versus spatially filtered coordinates of the responses:
+
+<<spatialFiltering1,eval=TRUE,echo=TRUE>>=
+print(sosCoordinates(obs.sept09)[,1:2])
+print(sosCoordinates(obs.sept09.bbox)[,1:2])
 @
 
 More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented. This could be implemented by implementing subclasses for \code{GmlGeometry} (including encoders) which must be wrapped in \code{OgcBinarySpatialOp} which extends \code{OgcSpatialOps} and can therefore be added to an object of class \code{SosFeatureOfInterest} as the spatial parameter.
 
 \subsubsection{Feature Filtering}
+\label{subsubsec:featurefiltering}
 
 The feature can not only be used for spatial filtering, but also to query specific FOIs. The following example extracts the identifiers from an offering and then creates an object of class \code{SosFeatureOfInterest}, which is passed into the get-observation call.
 
 <<featureFiltering1,eval=TRUE,echo=TRUE>>= 
 off.temp.fois <- sosFeaturesOfInterest(off.temp)
 request.fois <- sosCreateFeatureOfInterest(
-		objectIDs = list(off.temp.fois[[1]]))
+	objectIDs = list(off.temp.fois[[1]]))
 encodeXML(obj = request.fois, sos = mySOS)
 @
 
 <<featureFiltering1,eval=TRUE,echo=TRUE,print=FALSE>>= 
 obs.lastWeek.fois <- getObservation(sos = mySOS, offering = off.temp,
-		featureOfInterest = request.fois, eventTime = lastWeek.eventTime)
+	featureOfInterest = request.fois, eventTime = lastWeek.eventTime)
 print(sosFeaturesOfInterest(obs.lastWeek.fois))
 @
 
 
 \subsubsection{Value Filtering}
+\label{subsubsec:valuefiltering}
 
 Value Filtering is realized via the slot \code{result} in a GetObservation request. The filtering in the request is based on comparison operators and operands specified by OGC Filter Encoding (Vretanos, 2005).
 
@@ -500,19 +647,23 @@ The classes and methods of this specification are not yet implemented, but manua
 
 The following code example uses a literal comparison of a property:
 
-<<valueFiltering1,eval=TRUE,echo=TRUE>>= 
+<<valueFiltering1,eval=TRUE,echo=TRUE,print=FALSE>>= 
 # result filtering
 filter.value <- -2.3
 filter.propertyname <- xmlNode(name = ogcPropertyNameName,
 		namespace = ogcNamespacePrefix)
 xmlValue(filter.propertyname) <- "urn:ogc:def:property:OGC::Temperature"
-filter.literal <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
+filter.literal <- xmlNode(name = "Literal",
+		namespace = ogcNamespacePrefix)
 xmlValue(filter.literal) <- as.character(filter.value)
-filter.comparisonop <- xmlNode(name = ogcComparisonOpGreaterThanName,
-		namespace = ogcNamespacePrefix,
-		.children = list(filter.propertyname, filter.literal))
-filter.result <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
-		.children = list(filter.comparisonop))
+filter.comparisonop <- xmlNode(
+	name = ogcComparisonOpGreaterThanName,
+	namespace = ogcNamespacePrefix,
+	.children = list(filter.propertyname,
+	filter.literal))
+filter.result <- xmlNode(name = sosResultName,
+	namespace = sosNamespacePrefix,
+	.children = list(filter.comparisonop))
 @
 
 Please consult to the extensive documentation of the \pkg{XML} package for details. The commands above result in the following output which is inserted into the request without further processing.
@@ -525,19 +676,19 @@ Any object of class \code{OgcComparisonOpsOrXMLOrNULL}, which includes the class
 
 First, we request the unfiltered values for comparison, then again with the filter applied. The length of the returned results is compared in the end.
 
-<<valueFiltering3,eval=TRUE,echo=TRUE,print=TRUE>>= 
+<<valueFiltering3,eval=TRUE,echo=TRUE,print=FALSE>>= 
 # request  values for the last week.
 obs.lastWeek <- getObservation(sos = mySOS,
-		eventTime = lastWeek.eventTime,
-		offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]])
+	eventTime = lastWeek.eventTime,
+	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]])
 
 # request  values for the week with a value higher than 0 degrees.
 obs.lastWeek.filter <- getObservation(sos = mySOS,
-		eventTime = lastWeek.eventTime,
-		offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]],
-		result = filter.result)
-paste("Filtered:", dim(sosResult(obs.lastWeek.filter))[[1]], 
-				"-vs.- Unfiltered:", dim(sosResult(obs.lastWeek))[[1]])
+	eventTime = lastWeek.eventTime,
+	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]],
+	result = filter.result)
+print(paste("Filtered:", dim(sosResult(obs.lastWeek.filter))[[1]], 
+	"-vs.- Unfiltered:", dim(sosResult(obs.lastWeek))[[1]]))
 @
 
 \subsubsection{Result Exporting}
@@ -549,25 +700,29 @@ As an example the following code creates a \code{SpatialPointsDataFrame} (can on
 <<resultExporting,eval=TRUE,echo=TRUE,print=FALSE>>=
 library("sp")
 obs.lastWeek <- getObservation(sos = mySOS,
-		offering = off.temp,
-		procedure = sosProcedures(off.temp),
-		eventTime = lastWeek.eventTime)
+	offering = off.temp,
+	procedure = sosProcedures(off.temp),
+	eventTime = lastWeek.eventTime)
 
 # Create SpatialPointsDataFrame from result features
 coords <- sosCoordinates(obs.lastWeek[[1]])
 crs <- sosGetCRS(obs.lastWeek[[1]])
 spdf <- SpatialPointsDataFrame(coords = coords[,1:2],
-		data = data.frame(coords[,4]), proj4string = crs)
+	data = data.frame(coords[,4]), proj4string = crs)
 str(spdf)
 @
 
 \subsection{GetObservationById}
 
-The operation GetObservationById is defined in clause 10.1 of the SOS specification and not part of the core profile. But it is implemented as it is quite simple. The response is the same as described in the previous section. Optional parameters are the same as in GetObservation requests.
+The operation GetObservationById is defined in clause 10.1 of the SOS specification and not part of the core profile. But it is implemented as it is quite simple. The response is the same as described in the previous section. Optional parameters, and their defaults and supported values, are the same as in GetObservation requests.
 
-<<getObsById,eval=FALSE,echo=TRUE>>= 
-obs <- getObservationById(sos = mySOS, observationId = "o00001")
-obs
+In this case the returned observation collection contains an om:Measurement element, which contains just one measured value and is parsed to an object of class \code{OmMeasurement}. The result extraction works the same as with om:Observation objects.
+
+<<getObsById,eval=TRUE,echo=TRUE>>= 
+obs <- getObservationById(sos = mySOS, observationId = "o_3508493")
+# str(obs)
+# obs[[1]]
+sosResult(obs, coordinates = TRUE)
 @
 
 
@@ -575,14 +730,44 @@ obs
 \section{Changing Handling Functions}
 \label{sec:exchangeability}
 
-TODO: explain approach, mention available non-exchangeable functions in the subsections
+The flexibility of the specifications that model the markup requests and responses, especially the observation encoding, is too high to handle all possible cases within \pkg{sos4R}. Thus an equally flexible mechanism for users to adopt the steps of encoding and decoding documents to their needs is needed.
 
-fixed order, exchangeable components
+The process of data download comprises (i) building request, (ii) encoding requests, (iii) sending and receiving data, (iv) decoding responses, and (v) applying the correct R data type to the respective data values. This can be seen as a fixed, ordered workflow a user has to follow where each step build upon the input of the previous. To ensure flexibility within these steps of the workflow but also to maximize reusability of existing functionality, a mechanism to exchange the functions that are used in these steps is provided. 
 
-explain include/exclude mechanism
+Step (i), the building of requests, i.e. the assembly of the request parameters into an R object, is documented in section~\ref{sub:getobservation}. Step (iii), the sending of the sending and receiving of documents to respectively from a service, does not need to be influenced directly but the user (apart from the connection method).
+
+In the remainder of this section it is explained how this applies to the steps (ii), (iv) and (v) of the fixed workflow. 
 
 
-The process of data download also comprises (i) building requests, (ii) decoding responses, and (iii) applying the correct R data type to the respective data values. This mechanism is explained in detail in see section \ref{subsec:converters}.
+TODO: explain include/exclude mechanism
+
+TODO: mention available non-exchangeable functions in the subsections
+
+
+
+\subsection{Encoders}
+\label{subsec:encoders}
+
+# functions to disable all parsing
+SosDisabledParsers()
+
+%# Replace an encoding function
+%myEncoding <- function(object, v) {
+%	return(str(object))
+%
+%sos = SOS(url = "http://mysos.com/sos",
+%		encoders = SosEncodingFunctions("POST" = myPostEncoding))
+%
+%# Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
+%myConverters <- SosDataFieldConvertingFunctions(
+%	"myNumericUnit" = sosConvertDouble,
+%mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
+%sosDataFieldConverters(mySos)
+%
+%# inspecting XML using dummy parsing function
+%sos = SOS(url = "http://mysos.com/sos", parsers = SosDisabledParsers)
+%describeSensor(sos, sosProcedures(sos)[[1]])
+%}
 
 
 \subsection{Parsers/Decoders}
@@ -592,21 +777,30 @@ The terms parsing and decoding are used as names for the process of processing a
 
 TBD
 
-\subsection{Encoders}
-\label{subsec:encoders}
+%# Replace a parsing function
+%myER <- function(xml) {
+%	return("EXCEPTION!!!11")
+%}
+%SosParsingFunctions("ExceptionReport" = myER)
+%
+%# use inclusion and exclusion, important: even the just added function needs to be included manually!
+%SosParsingFunctions("ExceptionReport" = myER,
+%	include = c("GetObservation", "DescribeSensor", "ExceptionReport"))
+%SosParsingFunctions(exclude = c("GetObservation", "DescribeSensor"))
 
-TBD
+
 
 \subsection{Data Converters}
 \label{subsec:converters}
 
 A list of named functions to be used by the parsing methods to convert data values to the correct R type, which are mostly based on the unit of measurement\footnote{\url{http://en.wikipedia.org/wiki/Units_of_measurement}} code.
 
+
 The conversion functions always take two parameters: \code{x} is the object to be converted, \code{sos} is the service where the request was received from.
 
 The available functions are basically wrappers for coercion functions, for example \code{as.double()}. The only method exploiting the second argument is the one for conversion of time stamps which uses the time format saved with the object of class \code{SOS} in a call to \code{strptime}.
 
-<<converters0,eval=TRUE,echo=FALSE,print=TRUE>>= 
+<<converters0,eval=TRUE,echo=TRUE,print=FALSE>>= 
 value <- 2.0
 value.string <- sosConvertString(x = value, sos = mySOS)
 print(class(value.string))
@@ -626,39 +820,41 @@ print(class(value.time))
 
 The full list of currently supported units can be seen below. It mostly contains common numerical units which are converted to type \code{double}.
 
-<<converters1,echo=FALSE,print=TRUE>>=
+<<converters1,echo=TRUE,print=TRUE>>=
 names(SosDataFieldConvertingFunctions())
 @
 
 The following connection shows a typical workflow of connecting to a new SOS for the first time, what the errors for missing converters look like, and how to add them to the SOS connection.
 
 <<converters2,eval=TRUE,echo=TRUE>>= 
-# GET Verbindung
+# GET connection
 MBARI <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]])
+	method = SosSupportedConnectionMethods()[["GET"]])
 myOff <- sosOfferings(MBARI)[[1]]
 myProc <- sosProcedures(MBARI)[[1]]
-mbariObs1 <- try(getObservation(sos = MBARI, offering = myOff,
-				procedure = myProc))
+mbariObs1 <- try(
+	getObservation(sos = MBARI, offering = myOff,
+		procedure = myProc)
+)
 warnings()
 @
 
-There are warnings about unknown units of measurement. The example below creates conversion functions for these and subsequently results in more fields in the final result.
+There are warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field). The next example creates conversion functions for these and subsequently results in more fields in the final result.
 
 <<converters3,eval=TRUE,echo=TRUE,print=FALSE>>= 
-# Create converters for missing units and definitions, then reconnect:
 myConverters <- SosDataFieldConvertingFunctions(
-		"S/m" = sosConvertDouble,
-		"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
+	"S/m" = sosConvertDouble,
+	"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
 MBARI <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]],
-		dataFieldConverters = myConverters)
-mbariObs2 <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+	method = SosSupportedConnectionMethods()[["GET"]],
+	dataFieldConverters = myConverters)
+mbariObs2 <- getObservation(sos = MBARI, offering = myOff,
+	procedure = myProc)
 @
 
 <<converters4,eval=TRUE,echo=TRUE,print=TRUE>>= 
-names(sosResult(mbariObs1))
-names(sosResult(mbariObs2))
+toString(names(sosResult(mbariObs1)))
+toString(names(sosResult(mbariObs2)))
 @
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -683,15 +879,22 @@ The standard exception codes and meanings are accessible by calling
 OwsExceptionsData()
 @
 
-directly in \pkg{sos4R} and are shown in table \ref{tab:execptions}.
+directly in \pkg{sos4R} and are shown in table~\ref{tab:exceptions}. The original table also contains the respective HTTP error codes and messages.
 
+% row name & exceptionCode & meaningOfCode & locator & httpStatusCode & httpMessage \\ 
 <<exceptionTable,echo=FALSE,results=tex>>=
 library(xtable)
-print(xtable(x = OwsExceptionsData(), caption = "Exception Data Table", label = "tab:execptions", table.placement = "tbp", caption.placement = "top"))
+print(xtable(x = OwsExceptionsData()[,1:3],
+				caption = "Exception Data Table (without HTTP columns).",
+				label = "tab:exceptions ", table.placement = "tbp",
+				align = c("l", "l", "p{5cm}", "p{3cm}"),
+				caption.placement = "top"),
+		include.rownames = FALSE)
 @
 
 <<exceptionWarning,eval=TRUE,echo=TRUE,print=TRUE>>= 
-response <- try(getObservationById(sos = mySOS, observationId = "doesNotExist"))
+response <- try(getObservationById(sos = mySOS,
+			observationId = "doesNotExist"))
 @
 
 If an exception is received then it is also saved as a warning message.
@@ -704,16 +907,27 @@ If an exception is received then it is also saved as a warning message.
 The package offers two levels of inspection of the ongoing operations indicated by two boolean parameters, \code{inspect} and \code{verbose}. These are available in all service operation calls. The option \code{verboseOutput} when using the method \code{SOS(...)} turns on the verbose setting for all subsequent requests made to the created connection unless deactivated in an operation call.
 
 \begin{description}
-\item[inspect] prints the raw requests and responses to the console. An example is shown below.
-\item[verbose] prints not only the requests, but also debugging statements which are too extensive to show for this document.
+\item[inspect] prints the raw requests and responses to the console.
+\item[verbose] prints not only the requests, but also debugging statements.
 \end{description}
 
-<<inspect,eval=TRUE,echo=TRUE>>= 
-off1 <- sosOfferings(mySOS)[[1]]
+The output with these parameters enabled is too extensive to show within this document.
+
+<<inspect,eval=FALSE,echo=TRUE,print=FALSE>>= 
+off.4 <- sosOfferings(mySOS)[[4]]
 getObservation(sos = mySOS,
-		offering = off1, latest = TRUE,
-		procedure = sosProcedures(off1)[[1]],
-		inspect = TRUE)
+	offering = off.4,
+	procedure = sosProcedures(off.4)[[1]],
+	latest = TRUE,
+	inspect = TRUE)
+
+getObservation(sos = mySOS,
+		offering = ,
+		procedure = sosProcedures(off.4)[[1]],
+		latest = TRUE,
+		vebose = TRUE)
+
+verboseSOS <- SOS(sosUrl(mySOS), verboseOutput = TRUE)
 @
 
 
@@ -726,7 +940,7 @@ The \textbf{demos} are a good way to get started with the package. Please be awa
 demo(package = "sos4R")
 @
 
-Additionally, there is a list of services on the project homepage (\url{http://www.nordholmen.net/sos4r/data/}) and a few SOS URLs are available via the function \texttt{SosExampleServices()}.
+Additionally, there is a list of services on the project homepage (\url{http://www.nordholmen.net/sos4r/data/}) and a few SOS URLs are available via the function \code{SosExampleServices()}.
 
 <<exampleServices,echo=TRUE,print=TRUE>>= 
 SosExampleServices()
@@ -747,7 +961,7 @@ If you want to ask questions about using the software, please go first to the \f
 You can download (and also browse) the source code of \pkg{sos4R} directly from the \fivetwon repository:
 
 \begin{itemize}
-\item \textbf{SVN resource URL}: \url{https://svn.52north.org/svn/geostatistics/main/sos4R}. Please read the documentation (especially the posting guide) of the \fivetwon repositories\footnote{http://52north.org/resources/source-repositories/}. Anonymous access for download is possible.
+\item \textbf{SVN resource URL}: \url{https://svn.52north.org/svn/geostatistics/main/sos4R}. Please read the documentation (especially the posting guide) of the \fivetwon repositories\footnote{\url{http://52north.org/resources/source-repositories/}}. Anonymous access for download is possible.
 \item \textbf{Web access}: \url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
 \end{itemize}
 

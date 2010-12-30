@@ -806,7 +806,7 @@ setMethod("encodeRequestXML", "SosGetObservationById",
 		}
 )
 .sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
-	.xmlDoc <- xmlNode(name = "SosGetObservationById", namespace = sosNamespacePrefix,
+	.xmlDoc <- xmlNode(name = "GetObservationById", namespace = sosNamespacePrefix,
 			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 					.sosNamespaceDefinitionsGetObs),
 			attrs=c(.xsiSchemaLocationAttribute,

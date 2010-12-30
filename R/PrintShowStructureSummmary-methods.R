@@ -161,13 +161,13 @@
 			"Object of class OwsExceptionReport",
 			"; version: ",
 			x@version,
-			", lang: ",
+			"; lang: ",
 			x@lang,
-			paste(", ", length(x@exceptions),
-					"exceptions (code @ locator : text):"),
+			paste(";\n", length(x@exceptions),
+					"exception(s) (code @ locator : text):"),
 			sep = "")
 	for (e in x@exceptions) {
-		.e <- paste("\t", e@exceptionCode, " @ ", e@locator, " : ",
+		.e <- paste("  ", e@exceptionCode, " @ ", e@locator, " : ",
 				e@exceptionText, sep = "")
 		.s <- paste(.s, .e, sep = "\n")
 	}
@@ -291,7 +291,7 @@
 }
 
 .toString.SosEventTime <- function(x, ...) {
-	.s <- paste("Object of class SosEventTime: ",
+	.s <- paste("Object of class SosEventTime:\n\t",
 			class(x@temporalOps),": ",
 			toString(x@temporalOps@time), sep = "")
 	return(.s)

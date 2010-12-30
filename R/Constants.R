@@ -36,11 +36,21 @@
 sosService <- "SOS"
 sosNamespacePrefix <- "sos"
 
+# Core Operations Profile:
 sosGetCapabilitiesName <- "GetCapabilities"
 sosDescribeSensorName <- "DescribeSensor"
 sosGetObservationName <- "GetObservation"
+# Transaction Operations Profile
+sosRegisterSensorName <- "RegisterSensor"
+sosInsertObservationName <- "InsertObservation"
+# Enhanced Operations Profile:
 sosGetObservationByIdName <- "GetObservationById"
+sosGetResultName <- "GetResult"
 sosGetFeatureOfInterestName <- "GetFeatureOfInterest"
+sosGetFeatureOfInterestTimeName <- "GetFeatureOfInterestTime"
+sosDescribeFeatureTypeName <- "DescribeFeatureType"
+sosDescribeObservationTypeName <- "DescribeObservationType"
+sosDescribeResultModelName <- "DescribeResultModel"
 
 SosSupportedOperations <- function() {
 	.supported <- c(sosGetCapabilitiesName, sosDescribeSensorName, 

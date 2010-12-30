@@ -335,7 +335,7 @@ sosDefaultDescribeSensorOutputFormat <- SosSupportedResponseFormats()[2]
 sosDefaultGetCapSections <- c("All")
 sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
-sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[1]
+sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[[1]]
 sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]

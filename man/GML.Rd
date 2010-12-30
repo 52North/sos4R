@@ -100,6 +100,10 @@
 
 \alias{sosFeaturesOfInterest,GmlFeatureCollection-method}
 
+\alias{sosTime,GmlTimeInstant-method}
+\alias{sosTime,GmlTimeInstantProperty-method}
+\alias{sosTime,GmlTimePeriod-method}
+\alias{sosTime,GmlTimePosition-method}
 
 \title{Classes and Construction Functions from the GML Namespace}
 

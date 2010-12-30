@@ -50,7 +50,7 @@ OmObservationProperty <- function(href = as.character(NA), obs = NULL) {
 }
 
 OmMeasurement <- function(samplingTime, procedure, observedProperty,
-		featureOfInterest, result, metadata = NA, resultTime = NA,
+		featureOfInterest, result, metadata = NA, resultTime = NULL,
 		resultQuality = NA,	parameter = NA) {
 	new("OmMeasurement", samplingTime = samplingTime, procedure = procedure,
 			observedProperty = observedProperty,
@@ -87,7 +87,7 @@ setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 )
 
 .getObservationsWithObservedProperty <- function(coll, obsProp) {
-	.obsProperties <- sosObservedProperties(coll, removeDuplicates = FALSE)
+	.obsProperties <- sosObservedProperties(coll)
 	
 	if(any(is.na(sosObservedProperties(obs.temp.latest)))) {
 		warning("Aborted indexing because of NA values.")

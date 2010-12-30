@@ -106,7 +106,6 @@
 \alias{sosId}
 \alias{sosId-method}
 \alias{sosId,list-method}
-\alias{sosId,SosObservationOffering-method}
 \alias{sosSrsName}
 \alias{sosSrsName-method}
 
@@ -119,6 +118,10 @@
 \alias{sosGetCRS}
 \alias{sosGetCRS-method}
 \alias{sosGetCRS,character-method}
+
+\alias{sosName}
+\alias{sosName-method}
+
 
 
 \title{Class, and Construction and Accessor Functions for "SOS"}

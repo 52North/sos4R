@@ -3,13 +3,16 @@
 
 \docType{class}
 
+\alias{SosObservationOffering}
 \alias{SosObservationOffering-class}
 \alias{show,SosObservationOffering-method}
 \alias{sosTime,SosObservationOffering-method}
 \alias{sosBoundedBy,SosObservationOffering-method}
 \alias{print,SosObservationOffering-method}
 \alias{toString,SosObservationOffering-method}
-\alias{SosObservationOffering}
+\alias{sosName,SosObservationOffering-method}
+\alias{sosResultModels,SosObservationOffering-method}
+\alias{sosId,SosObservationOffering-method}
 
 \title{Classes and Related Functions for "SosObservationOffering"}
 

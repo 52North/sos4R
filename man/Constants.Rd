@@ -191,6 +191,13 @@
 \alias{ogcComparisonOperatorsName}
 \alias{ogcTempOpTMOverlappedBy}
 \alias{owsNamespacePrefix}
+\alias{sosDescribeFeatureTypeName}
+\alias{sosDescribeObservationTypeName}
+\alias{sosDescribeResultModelName}
+\alias{sosGetFeatureOfInterestTimeName}
+\alias{sosGetResultName}
+\alias{sosInsertObservationName}
+\alias{sosRegisterSensorName}
   
 \title{Constants in sos4R}
 

@@ -81,4 +81,10 @@
 * Added sosGetCRS(...)
 * Changed behaviour of parsing function: If a converter is missing, it does not stop but only warn. The output data.frame then lacks that attribute.
 * Added coordinates parameter to sosResult()
+* Added function sosName() for classes SosObservationOffering, OwsServiceProvider
+* Added convert parameter to sosTime() for offerings and conversion for object of class GmlTimePeriod
+* Added bbox parameter to sosBoundedBy() which returns an sp-like matrix
+* Added sosResultModel() for SosObservationOffering, but the namespace is not correct in 52N SOS
+* Added unimplemented operations to the list of operation names
+* Changed sosResult() for OmMeasurement, now returns a data.frame
 * ...
