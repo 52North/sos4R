@@ -89,7 +89,7 @@ setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 .getObservationsWithObservedProperty <- function(coll, obsProp) {
 	.obsProperties <- sosObservedProperties(coll)
 	
-	if(any(is.na(sosObservedProperties(obs.temp.latest)))) {
+	if(any(is.na(.obsProperties))) {
 		warning("Aborted indexing because of NA values.")
 		return(list())
 	}

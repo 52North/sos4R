@@ -308,15 +308,15 @@ SosDataFieldConvertingFunctions <- function (..., include = character(0),
 # This works for all but capabilities, as these need to be requested on creating
 # a new SOS instance.
 #
-.parseSosNoParsing <- function(ob) {
-	return(ob)	
+parseSosNoParsing <- function(obj) {
+	return(obj)	
 }
 .sosDisabledParsers <- list(
 		parseSosCapabilities, # if this is removed, no more SOS instances can be created! 
-		.parseSosNoParsing,
-		.parseSosNoParsing,
-		.parseSosNoParsing,
-		.parseSosNoParsing)
+		parseSosNoParsing,
+		parseSosNoParsing,
+		parseSosNoParsing,
+		parseSosNoParsing)
 names(.sosDisabledParsers) <- list(
 		sosGetCapabilitiesName,
 		sosDescribeSensorName,

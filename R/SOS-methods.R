@@ -476,16 +476,22 @@ setMethod(f = "getObservationById",
 		cat("*** RESPONSE size:", object.size(.responseString) , ")\n")
 	}
 	
-	.response <- xmlParseDoc(.responseString, asText = TRUE)
-	if(verbose || inspect) {
-		cat("** RESPONSE DOC:\n")
-		print(.response)
-	}
-	
-	if(.isExceptionReport(.response)) {
-		return(.handleExceptionReport(sos, .response))
-	}
-	else {
+	# responseFormat starts with text/xml OR the response string is XML content,
+	# for example an exeption (which is xml even if request wants something else
+	if(isXMLString(.responseString)) {
+		.response <- xmlParseDoc(.responseString, asText = TRUE)
+		if(verbose || inspect) {
+			cat("** RESPONSE DOC:\n")
+			print(.response)
+		}
+		
+		if(.isExceptionReport(.response)) {
+			return(.handleExceptionReport(sos, .response))
+		}
+		
+		if(grep(pattern = "text/xml", x = responseFormat) != 1)
+			warning("Got XML string, but request did not require text/xml (or subtype).")
+		
 		.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
 		.obs <- .parsingFunction(obj = .response, sos = sos,
 				verbose = verbose)
@@ -511,10 +517,45 @@ setMethod(f = "getObservationById",
 		
 		return(.obs)
 	}
+	else if(grep(pattern = "text/csv", x = responseFormat) == 1) {
+		# TODO handle csv data
+		if(verbose || inspect) {
+			cat("** CSV RESPONSE:\n")
+			print(.responseString)
+			str(.responseString)
+		}
+		return(.responseString)
+	}
+
+	# not xml nor csv
+	if(verbose || inspect) {
+		cat("** NON-XML RESPONSE:\n")
+		print(.responseString)
+		str(.responseString)
+	}
+	return(.responseString)
 }
 setMethod(f = "getObservation",
 		signature = signature(sos = "SOS_1.0.0",
 				offering = "SosObservationOffering"),
+		def = function(sos, offering, observedProperty, responseFormat, srsName,
+				eventTime,	procedure, featureOfInterest, result, resultModel,
+				responseMode, BBOX, latest, verbose, inspect) {
+			return(.getObservation_1.0.0(sos = sos, offering = offering,
+							observedProperty = observedProperty,
+							responseFormat = responseFormat,
+							srsName = srsName, eventTime = eventTime,
+							procedure = procedure,
+							featureOfInterest = featureOfInterest,
+							result = result, resultModel = resultModel,
+							responseMode = responseMode, BBOX = BBOX,
+							latest = latest, verbose = verbose,
+							inspect = inspect))
+		}
+)
+setMethod(f = "getObservation",
+		signature = signature(sos = "SOS_1.0.0",
+				offering = "character"),
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
 				responseMode, BBOX, latest, verbose, inspect) {
@@ -600,16 +641,18 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	.optionals = ""
 	# is optional for GET
 	if( !is.na(obj@responseFormat)) {
+		if(verbose) cat("Adding response format ", obj@responseFormat, "\n")
 		.responseFormat <- paste(
 				"responseFormat", 
 				.kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
 								pattern = "&quot;",
 								replacement = '"')),
 				sep = "=")
-		optionals <- paste(.optionals, .responseFormat, sep = "&")
+		.optionals <- paste(.optionals, .responseFormat, sep = "&")
 	}
 	
 	if( !is.na(obj@srsName)) {
+		if(verbose) cat("Adding SRS name ", obj@srsName, "\n")
 		.optionals <- paste(.optionals, paste("srsName", 
 						.kvpEscapeSpecialCharacters(x = obj@srsName),
 						sep = "="),
@@ -617,6 +660,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@eventTime)) {
+		if(verbose) cat("Adding event time", obj@eventTime, "\n")
 		if(length(obj@eventTime) > 1)
 			warning("Only first event time in the list is used for KVP!")
 		
@@ -638,6 +682,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
+		if(verbose) cat("Adding procedures ", obj@procedure, "\n")
 		.optionals <- paste(.optionals, .kvpKeyAndValues("procedure",
 						obj@procedure), sep = "&")
 	}
@@ -647,7 +692,6 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 #		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest",
 #						obj@featureOfInterest), sep = "&")
 		warning("'featureOfInterest' is not supported for 'GET' - parameter is discarded, use another method to include it!")
-		
 	}
 	
 	if( !is.null(obj@result)) {
@@ -655,6 +699,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@resultModel)) {
+		if(verbose) cat("Adding result model ", obj@resultModel, "\n")
 		.optionals <- paste(.optionals, paste("resultModel",
 						.kvpEscapeSpecialCharacters(x = obj@resultModel),
 						sep = "="),
@@ -662,6 +707,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@responseMode)) {
+		if(verbose) cat("Adding response mode ", obj@responseMode, "\n")
 		.optionals <- paste(.optionals, paste("responseMode",
 						.kvpEscapeSpecialCharacters(x = obj@responseMode),
 						sep = "="),
@@ -669,6 +715,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@BBOX)) {
+		if(verbose) cat("Adding BBOX ", obj@BBOX, "\n")
 		.optionals <- paste(.optionals, paste("BBOX", 
 						.kvpEscapeSpecialCharacters(x = obj@BBOX), sep = "="),
 				sep = "&")

@@ -192,6 +192,15 @@ setMethod(f = "sosOperationsMetadata", signature = signature(sos = "SOS"),
 			return(sos@capabilities@operations)
 		})
 
+if (!isGeneric("sosOperations"))
+	setGeneric(name = "sosOperations", def = function(sos) {
+				standardGeneric("sosOperations")
+			})
+setMethod(f = "sosOperations", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@capabilities@operations@operations)
+		})
+
 if (!isGeneric("sosContents"))
 	setGeneric(name = "sosContents", def = function(sos) {
 				standardGeneric("sosContents")
@@ -511,41 +520,84 @@ setMethod(f = "sosOperation",
 		})
 
 if (!isGeneric("sosResponseFormats"))
-	setGeneric(name = "sosResponseFormats", def = function(sos) {
+	setGeneric(name = "sosResponseFormats", def = function(obj, ...) {
 				standardGeneric("sosResponseFormats")
 			})
-setMethod(f = "sosResponseFormats", signature = signature(sos = "SOS"),
-		def = function(sos) {
-			.caps <- sosCaps(sos)
-			.getOb <- .caps@operations@operations[[sosGetObservationName]]
-			return(.getOb@parameters$responseFormat)
+setMethod(f = "sosResponseFormats", signature = signature(obj = "SOS"),
+		def = function(obj, unique = FALSE) {
+#			.caps <- sosCaps(obj)
+#			.getOb <- .caps@operations@operations[[sosGetObservationName]]
+#			return(.getOb@parameters$responseFormat)
+			.rf <- sapply(sosOperations(obj), sosResponseFormats)
+			if(unique) {
+				.c <- do.call(c, .rf)
+				.rf <- unique(.c)
+			}
+			return(.rf)
+		})
+setMethod(f = "sosResponseFormats",
+		signature = signature(obj = "SosObservationOffering"),
+		def = function(obj) {
+			return(obj@responseFormat)
+		})
+setMethod(f = "sosResponseFormats",
+		signature = signature(obj = "OwsOperation"),
+		def = function(obj) {
+			return(obj@parameters$responseFormat)
 		})
 
 if (!isGeneric("sosResponseMode"))
-	setGeneric(name = "sosResponseMode", def = function(sos) {
+	setGeneric(name = "sosResponseMode", def = function(obj, ...) {
 				standardGeneric("sosResponseMode")
 			})
-setMethod(f = "sosResponseMode", signature = signature(sos = "SOS"),
-		def = function(sos) {
-			.caps <- sosCaps(sos)
-			.getOb <- .caps@operations@operations[[sosGetObservationName]]
-			return(.getOb@parameters$responseMode)
+setMethod(f = "sosResponseMode", signature = signature(obj = "SOS"),
+		def = function(obj, unique = FALSE) {
+#			.caps <- sosCaps(obj)
+#			.getOb <- .caps@operations@operations[[sosGetObservationName]]
+#			return(.getOb@parameters$responseMode)
+			.rf <- sapply(sosOperations(obj), sosResponseMode)
+			if(unique) {
+				.c <- do.call(c, .rf)
+				.rf <- unique(.c)
+			}
+			return(.rf)
+		})
+setMethod(f = "sosResponseMode",
+		signature = signature(obj = "SosObservationOffering"),
+		def = function(obj) {
+			return(obj@responseMode)
+		})
+setMethod(f = "sosResponseMode",
+		signature = signature(obj = "OwsOperation"),
+		def = function(obj) {
+			return(obj@parameters$responseMode)
 		})
 
 if (!isGeneric("sosResultModels"))
-	setGeneric(name = "sosResultModels", def = function(obj) {
+	setGeneric(name = "sosResultModels", def = function(obj, ...) {
 				standardGeneric("sosResultModels")
 			})
 setMethod(f = "sosResultModels", signature = signature(obj = "SOS"),
-		def = function(obj) {
-			.caps <- sosCaps(obj)
-			.getOb <- .caps@operations@operations[[sosGetObservationName]]
-			return(.getOb@parameters$resultModel)
+		def = function(obj, unique = FALSE) {
+#			.caps <- sosCaps(obj)
+#			.getOb <- .caps@operations@operations[[sosGetObservationName]]
+#			return(.getOb@parameters$resultModel)
+			.rf <- sapply(sosOperations(obj), sosResultModels)
+			if(unique) {
+				.c <- do.call(c, .rf)
+				.rf <- unique(.c)
+			}
+			return(.rf)
 		})
 setMethod(f = "sosResultModels",
 		signature = signature(obj = "SosObservationOffering"),
 		def = function(obj) {
 			return(obj@resultModel)
+		})
+setMethod(f = "sosResultModels",
+		signature = signature(obj = "OwsOperation"),
+		def = function(obj) {
+			return(obj@parameters$resultModel)
 		})
 
 if (!isGeneric("sosTime"))
@@ -834,6 +886,15 @@ sosConvertString <- function(x, sos) {
 sosConvertLogical <- function(x, sos) {
 	return(as.logical(x = x))
 }
+
+if (!isGeneric("sosEncoders"))
+	setGeneric(name = "sosEncoders", def = function(sos) {
+				standardGeneric("sosEncoders")
+			})
+setMethod(f = "sosEncoders", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@encoders)
+		})
 
 if (!isGeneric("sosDataFieldConverters"))
 	setGeneric(name = "sosDataFieldConverters", def = function(sos) {

@@ -178,4 +178,7 @@ setClass("OgcComparisonOps",
 )
 setClassUnion(name = "OgcComparisonOpsOrXMLOrNULL",
 		members = c("OgcComparisonOps", "XMLNode", "NULL", "XMLAbstractNode"))
-		
+#"XMLPINode", "XMLCommentNode", "XMLProcessingInstruction",
+#"XMLCDataNode", "RXMLAbstractNode", "XMLHashTreeNode", "XMLTextNode",
+#"XMLPINode", "XMLCommentNode", "XMLProcessingInstruction",
+#"XMLCDataNode", "XMLAttributeNode"

@@ -153,7 +153,7 @@ toString(SosSupportedTemporalOperators())
 
 \pkg{sos4R} supports the core profile of the SOS specification. But the possible markups for observations is extremely manifold due to the flexibility of the O\&M specification. Sadly, there is no common application profile for certain types of observations, like simple measurements.
 
-Therefore, the undocumented profile of the \textbf{\fivetwon SOS implementation}\footnote{\url{http://52north.org/communities/sensorweb/sos/}} was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.
+Therefore, the undocumented profile of the \boldmath{\fivetwon}\textbf{ SOS implementation}\footnote{\url{http://52north.org/communities/sensorweb/sos/}} was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.
 
 In the author's experience, \textbf{OOSThetys SOS implementations}\footnote{\url{http://www.oostethys.org/}} utilise the same or at least very similar profile, so responses of these service instances are also probably parsed without further work.
 
@@ -257,18 +257,18 @@ The parameters of the operation are:
     \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
 \end{itemize}
 
-The respective parts of the capabilities document are modelled as R classes and can be inspected using accessor functions:
+The respective \textbf{parts of the capabilities document} are modelled as R classes and can be accessed with these functions:
 
 <<getCap2,echo=TRUE,eval=FALSE>>= 
-sosFilter_Capabilities(mySOS)
 sosServiceIdentification(mySOS)
 sosServiceProvider(mySOS)
+sosFilter_Capabilities(mySOS)
 sosContents(mySOS)
 @
 
 The contents part is described in detail in section~\ref{subsubsec:metadataExtraction}.
 
-The function \code{sosTime(...)} returns the time period for which observations are available within the service. To be precise, it accesses the ows:Range element of the parameter eventTime in the operations description of the GetObservation description.
+The function \code{sosTime(...)} returns the time period for which observations are available within the service. To be precise, it accesses the ows:Range element of the parameter eventTime in the description of the GetObservation operation.
 
 <<getCap3,echo=TRUE,eval=TRUE>>= 
 sosTime(mySOS)
@@ -284,17 +284,28 @@ sosOperation(mySOS, sosDescribeSensorName)
 sosOperation(mySOS, "GetResult")
 @
 
-% TODO überarbeiten, weil nur abhängig von GetObservation!
-<<getCap5,echo=TRUE,eval=TRUE>>= 
+The allowed response formats (the file format/encoding of the response), the response modes (for example inline or as attachment) and the result models (a qualified XML name of the root element of the response) differ for every operation of the service. The following accessor methods return either (i) a list (named by the operation names) of vectors (with the actual allowed parameter values), or (ii) with the \code{unique} parameter set to \code{TRUE}, a unique list of all allowed values. Please be aware that these are not allowed for all operations, not are all options supported by \pkg{sos4R}.
+
+<<getCap5,echo=TRUE,eval=FALSE>>=
 sosResponseFormats(mySOS)
 sosResponseMode(mySOS)
 sosResultModels(mySOS)
 @
 
+Some exemplary outputs of the operations are:
+
+<<getCap6,echo=TRUE,eval=TRUE>>=
+sosResponseMode(mySOS, unique = TRUE)
+sosResultModels(mySOS, unique = TRUE)[[1]]
+sosResponseMode(mySOS)[[sosGetObservationByIdName]]
+sosResultModels(mySOS)[[sosGetObservationName]][3:4]
+sosResponseFormats(mySOS)[["GetObservation"]]
+@
+
 \subsection{DescribeSensor}
 \label{sub:describesensor}
 
-The DescribeSensor operation is specified in clause 8.3 of the SOS specification and their response is modeled in Sensor Model Language\footnote{http://www.opengeospatial.org/standards/sensorml} (SensorML) and Transducer Markup Language\footnote{http://www.opengeospatial.org/standards/tml} (TML) specifications.
+The DescribeSensor operation is specified in clause 8.3 of the SOS specification and its response is modeled in Sensor Model Language\footnote{http://www.opengeospatial.org/standards/sensorml} (SensorML) and Transducer Markup Language\footnote{http://www.opengeospatial.org/standards/tml} (TML) specifications.
 
 \begin{quotation}
 The DescribeSensor operation is useful for obtaining detailed information of sensor characteristics encoded in either SensorML or TML. The sensor characteristics can include lists and definitions of observables supported by the sensor. [...]
@@ -323,9 +334,9 @@ sensor.1.1 <- describeSensor(sos = mySOS,
 \subsection{GetObservation}
 \label{sub:getobservation}
 
-A few utility functions exist to minize a user's amount of work to create usual requests. They accept normal R types as input and return the respective class from \pkg{sos4R} with useful default settings. These function's names start with \code{sosCreate...()} and exist for spatial and temporal filters.
+The GetObservation operation is specified in clause 8.4 of the SOS specification. In this section, all matters around requesting data are explained --- from extracting query parameters from metadata, and sending the request, till finally extracting data values and coordinates from the response.
 
-In this section, all matters around requesting data are explained --- from extracting query parameters from metadata, and sending the request, till finally extracting data values and coordinates from the response.
+A few utility functions exist to minize a user's amount of work to create usual requests. They accept normal R types as input and return the respective class from \pkg{sos4R} with useful default settings. These function's names follow the pattern with \code{sosCreate [name of object] ()} and exist for spatial and temporal filters.
 
 \subsubsection{Metadata Extraction for Request Building}
 \label{subsubsec:metadataExtraction}
@@ -738,63 +749,117 @@ Step (i), the building of requests, i.e. the assembly of the request parameters 
 
 In the remainder of this section it is explained how this applies to the steps (ii), (iv) and (v) of the fixed workflow. 
 
+\subsection{Include and Exclude Functions}
+\label{subsec:inexclusion}
 
-TODO: explain include/exclude mechanism
+The functions used in the exchangeable steps are organized in lists. To base your own list of functions on the existing ones, thereby not having to start from scratch, you can combine the default list of functions with your own. Use the following functions:
 
-TODO: mention available non-exchangeable functions in the subsections
+To add your own function, simply add it as a named argument. You can add as many as you like in the \code{...} parameter. If a function with that identifier already exists in the default list it will be replaced by your function.
+For further adjustments you can explicitly include and exclude functions by identifier. Please be aware that inclusion is applied first, then exclusion. It is also important that you also have to include that functions you just added manually!
 
+Examples of function list generation with parsing functions:
 
+<<inclusionExclusion,echo=TRUE,eval=TRUE,print=FALSE>>=
+parsers <- SosParsingFunctions(
+	"ExceptionReport" = function() {return("Got Exception!")},
+	include = c("GetObservation", "ExceptionReport"))
+print(names(parsers))
+
+parsers <- SosParsingFunctions(
+		"ExceptionReport" = function() {return("Got Exception!")},
+		include = c("GetCapabilities"))
+print(names(parsers))
+
+parsers <- SosParsingFunctions(
+		exclude = names(SosParsingFunctions())[1:15])
+print(names(parsers))
+@
 
 \subsection{Encoders}
 \label{subsec:encoders}
 
-# functions to disable all parsing
-SosDisabledParsers()
+The current list of a connection's encoders can be accessed with
 
-%# Replace an encoding function
-%myEncoding <- function(object, v) {
-%	return(str(object))
-%
-%sos = SOS(url = "http://mysos.com/sos",
-%		encoders = SosEncodingFunctions("POST" = myPostEncoding))
-%
-%# Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
-%myConverters <- SosDataFieldConvertingFunctions(
-%	"myNumericUnit" = sosConvertDouble,
-%mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
-%sosDataFieldConverters(mySos)
-%
-%# inspecting XML using dummy parsing function
-%sos = SOS(url = "http://mysos.com/sos", parsers = SosDisabledParsers)
-%describeSensor(sos, sosProcedures(sos)[[1]])
-%}
+<<encoders1,echo=TRUE,eval=FALSE>>=
+sosEncoders(mySOS)
+@
 
+A complete list of the existing encoders names:
+
+<<encoders2,echo=TRUE,eval=TRUE>>=
+names(sosEncoders(mySOS))
+@
+
+Here the idea of organizing the encoding functions becomes clear: One base encoding function is given, which is a generic method that must exist for alle elements that need to be encoded.
+
+<<encoders3,echo=TRUE,eval=FALSE>>=
+myPostEncoding <- function(object, sos, verbose) {
+	return(str(object))
+}
+# Will fail:
+mySOS2 = SOS(sosUrl(mySOS),
+	encoders = SosEncodingFunctions("POST" = myPostEncoding))
+@
 
 \subsection{Parsers/Decoders}
 \label{subsec:parsers}
 
-The terms parsing and decoding are used as names for the process of processing an XML document to create an R object.
+The terms parsing and decoding are used as synonyms for the process of processing an XML document to create an R object. XML documents are made out of hierarchical elements. That is why the parsing functions are organized in a listed, whose names are the elements' names that can be parsed.
 
-TBD
+The current list of a connection's parsers can be accessed with the following function.
 
-%# Replace a parsing function
-%myER <- function(xml) {
-%	return("EXCEPTION!!!11")
-%}
-%SosParsingFunctions("ExceptionReport" = myER)
-%
-%# use inclusion and exclusion, important: even the just added function needs to be included manually!
-%SosParsingFunctions("ExceptionReport" = myER,
-%	include = c("GetObservation", "DescribeSensor", "ExceptionReport"))
-%SosParsingFunctions(exclude = c("GetObservation", "DescribeSensor"))
+<<parsers1,echo=TRUE,eval=FALSE>>=
+sosParsers(mySOS)
+@
 
+A complete list of the elements with existing encoders is shown below.
 
+<<parsers2,echo=TRUE,eval=TRUE>>=
+names(sosParsers(mySOS))
+@
+
+Here the idea of organizing the encoding functions becomes clear: For every XML element that must be parsed there is a function given in the list.
+
+If you want to replace only selected parsers use the include parameter as described above. You can also base your own parsing functions on a variety of existing parsing functions. For example you can replace the base function for om:ObservationCollectionm, named \code{ObservationCollection}, but still use the parsing function for om:Observation within your own function if you include it in the parser list. The existing parsing functions are all named in the pattern \code{parse[ElementName](...)}. Please be aware that some parsers contain require a parameter of class SOS upon which they rely for encoding information.
+
+<<parsers2,echo=TRUE,eval=TRUE,print=FALSE>>=
+# Create own parsing function:
+myER <- function(xml) {
+	return("EXCEPTION!!!11")
+}
+myParsers <- SosParsingFunctions("ExceptionReport" = myER)
+mySOS2 <- SOS(sosUrl(mySOS), parsers = myParsers)
+# Triggers exception:
+response <- getObservation(mySOS2,
+	offering = sosOfferings(mySOS2)[[1]],
+	observedProperty = list("Bazinga"))
+print(response)
+@
+
+To disable all parsing, you can use the following function. This just \enquote{passes through} all received data.
+
+<<parsers4,echo=TRUE,eval=FALSE>>=
+SosDisabledParsers()
+@
+
+This list only contains the top-most parsing functions for the operation responses and exception reports. This is also the recommended way to start if you want to set-up your own parsers. This is also a way of directly inspecting the responses.
+
+The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class \code{XMLInternalDocument}:
+
+<<parsers5,echo=TRUE,eval=TRUE>>=
+names(SosDisabledParsers())
+mySOS2 <- SOS(sosUrl(mySOS), parsers = SosDisabledParsers())
+response <- getObservation(mySOS2,
+	offering = sosOfferings(mySOS2)[[1]],
+	observedProperty = list("Bazinga"))
+class(response)
+print(xmlName(xmlRoot(response))) # XML functions
+@
 
 \subsection{Data Converters}
 \label{subsec:converters}
 
 A list of named functions to be used by the parsing methods to convert data values to the correct R type, which are mostly based on the unit of measurement\footnote{\url{http://en.wikipedia.org/wiki/Units_of_measurement}} code.
-
 
 The conversion functions always take two parameters: \code{x} is the object to be converted, \code{sos} is the service where the request was received from.
 
@@ -824,9 +889,15 @@ The full list of currently supported units can be seen below. It mostly contains
 names(SosDataFieldConvertingFunctions())
 @
 
+The current list of a connection's converters can be accessed with
+
+<<converters2,echo=TRUE,eval=FALSE>>=
+sosDataFieldConverters(mySOS)
+@
+
 The following connection shows a typical workflow of connecting to a new SOS for the first time, what the errors for missing converters look like, and how to add them to the SOS connection.
 
-<<converters2,eval=TRUE,echo=TRUE>>= 
+<<converters3,eval=TRUE,echo=TRUE>>= 
 # GET connection
 MBARI <- SOS("http://mmisw.org/oostethys/sos",
 	method = SosSupportedConnectionMethods()[["GET"]])
@@ -839,9 +910,11 @@ mbariObs1 <- try(
 warnings()
 @
 
+% TODO warnigs besser ausgeben weil dort noch so einige infos enthalten sind
+
 There are warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field). The next example creates conversion functions for these and subsequently results in more fields in the final result.
 
-<<converters3,eval=TRUE,echo=TRUE,print=FALSE>>= 
+<<converters4,eval=TRUE,echo=TRUE,print=FALSE>>= 
 myConverters <- SosDataFieldConvertingFunctions(
 	"S/m" = sosConvertDouble,
 	"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
@@ -852,7 +925,7 @@ mbariObs2 <- getObservation(sos = MBARI, offering = myOff,
 	procedure = myProc)
 @
 
-<<converters4,eval=TRUE,echo=TRUE,print=TRUE>>= 
+<<converters5,eval=TRUE,echo=TRUE,print=TRUE>>= 
 toString(names(sosResult(mbariObs1)))
 toString(names(sosResult(mbariObs2)))
 @
@@ -894,11 +967,10 @@ print(xtable(x = OwsExceptionsData()[,1:3],
 
 <<exceptionWarning,eval=TRUE,echo=TRUE,print=TRUE>>= 
 response <- try(getObservationById(sos = mySOS,
-			observationId = "doesNotExist"))
+			observationId = "obs1000", inspect = TRUE))
 @
 
 If an exception is received then it is also saved as a warning message.
-
 
 \subsection{Inspect Requests and Verbose Printing}
 \label{subsec:inspect}
@@ -922,10 +994,10 @@ getObservation(sos = mySOS,
 	inspect = TRUE)
 
 getObservation(sos = mySOS,
-		offering = ,
-		procedure = sosProcedures(off.4)[[1]],
-		latest = TRUE,
-		vebose = TRUE)
+	offering = ,
+	procedure = sosProcedures(off.4)[[1]],
+	latest = TRUE,
+	vebose = TRUE)
 
 verboseSOS <- SOS(sosUrl(mySOS), verboseOutput = TRUE)
 @

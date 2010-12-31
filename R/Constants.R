@@ -72,7 +72,8 @@ SosSupportedConnectionMethods <- function() {
 
 .sosSupportedResponseFormats <- c(
 		"text/xml;subtype=&quot;om/1.0.0&quot;",
-		"text/xml;subtype=&quot;sensorML/1.0.1&quot;")
+		"text/xml;subtype=&quot;sensorML/1.0.1&quot;",
+		"text/csv")
 SosSupportedResponseFormats <- function() {
 	return(.sosSupportedResponseFormats)
 }
