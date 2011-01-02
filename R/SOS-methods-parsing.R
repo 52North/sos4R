@@ -214,3 +214,67 @@ parseSosFilter_Capabilities <- function(obj) {
 			scalar = .scalar, id = .id)
 }
 
+################################################################################
+# parse saved documents
+setMethod(f = "sosParse",
+		signature = signature(sos = "SOS_1.0.0", file = "character"),
+		def = function(sos, file, verbose, ...) {
+			# TODO add parameter and handling for strings using xmlParseString(...)
+			.parsed <- xmlParse(file, ...)
+			.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
+			
+			.doc <- .parsingFunction(obj = .parsed, sos = sos,
+					verbose = verbose)
+			
+			if(verbose) {
+				cat("** PARSED DOCUMENT FROM FILE:\n")
+				print(.doc)
+			}
+			return(.doc)
+		}
+)
+
+################################################################################
+#
+#
+#
+#
+sosParseCSV <- function(obj, verbose = FALSE) {
+	lines <- strsplit(x = obj, split = "\n")[[1]]
+	data <- do.call(what = "strsplit", args = list(lines, split = ","))
+	
+	# clean up names (double quotes)
+	.names <- data[[1]]
+	.newNames <- c()
+	for (.n in .names) {
+		.newNames <- c(.newNames,
+				gsub(pattern = "\"", replacement = "", x = .n))
+	}
+	.names <- .newNames
+	
+	.rows <- length(data)
+	df <- NULL
+	for (.r in seq(2,.rows)) {
+		# initialize first column of the data frame so it can be bound in loop
+		
+		# TODO add parsers based on field names
+		.row.df <- as.data.frame(data[[.r]][1])
+		names(.row.df) <- .names[[1]]
+		
+		for (i in seq(2,length(.names))) {
+			.df <- as.data.frame(data[[.r]][i])
+			names(.df) <- .names[[i]]
+			.row.df <- cbind(.row.df, .df)
+		}
+#		print(paste("row", .r))
+#		print(.row.df)
+		
+		if(is.null(df))
+			df <- .row.df
+		else
+			df <- do.call(rbind, list(df, .row.df))
+	}
+	
+	return(df)
+}
+

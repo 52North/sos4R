@@ -199,6 +199,9 @@
 \alias{sosInsertObservationName}
 \alias{sosRegisterSensorName}
   
+\alias{csvName}
+
+
 \title{Constants in sos4R}
 
 \description{

@@ -964,3 +964,38 @@ plot(off.1.spdf)
 # plots bbox!
 
 
+################################################################################
+# saving of the orginal document
+weathersos <- SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+weathersos.offerings <- sosOfferings(weathersos)
+
+# by id
+obs <- getObservationById(sos = weathersos, observationId = "o_3508493",
+		saveOriginal = TRUE, verbose = TRUE)
+
+.begin <- sosTime(weathersos.offerings[[1]], convert = TRUE)[["begin"]]
+.timelist <- sosCreateEventTimeList(sosCreateTimePeriod(weathersos,
+				begin = .begin,
+				end = (.begin + 3600*24)))
+obs <- getObservation(sos = weathersos, offering = weathersos.offerings[[1]],
+		eventTime = .timelist, saveOriginal = TRUE)
+
+# read it back
+.filename <- paste("o_3508493", , ".xml", sep = "")
+obs.2 <- sosParse(weathersos, .filename)
+
+################################################################################
+# url from DCPs
+weathersos <- SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+weathersos.offerings <- sosOfferings(weathersos)
+
+# manually
+weathersos@capabilities@operations@operations$GetCapabilities@DCPs["Get"]
+
+sosGetDCP(weathersos, operation = sosGetObservationName)
+sosGetDCP(weathersos, operation = sosGetObservationName, type = "Get")
+sosGetDCP(weathersos, operation = sosGetObservationName, type = "Post")
+
+describeSensor(weathersos, sosProcedures(weathersos)[[1]][[1]])
+getObservation(weathersos, sosOfferings(weathersos)[[1]], latest = TRUE)
+# still works

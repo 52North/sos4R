@@ -92,7 +92,7 @@ promptClass(clName = "OmObservationCollection",
 
 #
 promptMethods(f = "sosFeatureIds", filename = "/tmp/sosFeatureIds-methods.Rd")
-
+promptMethods(f = "sosParse", filename = "/tmp/sosParse-methods.Rd")
 
 #
 #

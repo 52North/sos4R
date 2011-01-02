@@ -8,24 +8,21 @@
 # http://sdf.ndbc.noaa.gov/sos/
 ioos.get <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
 		method = SosSupportedConnectionMethods()[["GET"]],
-		parsers = SosParsingFunctions("GetObservation" = parseSosNoParsing))
+		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
+#		parsers = SosParsingFunctions("GetObservation" = parseNoParsing)
 
-ioos.off <- sosOfferings(ioos)
+ioos.off <- sosOfferings(ioos.get)
 names(ioos.off)
 
-ioos.procedures <- sosProcedures(ioos)
+ioos.procedures <- sosProcedures(ioos.get)
 length(ioos.procedures)
 
 # requires SensorML 1.0.0
 describeSensorOp <- sosOperation(ioos.get, sosDescribeSensorName)
 describeSensor.outputFormat <- describeSensorOp@parameters[["outputFormat"]][[1]]
-ioos.sensor.1.1 <- describeSensor(sos = ioos, procedure = ioos.procedures[[1]][[1]],
+ioos.sensor.1.1 <- describeSensor(sos = ioos.get, procedure = ioos.procedures[[1]][[1]],
 		outputFormat = describeSensor.outputFormat)
 ioos.sensor.1.1@xml
-
-# TODO
-begin <- sosTime(ioos.off[[1]], convert = TRUE)[[1]]
-end <- as.POSIXct(Sys.time())
 
 # most recent:
 #http://sdf.ndbc.noaa.gov/sos/server.php?request=GetObservation&service=SOS&
@@ -34,58 +31,12 @@ end <- as.POSIXct(Sys.time())
 #		responseformat=text/csv
 obs.csv <- getObservation(ioos.get, offering = sosName(ioos.off[[100]]),
 		responseFormat = "text/csv",
-		observedProperty = sosObservedProperties(ioos.off[[100]])[1],
-		verbose = TRUE)
-#save(obs.csv, file = "temp.csv", ascii = TRUE)
-#write.csv(obs.csv, "temp.csv")
-#read.csv("temp.csv")
-#read.csv(file = obs.csv)
-# does not work
+		observedProperty = sosObservedProperties(ioos.off[[100]])[2],
+		verbose = TRUE, saveOriginal = TRUE)
+obs.csv
+# GET WORKS!
 
-obs <- parseCSV(obs.csv)
-
-#
-# TODO write to r-help on parsing csv from object
-#
-parseCSV <- function(obj) {
-	lines <- strsplit(x = obs.csv, split = "\n")[[1]]
-	data <- do.call(what = "strsplit", args = list(lines, split = ","))
-	
-	# clean up names (double quotes)
-	.names <- data[[1]]
-	.newNames <- c()
-	for (.n in .names) {
-		.newNames <- c(.newNames,
-				gsub(pattern = "\"", replacement = "", x = .n))
-	}
-	.names <- .newNames
-	
-	.rows <- length(data)
-	df <- NULL
-	for (.r in seq(2,.rows)) {
-		# initialize first column of the data frame so it can be bound in loop
-		
-		# TODO add parsers based on field names
-		.row.df <- as.data.frame(data[[.r]][1])
-		names(.row.df) <- .names[[1]]
-		
-		for (i in seq(2,length(.names))) {
-			.df <- as.data.frame(data[[.r]][i])
-			names(.df) <- .names[[i]]
-			.row.df <- cbind(.row.df, .df)
-		}
-#		print(paste("row", .r))
-#		print(.row.df)
-		
-		if(is.null(df))
-			df <- .row.df
-		else
-			df <- do.call(rbind, list(df, .row.df))
-	}
-	
-	return(df)
-}
-
+#obs <- sosParseCSV(obs.csv)
 
 # point in time:
 #http://sdf.ndbc.noaa.gov/sos/server.php?request=GetObservation&service=SOS&
@@ -101,18 +52,61 @@ parseCSV <- function(obj) {
 #		responseformat=text/csv&
 #		eventtime=2008-07-17T00:00Z/2008-07-17T23:59Z
 
+# mine:
+#http://sdf.ndbc.noaa.gov/sos/server.php?service=SOS&request=GetObservation&
+#		version=1.0.0&
+#		offering=urn%3Aioos%3Astation%3Awmo%3A42056&
+#		observedProperty=http%3A//mmisw.org/ont/cf/parameter/sea_water_temperature&
+#		responseFormat=text/csv&
+#		eventTime=2008-07-17T00%3A00%3A00Z/2008-07-17T00%3A00%3A00Z 
+
+ioos.get.interval <- getObservation(ioos.get,
+		offering = sosName(ioos.off[[100]]),
+		responseFormat = "text/csv",
+		observedProperty = sosObservedProperties(ioos.off[[100]])[3],
+		eventTime = sosCreateEventTimeList(
+				sosCreateTimePeriod(sos = ioos.get,
+						begin = as.POSIXct("2008-07-17T00:00Z"),
+						end = as.POSIXct("2008-07-17T23:59Z"))),
+		verbose = TRUE)
+
+# time interval, bbox
+#http://sdf.ndbc.noaa.gov/sos/server.php?request=GetObservation&service=SOS&
+#		offering=urn:ioos:network:noaa.nws.ndbc:all&
+#		featureofinterest=BBOX:-90,25,-65,35&
+#		observedproperty=sea_floor_depth_below_sea_surface&
+#		responseformat=text/csv&
+#		eventtime=2008-07-17T00:00Z/2008-07-17T23:59Z
+# bounding box is defined in feature of interest...
+
 
 ################################################################################
 # POST
 # http://sdf.ndbc.noaa.gov/sos/test.shtml
 ioos.post <- ioos <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
-		parsers = SosParsingFunctions("GetObservation" = parseSosNoParsing))
-obs.csv.post <- getObservation(ioos.post, offering = sosName(ioos.off[[100]]),
+		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
+ioos.post.off <- sosOfferings(ioos.post)
+obs.csv.post <- getObservation(ioos.post,
+		offering = sosName(ioos.post.off[[100]]),
 		responseFormat = "text/csv",
-		observedProperty = sosObservedProperties(ioos.off[[100]])[1],
+		observedProperty = sosObservedProperties(ioos.post.off[[100]])[1],
 		verbose = TRUE)
-obs.post <- parseCSV(obs.csv.post)
-obs.post
-str(obs.post)
+obs.csv.post
 
-write(obs.csv.post, "test.txt")
+#begin <- sosTime(ioos.post.off[[1]], convert = TRUE)[[1]]
+end <- as.POSIXct(Sys.time())
+begin <- end - 3600 * 24 * 30
+
+.offering <- sosOfferings(ioos.post, name = sosName(ioos.post.off[[1]]))
+.offeringId <- sosId(.offering)
+obs.001 <- getObservation(sos = ioos.post,
+		offering = sosName(.offering), # "urn:ioos:network:noaa.nws.ndbc:all"
+		procedure = sosProcedures(ioos.post.off[[1]])[500:550],
+		observedProperty = sosObservedProperties(ioos.post.off[[1]])[6:7],
+		responseFormat = "text/csv",
+		eventTime = sosCreateEventTimeList(
+				sosCreateTimePeriod(sos = ioos.post, begin = begin, end = end)),
+		inspect = TRUE, verbose = TRUE)
+
+
+

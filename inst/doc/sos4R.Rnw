@@ -347,6 +347,7 @@ The class \code{SosContents} simply contains a list of objects of the class \cod
 
 <<metadataExtraction1,echo=TRUE,eval=FALSE>>= 
 sosOfferings(mySOS)
+sosOfferings(mySOS, name = "Rain")
 @
 
 The output when printing this list is quite extensive, so we concentrate on just on element of it in the following.
@@ -460,6 +461,7 @@ defaultResponseFormatGetObs <- gsub(pattern = "&quot;", replacement = "'", x = s
   \item \code{responseMode}: The response mode defines the form of the response, e.g. inline, out-of-band, or attached. The available models of a service can be found in the service metadata using \code{sosResponseMode(...)}.
   \item \code{BBOX}: A bounding box to be used only in HTTP GET connections (parameter is discarded for POST connections). The format must one character string with \code{minlon,minlat,maxlon,maxlat,srsURI?}, the spatial reference system is optional.
   \item \code{latest}: A boolean parameter to request the latest observation only (see example below) --- this is not standard conform but only supported by \fivetwon SOS.
+  \item \code{saveOriginal}: Saves a copy of the response document in the current working directory. See section~\ref{subsec:getObsById} for an example.
 \end{itemize}
 
 A request to retrieve the latest measured value is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \enquote{latest}.
@@ -724,18 +726,32 @@ str(spdf)
 @
 
 \subsection{GetObservationById}
+\label{subsec:getObsById}
 
 The operation GetObservationById is defined in clause 10.1 of the SOS specification and not part of the core profile. But it is implemented as it is quite simple. The response is the same as described in the previous section. Optional parameters, and their defaults and supported values, are the same as in GetObservation requests.
 
 In this case the returned observation collection contains an om:Measurement element, which contains just one measured value and is parsed to an object of class \code{OmMeasurement}. The result extraction works the same as with om:Observation objects.
 
-<<getObsById,eval=TRUE,echo=TRUE>>= 
-obs <- getObservationById(sos = mySOS, observationId = "o_3508493")
-# str(obs)
+<<getObsById1,eval=TRUE,echo=TRUE>>= 
+obsId <- getObservationById(sos = mySOS, observationId = "o_3508493")
+# str(obsId)
 # obs[[1]]
-sosResult(obs, coordinates = TRUE)
+sosResult(obsId, coordinates = TRUE)
 @
 
+Just as for \code{getObservation()} you can save the orginal response document. It is saved into the current working directory and the name starts with the observation identifier. You can also read it back using the function \code{sosParse()}.
+
+<<getObsById3,eval=FALSE,echo=TRUE,print=FALSE>>= 
+obsId <- getObservationById(sos = mySOS, observationId = "o_3508493",
+		saveOriginal = TRUE)
+.files <- list.files(getwd())
+.observationFiles <- c()
+for(.f in .files) { # %in% not working with Sweave
+	if(length(grep("^o_", .f, value=TRUE)) > 0)
+		.observationFiles <- c(.observationFiles, .f)
+}
+obsId <- sosParse(sos = mySOS, file = .observationFiles[[1]])
+@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Changing Handling Functions}
@@ -987,16 +1003,12 @@ The output with these parameters enabled is too extensive to show within this do
 
 <<inspect,eval=FALSE,echo=TRUE,print=FALSE>>= 
 off.4 <- sosOfferings(mySOS)[[4]]
-getObservation(sos = mySOS,
-	offering = off.4,
-	procedure = sosProcedures(off.4)[[1]],
-	latest = TRUE,
+getObservation(sos = mySOS, offering = off.4,
+	procedure = sosProcedures(off.4)[[1]], latest = TRUE,
 	inspect = TRUE)
 
-getObservation(sos = mySOS,
-	offering = ,
-	procedure = sosProcedures(off.4)[[1]],
-	latest = TRUE,
+getObservation(sos = mySOS,	offering = off.4,
+	procedure = sosProcedures(off.4)[[1]], latest = TRUE,
 	vebose = TRUE)
 
 verboseSOS <- SOS(sosUrl(mySOS), verboseOutput = TRUE)
@@ -1037,7 +1049,9 @@ You can download (and also browse) the source code of \pkg{sos4R} directly from 
 \item \textbf{Web access}: \url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
 \end{itemize}
 
-See the \textbf{developer documentation} at the \fivetwon Wiki for detailed information on how to use the checked out source project: \url{https://wiki.52north.org/bin/view/Geostatistics/Sos4R }. You will find a detailed description of the folder and class structure, the file naming scheme, and an extensive list of tasks for future development.
+\subsection*{Developer Documentation}
+
+See the developer documentation at the \fivetwon Wiki for detailed information on how to use the checked out source project: \url{https://wiki.52north.org/bin/view/Geostatistics/Sos4R }. You will find a detailed description of the folder and class structure, the file naming scheme, and an extensive list of tasks for future development.
 
 Please get in touch with the community lead\footnote{\url{http://52north.org/communities/geostatistics/community-contact}} of the geostatistics community if you want to \textbf{become a contributor}.
 

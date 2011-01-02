@@ -14,6 +14,7 @@
 \alias{sosDefaultTempOpPropertyName}
 \alias{sosDefaultTemporalOperator}
 \alias{sosDefaultTimeFormat}
+\alias{sosDefaultFilenameTimeFormat}
 \alias{sosDefaultColumnNameFeatureIdentifier}
 \alias{sosDefaultColumnNameLat}
 \alias{sosDefaultColumnNameLon}
@@ -69,6 +70,7 @@ The function \code{SosDisabledParsers} can be used to use no parsing at all (des
 	\item{sosDefaultGetCapOwsVersion}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetCapOwsVersion}}} % "1.1.0"
 	\item{sosDefaultGetObsResponseFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetObsResponseFormat}}} % SosSupportedResponseFormats()[1]
 	\item{sosDefaultTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTimeFormat}}} % "%Y-%m-%dT%H:%M:%OS"
+	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} % 
 	\item{sosDefaultTempOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTempOpPropertyName}}} % "om:samplingTime"
 	\item{sosDefaultTemporalOperator}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTemporalOperator}}} % SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 	\item{sosDefaultSpatialOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultSpatialOpPropertyName}}} % "urn:ogc:data:location"
@@ -140,7 +142,7 @@ describeSensor(sos, sosProcedures(sos)[[1]])
 # a list of example services
 SosExampleServices()
 
-# a named list of defaults
+# a named list of all defaults
 SosDefaults()
 
 }

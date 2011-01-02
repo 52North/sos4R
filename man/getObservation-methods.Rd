@@ -4,7 +4,9 @@
 
 \alias{getObservation}
 \alias{getObservation-methods}
+\alias{getObservation,SOS,character-method}
 \alias{getObservation,SOS,SosObservationOffering-method}
+\alias{getObservation,SOS_1.0.0,character-method}
 \alias{getObservation,SOS_1.0.0,SosObservationOffering-method}
 \alias{getObservationById}
 \alias{getObservationById-methods}
@@ -19,7 +21,7 @@ This method sends a GetObservation request to the given SOS.
 
 \section{Methods}{
 \describe{
-	\item{\code{signature(sos = "SOS", offering = "SosObservationOffering")}}{Request observation data from the given SOS for the given offering (either ID or an object of class \code{SosObservationOffering}).}
+	\item{\code{signature(sos = "SOS", offering = "SosObservationOffering")} or \code{signature(sos = "SOS", offering = "character")}}{Request observation data from the given SOS for the given offering (either character identifier or an object of class \code{SosObservationOffering}).}
 	\item{\code{signature(sos = "SOS", observationId = "character")}}{Request observation data from the given SOS for the given observation identifier.}
 }
 }
@@ -29,7 +31,15 @@ This method sends a GetObservation request to the given SOS.
 }
 
 \examples{
-# TBD
+\dontrun{
+# by identifier
+sos <- SOS(...)
+os.offerings <- sosOfferings(sos)
+obsId <- getObservationById(sos = sos, observationId = "o_3508493")
+
+# TODO
+
+}
 }
 
 \keyword{methods}

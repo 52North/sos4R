@@ -60,12 +60,13 @@ if (!isGeneric("getObservationById"))
 	setGeneric(name = "getObservationById",
 			signature = signature("sos", "observationId", "responseFormat",
 					"srsName", "resultModel", "responseMode", "verbose", 
-					"inspect"),
+					"inspect", "saveOriginal"),
 			def = function(sos, observationId,
 					responseFormat = sosDefaultGetObsResponseFormat,
 					srsName = as.character(NA), resultModel = as.character(NA),
 					responseMode = as.character(NA),
-					verbose = sos@verboseOutput, inspect = FALSE) {
+					verbose = sos@verboseOutput, inspect = FALSE,
+					saveOriginal = FALSE) {
 				standardGeneric("getObservationById")
 			})
 if (!isGeneric("getObservation"))
@@ -73,7 +74,8 @@ if (!isGeneric("getObservation"))
 			signature = signature("sos", "offering", "observedProperty",
 					"responseFormat", "srsName", "eventTime", "procedure",
 					"featureOfInterest", "result", "resultModel",
-					"responseMode", "BBOX", "latest", "verbose", "inspect"),
+					"responseMode", "BBOX", "latest", "verbose", "inspect",
+					"saveOriginal"),
 			def = function(sos, offering,
 					observedProperty = sosObservedProperties(obj = offering),
 					responseFormat = sosDefaultGetObsResponseFormat,
@@ -88,7 +90,8 @@ if (!isGeneric("getObservation"))
 					BBOX = as.character(NA),
 					latest = FALSE,
 					verbose = sos@verboseOutput,
-					inspect = FALSE) {
+					inspect = FALSE,
+					saveOriginal = FALSE) {
 				standardGeneric("getObservation")
 			})
 
@@ -130,12 +133,12 @@ if (!isGeneric("sosExceptionCodeMeaning"))
 #
 if (!isGeneric("encodeXML"))
 	setGeneric(name = "encodeXML",
-			def = function(obj, sos = "SOS", verbose = FALSE, ...) {
+			def = function(obj, sos, verbose = FALSE, ...) {
 				standardGeneric("encodeXML")
 			})
 if (!isGeneric("encodeKVP"))
 	setGeneric(name = "encodeKVP",
-			def = function(obj, sos = "SOS", verbose = FALSE) {
+			def = function(obj, sos, verbose = FALSE, ...) {
 				standardGeneric("encodeKVP")
 			})
 
@@ -146,4 +149,22 @@ if (!isGeneric("sosGetCRS"))
 	setGeneric(name = "sosGetCRS",
 			def = function(obj) {
 				standardGeneric("sosGetCRS")
+			})
+
+#
+#
+#
+if (!isGeneric("sosParse"))
+	setGeneric(name = "sosParse",
+			def = function(sos, file, verbose = FALSE, ...) {
+				standardGeneric("sosParse")
+			})
+
+#
+#
+#
+if (!isGeneric("sosGetDCP"))
+	setGeneric(name = "sosGetDCP",
+			def = function(sos, operation, type = NA) {
+				standardGeneric("sosGetDCP")
 			})

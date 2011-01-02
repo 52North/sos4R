@@ -233,11 +233,17 @@ SosGetObservationById <- function(
 			verbose = verbose)
 	
 	if(sos@method == .sosConnectionMethodGet) {
-		if(isTRUE(grep(pattern = "[\\?]", x = sos@url) > 0)) {
-			warning("Given url already contains a '?', appending arguments!")
-			.url = paste(sos@url, .encodedRequest, sep = "&")
+		.dcp <- sosGetDCP(sos, sosName(request), "Get") #sos@url
+		if(is.null(.dcp) || is.na(.dcp)) {
+			.dcp <- sos@url
+			if(verbose) cat("Could not get DCP from operation description.\n")
 		}
-		else .url = paste(sos@url, .encodedRequest, sep = "?")
+			
+		if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
+			warning("Given url already contains a '?', appending arguments!")
+			.url = paste(.dcp, .encodedRequest, sep = "&")
+		}
+		else .url = paste(.dcp, .encodedRequest, sep = "?")
 		
 		if(verbose || inspect) {
 			cat("*** GET! REQUEST: ", .url, "\n")
@@ -253,8 +259,14 @@ SosGetObservationById <- function(
 			print(.encodedRequest)
 		}
 		
+		.dcp <- sosGetDCP(sos, sosName(request), "Post") #sos@url
+		if(is.null(.dcp) || is.na(.dcp)) {
+			.dcp <- sos@url
+			if(verbose) cat("Could not get DCP from operation description.\n")
+		}
+		
 		# using 'POST' for application/x-www-form-urlencoded content
-		.response <- postForm(uri = sos@url,
+		.response <- postForm(uri = .dcp,
 				request = toString(.encodedRequest),
 				style = "POST", .opts = sos@curlOptions,
 				curl = sos@curlHandle,
@@ -388,10 +400,14 @@ setMethod(f = "describeSensor",
 setMethod(f = "getObservationById",
 		signature = signature(sos = "SOS_1.0.0", observationId = "character"), 
 		def = function(sos, observationId, responseFormat, srsName,
-				resultModel, responseMode, verbose, inspect) {
+				resultModel, responseMode, verbose, inspect, saveOriginal) {
 			if(verbose) {
 				cat("** GET OBSERVATION BY ID: ", observationId, "\n")
 			}
+			
+			if(saveOriginal) .filename <- paste(observationId, 
+						format(Sys.time(), sosDefaultFilenameTimeFormat),
+						sep = "_")
 			
 			.go <- SosGetObservationById(service = sosService,
 					version = sos@version, observationId = observationId,
@@ -411,6 +427,15 @@ setMethod(f = "getObservationById",
 			if(verbose || inspect) {
 				cat("** RESPONSE DOC:\n")
 				print(.response)
+			}
+			
+			if(saveOriginal) {
+				.filename <- paste(.filename, ".xml", sep = "")
+				saveXML(.response, file = .filename)
+				
+				if(verbose) {
+					cat("** Saved original document:", .filename, "\n")
+				}
 			}
 			
 			if(.isExceptionReport(.response)) {
@@ -433,7 +458,15 @@ setMethod(f = "getObservationById",
 				return(.obs)
 			}
 			
-			return(.response)
+			if(saveOriginal) {
+				save(.responseString, file = .filename)
+				
+				if(verbose) {
+					cat("** Saved original document:", .filename, "\n")
+				}
+			}
+			
+			return(.responseString)
 		}
 )
 
@@ -441,17 +474,17 @@ setMethod(f = "getObservationById",
 #
 #
 #
-.getObservation_1.0.0 <- function(sos, offering, observedProperty,
+.getObservation_1.0.0 <- function(sos, offeringId, observedProperty,
 		responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-		result, resultModel, responseMode, BBOX, latest, verbose, inspect) {
+		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+		saveOriginal) {
 	
-	if(is.character(offering))
-		.offeringId <- offering
-	else .offeringId <- offering@id
+	if(saveOriginal) .filename <- paste(offeringId, 
+				format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
 	
 	if(verbose)
 		cat("** GET OBSERVATION to ", sos@url, " with offering ",
-				.offeringId, "\n")
+				offeringId, "\n")
 	
 	if(latest) .eventTime <- list(.createLatestEventTime(verbose))
 	else .eventTime <- eventTime
@@ -460,7 +493,7 @@ setMethod(f = "getObservationById",
 		warning("'Latest' is set to TRUE > given eventTime is ignored!")
 	
 	.go <- SosGetObservation(service = sosService, version = sos@version, 
-			offering = .offeringId, observedProperty = observedProperty,
+			offering = offeringId, observedProperty = observedProperty,
 			responseFormat =  responseFormat, srsName = srsName,
 			eventTime = .eventTime, procedure = procedure,
 			featureOfInterest = featureOfInterest, result = result,
@@ -483,6 +516,15 @@ setMethod(f = "getObservationById",
 		if(verbose || inspect) {
 			cat("** RESPONSE DOC:\n")
 			print(.response)
+		}
+		
+		if(saveOriginal) {
+			.filename <- paste(.filename, ".xml", sep = "")
+			saveXML(.response, file = .filename)
+			
+			if(verbose) {
+				cat("** Saved original document:", .filename, "\n")
+			}
 		}
 		
 		if(.isExceptionReport(.response)) {
@@ -510,29 +552,45 @@ setMethod(f = "getObservationById",
 			print(.obs)
 		}
 		
-		cat("Finished getObservation to", sos@url, "\n\t--> received",
-				length(.obs), "observation(s) having",
-				sum(.resultLength), "result values [", toString(.resultLength),
-				"].\n")
+		.msg <- paste("Finished getObservation to", sos@url, "\n\t--> received",
+				length(.obs), "observation(s) having", sum(.resultLength),
+				"result values [", toString(.resultLength), "].\n")
+		if(saveOriginal) .msg <- paste(.msg, "\tOriginal document saved:",
+					.filename)
+		cat(.msg)
 		
 		return(.obs)
 	}
 	else if(grep(pattern = "text/csv", x = responseFormat) == 1) {
-		# TODO handle csv data
 		if(verbose || inspect) {
 			cat("** CSV RESPONSE:\n")
 			print(.responseString)
-			str(.responseString)
 		}
-		return(.responseString)
+		
+		.parsingFunction <- sosParsers(sos)[[csvName]]
+		.csv <- .parsingFunction(obj = .responseString, verbose = verbose)
+		
+		if(saveOriginal) {
+			.filename <- paste(file = .filename, ".csv", sep = "")
+			write.csv(.csv, .filename)
+			cat("** Saved original document:", .filename, "\n")
+		}
+		
+		return(.csv)
 	}
 
 	# not xml nor csv
 	if(verbose || inspect) {
 		cat("** NON-XML RESPONSE:\n")
 		print(.responseString)
-		str(.responseString)
+#		str(.responseString)
 	}
+	
+	if(saveOriginal) {
+		save(.responseString, file = .filename)
+		cat("** Saved original document:", .filename)
+	}
+	
 	return(.responseString)
 }
 setMethod(f = "getObservation",
@@ -540,8 +598,13 @@ setMethod(f = "getObservation",
 				offering = "SosObservationOffering"),
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
-				responseMode, BBOX, latest, verbose, inspect) {
-			return(.getObservation_1.0.0(sos = sos, offering = offering,
+				responseMode, BBOX, latest, verbose, inspect, saveOriginal) {
+			
+			if(is.character(offering))
+				.offeringId <- offering
+			else .offeringId <- offering@id
+			
+			return(.getObservation_1.0.0(sos = sos, offeringId = .offeringId,
 							observedProperty = observedProperty,
 							responseFormat = responseFormat,
 							srsName = srsName, eventTime = eventTime,
@@ -550,17 +613,18 @@ setMethod(f = "getObservation",
 							result = result, resultModel = resultModel,
 							responseMode = responseMode, BBOX = BBOX,
 							latest = latest, verbose = verbose,
-							inspect = inspect))
+							inspect = inspect, saveOriginal = saveOriginal))
 		}
 )
 setMethod(f = "getObservation",
 		signature = signature(sos = "SOS_1.0.0",
 				offering = "character"),
-		def = function(sos, offering, observedProperty, responseFormat, srsName,
-				eventTime,	procedure, featureOfInterest, result, resultModel,
-				responseMode, BBOX, latest, verbose, inspect) {
+		def = function(sos, offering, observedProperty = list(), responseFormat,
+				srsName, eventTime,	procedure, featureOfInterest, result,
+				resultModel, responseMode, BBOX, latest, verbose, inspect,
+				saveOriginal) {
 			return(.getObservation_1.0.0(sos = sos, offering = offering,
-							observedProperty = observedProperty,
+							observedProperty = observedProperty, # cannot base observed properties based on id so easily
 							responseFormat = responseFormat,
 							srsName = srsName, eventTime = eventTime,
 							procedure = procedure,
@@ -568,10 +632,9 @@ setMethod(f = "getObservation",
 							result = result, resultModel = resultModel,
 							responseMode = responseMode, BBOX = BBOX,
 							latest = latest, verbose = verbose,
-							inspect = inspect))
+							inspect = inspect, saveOriginal = saveOriginal))
 		}
 )
-
 
 #
 # see: http://www.oostethys.org/best-practices/best-practices-get
@@ -660,7 +723,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@eventTime)) {
-		if(verbose) cat("Adding event time", obj@eventTime, "\n")
+		if(verbose) cat("Adding event time", toString(obj@eventTime), "\n")
 		if(length(obj@eventTime) > 1)
 			warning("Only first event time in the list is used for KVP!")
 		

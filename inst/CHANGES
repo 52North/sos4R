@@ -87,5 +87,8 @@
 * Added sosResultModel() for SosObservationOffering, but the namespace is not correct in 52N SOS
 * Added unimplemented operations to the list of operation names
 * Changed sosResult() for OmMeasurement, now returns a data.frame
+* Added saveOriginal parameter to getObservation(ById)()
+* Added parsing documents from saved files with sosParse(...)
 * Added support for result format "text/csv" (under development!)
+* Changed URL for requests to be based on DCPs from capabilities file
 * ...

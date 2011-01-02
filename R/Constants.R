@@ -383,3 +383,4 @@ OwsExceptionsData <- function() {
 # others
 xmlInternalDocumentName <- "XMLInternalDocument"
 xmlTextNodeName <- "text"
+csvName <- "text/csv"

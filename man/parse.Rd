@@ -46,11 +46,23 @@
 \alias{parseValues}
 \alias{parseObservationProperty}
 
+\alias{sosParse}
+\alias{sosParse-methods}
+\alias{sosParse,SOS_1.0.0,character-method}
+\alias{sosParse,SOS_1.0.0,character,logical-method}
+
+\alias{parseNoParsing}
+\alias{sosParseCSV}
+
+
 \title{Parsing Functions for XML Documents and Elements}
 
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}
 
 \usage{
+sosParse(sos, file, verbose = FALSE, ...)
+sosParseCSV(obj, verbose = FALSE)
+parseNoParsing(obj)
 parseCategoryObservation(obj, sos, verbose = FALSE)
 parseComplexObservation(obj, sos, verbose = FALSE)
 parseComponent(obj, sos, verbose = FALSE)
@@ -102,7 +114,9 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
   \item{format}{A character string defining the time format to be used in \code{strptime}.}
   \item{values}{The values to be parsed in \code{parseValues(...)}.}
   \item{fields}{Field information  in \code{parseValues(...)}, a named list.}
+  \item{file}{Name of the file to be parsed in \code{sosParse(...)}.}
   \item{encoding}{Encoding information in \code{parseValues(...)}, an object of class \code{SweTextBlock}.}
+  \item{...}{Additional arguments that are parsed to \code{xmlParse(...)} in \code{sosParse(...)}.}
 }
 
 \details{
@@ -111,6 +125,10 @@ The naming of the functions follow the following rule: parse[optional: namespace
 Not all parsing function that have a \code{SOS} object or \code{verbose} in their signature, but few actually use it at this points of development. Some of the parsing functions are \strong{exchangeable} when creating a new SOS connection. Please see the examples!
 
 \code{parseOM} is a special function in the respect that it matches sub parsing function depending on an objects \code{xmlName} from the list of the given \code{SOS}'s parsing functions.
+
+\code{parseNoParsing} is a convenience function that directly returns the object without any changes.
+
+\code{sosParse} allows parsing of files for all elements that have a parsers registered with the given SOS.
 }
 
 \value{An objects of a specific class depending on the parsing method and the passed object, possibly even lists or named character vectors.}
@@ -134,6 +152,19 @@ er.doc <- xmlParseDoc("<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/o
 er.parsed <- parseOwsExceptionReport(er.doc)
 print(er.parsed)
 str(er.parsed)
+
+\dontrun{
+# save and re-parse an observation from file
+obsId <- getObservationById(sos = mySOS, observationId = "o_3508493",
+		saveOriginal = TRUE)
+.files <- list.files(getwd())
+.startWithO_ <- .files \%in\% grep("o_", .files, value=TRUE)
+.observationFiles <- subset(.files, .startWithO_)
+
+obsId <- sosParse(sos = mySOS, file = .observationFiles[[1]])
 }
 
+}
+
+\keyword{methods}
 \keyword{misc}

@@ -193,12 +193,23 @@ setMethod(f = "sosOperationsMetadata", signature = signature(sos = "SOS"),
 		})
 
 if (!isGeneric("sosOperations"))
-	setGeneric(name = "sosOperations", def = function(sos) {
+	setGeneric(name = "sosOperations", def = function(obj) {
 				standardGeneric("sosOperations")
 			})
-setMethod(f = "sosOperations", signature = signature(sos = "SOS"),
-		def = function(sos) {
-			return(sos@capabilities@operations@operations)
+setMethod(f = "sosOperations", signature = signature(obj = "SOS"),
+		def = function(obj) {
+			return(sosOperations(obj@capabilities))
+		})
+setMethod(f = "sosOperations",
+		signature = signature(obj = "SosCapabilities_1.0.0"),
+		def = function(obj) {
+			return(obj@operations@operations)
+		})
+# required to handle the first capabilities request:
+setMethod(f = "sosOperations",
+		signature = signature(obj = "OwsCapabilities"),
+		def = function(obj) {
+			return(NULL)
 		})
 
 if (!isGeneric("sosContents"))
@@ -385,14 +396,19 @@ if (!isGeneric("sosOfferings"))
 				standardGeneric("sosOfferings")
 			})
 setMethod(f = "sosOfferings", signature = signature(obj = "SOS"),
-		def = function(obj) {
+		def = function(obj, offeringIDs = c(), name = NA) {
 			.offerings <- obj@capabilities@contents@observationOfferings
+			if(!is.na(name)) {
+				for (.o in .offerings) {
+					.currentName <- sosName(.o)
+					if(.currentName == name)
+						return(.o)
+				}
+			}
+			if(length(offeringIDs) > 0)
+				return(.offerings[offeringIDs])
+			
 			return(.offerings)
-		})
-setMethod(f = "sosOfferings", signature = signature(obj = "SOS"),
-		def = function(obj, offeringIDs) {
-			.offerings <- obj@capabilities@contents@observationOfferings
-			return(.offerings[offeringIDs])
 		})
 
 if (!isGeneric("sosOfferingIds"))
@@ -745,6 +761,11 @@ setMethod(f = "sosResult", signature = signature(obj = "list"),
 			.result <- do.call(rbind, .l)
 			return(.result)
 		})
+setMethod(f = "sosResult", signature = signature(obj = "OwsExceptionReport"),
+		def = function(obj, coordinates = FALSE) {
+			warning("OwsExceptionReport does not have a result set.")
+			return(toString(obj))
+		})
 
 if (!isGeneric("sosCoordinates"))
 	setGeneric(name = "sosCoordinates", def = function(obj) {
@@ -842,6 +863,7 @@ setMethod(f = "sosSrsName",
 			}
 			return(.self)
 		})
+
 if (!isGeneric("sosId"))
 	setGeneric(name = "sosId", def = function(obj) {
 				standardGeneric("sosId")
@@ -858,6 +880,7 @@ setMethod(f = "sosId", signature = signature(obj = "list"),
 		def = function(obj) {
 			return(sapply(obj, sosId))
 		})
+
 if (!isGeneric("sosName"))
 	setGeneric(name = "sosName", def = function(obj) {
 				standardGeneric("sosName")
@@ -870,6 +893,27 @@ setMethod(f = "sosName", signature = signature(obj = "OwsServiceProvider"),
 		def = function(obj) {
 			return(obj@providerName)
 		})
+setMethod(f = "sosName", signature = signature(obj = "OwsOperation"),
+		def = function(obj) {
+			return(obj@name)
+		})
+setMethod(f = "sosName", signature = signature(obj = "SosDescribeSensor"),
+		def = function(obj) {
+			return(sosDescribeSensorName)
+		})
+setMethod(f = "sosName", signature = signature(obj = "SosGetObservation"),
+		def = function(obj) {
+			return(sosDescribeSensorName)
+		})
+setMethod(f = "sosName", signature = signature(obj = "SosGetObservationById"),
+		def = function(obj) {
+			return(sosGetObservationByIdName)
+		})
+setMethod(f = "sosName", signature = signature(obj = "OwsGetCapabilities"),
+		def = function(obj) {
+			return(sosGetCapabilitiesName)
+		})
+
 
 ################################################################################
 # conversion methods and accessor function
@@ -1254,3 +1298,23 @@ setMethod(f = "sosGetCRS",
 			else return(.l)
 		}
 )
+
+#
+#
+#
+setMethod(f = "sosGetDCP",
+		signature = c(sos = "SOS", operation = "character"),
+		def = function(sos, operation, type = NA) {
+			.ops <- sosOperations(sos)
+			
+			if(is.null(.ops)) return(NULL)
+			
+			.dcps <- .ops[[operation]]@DCPs
+			
+			if(!is.na(type)) {
+				return(.dcps[[type]])
+			}
+			else return(.dcps)
+		}
+)
+

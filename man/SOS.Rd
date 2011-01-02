@@ -17,64 +17,87 @@
 
 \alias{sosCapabilitiesDocumentOriginal}
 \alias{sosCapabilitiesDocumentOriginal,SOS-method}
+
 \alias{sosCaps}
 \alias{sosCaps-methods}
 \alias{sosCaps,SOS-method}
+
 \alias{sosContents}
 \alias{sosContents-methods}
 \alias{sosContents,SOS-method}
+
 \alias{sosDataFieldConverters}
 \alias{sosDataFieldConverters-methods}
 \alias{sosDataFieldConverters,SOS-method}
+
 \alias{sosTime}
 \alias{sosTime-methods}
 \alias{sosTime,SOS-method}
+
 \alias{sosFilter_Capabilities}
 \alias{sosFilter_Capabilities-methods}
 \alias{sosFilter_Capabilities,SOS-method}
+
 \alias{sosFeaturesOfInterest}
 \alias{sosFeaturesOfInterest-methods}
 \alias{sosFeaturesOfInterest,SOS-method}
 \alias{sosFeaturesOfInterest,SOS,character-method}
 \alias{sosFeaturesOfInterest,SosObservationOffering-method}
+
 \alias{sosMethod}
 \alias{sosMethod-methods}
 \alias{sosMethod,SOS-method}
 \alias{sosMethod,SOS_1.0.0-method}
+
 \alias{sosObservedProperties}
 \alias{sosObservedProperties-methods}
 \alias{sosObservedProperties,SOS-method}
 \alias{sosObservedProperties,SosObservationOffering-method}
+
 \alias{sosOfferingIds}
 \alias{sosOfferingIds-methods}
 \alias{sosOfferingIds,SOS-method}
+
 \alias{sosOfferings}
 \alias{sosOfferings-methods}
 \alias{sosOfferings,SOS-method}
 \alias{sosOfferings,SOS,character-method}
+
 \alias{sosOperation}
 \alias{sosOperation-methods}
 \alias{sosOperation,SOS,character-method}
+
 \alias{sosOperationsMetadata}
 \alias{sosOperationsMetadata-methods}
 \alias{sosOperationsMetadata,SOS-method}
+
 \alias{sosParsers}
 \alias{sosParsers-methods}
 \alias{sosParsers,SOS-method}
+
 \alias{sosProcedures}
 \alias{sosProcedures-methods}
 \alias{sosProcedures,SOS-method}
 \alias{sosProcedures,list-method}
 \alias{sosProcedures,SosObservationOffering-method}
+
 \alias{sosResponseFormats}
 \alias{sosResponseFormats-methods}
 \alias{sosResponseFormats,SOS-method}
+\alias{sosResponseFormats,OwsOperation-method}
+\alias{sosResponseFormats,SosObservationOffering-method}
+
 \alias{sosResponseMode}
 \alias{sosResponseMode-methods}
 \alias{sosResponseMode,SOS-method}
+\alias{sosResponseMode,OwsOperation-method}
+\alias{sosResponseMode,SosObservationOffering-method}
+
 \alias{sosResultModels}
 \alias{sosResultModels-methods}
 \alias{sosResultModels,SOS-method}
+\alias{sosResultModels,OwsOperation-method}
+
 \alias{sosServiceIdentification}
 \alias{sosServiceIdentification-methods}
 \alias{sosServiceIdentification,SOS-method}
@@ -121,7 +144,23 @@
 
 \alias{sosName}
 \alias{sosName-method}
+\alias{sosName,OwsServiceProvider-method}
+\alias{sosName,OwsGetCapabilities-method}
+\alias{sosName,OwsOperation-method}
+\alias{sosName,SosDescribeSensor-method}
+\alias{sosName,SosGetObservation-method}
+\alias{sosName,SosGetObservationById-method}
 
+\alias{sosEncoders}
+\alias{sosEncoders,SOS-method}
+
+\alias{sosOperations}
+\alias{sosOperations,SOS-method}
+\alias{sosOperations,OwsCapabilities-method}
+\alias{sosOperations,SosCapabilities_1.0.0-method}
+
+\alias{sosGetDCP}
+\alias{sosGetDCP,SOS,character-method}
 
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
@@ -156,11 +195,16 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosContents}{\code{signature(sos = "SOS")}: ... }
     \item{sosDataFieldConverters}{\code{signature(sos = "SOS")}: ... }
     \item{sosTime}{\code{signature(obj = "SOS")}: ... }
-    \item{sosFilter_Capabilities}{\code{signature(sos = "SOS")}: ... }
+    \item{sosTime}{\code{signature(obj = "SOS")}: ... }
+    \item{sosOperations}{\code{signature(sos = "...")}: ... }
+    \item{sosGetCRS}{\code{signature(obj = "character")}: ... }
+    \item{sosGetDCP}{\code{signature(sos = "SOS", operation = "character", type = "character")}: Get the distributed computing platform URL for the given operation and method type. If type is missing, the function returns all available DCPs. }
+    \item{sosEncoders}{\code{signature(sos = "SOS")}: ... }
     \item{sosFeatureIds}{\code{signature(obj = "list")}: ... }
     \item{sosFeaturesOfInterest}{\code{signature(obj = "list")}: ... }
     \item{sosGetCRS}{\code{signature(obj = "character")}: Get an object of class \code{CRS} for a given OGC URN depicting a reference system, like \code{urn:ogc:def:crs:EPSG:1000}.}
     \item{sosMethod}{\code{signature(sos = "SOS")}: ... }
+    \item{sosName}{\code{signature(obj = "...")}: ... }
     \item{sosObservedProperties}{\code{signature(sos = "SOS")}: ... }
     \item{sosOffering}{\code{signature(sos = "SOS", offeringId = "character")}: ... }
     \item{sosOfferingIds}{\code{signature(sos = "SOS")}: ... }
@@ -169,7 +213,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosOperationsMetadata}{\code{signature(sos = "SOS")}: ... }
     \item{sosParsers}{\code{signature(sos = "SOS")}: ... }
     \item{sosProcedures}{\code{signature(sos = "SOS")}: Accessor function for the procedures of a \code{\linkS4class{SOS}} (via list in capabilities of \code{GetObservation} operation) or a \code{\linkS4class{SosObservationOffering}}.}
-    \item{sosResponseFormats}{\code{signature(sos = "SOS")}: ... }
+    \item{sosResponseFormats}{\code{signature(sos = "SOS")}: TBD: add missing signatures ... }
     \item{sosResponseMode}{\code{signature(sos = "SOS")}: ... }
     \item{sosResultModels}{\code{signature(sos = "SOS")}: ... }
     \item{sosServiceIdentification}{\code{signature(sos = "SOS")}: ... }

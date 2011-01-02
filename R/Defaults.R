@@ -78,7 +78,9 @@ SosExampleServices <- function() {
 		parseCountObservation,
 		parseTruthObservation,
 		parseTemporalObservation,
-		parseComplexObservation)
+		parseComplexObservation,
+		#
+		sosParseCSV)
 names(.sosDefaultParsers) <- list(
 		sosGetCapabilitiesName,
 		sosDescribeSensorName,
@@ -101,7 +103,9 @@ names(.sosDefaultParsers) <- list(
 		omCountObservationName,
 		omTruthObservationName,
 		omTemporalObservationName,
-		omComplexObservationName)
+		omComplexObservationName,
+		#
+		csvName)
 
 # Using a different approach for the encoders here, because there is more than
 # one way of encoding something (in contrast to parsing). So the different 
@@ -308,15 +312,15 @@ SosDataFieldConvertingFunctions <- function (..., include = character(0),
 # This works for all but capabilities, as these need to be requested on creating
 # a new SOS instance.
 #
-parseSosNoParsing <- function(obj) {
+parseNoParsing <- function(obj) {
 	return(obj)	
 }
 .sosDisabledParsers <- list(
 		parseSosCapabilities, # if this is removed, no more SOS instances can be created! 
-		parseSosNoParsing,
-		parseSosNoParsing,
-		parseSosNoParsing,
-		parseSosNoParsing)
+		parseNoParsing,
+		parseNoParsing,
+		parseNoParsing,
+		parseNoParsing)
 names(.sosDisabledParsers) <- list(
 		sosGetCapabilitiesName,
 		sosDescribeSensorName,
@@ -337,6 +341,7 @@ sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[[1]]
 sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
+sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H:%M:%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"
@@ -347,6 +352,7 @@ sosDefaultColumnNameLat <- "lat"
 sosDefaultColumnNameLon <- "lon"
 sosDefaultColumnNameSRS <- "SRS"
 
+
 SosDefaults <- function() {
 	.defaults <- list(sosDefaultCharacterEncoding,
 			sosDefaultDescribeSensorOutputFormat,
@@ -355,6 +361,7 @@ SosDefaults <- function() {
 			sosDefaultGetCapOwsVersion,
 			sosDefaultGetObsResponseFormat,
 			sosDefaultTimeFormat,
+			sosDefaultFilenameTimeFormat,
 			sosDefaultTempOpPropertyName,
 			sosDefaultTemporalOperator,
 			sosDefaultSpatialOpPropertyName,
@@ -369,6 +376,7 @@ SosDefaults <- function() {
 			"sosDefaultGetCapOwsVersion",
 			"sosDefaultGetObsResponseFormat",
 			"sosDefaultTimeFormat",
+			"sosDefaultFilenameTimeFormat",
 			"sosDefaultTempOpPropertyName",
 			"sosDefaultTemporalOperator",
 			"sosDefaultSpatialOpPropertyName",

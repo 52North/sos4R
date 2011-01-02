@@ -34,11 +34,13 @@ Na, A., Priest, M. (Eds.), 2007. Sensor Observation Service. OpenGIS Implementat
 \seealso{See also the package Vignette, \code{vignette(sos4R)}.}
 
 \note{
-The development of this software was gratefully supported by the 52°North Student Innovation Prize for Geoinformatics 2010.
+The development of this software was gratefully supported by the 52North Student Innovation Prize for Geoinformatics 2010.
 
 To stay updated on all matters around \pkg{sos4R} go to the development blog at \url{http://www.nordholmen.net/sos4r/}.
 
 If you want to ask questions about using the software, please go to the 52°North forum for the geostatistics community (\url{http://geostatistics.forum.52north.org/}), or consider subscribing to the mailing list (\url{http://list.52north.org/mailman/listinfo}).
+
+The most extensive documenation is contained in the \strong{package vignette}.
 }
 
 \examples{
