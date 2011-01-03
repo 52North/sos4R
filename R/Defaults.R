@@ -80,7 +80,8 @@ SosExampleServices <- function() {
 		parseTemporalObservation,
 		parseComplexObservation,
 		#
-		sosParseCSV)
+		parseCSV,
+		parseOM)
 names(.sosDefaultParsers) <- list(
 		sosGetCapabilitiesName,
 		sosDescribeSensorName,
@@ -105,7 +106,8 @@ names(.sosDefaultParsers) <- list(
 		omTemporalObservationName,
 		omComplexObservationName,
 		#
-		csvName)
+		mimeTypeCSV,
+		mimeTypeOM)
 
 # Using a different approach for the encoders here, because there is more than
 # one way of encoding something (in contrast to parsing). So the different 

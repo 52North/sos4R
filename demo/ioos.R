@@ -93,6 +93,7 @@ obs.csv.post <- getObservation(ioos.post,
 		verbose = TRUE)
 obs.csv.post
 
+# time series
 #begin <- sosTime(ioos.post.off[[1]], convert = TRUE)[[1]]
 end <- as.POSIXct(Sys.time())
 begin <- end - 3600 * 24 * 30
@@ -101,7 +102,7 @@ begin <- end - 3600 * 24 * 30
 .offeringId <- sosId(.offering)
 obs.001 <- getObservation(sos = ioos.post,
 		offering = sosName(.offering), # "urn:ioos:network:noaa.nws.ndbc:all"
-		procedure = sosProcedures(ioos.post.off[[1]])[500:550],
+		procedure = sosProcedures(ioos.post.off[[1]])[690:700],
 		observedProperty = sosObservedProperties(ioos.post.off[[1]])[6:7],
 		responseFormat = "text/csv",
 		eventTime = sosCreateEventTimeList(

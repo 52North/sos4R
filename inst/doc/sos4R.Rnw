@@ -155,7 +155,7 @@ toString(SosSupportedTemporalOperators())
 
 Therefore, the undocumented profile of the \boldmath{\fivetwon}\textbf{ SOS implementation}\footnote{\url{http://52north.org/communities/sensorweb/sos/}} was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.
 
-In the author's experience, \textbf{OOSThetys SOS implementations}\footnote{\url{http://www.oostethys.org/}} utilise the same or at least very similar profile, so responses of these service instances are also probably parsed without further work.
+In the author's experience, \textbf{OOSThetys SOS implementations}\footnote{\url{http://www.oostethys.org/}} utilise the same or at least very similar profile, so responses of these service instances are probably parsed without further work as well.
 
 Please share your experiences with other SOS implementations with the developers and users of \pkg{sos4R} (see section \ref{sec:support}). 
 
@@ -182,7 +182,7 @@ SosDataFieldConvertingFunctions()
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Creating a SOS connection}
 
-The operation \code{SOS(...)} is a construction method for classes encapsulating a connection to a SOS. It prints out a short statement when the connection was successful and returns an object of class \code{SOS}.
+The operation \code{SOS(...)} is a construction method for classes encapsulating a connection to a SOS. It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class \code{SOS}.
 
 <<conn,echo=TRUE,print=FALSE>>= 
 mySOS = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")

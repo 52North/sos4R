@@ -561,13 +561,13 @@ setMethod(f = "getObservationById",
 		
 		return(.obs)
 	}
-	else if(grep(pattern = "text/csv", x = responseFormat) == 1) {
+	else if(grep(pattern = mimeTypeCSV, x = responseFormat) == 1) {
 		if(verbose || inspect) {
 			cat("** CSV RESPONSE:\n")
 			print(.responseString)
 		}
 		
-		.parsingFunction <- sosParsers(sos)[[csvName]]
+		.parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
 		.csv <- .parsingFunction(obj = .responseString, verbose = verbose)
 		
 		if(saveOriginal) {
@@ -581,9 +581,8 @@ setMethod(f = "getObservationById",
 
 	# not xml nor csv
 	if(verbose || inspect) {
-		cat("** NON-XML RESPONSE:\n")
+		cat("** UNKNOWN RESPONSE FORMAT:\n")
 		print(.responseString)
-#		str(.responseString)
 	}
 	
 	if(saveOriginal) {
@@ -1178,7 +1177,7 @@ setMethod(f = "checkRequest",
 							"==",
 							.format),
 					na.rm = TRUE)) {
-				stop(paste("outputformat has to be one of",
+				warning(paste("Outputformat has to be one of",
 								paste(.supportedFormats, sep = ", ",
 										collapse = " ")))
 			}

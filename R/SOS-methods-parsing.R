@@ -216,7 +216,7 @@ parseSosFilter_Capabilities <- function(obj) {
 
 ################################################################################
 # parse saved documents
-setMethod(f = "sosParse",
+setMethod(f = "parseFile",
 		signature = signature(sos = "SOS_1.0.0", file = "character"),
 		def = function(sos, file, verbose, ...) {
 			# TODO add parameter and handling for strings using xmlParseString(...)
@@ -239,7 +239,7 @@ setMethod(f = "sosParse",
 #
 #
 #
-sosParseCSV <- function(obj, verbose = FALSE) {
+parseCSV <- function(obj, verbose = FALSE) {
 	lines <- strsplit(x = obj, split = "\n")[[1]]
 	data <- do.call(what = "strsplit", args = list(lines, split = ","))
 	

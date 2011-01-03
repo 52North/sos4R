@@ -70,10 +70,13 @@ SosSupportedConnectionMethods <- function() {
 	return(.supported)
 }
 
+mimeTypeCSV <- "text/csv"
+mimeTypeOM <- 'text/xml;subtype="om/1.0.0&quot"'
+
 .sosSupportedResponseFormats <- c(
 		"text/xml;subtype=&quot;om/1.0.0&quot;",
 		"text/xml;subtype=&quot;sensorML/1.0.1&quot;",
-		"text/csv")
+		mimeTypeCSV)
 SosSupportedResponseFormats <- function() {
 	return(.sosSupportedResponseFormats)
 }
@@ -383,4 +386,3 @@ OwsExceptionsData <- function() {
 # others
 xmlInternalDocumentName <- "XMLInternalDocument"
 xmlTextNodeName <- "text"
-csvName <- "text/csv"

@@ -154,10 +154,10 @@ if (!isGeneric("sosGetCRS"))
 #
 #
 #
-if (!isGeneric("sosParse"))
-	setGeneric(name = "sosParse",
+if (!isGeneric("parseFile"))
+	setGeneric(name = "parseFile",
 			def = function(sos, file, verbose = FALSE, ...) {
-				standardGeneric("sosParse")
+				standardGeneric("parseFile")
 			})
 
 #

@@ -89,6 +89,9 @@
 * Changed sosResult() for OmMeasurement, now returns a data.frame
 * Added saveOriginal parameter to getObservation(ById)()
 * Added parsing documents from saved files with sosParse(...)
-* Added support for result format "text/csv" (under development!)
-* Changed URL for requests to be based on DCPs from capabilities file
+* Added support for result format "text/csv"
+* Changed URL for requests to be based on DCPs from capabilities file (if present)
 * ...
+
+# TODO
+* Changed first parsing function call, now based on mime type instead of operation name???
