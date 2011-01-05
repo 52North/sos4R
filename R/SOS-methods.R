@@ -36,7 +36,7 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		dataFieldConverters = SosDataFieldConvertingFunctions(),
 		curlOptions = list(),
 		curlHandle = getCurlHandle(),
-		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE) {
+		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, ...) {
 	if(version == "1.0.0") {
 		if(method == .sosConnectionMethodPost)
 			.curlOpts <- curlOptions(url = url)
@@ -49,7 +49,7 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 				# dummy capabilities to be replaced below
 				capabilities = new("OwsCapabilities", version = "NA",
 						updateSequence = as.character(NA),
-						owsVersion = "1.1.0"),
+						owsVersion = sosDefaultGetCapOwsVersion),
 				parsers = parsers,
 				encoders = encoders,
 				dataFieldConverters = dataFieldConverters,
@@ -58,13 +58,15 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 				timeFormat = timeFormat,
 				verboseOutput = verboseOutput)
 		
-		.caps <- getCapabilities(sos = .sos, verbose = verboseOutput)
+		.caps <- getCapabilities(sos = .sos, verbose = verboseOutput, ...)
 		if(!is(.caps, "OwsCapabilities")) {
 			stop("ERROR: Did not receive a Capabilities response!")
 		}
 		
 		.sos@capabilities <- .caps
 		
+		if(verboseOutput) cat("Created new SOS:\n", toString(.sos), "\n")
+				
 		cat("Created SOS for URL", url, "\n")
 		return(.sos)
 	}
@@ -309,13 +311,16 @@ setMethod(f = "sosRequest",
 #
 #
 #
-.getCapabilities_1.0.0 <- function(sos, verbose, inspect) {
+.getCapabilities_1.0.0 <- function(sos, verbose, inspect, sections,
+		acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
 	if (verbose) {
-		cat("** GET CAPABILITIES of", sos@url, "\n")
+		cat("** GET CAPABILITIES of", sosUrl(sos), "\n")
 	}
 	
 	.gc <- OwsGetCapabilities(service = sosService,
-			acceptVersions = c(sos@version))
+			acceptVersions = c(sosVersion(sos)), sections = sections,
+			acceptFormats = acceptFormats, updateSequence = updateSequence,
+			owsVersion = owsVersion, acceptLanguages = acceptLanguages)
 	if(verbose) cat("** REQUEST:\n", toString(.gc), "\n")
 	
 	.responseString = sosRequest(sos = sos, request = .gc,
@@ -343,9 +348,14 @@ setMethod(f = "sosRequest",
 	}
 }
 setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
-		def = function(sos, verbose, inspect) {
+		def = function(sos, verbose, inspect, sections, acceptFormats,
+				updateSequence, owsVersion,	acceptLanguages) {
 			return(.getCapabilities_1.0.0(sos = sos, verbose = verbose,
-							inspect = inspect))
+							inspect = inspect, sections = sections,
+							acceptFormats = acceptFormats,
+							updateSequence = updateSequence,
+							owsVersion = owsVersion,
+							acceptLanguages = acceptLanguages))
 		}
 )
 

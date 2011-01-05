@@ -199,15 +199,19 @@
 \alias{sosInsertObservationName}
 \alias{sosRegisterSensorName}
   
-\alias{csvName}
+\alias{mimeTypeCSV}
+\alias{mimeTypeOM}
 
 
 \title{Constants in sos4R}
 
 \description{
-The package \pkg{sos4R} comes with a set of constant character strings and fixed supported features, for example for names of XML elements, XML Namespace prefixes, or supported formats and models.}
+The package \pkg{sos4R} comes with a set of constant character strings and fixed supported features, for example for names of XML elements, XML Namespace prefixes, or supported formats and models.
+}
 
 \details{
+Most of these variables should be pretty self-explanatory.
+
 Constants for names of XML elements start with a lowercase character string of the namespace prefix (e.g. "gml"), a unique name of the element (where parts like "type" and special characters may be left out, and other descripte elements may be added for clarity), and end with "Name".
 
 Examples: code{gmlEnvelopeName}, \code{ogcGeometryOperandLineStringName}, \code{ogcTempOpTMEqualsName}.

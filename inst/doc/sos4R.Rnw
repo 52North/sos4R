@@ -299,7 +299,7 @@ sosResponseMode(mySOS, unique = TRUE)
 sosResultModels(mySOS, unique = TRUE)[[1]]
 sosResponseMode(mySOS)[[sosGetObservationByIdName]]
 sosResultModels(mySOS)[[sosGetObservationName]][3:4]
-sosResponseFormats(mySOS)[["GetObservation"]]
+sosResponseFormats(mySOS)[[1]]
 @
 
 \subsection{DescribeSensor}
@@ -357,6 +357,7 @@ The offerings list is named with the offering identifier, so the following state
 <<metadataExtraction2,echo=TRUE,eval=FALSE>>= 
 sosOfferingIds(mySOS)
 names(sosOfferings(mySOS))
+sosName(sosOfferings(mySOS))
 @
 
 The offering identifier is is used in the example below to extract the offering description of temperature measurements. The offerings list is a standard R list, so all subsetting operations are possible.
@@ -374,6 +375,15 @@ off.temp.id <- sosId(off.temp)
 off.temp.name <- sosName(off.temp)
 off.temp.boundedBy <- sosBoundedBy(off.temp)
 @
+
+The offerings also contains metadata about the format and model that are supported.
+
+<<metadataExtraction4b,echo=TRUE,eval=TRUE,print=TRUE>>= 
+sosResultModels(off.temp)
+sosResponseMode(off.temp)
+sosResponseFormats(off.temp)
+@
+
 
 The structure of bounding box is not re-usable out of the box, as it simple returns a named list of lower and upper corner.
 
@@ -750,7 +760,7 @@ for(.f in .files) { # %in% not working with Sweave
 	if(length(grep("^o_", .f, value=TRUE)) > 0)
 		.observationFiles <- c(.observationFiles, .f)
 }
-obsId <- sosParse(sos = mySOS, file = .observationFiles[[1]])
+obsId <- parseFile(sos = mySOS, file = .observationFiles[[1]])
 @
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -992,12 +1002,14 @@ If an exception is received then it is also saved as a warning message.
 \label{subsec:inspect}
 \label{subsec:verbose}
 
-The package offers two levels of inspection of the ongoing operations indicated by two boolean parameters, \code{inspect} and \code{verbose}. These are available in all service operation calls. The option \code{verboseOutput} when using the method \code{SOS(...)} turns on the verbose setting for all subsequent requests made to the created connection unless deactivated in an operation call.
+The package offers two levels of inspection of the ongoing operations indicated by two boolean parameters, \code{inspect} and \code{verbose}. These are available in all service operation calls.
 
 \begin{description}
 \item[inspect] prints the raw requests and responses to the console.
 \item[verbose] prints not only the requests, but also debugging statements.
 \end{description}
+
+The option \code{verboseOutput} when using the method \code{SOS(...)} turns on the verbose setting for all subsequent requests made to the created connection unless deactivated in an operation call. By using \code{verboseOutput} you can also debug the automatic GetCapabilities operations when creating a new SOS connections.
 
 The output with these parameters enabled is too extensive to show within this document.
 

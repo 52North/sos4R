@@ -144,6 +144,7 @@
 
 \alias{sosName}
 \alias{sosName-method}
+\alias{sosName,list-method}
 \alias{sosName,OwsServiceProvider-method}
 \alias{sosName,OwsGetCapabilities-method}
 \alias{sosName,OwsOperation-method}
@@ -242,6 +243,7 @@ SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = Sos
   \item{curlHandle}{See the corresponding slot description.}
   \item{timeFormat}{See the corresponding slot description.}
   \item{verboseOutput}{See the corresponding slot description.}
+  \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
 }
 
 \value{The construction functions returns an object of class \code{\link{SOS-class}}.}

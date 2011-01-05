@@ -52,7 +52,10 @@
 \alias{sosParse,SOS_1.0.0,character,logical-method}
 
 \alias{parseNoParsing}
-\alias{sosParseCSV}
+\alias{parseCSV}
+\alias{parseFile}
+\alias{parseFile-method}
+\alias{parseFile,SOS_1.0.0,character-method}
 
 
 \title{Parsing Functions for XML Documents and Elements}
@@ -60,8 +63,8 @@
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}
 
 \usage{
-sosParse(sos, file, verbose = FALSE, ...)
-sosParseCSV(obj, verbose = FALSE)
+parseFile(sos, file, verbose = FALSE, ...)
+parseCSV(obj, verbose = FALSE)
 parseNoParsing(obj)
 parseCategoryObservation(obj, sos, verbose = FALSE)
 parseComplexObservation(obj, sos, verbose = FALSE)
@@ -161,7 +164,7 @@ obsId <- getObservationById(sos = mySOS, observationId = "o_3508493",
 .startWithO_ <- .files \%in\% grep("o_", .files, value=TRUE)
 .observationFiles <- subset(.files, .startWithO_)
 
-obsId <- sosParse(sos = mySOS, file = .observationFiles[[1]])
+obsId <- parseFile(sos = mySOS, file = .observationFiles[[1]])
 }
 
 }

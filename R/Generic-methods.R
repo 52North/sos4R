@@ -44,7 +44,12 @@ if (!isGeneric("sosRequest"))
 if (!isGeneric("getCapabilities"))
 	setGeneric(name = "getCapabilities",
 			signature = signature("sos", "verbose", "inspect"),
-			def = function(sos, verbose = sos@verboseOutput, inspect = FALSE) {
+			def = function(sos, verbose = sos@verboseOutput, inspect = FALSE,
+					sections = sosDefaultGetCapSections,
+					acceptFormats = sosDefaultGetCapAcceptFormats,
+					updateSequence = c(as.character(NA)),
+					owsVersion = sosDefaultGetCapOwsVersion,
+					acceptLanguages = c(NA)) {
 				standardGeneric("getCapabilities")	
 			})
 if (!isGeneric("describeSensor"))

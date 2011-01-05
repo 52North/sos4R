@@ -541,3 +541,23 @@ ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOut
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
 # Seems not to work with additional request parameters...
 
+
+################################################################################
+# Renaissance Computing Institute
+renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET")
+# does not support sections parameter, capabilities are empty if it's given
+
+# This works:
+renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET",
+		verboseOutput = TRUE, sections = NA)
+renci
+renci.off <- sosOfferings(renci)
+names(renci.off)
+
+length(renci.off)
+# 1772
+
+sosName(renci.off)
+
+# TODO check out service!
+

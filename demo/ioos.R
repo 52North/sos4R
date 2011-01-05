@@ -36,7 +36,7 @@ obs.csv <- getObservation(ioos.get, offering = sosName(ioos.off[[100]]),
 obs.csv
 # GET WORKS!
 
-#obs <- sosParseCSV(obs.csv)
+#obs <- parseCSV(obs.csv)
 
 # point in time:
 #http://sdf.ndbc.noaa.gov/sos/server.php?request=GetObservation&service=SOS&
@@ -110,4 +110,24 @@ obs.001 <- getObservation(sos = ioos.post,
 		inspect = TRUE, verbose = TRUE)
 
 
+
+################################################################################
+# another SOS from IOOS
+# https://geossregistries.info/geosspub/component_details_ns.jsp?compId=urn:uuid:c1af67f9-4a1b-42d2-b352-e2fdb3bcdeb1
+# request examples at http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/
+# Also good information about existing/active stations!
+ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS")
+#		method = "GET",
+#		verboseOutput = TRUE)
+ioosdif.off <- sosOfferings(ioosdif)
+sosName(ioosdif.off)
+
+length(ioosdif.off)
+# 771
+
+# TODO check out ioosdif
+
+sosResponseFormats(ioosdif)
+# TODO write parser for ioos:Composite results, do here to test exchangeability!
+		
 

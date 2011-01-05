@@ -885,6 +885,10 @@ if (!isGeneric("sosName"))
 	setGeneric(name = "sosName", def = function(obj) {
 				standardGeneric("sosName")
 			})
+setMethod(f = "sosName", signature = signature(obj = "list"),
+		def = function(obj) {
+			lapply(obj, sosName)
+		})
 setMethod(f = "sosName", signature = signature(obj = "SosObservationOffering"),
 		def = function(obj) {
 			return(obj@name)

@@ -170,3 +170,7 @@ observation.no2.all <- getObservation(sos = airsossos,
 		eventTime = sosCreateEventTimeList(timePeriod.no2),
 		procedure = sosProcedures(airsos.off.no2)[1:20])
 
+
+# make visualization example following
+# http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE
+

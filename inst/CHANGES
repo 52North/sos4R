@@ -93,5 +93,6 @@
 * Changed URL for requests to be based on DCPs from capabilities file (if present)
 * ...
 
+* Added more options to getCapabilities, which can also be passed on using the "..." argument when creating a SOS
 # TODO
 * Changed first parsing function call, now based on mime type instead of operation name???
