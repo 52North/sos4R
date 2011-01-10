@@ -318,11 +318,14 @@ toString(sosResponseMode(mySOS)[[sosGetObservationByIdName]])
 sosResultModels(mySOS)[[sosGetObservationName]][3:4]
 @
 <<getCap9b,echo=FALSE,eval=TRUE>>=
-toString(sosResultModels(mySOS)[[sosGetObservationName]][3:4])
+toString(sosResultModels(mySOS)[[sosGetObservationName]])
 @
 
-<<getCap10,echo=TRUE,eval=TRUE>>=
-sosResponseFormats(mySOS)[1]
+<<getCap10,echo=TRUE,eval=FALSE>>=
+sosResponseFormats(mySOS)[[sosGetObservationByIdName]]
+@
+<<getCap10,echo=FALSE,eval=TRUE>>=
+toString(paste(sosResponseFormats(mySOS)[[sosGetObservationByIdName]]))
 @
 
 \subsection{DescribeSensor}
