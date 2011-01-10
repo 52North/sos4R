@@ -182,3 +182,8 @@ setClassUnion(name = "OgcComparisonOpsOrXMLOrNULL",
 #"XMLCDataNode", "RXMLAbstractNode", "XMLHashTreeNode", "XMLTextNode",
 #"XMLPINode", "XMLCommentNode", "XMLProcessingInstruction",
 #"XMLCDataNode", "XMLAttributeNode"
+
+# TODO look into how this could be done without warnings:
+# - manually check in validity function, not so nice: https://stat.ethz.ch/pipermail/bioc-devel/2010-August/002292.html
+# - follow up on this old thread: http://www.mail-archive.com/r-devel@r-project.org/msg15088.html
+# - another old thread that went unanswered: http://tolstoy.newcastle.edu.au/R/e2/devel/06/12/1328.html

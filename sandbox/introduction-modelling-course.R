@@ -72,7 +72,7 @@ install.packages("RCurl")
 install.packages("XML")
 
 # Package herunterladen
-pkgName = "sos4R_0.1-07.tar.gz"
+pkgName = "sos4R_0.1-08.tar.gz"
 download.file(url = paste(
 				"http://www.nordholmen.net/sos4r/download/", pkgName, sep =""),
 		destfile = pkgName)
