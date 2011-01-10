@@ -314,7 +314,7 @@ sosResponseMode(mySOS)[[sosGetObservationByIdName]]
 toString(sosResponseMode(mySOS)[[sosGetObservationByIdName]])
 @
 
-<<getCap9a,echo=TRUE,eval=TRUE>>=
+<<getCap9a,echo=TRUE,eval=FALSE>>=
 sosResultModels(mySOS)[[sosGetObservationName]][3:4]
 @
 <<getCap9b,echo=FALSE,eval=TRUE>>=
