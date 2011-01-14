@@ -38,9 +38,10 @@ The package is published under GPL 2 license within the geostatistics community 
 
 \tableofcontents
 
-%<<load,echo=FALSE,print=FALSE,cache=FALSE>>=
-%setCacheDir("/tmp/cacheSweave/sos4R")
-%@
+<<load,echo=FALSE,print=FALSE,cache=FALSE>>=
+library("cacheSweave")
+setCacheDir("/tmp/cacheSweave/sos4R")
+@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
@@ -193,7 +194,7 @@ SosDataFieldConvertingFunctions()
 
 The method \code{SOS(...)} is a construction method for classes encapsulating a connection to a SOS. It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class \code{SOS}.
 
-<<conn,echo=TRUE,print=FALSE>>= 
+<<conn,echo=TRUE,print=FALSE,cache=TRUE>>= 
 mySOS = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 @
 
@@ -239,7 +240,7 @@ The methods mirroring the SOS operations all contain debugging parameters \code{
 
 The GetCapabilities operations is automatically conducted during the connecting to a SOS instance. The response is the \textbf{capabilities document}, which contains a detailed description of the services capabilities. It's sections describe: service identification, service provider, operations metadata (parameter names, \ldots), filter capabilities, and contents (a list of offering descriptions). Please see section 8.2.3 of the SOS specification for details. If you want to inspect the original capabilities document it can be re-requested using
 
-<<capsOriginal,echo=TRUE,eval=FALSE>>= 
+<<capsOriginal,echo=TRUE,eval=FALSE,cache=TRUE>>= 
 sosCapabilitiesDocumentOriginal(sos = mySOS)
 @
 
@@ -351,7 +352,7 @@ defaultOutputFormatDescribeSensor <- gsub(pattern = "&quot;", replacement = "'",
 
 A simple example is as follows.
 
-<<describeSensor,echo=TRUE,print=TRUE>>= 
+<<describeSensor,echo=TRUE,print=TRUE,cache=TRUE>>= 
 sensor.1.1 <- describeSensor(sos = mySOS,
 		procedure = sosProcedures(obj = mySOS)[[1]][[1]])
 str(sensor.1.1)
@@ -503,7 +504,7 @@ defaultResponseFormatGetObs <- gsub(pattern = "&quot;", replacement = "'", x = s
 
 A request to retrieve the latest measured value is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \enquote{latest}.
 
-<<getLatest,eval=TRUE,echo=TRUE>>= 
+<<getLatest,eval=TRUE,echo=TRUE,cache=TRUE>>= 
 obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
 		latest = TRUE)
 @
@@ -616,7 +617,7 @@ Please note that the create function \code{sosCreateEventTimeList()} also wraps 
 
 What was the average temperature during the last week?
 		
-<<temporalFiltering2,eval=TRUE,echo=TRUE>>= 
+<<temporalFiltering2,eval=TRUE,echo=TRUE,cache=TRUE>>= 
 obs.lastWeek <- getObservation(sos = mySOS,
 	offering = off.temp,
 	procedure = sosProcedures(off.temp),
@@ -643,7 +644,7 @@ print(lastDay.eventTime)
 
 The possibly most typical spatial filter is a bounding box\footnote{\url{http://en.wikipedia.org/wiki/Bounding_box}} within which measurements of interest must have been made. Here the creation function returns an object of class \code{OgcBBOX}, which can be wrapped in an object of class \code{SosFeatureOfInterest}, which is passed into the get-observation call.
 
-<<spatialFiltering1,eval=TRUE,echo=TRUE>>=
+<<spatialFiltering1,eval=TRUE,echo=TRUE,cache=TRUE>>=
 sept09.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = as.POSIXct("2009-09-01 00:00"),
 	end = as.POSIXct("2009-09-30 00:00"))
@@ -687,7 +688,7 @@ encodeXML(obj = request.fois, sos = mySOS)
 
 An exemplary GetObservation operation is as follows.
 
-<<featureFiltering1,eval=TRUE,echo=TRUE,print=FALSE>>= 
+<<featureFiltering1,eval=TRUE,echo=TRUE,print=FALSE,cache=TRUE>>= 
 obs.lastWeek.fois <- getObservation(sos = mySOS,
 	offering = off.temp, featureOfInterest = request.fois,
 	eventTime = lastWeek.eventTime)
@@ -734,7 +735,7 @@ Any object of class \code{OgcComparisonOpsOrXMLOrNULL}, which includes the class
 
 First, we request the unfiltered values for comparison, then again with the filter applied. The length of the returned results is compared in the end.
 
-<<valueFiltering3,eval=TRUE,echo=TRUE,print=FALSE>>= 
+<<valueFiltering3,eval=TRUE,echo=TRUE,print=FALSE,cache=TRUE>>= 
 # request  values for the last week.
 obs.lastWeek <- getObservation(sos = mySOS,
 	eventTime = lastWeek.eventTime,
@@ -755,7 +756,7 @@ A tighter integration with data structures of packages \pkg{sp} or \pkg{spacetim
 
 As an example the following code creates a \code{SpatialPointsDataFrame} (can only contain one data value per position!) based on the features of a result.
 
-<<resultExporting,eval=TRUE,echo=TRUE,print=FALSE>>=
+<<resultExporting,eval=TRUE,echo=TRUE,print=FALSE,cache=TRUE>>=
 library("sp")
 obs.lastWeek <- getObservation(sos = mySOS,
 	offering = off.temp,
@@ -779,7 +780,7 @@ In this case the returned observation collection contains an om:Measurement elem
 
 The result extraction works the same as with om:Observation objects.
 
-<<getObsById1,eval=TRUE,echo=TRUE>>= 
+<<getObsById1,eval=TRUE,echo=TRUE,cache=TRUE>>= 
 obsId <- getObservationById(sos = mySOS,
 	observationId = "o_3508493")
 # str(obsId)
@@ -789,7 +790,7 @@ sosResult(obsId, coordinates = TRUE)
 
 Just as for \code{getObservation()} you can save the orginal response document. It is saved into the current working directory and the name starts with the observation identifier. You can also read it back using the function \code{sosParse()}.
 
-<<getObsById3,eval=FALSE,echo=TRUE,print=FALSE>>= 
+<<getObsById3,eval=FALSE,echo=TRUE,print=FALSE,cache=TRUE>>= 
 obsId <- getObservationById(sos = mySOS,
 	observationId = "o_3508493",
 	saveOriginal = TRUE)
@@ -889,7 +890,7 @@ names(sosParsers(mySOS))
 
 If you want to replace only selected parsers use the include parameter as described above. You can also base your own parsing functions on a variety of existing parsing functions. For example you can replace the base function for om:ObservationCollectionm, named \code{ObservationCollection}, but still use the parsing function for om:Observation within your own function if you include it in the parser list. The existing parsing functions are all named in the pattern \code{parse[ElementName](...)}. Please be aware that some parsers contain require a parameter of class SOS upon which they rely for encoding information.
 
-<<parsers3,echo=TRUE,eval=TRUE,print=FALSE>>=
+<<parsers3,echo=TRUE,eval=TRUE,print=FALSE,cache=TRUE>>=
 # Create own parsing function:
 myER <- function(xml) {
 	return("EXCEPTION!!!11")
@@ -917,7 +918,7 @@ This is also the recommended way to start if you want to set-up your own parsers
 
 The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class \code{XMLInternalDocument}:
 
-<<parsers5,echo=TRUE,eval=TRUE>>=
+<<parsers5,echo=TRUE,eval=TRUE,cache=TRUE>>=
 mySOS2 <- SOS(sosUrl(mySOS), parsers = SosDisabledParsers())
 response <- getObservation(mySOS2,
 	offering = sosOfferings(mySOS2)[[1]],
@@ -969,7 +970,7 @@ The following connection shows a typical workflow of connecting to a new SOS for
 
 In Addition, this service shows errorenous behaviour regarding the reponse format (even if it is correctly set), so that the parameter \code{responseFormat} is set to \code{NA\_character} to be excluded in the request encoding. This results in additional warnings.
 
-<<converters3a,eval=TRUE,echo=TRUE>>= 
+<<converters3a,eval=TRUE,echo=TRUE,cache=TRUE>>= 
 # GET connection
 MBARI <- SOS("http://mmisw.org/oostethys/sos",
 	method = SosSupportedConnectionMethods()[["GET"]])
@@ -984,7 +985,7 @@ warnings()
 
 This shows warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field). The next example creates conversion functions for these fields and repeats the operation.
 
-<<converters4,eval=TRUE,echo=TRUE,print=FALSE>>= 
+<<converters4,eval=TRUE,echo=TRUE,print=FALSE,cache=TRUE>>= 
 myConverters <- SosDataFieldConvertingFunctions(
 	"S/m" = sosConvertDouble,
 	"http://mmisw.org/ont/cf/parameter/sea_water_salinity"
