@@ -93,9 +93,14 @@
 * Changed URL for requests to be based on DCPs from capabilities file (if present)
 * Added more options to getCapabilities, which can also be passed on using the "..." argument when creating a SOS
 
-2011-01-10		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-01-14		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-09
 * Changed required R version to 2.11.1 as 2.10 causes error on install
 * Finished vignette
 * Added parsing based on MIME type (rudimentary)
+
+2011-01-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.1-10
+* ...
