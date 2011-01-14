@@ -88,11 +88,15 @@ setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 
 .getObservationsWithObservedProperty <- function(coll, obsProp) {
 	.obsProperties <- sosObservedProperties(coll)
-	
+
 	if(any(is.na(.obsProperties))) {
-		warning("Aborted indexing because of NA values.")
-		return(list())
+		warning("NA values in observed property list.")
+		# remove NAs
+		.obsProperties <- .obsProperties[which(!is.na(.obsProperties))]
 	}
+	
+	if(length(.obsProperties) < 1)
+		return(list())
 	
 	.idx <- c()
 	

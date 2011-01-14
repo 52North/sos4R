@@ -97,7 +97,5 @@
 
 * Version 0.1-09
 * Changed required R version to 2.11.1 as 2.10 causes error on install
-* ...
-
-# TODO
-* Changed first parsing function call, now based on mime type instead of operation name???
+* Finished vignette
+* Added parsing based on MIME type (rudimentary)

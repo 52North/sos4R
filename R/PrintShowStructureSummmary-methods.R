@@ -167,7 +167,7 @@
 					"exception(s) (code @ locator : text):"),
 			sep = "")
 	for (e in x@exceptions) {
-		.e <- paste("  ", e@exceptionCode, " @ ", e@locator, " : ",
+		.e <- paste("  ", e@exceptionCode, " @ ", e@locator, " :\n\t",
 				e@exceptionText, sep = "")
 		.s <- paste(.s, .e, sep = "\n")
 	}
@@ -198,7 +198,7 @@
 	.s <- paste("Object of class OwsRange; spacing: ",
 			x@spacing, ", rangeClosure: ",
 			x@rangeClosure,
-			"\nFROM ", x@minimumValue, " TO ",x@maximumValue)
+			"\nFROM ", x@minimumValue, " TO ",x@maximumValue, sep = "")
 	return(.s)
 }
 
@@ -652,14 +652,16 @@
 		.s <- paste(.s, "; duration: ", x@duration)
 	}
 	if(!is.null(x@timeInterval)) {
-		.s <- paste(.s, ", timeInterval: ", toString(x@timeInterval), ";")
+		.s <- paste(.s, ", timeInterval: ", toString(x@timeInterval), ";",
+				sep = "")
 	}
 	
 	if(!is.null(x@begin) && !is.null(x@end)) {
-		.s <- paste(toString(x@begin), " --> ", toString(x@end))
+		.s <- paste(toString(x@begin), "\n\t--> ", toString(x@end), sep = "")
 	}
 	else {
-		.s <- paste(toString(x@beginPosition), " --> ", toString(x@endPosition))
+		.s <- paste(toString(x@beginPosition), "\n\t--> ",
+				toString(x@endPosition), sep = "")
 	}
 	
 	.s <- paste("GmlTimePeriod: [", .s, "]")
@@ -688,11 +690,8 @@
 
 .toString.GmlFeatureCollection <- function(x, ...) {
 	.s <- paste("Object of class GmlFeatureCollection",
-			"; id: ",
-			x@id,
-			"; ",
-			length(x@featureMembers),
-			" featureMembers: ",
+			"; id: ", x@id, ";\n\t",
+			length(x@featureMembers), " featureMember(s): ",
 			toString(x@featureMembers),
 			sep = "")
 	return(.s)

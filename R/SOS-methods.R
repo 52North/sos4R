@@ -541,7 +541,8 @@ setMethod(f = "getObservationById",
 			return(.handleExceptionReport(sos, .response))
 		}
 		
-		if(grep(pattern = "text/xml", x = responseFormat) != 1)
+		if( !is.na(responseFormat) && 
+				grep(pattern = "text/xml", x = responseFormat) != 1)
 			warning("Got XML string, but request did not require text/xml (or subtype).")
 		
 		.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
@@ -875,12 +876,14 @@ setMethod("encodeRequestXML", "SosGetObservation",
 				append = TRUE)
 	}
 	
-	.responseFormat <- xmlNode(name = "responseFormat",
-			namespace = sosNamespacePrefix,
-			gsub(obj@responseFormat, pattern = "&quot;",
-					replacement = '"'))
-	.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
-			append = TRUE)
+	if( !is.na(obj@responseFormat)) {
+		.responseFormat <- xmlNode(name = "responseFormat",
+				namespace = sosNamespacePrefix,
+				gsub(obj@responseFormat, pattern = "&quot;",
+						replacement = '"'))
+		.xmlDoc <- addChildren(node = .xmlDoc, kids = list(.responseFormat),
+				append = TRUE)
+	}
 	
 	if( !is.na(obj@resultModel)) {
 		.resultModel <- xmlNode(name = "resultModel",
