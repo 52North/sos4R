@@ -17,13 +17,6 @@ names(ioos.off)
 ioos.procedures <- sosProcedures(ioos.get)
 length(ioos.procedures)
 
-# requires SensorML 1.0.0
-describeSensorOp <- sosOperation(ioos.get, sosDescribeSensorName)
-describeSensor.outputFormat <- describeSensorOp@parameters[["outputFormat"]][[1]]
-ioos.sensor.1.1 <- describeSensor(sos = ioos.get, procedure = ioos.procedures[[1]][[1]],
-		outputFormat = describeSensor.outputFormat)
-ioos.sensor.1.1@xml
-
 # most recent:
 #http://sdf.ndbc.noaa.gov/sos/server.php?request=GetObservation&service=SOS&
 #		offering=urn:ioos:station:wmo:46403&
@@ -35,6 +28,13 @@ obs.csv <- getObservation(ioos.get, offering = sosName(ioos.off[[100]]),
 		verbose = TRUE, saveOriginal = TRUE)
 obs.csv
 # GET WORKS!
+
+# requires SensorML 1.0.0
+describeSensorOp <- sosOperation(ioos.get, sosDescribeSensorName)
+describeSensor.outputFormat <- describeSensorOp@parameters[["outputFormat"]][[1]]
+ioos.sensor.1.1 <- describeSensor(sos = ioos.get, procedure = ioos.procedures[[1]][[1]],
+		outputFormat = describeSensor.outputFormat)
+ioos.sensor.1.1@xml
 
 #obs <- parseCSV(obs.csv)
 
@@ -67,8 +67,9 @@ ioos.get.interval <- getObservation(ioos.get,
 		eventTime = sosCreateEventTimeList(
 				sosCreateTimePeriod(sos = ioos.get,
 						begin = as.POSIXct("2008-07-17T00:00Z"),
-						end = as.POSIXct("2008-07-17T23:59Z"))),
-		verbose = TRUE)
+						end = as.POSIXct("2008-07-17T23:59Z")))
+)
+#		, verbose = TRUE)
 
 # time interval, bbox
 #http://sdf.ndbc.noaa.gov/sos/server.php?request=GetObservation&service=SOS&

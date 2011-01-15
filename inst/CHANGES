@@ -104,4 +104,6 @@
 
 * Version 0.1-10
 * Using cacheSweave in vignette
+* Removed OgcComparisonOpsOrXMLOrNULL and added type checks to validity function instead
+* Fixed error when retrieving no data as CSV
 * ...

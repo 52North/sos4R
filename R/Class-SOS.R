@@ -226,7 +226,7 @@ setClass("SosGetObservation",
 				eventTime = "list", 
 				procedure = "character", 
 				featureOfInterest = "SosFeatureOfInterestOrNULL", 
-				result = "OgcComparisonOpsOrXMLOrNULL",
+				result = "ANY", # OgcComparisonOpsOrXMLOrNULL
 				resultModel = "character",
 				responseMode = "character",
 				BBOX = "character"),
@@ -258,7 +258,15 @@ setClass("SosGetObservation",
 			# srsName, offering, procedure, observedProperty are anyURIs
 			# eventTime is a list of ogc:temporalOps
 			# featureOfInterest is null or a SosFeatureOfInterest element
+	
 			# result is null or an ogc:comparisonOps element
+			cls <- class(slot(object, "result"))
+#			print(paste("class of result slot: ", cls))
+			if ( !any(cls %in% c("OgcComparisonOps", "XMLNode", "NULL",
+							"XMLAbstractNode", "XMLInternalNode"))) {
+				return("'response' argument does not have allowed class!")
+			}
+			
 			# responseFormat must be MIME content type
 			# resultModel must be a QName
 			# responseMode must be one of inline, out-of-band, attached, or resultTemplate

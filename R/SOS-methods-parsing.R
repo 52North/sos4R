@@ -240,6 +240,8 @@ setMethod(f = "parseFile",
 #
 #
 parseCSV <- function(obj, verbose = FALSE) {
+	if(verbose) cat("Processing CSV...\n")
+	
 	lines <- strsplit(x = obj, split = "\n")[[1]]
 	data <- do.call(what = "strsplit", args = list(lines, split = ","))
 	
@@ -253,11 +255,18 @@ parseCSV <- function(obj, verbose = FALSE) {
 	.names <- .newNames
 	
 	.rows <- length(data)
+	if(verbose) cat("Got", .rows, "lines of data.\n")
+	
+	if(.rows == 1) {
+		warnings(paste("Received just one line of data: ", data, "\n"))
+		return(data[[1]])
+	}
+	
 	df <- NULL
 	for (.r in seq(2,.rows)) {
-		# initialize first column of the data frame so it can be bound in loop
+		if(verbose) cat("Processing row in CSV:", data[[.r]], "\n")
 		
-		# TODO add parsers based on field names
+		# initialize first column of the data frame so it can be bound in loop
 		.row.df <- as.data.frame(data[[.r]][1])
 		names(.row.df) <- .names[[1]]
 		

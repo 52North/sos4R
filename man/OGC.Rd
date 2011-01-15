@@ -15,7 +15,6 @@
 \alias{OgcBinaryTemporalOpOrNULL-class}
 \alias{OgcComparisonOps}
 \alias{OgcComparisonOps-class}
-\alias{OgcComparisonOpsOrXMLOrNULL-class}
 \alias{OgcContains-class}
 \alias{show,OgcContains-method}
 \alias{OgcIntersects-class}
@@ -73,9 +72,6 @@ Class \code{"\linkS4class{OgcSpatialOpsOrNULL}"}, by class "OgcSpatialOps", dist
 
 \bold{OgcBinaryTemporalOp:}
 Class \code{"\linkS4class{OgcBinaryTemporalOpOrNULL}"}, directly.
-
-\bold{OgcComparisonOps:}
-Class \code{"\linkS4class{OgcComparisonOpsOrXMLOrNULL}"}, directly.
 
 \bold{OgcContains, OgcIntersects, OgcOverlaps:}
 Class \code{"\linkS4class{OgcBinarySpatialOp}"}, directly.
@@ -138,7 +134,6 @@ showClass("OgcBinarySpatialOp")
 showClass("OgcBinaryTemporalOp")
 showClass("OgcBinaryTemporalOpOrNULL")
 showClass("OgcComparisonOps")
-showClass("OgcComparisonOpsOrXMLOrNULL")
 showClass("OgcContains")
 showClass("OgcOverlaps")
 showClass("OgcSpatialOps")

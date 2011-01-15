@@ -82,7 +82,6 @@ exportClasses(
      "OgcBinaryTemporalOp",
      "OgcBinaryTemporalOpOrNULL",
      "OgcComparisonOps",
-     "OgcComparisonOpsOrXMLOrNULL",
      "OgcContains",
      "OgcIntersects",
      "OgcOverlaps",

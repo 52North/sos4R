@@ -653,7 +653,7 @@ myResult1 <- xmlParseString('<sos:result><ogc:PropertyIsGreaterThan>
 pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 xmlValue(pn) <- "urn:ogc:def:property:OGC::Temperature"
 l <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
-xmlValue(l) <- "20"
+xmlValue(l) <- "10"
 comp <- xmlNode(name = ogcComparisonOpGreaterThanName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
 myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
@@ -661,11 +661,9 @@ myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
 
 obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
 		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
-		result = myResult2)
+		result = myResult2, verbose = TRUE)
 
-length(obs1@result[[3]]); length(obs2@result[[3]])
-# 40
-# 16
+length(sosResult(obs1)[[3]]); length(sosResult(obs2)[[3]])
 # WORKS!
 
 

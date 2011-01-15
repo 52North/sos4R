@@ -522,6 +522,8 @@ setMethod(f = "getObservationById",
 	# responseFormat starts with text/xml OR the response string is XML content,
 	# for example an exeption (which is xml even if request wants something else
 	if(isXMLString(.responseString)) {
+		if(verbose) cat("Got XML string as response.\n")
+		
 		.response <- xmlParseDoc(.responseString, asText = TRUE)
 		if(verbose || inspect) {
 			cat("** RESPONSE DOC:\n")
@@ -572,28 +574,43 @@ setMethod(f = "getObservationById",
 		
 		return(.obs)
 	}
-	else if(grep(pattern = mimeTypeCSV, x = responseFormat) == 1) {
-		if(verbose || inspect) {
-			cat("** CSV RESPONSE:\n")
-			print(.responseString)
-		}
+	else {
+		if(verbose)
+			cat("Did NOT get XML string as response, trying to parse with",
+					responseFormat, "\n")
 		
-		.parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
-		.csv <- .parsingFunction(obj = .responseString, verbose = verbose)
+		if(mimeTypeCSV == responseFormat) {
+			if(verbose || inspect) {
+				cat("** CSV RESPONSE:\n")
+				print(.responseString)
+			}
 		
-		if(saveOriginal) {
-			.filename <- paste(file = .filename, ".csv", sep = "")
-			write.csv(.csv, .filename)
-			cat("** Saved original document:", .filename, "\n")
-		}
+			.parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
+			.csv <- .parsingFunction(obj = .responseString, verbose = verbose)
 		
-		return(.csv)
-	}
+			if(saveOriginal) {
+				.filename <- paste(file = .filename, ".csv", sep = "")
+				write.csv(.csv, .filename)
+			}
+			
+			.msg <- paste("Finished getObservation to", sos@url, "\n\t",
+					"--> received observations with dimensions", 
+					toString(dim(.csv)))
+			if(saveOriginal) .msg <- paste(.msg, "\n\tOriginal document saved:",
+						.filename)
+			cat(.msg)
+		
+			return(.csv)
+		} # grep(pattern = mimeTypeCSV...
+		
+		# Add other non-XML encodings here.
+	} # else
 
 	# not xml nor csv
 	if(verbose || inspect) {
 		cat("** UNKNOWN RESPONSE FORMAT:\n")
 		print(.responseString)
+		warning("Unknown response format!")
 	}
 	
 	if(saveOriginal) {
