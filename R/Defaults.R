@@ -386,5 +386,6 @@ SosDefaults <- function() {
 			"sosDefaultColumnNameLat",
 			"sosDefaultColumnNameLon",
 			"sosDefaultColumnNameSRS")
+	
 	return(.defaults)
 }
