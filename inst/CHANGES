@@ -107,7 +107,7 @@
 * Removed OgcComparisonOpsOrXMLOrNULL and added type checks to validity function instead
 * Fixed error when retrieving no data as CSV
 
-2011-01-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-01-17		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-11
 * Changed title and citation
