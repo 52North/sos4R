@@ -111,4 +111,10 @@
 
 * Version 0.1-11
 * Changed title and citation
+* added .Rbuildignore to exclude Eclipse specific files in build
+* Maintenance release to re-trigger generation of vignette with v-swe running
+
+2010-01-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.1-12
 * ...
