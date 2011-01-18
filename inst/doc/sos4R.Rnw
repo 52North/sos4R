@@ -45,11 +45,10 @@ The package is published under GPL 2 license within the geostatistics community 
 
 \tableofcontents
 
-% DISABLED FOR SUBMISSSION TO CRAN
-%<<load,echo=FALSE,print=FALSE,cache=FALSE>>=
-%library("cacheSweave")
-%setCacheDir("/tmp/cacheSweave/sos4R")
-%@
+<<load,echo=FALSE,print=FALSE,cache=FALSE>>=
+#library("cacheSweave")
+setCacheDir("/tmp/cacheSweave/sos4R")
+@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
@@ -509,14 +508,31 @@ defaultResponseFormatGetObs <- gsub(pattern = "&quot;", replacement = "'", x = s
   \item \code{saveOriginal}: Saves a copy of the response document in the current working directory. See section \ref{subsec:getObsById} for an example.
 \end{itemize}
 
-A request to retrieve the latest measured value is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \enquote{latest}.
+The returned data of all GetObservation operations is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely \code{OmObservation}, \code{OmMeasurement}, or \code{OmObservationCollection}.
+
+A request to retrieve the \textbf{latest measured value} is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \enquote{latest}.
 
 <<getLatest,eval=TRUE,echo=TRUE,cache=TRUE>>= 
-obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
-		latest = TRUE)
+obs.temp.latest <- getObservation(sos = mySOS,
+	offering = off.temp,
+	latest = TRUE)
 @
 
-The returned data is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely \code{OmObservation}, \code{OmMeasurement}, or \code{OmObservationCollection}.
+The most straightforward (and most simple to use) methods to query certain observations are to request one (or several) specific \textbf{observed property} (phenomenon) or \textbf{procedure} (sensor). Note that the procedures and observed properties have to match the given offering.
+
+<<getObsPropPhen,eval=FALSE,echo=TRUE,cache=TRUE>>= 
+obs.temp.procedure.1 <- getObservation(sos = mySOS,
+	offering = off.temp,
+	procedure = sosProcedures(off.temp)[[2]],
+	latest = TRUE)
+
+obs.temp.offering.345 <- getObservation(sos = mySOS,
+	offering = off.temp,
+	procedure = sosProcedures(off.temp)[2:4],
+	observedProperty =
+		sosObservedProperties(mySOS)[1:5],
+	latest = TRUE)
+@
 
 \subsubsection{Response Subsetting}
 
@@ -709,7 +725,7 @@ Value Filtering is realized via the slot \code{result} in a GetObservation reque
 
 The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the package \pkg{XML}.
 
-The following code example uses a literal comparison of a property:
+The following code example uses a literal comparison of a property. The elements names are taken from constants within \pkg{sos4R} (with the naming scheme \enquote{<namespace><ElementName>Name}), but can equally as well be put in directly.
 
 <<valueFiltering1,eval=TRUE,echo=TRUE,print=FALSE>>= 
 # result filtering
@@ -718,7 +734,7 @@ filter.propertyname <- xmlNode(name = ogcPropertyNameName,
 	namespace = ogcNamespacePrefix)
 xmlValue(filter.propertyname) <-
 		"urn:ogc:def:property:OGC::Temperature"
-filter.literal <- xmlNode(name = "Literal",
+filter.literal <- xmlNode(name = ogcLiteralName,
 	namespace = ogcNamespacePrefix)
 xmlValue(filter.literal) <- as.character(filter.value)
 filter.comparisonop <- xmlNode(

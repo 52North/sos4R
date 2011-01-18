@@ -304,6 +304,7 @@ ogcComparisonOperatorsName <- "ComparisonOperators"
 ogcArithmeticOperatorsName <- "ArithmeticOperators"
 ogcEIDName <- "EID"
 ogcFIDName <- "FID"
+ogcLiteralName <- "Literal"
 
 ################################################################################
 # OWS
