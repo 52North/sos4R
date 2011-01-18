@@ -203,7 +203,7 @@ SosDataFieldConvertingFunctions()
 The method \code{SOS(...)} is a construction method for classes encapsulating a connection to a SOS. It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class \code{SOS}.
 
 <<conn,echo=TRUE,print=FALSE,cache=TRUE>>= 
-mySOS = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+mySOS <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 @
 
 To create a SOS connection you only need the URL of the service (i.e. the URL which can be used for HTTP GET or POST requests). The service connection created above is used for all examples throughout this document.
@@ -410,7 +410,6 @@ Metadata about the whole \textbf{offering} are identifier, name, and spatial and
 <<metadataExtraction4,echo=TRUE,eval=TRUE,print=TRUE>>= 
 off.temp.id <- sosId(off.temp)
 off.temp.name <- sosName(off.temp)
-off.temp.boundedBy <- sosBoundedBy(off.temp)
 @
 
 The offerings also contains metadata about the format and model that are supported.
@@ -424,7 +423,7 @@ sosResponseFormats(off.temp)
 The \textbf{spatial extend} is given as a rectangular bounding box with two coordinates. The structure of the bounding box is kept flexible, as it simply returns a named list of lower and upper corner.
 
 <<metadataExtraction5,echo=TRUE,eval=TRUE,print=TRUE>>= 
-sosBoundedBy(off.temp)
+off.temp.boundedBy <- sosBoundedBy(off.temp)
 @
 
 The optional attribute \code{bbox} can be used to obtain a bounding box matrix as used by package \pkg{sp}.
@@ -487,7 +486,7 @@ getObservation(sos = mySOS, ...)
 
 The mandatory attributes are \code{sos}, \code{offering}, \code{observedProperty} and \code{responseFormat}. The other parameters are set to \code{NA} and not used when building the request.
 
-Please see section 8.4.2 of the SOS specification for details, and section \ref{sec:supported} and \ref{subsubsec:exploringcapabilities} of this document for supported values respectively allowed values of request parameters.
+Please see section 8.4.2 of the SOS specification for details, and section \ref{sec:supported} and \ref{subsubsec:exploringcapabilities} of this document for supported values respectively allowed values of request parameters. Note that different implementations might respond differently to missing parameters.
 
 <<defaultValue,echo=FALSE,print=FALSE,eval=TRUE>>=
 defaultResponseFormatGetObs <- gsub(pattern = "&quot;", replacement = "'", x = sosDefaultGetObsResponseFormat)
@@ -557,7 +556,6 @@ obs.temp.latest.result
 
 temperature.attrs <- attributes(
 	obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
-#temperature.attrs
 @
 
 \textbf{Spatial Information} can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result \code{data.frame}, (ii) within a feature collection in the observation. In the latter case the utility functions \code{sosCoordinates(...)} and \code{sosFeatureIds(...)} can be used to extract the coordinates respectively the identifiers from \code{OmObservationCollection} or \code{OmObservation} classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by \code{sosCoordinates(...)}.
