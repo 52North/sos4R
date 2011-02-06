@@ -118,4 +118,5 @@
 
 * Version 0.1-12
 * Minor changes in Vignette
+* Removed packages suggestion for sp, as it is never actually used
 * ...
