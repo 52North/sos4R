@@ -8,7 +8,6 @@
 % library(cacheSweave)
 % Sweave("sos4R.Rnw", driver = cacheSweaveDriver)
 
-
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{Sweave}
@@ -46,7 +45,7 @@ The package is published under GPL 2 license within the geostatistics community 
 \tableofcontents
 
 <<load,echo=FALSE,print=FALSE,cache=FALSE>>=
-#library("cacheSweave")
+library("cacheSweave")
 setCacheDir("/tmp/cacheSweave/sos4R")
 @
 

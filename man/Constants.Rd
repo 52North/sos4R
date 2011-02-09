@@ -45,6 +45,7 @@
 \alias{ogcGeometryOperandPointName}
 \alias{ogcGeometryOperandLineStringName}
 \alias{ogcIntersectsName}
+\alias{ogcLiteralName}
 \alias{ogcLogicalOperatorsName}
 \alias{ogcNamespacePrefix}
 \alias{ogcOverlapsName}
