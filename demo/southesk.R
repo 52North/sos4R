@@ -30,9 +30,47 @@
 ################################################################################
 # SOS @ CSIRO
 # The South Esk test bed
-# http://www.csiro.au/sensorweb/au.csiro.OgcThinClient/OgcThinClient.html
+cat("Go to the following website for details of the South Esk Hydrological Sensor Web - Tasmania, Australia: ", "http://www.csiro.au/sensorweb/au.csiro.OgcThinClient/OgcThinClient.html")
+
+# Data subject to CSIRO's legal disclaimer: http://www.csiro.au/org/LegalNoticeAndDisclaimer.html
+
+# Bureau of Meteorology (red and dark blue on map)
 bom <- SOS("http://wron.net.au/BOM_SOS/sos")
+
+# Hydro Tasmania Consulting (yellow on map)
+ht <- SOS("http://140.79.3.21/HT_SOS/sos")
+# not available... maybe in offering in CSIRO_SOS
+
+# Forestry Tasmania (green on map)
+ft <- SOS("http://140.79.3.21/Forestry_SOS/sos")
+# not available...
+# rainfalltoday
+
+# CSIRO (orange, purple on map)
+# rainfalltoday?
 csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos")
+
+# Tasmania Department of Primary Industries, Parks, Wildlife and Environment (DPIPWE, white on map)
+# http://140.79.3.21/DPIPWE_SOS/sos
 dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos")
 
-# TODO demo
+# phenomenon rainfall or rainfalltoday is available at all stations
+rainfall <- "urn:ogc:def:phenomenon:OGC:rainfall"
+rainfall.off.bom <- sosOfferings(bom)[[1]]
+plot(rainfall.off.bom, regions = "Australia", map.cities = TRUE)
+
+rainfall.off.csiro <- sosOfferings(csiro)["Rain Gauges"][[1]]
+plot(rainfall.off.csiro, map.cities = FALSE, off.col = "green", add = TRUE)
+
+rainfall.off.ht <- sosOfferings(csiro)["HT Weather Stations"][[1]]
+plot(rainfall.off.ht, add = TRUE, off.col = "blue")
+
+# plot all together
+plot(csiro, regions = "Australia")
+plot(csiro, regions = "Australia:Tasmania")
+plot(bom)
+
+lastWeek.bom <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600 * 24),
+		end = Sys.time())
+
+# make analysis
