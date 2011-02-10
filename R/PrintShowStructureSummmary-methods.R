@@ -227,8 +227,8 @@
 			x@url,
 #			"\n\tCapabilities: ",
 #			toString(x@capabilities)
-			"\n\tTitle:", toString(sosServiceIdentification(x)@title),
-			" -- Abstract:", toString(sosServiceIdentification(x)@abstract))
+			"\n\tTitle:", sosTitle(x),
+			" -- Abstract:", sosAbstract(x))
 	return(.s)
 }
 

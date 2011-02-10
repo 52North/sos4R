@@ -238,6 +238,15 @@ setMethod(f = "sosVersion", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(sos@version)
 		})
+if (!isGeneric("sosSwitchCoordinates"))
+	setGeneric(name = "sosSwitchCoordinates", def = function(sos) {
+				standardGeneric("sosSwitchCoordinates")
+			})
+setMethod(f = "sosSwitchCoordinates", signature = signature(sos = "SOS"),
+		def = function(sos) {
+			return(sos@switchCoordinates)
+		})
+
 
 if (!isGeneric("sosMethod"))
 	setGeneric(name = "sosMethod", def = function(sos) {
@@ -358,8 +367,8 @@ setMethod(f = "sosBoundedBy", signature = signature(
 			return(.boundedBy(obj, bbox))
 		})
 setMethod(f = "sosBoundedBy", signature = signature(obj = "list"),
-		def = function(obj) {
-			.bb <- lapply(obj, sosBoundedBy)
+		def = function(obj, bbox = FALSE) {
+			.bb <- lapply(obj, sosBoundedBy, bbox = bbox)
 			return(.bb)
 		})
 setMethod(f = "sosBoundedBy",
@@ -380,8 +389,8 @@ setMethod(f = "sosBoundedBy",
 		max1 <- as.double(.uC[[1]])
 		max2 <- as.double(.uC[[2]])
 		
-		.bb <- matrix(c(min1, min2, max1, max2), ncol = 2,
-				dimnames = list(c("coords.lat", "coords.lon"),
+		.bb <- matrix(c(min2, min1, max2, max1), ncol = 2,
+				dimnames = list(c("coords.lon", "coords.lat"),
 						c("min", "max")))
 	}
 	else {
@@ -918,6 +927,36 @@ setMethod(f = "sosName", signature = signature(obj = "OwsGetCapabilities"),
 			return(sosGetCapabilitiesName)
 		})
 
+if (!isGeneric("sosTitle"))
+	setGeneric(name = "sosTitle", def = function(obj) {
+				standardGeneric("sosTitle")
+			})
+setMethod(f = "sosTitle", signature = signature(obj = "SOS"),
+		def = function(obj) {
+			.s <- sosTitle(sosServiceIdentification(obj))
+			return(.s)
+		})
+setMethod(f = "sosTitle",
+		signature = signature(obj = "OwsServiceIdentification"),
+		def = function(obj) {
+			return(toString(obj@title))
+		})
+
+if (!isGeneric("sosAbstract"))
+	setGeneric(name = "sosAbstract", def = function(obj) {
+				standardGeneric("sosAbstract")
+			})
+setMethod(f = "sosAbstract", signature = signature(obj = "SOS"),
+		def = function(obj) {
+			.s <- sosAbstract(sosServiceIdentification(obj))
+			return(.s)
+		})
+setMethod(f = "sosAbstract",
+		signature = signature(obj = "OwsServiceIdentification"),
+		def = function(obj) {
+			return(toString(obj@abstract))
+		})
+
 
 ################################################################################
 # conversion methods and accessor function
@@ -1300,6 +1339,23 @@ setMethod(f = "sosGetCRS",
 			if(length(.l) == 1)
 				return(.l[[1]])
 			else return(.l)
+		}
+)
+
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "SosObservationOffering"),
+		def = function(obj) {
+			.srsName <- sosBoundedBy(obj)[["srsName"]]
+			.crs <- sosGetCRS(.srsName)
+			return(.crs)
+		}
+)
+
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "list"),
+		def = function(obj) {
+			.crs <- lapply(X = obj, FUN = sosGetCRS)
+			return(.crs)
 		}
 )
 

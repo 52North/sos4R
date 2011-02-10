@@ -102,7 +102,7 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 			href = xmlGetAttr(node = obj[[omObservedPropertyName]],
 					name = "href"))
 	
-	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
+	.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]], sos = sos)
 	
 	# must be GmlMeasure
 	.result <- parseMeasure(obj[[omResultName]])
@@ -140,7 +140,8 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
 	}
 	
 	if(!is.null(obj[[omFeatureOfInterestName]])) {
-		.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]])
+		.featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]],
+				sos = sos)
 	} else {
 		warning("om:featureOfInterest is mandatory in om:Observation, but is missing!")
 		.featureOfInterest <- NULL
@@ -188,6 +189,16 @@ parseObservationCollection <- function(obj, sos, verbose) {
 				srsName = xmlGetAttr(.env, "srsName"),
 				lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
 				upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+		
+		if(sosSwitchCoordinates(sos)) {
+			warning("Switching coordinates in envelope of ObservationCollection!")
+			.origLC <- strsplit(x = .boundedBy[["lowerCorner"]], split = " ")
+			.lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
+			.origUC <- strsplit(x = .boundedBy[["upperCorner"]], split = " ")
+			.uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
+			.boundedBy <- list(srsName = xmlGetAttr(.env, "srsName"),
+					lowerCorner = .lC, upperCorner = .uC)
+		}
 	}
 	else {
 		.boundedBy <- list()
@@ -280,7 +291,7 @@ parseComplexObservation <- function(obj, sos, verbose = FALSE) {
 #
 # parse sos:featureOfInterest to according Element of GML or SA
 #
-parseFOI <- function(obj) {
+parseFOI <- function(obj, sos) {
 	.foi <- NULL
 	
 	# has href attribute? if yes, use it!
@@ -297,7 +308,7 @@ parseFOI <- function(obj) {
 		.name <- xmlName(.feature)
 		
 		if(.name == saSamplingPointName) {
-			.sp <- parseSamplingPoint(.feature)
+			.sp <- parseSamplingPoint(.feature, sos = sos)
 			.foi <- GmlFeatureProperty(feature = .sp)
 		}
 		else if (.name == saSamplingSurface) {
@@ -305,7 +316,7 @@ parseFOI <- function(obj) {
 			.foi <- GmlFeatureProperty(href = .name)
 		}
 		else if (.name == gmlFeatureCollectionName) {
-			.foi <- parseFeatureCollection(.feature)
+			.foi <- parseFeatureCollection(.feature, sos = sos)
 		}
 		else {
 			warning("No parsing for given feature implemented")

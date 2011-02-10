@@ -36,7 +36,8 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		dataFieldConverters = SosDataFieldConvertingFunctions(),
 		curlOptions = list(),
 		curlHandle = getCurlHandle(),
-		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, ...) {
+		timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, 
+		switchCoordinates = FALSE, ...) {
 	if(version == "1.0.0") {
 		if(method == .sosConnectionMethodPost)
 			.curlOpts <- curlOptions(url = url)
@@ -56,7 +57,8 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 				curlOptions = .curlOpts,
 				curlHandle = curlHandle,
 				timeFormat = timeFormat,
-				verboseOutput = verboseOutput)
+				verboseOutput = verboseOutput,
+				switchCoordinates = switchCoordinates)
 		
 		.caps <- getCapabilities(sos = .sos, verbose = verboseOutput, ...)
 		if(!is(.caps, "OwsCapabilities")) {

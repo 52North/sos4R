@@ -68,6 +68,16 @@ parseSosObservationOffering <- function(obj, sos) {
 				srsName = xmlGetAttr(.env, "srsName"),
 				lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
 				upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+		
+		if(sosSwitchCoordinates(sos)) {
+			warning("Switching coordinates in envelope of ObservationOffering!")
+			.origLC <- strsplit(x = .boundedBy[["lowerCorner"]], split = " ")
+			.lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
+			.origUC <- strsplit(x = .boundedBy[["upperCorner"]], split = " ")
+			.uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
+			.boundedBy <- list(srsName = xmlGetAttr(.env, "srsName"),
+					lowerCorner = .lC, upperCorner = .uC)
+		}
 	}
 	else {
 		.boundedBy <- list()

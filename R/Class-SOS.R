@@ -34,7 +34,8 @@ setClass("SOS",
 		representation(version = "character",
 				capabilities = "OwsCapabilities", parsers = "list",
 				encoders = "list", dataFieldConverters = "list",
-				timeFormat = "character", verboseOutput = "logical"),
+				timeFormat = "character", verboseOutput = "logical",
+				switchCoordinates = "logical"),
 		contains = c("VIRTUAL"))
 
 #

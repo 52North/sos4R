@@ -31,7 +31,7 @@
 #
 #
 #
-parsePosition <- function(obj) {
+parsePosition <- function(obj, sos) {
 	.position <- NULL
 	
 	# has href attribute?
@@ -42,7 +42,8 @@ parsePosition <- function(obj) {
 	}
 	else {
 		# must be point
-		.position <- GmlPointProperty(point = parsePoint(obj[[gmlPointName]]))
+		.position <- GmlPointProperty(point = parsePoint(obj[[gmlPointName]],
+						sos = sos))
 	}
 	
 	return(.position)
@@ -51,11 +52,17 @@ parsePosition <- function(obj) {
 #
 #
 #
-parsePoint <- function(obj) {
+parsePoint <- function(obj, sos) {
 	.point <- NA
 	.pos <- obj[[gmlPosName]]
 	
 	.posString <- xmlValue(.pos)
+	
+	if(sosSwitchCoordinates(sos)) {
+		warning("Switching coordinates in Point!")
+		.orig <- strsplit(x = .posString, split = " ")
+		.posString <- paste(.orig[[1]][[2]], .orig[[1]][[1]])
+	}
 	
 	# optional attributes:
 	.srsName <- xmlGetAttr(node = .pos, name = "srsName",
@@ -216,14 +223,14 @@ parseTimeGeometricPrimitiveFromParent <- function(obj, format) {
 #
 #
 #
-parseFeatureCollection <- function(obj) {
+parseFeatureCollection <- function(obj, sos) {
 	.members <- .filterXmlChildren(node = obj,
 			childrenName = gmlFeatureMemberName)
 	
 	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
 	
 	if(length(.members) > 0) {
-		.members <- lapply(.members, .parseFeatureMember)
+		.members <- lapply(.members, .parseFeatureMember, sos = sos)
 		
 		.fc <- GmlFeatureCollection(featureMembers = .members, id = .id)
 		return(.fc)
@@ -233,18 +240,18 @@ parseFeatureCollection <- function(obj) {
 		return(NULL)
 	}
 }
-.parseFeatureMember <- function(obj) {
+.parseFeatureMember <- function(obj, sos) {
 	.noneTexts <- .filterXmlOnlyNoneTexts(obj)
 	.member <- .noneTexts[[1]]
 	
 	.name <- xmlName(.member)
 	
 	if(.name == saSamplingPointName) {
-		.sp <- parseSamplingPoint(.member)
+		.sp <- parseSamplingPoint(.member, sos = sos)
 		.member.parsed <- GmlFeatureProperty(feature = .sp)
 	}
 	else if (.name == gmlFeatureCollectionName) {
-		.member.parsed <- parseFeatureCollection(.member)
+		.member.parsed <- parseFeatureCollection(.member, sos = sos)
 	}
 	else {
 		warning("No handling for given gml:featureMember available, only sa:SamplingPoint is supported!")
