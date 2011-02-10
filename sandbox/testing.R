@@ -997,3 +997,46 @@ sosGetDCP(weathersos, operation = sosGetObservationName, type = "Post")
 describeSensor(weathersos, sosProcedures(weathersos)[[1]][[1]])
 getObservation(weathersos, sosOfferings(weathersos)[[1]], latest = TRUE)
 # still works
+
+################################################################################
+# plotting and coercion
+csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos")
+rainfall.off.csiro <- sosOfferings(csiro)["Rain Gauges"][[1]]
+sosBoundedBy(rainfall.off.csiro, bbox = TRUE)
+sosCapabilitiesDocumentOriginal(csiro)
+# wrong coordinate order in capabilities!!
+
+
+csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos", switchCoordinates = TRUE)
+rainfall.off.csiro <- sosOfferings(csiro)["Rain Gauges"][[1]]
+sosBoundedBy(rainfall.off.csiro, bbox = TRUE)
+plot(rainfall.off.csiro)
+
+poly <- as(rainfall.off.csiro, "SpatialPolygons")
+poly
+
+poly2 <- as(rainfall.off.bom, "SpatialPolygons")
+
+bbox(poly)
+map.where("world", coordinates(poly))
+
+# get the map data dir
+Sys.getenv("R_MAP_DATA_DIR")
+# check out world.N
+
+weathersos <- SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+weathersos.offerings <- sosOfferings(weathersos)
+
+plot(weathersos.offerings[[1]])
+plot(weathersos, regions = c("Germany", "Austria"))
+legend("topleft", legend = c("lala", "puhh"), title = "offerings")
+
+plot(csiro)
+
+sosBoundedBy(weathersos.offerings[[1]])
+sosBoundedBy(weathersos.offerings[[1]], bbox = TRUE)
+
+as(weathersos.offerings[[1]], "SpatialPolygons")
+
+
+

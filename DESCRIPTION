@@ -5,8 +5,7 @@ Version: 0.1-12
 Date: 2011-01-14
 Author: Daniel Nuest
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 2.11.1), XML, RCurl (>= 1.4-1), methods
-Suggests: sp
+Depends: R (>= 2.11.1), XML, RCurl (>= 1.4-1), sp, methods, graphics, maps, maptools, RColorBrewer
 Description: sos4R is a client for Sensor Observation Services (SOS) as
  specified by the Open Geospatial Consortium (OGC).
  It allows users to retrieve metadata from SOS web services and to interactively
@@ -23,4 +22,4 @@ Collate: Constants.R Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R
 	GML-methods.R SWE-methods.R SML-methods.R GML-methods-parsing.R
 	SA-methods-parsing.R SWE-methods-parsing.R OGC-methods.R
 	PrintShowStructureSummmary-methods.R SOS-methods-util.R SOS-methods.R
-	Defaults.R
+	Defaults.R SOS-methods-plotting.R SOS-methods-coercion.R
