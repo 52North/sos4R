@@ -140,7 +140,10 @@
 
 \alias{sosGetCRS}
 \alias{sosGetCRS-method}
+\alias{sosGetCRS,list-method}
 \alias{sosGetCRS,character-method}
+\alias{sosGetCRS,SosObservationOffering-method}
+
 
 \alias{sosName}
 \alias{sosName-method}
@@ -152,6 +155,15 @@
 \alias{sosName,SosGetObservation-method}
 \alias{sosName,SosGetObservationById-method}
 
+
+\alias{sosTitle}
+\alias{sosTitle-method}
+\alias{sosTitle,SOS-method}
+
+\alias{sosAbstract}
+\alias{sosAbstract-method}
+\alias{sosAbstract,SOS-method}
+
 \alias{sosEncoders}
 \alias{sosEncoders,SOS-method}
 
@@ -162,6 +174,10 @@
 
 \alias{sosGetDCP}
 \alias{sosGetDCP,SOS,character-method}
+
+\alias{sosSwitchCoordinates}
+\alias{sosSwitchCoordinates-method}
+\alias{sosSwitchCoordinates,SOS-method}
 
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
@@ -187,16 +203,19 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{curlOptions}:}{Object of class \code{"ANY"}: The curl handle to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
     \item{\code{timeFormat}:}{Object of class \code{"character"}: The time format to be used or decoding and encoding time character strings to and from \code{POSIXt} classes.}
     \item{\code{verboseOutput}:}{Object of class \code{"logical"}: Trigger parameter for extensive debugging information on the console.}
+    \item{\code{switchCoordinates}:}{Object of class \code{"logical"}: Trigger switching of lat/long during parsing stage.}
   }
 }
 \section{Methods}{
   \describe{
+    \item{sosAbstract}{\code{signature(obj = "SOS")}: ... }
     \item{sosCapabilitiesDocumentOriginal}{\code{signature(sos = "SOS")}: To retrieve the full original service metadata document.}
     \item{sosCaps}{\code{signature(sos = "SOS")}: ... }
     \item{sosContents}{\code{signature(sos = "SOS")}: ... }
     \item{sosDataFieldConverters}{\code{signature(sos = "SOS")}: ... }
     \item{sosTime}{\code{signature(obj = "SOS")}: ... }
     \item{sosTime}{\code{signature(obj = "SOS")}: ... }
+    \item{sosTitle}{\code{signature(obj = "SOS")}: ... }
     \item{sosOperations}{\code{signature(sos = "...")}: ... }
     \item{sosGetCRS}{\code{signature(obj = "character")}: ... }
     \item{sosGetDCP}{\code{signature(sos = "SOS", operation = "character", type = "character")}: Get the distributed computing platform URL for the given operation and method type. If type is missing, the function returns all available DCPs. }
@@ -220,6 +239,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosServiceIdentification}{\code{signature(sos = "SOS")}: ... }
     \item{sosServiceProvider}{\code{signature(sos = "SOS")}: ... }
     \item{sosSrsName}{\code{signature(sos = "SOS")}: ... }
+    \item{sosSwitchCoordinates}{\code{signature(sos = "SOS")}: ... }
     \item{sosTimeFormat}{\code{signature(sos = "SOS")}: ... }
     \item{sosUrl}{\code{signature(sos = "SOS")}: ... }
     \item{sosVersion}{\code{signature(sos = "SOS")}: ... }
@@ -229,7 +249,9 @@ Object from the class can be used in calls to function for metadata retrieval of
 }
 
 \usage{
-SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(), dataFieldConverters = SosDataFieldConvertingFunctions(), curlOptions = list(), curlHandle = getCurlHandle(), timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, ...)
+SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(), dataFieldConverters = SosDataFieldConvertingFunctions(), curlOptions = list(), curlHandle = getCurlHandle(), timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, switchCoordinates = FALSE, ...)
+
+# accessor methods ...
 }
 
 \arguments{
@@ -243,6 +265,7 @@ SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = Sos
   \item{curlHandle}{See the corresponding slot description.}
   \item{timeFormat}{See the corresponding slot description.}
   \item{verboseOutput}{See the corresponding slot description.}
+  \item{switchCoordinates}{See the corresponding slot description.}
   \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
 }
 

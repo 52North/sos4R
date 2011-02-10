@@ -81,6 +81,9 @@
 
 \alias{sosResult,OwsExceptionReport-method}
 
+\alias{sosTitle,OwsServiceIdentification-method}
+\alias{sosAbstract,OwsServiceIdentification-method}
+
 \title{Classes and Construction Functions for Elements of the OWS Namespace}
 
 \description{These classes represent elements from the OGC Web Services Common Specification and the OGC Web Services Common Standard.}
