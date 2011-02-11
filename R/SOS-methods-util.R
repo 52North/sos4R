@@ -777,7 +777,7 @@ setMethod(f = "sosResult", signature = signature(obj = "OwsExceptionReport"),
 		})
 
 if (!isGeneric("sosCoordinates"))
-	setGeneric(name = "sosCoordinates", def = function(obj) {
+	setGeneric(name = "sosCoordinates", def = function(obj, ...) {
 				standardGeneric("sosCoordinates")
 			})
 setMethod(f = "sosCoordinates",
@@ -842,8 +842,8 @@ setMethod(f = "sosCoordinates",
 		})
 setMethod(f = "sosCoordinates",
 		signature = signature(obj = "list"),
-		def = function(obj) {
-			.list <- lapply(obj, sosCoordinates)
+		def = function(obj, sos, verbose = FALSE) {
+			.list <- lapply(obj, sosCoordinates, sos = sos, verbose = verbose)
 			.coords <- do.call(rbind, .list)
 			return(.coords)
 		})

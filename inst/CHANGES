@@ -124,6 +124,7 @@
 * fix in bbox creation in sosBoundedBy(... bbox = TRUE)
 * Added coordinate switching mechanism, works during parsing, required sos to be added to a bunch of parsing functions
 * Added a few packages to dependency, they are needed for plotting
+* Added sosId(), sosName(), sosAbstract(), and sosCoordinates() for class SensorML (in SML-methods-util.R)
 * ...
 
 * TODO: add new features to Vignette

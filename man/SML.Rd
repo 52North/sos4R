@@ -10,6 +10,12 @@
 \alias{SensorML}
 \alias{sml}
 
+
+\alias{sosId,SensorML-method}
+\alias{sosName,SensorML-method}
+\alias{sosAbstract,SensorML-method}
+\alias{sosCoordinates,SensorML-method}
+
 \title{Classes of the Namespace sml}
 
 \description{

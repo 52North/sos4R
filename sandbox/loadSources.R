@@ -30,6 +30,7 @@
 # load required libraries
 library("XML")
 library("RCurl")
+library("sp")
 
 # load required source files for testing
 if(!exists(".path"))
@@ -51,7 +52,6 @@ source(paste(.path, "R", "OWS-methods.R",  sep = "/"))
 source(paste(.path, "R", "OWS-methods-parsing.R",  sep = "/"))
 source(paste(.path, "R", "SOS-methods-parsing.R",  sep = "/"))
 source(paste(.path, "R", "SOS-methods-plotting.R",  sep = "/"))
-source(paste(.path, "R", "SOS-methods-coercion.R",  sep = "/"))
 source(paste(.path, "R", "OM-methods.R",  sep = "/"))
 source(paste(.path, "R", "OM-methods-parsing.R",  sep = "/"))
 source(paste(.path, "R", "OM-methods-coercion.R",  sep = "/"))
@@ -66,6 +66,11 @@ source(paste(.path, "R", "OGC-methods.R",  sep = "/"))
 
 source(paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
 
+source(paste(.path, "R", "SOS-methods-coercion.R",  sep = "/"))
+
 source(paste(.path, "R", "SOS-methods-util.R",  sep = "/"))
+source(paste(.path, "R", "SML-methods-util.R",  sep = "/"))
+
 source(paste(.path, "R", "SOS-methods.R",  sep = "/"))
+
 source(paste(.path, "R", "Defaults.R",  sep = "/"))

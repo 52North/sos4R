@@ -41,3 +41,4 @@ parseSensorML <- function(obj) {
 	.sml = SensorML(obj)
 	return(.sml)
 }
+

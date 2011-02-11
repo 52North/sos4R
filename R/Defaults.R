@@ -72,6 +72,10 @@ SosExampleServices <- function() {
 		parseElementType,
 		parseEncoding,
 		parseValues,
+		parseSwePosition,
+		parseLocation,
+		parseVector,
+		parseCoordinate,
 		#
 		parseGeometryObservation,
 		parseCategoryObservation,
@@ -98,6 +102,10 @@ names(.sosDefaultParsers) <- list(
 		sweElementTypeName,
 		sweEncodingName,
 		sweValuesName,
+		swePositionName,
+		sweLocationName,
+		sweVectorName,
+		sweCoordinateName,
 		#
 		omGeometryObservationName,
 		omCategoryObservationName,

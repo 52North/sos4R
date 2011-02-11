@@ -186,6 +186,10 @@
 \alias{sweCodeSpaceName}
 \alias{sweTextName}
 \alias{sweUomName}
+\alias{sweCoordinateName}
+\alias{sweLocationName}
+\alias{swePositionName}
+\alias{sweVectorName}
 \alias{xmlInternalDocumentName}
 \alias{xmlTextNodeName}
 \alias{OwsExceptionsData}

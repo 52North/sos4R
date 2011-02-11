@@ -58,6 +58,16 @@
 \alias{parseFile,SOS_1.0.0,character-method}
 
 
+\alias{parseCoordinate}
+\alias{parseCoordinate-method}
+\alias{parseVector}
+\alias{parseVector-method}
+\alias{parseLocation}
+\alias{parseLocation-method}
+\alias{parseSwePosition}
+\alias{parseSwePosition-method}
+
+
 \title{Parsing Functions for XML Documents and Elements}
 
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}

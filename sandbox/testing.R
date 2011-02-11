@@ -1014,9 +1014,7 @@ plot(rainfall.off.csiro)
 
 poly <- as(rainfall.off.csiro, "SpatialPolygons")
 poly
-
 poly2 <- as(rainfall.off.bom, "SpatialPolygons")
-
 bbox(poly)
 map.where("world", coordinates(poly))
 
@@ -1029,14 +1027,41 @@ weathersos.offerings <- sosOfferings(weathersos)
 
 plot(weathersos.offerings[[1]])
 plot(weathersos, regions = c("Germany", "Austria"))
-legend("topleft", legend = c("lala", "puhh"), title = "offerings")
-
 plot(csiro)
 
 sosBoundedBy(weathersos.offerings[[1]])
 sosBoundedBy(weathersos.offerings[[1]], bbox = TRUE)
-
 as(weathersos.offerings[[1]], "SpatialPolygons")
 
+#
+# plotting sensor positions
+#
+proc1 <- sosProcedures(weathersos)[[1]][[1]]
+proc1.descr <- describeSensor(weathersos, proc1)
 
+# weathersos
+sosId(proc1.descr)
+sosName(proc1.descr) # short name
+sosAbstract(proc1.descr) # description name
+coords <- sosCoordinates(proc1.descr, sos = weathersos)
+coords
+attributes(coords[,1])
+attributes(coords[,3])
+
+proc.all <- sosProcedures(weathersos)[[1]]
+proc.all.descr <- lapply(proc.all, describeSensor, sos = weathersos)
+coords.all <- sosCoordinates(proc.all.descr, sos = weathersos)
+coords.all
+attributes(coords.all[,3])
+
+# try csiro, but not successful
+proc2 <- sosProcedures(csiro)[[3]][[2]]
+proc2.descr <- describeSensor(sos = csiro, procedure = proc2)
+proc2.descr@xml
+sosId(proc2.descr)
+sosName(proc2.descr)
+sosAbstract(proc2.descr)
+
+###
+# TODO continue here with plotting of sensor
 

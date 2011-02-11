@@ -34,6 +34,9 @@ cat("Go to the following website for details of the South Esk Hydrological Senso
 
 # Data subject to CSIRO's legal disclaimer: http://www.csiro.au/org/LegalNoticeAndDisclaimer.html
 
+# See also:
+# http://external.opengis.org/twiki_public/bin/view/ClimateChallenge2009/ServiceOfferingCSIRO
+
 # Bureau of Meteorology (red and dark blue on map)
 bom <- SOS("http://wron.net.au/BOM_SOS/sos")
 
