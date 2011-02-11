@@ -9,7 +9,7 @@
 # info@52north.org                                                             #
 #                                                                              #
 # This program is free software; you can redistribute and/or modify it under   #
-# the terms of the GNU General Publipc License version 2 as published by the    #
+# the terms of the GNU General Publipc License version 2 as published by the   #
 # Free Software Foundation.                                                    #
 #                                                                              #
 # This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
@@ -1037,13 +1037,13 @@ as(weathersos.offerings[[1]], "SpatialPolygons")
 # plotting sensor positions
 #
 proc1 <- sosProcedures(weathersos)[[1]][[1]]
-proc1.descr <- describeSensor(weathersos, proc1)
+proc1.descr <- describeSensor(weathersos, proc1, verbose = TRUE)
 
 # weathersos
 sosId(proc1.descr)
 sosName(proc1.descr) # short name
 sosAbstract(proc1.descr) # description name
-coords <- sosCoordinates(proc1.descr, sos = weathersos)
+coords <- sosCoordinates(proc1.descr, sos = weathersos, verbose = TRUE)
 coords
 attributes(coords[,1])
 attributes(coords[,3])
@@ -1064,4 +1064,26 @@ sosAbstract(proc2.descr)
 
 ###
 # TODO continue here with plotting of sensor
+weathersos <- SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+proc1 <- sosProcedures(weathersos)[[1]][[1]]
+proc1.descr <- describeSensor(weathersos, proc1, verbose = TRUE)
+
+# convert to spatial points data frame
+as(proc1.descr, "Spatial")
+
+.coords <- attributes(proc1.descr@coords)
+.crds <- .coords[,c("x", "y")]
+.data <- .coords[,!colnames(.coords)%in%c("x", "y")]
+.crs <- attributes(.coords)[["referenceFrame"]]
+
+SpatialPointsDataFrame(coords = .crds, data = .data, crs = .crs)
+
+summary(coords)
+
+# this works, move it to plot function...
+plot(coords, add = TRUE, pch = 19)
+text(x = coordinates(coords)[,"x"], y = coordinates(coords)[,"y"],
+		labels = row.names(coords@data), adj = c(0, 1), cex = 0.75)
+
+
 

@@ -27,23 +27,33 @@
 #                                                                              #
 ################################################################################
 
+#
+#
+#
+as.SosObservationOffering.SpatialPolygons = function(from) {
+	# create bounding polygon from offering bounding box
+	.bbox <- sosBoundedBy(from, bbox = TRUE)
+	.llat <- .bbox["coords.lat","min"]
+	.llon <- .bbox["coords.lon","min"]
+	.ulat <- .bbox["coords.lat","max"]
+	.ulon <- .bbox["coords.lon","max"]
+	
+	# beginning at lower left corner:
+	.poly <- Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
+					c(.llat, .ulat, .ulat, .llat, .llat)))
+	.spPoly <- SpatialPolygons(list(
+					Polygons(list(.poly), sosName(from))),
+			proj4string = sosGetCRS(from))
+	
+	return(.spPoly)
+}
 setAs("SosObservationOffering", "SpatialPolygons", 
 		function(from) {
-			
-			# create bounding polygon from offering bounding box
-			.bbox <- sosBoundedBy(from, bbox = TRUE)
-			.llat <- .bbox["coords.lat","min"]
-			.llon <- .bbox["coords.lon","min"]
-			.ulat <- .bbox["coords.lat","max"]
-			.ulon <- .bbox["coords.lon","max"]
-			
-			# beginning at lower left corner:
-			.poly <- Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
-					c(.llat, .ulat, .ulat, .llat, .llat)))
-			.spPoly <- SpatialPolygons(list(
-							Polygons(list(.poly), sosName(from))),
-					proj4string = sosGetCRS(from))
-			
-			return(.spPoly)
+			as.SosObservationOffering.SpatialPolygons(from)
+		}
+)
+setAs("SosObservationOffering", "Spatial", 
+		function(from) {
+			as.SosObservationOffering.SpatialPolygons(from)
 		}
 )

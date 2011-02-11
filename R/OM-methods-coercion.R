@@ -50,3 +50,27 @@ setAs(from = "OmObservationCollection", to = "list",
 			as.list.OmObservationCollection(from)
 		}
 )
+
+#
+#
+#
+as.SpatialPointsDataFrame.OmObservationCollection = function(parameter) {
+	warning("NOT IMPLEMENTED YET!")
+}
+setAs(from = "OmObservationCollection", to = "SpatialPointsDataFrame",
+		def = function(from) {
+			as.SpatialPointsDataFrame.OmObservationCollection(from)
+		}
+)
+
+#
+#
+#
+as.SpatialPointsDataFrame.OmObservation = function(parameter) {
+	warning("NOT IMPLEMENTED YET!")
+}
+setAs(from = "OmObservation", to = "SpatialPointsDataFrame",
+		def = function(from) {
+			as.SpatialPointsDataFrame.OmObservation(from)
+		}
+)

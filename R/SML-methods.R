@@ -30,15 +30,20 @@
 #
 #
 #
-SensorML <- function(xml) {
-	new("SensorML", xml = xml)
+SensorML <- function(xml, coords) {
+	new("SensorML", xml = xml, coords = coords)
 }
 
 #
 # no parsing actually done here...
 #
-parseSensorML <- function(obj) {
-	.sml = SensorML(obj)
+parseSensorML <- function(obj, sos, verbose = FALSE) {
+	.sml = SensorML(xml = obj, coords = data.frame())
+	
+	if(verbose) cat("Getting coordinates for ",
+				sosId(.sml), "\n")
+	.sml@coords <- sosCoordinates(obj = .sml, sos = sos, verbose = verbose)
+	
 	return(.sml)
 }
 

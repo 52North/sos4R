@@ -429,6 +429,10 @@ parseSwePosition <- function(obj, sos, verbose = FALSE) {
 	.parser <- sosParsers(sos)[[sweLocationName]]
 	
 	.pos <- .parser(.location, sos = sos, verbose = verbose)
+	
+	.oldAttrs <- attributes(.pos)
+	attributes(.pos) <- c(.oldAttrs, list(referenceFrame = .rF))
+	
 	return(.pos)
 }
 
@@ -459,7 +463,8 @@ parseVector <- function(obj, sos, verbose = FALSE) {
 		.coord <- parseCoordinate(.c, sos = sos, verbose = verbose)
 		.coords <- c(.coords, list(.coord))
 		
-		if(verbose) cat("[parseVector] parsed coordinate: ", toString(.coord))
+		if(verbose) cat("[parseVector] parsed coordinate: ", toString(.coord),
+					"\n")
 	}
 
 	return(.coords)

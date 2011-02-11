@@ -22,19 +22,33 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-06-18                                                          #
+# Created: 2011-02-11                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
 #
-# See OWS Common, OGC 06-121r9
 #
-setClass("SensorML",
-		representation(xml = "XMLInternalDocument", coords = "data.frame"),
-		prototype = list(xml = NULL, coords = data.frame()),
-		validity = function(object) {
-			#print("Entering validation: SensorML")
-			return(TRUE)
+#
+as.SensorML.SpatialPointsDataFrame = function(from) {
+#	coordinates(from@coords) = c("x", "y")
+	.coords <- attributes(proc1.descr@coords)
+	.crds <- .coords[,c("x", "y")]
+	.data <- .coords[,!colnames(.coords)%in%c("x", "y")]
+	.crs <- attributes(.coords)[["referenceFrame"]]
+	
+	.spdf <- SpatialPointsDataFrame(coords = .crds, data = .data, crs = .crs)
+	
+	return(.spdf)
+}
+setAs("SensorML", "SpatialPointsDataFrame", 
+		function(from) {
+			as.SensorML.SpatialPointsDataFrame(from)
 		}
 )
+setAs("SensorML", "Spatial", 
+		function(from) {
+			as.SensorML.SpatialPointsDataFrame(from)
+		}
+)
+

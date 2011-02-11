@@ -392,7 +392,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 	}
 	else {
 		.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
-		.sml <- .parsingFunction(obj = .response)
+		.sml <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
 		return(.sml)
 	}
 }

@@ -75,7 +75,8 @@ flush(stderr()); flush(stdout())
 ###   sweDataRecordName sweFieldName sweTimeName sweQuantityName
 ###   sweCategoryName sweBooleanName sweCountName sweEncodingName
 ###   sweTextBlockName sweValuesName sweValueName sweCodeSpaceName
-###   sweTextName sweUomName xmlInternalDocumentName xmlTextNodeName
+###   sweTextName sweUomName sweCoordinateName sweLocationName
+###   swePositionName sweVectorName xmlInternalDocumentName xmlTextNodeName
 ###   OwsExceptionsData ogcComparisonOperatorsName ogcTempOpTMOverlappedBy
 ###   owsNamespacePrefix sosDescribeFeatureTypeName
 ###   sosDescribeObservationTypeName sosDescribeResultModelName

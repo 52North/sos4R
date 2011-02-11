@@ -842,8 +842,11 @@ setMethod(f = "sosCoordinates",
 		})
 setMethod(f = "sosCoordinates",
 		signature = signature(obj = "list"),
-		def = function(obj, sos, verbose = FALSE) {
-			.list <- lapply(obj, sosCoordinates, sos = sos, verbose = verbose)
+		def = function(obj, sos = NULL, verbose = FALSE) {
+			if(is.null(sos))
+				.list <- lapply(obj, sosCoordinates)
+			else .list <- lapply(obj, sosCoordinates, sos = sos, verbose = verbose)
+
 			.coords <- do.call(rbind, .list)
 			return(.coords)
 		})

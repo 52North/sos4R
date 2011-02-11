@@ -72,9 +72,13 @@ setMethod(f = "sosAbstract", signature = signature(obj = "SensorML"),
 #
 # extract the coordinates from the SensorML document and return as a data.frame
 #
-setMethod(f = "sosCoordinates",
-		signature = signature(obj = "SensorML"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
 		def = function(obj, sos, verbose = FALSE) {
+			if(all(dim(obj@coords) > 0)) {
+				if(verbose) cat("Coordinates already in SensorML, returning.\n")
+				return(obj@coords)
+			}
+			
 			if(verbose) cat("Parsing coordinates from SensorML...\n")
 					
 			.root <- xmlRoot(obj@xml)
