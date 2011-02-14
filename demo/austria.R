@@ -6,3 +6,5 @@
 ################################################################################
 # http://ispacevm10.researchstudio.at/sostester/
 # use the two development services
+
+# TODO KML export
