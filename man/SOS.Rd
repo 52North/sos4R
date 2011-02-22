@@ -179,6 +179,9 @@
 \alias{sosSwitchCoordinates-method}
 \alias{sosSwitchCoordinates,SOS-method}
 
+\alias{plot.SOS}
+\alias{plot.SosObservationOffering}
+\alias{as.SosObservationOffering.SpatialPolygons}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 

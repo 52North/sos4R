@@ -32,12 +32,13 @@
 #
 as.SensorML.SpatialPointsDataFrame = function(from) {
 #	coordinates(from@coords) = c("x", "y")
-	.coords <- attributes(proc1.descr@coords)
+	.coords <- attributes(from@coords)
 	.crds <- .coords[,c("x", "y")]
 	.data <- .coords[,!colnames(.coords)%in%c("x", "y")]
 	.crs <- attributes(.coords)[["referenceFrame"]]
 	
-	.spdf <- SpatialPointsDataFrame(coords = .crds, data = .data, crs = .crs)
+	.spdf <- SpatialPointsDataFrame(coords = .crds, data = .data,
+			proj4string = .crs)
 	
 	return(.spdf)
 }

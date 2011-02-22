@@ -38,9 +38,7 @@ cat("Go to the following website for details of the South Esk Hydrological Senso
 # See also:
 # http://external.opengis.org/twiki_public/bin/view/ClimateChallenge2009/ServiceOfferingCSIRO
 
-#
-#
-#
+# Specific handling for time format required:
 .timeFormat <- paste(sosDefaultTimeFormat, "%z", sep = "")
 csiroTimeParser = function(x, sos) {
 	.x <- paste (x, "00", sep = "")
@@ -61,10 +59,9 @@ bom <- SOS("http://wron.net.au/BOM_SOS/sos",  timeFormat = .timeFormat,
 # Forestry Tasmania (green on map)
 #ft <- SOS("http://140.79.3.21/Forestry_SOS/sos")
 # not available...
-# rainfalltoday
 
 # CSIRO (orange, purple on map)
-# rainfalltoday?
+# What about rainfalltoday?
 csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos", timeFormat = .timeFormat,
 		dataFieldConverters = SosDataFieldConvertingFunctions(
 				"urn:ogc:data:time:iso8601" = csiroTimeParser,
@@ -98,7 +95,7 @@ coords.all
 attributes(coords.all[,3])
 
 ################################################################################
-# analysis based on bom, csiro and dpiw
+# Analysis based on bom, csiro and dpiw
 
 # phenomenon rainfall or rainfalltoday is available at all stations
 rainfall <- "urn:ogc:def:phenomenon:OGC:rainfall"
@@ -265,6 +262,6 @@ spplot(x["var1.var"],  main = "ordinary kriging variance")
 
 
 # spacetime
-
+# TODO continue analysis with spacetime package
 
 

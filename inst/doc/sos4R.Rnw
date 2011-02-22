@@ -1103,11 +1103,27 @@ verboseSOS <- SOS(sosUrl(mySOS), verboseOutput = TRUE)
 \section{Getting Started}
 \label{sec:gettingstarted}
 
-The \textbf{demos} are a good way to get started with the package. Please be aware that the used SOSs might be temporarily unavailable.
+\subsection{Demos}
+
+The \textbf{demos} are a good way to get started with the package. Please be aware that the used SOSs might be temporarily unavailable and some of the demos are under construction.
 
 <<demo,echo=TRUE,eval=FALSE>>= 
 demo(package = "sos4R")
 @
+
+\begin{description}
+\item[ades] SOS with French groundwater level data - \textbf{under construction}.
+\item[airquality] Air quality SOS by ifgi and EEA - \textbf{under construction}.
+\item[austria] SOSs by Research Studios Austria - \textbf{under construction}.
+\item[ioos] Example using SOS by the Integrated Ocean Observing System - \textbf{under construction}.
+\item[marinemeta] SOS by Marine Metadata Interoperability Initiative - \textbf{under construction}.
+\item[oceanwatch] SOS by NOAA/SWFSC/ERD - \textbf{under construction}.
+\item[pegel] Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.
+\item[southesk] SOSs from South Esk Testbed by CSIRO, focuses on \textbf{data consolidation/fusion} and \textbf{plotting}.
+\item[weathersos] Time series analysis demo with weather data by ifgi.
+\end{description}
+
+\subsection{Services}
 
 There also is an imcomplete list of services that have been tested or are currently evaluated on the project homepage in the \enquote{data} area\footnote{\url{http://www.nordholmen.net/sos4r/data/}}. If you find or can provide new SOS with data useful to others, please do not hesitate to leave a comment on that page so that it can be inlcuded.
 

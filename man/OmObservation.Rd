@@ -30,6 +30,8 @@
 
 \alias{sosGetCRS,OmObservation-method}
 
+\alias{as.SpatialPointsDataFrame.OmObservation}
+
 \title{Classes for om:Observation Elements}
 
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification.}

@@ -35,13 +35,14 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		world.col = "grey50",
 		regions = x,
 		cities.pch = 19, cities.label = FALSE, cities.col = "black",
+		cities.database = "world.cities",
 		off.label = TRUE, off.col = "red", off.lwd = 3, off.lty = 1,
 		ylabeloffset = 0, # offset of the label
 		map.axes = TRUE, map.scale = TRUE, map.cities = FALSE) {
 	require("maps")
 	require("sp")
 	require("maptools") # for pruneMap
-	data(world.cities) # for cities
+	data(cities.database)
 	
 	.name <- sosName(x)
 	.spPoly <- as(x, "SpatialPolygons")
@@ -71,7 +72,7 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 	if(!add) {
 		if(map.axes) map.axes()
 		if(map.scale) map.scale(metric = TRUE, ratio = FALSE)
-		if(map.cities) map.cities(world.cities, label = cities.label,
+		if(map.cities) map.cities(cities.database, label = cities.label,
 					pch = cities.pch, col = cities.col)
 	}
 	
