@@ -478,10 +478,19 @@ parseCoordinate <- function(obj, sos, verbose = FALSE) {
 	if(verbose) cat("[parseCoordinate] with name", .name, "\n")
 
 	.quantity <- obj[[sweQuantityName]]
-	.axisID <- xmlGetAttr(.quantity, name = "axisID")
-	.uomCode <- xmlGetAttr(node = .quantity[[sweUomName]], name = "code",
-			default = NA_character_)
-	.value <- as.double(xmlValue(.quantity[[sweValueName]]))
+	.axisID <- xmlGetAttr(.quantity, name = "axisID", default = NA_character_)
+	if(verbose) cat("axisID: ", .axisID, "\n")
+	
+	.uomCode <- NA_character_
+	if(!is.null(.quantity[[sweUomName]]))
+		.uomCode <- xmlGetAttr(node = .quantity[[sweUomName]], name = "code",
+				default = NA_character_)
+	if(verbose) cat("uomCode: ", .uomCode, "\n")
+	
+	.value <- NA_character_
+	if(!is.null(.quantity[[sweValueName]]))
+		.value <- as.double(xmlValue(.quantity[[sweValueName]]))
+	if(verbose) cat("value: ", .value, "\n")
 	
 	return(list(name = .name, axisID = .axisID, uomCode = .uomCode,
 					value = .value))

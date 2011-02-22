@@ -98,6 +98,8 @@
 \alias{sosResultModels,SOS-method}
 \alias{sosResultModels,OwsOperation-method}
 
+\alias{sosResult,character-method}
+
 \alias{sosServiceIdentification}
 \alias{sosServiceIdentification-methods}
 \alias{sosServiceIdentification,SOS-method}

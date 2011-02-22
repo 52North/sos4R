@@ -775,6 +775,11 @@ setMethod(f = "sosResult", signature = signature(obj = "OwsExceptionReport"),
 			warning("OwsExceptionReport does not have a result set.")
 			return(toString(obj))
 		})
+setMethod(f = "sosResult", signature = signature(obj = "character"),
+		def = function(obj, coordinates = FALSE) {
+			warning(paste("No processable result given: ", obj))
+			return(toString(obj))
+		})
 
 if (!isGeneric("sosCoordinates"))
 	setGeneric(name = "sosCoordinates", def = function(obj, ...) {
@@ -1010,8 +1015,9 @@ setMethod(f = "sosCreateTimeInstant",
 		signature = signature(sos = "SOS", time = "POSIXt"),
 		def = function(sos, time, frame, calendarEraName,
 				indeterminatePosition) {
-			.time <- format(time, sos@timeFormat)
-			.timePos <- GmlTimePosition(time = strptime(.time, sos@timeFormat),
+			.time <- format(time, sosTimeFormat(sos))
+			.timePos <- GmlTimePosition(
+					time = strptime(.time, sosTimeFormat(sos)),
 					frame = frame, calendarEraName = calendarEraName,
 					indeterminatePosition = indeterminatePosition)
 			.ti <- GmlTimeInstant(timePosition = .timePos)
@@ -1033,17 +1039,14 @@ setMethod(f = "sosCreateTimePeriod",
 		signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
 		def = function(sos, begin, end, frame, calendarEraName,
 				indeterminatePosition, duration, timeInterval) {
+			.tf <- sosTimeFormat(sos)
 			.beginPos <- GmlTimePosition(
-					time = strptime(
-							format(begin, sos@timeFormat),
-							sos@timeFormat),
+					time = strptime(format(begin, .tf), .tf),
 					frame = frame, calendarEraName = calendarEraName,
 					indeterminatePosition = indeterminatePosition
 			)
 			.endPos <- GmlTimePosition(
-					time = strptime(
-							format(end, sos@timeFormat),
-							sos@timeFormat),
+					time = strptime(format(end, .tf), .tf),
 					frame = frame, calendarEraName = calendarEraName,
 					indeterminatePosition = indeterminatePosition
 			)

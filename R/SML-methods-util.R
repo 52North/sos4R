@@ -91,22 +91,36 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
 			.colNames <- sapply(.position, "[[", "name")
 			.colUoms <- lapply(.position, "[[", "uomCode")
 			.values <- lapply(.position, "[[", "value")
-			names(.values) <- lapply(.position, "[[", "axisID") 
+			names(.values) <- lapply(.position, "[[", "axisID")
+			
+			if(any(is.na(names(.values)))) {
+				warning("No axisID given, cannot name data.frame with them, trying 'name'.")
+				names(.values) <- lapply(.position, "[[", "name")
+			}
+			
+			if(verbose) {
+				cat("[sosCoordinates] values: ", toString(.values),	"\n")
+				cat("[sosCoordinates] names: ", names(.values), "\n")
+			}
 			
 			.frame <- data.frame(rbind(.values))
 			
 			for (i in seq(1, length(.colUoms))) {
 				.newAttrs <- list(.colUoms[[i]], .colNames[[i]])
 				names(.newAttrs) <- c("uom", "name")
-				if(verbose) cat("New attributes: ", toString(.newAttrs), "\n")
+				if(verbose) cat("[sosCoordinates] New attributes: ",
+							toString(.newAttrs), "\n")
 
 				.oldAttrs <- attributes(.frame[,i])
 				attributes(.frame[,i]) <- c(as.list(.oldAttrs), .newAttrs)
-				
 				attributes(.frame[,i]) <- .newAttrs
 			}
 			
-			row.names(.frame) <- sosId(obj)
+			if(verbose) cat("[sosCoordinates] row names: ",
+						toString(sosId(obj)), "\n")
+			
+			if(!is.na(sosId(obj)))
+				row.names(.frame) <- sosId(obj)
 			
 			return(.frame)
 		})

@@ -1086,4 +1086,17 @@ text(x = coordinates(coords)[,"x"], y = coordinates(coords)[,"y"],
 		labels = row.names(coords@data), adj = c(0, 1), cex = 0.75)
 
 
+################################################################################
+# TODO plot sensor positions
+proc.all <- unlist(sosProcedures(csiro)[[1]])
 
+s1 <- describeSensor(csiro, procedure = proc.all[[1]], verbose = TRUE)
+plot(SpatialPoints(s1@coords, proj4string = sosGetCRS(rainfall.off.csiro)),
+		add = TRUE)
+
+plot(s1, add = TRUE)
+
+proc.all.descr <- lapply(proc.all, describeSensor, sos = csiro)
+coords.all <- sosCoordinates(proc.all.descr, sos = csiro)
+coords.all
+attributes(coords.all[,3])

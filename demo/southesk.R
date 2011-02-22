@@ -47,10 +47,21 @@ csiroTimeParser = function(x, sos) {
 }
 
 # Bureau of Meteorology (red and dark blue on map)
-bom <- SOS("http://wron.net.au/BOM_SOS/sos",  timeFormat = .timeFormat,
+bom <- SOS("http://wron.net.au/BOM_SOS/sos", # timeFormat = .timeFormat,
+		switchCoordinates = TRUE)
+sosTimeFormat(bom)
+
+# CSIRO (orange, purple on map)
+# What about rainfalltoday?
+csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos", timeFormat = .timeFormat,
 		dataFieldConverters = SosDataFieldConvertingFunctions(
 				"urn:ogc:data:time:iso8601" = csiroTimeParser,
-				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble))
+				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble),
+		switchCoordinates = TRUE)
+
+# Tasmania Department of Primary Industries, Parks, Wildlife and Environment (DPIPWE, white on map)
+# http://140.79.3.21/DPIPWE_SOS/sos
+#dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos", switchCoordinates = TRUE)
 
 # Hydro Tasmania Consulting (yellow on map)
 #ht <- SOS("http://140.79.3.21/HT_SOS/sos")
@@ -60,39 +71,23 @@ bom <- SOS("http://wron.net.au/BOM_SOS/sos",  timeFormat = .timeFormat,
 #ft <- SOS("http://140.79.3.21/Forestry_SOS/sos")
 # not available...
 
-# CSIRO (orange, purple on map)
-# What about rainfalltoday?
-csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos", timeFormat = .timeFormat,
-		dataFieldConverters = SosDataFieldConvertingFunctions(
-				"urn:ogc:data:time:iso8601" = csiroTimeParser,
-				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble))
-
-# Tasmania Department of Primary Industries, Parks, Wildlife and Environment (DPIPWE, white on map)
-# http://140.79.3.21/DPIPWE_SOS/sos
-dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos")
 
 ################################################################################
-# explore SOS with plots
-rainfall.off.bom <- sosOfferings(bom)[[1]]
-plot(rainfall.off.bom, regions = "Australia", map.cities = TRUE)
+# explore SOSs with plots
 
+# plot SOS completely together
+plot(csiro, regions = "Australia")
+plot(bom) # automatic region detection using map.where(...)
+
+# plot offerings with cities
+rainfall.off.bom <- sosOfferings(bom)[[1]]
+plot(rainfall.off.bom, regions = "Australia:Tasmania", map.cities = TRUE,
+		cities.label = TRUE)
 rainfall.off.csiro <- sosOfferings(csiro)["Rain Gauges"][[1]]
 plot(rainfall.off.csiro, map.cities = FALSE, off.col = "green", add = TRUE)
-
 rainfall.off.ht <- sosOfferings(csiro)["HT Weather Stations"][[1]]
 plot(rainfall.off.ht, add = TRUE, off.col = "blue")
-
-# plot all together
-#plot(csiro, regions = "Australia")
-#plot(csiro, regions = "Australia:Tasmania")
-#plot(bom)
-
-# TODO plot sensor positions
-proc.all <- sosProcedures(weathersos)[[1]]
-proc.all.descr <- lapply(proc.all, describeSensor, sos = weathersos)
-coords.all <- sosCoordinates(proc.all.descr, sos = weathersos)
-coords.all
-attributes(coords.all[,3])
+title("Offerings of BOM and CSIRO SOSs")
 
 ################################################################################
 # Analysis based on bom, csiro and dpiw
@@ -100,13 +95,28 @@ attributes(coords.all[,3])
 # phenomenon rainfall or rainfalltoday is available at all stations
 rainfall <- "urn:ogc:def:phenomenon:OGC:rainfall"
 
+time.bom <- as.POSIXct("2011-02-10 16:10:00 CET")
+sosCreateTimeInstant(sos = bom, time = time.bom)
+
+# problem with time formatting because of locale:
+Sys.getlocale()
+Sys.getlocale(category = "LC_TIME")
+Sys.setlocale("LC_ALL", "English")
+
+time.bom <- as.POSIXct("2011-02-10 16:10:00 CET")
+format(time.bom, sosTimeFormat(bom))
+
+time.csiro <- 
 lastWeek <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600 * 24 * 7),
 		end = Sys.time())
 lastDay <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600 * 24),
 		end = Sys.time())
-lastHour <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600),
-		end = Sys.time())
-#sosTimeFormat(bom); encodeXML(lastWeek.bom, bom)
+#sosTimeFormat(bom); encodeXML(lastWeek, bom)
+
+strptime(format((Sys.time() - 3600 * 24 * 7),
+				paste(sosDefaultTimeFormat, "%Z", sep = "")),
+		sosTimeFormat(csiro))
+
 
 #
 # bom
@@ -117,7 +127,7 @@ phenomenon.bom <- phenomenon.bom[grep(pattern = "rain", phenomenon.bom)]
 
 rainfall.obs.bom <- getObservation(sos = bom, offering = rainfall.off.bom, 
 		observedProperty = phenomenon.bom,
-		eventTime = sosCreateEventTimeList(lastWeek))
+		eventTime = sosCreateEventTimeList(lastWeek), verbose = TRUE)
 rainfall.result.bom <- sosResult(rainfall.obs.bom, coordinate = TRUE)
 summary(rainfall.result.bom)
 
@@ -131,14 +141,15 @@ rainfall.off.datacell <- sosOfferings(csiro)[["Datacall Weather Stations"]]
 procedures.csiro <- sosProcedures(rainfall.off.csiro)
 phenomenon.csiro <- sosObservedProperties(rainfall.off.csiro)
 phenomenon.csiro <- phenomenon.bom[grep(pattern = "rain", phenomenon.csiro)]
-sosFeaturesOfInterest(rainfall.off.csiro)
+print(paste("FOIs: ", toString(sosFeaturesOfInterest(rainfall.off.csiro))))
 
-rainfall.obs.csiro <- getObservation(sos = csiro, # verbose = TRUE
-		offering = rainfall.off.csiro, 
+rainfall.obs.csiro <- getObservation(sos = csiro, verbose = TRUE,
+		offering = rainfall.off.csiro,
 		procedure = procedures.csiro, 
 		observedProperty = phenomenon.csiro,
 		eventTime = sosCreateEventTimeList(lastDay))
-# problem with parsing time (just NAs), fix it with csiroTimeParser (see above)
+# at this point realized problem with parsing time (just NAs), need to fix it
+# with csiroTimeParser (see above)
 
 phenomenon.ht <- sosObservedProperties(rainfall.off.ht)
 phenomenon.ht <- phenomenon.ht[grep(pattern = "rain", phenomenon.ht)]
@@ -155,12 +166,18 @@ rainfall.obs.dc <- getObservation(sos = csiro, # verbose = TRUE
 		eventTime = sosCreateEventTimeList(lastDay))
 
 # get data values
+rainfall.result.csiro <- sosResult(rainfall.obs.csiro, coordinate = TRUE)
+summary(rainfall.result.csiro)
+
 rainfall.result.ht <- sosResult(rainfall.obs.ht, coordinate = TRUE)
 summary(rainfall.result.ht)
-crs.ht <- sosGetCRS(rainfall.obs.ht[[1]])
+
+#crs.ht <- sosGetCRS(rainfall.obs.ht[[1]])
 rainfall.result.dc <- sosResult(rainfall.obs.dc, coordinate = TRUE)
 summary(rainfall.result.dc)
 
+################################################################################
+# Data consolidation:
 # save all data in analyzable data structure for one point in time:
 rainfall.data.time <- unique(rainfall.result.csiro[,"Time"])[[1]]
 # 2011-02-10 16:10:00 CET
@@ -170,6 +187,7 @@ rainfall.data.csiro <- cbind(rainfall.data.csiro, offering = c("csiro"))
 rainfall.data.ht <- subset(rainfall.result.ht, Time == rainfall.data.time,
 		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfall"))
 rainfall.data.ht <- cbind(rainfall.data.ht, offering = c("ht"))
+
 # TODO times do not match, do manually here, probably possible with time packages as well
 rainfall.data.time.dc <- unique(rainfall.result.dc[["Time"]])[c(1,25,50)]
 rainfall.data.dc <- subset(rainfall.result.dc,
@@ -192,7 +210,7 @@ rainfall.spdf <- SpatialPointsDataFrame(
 str(rainfall.spdf)
 bbox(rainfall.spdf)
 
-####################################
+################################################################################
 # plot stations with background data
 library("maps")
 library("sp")
@@ -200,7 +218,8 @@ library("maptools") # for pruneMap
 library("mapdata")
 
 world.p <- pruneMap(
-		map(database = "worldHires", region = "Australia:Tasmania", plot = FALSE))
+		map(database = "worldHires", region = "Australia:Tasmania",
+				plot = FALSE))
 world.sp <- map2SpatialLines(world.p, proj4string = crs.csiro)
 plot(x = world.sp, col = "grey", main = "Stations of ")
 plot(rainfall.spdf, add = TRUE)
@@ -208,7 +227,7 @@ text(x = one.data[,"lat"], y = one.data[,"lon"], labels = one.data[,"feature"],
 		adj = c(0, 1), cex = 0.75)
 text(x = rainfall.data[,"lat"], y = rainfall.data[,"lon"], col = "blue",
 		labels = rainfall.data[,"offering"], adj = c(1, 0), cex = 0.75)
-title(main = paste("Stations of", sosTitle(csiro)),
+title(main = paste("Observation locations of", sosTitle(csiro)),
 		sub = paste(sosAbstract(csiro)))
 
 # inspect and plot data
@@ -217,16 +236,17 @@ hist(rainfall.spdf@data[,"rainfall"], main = "Rainfall")
 bubble(rainfall.spdf, zcol = 2, maxsize = 2, col = c("#ff0088", "#ff0088"),
 		main = "Rainfall in Tasmania", do.sqrt = TRUE)
 
-#################################################
+################################################################################
 # transform to UTM for kriging and background map
 utm55 = CRS("+proj=utm +zone=55 +datum=WGS84")
-bgmap = map2SpatialLines(map("worldHires", region = "Australia:Tasmania", plot=F))
+bgmap = map2SpatialLines(map("worldHires", region = "Australia:Tasmania",
+				plot=F))
 proj4string(bgmap) <- "+proj=longlat +datum=WGS84"
 bgmap.utm <- spTransform(bgmap, utm55)
 rainfall.spdf.utm = spTransform(rainfall.spdf, utm55)
 plot(bgmap.utm, col = "grey"); plot(rainfall.spdf.utm, add = TRUE)
 
-#########
+################################################################################
 # Intamap
 #library("intamap")
 #one.intamap <- one.spdf
@@ -237,7 +257,7 @@ plot(bgmap.utm, col = "grey"); plot(rainfall.spdf.utm, add = TRUE)
 #checkSetup(obj)
 # less than 20 observations, not able to perfrom interpolation
 
-#########
+################################################################################
 # automap
 library("automap")
 # Ordinary kriging, no new_data object
@@ -247,7 +267,7 @@ kriging_result = autoKrige(
 		new_data = SpatialPixels(SpatialPoints(makegrid(one.utm, n = 300))))
 plot(kriging_result)
 
-#########
+################################################################################
 # Kriging
 library("gstat")
 rainfall.grid.utm = SpatialPixels(SpatialPoints(makegrid(rainfall.spdf.utm, n = 300), 
@@ -263,5 +283,4 @@ spplot(x["var1.var"],  main = "ordinary kriging variance")
 
 # spacetime
 # TODO continue analysis with spacetime package
-
 

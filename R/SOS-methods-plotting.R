@@ -35,25 +35,30 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		world.col = "grey50",
 		regions = x,
 		cities.pch = 19, cities.label = FALSE, cities.col = "black",
-		cities.database = "world.cities",
 		off.label = TRUE, off.col = "red", off.lwd = 3, off.lty = 1,
 		ylabeloffset = 0, # offset of the label
 		map.axes = TRUE, map.scale = TRUE, map.cities = FALSE) {
 	require("maps")
 	require("sp")
 	require("maptools") # for pruneMap
-	data(cities.database)
+	
+	if(map.cities)
+		data("world.cities")
+#	eval(paste("data(", cities, ")", sep = ""))
 	
 	.name <- sosName(x)
-	.spPoly <- as(x, "SpatialPolygons")
+	.off.spatial <- as(x, "Spatial")
 	
 	if(!add) {
+#		cat("adding", .name, "\n")
 		# if regions is based on offering, then calculate it, otherwise use given 
 		if(is(regions, "SosObservationOffering")) {
-			.regions <- map.where(database = map.database, coordinates(.spPoly))
-			if(is.na(.regions)) .regions <- "."
-			
-			warning("Could not determine region based on coordinates, using '.'.")
+			.regions <- map.where(database = map.database,
+					coordinates(.off.spatial))
+			if(is.na(.regions)) {
+				.regions <- "."
+				warning("Could not determine region based on coordinates, using '.'.")
+			}
 		}
 		else .regions <- regions
 		
@@ -62,24 +67,25 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		.world.sp <- map2SpatialLines(.world.p, proj4string = proj4string)
 		
 		plot(x = .world.sp, col = world.col)
-		par(new =  TRUE)
+		par(new = TRUE)
 	}
 	
-	plot(x = .spPoly, add = TRUE, border = off.col,
-			lwd = off.lwd, lty = off.lty)
+	plot(x = .off.spatial, add = TRUE, border = off.col, lwd = off.lwd,
+			lty = off.lty)
 	par(new =  TRUE)
 	
 	if(!add) {
 		if(map.axes) map.axes()
 		if(map.scale) map.scale(metric = TRUE, ratio = FALSE)
-		if(map.cities) map.cities(cities.database, label = cities.label,
+		if(map.cities) map.cities(world.cities, label = cities.label,
 					pch = cities.pch, col = cities.col)
 	}
 	
 	if(off.label) {
+		.coords <- coordinates(.off.spatial)
 		text(labels = .name, col = off.col,
-				x = coordinates(.spPoly)[1],
-				y = coordinates(.spPoly)[2] + ylabeloffset)
+				x = .coords[1],
+				y = .coords[2] + ylabeloffset)
 	}
 	
 	par(new =  FALSE)

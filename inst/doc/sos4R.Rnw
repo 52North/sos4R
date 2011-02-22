@@ -1105,7 +1105,7 @@ verboseSOS <- SOS(sosUrl(mySOS), verboseOutput = TRUE)
 
 \subsection{Demos}
 
-The \textbf{demos} are a good way to get started with the package. Please be aware that the used SOSs might be temporarily unavailable and some of the demos are under construction.
+The \textbf{demos} are a good way to get started with the package. Please be aware that you need an internet connection for these demos, the used SOSs might be temporarily unavailable, and some of the demos are under construction.
 
 <<demo,echo=TRUE,eval=FALSE>>= 
 demo(package = "sos4R")

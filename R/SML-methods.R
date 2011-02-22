@@ -35,7 +35,7 @@ SensorML <- function(xml, coords) {
 }
 
 #
-# no parsing actually done here...
+#
 #
 parseSensorML <- function(obj, sos, verbose = FALSE) {
 	.sml = SensorML(xml = obj, coords = data.frame())
@@ -45,5 +45,21 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 	.sml@coords <- sosCoordinates(obj = .sml, sos = sos, verbose = verbose)
 	
 	return(.sml)
+}
+
+#
+#
+#
+plot.SensorML <- function(x, y, ..., label = FALSE, col = "black",
+		add = TRUE) {
+	.c <- sosCoordinates(x)
+	
+	if(add) par(new = TRUE)
+	plot(.c)
+	
+	if(label) {
+		.id <- sosId(x)
+		text(labels = .id, col = col, x = .c[1], y = .c[2])
+	}
 }
 
