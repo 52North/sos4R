@@ -95,28 +95,14 @@ title("Offerings of BOM and CSIRO SOSs")
 # phenomenon rainfall or rainfalltoday is available at all stations
 rainfall <- "urn:ogc:def:phenomenon:OGC:rainfall"
 
-time.bom <- as.POSIXct("2011-02-10 16:10:00 CET")
-sosCreateTimeInstant(sos = bom, time = time.bom)
+# problem with time formatting because of locale in Windows:
+#Sys.getlocale()
+#Sys.getlocale(category = "LC_TIME")
+#Sys.setlocale("LC_ALL", "English")
 
-# problem with time formatting because of locale:
-Sys.getlocale()
-Sys.getlocale(category = "LC_TIME")
-Sys.setlocale("LC_ALL", "English")
-
-time.bom <- as.POSIXct("2011-02-10 16:10:00 CET")
-format(time.bom, sosTimeFormat(bom))
-
-time.csiro <- 
-lastWeek <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600 * 24 * 7),
-		end = Sys.time())
 lastDay <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600 * 24),
 		end = Sys.time())
-#sosTimeFormat(bom); encodeXML(lastWeek, bom)
-
-strptime(format((Sys.time() - 3600 * 24 * 7),
-				paste(sosDefaultTimeFormat, "%Z", sep = "")),
-		sosTimeFormat(csiro))
-
+sosTimeFormat(bom); encodeXML(lastDay, bom)
 
 #
 # bom
@@ -126,8 +112,8 @@ phenomenon.bom <- as.list(unlist(sosObservedProperties(bom)))
 phenomenon.bom <- phenomenon.bom[grep(pattern = "rain", phenomenon.bom)]
 
 rainfall.obs.bom <- getObservation(sos = bom, offering = rainfall.off.bom, 
-		observedProperty = phenomenon.bom,
-		eventTime = sosCreateEventTimeList(lastWeek), verbose = TRUE)
+		observedProperty = phenomenon.bom, # verbose = TRUE,
+		eventTime = sosCreateEventTimeList(lastDay))
 rainfall.result.bom <- sosResult(rainfall.obs.bom, coordinate = TRUE)
 summary(rainfall.result.bom)
 
@@ -143,7 +129,7 @@ phenomenon.csiro <- sosObservedProperties(rainfall.off.csiro)
 phenomenon.csiro <- phenomenon.bom[grep(pattern = "rain", phenomenon.csiro)]
 print(paste("FOIs: ", toString(sosFeaturesOfInterest(rainfall.off.csiro))))
 
-rainfall.obs.csiro <- getObservation(sos = csiro, verbose = TRUE,
+rainfall.obs.csiro <- getObservation(sos = csiro, # verbose = TRUE,
 		offering = rainfall.off.csiro,
 		procedure = procedures.csiro, 
 		observedProperty = phenomenon.csiro,
@@ -178,7 +164,44 @@ summary(rainfall.result.dc)
 
 ################################################################################
 # Data consolidation:
-# save all data in analyzable data structure for one point in time:
+# save all data in analyzable data structure for one point in time.
+
+# Times do not match exactly:
+times.csiro <- rainfall.result.csiro[,"Time"]
+times.ht <- rainfall.result.ht[,"Time"]
+times.dc <- rainfall.result.dc[,"Time"]
+times.bom <- rainfall.result.bom[,"Time"]
+
+.minLength <- min(length(times.csiro), length(times.ht), length(times.dc),
+		length(times.bom))
+
+#.matches <- MATCH(unique(rainfall.result.csiro[,"Time"]),
+#		unique(rainfall.result.ht[,"Time"]))[1:10]
+#require(chron)
+#require(zoo)
+#MATCH( eps = 1e-10)
+
+# inspired by http://www.mail-archive.com/r-help@r-project.org/msg49514.html
+mydist <- function(x, y) abs(as.numeric(x-y))
+
+mydist(rainfall.result.csiro[,"Time"][1:.minLength],
+		rainfall.result.ht[,"Time"][1:.minLength])
+
+mydist(rainfall.result.csiro[,"Time"][1:.minLength],
+		rainfall.result.dc[,"Time"][1:.minLength])
+
+mydist(rainfall.result.csiro[,"Time"][1:.minLength],
+		rainfall.result.bom[,"Time"][1:.minLength])
+
+which.min(mydist(rainfall.result.csiro[,"Time"][1:.minLength],
+				rainfall.result.ht[,"Time"][1:.minLength]))
+
+library(dtw)
+?dtw
+
+#
+#
+#
 rainfall.data.time <- unique(rainfall.result.csiro[,"Time"])[[1]]
 # 2011-02-10 16:10:00 CET
 rainfall.data.csiro <- subset(rainfall.result.csiro, Time == rainfall.data.time,

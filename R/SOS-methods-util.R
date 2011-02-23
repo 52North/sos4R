@@ -1384,3 +1384,18 @@ setMethod(f = "sosGetDCP",
 		}
 )
 
+
+################################################################################
+#
+sosChanges <- function() {
+	.libloc <- Sys.getenv("R_LIBS_USER")
+	if(length(.libloc) < 1)
+		.libloc <- Sys.getenv("R_LIBS")
+	
+	.path <- paste(Sys.getenv("R_LIBS_USER"), "sos4R", "CHANGES", sep = "/")
+	.con <- file(.path)
+	.lines <- readLines(.con)
+	close(.con)	
+	
+	cat(.lines, sep = "\n")
+}

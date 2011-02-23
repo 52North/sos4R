@@ -1155,6 +1155,8 @@ You can download (and also browse) the source code of \pkg{sos4R} directly from 
 \item \textbf{Web access}: \url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
 \end{itemize}
 
+The latest changes for every version are documented in the file \textbf{CHANGES} in the package root directory, which you can directly print to the console by calling \code{sosChanges()}.
+
 \subsection*{Developer Documentation}
 
 See the developer documentation at the \fivetwon Wiki for detailed information on how to use the checked out source project: \url{https://wiki.52north.org/bin/view/Geostatistics/Sos4R }. You will find a detailed description of the folder and class structure, the file naming scheme, and an extensive list of tasks for future development.
