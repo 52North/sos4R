@@ -16,6 +16,7 @@
 \alias{sosCoordinates,SensorML-method}
 
 \alias{as.SensorML.SpatialPointsDataFrame}
+\alias{plot.SensorML}
 
 \title{Classes of the Namespace sml}
 

@@ -185,6 +185,8 @@
 \alias{plot.SosObservationOffering}
 \alias{as.SosObservationOffering.SpatialPolygons}
 
+\alias{sosChanges}
+
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
 \description{Base class of a connection to a Sensor Observation Service.}
@@ -308,11 +310,14 @@ SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)
 
 # get the meaning of an exception code
 sosExceptionCodeMeaning(ex@exceptionCode)
+
+# print the changes document
+sosChanges()
+
 }
 
 # create a CRS object from a URN CRS string
 sosGetCRS("urn:ogc:def:crs:EPSG:4217")
-
 
 }
 
