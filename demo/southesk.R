@@ -47,7 +47,10 @@ csiroTimeParser = function(x, sos) {
 }
 
 # Bureau of Meteorology (red and dark blue on map)
-bom <- SOS("http://wron.net.au/BOM_SOS/sos", # timeFormat = .timeFormat,
+bom <- SOS("http://wron.net.au/BOM_SOS/sos", timeFormat = .timeFormat,
+		dataFieldConverters = SosDataFieldConvertingFunctions(
+				"urn:ogc:data:time:iso8601" = csiroTimeParser,
+				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble),
 		switchCoordinates = TRUE)
 sosTimeFormat(bom)
 
@@ -104,7 +107,7 @@ lastDay <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600 * 24),
 		end = Sys.time())
 sosTimeFormat(bom); encodeXML(lastDay, bom)
 
-#
+#####
 # bom
 #
 rainfall.off.bom <- sosOfferings(bom)[["BOM Offering"]]
@@ -117,7 +120,7 @@ rainfall.obs.bom <- getObservation(sos = bom, offering = rainfall.off.bom,
 rainfall.result.bom <- sosResult(rainfall.obs.bom, coordinate = TRUE)
 summary(rainfall.result.bom)
 
-#
+########################
 # csiro, ht and datacell
 #
 rainfall.off.csiro <- sosOfferings(csiro)[["Rain Gauges"]]
@@ -167,96 +170,99 @@ summary(rainfall.result.dc)
 # save all data in analyzable data structure for one point in time.
 
 # Times do not match exactly:
-times.csiro <- rainfall.result.csiro[,"Time"]
-times.ht <- rainfall.result.ht[,"Time"]
-times.dc <- rainfall.result.dc[,"Time"]
-times.bom <- rainfall.result.bom[,"Time"]
-
-.minLength <- min(length(times.csiro), length(times.ht), length(times.dc),
-		length(times.bom))
-
-#.matches <- MATCH(unique(rainfall.result.csiro[,"Time"]),
-#		unique(rainfall.result.ht[,"Time"]))[1:10]
-#require(chron)
-#require(zoo)
-#MATCH( eps = 1e-10)
-
-# inspired by http://www.mail-archive.com/r-help@r-project.org/msg49514.html
-mydist <- function(x, y) abs(as.numeric(x-y))
-
-mydist(rainfall.result.csiro[,"Time"][1:.minLength],
-		rainfall.result.ht[,"Time"][1:.minLength])
-
-mydist(rainfall.result.csiro[,"Time"][1:.minLength],
-		rainfall.result.dc[,"Time"][1:.minLength])
-
-mydist(rainfall.result.csiro[,"Time"][1:.minLength],
-		rainfall.result.bom[,"Time"][1:.minLength])
-
-which.min(mydist(rainfall.result.csiro[,"Time"][1:.minLength],
-				rainfall.result.ht[,"Time"][1:.minLength]))
-
-library(dtw)
-?dtw
+#time.csiro <- rainfall.result.csiro[,"Time"]
+#time.ht <- rainfall.result.ht[,"Time"]
+#time.dc <- rainfall.result.dc[,"Time"]
+#time.bom <- rainfall.result.bom[,"Time"]
 
 #
+# subset data for one point in time
 #
-#
-rainfall.data.time <- unique(rainfall.result.csiro[,"Time"])[[1]]
-# 2011-02-10 16:10:00 CET
-rainfall.data.csiro <- subset(rainfall.result.csiro, Time == rainfall.data.time,
+rainfall.data.time.bom <- unique(rainfall.result.bom[,"Time"])[[1]]
+rainfall.data.bom <- subset(rainfall.result.bom,
+		Time == rainfall.data.time.bom,
+		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfall"))
+rainfall.data.bom <- cbind(rainfall.data.bom, offering = c("bom"))
+
+rainfall.data.time.csiro <- unique(rainfall.result.csiro[,"Time"])[[1]]
+rainfall.data.csiro <- subset(rainfall.result.csiro,
+		Time == rainfall.data.time.csiro,
 		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfall"))
 rainfall.data.csiro <- cbind(rainfall.data.csiro, offering = c("csiro"))
-rainfall.data.ht <- subset(rainfall.result.ht, Time == rainfall.data.time,
+
+rainfall.data.time.ht <- unique(rainfall.result.ht[,"Time"])[[1]]
+rainfall.data.ht <- subset(rainfall.result.ht,
+		Time == rainfall.data.time.ht,
 		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfall"))
 rainfall.data.ht <- cbind(rainfall.data.ht, offering = c("ht"))
 
-# TODO times do not match, do manually here, probably possible with time packages as well
-rainfall.data.time.dc <- unique(rainfall.result.dc[["Time"]])[c(1,25,50)]
+rainfall.data.time.dc <- unique(rainfall.result.dc[["Time"]])[[1]]
 rainfall.data.dc <- subset(rainfall.result.dc,
 		Time %in% rainfall.data.time.dc,
 		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfalltoday"))
 names(rainfall.data.dc) <- c(names(rainfall.data.dc)[c(1,2,3)],
 		"urn:ogc:def:phenomenon:OGC:rainfall")
 rainfall.data.dc <- cbind(rainfall.data.dc, offering = c("dc"))
-rainfall.data <- rbind(rainfall.data.csiro, rainfall.data.ht, rainfall.data.dc)
+
+#
+# Bind data frames together
+#
+rainfall.data <- rbind(rainfall.data.bom, rainfall.data.csiro,
+		rainfall.data.ht, rainfall.data.dc)
 names(rainfall.data) <- list("lat", "lon", "feature", "rainfall", "offering")
 summary(rainfall.data)
 # see offering!
 
 # Eastwood is outlier in , remove it
 rainfall.data <- subset(rainfall.data, feature != "Eastwood")
+
+# Create SpatialPointsDataFrame, use just the CRS of one observation
+crs <- sosGetCRS(rainfall.obs.csiro)[[2]]
 rainfall.spdf <- SpatialPointsDataFrame(
 		coords = rainfall.data[,c("lat", "lon")],
 		data = rainfall.data[,c("feature", "rainfall", "offering")],
-		proj4string = crs.csiro)
+		proj4string = crs)
 str(rainfall.spdf)
 bbox(rainfall.spdf)
+summary(rainfall.spdf)
+
+cat("Please be aware that the times that are combined in the following are NOT equal!\n")
+cat(paste("BOM:\t", toString(rainfall.data.time.bom), "\n"),
+		paste("CSIRO:\t", toString(rainfall.data.time.csiro), "\n"),
+		paste("HT:\t", toString(rainfall.data.time.ht), "\n"),
+		paste("DC:\t", toString(rainfall.data.time.dc), "\n"))
+
 
 ################################################################################
 # plot stations with background data
 library("maps")
 library("sp")
+library("rgdal") # for spTransform
 library("maptools") # for pruneMap
 library("mapdata")
 
 world.p <- pruneMap(
 		map(database = "worldHires", region = "Australia:Tasmania",
 				plot = FALSE))
-world.sp <- map2SpatialLines(world.p, proj4string = crs.csiro)
-plot(x = world.sp, col = "grey", main = "Stations of ")
+world.sp <- map2SpatialLines(world.p, proj4string = crs)
+plot(x = world.sp, col = "grey", main = "Rainfall Tasmania")
 plot(rainfall.spdf, add = TRUE)
-text(x = one.data[,"lat"], y = one.data[,"lon"], labels = one.data[,"feature"],
-		adj = c(0, 1), cex = 0.75)
-text(x = rainfall.data[,"lat"], y = rainfall.data[,"lon"], col = "blue",
-		labels = rainfall.data[,"offering"], adj = c(1, 0), cex = 0.75)
+
+plot(rainfall.spdf)
+
+#text(x = coordinates(rainfall.spdf)[,"lat"],
+#		y = coordinates(rainfall.spdf)[,"lon"],
+#		labels = rainfall.spdf@data[, "feature"], adj = c(0, 1), cex = 0.75)
+text(x = coordinates(rainfall.spdf)[,"lat"],
+		y = coordinates(rainfall.spdf)[,"lon"], col = "blue",
+		labels = rainfall.spdf@data[,"offering"], adj = c(1, 0), cex = 0.75)
 title(main = paste("Observation locations of", sosTitle(csiro)),
 		sub = paste(sosAbstract(csiro)))
 
 # inspect and plot data
 summary(rainfall.spdf[,"rainfall"])
 hist(rainfall.spdf@data[,"rainfall"], main = "Rainfall")
-bubble(rainfall.spdf, zcol = 2, maxsize = 2, col = c("#ff0088", "#ff0088"),
+bubble(rainfall.spdf, zcol = 2, maxsize = 2, col = c("#ff5588", "#ff5588"),
 		main = "Rainfall in Tasmania", do.sqrt = TRUE)
 
 ################################################################################
@@ -267,7 +273,8 @@ bgmap = map2SpatialLines(map("worldHires", region = "Australia:Tasmania",
 proj4string(bgmap) <- "+proj=longlat +datum=WGS84"
 bgmap.utm <- spTransform(bgmap, utm55)
 rainfall.spdf.utm = spTransform(rainfall.spdf, utm55)
-plot(bgmap.utm, col = "grey"); plot(rainfall.spdf.utm, add = TRUE)
+plot(bgmap.utm, col = "grey")
+plot(rainfall.spdf.utm, add = TRUE)
 
 ################################################################################
 # Intamap
@@ -293,8 +300,9 @@ plot(kriging_result)
 ################################################################################
 # Kriging
 library("gstat")
-rainfall.grid.utm = SpatialPixels(SpatialPoints(makegrid(rainfall.spdf.utm, n = 300), 
-				proj4string = crs.csiro))
+rainfall.grid.utm = SpatialPixels(
+		SpatialPoints(makegrid(rainfall.spdf.utm, n = 300), 
+				proj4string = utm55))
 m <- vgm(.59, "Sph", 874, .04)
 # ordinary kriging:
 x <- krige(log(rainfall.spdf[["rainfall"]])~1,

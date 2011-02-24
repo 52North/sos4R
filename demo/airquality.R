@@ -73,7 +73,7 @@ sosProcedures(airsos.off.pm10) # still a long vector!
 ####################
 # OBSERVATIONS: PM10
 # *** The event time handling is not really nice yet...
-lastWeek = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsos,
+lastDay = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsos,
 				begin = as.POSIXct(Sys.time() - 3600*24*7),
 				end = as.POSIXct(Sys.time())))
 
@@ -81,7 +81,7 @@ lastWeek = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsos,
 observation.pm10.week <- getObservation(sos = airsos,
 		offering = airsos.off.pm10,
 #		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
-		eventTime = lastWeek,
+		eventTime = lastDay,
 		procedure = sosProcedures(airsos.off.pm10)
 #		inspect = TRUE
 )
@@ -148,7 +148,7 @@ observation.pm10.year <- getObservation(sos = airsossos,
 observation.no2.week <- getObservation(sos = airsos,
 		offering = airsos.off.no2,
 #		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
-		eventTime = lastWeek,
+		eventTime = lastDay,
 		procedure = sosProcedures(airsos.off.no2)
 #		inspect = TRUE
 )

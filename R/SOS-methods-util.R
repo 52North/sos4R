@@ -1334,7 +1334,17 @@ setMethod(f = "sosGetCRS",
 			return(.crs)
 		}
 )
-
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "OmObservationCollection"),
+		def = function(obj) {
+			.l <- lapply(X = obj, FUN = sosGetCRS)
+			.l <- unique(.l)
+			
+			if(length(.l) == 1)
+				return(.l[[1]])
+			else return(.l)
+		}
+)
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "OmObservation"),
 		def = function(obj) {
@@ -1347,7 +1357,6 @@ setMethod(f = "sosGetCRS",
 			else return(.l)
 		}
 )
-
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "SosObservationOffering"),
 		def = function(obj) {
