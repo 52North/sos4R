@@ -39,9 +39,6 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		off.title = TRUE,
 		ylabeloffset = 0, # offset of the label
 		map.axes = TRUE, map.scale = TRUE, map.cities = FALSE) {
-	require("maps")
-	require("sp")
-	require("maptools") # for pruneMap
 	
 	if(map.cities)
 		data("world.cities")
@@ -69,7 +66,8 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		.world.sp <- map2SpatialLines(.world.p, proj4string = proj4string)
 		
 		# TODO fix some weird error here that is only there when installed...
-		plot(x = .world.sp, col = world.col)
+		plot(.world.sp, col = world.col)
+		#print("here!")
 		
 		if(off.title)
 			title(paste("Offering with ID '", main = .id, "'", sep = ""))

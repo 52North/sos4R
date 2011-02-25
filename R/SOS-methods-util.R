@@ -1348,13 +1348,15 @@ setMethod(f = "sosGetCRS",
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "OmObservation"),
 		def = function(obj) {
-			.char <- as.vector(sosCoordinates(obj)[[sosDefaultColumnNameSRS]])
-			.l <- sapply(X = .char, FUN = sosGetCRS)
-			.l <- unique(.l)
-			
-			if(length(.l) == 1)
-				return(.l[[1]])
-			else return(.l)
+			.crs <- .getCRSfromOM(obj)
+			return(.crs)
+		}
+)
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "OmMeasurement"),
+		def = function(obj) {
+			.crs <- .getCRSfromOM(obj)
+			return(.crs)
 		}
 )
 setMethod(f = "sosGetCRS",
@@ -1373,6 +1375,16 @@ setMethod(f = "sosGetCRS",
 			return(.crs)
 		}
 )
+
+.getCRSfromOM <- function(obj) {
+	.char <- as.vector(sosCoordinates(obj)[[sosDefaultColumnNameSRS]])
+	.l <- sapply(X = .char, FUN = sosGetCRS)
+	.l <- unique(.l)
+	
+	if(length(.l) == 1)
+		return(.l[[1]])
+	else return(.l)
+}
 
 #
 #

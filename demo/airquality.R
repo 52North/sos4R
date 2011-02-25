@@ -9,16 +9,15 @@
 # Data source: http://www.eea.europa.eu/themes/air/airbase
 
 # Set the converters for observed properties:
-airsos.converters <- SosDataFieldConvertingFunctions(
+aqe.converters <- SosDataFieldConvertingFunctions(
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble)
 
 # Create the SOS connection:
 aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
-		dataFieldConverters = airsos.converters)
+		dataFieldConverters = aqe.converters)
 summary(aqe)
-plot(aqe)
 
 ###########
 # OFFERINGS
@@ -26,8 +25,15 @@ plot(aqe)
 aqe.offerings <- sosOfferings(aqe)
 names(aqe.offerings)
 
+########################
+# Plot SOS and offering:
+plot(aqe)
+temp <- plot(aqe.offerings[["PM10"]])
+
+
 ################################################################################
 # NO2
+#
 # Extract one offering of interest and explore:
 aqe.off.no2 <- aqe.offerings[["NO2"]]
 aqe.off.no2
@@ -78,6 +84,8 @@ obs.no2.12Hrs[sosProcedures(obs.no2.12Hrs)[200:201]]
 #obs.no2.dec
 #result.no2.dec <- sosResult(obs.no2.dec)[1:10, ]
 
+
+################################################################################
 # Get the result data for all observations, with coordinates:
 result.no2.12Hrs <- sosResult(obs.no2.12Hrs, coordinates = TRUE)
 # Coordinates only:
@@ -99,6 +107,8 @@ hist(result.no2.12Hrs[,3], main = "NO2")
 # Test plot:
 plot(result.no2.12Hrs[["Time"]], result.no2.12Hrs[[NO2]])
 
+
+################################################################################
 # Get the result data and create sp object:
 obs.no2.crs <- sosGetCRS(obs.no2.12Hrs)
 no2.spdf <- SpatialPointsDataFrame(
@@ -108,6 +118,12 @@ no2.spdf <- SpatialPointsDataFrame(
 bbox(no2.spdf)
 #obs.no2.bbox <- sosBoundedBy(obs.no2.12Hrs, bbox = TRUE) # equal
 summary(no2.spdf)
+
+########################################
+# Shortcut to get SpatialPointsDataFrame
+#as(obs.no2.12Hrs[[1]], "SpatialPointsDataFrame")
+no2.spdf.shortcut <- as(obs.no2.12Hrs, "SpatialPointsDataFrame")
+summary(no2.spdf.shortcut)
 
 # Plot with background map:
 require("mapdata")

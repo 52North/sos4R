@@ -31,6 +31,11 @@
 library("XML")
 library("RCurl")
 library("sp")
+library("methods")
+library("graphics")
+library("maps")
+library("maptools")
+library("RColorBrewer")
 
 # load required source files for testing
 if(!exists(".path"))

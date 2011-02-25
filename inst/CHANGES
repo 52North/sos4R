@@ -129,6 +129,7 @@
 * Work on demo for South Esk Test Bed, southesk
 * Work on demo for EEA AirQuality data, airquality
 * Added summary functions for SOS, SosObservationOffering
+* Added coercion functions from OmMeasurement, OmObservation and OmObservationCollection to SpatialPointsDataFrame
 * ...
 
 * TODO: add new features to Vignette: coordinate switching, plotting, sensorML stuff, 
