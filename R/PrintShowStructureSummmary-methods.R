@@ -330,6 +330,9 @@
 
 .toString.SensorML <- function(x, ...) {
 	.s <- ("Object of class SensorML (wraps unparsed XML, see @xml for details).\n")
+	.s <- paste(.s, "\tID: ", sosId(x),
+			"\n\tcoordinates:", toString(sosCoordinates(x)),
+			"\n\tdescription:", toString(sosAbstract(x)))
 	return(.s)
 }
 
@@ -1144,6 +1147,113 @@ setMethod("show", "OgcOverlaps", function(object) .print.OgcOverlaps(object))
 
 ################################################################################
 # SUMMARY FUNCTIONS
+summary.SOS = function(object, ...) {
+	obj = list()
+	obj[["class"]] = class(object)
+	obj[["version"]] = sosVersion(object)
+	obj[["url"]] = sosUrl(object)
+	obj[["method"]] = sosMethod(object)
+	obj[["title"]] = sosTitle(object)
+	obj[["abstract"]] = sosAbstract(object)
+	obj[["time"]] = summary(sosTime(object))
+	obj[["offeringCount"]] = length(sosOfferingIds(object))
+	obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
+	obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
+	class(obj) = "summary.SOS"
+	obj
+}
+setMethod("summary", "SOS", summary.SOS)
+print.summary.SOS = function(x, ...) {
+	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
+	cat("[[version:]]\t")
+	print(x[["version"]])
+	cat("[[url:]]\t")
+	print(x[["url"]])
+	cat("[[title:]]\t")
+	print(x[["title"]])
+	cat("[[method:]]\t")
+	print(x[["method"]])
+	cat("[[abstract:]]\t")
+	print(x[["abstract"]])
+	cat("[[time:]]\t")
+	print(x[["time"]])
+	cat("[[offerings:]]\t")
+	print(x[["offeringCount"]])
+	cat("[[procedures:]]\t")
+	print(x[["procedureCount"]])
+	cat("[[observed properties:]]\t")
+	print(x[["observedPropCount"]])
+	invisible(x)
+}
+
+summary.SosObservationOffering = function(object, ...) {
+	obj = list()
+	obj[["class"]] = class(object)
+	obj[["id"]] = sosId(object)
+	obj[["name"]] = sosName(object)
+	obj[["time"]] = summary(sosTime(object))
+	obj[["bbox"]] = toString(sosBoundedBy(object))
+	obj[["foiCount"]] = length(sosFeaturesOfInterest(object))
+	obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
+	obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
+	class(obj) = "summary.SosObservationOffering"
+	obj
+}
+setMethod("summary", "SosObservationOffering", summary.SosObservationOffering)
+print.summary.SosObservationOffering = function(x, ...) {
+	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
+	cat("[[id:]]\t\t")
+	print(x[["id"]])
+	cat("[[name:]]\t")
+	print(x[["name"]])
+	cat("[[time:]]\t")
+	print(x[["time"]])
+	cat("[[bbox:]]\t")
+	print(x[["bbox"]])
+	cat("[[fois:]]\t")
+	print(x[["foiCount"]])
+	cat("[[procs:]]\t")
+	print(x[["procedureCount"]])
+	cat("[[obsProps:]]\t")
+	print(x[["observedPropCount"]])
+	invisible(x)
+}
+
+summary.OwsRange = function(object, ...) {
+	obj = list()
+	obj[["class"]] = class(object)
+	obj[["range"]] = paste(object@minimumValue, "-->", object@maximumValue)
+	class(obj) = "summary.OwsRange"
+	obj
+}
+setMethod("summary", "OwsRange", summary.OwsRange)
+print.summary.OwsRange = function(x, ...) {
+	print(x[["range"]])
+	invisible(x)
+}
+
+summary.GmlTimePeriod = function(object, ...) {
+	if(!is.null(object@begin) && !is.null(object@end)) {
+		.s <- paste(toString(object@begin), "-->", toString(object@end))
+	}
+	else {
+		.s <- paste(toString(object@beginPosition@time), "-->",
+				toString(object@endPosition@time))
+	}
+	
+	obj = list()
+	obj[["class"]] = class(object)
+	obj[["duration"]] = object@duration
+	obj[["interval"]] = object@timeInterval
+	obj[["beginEnd"]] = .s
+	class(obj) = "summary.GmlTimePeriod"
+	obj
+}
+setMethod("summary", "GmlTimePeriod", summary.GmlTimePeriod)
+print.summary.GmlTimePeriod = function(x, ...) {
+	print(x[["beginEnd"]])
+	invisible(x)
+}
 
 ################################################################################
 # STR FUNCTIONS

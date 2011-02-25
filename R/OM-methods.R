@@ -90,7 +90,7 @@ setMethod(f = "[[", signature = signature(x = "OmObservationCollection",
 	.obsProperties <- sosObservedProperties(coll)
 
 	if(any(is.na(.obsProperties))) {
-		warning("NA values in observed property list.")
+		# warning("NA values in observed property list.")
 		# remove NAs
 		.obsProperties <- .obsProperties[which(!is.na(.obsProperties))]
 	}

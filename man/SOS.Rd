@@ -146,7 +146,6 @@
 \alias{sosGetCRS,character-method}
 \alias{sosGetCRS,SosObservationOffering-method}
 
-
 \alias{sosName}
 \alias{sosName-method}
 \alias{sosName,list-method}
@@ -184,6 +183,12 @@
 \alias{plot.SOS}
 \alias{plot.SosObservationOffering}
 \alias{as.SosObservationOffering.SpatialPolygons}
+
+\alias{print.summary.SOS}
+\alias{print.summary.SosObservationOffering}
+
+\alias{summary.SosObservationOffering}
+\alias{summary.SOS}
 
 \alias{sosChanges}
 

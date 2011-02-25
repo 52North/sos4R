@@ -66,7 +66,7 @@ setMethod(f = "sosAbstract", signature = signature(obj = "SensorML"),
 			.root <- xmlRoot(obj@xml)
 			.abstract <- getNodeSet(doc = .root, path = .smlXPathDescription,
 					namespaces = .sosNamespaceDefinitionsSML)[[1]]
-			return(.abstract)
+			return(xmlValue(.abstract))
 		})
 
 #

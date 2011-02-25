@@ -126,8 +126,10 @@
 * Added a few packages to dependency, they are needed for plotting
 * Added sosId(), sosName(), sosAbstract(), and sosCoordinates() for class SensorML (in SML-methods-util.R)
 * Added sosChanges()
-* Finished demo for South Esk Test Bed, southesk
+* Work on demo for South Esk Test Bed, southesk
+* Work on demo for EEA AirQuality data, airquality
+* Added summary functions for SOS, SosObservationOffering
 * ...
 
-* TODO: add new features to Vignette
+* TODO: add new features to Vignette: coordinate switching, plotting, sensorML stuff, 
 * TODO: plot sensor positions

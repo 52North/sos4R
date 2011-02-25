@@ -36,6 +36,7 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		regions = x,
 		cities.pch = 19, cities.label = FALSE, cities.col = "black",
 		off.label = TRUE, off.col = "red", off.lwd = 3, off.lty = 1,
+		off.title = TRUE,
 		ylabeloffset = 0, # offset of the label
 		map.axes = TRUE, map.scale = TRUE, map.cities = FALSE) {
 	require("maps")
@@ -47,6 +48,7 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 #	eval(paste("data(", cities, ")", sep = ""))
 	
 	.name <- sosName(x)
+	.id <- sosId(x)
 	.off.spatial <- as(x, "Spatial")
 	
 	if(!add) {
@@ -66,7 +68,12 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		.world.p <- pruneMap(.world)
 		.world.sp <- map2SpatialLines(.world.p, proj4string = proj4string)
 		
+		# TODO fix some weird error here that is only there when installed...
 		plot(x = .world.sp, col = world.col)
+		
+		if(off.title)
+			title(paste("Offering with ID '", main = .id, "'", sep = ""))
+		
 		par(new = TRUE)
 	}
 	
@@ -132,6 +139,7 @@ plot.SOS <- function(x, y, ..., map.database = "world",
 				cities.col = cities.col,
 				off.label = off.label, off.lwd = off.lwd, off.lty = off.lty,
 				off.col = .col,
+				off.title = FALSE,
 				map.axes = map.axes, map.scale = map.scale,
 				map.cities = map.cities,
 				ylabeloffset = i * 0.5)

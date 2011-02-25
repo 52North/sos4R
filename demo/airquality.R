@@ -3,174 +3,161 @@
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
 
-##############################################################################
-# AirQuality
+################################################################################
+# AQE SOS
+
+# Data source: http://www.eea.europa.eu/themes/air/airbase
+
+# Set the converters for observed properties:
 airsos.converters <- SosDataFieldConvertingFunctions(
-		"urn:ogc:def:phenomenon:OGC:1.0.30:PM10" = sosConvertDouble,
-		"urn:ogc:def:phenomenon:OGC:1.0.30:NO2" = sosConvertDouble)
-airsos <- SOS(url = "http://giv-sos.uni-muenster.de:8080/AirQualitySOS/sos",
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble)
+
+# Create the SOS connection:
+aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
 		dataFieldConverters = airsos.converters)
-
-airsos.offerings <- sosOfferings(airsos)
-names(airsos.offerings)
-
-##############################################################################
-# airsos SOS
-
-# Preview: some units are not supported out of the box (saw this when I first did
-# a getObservation call):
-# 	No converter for the unit of measurement  µg/m^3  with the definition 
-# 	urn:ogc:def:phenomenon:OGC:1.0.30:PM10 ! Trying a default, but you can add
-#	one when creating a SOS using SosDataFieldConvertingFunctions().
-airsos.converters <- SosDataFieldConvertingFunctions(
-		"urn:ogc:def:phenomenon:OGC:1.0.30:PM10" = sosConvertDouble,
-		"urn:ogc:def:phenomenon:OGC:1.0.30:NO2" = sosConvertDouble)
-sos = NA
-airsos2 <- SOS(url = sos2, dataFieldConverters = airsos.converters)
+summary(aqe)
+plot(aqe)
 
 ###########
 # OFFERINGS
-# get the available offerings
-airsos.offerings <- sosOfferings(airsos)
-airsos.offerings
-# extract one offering
-airsos.off.pm10 <- airsos.offerings[["PM10"]]
-airsos.off.pm10
-airsos.off.no2 <- airsos.offerings[["NO2"]]
+# Get the available offerings:
+aqe.offerings <- sosOfferings(aqe)
+names(aqe.offerings)
 
-#####################
-# OBSERVED PROPERTIES
-# get the observed properties of all offerings
-airsos.obsProp <- sosObservedProperties(airsos)
-# (be aware that this is a list of character vectors
-str(airsos.obsProp)
+################################################################################
+# NO2
+# Extract one offering of interest and explore:
+aqe.off.no2 <- aqe.offerings[["NO2"]]
+aqe.off.no2
+plot(aqe.off.no2)
+summary(aqe.off.no2)
 
-# get the obseairsos.obsProp.pm10rved properties
-airsos.obsProp.pm10 <- sosObservedProperties(airsos.off.pm10)
-airsos.obsProp.no2 <- sosObservedProperties(airsos.off.no2)
-# both the same:
-airsos.obsProp.pm10; airsos.obsProp[["PM10"]][1]
+# Get observations, december 2003 is arbitrary choice!
+dec2003.12Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+				begin = as.POSIXct("2003/12/01 08:00"),
+				end = as.POSIXct("2003/12/01 20:00")))
+dec2003.24Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+				begin = as.POSIXct("2003/12/01 08:00"),
+				end = as.POSIXct("2003/12/02 08:00")))
+dec2003 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+				begin = as.POSIXct("2003/12/01"),
+				end = as.POSIXct("2003/12/31")))
 
-##############
-# BOUNDING BOX
-sosBoundedBy(airsos.off.pm10) # or airsos.off.pm10@boundedBy
-# *** Here the format could definitly be improved, i.e. matrix as in sp, even with a proj4string based on srsName?
+# Request data (request and response can be check by setting the inspect=TRUE):
+obs.no2.12Hrs <- getObservation(sos = aqe, # inspect = TRUE,
+		offering = aqe.off.no2,
+		#procedure = sosProcedures(aqe.off.no2)[1:20],
+		saveOriginal = TRUE,# saves file in getwd()
+		eventTime = dec2003.12Hrs)
+# 38 secs
 
-#############
-# TIME PERIOD
-# for all data based on eventTime parameter in GetObservation metadata
-sosTime(airsos)
+# Explore the returned observation collection:
+obs.no2.12Hrs
+# There is one observatio for every FOI / procedure combination :
+names(obs.no2.12Hrs)[1:3]
 
-# for one offering
-sosTime(airsos.off.pm10)
-# *** Just name what format would work best here! Or coercion to some R format?
+# Subset the collection (features, observed properties and procedures):
+# sosFeatureIds(obs.no2.12Hrs)[c(1,100)]
+obs.no2.12Hrs[sosFeatureIds(obs.no2.12Hrs)[c(1,100)]]
+# sosObservedProperties(obs.no2.12Hrs)[2]
+obs.no2.12Hrs[sosObservedProperties(obs.no2.12Hrs)[2]]
+# sosProcedures(obs.no2.12Hrs)[200:201]
+obs.no2.12Hrs[sosProcedures(obs.no2.12Hrs)[200:201]]
 
-############
-# PROCEDURES
-sosProcedures(airsos) # list of vectors
-sosProcedures(airsos.off.pm10) # still a long vector!
+# More requests for more data for testing of response time:
+#obs.no2.24Hrs <- getObservation(sos = aqe, # inspect = TRUE,
+#		offering = aqe.off.no2,
+#		eventTime = dec2003.24Hrs)
+## 41 secs
+#obs.no2.dec <- getObservation(sos = aqe, # inspect = TRUE,
+#		offering = aqe.off.no2,
+#		eventTime = dec2003)
+## 3:25 mins
+#obs.no2.dec
+#result.no2.dec <- sosResult(obs.no2.dec)[1:10, ]
 
-####################
-# OBSERVATIONS: PM10
-# *** The event time handling is not really nice yet...
-lastDay = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsos,
-				begin = as.POSIXct(Sys.time() - 3600*24*7),
-				end = as.POSIXct(Sys.time())))
+# Get the result data for all observations, with coordinates:
+result.no2.12Hrs <- sosResult(obs.no2.12Hrs, coordinates = TRUE)
+# Coordinates only:
+#sosCoordinates(obs.no2.12Hrs[1:10])
+# One observation only
+# sosResult(obs.no2.12Hrs[[42]])
 
-# if you want to see what get's in and out, just set "inspect" flag to TRUE
-observation.pm10.week <- getObservation(sos = airsos,
-		offering = airsos.off.pm10,
-#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
-		eventTime = lastDay,
-		procedure = sosProcedures(airsos.off.pm10)
-#		inspect = TRUE
+summary(result.no2.12Hrs)
+NO2 <- colnames(result.no2.12Hrs)[[3]]
+
+# Subset and sort the data with subset or sort_df
+subset(result.no2.12Hrs, feature=="foi_DEBY109")
+require("reshape")
+# The ten highest values:
+tail(sort_df(result.no2.12Hrs, NO2), 10)
+
+# Histogram of NO2 data:
+hist(result.no2.12Hrs[,3], main = "NO2")
+# Test plot:
+plot(result.no2.12Hrs[["Time"]], result.no2.12Hrs[[NO2]])
+
+# Get the result data and create sp object:
+obs.no2.crs <- sosGetCRS(obs.no2.12Hrs)
+no2.spdf <- SpatialPointsDataFrame(
+		coords = result.no2.12Hrs[,c("lat", "lon")],
+		data = result.no2.12Hrs[,c("Time", "feature", NO2)],
+		proj4string = crs)
+bbox(no2.spdf)
+#obs.no2.bbox <- sosBoundedBy(obs.no2.12Hrs, bbox = TRUE) # equal
+summary(no2.spdf)
+
+# Plot with background map:
+require("mapdata")
+germany.p <- pruneMap(map(database = "worldHires", region = "Germany",
+				plot = FALSE))
+germany.sp <- map2SpatialLines(world.p, proj4string = crs)
+plot(no2.spdf, col = "blue") # works
+plot(x = germany.sp, col = "grey")
+plot(no2.spdf, pch = "10", col = "blue", cex = "3", add = TRUE) # nothing happens...
+points(no2.spdf) # nothing happens...
+title("NO2 Germany")
+
+#require("lattice")
+#spplot(no2.spdf, zcol = NO2)
+
+
+################################################################################
+# Plot with whole year 2004 for one station:
+# See http://www.eea.europa.eu/themes/air/airbase/interpolated for identifiers.
+denw095 <- "urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DENW095"
+denw095.descr <- describeSensor(aqe, denw095)
+denw095.descr
+#procedure1.descr@xml
+
+obs.denw095.2004 <- getObservation(sos = aqe, # inspect = TRUE,
+		offering = aqe.off.no2,
+		procedure = denw095,
+		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+						begin = as.POSIXct("2004/01/01"),
+						end = as.POSIXct("2004/12/31")))
 )
+# second(s)
 
-# explore the returned observation collection:
-observation.pm10.week
-observation.pm10.week[[1]]
-features <- levels(result.pm10.week$feature)
-features
+# Plot it:
+data.denw095.2004 <- sosResult(obs.denw095.2004)
+summary(data.denw095.2004)
 
-# sosResult currently does the same as as.data.frame for single observations
-# and binds the observation together for observation collections:
-as.data.frame(observation.pm10.week[[1]]); sosResult(observation.pm10.week[[1]])
-result.pm10.week <- sosResult(observation.pm10.week)
-
-# sort 
-sort_df(result.pm10.week, names(result.pm10.week)[3])
-sort_df(result.pm10.week, "Time")
-
-# subset that data frame
-subset(result.pm10.week, feature=="foi_AT10001")
-subset(result.pm10.week, feature=="foi_AT10001" & PM10 > 12)
-
-# subset the observation collection based on features, observed properties and 
-# procedures
-observation.pm10.week[features[1:4]]
-observation.pm10.week[sosObservedProperties(observation.pm10.week)[2]]
-observation.pm10.week[sosProcedures(observation.pm10.week)[2:4]]
-
-#
-result.pm10.week.split = split(result.pm10.week, result.pm10.week$feature)
-
-# get observation metadata
-result01 <- sosResult(observation.pm10.week[[1]])
-attributes(result01)
-
-# get station position
-sosCoordinates(observation.pm10.week[[1]])
-sosCoordinates(observation.pm10.week[1:3])
-sosCoordinates(observation.pm10.week)
-str(sosCoordinates(observation.pm10.week))
-
-# create some plots
-plot(result01[["Time"]], result01[["PM10"]])
-library(lattice)
-xyplot(PM10~Time|feature, sosResult(observation.pm10.week[1:50]), type='l',
-		par.strip.text=list(cex=.7))
-
-###
-# getting data for a whole year and many procedures, still quite fast as not much data.
-lastYear = sosCreateEventTimeList(sosCreateTimePeriod(sos = airsossos,
-				begin = as.POSIXct(Sys.time() - 3600*24*365),
-				end = as.POSIXct(Sys.time())))
-observation.pm10.year <- getObservation(sos = airsossos,
-		offering = airsos.off.pm10,
-#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
-		eventTime = lastYear,
-		procedure = sosProcedures(airsos.off.pm10)[c(1:100)])
+denw095.NO2.attributes <- attributes(data.denw095.2004[[NO2]])
+#data.denw095.2004.locRegr = loess(
+#		formula = data.denw095.2004[[NO2]]~data.denw095.2004[["Time"]],
+#		data = data.denw095.2004[[NO2]])
+plot(data.denw095.2004[["Time"]], data.denw095.2004[[NO2]], type = "l",
+		main = "NO2 in Muenster", sub = denw095,
+		xlab = "Time",
+		ylab = paste("NO2 in ",
+				denw095.NO2.attributes[["unit of measurement"]],
+						sep = ""))
+#lines(data.denw095.2004$Time, data.denw095.2004.locRegr$fitted, col = 'red', lwd=3)
 
 
-###################
-# OBSERVATIONS: NO2
-
-observation.no2.week <- getObservation(sos = airsos,
-		offering = airsos.off.no2,
-#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
-		eventTime = lastDay,
-		procedure = sosProcedures(airsos.off.no2)
-#		inspect = TRUE
-)
-
-# ! DN: There is some problem here if requestion a lot of procedures (> about 177) at once, I'm looking into that.
-
-observation.no2.year <- getObservation(sos = airsossos,
-		offering = airsos.off.no2,
-#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
-		eventTime = lastYear,
-		procedure = sosProcedures(airsos.off.no2)[1:180],
-		verbose = TRUE)
-
-# observations from complete time period
-timePeriod.no2 <- sosTime(airsos.off.no2)
-observation.no2.all <- getObservation(sos = airsossos,
-		offering = airsos.off.no2,
-#		observedProperty = airsos.obsProp.pm10, # not needed, taken from the offering as default
-		eventTime = sosCreateEventTimeList(timePeriod.no2),
-		procedure = sosProcedures(airsos.off.no2)[1:20])
-
-
-# make visualization example following
+# TODO make visualization example following howto?
 # http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE
 

@@ -629,9 +629,12 @@ The possibly most typical temporal filter is a period of time for which measurem
 
 <<temporalFiltering1,eval=TRUE,echo=TRUE>>= 
 # temporal interval creation based on POSIXt classes 
-lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
+last.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = (Sys.time() - 3600 * 24 * 7), end = Sys.time())
-lastWeek.eventTime <- sosCreateEventTimeList(lastWeek.period)
+
+oneWeek.period <- sosCreateTimePeriod(sos = mySOS,
+		begin = as.POSIXct("2010/01/01"), end = as.POSIXct("2010/01/07"))
+oneWeek.eventTime <- sosCreateEventTimeList(oneWeek.period)
 @
 
 Please note that the create function \code{sosCreateEventTimeList()} also wraps the created objects in a list as expected by the method \code{getObservation(...)}.
@@ -639,14 +642,13 @@ Please note that the create function \code{sosCreateEventTimeList()} also wraps 
 What was the average temperature during the last week?
 		
 <<temporalFiltering2,eval=TRUE,echo=TRUE,cache=TRUE>>= 
-obs.lastWeek <- getObservation(sos = mySOS,
+obs.oneWeek <- getObservation(sos = mySOS,
 	offering = off.temp,
 	procedure = sosProcedures(off.temp),
-	eventTime = lastWeek.eventTime)
+	eventTime = oneWeek.eventTime)
 
-obs.temp.lastWeek.result <- sosResult(obs.lastWeek)
-summary(obs.temp.lastWeek.result)[
-	4,"urn:ogc:def:property:OGC::Temperature"]
+obs.temp.result <- sosResult(obs.oneWeek)
+summary(obs.temp.result)
 @
 
 The default temporal operator is \enquote{during}, but others are supported as well (see section \ref{sec:supported}). The next example shows how to create a temporal filter for all observations taken \textbf{after} a certain point in time. Here the creation function creates just one object of class \code{SosEventTime} which must be added to a list manually before passing it to \code{getObservation(...)}.
@@ -710,10 +712,10 @@ encodeXML(obj = request.fois, sos = mySOS)
 An exemplary GetObservation operation is as follows.
 
 <<featureFiltering1,eval=TRUE,echo=TRUE,print=FALSE,cache=TRUE>>= 
-obs.lastWeek.fois <- getObservation(sos = mySOS,
+obs.oneWeek.fois <- getObservation(sos = mySOS,
 	offering = off.temp, featureOfInterest = request.fois,
-	eventTime = lastWeek.eventTime)
-print(sosFeaturesOfInterest(obs.lastWeek.fois))
+	eventTime = oneWeek.eventTime)
+print(sosFeaturesOfInterest(obs.oneWeek.fois))
 @
 
 
@@ -757,18 +759,18 @@ Any object of class \code{OgcComparisonOpsOrXMLOrNULL}, which includes the class
 First, we request the unfiltered values for comparison, then again with the filter applied. The length of the returned results is compared in the end.
 
 <<valueFiltering3,eval=TRUE,echo=TRUE,print=FALSE,cache=TRUE>>= 
-# request  values for the last week.
-obs.lastWeek <- getObservation(sos = mySOS,
-	eventTime = lastWeek.eventTime,
+# request values:
+obs.oneWeek <- getObservation(sos = mySOS,
+	eventTime = oneWeek.eventTime,
 	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]])
 
 # request  values for the week with a value higher than 0 degrees.
-obs.lastWeek.filter <- getObservation(sos = mySOS,
-	eventTime = lastWeek.eventTime,
+obs.oneWeek.filter <- getObservation(sos = mySOS,
+	eventTime = oneWeek.eventTime,
 	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]],
 	result = filter.result)
-print(paste("Filtered:", dim(sosResult(obs.lastWeek.filter))[[1]], 
-	"-vs.- Unfiltered:", dim(sosResult(obs.lastWeek))[[1]]))
+print(paste("Filtered:", dim(sosResult(obs.oneWeek.filter))[[1]], 
+	"-vs.- Unfiltered:", dim(sosResult(obs.oneWeek))[[1]]))
 @
 
 \subsubsection{Result Exporting}
@@ -779,14 +781,14 @@ As an example the following code creates a \code{SpatialPointsDataFrame} (can on
 
 <<resultExporting,eval=TRUE,echo=TRUE,print=FALSE,cache=TRUE>>=
 library("sp")
-obs.lastWeek <- getObservation(sos = mySOS,
+obs.oneWeek <- getObservation(sos = mySOS,
 	offering = off.temp,
 	procedure = sosProcedures(off.temp),
-	eventTime = lastWeek.eventTime)
+	eventTime = oneWeek.eventTime)
 
 # Create SpatialPointsDataFrame from result features
-coords <- sosCoordinates(obs.lastWeek[[1]])
-crs <- sosGetCRS(obs.lastWeek[[1]])
+coords <- sosCoordinates(obs.oneWeek[[1]])
+crs <- sosGetCRS(obs.oneWeek[[1]])
 spdf <- SpatialPointsDataFrame(coords = coords[,1:2],
 	data = data.frame(coords[,4]), proj4string = crs)
 str(spdf)

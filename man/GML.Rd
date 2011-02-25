@@ -105,6 +105,9 @@
 \alias{sosTime,GmlTimePeriod-method}
 \alias{sosTime,GmlTimePosition-method}
 
+\alias{summary.GmlTimePeriod}
+\alias{print.summary.GmlTimePeriod}
+
 \title{Classes and Construction Functions from the GML Namespace}
 
 \description{

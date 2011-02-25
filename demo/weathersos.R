@@ -26,7 +26,7 @@ str(obs[[2]]@result)
 # plot it!
 x <- 800
 plot(x = obs[[1]]@result[[1]][1:x], y = obs[[1]]@result[[3]][1:x], type = "l",
-		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
+		col = "steelblue", main = "Temperature in Muenster and Kaernten, 2009",
 		xlab = "Time (00:00 o'clock)",
 		ylab = "Temperature (°C)",
 		xaxt="n") # do not plot x-axis
@@ -35,7 +35,7 @@ axis.POSIXct(side = 1, x = obs[[1]]@result[[1]][1:x], format = "%d. %h",
 		at = seq(r[1], r[2], by="day"))
 lines(x = obs[[2]]@result[[1]][1:x], y = obs[[2]]@result[[3]][1:x],
 		col = "orange")
-legend("topleft", legend = c("Münster", "Kärnten"),
+legend("topleft", legend = c("Muenster", "Kaernten"),
 		col = c("steelblue", "orange"), lty = 1, bty="n")
 
 ################################################################################
@@ -50,7 +50,8 @@ september <- sosCreateTimePeriod(sos = weathersos,
 		begin = as.POSIXct("2010-09-01 00:00"),
 		end = as.POSIXct("2010-09-30 00:00"))
 # make the request
-obsSept <- getObservation(sos = weathersos, observedProperty = temperature,
+obsSept <- getObservation(sos = weathersos, verbose = TRUE,
+		observedProperty = temperature,
 		procedure = station, eventTime = sosCreateEventTimeList(september),
 		offering = temperatureOffering)
 data <- sosResult(obsSept)
@@ -67,7 +68,7 @@ x = loess(temp~time,
 		na.omit(data),enp.target=10)
 
 # create plot
-plot(tempSept, main = "Temperature at WeatherSOS-Station in Münster",
+plot(tempSept, main = "Temperature at WeatherSOS-Station in Muenster",
 		xlab = "Time", ylab = paste("Temperature in", attributes(temp)[["unit of measurement"]]),
 		major.ticks = "weeks")
 lines(data$Time, x$fitted, col = 'red', lwd=3)

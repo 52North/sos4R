@@ -71,11 +71,13 @@ SosSupportedConnectionMethods <- function() {
 }
 
 mimeTypeCSV <- "text/csv"
-mimeTypeOM <- 'text/xml;subtype="om/1.0.0&quot"'
+mimeTypeXML <- "text/xml"
+mimeTypeOM <- "text/xml;subtype=&quot;om/1.0.0&quot;"
+mimeTypeSML <- "text/xml;subtype=&quot;sensorML/1.0.1&quot;"
 
 .sosSupportedResponseFormats <- c(
-		"text/xml;subtype=&quot;om/1.0.0&quot;",
-		"text/xml;subtype=&quot;sensorML/1.0.1&quot;",
+		mimeTypeOM,
+		mimeTypeSML,
 		mimeTypeCSV)
 SosSupportedResponseFormats <- function() {
 	return(.sosSupportedResponseFormats)

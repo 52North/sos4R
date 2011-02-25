@@ -23,6 +23,7 @@
 \alias{OwsServiceOperation-class}
 \alias{OwsServiceProvider-class}
 \alias{OwsServiceProviderOrNULL-class}
+
 \alias{print,OwsCapabilities-method}
 \alias{print,OwsCapabilities_1.1.0-method}
 \alias{print,OwsCapabilities_2.0.0-method}
@@ -38,6 +39,8 @@
 \alias{print,OwsServiceIdentification-method}
 \alias{print,OwsServiceOperation-method}
 \alias{print,OwsServiceProvider-method}
+\alias{print.summary.OwsRange}
+
 \alias{show,OwsCapabilities_1.1.0-method}
 \alias{show,OwsCapabilities_2.0.0-method}
 \alias{show,OwsCapabilities-method}
@@ -83,6 +86,8 @@
 
 \alias{sosTitle,OwsServiceIdentification-method}
 \alias{sosAbstract,OwsServiceIdentification-method}
+
+\alias{summary.OwsRange}
 
 \title{Classes and Construction Functions for Elements of the OWS Namespace}
 

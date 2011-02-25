@@ -206,6 +206,8 @@
   
 \alias{mimeTypeCSV}
 \alias{mimeTypeOM}
+\alias{mimeTypeSML}
+\alias{mimeTypeXML}
 
 
 \title{Constants in sos4R}
