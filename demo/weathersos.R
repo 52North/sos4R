@@ -6,14 +6,18 @@
 # establish a connection to a SOS instance with default settings
 weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
+# explore SOS
+plot(weathersos)
+
 # get the latest observation (not standard conform!)
 off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
 obs <- getObservation(sos = weathersos, offering = off, latest = TRUE)
 
-# show the result
+# show the result for latest observation
 sosResult(obs)
 
-# Two procedures, including plot
+############################################
+# Request two procedures, then create a plot
 # Attention: plots ignore the fact that the times do NOT perfectly match!
 obs <- getObservation(sos = weathersos, offering = off,
 		procedure = sosProcedures(off),
@@ -22,6 +26,7 @@ obs <- getObservation(sos = weathersos, offering = off,
 						end = as.POSIXct("2009-08-20 12:00"))))
 str(obs[[1]]@result)
 str(obs[[2]]@result)
+summary(obs)
 
 # plot it!
 x <- 800
