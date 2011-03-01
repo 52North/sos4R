@@ -43,6 +43,8 @@ print(tcs.cor)
 # quick plot
 plot(data)
 par(ask = TRUE)
-plot(data[,c("Temperature", "Salinity", "Conductivity")])
+plot(data[,c("Temperature", "Salinity", "Conductivity")],
+		main = "MBARI MMI SOS",
+		sub = "OOSTethys Sensor Observation Service")
 
 cat("\nExpect a warning here because of incomplete swe:Quantitiy.\n")

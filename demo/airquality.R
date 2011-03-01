@@ -28,7 +28,7 @@ names(aqe.offerings)
 ########################
 # Plot SOS and offering:
 plot(aqe)
-temp <- plot(aqe.offerings[["PM10"]])
+plot(aqe.offerings[["PM10"]])
 
 
 ################################################################################
@@ -114,7 +114,7 @@ obs.no2.crs <- sosGetCRS(obs.no2.12Hrs)
 no2.spdf <- SpatialPointsDataFrame(
 		coords = result.no2.12Hrs[,c("lat", "lon")],
 		data = result.no2.12Hrs[,c("Time", "feature", NO2)],
-		proj4string = crs)
+		proj4string = obs.no2.crs)
 bbox(no2.spdf)
 #obs.no2.bbox <- sosBoundedBy(obs.no2.12Hrs, bbox = TRUE) # equal
 summary(no2.spdf)
@@ -133,7 +133,7 @@ germany.sp <- map2SpatialLines(world.p, proj4string = crs)
 plot(no2.spdf, col = "blue") # works
 plot(x = germany.sp, col = "grey")
 plot(no2.spdf, pch = "10", col = "blue", cex = "3", add = TRUE) # nothing happens...
-points(no2.spdf) # nothing happens...
+#points(no2.spdf) # nothing happens...
 title("NO2 Germany")
 
 #require("lattice")
