@@ -17,6 +17,8 @@ exportMethods(
     "getCapabilities",
     "getObservationById",
     "getObservation",
+	"plot",
+	"print",
     "saveXML",
     "show",
     "sosCapabilitiesDocumentOriginal",
