@@ -31,7 +31,7 @@
 #
 #
 plot.SosObservationOffering <- function(x, y, ..., map.database = "world", 
-		proj4string = sosGetCRS(x), add = FALSE,
+		crs = sosGetCRS(x), add = FALSE,
 		world.col = "grey50",
 		regions = x,
 		cities.pch = 19, cities.label = FALSE, cities.col = "black",
@@ -40,9 +40,11 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		ylabeloffset = 0, # offset of the label
 		map.axes = TRUE, map.scale = TRUE, map.cities = FALSE) {
 	
-	if(map.cities)
+#	data(worldMapEnv)
+	if(map.cities) {
+		library(maps)
 		data("world.cities")
-#	eval(paste("data(", cities, ")", sep = ""))
+	}
 	
 	.name <- sosName(x)
 	.id <- sosId(x)
@@ -63,7 +65,7 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 		
 		.world <- map(database = map.database, region = .regions, plot = FALSE)
 		.world.p <- pruneMap(.world)
-		.world.sp <- map2SpatialLines(.world.p, proj4string = proj4string)
+		.world.sp <- map2SpatialLines(.world.p, proj4string = crs)
 		
 		# TODO fix some weird error here that is only there when installed...
 		plot(.world.sp, col = world.col)
@@ -95,7 +97,6 @@ plot.SosObservationOffering <- function(x, y, ..., map.database = "world",
 	
 	par(new =  FALSE)
 }
-
 setMethod("plot", signature(x = "SosObservationOffering", y = "missing"),
 		plot.SosObservationOffering)
 
@@ -110,8 +111,6 @@ plot.SOS <- function(x, y, ..., map.database = "world",
 		cities.pch = 19, cities.label = FALSE, cities.col = "black",
 		off.label = TRUE, off.lwd = 3, off.lty = 1,
 		map.axes = TRUE, map.scale = TRUE, map.cities = FALSE) {
-	require("RColorBrewer")
-	
 	.offs <- sosOfferings(x)
 	.offs.length <- length(.offs)
 	.availableColors <- 12
@@ -145,8 +144,8 @@ plot.SOS <- function(x, y, ..., map.database = "world",
 	
 	title(main = sosTitle(x), sub = sosAbstract(x))
 }
-
 setMethod("plot", signature(x = "SOS", y = "missing"), plot.SOS)
+#setMethod("plot", signature(x = "SOS_1.0.0", y = "missing"), plot.SOS)
 
 # http://r.789695.n4.nabble.com/plotting-points-in-random-but-different-colors-based-on-condition-td907070.html
 .gimmeDiffCol <- function(oldcol) {

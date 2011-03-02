@@ -133,5 +133,5 @@
 * Starting demo austria, consequently some fixing in parsing of capabilities (making mandatory elements optional in parsing to avoid errors)
 * Fixed printing bug for class SOS when capabilities are only partly requested
 
-* TODO: add new features to Vignette: coordinate switching, plotting, sensorML stuff, 
+* TODO: add new features to Vignette: coordinate switching, plotting, sensorML stuff, coercion of OmMeasurement, summary functions, ...
 * TODO: plot sensor positions

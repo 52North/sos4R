@@ -30,7 +30,6 @@ names(aqe.offerings)
 plot(aqe)
 plot(aqe.offerings[["PM10"]])
 
-
 ################################################################################
 # NO2
 #
@@ -52,7 +51,7 @@ dec2003 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 				end = as.POSIXct("2003/12/31")))
 
 # Request data (request and response can be check by setting the inspect=TRUE):
-obs.no2.12Hrs <- getObservation(sos = aqe, inspect = TRUE,
+obs.no2.12Hrs <- getObservation(sos = aqe, # inspect = TRUE,
 		offering = aqe.off.no2,
 		#procedure = sosProcedures(aqe.off.no2)[1:20],
 		saveOriginal = TRUE,# saves file in getwd()
@@ -148,9 +147,11 @@ germany.utm <- spTransform(germany.sp, utm32)
 no2.spdf.utm = spTransform(no2.spdf, utm32)
 plot(germany.utm, col = "grey")
 plot(no2.spdf.utm, add = TRUE)
+title(main = "NO2 Germany", sub = "UTM projection")
 
+ 
 ################################################################################
-# TODO Kriging with automap
+# TODO Kriging with automap?
 
 ################################################################################
 # Plot with whole year 2004 for one station:
@@ -184,8 +185,4 @@ plot(data.denw095.2004[["Time"]], data.denw095.2004[[NO2]], type = "l",
 				denw095.NO2.attributes[["unit of measurement"]],
 						sep = ""))
 #lines(data.denw095.2004$Time, data.denw095.2004.locRegr$fitted, col = 'red', lwd=3)
-
-
-# TODO make visualization example following howto?
-# http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE
 

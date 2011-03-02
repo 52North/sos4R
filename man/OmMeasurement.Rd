@@ -12,8 +12,11 @@
 \alias{sosProcedures,OmMeasurement-method}
 \alias{sosFeatureIds,OmMeasurement-method}
 \alias{sosFeaturesOfInterest,OmMeasurement-method}
+\alias{sosGetCRS,OmMeasurement-method}
 \alias{names.OmMeasurement}
 
+\alias{as.data.frame.OmMeasurement}
+\alias{as.SpatialPointsDataFrame.OmMeasurement}
 
 \title{Class and Construction Function for om:Measurement Elements}
 
@@ -49,7 +52,9 @@ Class \code{"\linkS4class{OmObservationOrNULL}"}, by class "OmObservation", dist
 
 \section{Methods}{
   \describe{
-    \item{sosResult}{\code{signature(obj = "OmMeasurement")}: ... }
+    \item{sosResult}{\code{signature(obj = "OmMeasurement")}: Get the data in the measurement as a data.frame.}
+    \item{sosGetCRS}{\code{signature(obj = "OmMeasurement")}: Get the coordinate reference system used in the feature of interest.}
+    
 	 }
 }
 

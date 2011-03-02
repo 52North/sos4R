@@ -1,7 +1,7 @@
 import("XML")
 importFrom("RCurl", "getURL", "postForm")
 importFrom("graphics", "plot")
-importFrom("sp", "SpatialPolygons")
+import("sp")
 
 exportPattern("^[[:alpha:]]+")
 # export all who start with a letter (i.e. not .) except 'print.' or 'toString.'
