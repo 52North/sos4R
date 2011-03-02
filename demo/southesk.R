@@ -294,7 +294,7 @@ library("automap")
 kriging_result = autoKrige(
 		log(rainfall.spdf.utm[["rainfall"]])~1,
 		input_data = rainfall.spdf.utm,
-		new_data = SpatialPixels(SpatialPoints(makegrid(one.utm, n = 300))))
+		new_data = SpatialPixels(SpatialPoints(makegrid(rainfall.spdf.utm, n = 300))))
 plot(kriging_result)
 
 ################################################################################

@@ -31,11 +31,28 @@
 #
 #
 parseSosObservationOffering <- function(obj, sos) {
-	.id <- xmlGetAttr(obj, "id")
-	.name <- xmlValue(obj[[gmlNameName]])
+	if(sos@verboseOutput) {
+		cat("[parseSosObservationOffering] entering... \n")
+		print(obj)
+	}
 	
-	.time <- parseTimeGeometricPrimitiveFromParent(obj = obj[[sosTimeName]],
-			format = sosTimeFormat(sos))
+	# not optional, but have a default just in case...
+	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+	.name <- xmlValue(obj[[gmlNameName]])
+	if(sos@verboseOutput)
+		cat("[parseSosObservationOffering] id:", .id, "name:", .name, "\n")
+	
+	if(!is.null(obj[[sosTimeName]])) {
+		.time <- parseTimeGeometricPrimitiveFromParent(obj = obj[[sosTimeName]],
+				format = sosTimeFormat(sos))
+		if(sos@verboseOutput)
+			cat("[parseSosObservationOffering] time: ", .time, "\n")
+	}
+	else {
+		warning("Did not find mandatory sos:time element in offering.")
+		.time <- GmlTimeInstant(timePosition = GmlTimePosition(
+						time = as.POSIXct(x = NA)))
+	}
 	
 	# can be references or containes, so use lists
 	.observedProperty <- lapply(obj[sosObservedPropertyName], xmlGetAttr,
@@ -96,7 +113,6 @@ parseSosObservationOffering <- function(obj, sos) {
 						.warningText, sep = ""))
 	}
 		
-
 	.ob <- SosObservationOffering(id = .id, name = .name, 
 			time = .time, procedure = .procedure,
 			observedProperty = .observedProperty,
@@ -106,6 +122,9 @@ parseSosObservationOffering <- function(obj, sos) {
 			resultModel = .resultModel,
 			responseMode = .responseMode, boundedBy = .boundedBy)
 	
+	if(sos@verboseOutput)
+		cat("[parseSosObservationOffering] done: ", toString(.ob), "\n")
+	
 	return(.ob)
 }
 
@@ -113,6 +132,9 @@ parseSosObservationOffering <- function(obj, sos) {
 #
 #
 parseSosCapabilities <- function(obj, sos) {
+	if(sos@verboseOutput)
+		cat("[parseSosCapabilities] entered... \n")
+	
 	.caps.root <- xmlRoot(obj)
 	
 	# attributes:
@@ -120,6 +142,10 @@ parseSosCapabilities <- function(obj, sos) {
 			default = NA_character_)
 	.caps.updateSequence <- xmlGetAttr(node = .caps.root,
 			name = "updateSequence", default = NA_character_)
+	
+	if(sos@verboseOutput)
+		cat("[parseSosCapabilities] version, update sequence:", .caps.version,
+				.caps.updateSequence, "\n")
 	
 	if(!is.null(.caps.root[[owsServiceIdentificationName]])) {
 		.caps.si <- parseOwsServiceIdentification(
@@ -133,6 +159,10 @@ parseSosCapabilities <- function(obj, sos) {
 	else .caps.sp <- NULL
 	
 	if(!is.null(.caps.root[[owsOperationsMetadataName]])) {
+		if(sos@verboseOutput)
+			cat("[parseSosCapabilities] entering", owsOperationsMetadataName,
+					"... \n")
+		
 		.operationsXML <- .filterXmlChildren(
 				node = .caps.root[[owsOperationsMetadataName]],
 				childrenName = owsOperationName)
@@ -148,6 +178,9 @@ parseSosCapabilities <- function(obj, sos) {
 	else .caps.om <- NULL
 	
 	if(!is.null(.caps.root[[sosContentsName]])) {
+		if(sos@verboseOutput)
+			cat("[parseSosCapabilities] entering", sosContentsName, "... \n")
+		
 		.observationsXML <- .filterXmlChildren(
 				node = .caps.root[[sosContentsName]][[sosObservationOfferingListName]],
 				childrenName = sosObservationOfferingName)
@@ -164,8 +197,12 @@ parseSosCapabilities <- function(obj, sos) {
 	else .caps.contents <- NULL
 	
 	if(!is.null(.caps.root[[sosFilterCapabilitiesName]])) {
+		if(sos@verboseOutput)
+			cat("[parseSosCapabilities] entering", sosFilterCapabilitiesName,
+					"... \n")
+		
 		.caps.fc <- parseSosFilter_Capabilities(
-				.caps.root[[sosFilterCapabilitiesName]])
+				obj = .caps.root[[sosFilterCapabilitiesName]], sos = sos)
 	}
 	else .caps.fc <- NULL
 
@@ -180,48 +217,124 @@ parseSosCapabilities <- function(obj, sos) {
 	return(.capabilities)
 }
 
-parseSosFilter_Capabilities <- function(obj) {
-	.spatial.geom <- .filterXmlOnlyNoneTexts(
-			node = obj[[ogcSpatialCapabilitiesName]][[ogcGeometryOperandsName]])
-	.spatial.spat <- .filterXmlOnlyNoneTexts(
-			node = obj[[ogcSpatialCapabilitiesName]][[ogcSpatialOperatorsName]])
-	.spatial <- list(lapply(.spatial.geom, xmlValue),
-			lapply(.spatial.spat, xmlGetAttr, name = "name"))
-	names(.spatial) <- c(ogcGeometryOperandsName, ogcSpatialOperatorsName)
+parseSosFilter_Capabilities <- function(obj, sos) {
+	if(sos@verboseOutput) {
+		cat("[parseSosFilter_Capabilities] entering... \n")
+		print(obj)
+	}
 	
-	.temporal.ands <- .filterXmlOnlyNoneTexts(
-			node = obj[[ogcTemporalCapabilitiesName]][[ogcTemporalOperandsName]])
-	.temporal.ators <- .filterXmlOnlyNoneTexts(
-			node = obj[[ogcTemporalCapabilitiesName]][[ogcTemporalOperatorsName]])
-	.temporal <- list(lapply(.temporal.ands, xmlValue),
-			lapply(.temporal.ators, xmlGetAttr, name = "name"))
-	names(.temporal) <- c(ogcTemporalOperandsName, ogcTemporalOperatorsName)
+	if(!is.null(obj[[ogcSpatialCapabilitiesName]])) {
+		if(sos@verboseOutput)
+			cat("[parseSosFilter_Capabilities] parsing", 
+					ogcSpatialCapabilitiesName, "\n")
+		
+		.s <- obj[[ogcSpatialCapabilitiesName]]
+		
+		if(!is.null(.s[[ogcGeometryOperandsName]])) {
+			.spatial.geom <- .filterXmlOnlyNoneTexts(
+					node = .s[[ogcGeometryOperandsName]])
+			.spatial.geom.values <- lapply(.spatial.geom, xmlValue)
+		}
+		else {
+			.spatial.geom <- NA_character_
+			.spatial.geom.values <- NA_character_
+			warning(paste("Mandatory element", ogcGeometryOperandsName, 
+							"missing in", ogcSpatialCapabilitiesName))
+		}
+		
+		if(!is.null(.s[[ogcSpatialOperatorsName]])) {
+			.spatial.spat <- .filterXmlOnlyNoneTexts(
+					node = .s[[ogcSpatialOperatorsName]])
+			.spatial.spat.values <- lapply(.spatial.spat, xmlGetAttr,
+					name = "name")
+		}
+		else {
+			.spatial.spat <- NA_character_
+			.spatial.spat.values <- NA_character_
+			warning(paste("Mandatory element", ogcSpatialOperatorsName, 
+						"missing in", ogcSpatialCapabilitiesName))
+		}
+		
+		.spatial <- list(.spatial.geom.values, .spatial.spat.values)
+		names(.spatial) <- c(ogcGeometryOperandsName, ogcSpatialOperatorsName)
+	}
+	else {
+		.spatial <- list(NA_character_)
+		warning(paste("Mandatory element", ogcSpatialCapabilitiesName, 
+						"missing in", sosFilterCapabilitiesName))
+	}
 	
+	if(!is.null(obj[[ogcTemporalCapabilitiesName]])) {
+		if(sos@verboseOutput)
+			cat("[parseSosFilter_Capabilities] parsing", 
+					ogcTemporalCapabilitiesName, "\n")
+		
+		.temporal.ands <- .filterXmlOnlyNoneTexts(
+				node = obj[[ogcTemporalCapabilitiesName]][[ogcTemporalOperandsName]])
+		.temporal.ators <- .filterXmlOnlyNoneTexts(
+				node = obj[[ogcTemporalCapabilitiesName]][[ogcTemporalOperatorsName]])
+		.temporal <- list(lapply(.temporal.ands, xmlValue),
+				lapply(.temporal.ators, xmlGetAttr, name = "name"))
+		names(.temporal) <- c(ogcTemporalOperandsName, ogcTemporalOperatorsName)
+	}
+	else {
+		.temporal <- list(NA_character_)
+		warning(paste("Mandatory element", ogcTemporalCapabilitiesName, 
+						"missing in", sosFilterCapabilitiesName))
+	}
+
 	.scalarXML <- obj[[ogcScalarCapabilitiesName]]
-	.scalar <- list()
-	if(!is.null(.scalarXML[[ogcLogicalOperatorsName]])) {
-		.scalar.logicalXML <- .filterXmlOnlyNoneTexts(
-				.scalarXML[[ogcLogicalOperatorsName]])
-		.scalar.logical <- lapply(.scalar.logicalXML, xmlValue)
-		.scalar <- c(.scalar, .scalar.logical)
+	if(!is.null(.scalarXML)) {
+		if(sos@verboseOutput)
+			cat("[parseSosFilter_Capabilities] parsing", 
+					ogcScalarCapabilitiesName, "\n")
+		
+		.scalar <- list()
+		if(!is.null(.scalarXML[[ogcLogicalOperatorsName]])) {
+			.scalar.logicalXML <- .filterXmlOnlyNoneTexts(
+					.scalarXML[[ogcLogicalOperatorsName]])
+			.scalar.logical <- lapply(.scalar.logicalXML, xmlValue)
+			.scalar <- c(.scalar, .scalar.logical)
+		}
+		if(!is.null(.scalarXML[[ogcComparisonOperatorsName]])) {
+			.scalar.compXML <- .filterXmlOnlyNoneTexts(
+					.scalarXML[[ogcComparisonOperatorsName]])
+			.scalar.comp <- lapply(.scalar.compXML, xmlValue)
+			.scalar <- c(.scalar, .scalar.comp)
+		}
+		if(!is.null(.scalarXML[[ogcArithmeticOperatorsName]])) {
+			.scalar.arithm <- xmlToList(
+					.scalarXML[[ogcArithmeticOperatorsName]])
+			.scalar <- c(.scalar, .scalar.arithm)
+		}
 	}
-	if(!is.null(.scalarXML[[ogcComparisonOperatorsName]])) {
-		.scalar.compXML <- .filterXmlOnlyNoneTexts(
-				.scalarXML[[ogcComparisonOperatorsName]])
-		.scalar.comp <- lapply(.scalar.compXML, xmlValue)
-		.scalar <- c(.scalar, .scalar.comp)
-	}
-	if(!is.null(.scalarXML[[ogcArithmeticOperatorsName]])) {
-		.scalar.arithm <- xmlToList(
-				.scalarXML[[ogcArithmeticOperatorsName]])
-		.scalar <- c(.scalar, .scalar.arithm)
+	else {
+		.scalar <- list(NA_character_)
+		warning(paste("Mandatory element", ogcScalarCapabilitiesName,
+						"missing in", sosFilterCapabilitiesName))
 	}
 	
-	.idXML <- .filterXmlOnlyNoneTexts(obj[[ogcIdCapabilities]])
-	.id <- lapply(.idXML, xmlName)
+	if(!is.null(obj[[ogcIdCapabilities]])) {
+		if(sos@verboseOutput)
+			cat("[parseSosFilter_Capabilities] parsing", 
+					ogcIdCapabilities, "\n")
+		
+		.idXML <- .filterXmlOnlyNoneTexts(obj[[ogcIdCapabilities]])
+		.id <- lapply(.idXML, xmlName)
+	}
+	else {
+		.id <- list(NA_character_)
+		warning(paste("Mandatory element", ogcIdCapabilities,
+						"missing in", sosFilterCapabilitiesName))
+	}
 	
 	.fc <- SosFilter_Capabilities(spatial = .spatial, temporal = .temporal,
 			scalar = .scalar, id = .id)
+	
+	if(sos@verboseOutput)
+		cat("[parseSosFilter_Capabilities] done:", toString(.fc), "\n")
+	
+	return(.fc)
 }
 
 ################################################################################

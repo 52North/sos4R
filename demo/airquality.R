@@ -52,7 +52,7 @@ dec2003 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 				end = as.POSIXct("2003/12/31")))
 
 # Request data (request and response can be check by setting the inspect=TRUE):
-obs.no2.12Hrs <- getObservation(sos = aqe, # inspect = TRUE,
+obs.no2.12Hrs <- getObservation(sos = aqe, inspect = TRUE,
 		offering = aqe.off.no2,
 		#procedure = sosProcedures(aqe.off.no2)[1:20],
 		saveOriginal = TRUE,# saves file in getwd()
@@ -112,7 +112,7 @@ plot(result.no2.12Hrs[["Time"]], result.no2.12Hrs[[NO2]])
 # Get the result data and create sp object:
 obs.no2.crs <- sosGetCRS(obs.no2.12Hrs)
 no2.spdf <- SpatialPointsDataFrame(
-		coords = result.no2.12Hrs[,c("lat", "lon")],
+		coords = result.no2.12Hrs[,c("lon", "lat")],
 		data = result.no2.12Hrs[,c("Time", "feature", NO2)],
 		proj4string = obs.no2.crs)
 bbox(no2.spdf)
@@ -129,16 +129,28 @@ summary(no2.spdf.shortcut)
 require("mapdata")
 germany.p <- pruneMap(map(database = "worldHires", region = "Germany",
 				plot = FALSE))
-germany.sp <- map2SpatialLines(world.p, proj4string = crs)
-plot(no2.spdf, col = "blue") # works
+germany.sp <- map2SpatialLines(germany.p, proj4string = obs.no2.crs)
+proj4string(germany.sp) <- obs.no2.crs
 plot(x = germany.sp, col = "grey")
-plot(no2.spdf, pch = "10", col = "blue", cex = "3", add = TRUE) # nothing happens...
-#points(no2.spdf) # nothing happens...
+plot(no2.spdf, pch = 20, col = "blue", add = TRUE)
 title("NO2 Germany")
 
-#require("lattice")
-#spplot(no2.spdf, zcol = NO2)
+##############
+# Bubble plot:
+bubble(no2.spdf, zcol = 3, maxsize = 2, col = c("#1155ff"),
+		main = "NO2 in Germany", do.sqrt = TRUE)
 
+################################################################################
+# Transform to UTM for kriging and background map:
+require("rgdal")
+utm32 = CRS("+proj=utm +zone=32 +datum=WGS84")
+germany.utm <- spTransform(germany.sp, utm32)
+no2.spdf.utm = spTransform(no2.spdf, utm32)
+plot(germany.utm, col = "grey")
+plot(no2.spdf.utm, add = TRUE)
+
+################################################################################
+# TODO Kriging with automap
 
 ################################################################################
 # Plot with whole year 2004 for one station:

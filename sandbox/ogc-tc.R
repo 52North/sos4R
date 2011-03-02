@@ -77,5 +77,3 @@ plot(tempLastWeek, main = "Temperature at WeatherSOS-Station in Muenster - LAST 
 		ylab = paste("Temperature in", attributes(temp)[["unit of measurement"]]),
 		major.ticks = "days")
 lines(dataLastWeek$Time, x$fitted, col = 'red', lwd=3)
-#savePlot(type = "png", filename = "usecase.png")
-

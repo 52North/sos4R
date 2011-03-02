@@ -5,6 +5,80 @@
 
 ################################################################################
 # http://ispacevm10.researchstudio.at/sostester/
-# use the two development services
+# Contact: Michael Lippautz: michael.lippautz@researchstudio.at
+# Use the two development services on ispacevm10.
+
+# PROBLEMS:
+# - services do not accept the parameter "sections=ALL" in GetCapabilities requests, disable that parameter with "sections = NA" which is passed on to the call to getCapabilities
+# - observation offerings contains time period directly, not in a sos:time element...
+# - mandatory elements ogc:Scalar_Capabilitis and ogc:Id_Capabilities are missing in sos:Filter_Capabilities (could be empty...)
+# - "SpatialOperands" instad of correct element name "GeometryOperands", OGC 04-095 (Filter Encoding Spec)
+# - Temporal filtering has no effect...
+
+################################################################################
+# Nationalpark Berchtesgaden
+npbg.converter <- SosDataFieldConvertingFunctions(
+		"urn:ogc:def:property:OGC:Time:iso8601" = sosConvertTime,
+		"urn:ogc:def:property:OGC:Reflection" = sosConvertDouble,
+		"urn:ogc:def:property:OGC:Insolation" = sosConvertDouble)
+npbg <- SOS("http://ispacevm10.researchstudio.at/geoservices/npbg",
+		method = "GET", # verboseOutput = TRUE,
+		dataFieldConverters = npbg.converter,
+		sections = NA)
+npbg
+summary(npbg)
+plot(npbg)
+
+sosFilter_Capabilities(npbg)
+
+#########################
+# superordinate offering:
+np.off <- sosOfferings(npbg)[["org:npbg:Nationalpark"]]
+#np.off
+summary(np.off)
+plot(np.off)
+
+np.obsProp <- sosObservedProperties(np.off)
+np.obsProp
+np.proc <- sosProcedures(np.off)
+np.proc
+
+###########
+# Get data:
+lastDay <- sosCreateTimePeriod(sos = npbg, begin = (Sys.time() - 3600 * 24),
+		end = Sys.time())
+
+obs.proc1 <- getObservation(sos = npbg, offering = np.off,
+	procedure = np.proc[[1]],
+#	eventTime = sosCreateEventTimeList(lastDay),
+	inspect = TRUE)
+
+# cannot get the coordinates via result, because they are given as attribute,
+# not as a featureOfInterest
+#result.proc1 <- sosResult(obs.proc1, coordinates = TRUE)
+#spdf.proc1 <- as(obs.proc1, "Spatial")
+
+# Coordinates inline:
+result.proc1 <- sosResult(obs.proc1)
+summary(result.proc1)
+
+coords.proc1 <- unique(result.proc1[c("Latitude", "Longitude")])
+coords.proc1
+
+plot(result.proc1)
+
+################################################################################
+# Land Oberösterreich
+ooe <- SOS("http://ispacevm10.researchstudio.at/geoservices/ooe",
+		method = "GET", sections = NA)
+ooe
+summary(ooe)
+
+
+
+
+
+
+
 
 # TODO KML export
