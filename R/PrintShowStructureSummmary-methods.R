@@ -1155,10 +1155,15 @@ summary.SOS = function(object, ...) {
 	obj[["method"]] = sosMethod(object)
 	obj[["title"]] = sosTitle(object)
 	obj[["abstract"]] = sosAbstract(object)
-	obj[["time"]] = summary(sosTime(object))
+	
+	if(!is.null(sosTime(object)))
+		obj[["time"]] = summary(sosTime(object))
+	else obj[["time"]] = NA_character_
+	
 	obj[["offeringCount"]] = length(sosOfferingIds(object))
 	obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
 	obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
+
 	class(obj) = "summary.SOS"
 	obj
 }

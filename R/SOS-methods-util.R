@@ -203,7 +203,9 @@ setMethod(f = "sosOperations", signature = signature(obj = "SOS"),
 setMethod(f = "sosOperations",
 		signature = signature(obj = "SosCapabilities_1.0.0"),
 		def = function(obj) {
-			return(obj@operations@operations)
+			if(!is.null(obj@operations))
+				return(obj@operations@operations)
+			return(NA_character_)
 		})
 # required to handle the first capabilities request:
 setMethod(f = "sosOperations",
@@ -264,6 +266,9 @@ if (!isGeneric("sosProcedures"))
 setMethod(f = "sosProcedures", signature = signature(obj = "SOS"),
 		def = function(obj) {
 			.offerings <- sosOfferings(obj)
+			if(length(.offerings) == 1 && is.na(.offerings))
+				return(NA_character_)
+			
 			.p <- lapply(.offerings, sosProcedures)
 			names(.p) <- names(.offerings)
 			return(.p)
@@ -305,7 +310,11 @@ if (!isGeneric("sosObservedProperties"))
 			})
 setMethod(f = "sosObservedProperties", signature = signature(obj = "SOS"),
 		def = function(obj) {
-			.op <- lapply(sosOfferings(obj), sosObservedProperties)
+			.offerings <- sosOfferings(obj)
+			if(length(.offerings) == 1 && is.na(.offerings))
+				return(NA_character_)
+			
+			.op <- lapply(.offerings, sosObservedProperties)
 			return(.op)
 		})
 setMethod(f = "sosObservedProperties", signature = signature(
@@ -406,7 +415,11 @@ if (!isGeneric("sosOfferings"))
 			})
 setMethod(f = "sosOfferings", signature = signature(obj = "SOS"),
 		def = function(obj, offeringIDs = c(), name = NA) {
-			.offerings <- obj@capabilities@contents@observationOfferings
+			.contents <- sosContents(obj)
+			if(is.null(.contents))
+				return(NA_character_)
+			
+			.offerings <- .contents@observationOfferings
 			if(!is.na(name)) {
 				for (.o in .offerings) {
 					.currentName <- sosName(.o)
@@ -426,7 +439,10 @@ if (!isGeneric("sosOfferingIds"))
 			})
 setMethod(f = "sosOfferingIds", signature = signature(sos = "SOS"),
 		def = function(sos) {
-			return(names(sosOfferings(sos)))
+			.offerings <- sosOfferings(sos)
+			if(length(.offerings) == 1 && !is.na(.offerings))
+				return(names(.offerings))
+			else return(NA_character_)
 		})
 
 if (!isGeneric("sosFeaturesOfInterest"))
@@ -632,11 +648,15 @@ if (!isGeneric("sosTime"))
 setMethod(f = "sosTime", signature = signature(obj = "SOS"),
 		def = function(obj) {
 			.caps <- sosCaps(obj)
-			.getOb <- .caps@operations@operations[[sosGetObservationName]]
-			.time <- .getOb@parameters$eventTime
-			if(is.list(.time) && length(.time) == 1)
-				return(.time[[1]])
-			return(.time)
+			.operations <- sosOperations(obj)
+			if(length(.operations) > 1 && !is.na(.operations)) {
+				.getOb <- .caps@operations@operations[[sosGetObservationName]]
+				.time <- .getOb@parameters$eventTime
+				if(is.list(.time) && length(.time) == 1)
+					return(.time[[1]])
+				return(.time)
+			}
+			else return(NA_character_)
 		})
 setMethod(f = "sosTime", signature = signature(
 				obj = "SosObservationOffering"),
@@ -941,7 +961,10 @@ if (!isGeneric("sosTitle"))
 			})
 setMethod(f = "sosTitle", signature = signature(obj = "SOS"),
 		def = function(obj) {
-			.s <- sosTitle(sosServiceIdentification(obj))
+			if(!is.null(sosServiceIdentification(obj)))
+				.s <- sosTitle(sosServiceIdentification(obj))
+			else .s <- NA_character_
+			
 			return(.s)
 		})
 setMethod(f = "sosTitle",
@@ -956,7 +979,10 @@ if (!isGeneric("sosAbstract"))
 			})
 setMethod(f = "sosAbstract", signature = signature(obj = "SOS"),
 		def = function(obj) {
-			.s <- sosAbstract(sosServiceIdentification(obj))
+			if(!is.null(sosServiceIdentification(obj)))
+				.s <- sosAbstract(sosServiceIdentification(obj))
+			else .s <- NA_character_
+			
 			return(.s)
 		})
 setMethod(f = "sosAbstract",

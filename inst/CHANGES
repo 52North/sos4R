@@ -131,6 +131,7 @@
 * Added summary functions for SOS, SosObservationOffering
 * Added coercion functions from OmMeasurement, OmObservation and OmObservationCollection to SpatialPointsDataFrame
 * Starting demo austria, consequently some fixing in parsing of capabilities (making mandatory elements optional in parsing to avoid errors)
+* Fixed printing bug for class SOS when capabilities are only partly requested
 
 * TODO: add new features to Vignette: coordinate switching, plotting, sensorML stuff, 
 * TODO: plot sensor positions

@@ -8,11 +8,7 @@
 # Contact: Michael Lippautz: michael.lippautz@researchstudio.at
 # Use the two development services on ispacevm10.
 
-# PROBLEMS:
-# - services do not accept the parameter "sections=ALL" in GetCapabilities requests, disable that parameter with "sections = NA" which is passed on to the call to getCapabilities
-# - observation offerings contains time period directly, not in a sos:time element...
-# - mandatory elements ogc:Scalar_Capabilitis and ogc:Id_Capabilities are missing in sos:Filter_Capabilities (could be empty...)
-# - "SpatialOperands" instad of correct element name "GeometryOperands", OGC 04-095 (Filter Encoding Spec)
+# PROBLEMS using GET:
 # - Temporal filtering has no effect...
 
 ################################################################################
@@ -22,7 +18,8 @@ npbg.converter <- SosDataFieldConvertingFunctions(
 		"urn:ogc:def:property:OGC:Reflection" = sosConvertDouble,
 		"urn:ogc:def:property:OGC:Insolation" = sosConvertDouble)
 npbg <- SOS("http://ispacevm10.researchstudio.at/geoservices/npbg",
-		method = "GET", # verboseOutput = TRUE,
+		method = "GET",
+		#verboseOutput = TRUE,
 		dataFieldConverters = npbg.converter,
 		sections = NA)
 npbg
