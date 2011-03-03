@@ -126,9 +126,10 @@ sosName(ioosdif.off)
 length(ioosdif.off)
 # 771
 
-# TODO check out ioosdif
-
+# check out ioosdif at some point?
 sosResponseFormats(ioosdif)
-# TODO write parser for ioos:Composite results, do here to test exchangeability!
+
+# TODO write parser for KML results, return kml as is and export using
+# examples from Spatial-Analyst?
 		
 
