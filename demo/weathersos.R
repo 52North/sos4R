@@ -7,8 +7,7 @@
 weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
 # explore SOS, plotting
-library(maps); library(mapdata); library(maptools)
-data(worldHiresMapEnv)
+library(maps); library(mapdata); library(maptools); data(worldHiresMapEnv)
 crs <- sosGetCRS(weathersos)[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
 				region = c("Germany", "Austria"), plot = FALSE))
@@ -93,11 +92,15 @@ lines(data$Time, x$fitted, col = 'red', lwd=3)
 # DescribeSensor Operation
 procs <- unique(unlist(sosProcedures(weathersos)))
 
-procs.descr <- lapply(X = procs, FUN = describeSensor, sos = weathersos)
+procs.descr <- lapply(X = procs, FUN = describeSensor, verbose = TRUE,
+		sos = weathersos)
 procs.descr
 
 proc1 <- procs.descr[[1]]
 proc1
+
+# original xml:
+proc1@xml
 
 ##############################
 # access parts of the SensorML
@@ -105,8 +108,18 @@ proc1
 sosId(proc1)
 sosName(proc1)
 sosAbstract(proc1)
+
+# get spatial informatin (including unit and reference system information)
 #sosCoordinates(proc1, weathersos, forceReparse = TRUE, verbose = TRUE)
-as(proc1, "Spatial") # basis for plot
+coords <- sosCoordinates(proc1)
+coords
+#str(coords)
+attributes(coords)
+sosGetCRS(proc1)
+sosBoundedBy(proc1)
+
+# create spatial representation, which also will be basis for plottting
+as(proc1, "Spatial")
 
 plot(worldHigh.lines, col = "grey50")
 for (x in procs.descr) {

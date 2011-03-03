@@ -342,7 +342,6 @@ parseSosFilter_Capabilities <- function(obj, sos) {
 setMethod(f = "parseFile",
 		signature = signature(sos = "SOS_1.0.0", file = "character"),
 		def = function(sos, file, verbose, ...) {
-			# TODO add parameter and handling for strings using xmlParseString(...)
 			.parsed <- xmlParse(file, ...)
 			.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
 			
@@ -358,7 +357,6 @@ setMethod(f = "parseFile",
 )
 
 ################################################################################
-#
 #
 #
 #

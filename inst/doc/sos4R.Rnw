@@ -348,6 +348,25 @@ sosResponseFormats(mySOS)[[sosGetObservationByIdName]]
 toString(paste(sosResponseFormats(mySOS)[[sosGetObservationByIdName]]))
 @
 
+\subsubsection{Spatial Reference Systems}
+\label{subsubsec:getCapSRS}
+
+For future analyses, but also for correct plotting, one must know the coordinate reference system (CRS) or spatial reference system (SRS)\footnote{\url{http://en.wikipedia.org/wiki/Spatial_referencing_system}} or the returned data. You can get this information using the method \code{sosGetCRS()} from variuos objects.
+
+The function utilizes the EPSG code\footnote{\url{http://www.epsg-registry.org/}} in GML attributes like \code{srsName="urn:ogc:def:crs:EPSG:4326"} to initialize an object of class \code{CRS} from the package \pgk{sp}. For \code{SOS} and code{SosObservationOffering} objects these are taken from the bounding box given in the \code{gml:boundedBy} element.
+
+<<sosGetCRS,echo=TRUE,eval=TRUE>>=
+sosGetCRS("urn:ogc:def:crs:EPSG:4326")
+
+# returns the CRS of each offering based on the CRS 
+# used in the element gml:boundedBy:
+sosGetCRS(mySOS)[1:3]
+
+sosGetCRS(sosOfferings(mySOS)[[1]])
+@
+
+Mre examples for \code{sosGetSRS()} can be found in section \ref{subsubsec:getObsSRS}.
+
 \subsubsection{Plotting SOS and Offerings}
 \label{subsubsec:plottingSosAndOfferings}
 
@@ -425,6 +444,8 @@ sensor.1.1 <- describeSensor(sos = mySOS,
 str(sensor.1.1)
 @
 
+All additional information presented in the following depends on compliance of the sensor description with the SensorML Profile for Discovery (available for downlaod at \url{http://portal.opengeospatial.org/files/?artifact_id=37944}).
+
 The coordinates data frame of a sensor description can be accessed with the common method \code{sosCoordinates()}.
 
 <<describeSensor1,echo=TRUE,print=TRUE,eval=FALSE>>=
@@ -439,26 +460,38 @@ sosName(sensor.1.1)
 sosAbstract(sensor.1.1)
 @
 
-The coordinates also allow the plotting of the sensor positions (see Figure \ref{fig:desribeSensorPlot}).
+This includes the coordinates with unit and reference system information in the attributes of the returned object. The observed bounding box is also available.
+
+<<describeSensorCoords,echo=TRUE,print=TRUE,cache=TRUE>>=
+sensor.1.1.coords <- sosCoordinates(sensor.1.1)
+attributes(sensor.1.1.coords)
+
+sosBoundedBy(sensor.1.1)
+@
+
+The coordinates also allow the plotting of the sensor positions (see Figure \ref{fig:desribeSensorPlot}). Here it is assumed that the spatial reference system of the SOS is the same for data from the first offering and the sensor positions.
 
 <<describeSensorPlot,fig=TRUE,echo=TRUE,include=FALSE>>= 
 # background map data
 library(maps); library(mapdata); library(maptools)
 data(worldHiresMapEnv)
-crs <- sosGetCRS(mySOS)[[1]]
-worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria"), plot = FALSE))
-worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
 # get sensor descriptions
 procs <- unique(unlist(sosProcedures(mySOS)))
 procs.descr <- lapply(X = procs, FUN = describeSensor, sos = mySOS)
+
+# create background map
+sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
+worldHigh <- pruneMap(map(database = "worldHires",
+				region = c("Germany", "Austria"), plot = FALSE))
+worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
+
 plot(worldHigh.lines, col = "grey50")
 for (x in procs.descr) {
 	plot(x, add = TRUE, pch = 19)
 }
-text(sosCoordinates(procs.descr)[c("x", "y")], labels = sosId(procs.descr),
-		pos = 4)
+text(sosCoordinates(procs.descr)[c("x", "y")],
+		labels = sosId(procs.descr), pos = 4)
 title(main = paste("Sensors of", sosTitle(mySOS)))
 @
 
@@ -903,6 +936,16 @@ crs <- sosGetCRS(obs.oneWeek[[1]])
 spdf <- SpatialPointsDataFrame(coords = coords[,1:2],
 	data = data.frame(coords[,4]), proj4string = crs)
 str(spdf)
+@
+
+\subsubsection{Spatial Reference Systems}
+\label{subsubsec:getObsSRS}
+
+For following analyses and plotting, the \textbf{spatial reference system} can be extracted as follows (see section \ref{subsubsec:getCapSRS} for a general description).
+
+<<getObsCRS,echo=TRUE,eval=TRUE>>=
+sosGetCRS(obs.temp.latest)
+sosGetCRS(obs.oneWeek)
 @
 
 \subsection{GetObservationById}

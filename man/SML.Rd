@@ -15,6 +15,9 @@
 \alias{sosAbstract,SensorML-method}
 \alias{sosCoordinates,SensorML-method}
 
+\alias{sosBoundedBy,SensorML-method}
+\alias{sosGetCRS,SensorML-method}
+
 \alias{as.SensorML.SpatialPointsDataFrame}
 \alias{plot.SensorML}
 
@@ -23,9 +26,9 @@
 \title{Classes of the Namespace sml}
 
 \description{
-Classes and construction functions for elements from the OGC specification \dQuote{OpenGIS(R) Sensor Model Language (SensorML) Implementation Specification}.
+Classes, construction functions, and accessor functions for elements from the OGC specification \dQuote{OpenGIS(R) Sensor Model Language (SensorML) Implementation Specification}.
 
-The only class at the moment is \code{"SensorML"} which only wraps an \code{"XMLInternalDocument"}.
+The only class at the moment is \code{"SensorML"} which wraps an \code{"XMLInternalDocument"} and some additional information. This strongly depends on the SensorML Profile for Discovery to find the respective paramters.
 }
 
 \section{Objects from the Class}{
@@ -45,7 +48,10 @@ Objects can be created by calls to the construction method in the form \code{Sen
 	 }
 }
 
-\references{Botts, M., Robin, A. (Eds.), OpenGIS® Sensor Model Language (SensorML) Implementation Specification, OGC® 07-000}
+\references{Botts, M., Robin, A. (Eds.), OpenGIS® Sensor Model Language (SensorML) Implementation Specification, OGC® 07-000
+
+Houbie, F., Skivee F., Robin A., Jirka S., Broering, A., Nuest D. (2009): OGC® Catalogue Services Specification 2.0 - Extension Package for ebRIM Application Profile: SensorML. OGC Discussion Paper. Open Geospatial Consortium: 09-163. \url{http://portal.opengeospatial.org/files/?artifact_id=37944}.
+}
 
 \author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
 

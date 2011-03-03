@@ -66,16 +66,26 @@ dec2003 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 obs.no2.12Hrs <- getObservation(sos = aqe, # inspect = TRUE,
 		offering = aqe.off.no2,
 		#procedure = sosProcedures(aqe.off.no2)[1:20],
-		saveOriginal = TRUE,# saves file in getwd()
+		saveOriginal = TRUE, # saves file in getwd()
 		eventTime = dec2003.12Hrs)
 # 38 secs
 
+################################################
+# Reloading the file later for further analysis:
+# Use the file name printed out by the getObservation(...) call or check your
+# working directory:
+list.files(path = getwd(), pattern = sosName(aqe.off.no2))
+#parseFile("NO2_2011-03-03_11:31:23.xml")
+
+##############################################
 # Explore the returned observation collection:
 obs.no2.12Hrs
 # There is one observatio for every FOI / procedure combination :
 names(obs.no2.12Hrs)[1:3]
 
-# Subset the collection (features, observed properties and procedures):
+########################
+# Subset the collection:
+# (features, observed properties and procedures):
 # sosFeatureIds(obs.no2.12Hrs)[c(1,100)]
 obs.no2.12Hrs[sosFeatureIds(obs.no2.12Hrs)[c(1,100)]]
 # sosObservedProperties(obs.no2.12Hrs)[2]
@@ -107,12 +117,14 @@ result.no2.12Hrs <- sosResult(obs.no2.12Hrs, coordinates = TRUE)
 summary(result.no2.12Hrs)
 NO2 <- colnames(result.no2.12Hrs)[[3]]
 
+#################################################
 # Subset and sort the data with subset or sort_df
 subset(result.no2.12Hrs, feature=="foi_DEBY109")
 require("reshape")
 # The ten highest values:
 tail(sort_df(result.no2.12Hrs, NO2), 10)
 
+########################
 # Histogram of NO2 data:
 hist(result.no2.12Hrs[,3], main = "NO2")
 # Test plot:
@@ -163,9 +175,6 @@ plot(no2.spdf.utm, add = TRUE)
 title(main = "NO2 Germany", sub = "UTM projection")
 
  
-################################################################################
-# TODO Kriging with automap?
-
 ################################################################################
 # Plot with whole year 2004 for one station:
 # See http://www.eea.europa.eu/themes/air/airbase/interpolated for identifiers.

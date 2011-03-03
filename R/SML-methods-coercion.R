@@ -31,9 +31,9 @@
 #
 #
 as.SensorML.SpatialPointsDataFrame = function(from) {
-	.coords <- from@coords
+	.coords <- sosCoordinates(from)
 	.crds <- .coords[,c("x", "y")]
-	.crs <- sosGetCRS(attributes(.coords)[["referenceFrame"]])
+	.crs <- sosGetCRS(from)
 	
 	.notCoordCols <- !colnames(.coords)%in%c("x", "y")
 	.otherData <- data.frame(.coords[,.notCoordCols])

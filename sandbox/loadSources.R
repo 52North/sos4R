@@ -69,6 +69,7 @@ source(paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
 source(paste(.path, "R", "SOS-methods-coercion.R",  sep = "/"))
 source(paste(.path, "R", "SML-methods-coercion.R",  sep = "/"))
 
+source(paste(.path, "R", "SOS-methods-accessor.R",  sep = "/"))
 source(paste(.path, "R", "SOS-methods-util.R",  sep = "/"))
 source(paste(.path, "R", "SML-methods-util.R",  sep = "/"))
 

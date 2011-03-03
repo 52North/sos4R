@@ -457,15 +457,19 @@ parseVector <- function(obj, sos, verbose = FALSE) {
 	.children <- .filterXmlChildren(node = obj, childrenName = sweCoordinateName)
 	
 	.coords <- list()
+	.names <- list()
 	for (i in seq(1, length(.children))) {
 		.c <- .children[[i]]
 		
 		.coord <- parseCoordinate(.c, sos = sos, verbose = verbose)
 		.coords <- c(.coords, list(.coord))
+		.names <- c(.names, list(.coord[["axisID"]]))
 		
 		if(verbose) cat("[parseVector] parsed coordinate: ", toString(.coord),
 					"\n")
 	}
+	
+	names(.coords) <- .names
 
 	return(.coords)
 }

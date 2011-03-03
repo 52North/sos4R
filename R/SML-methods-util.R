@@ -37,6 +37,7 @@
 		"']/sml:value/text()", sep = "")
 .smlXPathDescription <- "//sml:System/gml:description/text()"
 .smlXPathPosition <- "//sml:System/sml:position/swe:Position"
+.smlXPathObservedBBox <- "//swe:field[@name='observedBBOX']/swe:Envelope"
 
 #
 #
@@ -70,6 +71,18 @@ setMethod(f = "sosAbstract", signature = signature(obj = "SensorML"),
 		})
 
 #
+#
+#
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "SensorML"),
+		def = function(obj) {
+			.coords <- sosCoordinates(obj)
+			.crs <- sosGetCRS(attributes(.coords)[["referenceFrame"]])
+			return(.crs)
+		}
+)
+
+#
 # extract the coordinates from the SensorML document and return as a data.frame
 #
 setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
@@ -87,13 +100,14 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
 					namespaces = .sosNamespaceDefinitionsSML)[[1]]
 			.position <- parseSwePosition(.xmlPosition, sos = sos,
 					verbose = verbose)
-			.referenceFrame = attributes(.position)[["referenceFrame"]]
+			.referenceFrame = attributes(.position)[["referenceFrame"]]			
+			.uom <- lapply(.position, "[[", "uomCode")
+			names(.uom) <- lapply(.position, "[[", "axisID")
+			.name <- lapply(.position, "[[", "name")
+			names(.name) <- lapply(.position, "[[", "axisID")
 			
-			.colNames <- sapply(.position, "[[", "name")
-			.colUoms <- lapply(.position, "[[", "uomCode")
 			.values <- lapply(.position, "[[", "value")
 			names(.values) <- lapply(.position, "[[", "axisID")
-			
 			if(any(is.na(names(.values)))) {
 				warning("No axisID given, cannot name data.frame with them, trying 'name'.")
 				names(.values) <- lapply(.position, "[[", "name")
@@ -101,35 +115,58 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
 			
 			if(verbose) {
 				cat("[sosCoordinates] values: ", toString(.values),	"\n")
+				str(.values)
 				cat("[sosCoordinates] names: ", names(.values), "\n")
 			}
 			
-			.frame <- data.frame(rbind(.values))
+			.frame <- data.frame(.values)
 			
-			for (i in seq(1, length(.colUoms))) {
-				.newAttrs <- list(.colUoms[[i]], .colNames[[i]],
-						.referenceFrame)
-				names(.newAttrs) <- c("uom", "name", "referenceFrame")
-				if(verbose) cat("[sosCoordinates] New attributes: ",
-							toString(.newAttrs), "\n")
-
-				.oldAttrs <- attributes(.frame[,i])
-				attributes(.frame[,i]) <- c(as.list(.oldAttrs), .newAttrs)
-			}
-			
-			if(verbose) cat("[sosCoordinates] row names: ",
-						toString(sosId(obj)), "\n")
+			.oldAttrs <- attributes(.frame)
+			attributes(.frame) <- c(as.list(.oldAttrs),
+					list(referenceFrame = .referenceFrame,
+							uom = .uom, name = .name))
 			
 			if(!is.na(sosId(obj)))
 				row.names(.frame) <- sosId(obj)
 			
-			.oldAttrs <- attributes(.frame)
-			attributes(.frame) <- c(as.list(.oldAttrs),
-					list(referenceFrame = .referenceFrame))
+			if(verbose) cat("[sosCoordinates] row names: ", row.names(.frame),
+						"\n")
 			
 			return(.frame)
 		}
 )
+
+#
+#
+#
+setMethod(f = "sosBoundedBy",
+		signature = signature(obj = "SensorML"),
+		def = function(obj, sos, verbose = FALSE) {
+			
+			.observedBBox <- getNodeSet(doc = obj@xml,
+					path = .smlXPathObservedBBox,
+					namespaces = .sosNamespaceDefinitionsSML)[[1]]
+			
+			.referenceFrame <- .observedBBox[["referenceFrame"]]
+			
+			.llVector <- parseVector(.observedBBox[["lowerCorner"]][["Vector"]],
+					sos = weathersos, verbose = verbose)
+			.uuVector <- parseVector(.observedBBox[["upperCorner"]][["Vector"]],
+					sos = weathersos, verbose = verbose)
+			
+			.bb <- matrix(c(.llVector[["x"]][["value"]],
+							.llVector[["y"]][["value"]],
+							.uuVector[["x"]][["value"]],
+							.uuVector[["y"]][["value"]]),
+					ncol = 2,
+					dimnames = list(c("coords.lon", "coords.lat"),
+							c("min", "max")))
+			.oldAttrs <- attributes(.bb)
+			attributes(.bb) <- c(.oldAttrs,
+					list(referenceFrame = .referenceFrame))
+			
+			return(.bb)
+		})
 
 #
 #
