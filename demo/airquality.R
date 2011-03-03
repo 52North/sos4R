@@ -25,7 +25,11 @@ names(aqe.offerings)
 
 ###########
 # Plot SOS:
-library(maps); library(mapdata); library(maptools)
+library(maps); 
+library(mapdata); 
+library(maptools)
+if(!require(rgdal, quietly = TRUE))
+	print("rgdal not present: CRS values will not be converted correctly")
 data(worldHiresMapEnv)
 crs <- sosGetCRS(aqe)[[1]]
 region <- map.where(database = "worldHires",
