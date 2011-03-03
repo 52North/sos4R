@@ -440,9 +440,9 @@ if (!isGeneric("sosOfferingIds"))
 setMethod(f = "sosOfferingIds", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			.offerings <- sosOfferings(sos)
-			if(length(.offerings) == 1 && !is.na(.offerings))
-				return(names(.offerings))
-			else return(NA_character_)
+#			if(length(.offerings) == 1 && !is.na(.offerings))
+			return(names(.offerings))
+#			else return(NA_character_)
 		})
 
 if (!isGeneric("sosFeaturesOfInterest"))
@@ -805,6 +805,13 @@ if (!isGeneric("sosCoordinates"))
 	setGeneric(name = "sosCoordinates", def = function(obj, ...) {
 				standardGeneric("sosCoordinates")
 			})
+setMethod(f = "sosCoordinates",
+		signature = signature(obj = "SosObservationOffering"),
+		def = function(obj) {
+			.off.spatial <- as(obj, "Spatial")
+			.coords <- coordinates(.off.spatial)
+			return(.coords)
+		})
 setMethod(f = "sosCoordinates",
 		signature = signature(obj = "OmObservationCollection"),
 		def = function(obj) {
@@ -1393,7 +1400,16 @@ setMethod(f = "sosGetCRS",
 			return(.crs)
 		}
 )
-
+setMethod(f = "sosGetCRS",
+		signature = c(obj = "SOS"),
+		def = function(obj) {
+			.offs <- sosOfferings(obj)
+			.crss <- lapply(.offs, sosGetCRS)
+			if(length(.crss) == 1)
+				return(.crss[[1]])
+			return(.crss)
+		}
+)
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "list"),
 		def = function(obj) {

@@ -18,6 +18,8 @@
 \alias{as.SensorML.SpatialPointsDataFrame}
 \alias{plot.SensorML}
 
+\alias{plot,SensorML,missing-method}
+
 \title{Classes of the Namespace sml}
 
 \description{

@@ -114,24 +114,21 @@
 * added .Rbuildignore to exclude Eclipse specific files in build
 * Maintenance release to re-trigger generation of vignette with v-swe running
 
-2010-02-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-03-03		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
-* Version 0.1-12
-* Minor changes in Vignette
+* Version 0.1-13
 * Added sosGetCRS() for SosObservationOffering based on bounding box
 * Added plot() for SosObservationOffering
 * Added sosTitle() and sosAbstract()
 * fix in bbox creation in sosBoundedBy(... bbox = TRUE)
 * Added coordinate switching mechanism, works during parsing, required sos to be added to a bunch of parsing functions
-* Added a few packages to dependency, they are needed for plotting
-* Added sosId(), sosName(), sosAbstract(), and sosCoordinates() for class SensorML (in SML-methods-util.R)
+* Added sosId(), sosName(), sosAbstract(), and sosCoordinates(), coercion to Spatial, and plot() for class SensorML
 * Added sosChanges()
 * Work on demo for South Esk Test Bed, southesk
 * Work on demo for EEA AirQuality data, airquality
+* Overhaul of all demos with plotting
 * Added summary functions for SOS, SosObservationOffering
 * Added coercion functions from OmMeasurement, OmObservation and OmObservationCollection to SpatialPointsDataFrame
 * Starting demo austria, consequently some fixing in parsing of capabilities (making mandatory elements optional in parsing to avoid errors)
 * Fixed printing bug for class SOS when capabilities are only partly requested
-
-* TODO: add new features to Vignette: coordinate switching, plotting, sensorML stuff, coercion of OmMeasurement, summary functions, ...
-* TODO: plot sensor positions
+* Updates in Vignette for new features

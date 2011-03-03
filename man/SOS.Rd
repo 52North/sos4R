@@ -127,6 +127,7 @@
 \alias{sosCoordinates}
 \alias{sosCoordinates-method}
 \alias{sosCoordinates,list-method}
+\alias{sosCoordinates,SosObservationOffering-method}
 
 \alias{sosId}
 \alias{sosId-method}
@@ -142,6 +143,7 @@
 
 \alias{sosGetCRS}
 \alias{sosGetCRS-method}
+\alias{sosGetCRS,SOS-method}
 \alias{sosGetCRS,list-method}
 \alias{sosGetCRS,character-method}
 \alias{sosGetCRS,SosObservationOffering-method}
@@ -155,7 +157,6 @@
 \alias{sosName,SosDescribeSensor-method}
 \alias{sosName,SosGetObservation-method}
 \alias{sosName,SosGetObservationById-method}
-
 
 \alias{sosTitle}
 \alias{sosTitle-method}
@@ -181,7 +182,9 @@
 \alias{sosSwitchCoordinates,SOS-method}
 
 \alias{plot.SOS}
+\alias{plot,SOS,missing-method}
 \alias{plot.SosObservationOffering}
+\alias{plot,SosObservationOffering,missing-method}
 \alias{as.SosObservationOffering.SpatialPolygons}
 
 \alias{print.summary.SOS}

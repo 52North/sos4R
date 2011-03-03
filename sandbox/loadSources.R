@@ -31,11 +31,6 @@
 library("XML")
 library("RCurl")
 library("sp")
-library("methods")
-library("graphics")
-library("maps")
-library("maptools")
-library("RColorBrewer")
 
 # load required source files for testing
 if(!exists(".path"))
@@ -72,6 +67,7 @@ source(paste(.path, "R", "OGC-methods.R",  sep = "/"))
 source(paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
 
 source(paste(.path, "R", "SOS-methods-coercion.R",  sep = "/"))
+source(paste(.path, "R", "SML-methods-coercion.R",  sep = "/"))
 
 source(paste(.path, "R", "SOS-methods-util.R",  sep = "/"))
 source(paste(.path, "R", "SML-methods-util.R",  sep = "/"))

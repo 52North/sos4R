@@ -78,22 +78,58 @@ csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos", timeFormat = .timeFormat,
 ################################################################################
 # explore SOSs with plots
 
-# plot SOS completely together
-plot(csiro, regions = "Australia")
-plot(bom) # automatic region detection using map.where(...)
+################################################################################
+# plot two SOS with background map
+crs <- sosGetCRS(csiro)
 
-# plot offerings with cities
-rainfall.off.bom <- sosOfferings(bom)[[1]]
-plot(rainfall.off.bom, regions = "Australia:Tasmania", map.cities = TRUE,
-		cities.label = TRUE)
-rainfall.off.csiro <- sosOfferings(csiro)["Rain Gauges"][[1]]
-plot(rainfall.off.csiro, map.cities = FALSE, off.col = "green", add = TRUE)
-rainfall.off.ht <- sosOfferings(csiro)["HT Weather Stations"][[1]]
-plot(rainfall.off.ht, add = TRUE, off.col = "blue")
-title("Offerings of BOM and CSIRO SOSs")
+library(maps)
+library(maptools)
+world <- pruneMap(map(database = "world", region = "Australia:Tasmania",
+				plot = FALSE))
+world.lines <- map2SpatialLines(world, proj4string = crs[[2]])
+plot(world.lines, col = "grey50")
+plot(csiro, add = TRUE, lwd = 3, lty = 1)
+plot(bom, add = TRUE,
+		border.color.pal = sosDefaultColorPalette[[length(sosOfferings(csiro))]],
+		lwd = 3, lty = 3)
+
+# plot labels
+labelCoords <- rbind(sosCoordinates(sosOfferings(csiro)),
+		sosCoordinates(sosOfferings(bom)))
+labels <- c(sosName(sosOfferings(csiro)), sosName(sosOfferings(bom)))
+text(labels = labels, col = sosDefaultColorPalette,
+		x = labelCoords[,1],
+		y = labelCoords[,2])
+title(main = paste(sosTitle(csiro), "and", sosTitle(bom)),
+				sub = paste(sosAbstract(csiro), "\n", sosAbstract(bom)))
 
 ################################################################################
-# Analysis based on bom, csiro and dpiw
+# plot one offering with high resolution background map and cities, including 
+# map axes and scale
+off <- sosOfferings(csiro)[[2]]
+library(mapdata)
+data(worldHiresMapEnv)
+
+# detect region automatically
+region <- map.where(database = "worldHires", sosCoordinates(off))
+worldHigh <- pruneMap(map(database = "worldHires", region = region,
+				plot = FALSE))
+worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs[[2]])
+
+plot(worldHigh.lines, col = "grey50")
+data(world.cities)
+map.cities(label = TRUE, pch = 19, col = "black")
+
+plot(off, add = TRUE, border = "red", lwd = 3)
+title(main = paste("Offering with ID '", sosId(off), "'", sep = ""),
+		sub = paste("Features:", toString(sosFeaturesOfInterest(off))))
+
+map.axes()
+map.scale(metric = TRUE, ratio = FALSE)
+
+
+################################################################################
+# Data consilidation based on three SOS: bom, csiro and dpiw
 
 # phenomenon rainfall or rainfalltoday is available at all stations
 rainfall <- "urn:ogc:def:phenomenon:OGC:rainfall"
@@ -219,7 +255,7 @@ rainfall.data <- subset(rainfall.data, feature != "Eastwood")
 # Create SpatialPointsDataFrame, use just the CRS of one observation
 crs <- sosGetCRS(rainfall.obs.csiro)[[2]]
 rainfall.spdf <- SpatialPointsDataFrame(
-		coords = rainfall.data[,c("lat", "lon")],
+		coords = rainfall.data[,c("lon", "lat")],
 		data = rainfall.data[,c("feature", "rainfall", "offering")],
 		proj4string = crs)
 str(rainfall.spdf)
@@ -248,13 +284,11 @@ world.sp <- map2SpatialLines(world.p, proj4string = crs)
 plot(x = world.sp, col = "grey", main = "Rainfall Tasmania")
 plot(rainfall.spdf, add = TRUE)
 
-plot(rainfall.spdf)
-
 #text(x = coordinates(rainfall.spdf)[,"lat"],
 #		y = coordinates(rainfall.spdf)[,"lon"],
 #		labels = rainfall.spdf@data[, "feature"], adj = c(0, 1), cex = 0.75)
-text(x = coordinates(rainfall.spdf)[,"lat"],
-		y = coordinates(rainfall.spdf)[,"lon"], col = "blue",
+text(x = coordinates(rainfall.spdf)[,"lon"],
+		y = coordinates(rainfall.spdf)[,"lat"], col = "blue",
 		labels = rainfall.spdf@data[,"offering"], adj = c(1, 0), cex = 0.75)
 title(main = paste("Observation locations of", sosTitle(csiro)),
 		sub = paste(sosAbstract(csiro)))
@@ -309,6 +343,7 @@ x <- krige(log(rainfall.spdf[["rainfall"]])~1,
 		rainfall.spdf.utm, rainfall.grid.utm, model = m)
 spplot(x["var1.pred"], main = "ordinary kriging predictions")
 spplot(one.utm, add = TRUE)
+
 spplot(x["var1.var"],  main = "ordinary kriging variance")
 
 

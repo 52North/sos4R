@@ -19,16 +19,25 @@ aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
 		dataFieldConverters = aqe.converters)
 summary(aqe)
 
-###########
-# OFFERINGS
 # Get the available offerings:
 aqe.offerings <- sosOfferings(aqe)
 names(aqe.offerings)
 
-########################
-# Plot SOS and offering:
-plot(aqe)
-plot(aqe.offerings[["PM10"]])
+###########
+# Plot SOS:
+library(maps); library(mapdata); library(maptools)
+data(worldHiresMapEnv)
+crs <- sosGetCRS(aqe)[[1]]
+region <- map.where(database = "worldHires",
+		sosCoordinates(aqe.offerings)) # find region
+worldHigh <- pruneMap(map(database = "worldHires", region = region,
+				plot = FALSE))
+worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
+
+plot(worldHigh.lines, col = "grey50")
+plot(aqe, add = TRUE, lwd = 3)
+title(main = paste("Offerings Germany by '", sosTitle(aqe), "'", sep = ""),
+		sub = toString(names(aqe.offerings)))
 
 ################################################################################
 # NO2
@@ -36,7 +45,6 @@ plot(aqe.offerings[["PM10"]])
 # Extract one offering of interest and explore:
 aqe.off.no2 <- aqe.offerings[["NO2"]]
 aqe.off.no2
-plot(aqe.off.no2)
 summary(aqe.off.no2)
 
 # Get observations, december 2003 is arbitrary choice!
@@ -118,13 +126,14 @@ bbox(no2.spdf)
 #obs.no2.bbox <- sosBoundedBy(obs.no2.12Hrs, bbox = TRUE) # equal
 summary(no2.spdf)
 
-########################################
-# Shortcut to get SpatialPointsDataFrame
+#########################################
+# Shortcut to get SpatialPointsDataFrame:
 #as(obs.no2.12Hrs[[1]], "SpatialPointsDataFrame")
 no2.spdf.shortcut <- as(obs.no2.12Hrs, "SpatialPointsDataFrame")
 summary(no2.spdf.shortcut)
 
-# Plot with background map:
+####################################
+# Plot stations with background map:
 require("mapdata")
 germany.p <- pruneMap(map(database = "worldHires", region = "Germany",
 				plot = FALSE))

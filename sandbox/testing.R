@@ -1087,16 +1087,11 @@ text(x = coordinates(coords)[,"x"], y = coordinates(coords)[,"y"],
 
 
 ################################################################################
-# TODO plot sensor positions
-proc.all <- unlist(sosProcedures(csiro)[[1]])
+# plot sensor positions -- SEE WEATHERSOS DEMO
 
-s1 <- describeSensor(csiro, procedure = proc.all[[1]], verbose = TRUE)
-plot(SpatialPoints(s1@coords, proj4string = sosGetCRS(rainfall.off.csiro)),
-		add = TRUE)
 
-plot(s1, add = TRUE)
+################################################################################
+# fixing errors in vignette...
+weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
-proc.all.descr <- lapply(proc.all, describeSensor, sos = csiro)
-coords.all <- sosCoordinates(proc.all.descr, sos = csiro)
-coords.all
-attributes(coords.all[,3])
+sosFeaturesOfInterest(weathersos)[1:2]

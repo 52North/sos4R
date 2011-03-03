@@ -73,8 +73,8 @@ setMethod(f = "sosAbstract", signature = signature(obj = "SensorML"),
 # extract the coordinates from the SensorML document and return as a data.frame
 #
 setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
-		def = function(obj, sos, verbose = FALSE) {
-			if(all(dim(obj@coords) > 0)) {
+		def = function(obj, sos, verbose = FALSE, forceReparse = FALSE) {
+			if(all(dim(obj@coords) > 0) && !forceReparse) {
 				if(verbose) cat("Coordinates already in SensorML, returning.\n")
 				return(obj@coords)
 			}
@@ -87,6 +87,7 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
 					namespaces = .sosNamespaceDefinitionsSML)[[1]]
 			.position <- parseSwePosition(.xmlPosition, sos = sos,
 					verbose = verbose)
+			.referenceFrame = attributes(.position)[["referenceFrame"]]
 			
 			.colNames <- sapply(.position, "[[", "name")
 			.colUoms <- lapply(.position, "[[", "uomCode")
@@ -106,14 +107,14 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
 			.frame <- data.frame(rbind(.values))
 			
 			for (i in seq(1, length(.colUoms))) {
-				.newAttrs <- list(.colUoms[[i]], .colNames[[i]])
-				names(.newAttrs) <- c("uom", "name")
+				.newAttrs <- list(.colUoms[[i]], .colNames[[i]],
+						.referenceFrame)
+				names(.newAttrs) <- c("uom", "name", "referenceFrame")
 				if(verbose) cat("[sosCoordinates] New attributes: ",
 							toString(.newAttrs), "\n")
 
 				.oldAttrs <- attributes(.frame[,i])
 				attributes(.frame[,i]) <- c(as.list(.oldAttrs), .newAttrs)
-				attributes(.frame[,i]) <- .newAttrs
 			}
 			
 			if(verbose) cat("[sosCoordinates] row names: ",
@@ -122,8 +123,13 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
 			if(!is.na(sosId(obj)))
 				row.names(.frame) <- sosId(obj)
 			
+			.oldAttrs <- attributes(.frame)
+			attributes(.frame) <- c(as.list(.oldAttrs),
+					list(referenceFrame = .referenceFrame))
+			
 			return(.frame)
-		})
+		}
+)
 
 #
 #

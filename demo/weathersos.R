@@ -6,8 +6,18 @@
 # establish a connection to a SOS instance with default settings
 weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
-# explore SOS
-plot(weathersos)
+# explore SOS, plotting
+library(maps); library(mapdata); library(maptools)
+data(worldHiresMapEnv)
+crs <- sosGetCRS(weathersos)[[1]]
+worldHigh <- pruneMap(map(database = "worldHires",
+				region = c("Germany", "Austria"), plot = FALSE))
+worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
+
+plot(worldHigh.lines, col = "grey50")
+plot(weathersos, add = TRUE, lwd = 3)
+title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
+		sub = toString(names(sosOfferings(weathersos))))
 
 # get the latest observation (not standard conform!)
 off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
@@ -78,3 +88,30 @@ plot(tempSept, main = "Temperature at WeatherSOS-Station in Muenster",
 		major.ticks = "weeks")
 lines(data$Time, x$fitted, col = 'red', lwd=3)
 #savePlot(type = "png", filename = "usecase.png")
+
+################################################################################
+# DescribeSensor Operation
+procs <- unique(unlist(sosProcedures(weathersos)))
+
+procs.descr <- lapply(X = procs, FUN = describeSensor, sos = weathersos)
+procs.descr
+
+proc1 <- procs.descr[[1]]
+proc1
+
+##############################
+# access parts of the SensorML
+# (partly depends on SensorML profile for discovery)
+sosId(proc1)
+sosName(proc1)
+sosAbstract(proc1)
+#sosCoordinates(proc1, weathersos, forceReparse = TRUE, verbose = TRUE)
+as(proc1, "Spatial") # basis for plot
+
+plot(worldHigh.lines, col = "grey50")
+for (x in procs.descr) {
+	plot(x, add = TRUE, pch = 19)
+}
+text(sosCoordinates(procs.descr)[c("x", "y")], labels = sosId(procs.descr),
+		pos = 4)
+title(main = paste("Sensors of", sosTitle(weathersos)))

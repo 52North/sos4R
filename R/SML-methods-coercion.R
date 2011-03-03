@@ -31,16 +31,19 @@
 #
 #
 as.SensorML.SpatialPointsDataFrame = function(from) {
-#	coordinates(from@coords) = c("x", "y")
-	.coords <- attributes(from@coords)
+	.coords <- from@coords
 	.crds <- .coords[,c("x", "y")]
-	.data <- .coords[,!colnames(.coords)%in%c("x", "y")]
-	.crs <- attributes(.coords)[["referenceFrame"]]
+	.crs <- sosGetCRS(attributes(.coords)[["referenceFrame"]])
 	
-	.spdf <- SpatialPointsDataFrame(coords = .crds, data = .data,
+	.notCoordCols <- !colnames(.coords)%in%c("x", "y")
+	.otherData <- data.frame(.coords[,.notCoordCols])
+	colnames(.otherData) <- colnames(.coords)[.notCoordCols]
+
+	.sp <- SpatialPointsDataFrame(coords = .crds,
+			data = .otherData,
 			proj4string = .crs)
 	
-	return(.spdf)
+	return(.sp)
 }
 setAs("SensorML", "SpatialPointsDataFrame", 
 		function(from) {

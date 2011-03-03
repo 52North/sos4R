@@ -50,16 +50,10 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 #
 #
 #
-plot.SensorML <- function(x, y, ..., label = FALSE, col = "black",
-		add = TRUE) {
-	.c <- sosCoordinates(x)
-	
-	if(add) par(new = TRUE)
-	plot(.c)
-	
-	if(label) {
-		.id <- sosId(x)
-		text(labels = .id, col = col, x = .c[1], y = .c[2])
-	}
+plot.SensorML <- function(x, y, ...) {
+	.sp <- as(x, "SpatialPointsDataFrame")
+	plot(.sp, ...)
 }
+setMethod("plot", signature(x = "SensorML", y = "missing"),
+		plot.SensorML)
 

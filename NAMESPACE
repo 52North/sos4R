@@ -21,9 +21,11 @@ exportMethods(
 	"print",
     "saveXML",
     "show",
+    "sosAbstract",
     "sosCapabilitiesDocumentOriginal",
     "sosCaps",
     "sosContents",
+    "sosCoordinates",
     "sosCreateBBOX",
     "sosCreateBBoxMatrix",
     "sosCreateEventTimeList",
@@ -34,7 +36,10 @@ exportMethods(
     "sosExceptionCodeMeaning",
     "sosFilter_Capabilities",
     "sosFeaturesOfInterest",
+    "sosGetCRS",
+    "sosId",
     "sosMethod",
+    "sosName",
     "sosObservedProperties",
     "sosOfferingIds",
     "sosOfferings",
@@ -52,8 +57,9 @@ exportMethods(
     "sosSrsName",
     "sosTime",
     "sosTimeFormat",
+    "sosTitle",
     "sosUrl",
-    "sosVersion" 
+    "sosVersion"
 )
 exportClasses(
      "GmlDirectPosition",

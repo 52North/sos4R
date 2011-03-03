@@ -24,16 +24,26 @@ npbg <- SOS("http://ispacevm10.researchstudio.at/geoservices/npbg",
 		sections = NA)
 npbg
 summary(npbg)
-plot(npbg)
 
-sosFilter_Capabilities(npbg)
+#################
+# Plot whole sos:
+library(maps); library(mapdata); library(maptools)
+data(worldHiresMapEnv)
+crs <- unique(sosGetCRS(npbg))[[1]]
+worldHigh <- pruneMap(map(database = "worldHires", region = "Austria",
+				plot = FALSE))
+worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
+
+plot(worldHigh.lines, col = "grey50")
+plot(npbg, add = TRUE, lwd = 2)
+title(main = paste("Offerings by '", sosTitle(npbg), "'", sep = ""),
+		sub = toString(names(sosOfferings(npbg))))
 
 #########################
 # superordinate offering:
 np.off <- sosOfferings(npbg)[["org:npbg:Nationalpark"]]
 #np.off
 summary(np.off)
-plot(np.off)
 
 np.obsProp <- sosObservedProperties(np.off)
 np.obsProp
@@ -45,10 +55,10 @@ np.proc
 lastDay <- sosCreateTimePeriod(sos = npbg, begin = (Sys.time() - 3600 * 24),
 		end = Sys.time())
 
-obs.proc1 <- getObservation(sos = npbg, offering = np.off,
+obs.proc1 <- getObservation(sos = npbg, offering = np.off, #inspect = TRUE
 	procedure = np.proc[[1]],
 #	eventTime = sosCreateEventTimeList(lastDay),
-	inspect = TRUE)
+	)
 
 # cannot get the coordinates via result, because they are given as attribute,
 # not as a featureOfInterest

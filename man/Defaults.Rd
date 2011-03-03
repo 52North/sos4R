@@ -19,6 +19,8 @@
 \alias{sosDefaultColumnNameLat}
 \alias{sosDefaultColumnNameLon}
 \alias{sosDefaultColumnNameSRS}
+\alias{sosDefaultColorPalette}
+
 \alias{SosParsingFunctions}
 \alias{SosEncodingFunctions}
 \alias{SosDisabledParsers}
