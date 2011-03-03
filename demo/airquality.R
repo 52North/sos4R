@@ -166,15 +166,42 @@ bubble(no2.spdf, zcol = 3, maxsize = 2, col = c("#1155ff"),
 
 ################################################################################
 # Transform to UTM for kriging and background map:
-require("rgdal")
 utm32 = CRS("+proj=utm +zone=32 +datum=WGS84")
 germany.utm <- spTransform(germany.sp, utm32)
 no2.spdf.utm = spTransform(no2.spdf, utm32)
 plot(germany.utm, col = "grey")
-plot(no2.spdf.utm, add = TRUE)
+points(no2.spdf.utm, cex=.5, pch=3)
 title(main = "NO2 Germany", sub = "UTM projection")
-
  
+################################################################################
+# Spatial interpolation, averaging over (essentially ignoring) time:
+library(cshapes) # get a polygon of Germany, rather than a set of lines:
+cs = cshp()
+g = spTransform(cs[cs$CNTRY_NAME=="Germany",], utm32)
+# create a grid of points within Germany:
+grdpoints = SpatialPoints(makegrid(germany.utm),utm32)
+grd = SpatialPixels(grdpoints)[g]
+names(no2.spdf.utm)[3] = "NO2"
+library(gstat)
+no2.id = idw(NO2~1, no2.spdf.utm, grd)
+lt=list(list("sp.polygons", g),
+	list("sp.points", no2.spdf.utm, col=grey(.7), cex=.5))
+spplot(no2.id[1], sp.layout=lt, col.regions=bpy.colors())
+
+## now get the values of 2003-12-01 12:00:00 CET, or the third time stamp
+# by creating a spatio-temporal structure, and indexing the time axis:
+t12h = unique(no2.spdf.utm$Time)[3]
+library(spacetime)
+no2.stidf = STIDF(as(no2.spdf.utm, "SpatialPoints"), 
+	no2.spdf.utm$Time, data.frame(NO2 = no2.spdf.utm$NO2))
+no2.stfdf = as(no2.stidf, "STFDF")
+no2.12h = no2.stfdf[,3,"NO2"]
+no2.12h2 = no2.stfdf[,t12h,"NO2"]
+all.equal(no2.12h, no2.12h2)
+# inverse distance interpolation of the 12:00h NO2 values:
+no2.12h.id = idw(NO2~1, no2.12h[!is.na(no2.12h$NO2),], grd)
+spplot(no2.12h.id[1], sp.layout=lt, col.regions=bpy.colors())
+
 ################################################################################
 # Plot with whole year 2004 for one station:
 # See http://www.eea.europa.eu/themes/air/airbase/interpolated for identifiers.
@@ -201,10 +228,13 @@ denw095.NO2.attributes <- attributes(data.denw095.2004[[NO2]])
 #		formula = data.denw095.2004[[NO2]]~data.denw095.2004[["Time"]],
 #		data = data.denw095.2004[[NO2]])
 plot(data.denw095.2004[["Time"]], data.denw095.2004[[NO2]], type = "l",
-		main = "NO2 in Muenster", sub = denw095,
+		main = "NO2 in Muenster (Geist), 2004", sub = denw095,
 		xlab = "Time",
-		ylab = paste("NO2 in ",
+		ylab = paste("NO2 (",
 				denw095.NO2.attributes[["unit of measurement"]],
-						sep = ""))
+				")", sep = ""))
+data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw095.2004[["Time"]]), data.denw095.2004,enp.target=30)
+p = predict(data.denw095.2004.locRegr)
+lines(p ~ data.denw095.2004[["Time"]], col='blue',lwd=4)
 #lines(data.denw095.2004$Time, data.denw095.2004.locRegr$fitted, col = 'red', lwd=3)
 
