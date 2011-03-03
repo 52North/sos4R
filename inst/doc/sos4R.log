@@ -1,16 +1,10 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.2.2)  3 MAR 2011 15:15
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.2.2)  3 MAR 2011 16:02
 entering extended mode
  restricted \write18 enabled.
- Source specials enabled.
  %&-line parsing enabled.
-**sos4R.tex
-(./sos4R.tex
-LaTeX2e <2009/09/24>
-Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, ngerman, german, german-x-2009-06-19, ngerman-x-2009-06-19, romania
-n, irish, coptic, serbian, turkish, welsh, esperanto, uppersorbian, estonian, i
-ndonesian, interlingua, icelandic, kurmanji, slovenian, swedish, loaded.
-(/usr/share/texmf-texlive/tex/latex/base/article.cls
+**\nonstopmode \catcode126=12 \def\normaltilde{~}\catcode126=13 \let~\normaltil
+de  \input ./sos4R.tex
+(./sos4R.tex (/usr/share/texmf-texlive/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/share/texmf-texlive/tex/latex/base/size10.clo
 File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
@@ -60,7 +54,7 @@ File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 )
-(/usr/share/texmf/tex/latex/R/tex/latex/Sweave.sty
+(/usr/share/R/share/texmf/tex/latex/Sweave.sty
 Package: Sweave 
 
 (/usr/share/texmf-texlive/tex/latex/base/ifthen.sty
@@ -77,7 +71,7 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 \c@FancyVerbLine=\count89
 \FV@StepNumber=\count90
 \FV@OutFile=\write3
-) (/usr/share/texmf/tex/latex/R/tex/latex/upquote.sty
+) (/usr/share/R/share/texmf/tex/latex/upquote.sty
 Package: upquote 2003/08/11 v1.1 Covington's upright-quote modification to verb
 atim and verb
 
@@ -684,18 +678,18 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
  [2] [3]
 Overfull \hbox (14.26723pt too wide) in paragraph at lines 90--91
-[][]\T1/aer/m/n/10 Filter En-cod-ing (Vre-tanos, 2005) de-fines op-er-a-tors an
-d operands
+[]\T1/aer/m/n/10 Filter En-cod-ing (Vre-tanos, 2005) de-fines op-er-a-tors and 
+operands
  []
 
 
 Overfull \hbox (0.7168pt too wide) in paragraph at lines 99--100
-[][]\T1/aer/m/n/10 The FOI rep-re-sents the geo-object, for which mea-
+[]\T1/aer/m/n/10 The FOI rep-re-sents the geo-object, for which mea-
  []
 
 
 Overfull \hbox (53.28008pt too wide) in paragraph at lines 110--123
-[][][] 
+[][] 
  []
 
 
@@ -704,15 +698,15 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [4] [5] [6] [7]
 LaTeX Font Info:    Try loading font information for TS1+aer on input line 315.
 
- (/usr/share/texmf/tex/latex/R/tex/latex/ts1aer.fd
+ (/usr/share/R/share/texmf/tex/latex/ts1aer.fd
 File: ts1aer.fd 
 )
 LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
 (Font)              Font shape `TS1/cmr/m/n' tried instead on input line 315.
  [8] [9]
 Overfull \hbox (9.18391pt too wide) in paragraph at lines 437--438
-[][]\T1/aer/m/n/10 The op-er-a-tions sup-ported by the SOS are listed in the ow
-s:OperationsMetadata
+[]\T1/aer/m/n/10 The op-er-a-tions sup-ported by the SOS are listed in the ows:
+OperationsMetadata
  []
 
 [10] [11]
@@ -727,14 +721,14 @@ and I'll forget about whatever was undefined.
 
 
 Overfull \hbox (117.52927pt too wide) in paragraph at lines 535--536
-[][]\T1/aer/m/n/10 The func-tion uti-lizes the EPSG code[][][][][] in GML at-tr
-ibutes like \T1/aett/m/n/10 srsName="urn:ogc:def:crs:EPSG:4326"
+[]\T1/aer/m/n/10 The func-tion uti-lizes the EPSG code[][][][][] in GML at-trib
+utes like \T1/aett/m/n/10 srsName="urn:ogc:def:crs:EPSG:4326"
  []
 
 [12]
 LaTeX Font Info:    Try loading font information for TS1+aett on input line 610
 .
- (/usr/share/texmf/tex/latex/R/tex/latex/ts1aett.fd
+ (/usr/share/R/share/texmf/tex/latex/ts1aett.fd
 File: ts1aett.fd 
 )
 LaTeX Font Info:    Try loading font information for TS1+cmtt on input line 610
@@ -761,8 +755,8 @@ File: sos4R-describeSensorPlotFigure.pdf Graphic file (type pdf)
 gure.pdf>] [18] [19] [20] [21] [22] [23] [24] [25] [26] [27] [28] [29] [30]
 [31] [32] [33] [34] [35] [36] [37] [38] [39]
 Overfull \hbox (6.00629pt too wide) in paragraph at lines 2210--2211
-[][]\T1/aer/m/n/10 This shows warn-ings about un-known units of mea-sure-ment a
-nd a swe:Quantity
+[]\T1/aer/m/n/10 This shows warn-ings about un-known units of mea-sure-ment and
+ a swe:Quantity
  []
 
 [40] [41]
@@ -782,7 +776,7 @@ Underfull \hbox (badness 1845) in paragraph at lines 2293--2294
 
 
 Underfull \hbox (badness 1755) in paragraph at lines 2294--2294
-[][]\T1/aer/m/n/10 Value of (op-tional) up-date-Se-
+[]\T1/aer/m/n/10 Value of (op-tional) up-date-Se-
  []
 
 
@@ -812,19 +806,19 @@ Underfull \hbox (badness 1845) in paragraph at lines 2296--2297
 
 
 Overfull \hbox (27.91069pt too wide) in paragraph at lines 2286--2299
- [][] 
+ [] 
  []
 
 [42] [43]
 Overfull \hbox (1.13422pt too wide) in paragraph at lines 2390--2391
-[][]\T1/aer/m/n/10 SOS by Ma-rine Meta-data In-ter-op-er-abil-ity Ini-tia-tive 
-- \T1/aer/bx/n/10 un-der con-
+[]\T1/aer/m/n/10 SOS by Ma-rine Meta-data In-ter-op-er-abil-ity Ini-tia-tive - 
+\T1/aer/bx/n/10 un-der con-
  []
 
 [44] [45]
 Overfull \hbox (0.37746pt too wide) in paragraph at lines 2443--2444
-[][]\T1/aer/bx/n/10 SVN re-source URL\T1/aer/m/n/10 : [][]$\T1/aett/m/n/10 http
-s : / / svn . 52north . org / svn / geostatistics /
+[]\T1/aer/bx/n/10 SVN re-source URL\T1/aer/m/n/10 : [][]$\T1/aett/m/n/10 https 
+: / / svn . 52north . org / svn / geostatistics /
  []
 
 [46]
@@ -835,13 +829,13 @@ er/m/n/10 , Open Geospa-tial Con-
 
 [47] (./sos4R.aux) ) 
 Here is how much of TeX's memory you used:
- 6678 strings out of 494621
- 94679 string characters out of 1172512
- 172052 words of memory out of 3000000
- 9576 multiletter control sequences out of 15000+50000
+ 6679 strings out of 494621
+ 94656 string characters out of 1172512
+ 171050 words of memory out of 3000000
+ 9577 multiletter control sequences out of 15000+50000
  49947 words of font info for 108 fonts, out of 3000000 for 9000
  289 hyphenation exceptions out of 8191
- 38i,11n,36p,790b,510s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,11n,36p,880b,510s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmb10.pfb></usr/share
 /texmf-texlive/fonts/type1/public/amsfonts/cmextra/cmbsy7.pfb></usr/share/texmf
@@ -863,7 +857,7 @@ fonts/cm/cmtt12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cm
 tt8.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/
 texmf/fonts/type1/public/cm-super/sfst1000.pfb></usr/share/texmf/fonts/type1/pu
 blic/cm-super/sftt1000.pfb>
-Output written on sos4R.pdf (47 pages, 1129239 bytes).
+Output written on sos4R.pdf (47 pages, 1129225 bytes).
 PDF statistics:
  652 PDF objects out of 1000 (max. 8388607)
  115 named destinations out of 1000 (max. 500000)
