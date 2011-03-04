@@ -47,10 +47,10 @@ The package is published under GPL 2 license within the geostatistics community 
 
 \tableofcontents
 
-<<load,echo=FALSE,print=FALSE,cache=FALSE>>=
-library("cacheSweave")
-setCacheDir("/tmp/cacheSweave/sos4R")
-@
+%<<load,echo=FALSE,print=FALSE,cache=FALSE>>=
+%library("cacheSweave")
+%setCacheDir("/tmp/cacheSweave/sos4R")
+%@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}

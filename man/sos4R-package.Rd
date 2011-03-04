@@ -11,14 +11,12 @@
 \pkg{sos4R} is a client for Sensor Observation Services (SOS). It allows users to retrieve metadata from SOS web service instances as specified by the Open Geospatial Consortium (OGC) and subsequently to interactively create requests for observation data based on the available sensors, phenomena, observations, offerings etc.
 }
 
-\newdateformat{mydate}{\THEYEAR-\THEMONTH-\THEDAY}
- 
 \details{
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
 	Version: \tab 0.1-15\cr
-	Date: \tab \mydate\cr
+	Date: \tab 2011-03-04\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	Depends: \tab XML, RCurl\cr

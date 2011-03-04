@@ -13,7 +13,9 @@ library("sos4R")
 aqe.converters <- SosDataFieldConvertingFunctions(
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
-		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble)
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble,
+		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
+		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString)
 
 # Create the SOS connection:
 aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
@@ -127,7 +129,7 @@ tail(sort_df(result.no2.12Hrs, NO2), 10)
 # Histogram of NO2 data:
 hist(result.no2.12Hrs[,3], main = "NO2")
 # Test plot:
-plot(result.no2.12Hrs[["Time"]], result.no2.12Hrs[[NO2]])
+plot(result.no2.12Hrs[["SamplingTime"]], result.no2.12Hrs[[NO2]])
 
 
 ################################################################################
@@ -135,7 +137,7 @@ plot(result.no2.12Hrs[["Time"]], result.no2.12Hrs[[NO2]])
 obs.no2.crs <- sosGetCRS(obs.no2.12Hrs)
 no2.spdf <- SpatialPointsDataFrame(
 		coords = result.no2.12Hrs[,c("lon", "lat")],
-		data = result.no2.12Hrs[,c("Time", "feature", NO2)],
+		data = result.no2.12Hrs[,c("SamplingTime", "feature", NO2)],
 		proj4string = obs.no2.crs)
 bbox(no2.spdf)
 #obs.no2.bbox <- sosBoundedBy(obs.no2.12Hrs, bbox = TRUE) # equal
@@ -186,15 +188,16 @@ no2.id = idw(NO2~1, no2.spdf.utm, grd)
 lt=list(list("sp.polygons", g),
 	list("sp.points", no2.spdf.utm, col=grey(.7), cex=.5))
 spplot(no2.id[1], sp.layout = lt, col.regions = bpy.colors(),
-		main = paste("IDW Interpolation of NO2,", min(no2.spdf.utm$Time), "to",
-				max(no2.spdf.utm$Time)))
+		main = paste("IDW Interpolation of NO2,",
+				min(no2.spdf.utm$SamplingTime), "to",
+				max(no2.spdf.utm$SamplingTime)))
 
 ## now get the values of 2003-12-01 12:00:00 CET, or the third time stamp
 # by creating a spatio-temporal structure, and indexing the time axis:
-t12h = unique(no2.spdf.utm$Time)[3]
+t12h = unique(no2.spdf.utm$SamplingTime)[3]
 library(spacetime)
 no2.stidf = STIDF(as(no2.spdf.utm, "SpatialPoints"), 
-	no2.spdf.utm$Time, data.frame(NO2 = no2.spdf.utm$NO2))
+	no2.spdf.utm$SamplingTime, data.frame(NO2 = no2.spdf.utm$NO2))
 no2.stfdf = as(no2.stidf, "STFDF")
 no2.12h = no2.stfdf[,3,"NO2"]
 no2.12h2 = no2.stfdf[,t12h,"NO2"]
@@ -231,14 +234,14 @@ data.denw095.2004 <- sosResult(obs.denw095.2004)
 summary(data.denw095.2004)
 
 denw095.NO2.attributes <- attributes(data.denw095.2004[[NO2]])
-plot(data.denw095.2004[["Time"]], data.denw095.2004[[NO2]], type = "l",
+plot(data.denw095.2004[["SamplingTime"]], data.denw095.2004[[NO2]], type = "l",
 		main = paste("NO2 in", denw095.id, "2004"), sub = denw095,
 		xlab = "Time",
 		ylab = paste("NO2 (",
 				denw095.NO2.attributes[["unit of measurement"]],
 				")", sep = ""))
-data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw095.2004[["Time"]]),
+data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw095.2004[["SamplingTime"]]),
 		data.denw095.2004, enp.target = 30)
 p = predict(data.denw095.2004.locRegr)
-lines(p ~ data.denw095.2004[["Time"]], col = 'blue',lwd = 4)
+lines(p ~ data.denw095.2004[["SamplingTime"]], col = 'blue',lwd = 4)
 

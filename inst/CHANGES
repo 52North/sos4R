@@ -141,13 +141,13 @@
 * Added sosBoundedBy() and sosGetCRS() for objects of class SensorML
 * Work on demos (airquality, ioos, and others)
 
-2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-03-04		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-15
-* ...
+* Fixes in airquality demo due to new names of observed properties.
+* Added packages used in demos to DESCRIPTION's Suggest field
+* Fix because of missing dependency for cacheSchweave -> removed caching from vignette. 
 
 # TODO:
 * add function =sosUOM()= extracts a named character vector of all attributes named "uom" from a given data.frame/OmObservation/OmObservationCollection/OmMeasurement, names are the variable/column names.
 * implement =summary= functions for =OmObservation= and =OmMeasurement=, should also contain numerical/statistical information about the contained result, the feature, the name, etc.
-
-
