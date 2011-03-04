@@ -353,7 +353,7 @@ toString(paste(sosResponseFormats(mySOS)[[sosGetObservationByIdName]]))
 
 For future analyses, but also for correct plotting, one must know the coordinate reference system (CRS) or spatial reference system (SRS)\footnote{\url{http://en.wikipedia.org/wiki/Spatial_referencing_system}} or the returned data. You can get this information using the method \code{sosGetCRS()} from variuos objects.
 
-The function utilizes the EPSG code\footnote{\url{http://www.epsg-registry.org/}} in GML attributes like \code{srsName="urn:ogc:def:crs:EPSG:4326"} to initialize an object of class \code{CRS} from the package \pgk{sp}. For \code{SOS} and code{SosObservationOffering} objects these are taken from the bounding box given in the \code{gml:boundedBy} element.
+The function utilizes the EPSG code\footnote{\url{http://www.epsg-registry.org/}} in GML attributes like \code{srsName="urn:ogc:def:crs:EPSG:4326"} to initialize an object of class \code{CRS} from the package \pkg{sp}. For \code{SOS} and code{SosObservationOffering} objects these are taken from the bounding box given in the \code{gml:boundedBy} element.
 
 <<sosGetCRS,echo=TRUE,eval=TRUE>>=
 sosGetCRS("urn:ogc:def:crs:EPSG:4326")
