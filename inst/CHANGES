@@ -133,12 +133,17 @@
 * Fixed printing bug for class SOS when capabilities are only partly requested
 * Updates in Vignette for new features
 
-2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-03-04		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-14
 * Minor improvements with metadata information for sosCoordinates(SensorML)
 * Vignette extension for usage of sosGetCRS()
 * Added sosBoundedBy() and sosGetCRS() for objects of class SensorML
+* Work on demos (airquality, ioos, and others)
+
+2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.1-15
 * ...
 
 # TODO:
