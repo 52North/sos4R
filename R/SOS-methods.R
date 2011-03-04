@@ -600,9 +600,9 @@ setMethod(f = "getObservationById",
 			
 			.msg <- paste("Finished getObservation to", sos@url, "\n\t",
 					"--> received observations with dimensions", 
-					toString(dim(.csv)))
-			if(saveOriginal) .msg <- paste(.msg, "\n\tOriginal document saved:",
-						.filename)
+					toString(dim(.csv)), "\n")
+			if(saveOriginal) .msg <- paste(.msg, "\tOriginal document saved:",
+						.filename, "\n")
 			cat(.msg)
 		
 			return(.csv)

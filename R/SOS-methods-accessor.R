@@ -682,6 +682,12 @@ setMethod(f = "sosResult", signature = signature(obj = "character"),
 			warning(paste("No processable result given: ", obj))
 			return(toString(obj))
 		})
+# just returns the data.frame again, allows using the binding facilities of 
+# the sosResult(list) function
+setMethod(f = "sosResult", signature = signature(obj = "data.frame"),
+		def = function(obj, coordinates = FALSE) {
+			return(obj)
+		})
 
 if (!isGeneric("sosCoordinates"))
 	setGeneric(name = "sosCoordinates", def = function(obj, ...) {

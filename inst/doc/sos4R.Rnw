@@ -1274,7 +1274,7 @@ demo("southesk")
 
 \begin{description}
 \item[ades] SOS with French groundwater level data - \textbf{under construction}.
-\item[airquality] Air quality SOS by ifgi and EEA - \textbf{under construction}.
+\item[airquality] The Air Quality SOS by ifgi provides EEA AirBase\footnote{\url{http://www.eea.europa.eu/themes/air/airbase}} data for Germany (and other countries). It is used for this demo about \textbf{spatio-temporal interpolation with inverse distance weighting} of NO2 observation in Germany using the packages \pkg{gstat} and \pkg{spacetime}.
 \item[austria] SOSs by Research Studios Austria - \textbf{under construction}.
 \item[ioos] Example using SOS by the Integrated Ocean Observing System - \textbf{under construction}.
 \item[marinemeta] SOS by Marine Metadata Interoperability Initiative - \textbf{under construction}.

@@ -64,7 +64,7 @@ september <- sosCreateTimePeriod(sos = weathersos,
 		begin = as.POSIXct("2010-09-01 00:00"),
 		end = as.POSIXct("2010-09-30 00:00"))
 # make the request
-obsSept <- getObservation(sos = weathersos, verbose = TRUE,
+obsSept <- getObservation(sos = weathersos, # verbose = TRUE,
 		observedProperty = temperature,
 		procedure = station, eventTime = sosCreateEventTimeList(september),
 		offering = temperatureOffering)
@@ -92,7 +92,7 @@ lines(data$Time, x$fitted, col = 'red', lwd=3)
 # DescribeSensor Operation
 procs <- unique(unlist(sosProcedures(weathersos)))
 
-procs.descr <- lapply(X = procs, FUN = describeSensor, verbose = TRUE,
+procs.descr <- lapply(X = procs, FUN = describeSensor, # verbose = TRUE,
 		sos = weathersos)
 procs.descr
 
@@ -100,7 +100,7 @@ proc1 <- procs.descr[[1]]
 proc1
 
 # original xml:
-proc1@xml
+#proc1@xml
 
 ##############################
 # access parts of the SensorML

@@ -483,8 +483,11 @@ setMethod(f = "sosGetCRS",
 		def = function(obj) {
 			# get the position of EPSG
 			.split <- strsplit(as.character(obj), split = ":")
-			.idx <- which(.split[[1]]=="EPSG")
+			.idx <- which(toupper(.split[[1]]) == "EPSG")
 			if(length(.idx) == 0) {
+				# possibly versioned, try one index higher
+				
+				
 				warning(paste("Could not create CRS from the given object:", obj))
 				return(NULL)
 			}

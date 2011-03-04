@@ -140,12 +140,5 @@ ooe <- SOS("http://ispacevm10.researchstudio.at/geoservices/ooe", sections = NA,
 ooe
 summary(ooe)
 
-
-
-
-
-
-
-
 # TODO KML export, or make visualization example following howto:
 # http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE

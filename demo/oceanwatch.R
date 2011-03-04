@@ -5,7 +5,7 @@
 
 ##############################################################################
 # Oceanwatch
-# http://las.pfeg.noaa.gov/oceanWatch/oceanwatch.php ???
+# http://las.pfeg.noaa.gov/oceanWatch/oceanwatch.php
 oceanwatch <- SOS(url = "http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
 		method = SosSupportedConnectionMethods()[["GET"]])
 # warnings about missing response modes for offerings
@@ -36,25 +36,3 @@ length(ocean.off)
 
 # TODO
 
-#<ows:ServiceProvider>
-#		<ows:ProviderName>Environemntal Resource Division (ERD)</ows:ProviderName>
-#		<ows:ProviderSite xlink:href="http://oceanwatch.pfeg.noaa.gov"/>
-#		<ows:ServiceContact>
-#		<ows:IndividualName>Jerome King</ows:IndividualName>
-#		<ows:PositionName>Data Manager</ows:PositionName>
-#		<ows:ContactInfo>
-#		<ows:Phone>
-#		<ows:Voice/>
-#		</ows:Phone>
-#		<ows:Address>
-#		<ows:DeliveryPoint/>
-#		<ows:City/>
-#		<ows:AdministrativeArea/>
-#		
-#		<ows:PostalCode/>
-#		<ows:Country/>
-#		<ows:ElectronicMailAddress>jerome.king@noaa.gov</ows:ElectronicMailAddress>
-#		</ows:Address>
-#		</ows:ContactInfo>
-#		</ows:ServiceContact>
-#		</ows:ServiceProvider>

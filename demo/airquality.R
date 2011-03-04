@@ -1,6 +1,7 @@
 # Copyright (C) 2010 by 52 North Initiative for Geospatial Open Source Software GmbH, Contact: info@52north.org
 # This program is free software; you can redistribute and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program (see gpl-2.0.txt). If not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the Free Software Foundation web page, http://www.fsf.org.
-# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
+# Author: 	Daniel Nuest (daniel.nuest@uni-muenster.de)
+#			Edzer Pebesma (edzer.pebesma@uni-muenster.de)
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
 library("sos4R")
 
@@ -25,9 +26,7 @@ names(aqe.offerings)
 
 ###########
 # Plot SOS:
-library(maps); 
-library(mapdata); 
-library(maptools)
+library(maps); library(mapdata); library(maptools)
 if(!require(rgdal, quietly = TRUE))
 	print("rgdal not present: CRS values will not be converted correctly")
 data(worldHiresMapEnv)
@@ -120,7 +119,7 @@ NO2 <- colnames(result.no2.12Hrs)[[3]]
 #################################################
 # Subset and sort the data with subset or sort_df
 subset(result.no2.12Hrs, feature=="foi_DEBY109")
-require("reshape")
+library("reshape")
 # The ten highest values:
 tail(sort_df(result.no2.12Hrs, NO2), 10)
 
@@ -150,7 +149,7 @@ summary(no2.spdf.shortcut)
 
 ####################################
 # Plot stations with background map:
-require("mapdata")
+library("mapdata")
 germany.p <- pruneMap(map(database = "worldHires", region = "Germany",
 				plot = FALSE))
 germany.sp <- map2SpatialLines(germany.p, proj4string = obs.no2.crs)
@@ -171,7 +170,7 @@ germany.utm <- spTransform(germany.sp, utm32)
 no2.spdf.utm = spTransform(no2.spdf, utm32)
 plot(germany.utm, col = "grey")
 points(no2.spdf.utm, cex=.5, pch=3)
-title(main = "NO2 Germany", sub = "UTM projection")
+title(main = "NO2 Sensor Stations, Germany", sub = "UTM projection")
  
 ################################################################################
 # Spatial interpolation, averaging over (essentially ignoring) time:
@@ -186,7 +185,9 @@ library(gstat)
 no2.id = idw(NO2~1, no2.spdf.utm, grd)
 lt=list(list("sp.polygons", g),
 	list("sp.points", no2.spdf.utm, col=grey(.7), cex=.5))
-spplot(no2.id[1], sp.layout=lt, col.regions=bpy.colors())
+spplot(no2.id[1], sp.layout = lt, col.regions = bpy.colors(),
+		main = paste("IDW Interpolation of NO2,", min(no2.spdf.utm$Time), "to",
+				max(no2.spdf.utm$Time)))
 
 ## now get the values of 2003-12-01 12:00:00 CET, or the third time stamp
 # by creating a spatio-temporal structure, and indexing the time axis:
@@ -200,7 +201,8 @@ no2.12h2 = no2.stfdf[,t12h,"NO2"]
 all.equal(no2.12h, no2.12h2)
 # inverse distance interpolation of the 12:00h NO2 values:
 no2.12h.id = idw(NO2~1, no2.12h[!is.na(no2.12h$NO2),], grd)
-spplot(no2.12h.id[1], sp.layout=lt, col.regions=bpy.colors())
+spplot(no2.12h.id[1], sp.layout = lt, col.regions = bpy.colors(),
+		main = paste("IDW Interpolation of NO2,", t12h))
 
 ################################################################################
 # Plot with whole year 2004 for one station:
@@ -208,8 +210,14 @@ spplot(no2.12h.id[1], sp.layout=lt, col.regions=bpy.colors())
 denw095 <- "urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DENW095"
 denw095.descr <- describeSensor(aqe, denw095)
 denw095.descr
-#procedure1.descr@xml
+#denw095.descr@xml
 
+# Get the identifier of the station:
+denw095.id <- xmlValue(getNodeSet(doc = denw095.descr@xml,
+		path = "//sml:Term[@definition='urn:ogc:def:identifier:OGC:1.0:longName']/sml:value/text()",
+		namespaces = sos4R:::.sosNamespaceDefinitionsSML)[[1]])
+
+# Request observations:
 obs.denw095.2004 <- getObservation(sos = aqe, # inspect = TRUE,
 		offering = aqe.off.no2,
 		procedure = denw095,
@@ -217,24 +225,20 @@ obs.denw095.2004 <- getObservation(sos = aqe, # inspect = TRUE,
 						begin = as.POSIXct("2004/01/01"),
 						end = as.POSIXct("2004/12/31")))
 )
-# second(s)
 
-# Plot it:
+# Print statistical information and plot time series:
 data.denw095.2004 <- sosResult(obs.denw095.2004)
 summary(data.denw095.2004)
 
 denw095.NO2.attributes <- attributes(data.denw095.2004[[NO2]])
-#data.denw095.2004.locRegr = loess(
-#		formula = data.denw095.2004[[NO2]]~data.denw095.2004[["Time"]],
-#		data = data.denw095.2004[[NO2]])
 plot(data.denw095.2004[["Time"]], data.denw095.2004[[NO2]], type = "l",
-		main = "NO2 in Muenster (Geist), 2004", sub = denw095,
+		main = paste("NO2 in", denw095.id, "2004"), sub = denw095,
 		xlab = "Time",
 		ylab = paste("NO2 (",
 				denw095.NO2.attributes[["unit of measurement"]],
 				")", sep = ""))
-data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw095.2004[["Time"]]), data.denw095.2004,enp.target=30)
+data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw095.2004[["Time"]]),
+		data.denw095.2004, enp.target = 30)
 p = predict(data.denw095.2004.locRegr)
-lines(p ~ data.denw095.2004[["Time"]], col='blue',lwd=4)
-#lines(data.denw095.2004$Time, data.denw095.2004.locRegr$fitted, col = 'red', lwd=3)
+lines(p ~ data.denw095.2004[["Time"]], col = 'blue',lwd = 4)
 

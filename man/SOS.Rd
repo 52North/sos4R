@@ -195,6 +195,8 @@
 
 \alias{sosChanges}
 
+\alias{sosResult,data.frame-method}
+
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
 \description{Base class of a connection to a Sensor Observation Service.}
