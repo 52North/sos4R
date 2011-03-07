@@ -1,9 +1,10 @@
 ades			demo script for SOS with French groundwater level data
-airquality		demo script for air quality SOS by ifgi and EEA
+airquality		spatial analysis demo for air quality SOS by ifgi and EEA
 austria			demo script for SOSs by Research Studios Austria
+coastlab		demo script for SOSs by Helmholtz-Zentrum Geesthacht
 ioos			demo script for SOS by Integrated Ocean Observing System
 marinemeta		demo script for SOS by Marine Metadata Interoperability Initiative
 oceanwatch		demo script for SOS by NOAA/SWFSC/ERD
 pegel			demo script for water gauge data in Germany by Pegelonline
-southesk		demo script for SOSs from South Esk Testbed by CSIRO
+southesk		plotting and data consilidation demo for SOSs from South Esk Testbed by CSIRO
 weathersos		time series analysis demo with weather data by ifgi

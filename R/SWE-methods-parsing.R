@@ -352,7 +352,8 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 	# check if reference or inline phenomenon
 	.href <- xmlGetAttr(node = obj, name = "href")
 	if(!is.null(.href)) {
-		if(verbose) cat("[parsePhenomenonProperty] with reference", .href)
+		if(verbose) cat("[parsePhenomenonProperty] with reference", .href,
+					"\n")
 		
 		.obsProp <- SwePhenomenonProperty(href = .href)
 	}
@@ -362,7 +363,8 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 		.compPhen <- .noneText[[1]]
 		# 52N SOS only returns swe:CompositePhenomenon
 		.name <- xmlName(.compPhen)
-		if(verbose) cat("[parsePhenomenonProperty] inline with name ", .name)
+		if(verbose) cat("[parsePhenomenonProperty] inline with name ", .name,
+					"\n")
 		
 		if(.name == sweCompositePhenomenonName) {
 			.phen <- parseCompositePhenomenon(.compPhen, sos = sos,
@@ -370,7 +372,8 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 			.obsProp <- SwePhenomenonProperty(phenomenon = .phen)
 		}
 		else {
-			warning(paste("Unsupprted observed property: ", .name))
+			warning(paste("Unsupprted observed property: ", .name,
+							"\n"))
 		}
 	}
 	
