@@ -5,11 +5,14 @@
 library("sos4R")
 
 ################################################################################
-# IOOS
+# IOOS/NDBC
 #
-# http://sdf.ndbc.noaa.gov/sos/
-# http://www.ioos.gov/catalog/
-# http://sdf.ndbc.noaa.gov/sos/test.shtml
+# Service Description: http://sdf.ndbc.noaa.gov/sos/
+# Test Client: http://sdf.ndbc.noaa.gov/sos/test.shtml
+#
+# IOOS Map: http://www.ioos.gov/catalog/
+# NDBC Map: http://www.ndbc.noaa.gov/
+# Good for selecting subgroups/programmes of sensors
 #
 ioos <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
 		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
@@ -47,6 +50,13 @@ length(ioos.procedures); length(ioos.off)
 
 # offerings in pacific?
 # TODO all also the ones starting with 51, 41, 32, ...
+
+# TODO get all TAO/TRITON Array sensors: http://www.pmel.noaa.gov/tao/index.shtml
+# Terminology: http://www.pmel.noaa.gov/tao/jsdisplay/help/help_terminology_f.html
+# Data display: http://www.pmel.noaa.gov/tao/jsdisplay/
+# Create similar plot: http://www.pmel.noaa.gov/cgi-tao/cover.cgi?P1=uwnd&P2=20110304-March-6-2011&P3=month&P4=off&script=jsdisplay/scripts/lat-lon-5day-jsd.csh
+# About the buoys: http://www.pmel.noaa.gov/tao/proj_over/pubs/mil96paper.html
+
 # OR JUST GET LATEST VALUE FOR ALL INSTEAD!!
 offerings.wmo52 <- ioos.off[grep(pattern = "wmo:52", x = off.names)]
 obsProps.wmo52 <- unique(unlist(sosObservedProperties(offerings.wmo52)))
