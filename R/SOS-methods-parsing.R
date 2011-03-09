@@ -42,6 +42,50 @@ parseSosObservationOffering <- function(obj, sos) {
 	if(sos@verboseOutput)
 		cat("[parseSosObservationOffering] id:", .id, "name:", .name, "\n")
 	
+	# can be references or containes, so use lists
+	.observedProperty <- lapply(obj[sosObservedPropertyName], xmlGetAttr,
+			"href")
+	if(sos@verboseOutput)
+		cat("[parseSosObservationOffering] observedProperty:",
+				toString(.observedProperty), "\n")
+	.featureOfInterest <- lapply(obj[sosFeatureOfInterestName], xmlGetAttr,
+			"href")
+	if(sos@verboseOutput)
+		cat("[parseSosObservationOffering] featureOfInterest:", 
+				toString(.featureOfInterest), "\n")
+	
+	# can be transformed to character vectors
+	.procedure <- sapply(obj[sosProcedureName], xmlGetAttr, "href")
+	if(sos@verboseOutput)
+		cat("[parseSosObservationOffering] procedure:",
+				toString(.procedure), "\n")
+	
+	############################################################
+	# not optional, but potentially missing in some instances...
+	if(!length(obj[sosResponseFormatName]) < 1) {
+		.responseFormat <- sapply(obj[sosResponseFormatName], xmlValue)
+		if(sos@verboseOutput)
+			cat("[parseSosObservationOffering] responseFormat:",
+					toString(.responseFormat), "\n")
+	}
+	else {
+		.responseFormat <- NA_character_
+		warning(paste("Mandatory element 'responseFormat' missing in offering",
+						.id))
+	}
+	
+	if(!length(obj[sosResponseModeName]) < 1) {
+		.responseMode <- sapply(obj[sosResponseModeName], xmlValue)
+		if(sos@verboseOutput)
+			cat("[parseSosObservationOffering] responseMode:",
+					toString(.responseMode), "\n")
+	}
+	else {
+		.responseMode <- NA_character_
+		warning(paste("Mandatory element 'responseMode' missing in offering",
+						.id))
+	}
+	
 	if(!is.null(obj[[sosTimeName]])) {
 		.time <- parseTimeGeometricPrimitiveFromParent(obj = obj[[sosTimeName]],
 				format = sosTimeFormat(sos))
@@ -49,30 +93,12 @@ parseSosObservationOffering <- function(obj, sos) {
 			cat("[parseSosObservationOffering] time: ", .time, "\n")
 	}
 	else {
-		warning("Did not find mandatory sos:time element in offering.")
+		warning("Mandatory element 'time' missing in offering", .id)
 		.time <- GmlTimeInstant(timePosition = GmlTimePosition(
 						time = as.POSIXct(x = NA)))
 	}
 	
-	# can be references or containes, so use lists
-	.observedProperty <- lapply(obj[sosObservedPropertyName], xmlGetAttr,
-			"href")
-	.featureOfInterest <- lapply(obj[sosFeatureOfInterestName], xmlGetAttr,
-			"href")
-	
-	# can be transformed to character vectors
-	.procedure <- sapply(obj[sosProcedureName], xmlGetAttr, "href")
-	.responseFormat <- sapply(obj[sosResponseFormatName], xmlValue)
-	
-	# not optional, but potentially missing in some instances...
-	if(!length(obj[sosResponseModeName]) < 1) {
-		.responseMode <- sapply(obj[sosResponseModeName], xmlValue)
-	}
-	else {
-		.responseMode <- NA_character_
-		warning(paste("'responseMode' missing in offering", .id))
-	}
-	
+	##########
 	# optional, so check if list is empty!
 	.resultModel <- sapply(obj[sosResultModelName], xmlValue)
 	if(length(.resultModel) == 0) .resultModel <- NA_character_
@@ -95,6 +121,10 @@ parseSosObservationOffering <- function(obj, sos) {
 			.boundedBy <- list(srsName = xmlGetAttr(.env, "srsName"),
 					lowerCorner = .lC, upperCorner = .uC)
 		}
+		
+		if(sos@verboseOutput)
+			cat("[parseSosObservationOffering] boundedBy:",
+					toString(.boundedBy), "\n")
 	}
 	else {
 		.boundedBy <- list()
@@ -105,7 +135,8 @@ parseSosObservationOffering <- function(obj, sos) {
 	if(length(.boundedBy) < 1) {
 		.warningText <- "\t'gml:boundedBy' is NA/empty.\n"
 	}
-	if(extends(class(.time), "GmlTimeInstant") && is.na(.time@timePosition@time)) {
+	if(extends(class(.time), "GmlTimeInstant") &&
+			is.na(.time@timePosition@time)) {
 		.warningText <- paste(.warningText, "\t'sos:time' is NA/empty.\n")
 	}
 	if(length(.warningText) > 1) {
@@ -142,7 +173,6 @@ parseSosCapabilities <- function(obj, sos) {
 			default = NA_character_)
 	.caps.updateSequence <- xmlGetAttr(node = .caps.root,
 			name = "updateSequence", default = NA_character_)
-	
 	if(sos@verboseOutput)
 		cat("[parseSosCapabilities] version, update sequence:", .caps.version,
 				.caps.updateSequence, "\n")

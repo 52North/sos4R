@@ -39,16 +39,16 @@
 .sosExampleServices <- list(
 		"http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 		"http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos",
-		"http://v-sos.uni-muenster.de:8080/AirQualityEurope/sos",
+		"http://giv-uw.uni-muenster.de:8080/AQE/sos",
 		"http://mmisw.org/oostethys/sos",
-		"http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi"
+		"http://sdf.ndbc.noaa.gov/sos/server.php"
 		)
 names(.sosExampleServices) <- list(
 		"52 North SOS: Weather Data, station at IFGI, Muenster, Germany",
 		"52 North SOS: Water gauge data for Germany",
 		"52 North SOS: Air Quality Data for Europe",
 		"OOTethys SOS: Marine Metadata Interoperability Initiative (MMI)",
-		"OOTethys SOS: Gulf of Maine Ocean Observing System SOS"
+		"NOAA SOS: "
 		)
 SosExampleServices <- function() {
 	return(.sosExampleServices)

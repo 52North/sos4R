@@ -240,7 +240,7 @@ SosGetObservationById <- function(
 		.dcp <- sosGetDCP(sos, sosName(request), "Get") #sos@url
 		if(is.null(.dcp) || is.na(.dcp)) {
 			.dcp <- sos@url
-			if(verbose) cat("Could not get DCP from operation description.\n")
+			if(verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request.\n")
 		}
 			
 		if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
@@ -266,7 +266,7 @@ SosGetObservationById <- function(
 		.dcp <- sosGetDCP(sos, sosName(request), "Post") #sos@url
 		if(is.null(.dcp) || is.na(.dcp)) {
 			.dcp <- sos@url
-			if(verbose) cat("Could not get DCP from operation description.\n")
+			if(verbose) cat("Could not get DCP from operation description.  This is OK for first GetCapabilities request.\n")
 		}
 		
 		# using 'POST' for application/x-www-form-urlencoded content

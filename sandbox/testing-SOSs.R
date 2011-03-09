@@ -28,15 +28,6 @@
 ################################################################################
 
 ################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
-
-################################################################################
-# WeatherSOS
-weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
-
-
-################################################################################
 # PegelOnlineSOS
 pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 print(object.size(pegelsos), units = c("Mb"))
@@ -307,11 +298,6 @@ stl(tempSeries2009)
 #  Zeitreihe ist nicht periodisch oder umfasst weniger als zwei Perioden
 
 
-
-################################################################################
-# AirQualitySOS
-# see also testing-aq.R
-
 ################################################################################
 # ClimateSOS
 climatesos <- SOS("http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos")
@@ -320,12 +306,6 @@ length(sosProcedures(climatesos))
 # 6
 
 lapply(sosOfferings(climatesos), slot, "name")
-
-################################################################################
-# "catchall" SOS
-givsos <- SOS("http://giv-sos.uni-muenster.de:8080/52nSOSv3/sos")
-
-# TODO fix errors when requesting capabilities from givsos
 
 ################################################################################
 # MoodSOS
@@ -340,22 +320,6 @@ umweltsos <- SOS(url = "https://develop.umweltbundesamt.at/SOSsrv/sos")
 # https://develop.umweltbundesamt.at/SOSsrv/sos?service=SOS&request=GetCapabilities
 # --> 503 Service temporarily unavailable
 
-
-################################################################################
-# OOSTethys SOS                                                                #
-# http://www.oostethys.org/development/web-services/web-services-summary       #
-################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
-
-################################################################################
-# Sensor Observation Service (SOS) for Marine Metadata Interoperability
-# Initiative (MMI)
-MBARI <- SOS("http://mmisw.org/oostethys/sos", method = "GET", verboseOutput = TRUE)
-# Using POST: InvalidRequest @ NA : Not able to understand the operation. This service supports the following operations: GetCapabilities, DescribeSensor and, GetObservation 
-# Using GET works!
-
-
 ################################################################################
 # Ocean Process Analysis Laboratory, Institute for the Study of Earth, Oceans,
 # and Space, University of New Hampshire SOS
@@ -364,7 +328,7 @@ COOA_UNH <- SOS("http://www.cooa.unh.edu/cgi-bin/sos/oostethys_sos")
 # --> Capabilities are shown when opening the link above in a browser, but it
 # has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
 
-
+################################################################################
 # Gulf of Maine Ocean Observing System SOS
 GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 		version = "0.0.31", verboseOutput = TRUE)
@@ -375,14 +339,6 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 #	MissingParamterValue @ service : No input parameters 
 
 ################################################################################
-# iSpace - NPBG
-# TODO
-npbg <- SOS("http://ispacevm09.researchstudio.at/geoservices/npbg", method = "GET", verboseOutput = TRUE)
-# requires the attribute "version" in GetCapabilities - but that does not make sense...
-# wrote email to provider on that issue.
-
-
-################################################################################
 # others:
 ################################################################################
 #
@@ -391,24 +347,6 @@ npbg <- SOS("http://ispacevm09.researchstudio.at/geoservices/npbg", method = "GE
 #
 # MVCO_WHOI <- SOS("http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos")
 # --> seems almost empty
-
-
-
-################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
-
-
-################################################################################
-# SOS @ CSIRO
-# The South Esk test bed
-bom <- SOS("http://wron.net.au/BOM_SOS/sos")
-csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos")
-dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos")
-
-# ??
-hutchins <- SOS("http://150.229.66.73/HutchinsSOS/sos")
-elliotwsn <- SOS("http://150.229.66.73/ElliotWSNSOS/sos")
 
 
 ################################################################################
@@ -426,21 +364,6 @@ sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
 ################################################################################
 # some french sos, 52N, but just one week of data....
 sandre <- SOS("http://services.sandre.eaufrance.fr/52nSOSv3/sos")
-
-
-################################################################################
-# Sensor Observation Service for ADES database : French GroundWater level
-#
-ades <- SOS("http://sosades.brgm.fr/REST/sos", method = "GET")
-print(object.size(ades), units=c("Mb"))
-# 6.8 Mb, large capabilities file!
-
-testObsAdes <- getObservation(sos = ades, offering = sosOfferings(ades)[[1]],
-		procedure = sosProcedures(sosOfferings(ades)[[1]])[1], verbose =TRUE) # inspect = TRUE)
-# works!
-
-# this one could be great for mapping the features
-
 
 ################################################################################
 # various
@@ -537,6 +460,7 @@ ise.rain3 <- getObservation(sos = ise,
 
 ################################################################################
 # .NET implementation from http://ogc.codeplex.com/ (http://sensordatabus.org/)
+# TODO
 ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOutput = TRUE)
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
 # Seems not to work with additional request parameters...
@@ -544,6 +468,7 @@ ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOut
 
 ################################################################################
 # Renaissance Computing Institute
+# TODO
 renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET")
 # does not support sections parameter, capabilities are empty if it's given
 
@@ -559,5 +484,37 @@ length(renci.off)
 
 sosName(renci.off)
 
-# TODO check out service!
+################################################################################
+# istSOS
+# - NO stress tests!
+# - Maximum of one month of data!
+# - contact: massimiliano.cannata@gmail.com
+# TODO
+
+# here you find 10 minutes aggregated values, they are backward intervals:
+# http://geoservice.ist.supsi.ch/sos?request=getcapabilities
+ist <- SOS(url = "http://geoservice.ist.supsi.ch/sos", verboseOutput = TRUE)
+sosOfferings(ist)
+
+istraw <- SOS(url = "http://geoservice.ist.supsi.ch/sosraw")
+sosOfferings(istraw)
+
+################################################################################
+# ENVISION SOS
+# TODO
+brgm <- SOS(url = "http://swe.brgm.fr/constellation-envision/WS/sos-discovery",
+#		verboseOutput = TRUE,
+		method = "GET")
+summary(brgm)
+
+brgm.offerings <- sosOfferings(brgm)
+brgm.offerings
+# just one offering
+
+brgm.all <- brgm.offerings[[1]]
+sosObservedProperties(brgm.all)
+# NONE!
+
+sosProcedures(brgm.all)
+
 
