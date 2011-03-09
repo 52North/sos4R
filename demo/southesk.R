@@ -74,6 +74,10 @@ csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos", timeFormat = .timeFormat,
 #ft <- SOS("http://140.79.3.21/Forestry_SOS/sos")
 # not available...
 
+# What about these?
+#hutchins <- SOS("http://150.229.66.73/HutchinsSOS/sos")
+#elliotwsn <- SOS("http://150.229.66.73/ElliotWSNSOS/sos")
+
 
 ################################################################################
 # explore SOSs with plots
