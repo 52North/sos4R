@@ -518,3 +518,28 @@ sosObservedProperties(brgm.all)
 sosProcedures(brgm.all)
 
 
+################################################################################
+# AQE inapplicable error
+aqe.converters <- SosDataFieldConvertingFunctions(
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble,
+		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
+		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString)
+aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
+		dataFieldConverters = aqe.converters)
+
+prop <- "http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]"
+foi = "foi_DEST080"
+time = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+				begin = as.POSIXct("2008-10-01T23:01:00Z"),
+		end = as.POSIXct("2008-12-31T23:01:00Z")))
+sosOfferings(aqe)[["NO2"]]
+
+obs <- getObservation(sos = aqe, offering = sosOfferings(aqe)[["NO2"]], # verbose = TRUE,
+#		observedProperty = sosObservedProperties(sosOfferings(aqe)[["NO2"]]),
+		featureOfInterest = sosCreateFeatureOfInterest(list(foi)),
+		eventTime = time)
+str(obs)
+# ist auch bei mir mir inapplicable
+

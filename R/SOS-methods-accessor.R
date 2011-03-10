@@ -598,6 +598,10 @@ setMethod(f = "sosTime", signature = signature(obj = "GmlTimeInstant"),
 		def = function(obj) {
 			return(sosTime(obj@timePosition))
 		})
+setMethod(f = "sosTime", signature = signature(obj = "list"),
+		def = function(obj) {
+			return(lapply(X = obj, FUN = sosTime))
+		})
 
 if (!isGeneric("sosTimeFormat"))
 	setGeneric(name = "sosTimeFormat", def = function(sos) {

@@ -119,7 +119,7 @@ GmlMeasure <- function(value, uom) {
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlTimeInstantProperty", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlTimeInstantProperty with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlTimeInstantProperty with", toString(obj))
 			
 			stop("Function not implemented yet!")
 		}
@@ -128,7 +128,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlTimeInstant", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlTimeInstant with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlTimeInstant with", toString(obj))
 			
 			.ti <- xmlNode(name = gmlTimeInstantName,
 					namespace = gmlNamespacePrefix)
@@ -143,7 +143,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlTimePosition", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlTimePosition with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlTimePosition with", toString(obj))
 			
 			.tpos <- xmlNode(name = gmlTimePositionName,
 					namespace = gmlNamespacePrefix)
@@ -173,7 +173,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlTimePeriod", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlTimePeriod with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlTimePeriod with", toString(obj))
 			
 			.tp <- xmlNode(name = gmlTimePeriodName,
 					namespace = gmlNamespacePrefix)
@@ -216,9 +216,6 @@ setMethod(f = "encodeXML",
 				.timeInterval <-  xmlNode(name = gmlTimeIntervalName, 
 						namespace = gmlNamespacePrefix)
 				
-				print("lala here")
-				print(obj)
-				
 				xmlValue(.timeInterval) <- obj@timeInterval@interval
 				.timeInterval <- addAttributes(node = .timeInterval,
 						.attrs = list("unit" = obj@timeInterval@unit))
@@ -245,7 +242,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlEnvelope", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlEnvelope with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlEnvelope with", toString(obj))
 			
 			.env <- xmlNode(name = gmlEnvelopeName,
 					namespace = gmlNamespacePrefix)
@@ -285,7 +282,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlDirectPosition", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlDirectPosition with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlDirectPosition with", toString(obj))
 			
 			.pos <- xmlNode(name = gmlPosName,
 					namespace = gmlNamespacePrefix)
@@ -317,7 +314,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlPoint", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlPoint with", toString(obj))
 			
 			.point <- xmlNode(name = gmlPointName,
 					namespace = gmlNamespacePrefix)
@@ -331,7 +328,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlLineString", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlPoint with", toString(obj))
 			
 			warning("FUNCTION NOT IMPLEMENTED!")
 		}
@@ -340,7 +337,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlPolygon", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlPoint with", toString(obj))
 			
 			warning("FUNCTION NOT IMPLEMENTED!")
 		}
@@ -349,7 +346,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
 		signature = signature(obj = "GmlPointProperty", sos = "SOS"),
 		def = function(obj, sos, verbose) {
-			if(verbose) cat("Encoding XML GmlPoint with", toString(obj))
+			if(verbose) cat("[encodeXML] GmlPoint with", toString(obj))
 			
 			warning("FUNCTION NOT IMPLEMENTED!")
 		}

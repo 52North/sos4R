@@ -297,7 +297,7 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
 setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0", 
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML", class(obj), "\n")
+				cat("[encodeRequestXML]", class(obj), "\n")
 			}
 			
 			return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
@@ -347,7 +347,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
 setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0", 
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML", class(obj), "\n")
+				cat("[encodeRequestXML]", class(obj), "\n")
 			}
 			
 			return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))

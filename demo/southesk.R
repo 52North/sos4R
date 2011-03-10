@@ -38,7 +38,36 @@ cat("Go to the following website for details of the South Esk Hydrological Senso
 # See also:
 # http://external.opengis.org/twiki_public/bin/view/ClimateChallenge2009/ServiceOfferingCSIRO
 
-# Specific handling for time format required:
+###################
+# Time zone issues:
+#?Sys.timezone
+Sys.timezone()
+strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS")$isdst
+# 1
+strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS%z")$isdst
+# -1
+# This does not work on windows machines!
+# Try fixing with locale...
+#Sys.getlocale(category = "LC_TIME")
+#Sys.setlocale("LC_ALL", "English")
+#Sys.getlocale()
+#Sys.setenv(TZ="GMT") 
+# All this does NOT remove the "Mitteleuropäische Zeit" from the strftime output!!
+
+# Ignore time zone when parsing, but use when creating output:
+strftime(strptime("1995-05-25T15:30:00+10:00", format = sosDefaultTimeFormat),
+		format = .timeFormat)
+# Problem: Output is "1995-05-25T15:30:00Mitteleuropäische Sommerzeit", not numerical!
+# InvalidParameterValue @ EventTime :
+# Error while parsing eventTime of GetObservation request: Unparseable date: "2011-03-09T16:15:03Mitteleurop�ische+Zeit00" 
+
+# Other OwsException for time stamp "2011-03-09T16:15:03":
+# InvalidParameterValue @ EventTime :
+#	Error while parsing eventTime of GetObservation request: Unparseable date: "2011-03-09T161503" 
+
+# NOTE: The default time format works for parsing, it just ignores the time zone.
+
+# Specific handling for time format required for output only:
 .timeFormat <- paste(sosDefaultTimeFormat, "%z", sep = "")
 csiroTimeParser = function(x, sos) {
 	.x <- paste (x, "00", sep = "")
@@ -47,12 +76,13 @@ csiroTimeParser = function(x, sos) {
 }
 
 # Bureau of Meteorology (red and dark blue on map)
-bom <- SOS("http://wron.net.au/BOM_SOS/sos", timeFormat = .timeFormat,
+bom <- SOS("http://wron.net.au/BOM_SOS/sos", #timeFormat = .timeFormat,
 		dataFieldConverters = SosDataFieldConvertingFunctions(
 				"urn:ogc:data:time:iso8601" = csiroTimeParser,
 				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble),
 		switchCoordinates = TRUE)
 sosTimeFormat(bom)
+sosOfferings(bom)[[1]]
 
 # CSIRO (orange, purple on map)
 # What about rainfalltoday?
@@ -138,14 +168,10 @@ map.scale(metric = TRUE, ratio = FALSE)
 # phenomenon rainfall or rainfalltoday is available at all stations
 rainfall <- "urn:ogc:def:phenomenon:OGC:rainfall"
 
-# problem with time formatting because of locale in Windows:
-#Sys.getlocale()
-#Sys.getlocale(category = "LC_TIME")
-#Sys.setlocale("LC_ALL", "English")
-
 lastDay <- sosCreateTimePeriod(sos = bom, begin = (Sys.time() - 3600 * 24),
 		end = Sys.time())
 sosTimeFormat(bom); encodeXML(lastDay, bom)
+str(lastDay)
 
 #####
 # bom
@@ -155,7 +181,7 @@ phenomenon.bom <- as.list(unlist(sosObservedProperties(bom)))
 phenomenon.bom <- phenomenon.bom[grep(pattern = "rain", phenomenon.bom)]
 
 rainfall.obs.bom <- getObservation(sos = bom, offering = rainfall.off.bom, 
-		observedProperty = phenomenon.bom, # verbose = TRUE,
+		observedProperty = phenomenon.bom, verbose = TRUE,
 		eventTime = sosCreateEventTimeList(lastDay))
 rainfall.result.bom <- sosResult(rainfall.obs.bom, coordinate = TRUE)
 summary(rainfall.result.bom)

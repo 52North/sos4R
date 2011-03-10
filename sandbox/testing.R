@@ -1095,3 +1095,66 @@ text(x = coordinates(coords)[,"x"], y = coordinates(coords)[,"y"],
 weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
 sosFeaturesOfInterest(weathersos)[1:2]
+
+################################################################################
+# requesting offerings by name
+aqe.converters <- SosDataFieldConvertingFunctions(
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble,
+		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
+		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString)
+aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
+		dataFieldConverters = aqe.converters)
+no2off <- sosOfferings(aqe)[["NO2"]]
+
+prop <- "http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]"
+#foi = "foi_DEST080"
+foi <- sosCreateFeatureOfInterest(sosFeaturesOfInterest(no2off)[1:20])
+time <- sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+				begin = as.POSIXct("2008-12-21T23:01:00Z"),
+				end = as.POSIXct("2008-12-31T23:01:00Z")))
+
+obs <- getObservation(sos = aqe, offering = "NO2", verbose = TRUE,
+#		observedProperty = sosObservedProperties(sosOfferings(aqe)[["NO2"]]),
+		featureOfInterest = foi,
+		eventTime = time)
+
+
+################################################################################
+# r-help with time zones
+
+sessionInfo()
+
+t1 <- strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS")
+t2 <- strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS%z")
+
+strftime(t1, format = "%Y-%m-%dT%H:%M:%OS")
+strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%z")
+# Ends in "Mitteleuropäische Sommerzeit", not in +10:00, so time zone is ignored!
+# Also no difference beetween %z and %z !
+strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%Z")
+# All this does NOT remove the "Mitteleuropäische Zeit" from the strftime output!!
+
+# Can locale solve the problem?
+Sys.getlocale(category = "LC_TIME")
+Sys.setlocale("LC_TIME", "English")
+
+strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%z")
+# [1] "1995-05-25T15:30:00Mitteleuropäische Sommerzeit" -- No change.
+
+# does t1 actually have time zone?
+attributes(t1)
+
+format(t1, format = "%Y-%m-%dT%H:%M:%OS%z") # usetz = TRUE) # no change on usetz
+
+# Is the : in offset the problem?
+t3 <- strptime("1995-05-25T15:30:00+1000", format = "%Y-%m-%dT%H:%M:%S%z")
+attributes(t3)
+format(t3, format = "%Y-%m-%dT%H:%M:%OS%z")
+# [1] "1995-05-25T07:30:00Mitteleuropäische Sommerzeit"
+
+strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%z", tz = "+0200") # no effect on setting tz
+
+Sys.setenv(TZ="GMT") # no working effect on format and strftime
+

@@ -76,8 +76,9 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
 		
 		.href <- xmlGetAttr(node = obj, name = "href", default = NA_character_)
 		if(!is.na(.href)) {
+			warning(paste("[parseObservationProperty] Only reference to Observation was returned:",
+					.href))
 			.mResult <- OmObservationProperty(href = .href)
-			warning("[parseObservationProperty] Only reference to Observation was returned!")
 		}
 		else {
 			warning("[parseObservationProperty] No Observation found in response!")
@@ -127,7 +128,9 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 # om:Observation
 #
 parseObservation <- function(obj, sos, verbose = FALSE) {
-	if(verbose) cat("[parseObservation]\n")
+	.id <- xmlGetAttr(node = obj, name = "id",
+			default = NA_character_)
+	if(verbose) cat("[parseObservation]", .id, "\n")
 	
 	# 52N SOS only returns om:Observation with procedure ids xlink:href
 	.procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href",
@@ -353,13 +356,11 @@ parseSamplingTime <- function(obj, format, verbose = FALSE) {
 	.tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
 	.timeObject <- NULL
 	if(!is.null(.tiXML)) {
-		if(verbose) cat("[parseSamplingTime] time instant: ", toString(tiXML),
-					"\n")
+		if(verbose) cat("[parseSamplingTime] time instant.\n")
 		.timeObject <- parseTimeInstant(obj = .tiXML, format = format)
 	}
 	else if(!is.null(.tpXML)) {
-		if(verbose) cat("[parseSamplingTime] time period: ", toString(tpXML),
-					"\n")
+		if(verbose) cat("[parseSamplingTime] time period.\n")
 		.timeObject <- parseTimePeriod(obj = .tpXML, format = format)
 	}
 	else {

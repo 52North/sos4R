@@ -33,6 +33,7 @@
 \alias{sosTime}
 \alias{sosTime-methods}
 \alias{sosTime,SOS-method}
+\alias{sosTime,list-method}
 
 \alias{sosFilter_Capabilities}
 \alias{sosFilter_Capabilities-methods}
@@ -193,7 +194,6 @@
 \alias{summary.SosObservationOffering}
 \alias{summary.SOS}
 
-\alias{sosChanges}
 
 \alias{sosResult,data.frame-method}
 
@@ -320,9 +320,6 @@ SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)
 
 # get the meaning of an exception code
 sosExceptionCodeMeaning(ex@exceptionCode)
-
-# print the changes document
-sosChanges()
 
 }
 

@@ -176,9 +176,10 @@ setMethod(f = "sosCreateTimeInstant",
 		signature = signature(sos = "SOS", time = "POSIXt"),
 		def = function(sos, time, frame, calendarEraName,
 				indeterminatePosition) {
-			.time <- format(time, sosTimeFormat(sos))
+#			.time <- format(time, sosTimeFormat(sos))
 			.timePos <- GmlTimePosition(
-					time = strptime(.time, sosTimeFormat(sos)),
+#					time = strptime(.time, sosTimeFormat(sos)),
+					time = time,
 					frame = frame, calendarEraName = calendarEraName,
 					indeterminatePosition = indeterminatePosition)
 			.ti <- GmlTimeInstant(timePosition = .timePos)
@@ -200,14 +201,16 @@ setMethod(f = "sosCreateTimePeriod",
 		signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
 		def = function(sos, begin, end, frame, calendarEraName,
 				indeterminatePosition, duration, timeInterval) {
-			.tf <- sosTimeFormat(sos)
+#			.tf <- sosTimeFormat(sos)
 			.beginPos <- GmlTimePosition(
-					time = strptime(format(begin, .tf), .tf),
+#					time = strptime(format(begin, .tf), .tf),
+					time = begin,
 					frame = frame, calendarEraName = calendarEraName,
 					indeterminatePosition = indeterminatePosition
 			)
 			.endPos <- GmlTimePosition(
-					time = strptime(format(end, .tf), .tf),
+#					time = strptime(format(end, .tf), .tf),
+					time = end,
 					frame = frame, calendarEraName = calendarEraName,
 					indeterminatePosition = indeterminatePosition
 			)
@@ -415,7 +418,7 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
 		def = function(obj, sos, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML from XMLNode\n")
+				cat("[encodeXML] from XMLNode\n")
 			}
 			return(obj)
 		}
@@ -423,19 +426,19 @@ setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
 setMethod(f = "encodeXML", signature = signature(obj = "XMLInternalElementNode", sos = "SOS"),
 		def = function(obj, sos, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE XML from XMLInternalElementNode\n")
+				cat("[encodeXML] from XMLInternalElementNode: just returning it.\n")
 			}
 			return(obj)
 		}
 )
 setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS"),
 		def = function(obj, sos, addNamespaces = FALSE, verbose = FALSE) {
-			if(verbose) cat("ENCODE XML from character string\n")
+			if(verbose) cat("[encodeXML] from character string\n")
 			
 			if(isXMLString(obj)) {
 				#FIXME this just won't work, see testing.R, section "encode xml character string (again)"
 				if(addNamespaces) {
-					if(verbose) cat("Namespace hack for character string, trying to replace 'result>'!\n")
+					if(verbose) cat("[encodeXML] Namespace hack for character string, trying to replace 'result>'!\n")
 					.hack <- 'result xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">'
 					.hackedString <- sub(pattern = "result>",
 							replacement = .hack,
@@ -448,12 +451,12 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
 				}
 								
 				if(verbose) {
-					cat("Created XML from string:\n", toString(.xml))
+					cat("[encodeXML] Created XML from string:\n", toString(.xml))
 				}
 				return(.xml)
 			}
 			else {
-				warning(paste("Could not encode given character string as XML!",
+				warning(paste("[encodeXML] Could not encode given character string as XML!",
 								" Character string: '", obj, "'", sep = ""))
 			}
 		}
@@ -580,16 +583,27 @@ setMethod(f = "sosGetDCP",
 
 
 ################################################################################
+# Access to changes and other documents shipping with the package
+#
 #
 sosChanges <- function() {
-	.libloc <- Sys.getenv("R_LIBS_USER")
-	if(length(.libloc) < 1)
-		.libloc <- Sys.getenv("R_LIBS")
-	
-	.path <- paste(Sys.getenv("R_LIBS_USER"), "sos4R", "CHANGES", sep = "/")
+	.path <- paste(.find.package("sos4R", lib.loc = NULL), "CHANGES",
+			sep = "\\")
 	.con <- file(.path)
 	.lines <- readLines(.con)
 	close(.con)	
 	
 	cat(.lines, sep = "\n")
+}
+
+# based on vignette-function
+sosCheatSheet <- function() {
+	.path <- paste(.find.package("sos4R", lib.loc = NULL), "doc",
+			.sosCheatSheetDocumentName, sep = "\\")
+	
+	.z <- list(file = .sosCheatSheetDocumentName, pdf = .path)
+	.z$topic <- "sos4R Cheat Sheet"
+	class(.z) <- "vignette"
+
+	return(.z)
 }

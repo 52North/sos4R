@@ -386,7 +386,7 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {
 	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
 	
-	if(verbose) cat("[parseCompositePhenomenon] with id", .id)
+	if(verbose) cat("[parseCompositePhenomenon] with id", .id, "\n")
 	
 	.dimension <- as.integer(
 			xmlGetAttr(node = obj, name = "dimension", default = NA_character_))

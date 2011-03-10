@@ -152,6 +152,13 @@
 
 * Version 0.1-16
 * Added file to create demo for Coastlab SOS
+* Added sosTime() for signature "list"
+* Fixed bug in .getObservation_1.0.0 when calculating length of referenced ObservationProperty
+* Fixed bug in getObservation() when offering is of class "character"
+* Improvements in verbose-messages
+* Improved sosChanges() based on code in vignette()
+* Added sosCheatSheet() function that open the cheat sheet PDF, included new cheat sheet in package
+* Change in createTime...() functions: removed unneccessary format and parsing -- please observe if everything still works!
 * ...
 
 # TODO:

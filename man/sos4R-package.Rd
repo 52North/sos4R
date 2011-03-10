@@ -5,6 +5,9 @@
 \alias{sos4R-package}
 \alias{sos4R}
 
+\alias{sosChanges}
+\alias{sosCheatSheet}
+
 \title{A client for the OGC Sensor Observation Service}
 
 \description{
@@ -86,9 +89,15 @@ else {
 
 # Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
 myConverters <- SosDataFieldConvertingFunctions(
-	"myNumericUnit" = sosConvertDouble,
+	"myNumericUnit" = sosConvertDouble)
 mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)
+
+# print the changes document
+sosChanges()
+
+# get the cheat sheet
+sosCheatSheet()
 
 }
 
