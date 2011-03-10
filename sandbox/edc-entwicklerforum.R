@@ -2,6 +2,7 @@
 # Münster, 17. - 18.02.2011
 # 
 # Author: Daniel Nüst
+# sos4R Webseite (downloads, news): http://www.nordholmen.net/sos4r
 ###############################################################################
 
 # Was muss ich wirklich wissen?
@@ -10,16 +11,6 @@
 #	- procedure
 #	- observedProperty
 #	- feature of interest
-
-# Was ist sos4R?
-# - Webseite (downloads, news): http://www.nordholmen.net/sos4r
-# - Funktionalität
-# 	- Core Profile (plug GetObservationById)
-#		- GetCapabilities
-#		- GetObservation
-#		- DescribeSensor
-#	- GET und POST
-#	- Austauschbarkeit!
 
 ##### Installation #############################################################
 # Dependencies installieren (werden nicht aufgelöst wenn von Datei installiert 
@@ -42,7 +33,6 @@ SosSupportedTemporalOperators()
 SosDefaultConnectionMethod()
 SosDataFieldConvertingFunctions()
 SosDefaults()
-
 
 ##### Verbindung zu einem SOS erstellen ########################################
 mySOS = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
@@ -67,15 +57,15 @@ sosFilter_Capabilities(mySOS)
 sosServiceIdentification(mySOS)
 sosServiceProvider(mySOS) # @serviceContact
 
-#######################################################
-# Wichtige Elemente, da Grundlage für spätere Anfragen:
+##### Zugriffsfunktionen #######################################################
+# Wichtige Elemente, da Grundlage für spätere Anfragen, sind über getter bzw. 
+# accessor oder Zugriffsfunktionen abrufbar:
 sosOfferings(mySOS)
-off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
+sosOfferings(mySOS)[2:3]
 sosOfferingIds(mySOS)
-names(sosOfferings(mySOS))
 
+off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
 sosId(off.temp)
-sosOfferings(mySOS)[1:3]
 
 sosProcedures(mySOS)
 sosProcedures(off.temp)
@@ -83,49 +73,65 @@ sosProcedures(off.temp)
 sosObservedProperties(mySOS)
 sosObservedProperties(off.temp)
 
-sosBoundedBy(off.temp)
-str(sosBoundedBy(off.temp)) # Nicht so schön ...
+sosBoundedBy(off.temp) # , convert = TRUE)
 
 sosTime(mySOS)
 off.temp.time <- sosTime(off.temp)
 str(off.temp.time) # modelliert XML
-# "wirklichen" Startzeitpunkt abfragen
-off.temp.time@beginPosition@time
-class(off.temp.time@beginPosition@time)
+
+
+##### Grafische Ausgabe der Offerings ##########################################
+plot(offering)
+
+# TODO hintergrundkarte erstellen
+
 
 ##### Sensor Metadaten abfragen ################################################
-describeSensor(sos = mySOS, procedure = "meinTollerSensor")
-# Warnung! Und: Antwort ist OwsExceptionReport!
-
-# TIPP: verbose option in service operation functions
-describeSensor(sos = mySOS, procedure = "lala", verbose = TRUE)
-
 sensor2 <- describeSensor(mySOS, sosProcedures(off.temp)[[2]])
 sensor2
 str(sensor2)
 sensor2@xml
 
+sosId(sensor2)
+sosCoordinates(sensor2)
+
+#************#
+# Aufgabe 02 #
+#************#
+# Wie ist die bounding box von sensor2?
+
+# Wo ist sensor2?
+
+
 ##### Messungen abfragen #######################################################
-# Einfachster Fall: "latest observation" für ein gesamtes offerings
+# Einfachster Fall: "latest observation" für ein gesamtes offering
 obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
 		latest = TRUE, inspect = TRUE)
 # TIPP: "inspect" benutzen um die requests und responses kennen zu lernen!
 
 ##### Response erforschen ######################################################
-# print Methoden
 obs.temp.latest
 # TIPP: str(...) für Einblick unter die Motorhaube
 
-# ObservationCollection behaves like a list in most cases
+# ObservationCollection ist auf vielfältige Art indizierbar:
 length(obs.temp.latest)
 obs.temp.latest[[1]]
 obs.temp.latest[2:5]
 
-# Koordinaten, Features und BoundingBox abfragen
+# Koordinaten, Features und BoundingBox abfragen:
 sosCoordinates(obs.temp.latest)
 sosCoordinates(obs.temp.latest[[1]])
 sosFeatureIds(obs.temp.latest)
 sosBoundedBy(obs.temp.latest)
+
+#************#
+# Aufgabe 02 #
+#************#
+# Welche procedures, observedProperties und features sind in den erhaltenen
+# Observations zu finden?
+# TIPP: Zugriffsfunktionen für SOS (siehe oben) wiederverwenden.
+
+sosObservedProperties(obs.temp.latest)
 
 
 ##### Daten erforschen #########################################################
@@ -133,8 +139,7 @@ sosBoundedBy(obs.temp.latest)
 sosResult(obs.temp.latest[[2]])
 obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
 
-# Nur ein ganz normaler data.frame ... Attribute enthalten Metadaten. Diese 
-# gehen nach dem "merge" verloren!
+# Nur ein ganz normaler data.frame ... Attribute enthalten Metadaten.
 attributes(obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
 
 # Kombination der results mit den Koordinaten
@@ -142,6 +147,14 @@ obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
 obs.temp.latest.data <- merge(x = obs.temp.latest.result,
 		y = obs.temp.latest.coords)
 obs.temp.latest.data
+
+# Geht viel einfacher!
+obs.temp.latest.data <- sosResult(..., coordinates = TRUE)
+
+#************#
+# Aufgabe 02 #
+#************#
+# ...
 
 ##### Temporäre Ausschnitte ####################################################
 # Erstellen der event time für GetObservation requests:
@@ -164,12 +177,30 @@ summary(obs.temp.august09.result)
 str(obs.temp.august09.result)
 obs.temp.august09.result[100:103,]
 
+#************#
+# Aufgabe 02 #
+#************#
+# Wie ist die maximale, die minimale, und die Durchschnittstemperatur im
+# September 2010? TIPP: ?summary
+
+
+##### Thematische Ausschnitte ##################################################
+sosObservedProperties(mySOS)
+
+# TODO plot einer Stations über einen Monat
+
+# TODO Histogramm
+
+#************#
+# Aufgabe 02 #
+#************#
+# Wie war die maximale Windstärke im September 2010 für alle verfügbaren Stationen? 
+
+
 ##### Räumliche Ausschnitte ####################################################
 #SosSupportedSpatialOperators()
-
 sosBoundedBy(off.temp)
-#request.bbox <- sosCreateBBOX(lowLat = 10.0, lowLon = 2.0,
-#		uppLat = 30.0, uppLon = 5.0, srsName = "urn:ogc:def:crs:EPSG:4326")
+
 request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 7.0,
 		uppLat = 52.0, uppLon = 9.0, srsName = "urn:ogc:def:crs:EPSG:4326")
 request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
@@ -178,60 +209,43 @@ request.bbox.foi
 obs.august09.bbox <- getObservation(sos = mySOS,
 		offering = off.temp,
 		featureOfInterest = request.bbox.foi,
-		eventTime = period.august09,
-		inspect = TRUE)
+		eventTime = period.august09)
 obs.august09.bbox
 sosCoordinates(obs.august09.bbox)
 
-# Beliebige räumliche Filter über FOI sind auch möglich
-# -> siehe SOS Spec.
-# -> siehe sos4R Code
+sosBoundedBy(obs.august09.bbox, convert = TRUE)
 
-##### Fortgeschrittenes Filtern ################################################
-# Mit feature of interest:
-off.temp.fois <- sosFeaturesOfInterest(off.temp)
-request.fois <- sosCreateFeatureOfInterest(objectIDs = list(off.temp.fois[[1]]))
 
-obs.august09.fois <- getObservation(sos = mySOS, offering = off.temp,
-		featureOfInterest = request.fois,
-		eventTime = period.august09)
-obs.august09.fois
-# Object of class OmObservationCollection with 1 members. 
+##### Air Quality SOS ##########################################################
 
-# Weitere Filter sind derzeit nicht implementiert...
+#************#
+# Aufgabe 02 #
+#************#
+# Erzeuge eine Verbindung zum SOS mit der URL http://giv-uw.uni-muenster.de:8080/AQE/sos
 
-##### Neue Konverter ###########################################################
-# GET Verbindung
-MBARI <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]])
-myOff <- sosOfferings(MBARI)[[1]]
-myProc <- sosProcedures(MBARI)[[1]]
-mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc,
-		inspect = TRUE)
-# Warnmeldungen!
+# Wann sind Daten des Offerings NO2 verfügbar?
 
-?SosDataFieldConvertingFunctions
+# Welche Phänomene werden im SOS beobachtet?
 
-# So geht es:
-myConverters <- SosDataFieldConvertingFunctions(
-		# mapping for UOM:
-		"C" = sosConvertDouble,
-		"S/m" = sosConvertDouble,
-		# mapping for definition:
-		"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
-MBARI <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]],
-		dataFieldConverters = myConverters)
-myOff <- sosOfferings(MBARI)[[1]]
-myProc <- sosProcedures(MBARI)[[1]]
-mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc)
+# Wie viele procedures/Messstationen gibt es, die NO2-Werte liefern?
 
-sosResult(mbariObs)
+# Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame.
 
-##### Daten -> sp/gstat ########################################################
 
-# Typisch für das Geoinformatikerleben: Anwenden von Software anderer Leute...
-# Viel Erfolg!
+
+##### Daten -> sp ##############################################################
+
+spdf <- SpatioalPointsDataFrame(...)
+
+spdf <- as(result, "SpatialPointsDataFrame")
+
+
+#************#
+# Aufgabe 02 #
+#************#
+# Wo sind die Messtationen?
+plot(spdf)
+
 
 ##### Demos ####################################################################
 demo(package = "sos4R")
