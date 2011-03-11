@@ -489,13 +489,53 @@ sosName(renci.off)
 # - NO stress tests!
 # - Maximum of one month of data!
 # - contact: massimiliano.cannata@gmail.com
-# TODO
+ist.converters <- SosDataFieldConvertingFunctions(
+		"urn:ogc:def:parameter:x-ist::time:iso8601" = sosConvertTime,
+		"urn:ogc:def:parameter:x-ist::meteo:air:temperature" = sosConvertDouble)
 
-# here you find 10 minutes aggregated values, they are backward intervals:
+### here you find 10 minutes aggregated values, they are backward intervals:
 # http://geoservice.ist.supsi.ch/sos?request=getcapabilities
-ist <- SOS(url = "http://geoservice.ist.supsi.ch/sos", verboseOutput = TRUE)
-sosOfferings(ist)
 
+# GET #
+ist.get <- SOS(url = "http://geoservice.ist.supsi.ch/sos",#verboseOutput = TRUE,
+		method = "GET", dataFieldConverters = ist.converters)
+sosOfferings(ist.get)
+
+ist.timeperiod <- sosCreateEventTimeList(sosCreateTimePeriod(sos = ist.get,
+				begin = as.POSIXct("2011-01-01 00:00"),
+				end = as.POSIXct("2011-01-07 00:00")))
+ist.offering <- sosOfferings(ist.get)[[1]]
+
+ist.obs <- getObservation(sos = ist.get, verbose = TRUE,
+		offering = ist.offering,
+#		observedProperty = sosObservedProperties(ist.offering)[2],
+		observedProperty = list("urn:ogc:def:parameter:x-ist::meteo:air:temperature"),
+		eventTime = ist.timeperiod)
+# names of observed properties in capabilities do not match available names:
+#Parameter "observedProperty" sent with invalid value: 
+#	['urn:ogc:def:property:x-ist::urn:ogc:def:parameter:x-ist::meteo:air:humidity']
+# - available options: ['urn:ogc:def:parameter:x-ist::lake:water:height',
+#	'urn:ogc:def:parameter:x-ist::meteo:air:humidity',
+# [...]
+
+ist.result <- sosResult(ist.obs)
+summary(ist.result)
+plot(ist.result[["Time"]], ist.result[["air-temperature"]], type = "l")
+
+
+# POST #
+ist.post <- SOS(url = "http://geoservice.ist.supsi.ch/sos",#verboseOutput = TRUE,
+		method = "POST", dataFieldConverters = ist.converters)
+sosOfferings(ist.post)
+ist.obs.post <- getObservation(sos = ist.post, verbose = TRUE,
+		offering = ist.offering,
+#		observedProperty = sosObservedProperties(ist.offering)[2],
+		observedProperty = list("urn:ogc:def:parameter:x-ist::meteo:air:temperature"),
+		eventTime = ist.timeperiod)
+# ERROR!
+# [...] Parameter "offering" is mandatory with multiplicity 1
+
+### raw data:
 istraw <- SOS(url = "http://geoservice.ist.supsi.ch/sosraw")
 sosOfferings(istraw)
 
@@ -516,6 +556,52 @@ sosObservedProperties(brgm.all)
 # NONE!
 
 sosProcedures(brgm.all)
+
+################################################################################
+# OOSTethy PySOS
+# Center for Coastal Margin Observation & Prediction
+# http://www.stccmop.org/, http://www.stccmop.org/sos
+
+# TODO implement parsing of om:resultDefinition
+
+# TODO impmlement method to return data frame
+stccmopParseResult <- function(obj, sos, verbose = FALSE) {
+	if(verbose) {
+		cat("[stccmopParseResult]\n")
+		print(obj)
+	}
+	
+	.val <- xmlValue(obj)
+	return(.val)
+}
+print(omResultName)
+
+stccmop <- SOS("http://data.stccmop.org/ws/sos.py", method = "GET",
+		parsers = SosParsingFunctions("result" = stccmopParseResult))
+sosParsers(stccmop)[[omResultName]]
+
+
+sosCaps(stccmop)
+plot(stccmop) # missing CRS
+
+names(sosOfferings(stccmop))
+sosProcedures(stccmop)
+
+length(sosOfferings(stccmop)); length(unlist(sosProcedures(stccmop)))
+# one offering per procedure
+
+unique(unlist(sosObservedProperties(stccmop)))
+
+############################
+# Get data for one offering:
+off <- sosOfferings(stccmop)[[2]]
+sosObservedProperties(off)
+
+# Example from website: http://data.stccmop.org/ws/util/sos.py?service=SOS&request=GetObservation&offering=saturn04&observedProperty=WaterTemperature&responseFormat=text/xml&eventTime=2009-09-26/2009-09-28
+getObservation(sos = stccmop, inspect = TRUE, verbose = TRUE,
+		observedProperty = list("http://marinemetadata.org/cf#sea_water_temperature"),
+		offering = "saturn04")
+# not time given returns last observation, fixes in parsing required, see above!
 
 
 ################################################################################

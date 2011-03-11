@@ -183,6 +183,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	if(verbose) cat("[parseValues] Removing temporary first column\n")
 	.data <- .data[,!colnames(.data)%in%.tempId]
 	
+	if(verbose) cat("[parseValues] returning!\n")
 	return(.data)
 }
 
@@ -363,7 +364,7 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 		.compPhen <- .noneText[[1]]
 		# 52N SOS only returns swe:CompositePhenomenon
 		.name <- xmlName(.compPhen)
-		if(verbose) cat("[parsePhenomenonProperty] inline with name ", .name,
+		if(verbose) cat("[parsePhenomenonProperty] inline with name", .name,
 					"\n")
 		
 		if(.name == sweCompositePhenomenonName) {
@@ -372,8 +373,8 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 			.obsProp <- SwePhenomenonProperty(phenomenon = .phen)
 		}
 		else {
-			warning(paste("Unsupprted observed property: ", .name,
-							"\n"))
+			warning(paste("[parsePhenomenonProperty] Unsupported observed property: ",
+							.name, "\n"))
 		}
 	}
 	
@@ -394,6 +395,9 @@ parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {
 	
 	.components <- lapply(obj[sweComponentName], parseComponent, sos = sos,
 			verbose = verbose)
+	
+	if(verbose) cat("[parseCompositePhenomenon]", length(.components),
+				"components parsed.\n")
 	
 	# optional:
 	.description <- NA_character_

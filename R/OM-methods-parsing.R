@@ -236,11 +236,27 @@ parseObservationCollection <- function(obj, sos, verbose) {
 # om:result
 #
 parseResult <- function(obj, sos, verbose = FALSE) {
-	if(verbose) cat("[parseResult]\n")
+	if(verbose) {
+		cat("[parseResult]\n")
+#		print(obj)
+	}
 	.result <- NULL
 	
 	.noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
-			includeNamed = FALSE)
+			includeNamed = FALSE, verbose = verbose)
+	
+	if(verbose) {
+		cat("[parseResult]", length(.noneText), " non-text nodes, names:",
+				names(.noneText), "\n")
+	}
+	
+	# Check if remaining element is there
+	if(length(.noneText) == 0) {
+		.children <- xmlChildren(obj)
+		cat("[parseResult] No non-text nodes in result, returning NULL.\n")
+		return(NULL)
+	}
+	
 	# 52N SOS currently only returns swe:DataArrayDocument, but still check
 	if(xmlName(.noneText[[1]]) != sweDataArrayName) {
 		warning(paste("[parseResult] Parsing of given result is NOT supported:",
@@ -248,7 +264,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 						"can be parsed."))
 	}
 	else {
-		if(verbose) cat("[parseResult] Parsing result with swe:DataArray.")
+		if(verbose) cat("[parseResult] Parsing result with swe:DataArray.\n")
 		
 		# data array parser is exchangeable
 		.dataArrayParsingFunction <- sosParsers(sos)[[sweDataArrayName]]
@@ -257,12 +273,10 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 	}
 	
 	if(is.null(.result)) {
-		stop("[parseResult] result is null!")
-		cat(obj)
-		cat("\n")
+		stop("[parseResult] result is null! Given result:\n")
+		print(obj)
 	}
-	
-	return(.result)
+	else return(.result)
 }
 
 
@@ -307,7 +321,7 @@ parseComplexObservation <- function(obj, sos, verbose = FALSE) {
 # parse sos:featureOfInterest to according Element of GML or SA
 #
 parseFOI <- function(obj, sos, verbose = FALSE) {
-	if(verbose) cat("[parseFOI]\n")
+	if(verbose) cat("[parseFOI] starting...\n")
 	.foi <- NULL
 	
 	# has href attribute? if yes, use it!

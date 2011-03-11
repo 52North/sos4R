@@ -159,8 +159,11 @@
 * Improved sosChanges() based on code in vignette()
 * Added sosCheatSheet() function that open the cheat sheet PDF, included new cheat sheet in package
 * Change in createTime...() functions: removed unneccessary format and parsing -- please observe if everything still works!
+* Changed slot type in OmObservation@observedProperty from "SwePhenomenonProperty" to "SwePhenomenonPropertyOrNULL"
+* Testing istSOS and fixing bugs
 * ...
 
 # TODO:
 * add function =sosUOM()= extracts a named character vector of all attributes named "uom" from a given data.frame/OmObservation/OmObservationCollection/OmMeasurement, names are the variable/column names.
 * implement =summary= functions for =OmObservation= and =OmMeasurement=, should also contain numerical/statistical information about the contained result, the feature, the name, etc.
+* TODOs in testing-SOSs.R

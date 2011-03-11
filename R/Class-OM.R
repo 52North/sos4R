@@ -49,7 +49,7 @@ setClass("OmObservation",
 		representation(
 				samplingTime = "GmlTimeObjectOrNULL",	
 				procedure = "ANY",
-				observedProperty = "SwePhenomenonProperty",
+				observedProperty = "SwePhenomenonPropertyOrNULL",
 				featureOfInterest = "GmlFeatureOrGmlFeaturePropertyOrNULL",
 				result = "ANY",
 				# optional:

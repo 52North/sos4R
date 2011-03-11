@@ -454,9 +454,13 @@
 }
 
 .toString.OmObservation <- function(x, ...) {
+	if(is.null(sosObservedProperties(x)))
+		.obsProp <- NULL
+	else .obsProp <- toString(sosObservedProperties(x))
+	
 	.s <- paste("Object of class OmObservation;\n\tprocedure: ",
 			toString(x@procedure),
-			"\n\tobservedProperty: ", toString(sosObservedProperties(x)),
+			"\n\tobservedProperty: ", .obsProp,
 			"\n\tfoi: ", toString(sosFeatureIds(x)),
 			"\n\tsamplingTime: ", .addTabIndent(toString(x@samplingTime)),
 			"\n\tresult dimensions: ", toString(dim(x@result)),

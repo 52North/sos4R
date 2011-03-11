@@ -273,17 +273,26 @@ parseOwsRange <- function(obj) {
 # given name, of the given element. If includeNamed is FALSE, it contains all
 # children of the given node not matching the given name.
 #
-.filterXmlChildren <- function(node, childrenName, includeNamed = TRUE) {
+.filterXmlChildren <- function(node, childrenName, includeNamed = TRUE,
+		verbose = FALSE) {
 	.temp <- xmlChildren(node)
+	
+	if(verbose) {
+		cat("[.filterXmlChildren] Children:\n")
+		print(.temp)
+	}
+	
 	.filtered <- c()
 	.names <- c()
 	for (.x in .temp) {
 		if(xmlName(.x) == childrenName && includeNamed) {
 			.filtered <- c(.filtered, .x)
+			if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
 			.names <- c(.names, xmlName(.x))
 		}
 		else if(!includeNamed && xmlName(.x) != childrenName) {
 			.filtered <- c(.filtered, .x)
+			if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
 			.names <- c(.names, xmlName(.x))
 		}
 	}

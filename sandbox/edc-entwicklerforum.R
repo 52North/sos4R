@@ -14,7 +14,7 @@
 ##### Installation #############################################################
 # Dependencies installieren (werden nicht aufgelöst wenn von Datei installiert 
 # wird):
-install.packages("sos4R")
+#install.packages("sos4R")
 # Package laden
 library("sos4R")
 # sessionInfo()
@@ -74,6 +74,10 @@ sosContents(aqe)
 #----- sosServiceIdentification(aqe)
 #----- sosServiceProvider(aqe)
 #----- sosOperationsMetadata(aqe)
+
+# Welche Information sind dort zu finden?
+# Wie viel kosten die Benutzung diese SOS?
+# Wer ist verantwortliche Kontaktperson?
 
 
 ##### Zugriffsfunktionen #######################################################
@@ -183,10 +187,14 @@ aqe <- SOS(sosUrl(aqe), dataFieldConverters = aqe.converters)
 
 # Nochmaliges daten abrufen, diesmal alternativ auf Basis der offering ID:
 # Daten für ganz Deutschland!
-dec2003.obs <- getObservation(sos = aqe, offering = "NO2",
+dec2003.obs <- getObservation(sos = aqe, offering = "NO2", verbose = TRUE,
 		saveOriginal = TRUE,
 		eventTime = dec2003.1Hrs)
 
+# Nur einige Stationen:
+dec2003.obs <- getObservation(sos = aqe, offering = "NO2", verbose = TRUE,
+		procedure = sosProcedures(aqe)[[1]][1:10],
+		eventTime = dec2003.1Hrs)
 
 ##### Response erforschen ######################################################
 print(dec2003.obs)

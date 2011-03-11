@@ -222,6 +222,9 @@ setMethod(f = "sosObservedProperties", signature = signature(
 setMethod(f = "sosObservedProperties", signature = signature(
 				obj = "OmObservation"),
 		def = function(obj) {
+			if(is.null(obj@observedProperty))
+				return(NULL)
+			
 			.op <- sosObservedProperties(obj@observedProperty)
 			return(.op)
 		})

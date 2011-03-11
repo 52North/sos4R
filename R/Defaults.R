@@ -263,24 +263,26 @@ names(.sosDefaultFieldConverters) <- list(
 
 ################################################################################
 # access methods
-
-SosParsingFunctions <- function (..., include = character(0), exclude = character(0)) {
-	.merge(els = list(...), defaults = .sosDefaultParsers,
-			include = include, exclude)
-}
-
-SosEncodingFunctions <- function (..., include = character(0), exclude = character(0)) {
-	.merge(els = list(...), defaults = .sosDefaultEncoders,
-			include = include, exclude)
+#
+SosDataFieldConvertingFunctions <- function (..., include = character(0),
+		exclude = character(0)) {
+	.merge(els = list(...), defaults = .sosDefaultFieldConverters,
+			include = include, exclude = exclude)
 }
 
 SosDefaultConnectionMethod <- function() {
 	return(.sosConnectionMethodPost)
 }
 
-SosDataFieldConvertingFunctions <- function (..., include = character(0),
+SosEncodingFunctions <- function (..., include = character(0),
 		exclude = character(0)) {
-	.merge(els = list(...), defaults = .sosDefaultFieldConverters,
+	.merge(els = list(...), defaults = .sosDefaultEncoders,
+			include = include, exclude = exclude)
+}
+
+SosParsingFunctions <- function (..., include = character(0),
+		exclude = character(0)) {
+	.merge(els = list(...), defaults = .sosDefaultParsers,
 			include = include, exclude = exclude)
 }
 
@@ -296,10 +298,11 @@ SosDataFieldConvertingFunctions <- function (..., include = character(0),
 	if (length(els) > 0) {
 		# which elements are given?
 		.which <- match(names(defaults), names(els))
+#		cat("given names: ", names(defaults))
 		# add defaults (including names) for all that are not given
 		.missing <- is.na(.which)
 		.missingNames <- names(defaults)[.missing]
-		#cat("missing names: "); print(.missingNames)
+#		cat("missing names: ", .missingNames)
 		els[.missingNames] <- defaults[.missing]
 	}
 	# no replacements given, base in-/exclusion on all defaults
