@@ -148,7 +148,7 @@
 * Added packages used in demos to DESCRIPTION's Suggest field
 * Fix because of missing dependency for cacheSchweave -> removed caching from vignette. 
 
-2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-03-11		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-16
 * Added file to create demo for Coastlab SOS
@@ -161,7 +161,6 @@
 * Change in createTime...() functions: removed unneccessary format and parsing -- please observe if everything still works!
 * Changed slot type in OmObservation@observedProperty from "SwePhenomenonProperty" to "SwePhenomenonPropertyOrNULL"
 * Testing istSOS and fixing bugs
-* ...
 
 # TODO:
 * add function =sosUOM()= extracts a named character vector of all attributes named "uom" from a given data.frame/OmObservation/OmObservationCollection/OmMeasurement, names are the variable/column names.
