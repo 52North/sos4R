@@ -183,7 +183,7 @@ sensor2@xml # Viel Information, einzelne Details über Getter abfragbar, dies
 sosId(sensor2)
 
 #************#
-# Aufgabe 02 #
+# Aufgabe 04 #
 #************#
 # Wie ist die Bounding Box von sensor2?
 
@@ -251,7 +251,7 @@ sosFeatureIds(dec2003.obs)[42:44]
 sosBoundedBy(dec2003.obs, bbox = TRUE)
 
 #************#
-# Aufgabe 02 #
+# Aufgabe 05 #
 #************#
 # Welche procedures, observedProperties und features sind in den erhaltenen
 # Observations zu finden? TIPP: Zugriffsfunktionen!
@@ -305,7 +305,7 @@ merge(x = dec2003.result, y = dec2003.coords)[1:3,]
 dec2003.data <- sosResult(dec2003.obs, coordinates = TRUE)
 
 #************#
-# Aufgabe 02 #
+# Aufgabe 06 #
 #************#
 # Was sind der maximale/minimale, der Durchschnittswert, der Median und die
 # Quantile von NO2 für alle heruntergeladenen Daten?
@@ -372,7 +372,7 @@ lines(p ~ data.denw095.2004[["SamplingTime"]], col = 'blue',lwd = 4)
 hist(result.myStation.2005[[""]])
 
 #************#
-# Aufgabe 02 #
+# Aufgabe 07 #
 #************#
 # Wie war der maximale Wert von 03 im März 2005 für eine Station in der Nähe 
 # deiner Heimatstadt?
@@ -383,46 +383,59 @@ hist(result.myStation.2005[[""]])
 #SosSupportedSpatialOperators()
 sosBoundedBy(off.temp)
 
-request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 7.0,
-		uppLat = 52.0, uppLon = 9.0, srsName = "urn:ogc:def:crs:EPSG:4326")
+request.bbox <- sosCreateBBOX(lowLat = 49.84, lowLon = 5.98,
+		uppLat = 52.12, uppLon = 10.15, srsName = "urn:ogc:def:crs:EPSG:4326")
 request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
 request.bbox.foi
 
-obs.august09.bbox <- getObservation(sos = mySOS,
-		offering = off.temp,
+# Alle PM10 Daten von Januar 2007 in Bounding Box
+obs.2007.bbox <- getObservation(sos = aqe, # inspect = TRUE,
+		offering = pm10.off,
 		featureOfInterest = request.bbox.foi,
-		eventTime = period.august09)
-obs.august09.bbox
-sosCoordinates(obs.august09.bbox)
+		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+						begin = as.POSIXct("2007/01/01"),
+						end = as.POSIXct("2007/01/31"))))
+obs.2007.bbox
+sosBoundedBy(obs.2007.bbox, convert = TRUE)
 
-sosBoundedBy(obs.august09.bbox, convert = TRUE)
+bbox.coords <- sosCoordinates(obs.2007.bbox)
 
 
 #************#
-# Aufgabe 02 #
+# Aufgabe 08 #
 #************#
-# Wann sind Daten des Offerings NO2 verfügbar?
+# Wann und wo sind Daten des Offerings PM10 verfügbar?
 
-# Welche Phänomene werden im SOS beobachtet?
+# Wann und wo sind Daten in den abgefragten Observations verfügbar?
 
-# Wie viele procedures/Messstationen gibt es, die NO2-Werte liefern?
-
-# Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame.
-
+# Wie viele Messstationen gibt es in der bounding box, die PM10-Werte liefern?
 
 
 ##### Daten -> sp ##############################################################
+result.2007.bbox <- sosResult(obs.2007.bbox)
+obs.crs <- sosGetCRS(obs.2007.bbox)
 
-spdf <- SpatioalPointsDataFrame(...)
+pm10.spdf <- SpatialPointsDataFrame(
+		coords = result.2007.bbox[,c("lon", "lat")],
+		data = result.2007.bbox[,
+				c("SamplingTime", "feature", "Concentration[NO2]")],
+		proj4string = obs.crs)
+summary(pm10.spdf)
 
-spdf <- as(result, "SpatialPointsDataFrame")
+as(obs.2007.bbox[[1]], "SpatialPointsDataFrame")
+spdf <- as(obs.2007.bbox, "SpatialPointsDataFrame")
 
 
 #************#
-# Aufgabe 02 #
+# Aufgabe 09 #
 #************#
 # Wo sind die Messtationen?
+
+coordinates(spdf)
+plot(map.lines, col = "grey50", lwd = 1)
 plot(spdf)
+
+# Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame.
 
 
 ##### Demos ####################################################################
@@ -435,6 +448,7 @@ demo("airquality")
 
 ##### Fragen? ##################################################################
 vignette("sos4R")
+sosCheatSheet()
 # Mailingliste: http://52north.org/resources/mailing-list-and-forums/
 # 				Bitte den Posting-Guide beachten!
 # Forum:		http://geostatistics.forum.52north.org/
