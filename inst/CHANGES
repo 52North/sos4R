@@ -162,6 +162,11 @@
 * Changed slot type in OmObservation@observedProperty from "SwePhenomenonProperty" to "SwePhenomenonPropertyOrNULL"
 * Testing istSOS and fixing bugs
 
+2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.1-17
+* ...
+
 # TODO:
 * add function =sosUOM()= extracts a named character vector of all attributes named "uom" from a given data.frame/OmObservation/OmObservationCollection/OmMeasurement, names are the variable/column names.
 * implement =summary= functions for =OmObservation= and =OmMeasurement=, should also contain numerical/statistical information about the contained result, the feature, the name, etc.
