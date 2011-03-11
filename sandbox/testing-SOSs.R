@@ -558,11 +558,13 @@ sosObservedProperties(brgm.all)
 sosProcedures(brgm.all)
 
 ################################################################################
-# OOSTethy PySOS
+# OOSTethys PySOS
 # Center for Coastal Margin Observation & Prediction
 # http://www.stccmop.org/, http://www.stccmop.org/sos
 
 # TODO implement parsing of om:resultDefinition
+# BUT do not do it because the referenced schemas are not available for download
+# and the response does not validate with http://schemas.opengis.net/om/1.0.0/observation.xsd
 
 # TODO impmlement method to return data frame
 stccmopParseResult <- function(obj, sos, verbose = FALSE) {
@@ -575,21 +577,18 @@ stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 	return(.val)
 }
 print(omResultName)
-
 stccmop <- SOS("http://data.stccmop.org/ws/sos.py", method = "GET",
 		parsers = SosParsingFunctions("result" = stccmopParseResult))
 sosParsers(stccmop)[[omResultName]]
-
-
 sosCaps(stccmop)
-plot(stccmop) # missing CRS
+
+plot(stccmop) # DOES NOT WORK, missing CRS
 
 names(sosOfferings(stccmop))
 sosProcedures(stccmop)
 
 length(sosOfferings(stccmop)); length(unlist(sosProcedures(stccmop)))
 # one offering per procedure
-
 unique(unlist(sosObservedProperties(stccmop)))
 
 ############################

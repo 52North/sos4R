@@ -1158,3 +1158,43 @@ strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%z", tz = "+0200") # no effect on setti
 
 Sys.setenv(TZ="GMT") # no working effect on format and strftime
 
+
+###############
+# http://r.789695.n4.nabble.com/Timezone-issue-with-strftime-strptime-and-z-and-Z-tt3346204.html#none
+
+# SECOND EMAIL DAVID
+as.POSIXlt(gsub("T", " ", 	# change T to space
+							# but preserve the sign for the %z format string
+				gsub("(T..:..:.....):", "\\1", "1995-05-25T15:30:00-10:00")),
+		format="%Y-%m-%d %H:%M:%S%z")
+# [1] "1995-05-25 21:30:00"
+
+# To get output in GMT add tz argument to as.POSIXlt:
+as.POSIXlt(gsub("T", " ", 	# change T to space
+							# but preserve the sign for the %z format string
+				gsub("(T..:..:.....):", "\\1", "1995-05-25T15:30:00-10:00")),
+		format="%Y-%m-%d %H:%M:%S%z", tz="GMT")
+
+# Does still not ouput the numerical time zones!
+
+# To get output in GMT add tz argument to as.POSIXlt:
+time <- as.POSIXlt(gsub("T", " ", 	# change T to space
+				# but preserve the sign for the %z format string
+				gsub("(T..:..:.....):", "\\1", "1995-05-25T15:30:00-10:00")),
+		format="%Y-%m-%d %H:%M:%S%z") #, tz="GMT")
+format(x = time, format = "%Y-%m-%d %H:%M:%S%z")
+# [1] "1995-05-26 01:30:00Mitteleuropäische Zeit"
+strftime(x = time, format = "%Y-%m-%d %H:%M:%S%z")
+# [1] "1995-05-26 03:30:00Mitteleuropäische Sommerzeit"
+
+x <- as.POSIXlt(gsub("T", " ", #change T to space
+				# but preserve the sign for the %z format string
+		gsub("(T..:..:.....):", "\\1", "1995-05-25T15:30:00-10:00")),
+		format="%Y-%m-%d %H:%M:%S%z", tz="GMT")
+x
+# [1] "1995-05-26 01:30:00 GMT"
+format(x, "%Y-%m-%d %H:%M:%S%z")
+# [1] "1995-05-26 03:30:00Mitteleuropäische Zeit"
+format(x, "%Y-%m-%dT%H:%M:%S%z")
+# [1] "1995-05-26T01:30:00Mitteleuropäische Zeit"
+
