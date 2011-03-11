@@ -209,7 +209,7 @@ spplot(no2.12h.id[1], sp.layout = lt, col.regions = bpy.colors(),
 
 ################################################################################
 # Plot with whole year 2004 for one station:
-# See http://www.eea.europa.eu/themes/air/airbase/interpolated for identifiers.
+# See http://www.eea.europa.eu/themes/air/airbase/map-stations.
 denw095 <- "urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DENW095"
 denw095.descr <- describeSensor(aqe, denw095)
 denw095.descr

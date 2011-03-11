@@ -172,9 +172,9 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		if(verbose) cat("[parseValues] Added attributes to new data:",
 					toString(.addAttrs),
 					"[ names: ", toString(names(.addAttrs)), "]",
-					"\nOld attributes list is",
+					"\n[parseValues] Old attributes list is",
 					toString(.oldAttrs),
-					"\nNew attributes list is",
+					"\n[parseValues] New attributes list is",
 					toString(attributes(.data[,.lastColumn])),
 					"\n")
 	}

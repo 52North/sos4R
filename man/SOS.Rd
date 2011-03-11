@@ -321,10 +321,11 @@ SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)
 # get the meaning of an exception code
 sosExceptionCodeMeaning(ex@exceptionCode)
 
-}
-
 # create a CRS object from a URN CRS string
 sosGetCRS("urn:ogc:def:crs:EPSG:4217")
+}
+
+
 
 }
 

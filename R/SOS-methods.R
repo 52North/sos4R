@@ -519,9 +519,9 @@ setMethod(f = "getObservationById",
 	
 	.responseString = sosRequest(sos = sos, request = .go,
 			verbose = verbose, inspect = inspect)
-	if(verbose || inspect){
-		cat("*** RESPONSE size:", object.size(.responseString) , ")\n")
-	}
+	
+	cat("Received response (size:", object.size(.responseString),
+			"bytes), starting parsing ...\n")
 	
 	# responseFormat starts with text/xml OR the response string is XML content,
 	# for example an exeption (which is xml even if request wants something else
@@ -582,7 +582,7 @@ setMethod(f = "getObservationById",
 
 		.msg <- paste("Finished getObservation to", sos@url, "\n\t--> received",
 				length(.obs), "observation(s) having", .countInfo , "\n")
-		if(saveOriginal) .msg <- paste(.msg, "\tOriginal document saved:",
+		if(saveOriginal) .msg <- paste(.msg, "Original document saved:",
 					.filename, "\n")
 		cat(.msg)
 		

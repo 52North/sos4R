@@ -484,6 +484,9 @@ setMethod(f = "sosExceptionCodeMeaning",
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "character"),
 		def = function(obj) {
+			if(!require(rgdal, quietly = TRUE))
+				print("rgdal not present: CRS values will not be converted correctly")
+			
 			# get the position of EPSG
 			.split <- strsplit(as.character(obj), split = ":")
 			.idx <- which(toupper(.split[[1]]) == "EPSG")
