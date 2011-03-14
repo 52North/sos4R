@@ -170,6 +170,11 @@
 * Changed vignette to use saved sensor description from file
 * Fixes with exports and documentation to adhere to changes for R 2.13.0
 
+2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.1-179
+* ...
+
 # TODO:
 * add function =sosUOM()= extracts a named character vector of all attributes named "uom" from a given data.frame/OmObservation/OmObservationCollection/OmMeasurement, names are the variable/column names.
 * implement =summary= functions for =OmObservation= and =OmMeasurement=, should also contain numerical/statistical information about the contained result, the feature, the name, etc.
