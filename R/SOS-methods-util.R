@@ -565,6 +565,18 @@ setMethod(f = "sosGetCRS",
 	else return(.l)
 }
 
+
+#
+# ‘"’, ‘*’, ‘:’, ‘/’, ‘<’, ‘>’, ‘?’, ‘\’, and ‘|’
+#
+.cleanupFileName <- function(obj) {
+	.clean <- gsub(
+			pattern = "[\\/:\"|?<>*,]+",
+			x = obj,
+			replacement = "_")
+	return(.clean)
+}
+
 #
 #
 #

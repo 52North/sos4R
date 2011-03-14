@@ -4,14 +4,17 @@
 %\docType{class}
 
 \alias{GmlDirectPosition-class}
+\alias{GmlDirectPositionOrNULL-class}
 \alias{GmlEnvelope-class}
 \alias{GmlFeature-class}
 \alias{GmlFeatureCollection-class}
 \alias{GmlFeatureOrNULL-class}
 \alias{GmlFeatureProperty-class}
+\alias{GmlFeatureOrGmlFeaturePropertyOrNULL-class}
 \alias{GmlGeometry-class}
 \alias{GmlLineString-class}
 \alias{GmlPoint-class}
+\alias{GmlPointOrNULL-class}
 \alias{GmlPointProperty-class}
 \alias{GmlPolygon-class}
 \alias{GmlTimeGeometricPrimitive-class}
@@ -27,7 +30,6 @@
 \alias{GmlTimePosition-class}
 \alias{GmlTimePositionOrNULL-class}
 \alias{GmlTimePrimitive-class}
-
 
 \alias{show,GmlDirectPosition-method}
 \alias{show,GmlEnvelope-method}

@@ -364,7 +364,8 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 #
 #
 #
-.describeSensor_1.0.0 <- function(sos, procedure, outputFormat, verbose, inspect) {
+.describeSensor_1.0.0 <- function(sos, procedure, outputFormat, verbose,
+		inspect, saveOriginal) {
 	if(verbose) {
 		cat("[.describeSensor_1.0.0] ", procedure, "@", sos@url, "\n")
 	}
@@ -387,21 +388,37 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 		print(.response)
 	}
 	
+	if(saveOriginal) {
+		.filename <- paste(.cleanupFileName(procedure), "_", ".xml",
+				sep = "")
+		
+		if(verbose) {
+			cat("[.describeSensor_1.0.0] Saving original document...",
+					.filename, "in", getwd(), "\n")
+		}
+		
+		saveXML(.response, file = .filename)
+		
+		cat("[sos4R] Original document saved:", .filename, "\n")
+	}
+	
 	if(.isExceptionReport(.response)) {
 		return(.handleExceptionReport(sos, .response))
 	}
 	else {
 		.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
 		.sml <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
+		
 		return(.sml)
 	}
 }
 setMethod(f = "describeSensor",
 		signature = signature(sos = "SOS_1.0.0", procedure  = "character"), 
-		def = function(sos, procedure, outputFormat, verbose, inspect) {
+		def = function(sos, procedure, outputFormat, verbose, inspect,
+				saveOriginal) {
 			return(.describeSensor_1.0.0(sos = sos, procedure = procedure,
 							outputFormat = outputFormat, verbose = verbose,
-							inspect = inspect))
+							inspect = inspect, saveOriginal = saveOriginal))
 		}
 )
 
@@ -413,76 +430,86 @@ setMethod(f = "getObservationById",
 		signature = signature(sos = "SOS_1.0.0", observationId = "character"), 
 		def = function(sos, observationId, responseFormat, srsName,
 				resultModel, responseMode, verbose, inspect, saveOriginal) {
-			if(verbose) {
-				cat("[getObservationById] ID", observationId, "\n")
-			}
-			
-			if(saveOriginal) .filename <- paste(observationId, 
-						format(Sys.time(), sosDefaultFilenameTimeFormat),
-						sep = "_")
-			
-			.go <- SosGetObservationById(service = sosService,
-					version = sos@version, observationId = observationId,
-					responseFormat =  responseFormat, srsName = srsName,
-					resultModel = resultModel, responseMode = responseMode)
-			
-			if(verbose)
-				cat("[getObservationById] REQUEST:\n", toString(.go), "\n")
-			
-			.responseString = sosRequest(sos = sos, request = .go,
-					verbose = verbose, inspect = inspect)
-			if(verbose || inspect){
-				cat("[getObservationById] RESPONSE:\n", .responseString , "\n")
-			}
-			
-			.response <- xmlParseDoc(.responseString, asText = TRUE)
-			if(verbose || inspect) {
-				cat("[getObservationById] RESPONSE DOC:\n")
-				print(.response)
-			}
-			
-			if(saveOriginal) {
-				.filename <- paste(.filename, ".xml", sep = "")
-				saveXML(.response, file = .filename)
-				
-				if(verbose) {
-					cat("[getObservationById] Saved original document:",
-							.filename, "\n")
-				}
-			}
-			
-			if(.isExceptionReport(.response)) {
-				return(.handleExceptionReport(sos, .response))
-			}
-			else {
-				.parsingFunction <- sosParsers(sos)[[sosGetObservationByIdName]]
-				.obs <- .parsingFunction(obj = .response, sos = sos,
-						verbose = verbose)
-				
-				# remove list if only one element
-				if(is.list(.obs) && length(.obs) == 1)
-					.obs <- .obs[[1]]
-				
-				if(verbose) {
-					cat("[getObservationById] PARSED RESPONSE:\n")
-					print(.obs)
-				}
-				
-				return(.obs)
-			}
-			
-			if(saveOriginal) {
-				save(.responseString, file = .filename)
-				
-				if(verbose) {
-					cat("[getObservationById] Saved original document:",
-							.filename, "\n")
-				}
-			}
-			
-			return(.responseString)
+			return(.getObservationById_1.0.0(sos = sos,
+							observationId = observationId,
+							responseFormat = responseFormat, srsName = srsName,
+							resultModel = resultModel,
+							responseMode = responseMode, verbose = verbose,
+							inspect = inspect, saveOriginal = saveOriginal))
 		}
 )
+
+.getObservationById_1.0.0 <- function(sos, observationId, responseFormat, srsName,
+		resultModel, responseMode, verbose, inspect, saveOriginal) {
+	if(verbose) {
+		cat("[getObservationById] ID", observationId, "\n")
+	}
+	
+	if(saveOriginal) .filename <- paste(observationId, 
+				format(Sys.time(), sosDefaultFilenameTimeFormat),
+				sep = "_")
+	
+	.go <- SosGetObservationById(service = sosService,
+			version = sos@version, observationId = observationId,
+			responseFormat =  responseFormat, srsName = srsName,
+			resultModel = resultModel, responseMode = responseMode)
+	
+	if(verbose)
+		cat("[getObservationById] REQUEST:\n", toString(.go), "\n")
+	
+	.responseString = sosRequest(sos = sos, request = .go,
+			verbose = verbose, inspect = inspect)
+	if(verbose || inspect){
+		cat("[getObservationById] RESPONSE:\n", .responseString , "\n")
+	}
+	
+	.response <- xmlParseDoc(.responseString, asText = TRUE)
+	if(verbose || inspect) {
+		cat("[getObservationById] RESPONSE DOC:\n")
+		print(.response)
+	}
+	
+	if(saveOriginal) {
+		.filename <- paste(.filename, ".xml", sep = "")
+		saveXML(.response, file = .filename)
+		
+		if(verbose) {
+			cat("[getObservationById] Saved original document:",
+					.filename, "\n")
+		}
+	}
+	
+	if(.isExceptionReport(.response)) {
+		return(.handleExceptionReport(sos, .response))
+	}
+	else {
+		.parsingFunction <- sosParsers(sos)[[sosGetObservationByIdName]]
+		.obs <- .parsingFunction(obj = .response, sos = sos,
+				verbose = verbose)
+		
+		# remove list if only one element
+		if(is.list(.obs) && length(.obs) == 1)
+			.obs <- .obs[[1]]
+		
+		if(verbose) {
+			cat("[getObservationById] PARSED RESPONSE:\n")
+			print(.obs)
+		}
+		
+		return(.obs)
+	}
+	
+	if(saveOriginal) {
+		save(.responseString, file = .filename)
+		
+		if(verbose) {
+			cat("[getObservationById] Saved original document:",
+					.filename, "\n")
+		}
+	}
+	
+	return(.responseString)
+}
 
 
 #
@@ -493,7 +520,7 @@ setMethod(f = "getObservationById",
 		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
 		saveOriginal) {
 	
-	if(saveOriginal) .filename <- paste(offeringId, 
+	if(saveOriginal) .filename <- paste(.cleanupFileName(offeringId), 
 				format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
 	
 	if(verbose)
@@ -1271,9 +1298,9 @@ setMethod(f = "checkRequest",
 				warning("Requested method type ist not listed in capablities for this operation, service might return error!")
 			
 			if(verbose) {
-				cat("Checks: procedure contained=", .procContained,
-						", output supported=", .oFSupported,
-						", method supported", .methodSupported, "\n")
+				cat("Checks: procedure contained =", .procContained,
+						", output supported =", .oFSupported,
+						", method supported =", .methodSupported, "\n")
 			}
 			
 			return(.procContained && .oFSupported && .methodSupported)

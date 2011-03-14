@@ -372,19 +372,41 @@ parseSosFilter_Capabilities <- function(obj, sos) {
 setMethod(f = "parseFile",
 		signature = signature(sos = "SOS_1.0.0", file = "character"),
 		def = function(sos, file, verbose, ...) {
-			.parsed <- xmlParse(file, ...)
-			.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
-			
-			.doc <- .parsingFunction(obj = .parsed, sos = sos,
-					verbose = verbose)
-			
-			if(verbose) {
-				cat("** PARSED DOCUMENT FROM FILE:\n")
-				print(.doc)
-			}
-			return(.doc)
+			.parseFile(sos, file, verbose, ...)
 		}
 )
+
+.parseFile <- function(sos, file, verbose, ...) {
+	.parsed <- xmlParse(file, ...)
+	.name <- xmlName(xmlRoot(.parsed))
+	
+	if(verbose) cat("[parseFile] root", .name, "\n")
+	
+	if(.name == smlSensorMLName) {
+		.opName <- sosDescribeSensorName
+	}
+	else if(.name == omObservationCollectionName ||
+			.name == omObservationName ||
+			.name == omMeasurementName)  {
+		.opName <- sosGetObservationName
+	}
+	else {
+		stop(paste("Root element", .name, "not supported by file parser!"))
+	}
+	
+	if(verbose) cat("[parseFile] parsing with parser for operation", 
+				.opName, "\n")
+	
+	.parsingFunction <- sosParsers(sos)[[.opName]]
+	.obj <- .parsingFunction(obj = .parsed, sos = sos,
+			verbose = verbose)
+	
+	if(verbose) {
+		cat("[parseFile] done:\n")
+		print(.obj)
+	}
+	return(.obj)
+}
 
 ################################################################################
 #

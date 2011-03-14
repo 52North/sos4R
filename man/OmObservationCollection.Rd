@@ -40,6 +40,7 @@ Objects can be created by calls to the construction function of the form \code{O
 
 \section{Slots}{
   \describe{
+    \item{\code{boundedBy}:}{Object of class \code{"list"} containing a representation of the bounding box of the contained observations.}
     \item{\code{members}:}{Object of class \code{"list"} containing objects of class \code{OmObservation} or \code{OmMeasurement}.}
   }
 }

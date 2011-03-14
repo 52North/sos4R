@@ -209,6 +209,7 @@
 \alias{mimeTypeSML}
 \alias{mimeTypeXML}
 
+\alias{smlSensorMLName}
 
 \title{Constants in sos4R}
 

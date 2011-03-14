@@ -318,6 +318,8 @@ ogcEIDName <- "EID"
 ogcFIDName <- "FID"
 ogcLiteralName <- "Literal"
 
+smlSensorMLName <- "SensorML"
+
 ################################################################################
 # OWS
 owsServiceIdentificationName <- "ServiceIdentification"

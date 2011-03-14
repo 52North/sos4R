@@ -354,7 +354,7 @@ sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[[1]]
 sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
-sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H:%M:%OS"
+sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H-%M-%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"

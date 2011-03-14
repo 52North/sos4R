@@ -147,5 +147,8 @@ exportClasses(
      "TM_After",
      "TM_Before",
      "TM_During",
-     "TM_Equals" 
+     "TM_Equals",
+     "GmlDirectPositionOrNULL",
+     "GmlFeatureOrGmlFeaturePropertyOrNULL",
+     "GmlPointOrNULL"
 )
