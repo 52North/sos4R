@@ -44,6 +44,10 @@ SosDefaults()
 ##### Verbindung zu einem SOS erstellen ########################################
 aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos")
 
+# Backup-Server für Niederlande, nur 1 Monat Daten:
+aqe <- SOS(url = "http://v-sos.uni-muenster.de:8080/SosAirQuality/sos")
+
+
 # TIPP: Methoden beginnen mit 'sos...'
 # > sos "TAB TAB" in Konsole
 # sos "CTRL Space" in StatET
@@ -201,13 +205,13 @@ sosId(sensor2)
 ##### Temporäre Ausschnitte ####################################################
 # 1 Stunde im Dezember, alle Daten zu viel wegen parallelen Anfragen!
 # TIPP: sosCreate... - Funktionen helfen korrekte Strukturen zu erzeugen:
-dec2003.1Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
-				begin = as.POSIXct("2003/12/01 08:00"),
-				end = as.POSIXct("2003/12/02 09:00")))
+aug2007.6Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
+				begin = as.POSIXct("2007/08/10 08:00"),
+				end = as.POSIXct("2007/08/10 14:00")))
 
-# Daten abrufen, nur zeitlicher Auschnitt, Gesamtdeutschland:
-dec2003.obs <- getObservation(sos = aqe, # inspect = TRUE,
-		offering = pm10.off, eventTime = dec2003.1Hrs)
+# Daten abrufen, nur zeitlicher Auschnitt:
+aug2007.obs <- getObservation(sos = aqe, # inspect = TRUE,
+		offering = pm10.off, eventTime = aug2007.6Hrs)
 warnings()
 
 # PROBLEM: Nicht unterstützte Datenfelder werden abgefragt! Konverter ergänzen:
@@ -223,32 +227,32 @@ aqe <- SOS(sosUrl(aqe), dataFieldConverters = aqe.converters)
 
 # Nochmaliges daten abrufen, diesmal alternativ auf Basis der offering ID:
 # Daten für ganz Deutschland!
-dec2003.obs <- getObservation(sos = aqe, offering = "NO2", # verbose = TRUE,
+aug2007.obs <- getObservation(sos = aqe, offering = "NO2", #verbose = TRUE,
 #		saveOriginal = TRUE,
-		eventTime = dec2003.1Hrs)
+		eventTime = aug2007.6Hrs)
 # Parsing dauert länger als request -> wenig Daten in vielen Observations, hoher
 # XML overhead.
 
 # Nur einige Stationen, mit 'inspect' Parameter
-dec2003.obs.small <- getObservation(sos = aqe, offering = "NO2",# verbose = TRUE,
+aug2007.obs.small <- getObservation(sos = aqe, offering = "NO2",# verbose = TRUE,
 		inspect = TRUE,
-		procedure = sosProcedures(aqe)[[1]][1:10],
-		eventTime = dec2003.1Hrs)
+		procedure = sosProcedures(aqe)[[1]][10:20],
+		eventTime = aug2007.6Hrs)
 
 ##### Response erforschen ######################################################
-print(dec2003.obs.small)
-str(dec2003.obs.small, max.level = 5) # limitieren der Strukturtiefe
+print(aug2007.obs.small)
+str(aug2007.obs.small, max.level = 5) # limitieren der Strukturtiefe
 
 # ObservationCollection ist auf vielfältige Art indizierbar:
-dec2003.obs[[1]]
-dec2003.obs[355:length(dec2003.obs)]
-dec2003.obs[c(17,42)]
+aug2007.obs[[1]]
+aug2007.obs[10:14]
+aug2007.obs[c(17,21)]
 
 # Koordinaten, Features und BoundingBox abfragen:
-sosCoordinates(dec2003.obs[[1]])
-sosCoordinates(dec2003.obs[[1]])
-sosFeatureIds(dec2003.obs)[42:44]
-sosBoundedBy(dec2003.obs, bbox = TRUE)
+sosCoordinates(aug2007.obs[[1]])
+sosCoordinates(aug2007.obs[[1]])
+sosFeatureIds(aug2007.obs)[10:14]
+sosBoundedBy(aug2007.obs, bbox = TRUE)
 
 #************#
 # Aufgabe 05 #
@@ -256,53 +260,55 @@ sosBoundedBy(dec2003.obs, bbox = TRUE)
 # Welche procedures, observedProperties und features sind in den erhaltenen
 # Observations zu finden? TIPP: Zugriffsfunktionen!
 
-#++ sosProcedures(dec2003.obs)
-#++ sosObservedProperties(dec2003.obs[[1]])
+#++ sosProcedures(aug2007.obs)
+#++ sosObservedProperties(aug2007.obs[[10]])
 
 # Wie können die Koordinaten für die Observations 10 bis 20 abgefragt werden?
 
-sosCoordinates(dec2003.obs[10:20])
+sosCoordinates(aug2007.obs[10:20])
 
-# Was ist der Unterschied zwischen sosFeatureIds(dec2003.obs)[42:44] und 
-# sosFeatureIds(dec2003.obs[42:44])
+# Was ist der Unterschied zwischen sosFeatureIds(aug2007.obs)[10:12] und 
+# sosFeatureIds(aug2007.obs[10:12])
 
 #++ Fragt alle feature ids ab und nimmt von dieser zusammengefügten Liste
 #++ die Elemente 42 bis 44:
-#++ str(sosFeatureIds(dec2003.obs)[42:44]) # List of 3 character
-#++ Frage observations 42:44 ab und ruft auf dieser Liste (!) für jedes Element
-#++ die Funktion sosFeatureIds(...) auf.
-#++ str(sosFeatureIds(dec2003.obs[42:44])) # List of 3 Lists
+#++ str(sosFeatureIds(aug2007.obs)[10:12]) # List of 3 character
+#++ Frage observations 10 bis 14 ab und ruft auf dieser Liste (!) für jedes
+#++ Element die Funktion sosFeatureIds(...) auf.
+#++ str(sosFeatureIds(aug2007.obs[10:12])) # List of 3 Lists
 
 
 ##### Tatsächliche Daten erforschen ############################################
 # sosResult(...) ist die wichtigste Methode:
-sosResult(dec2003.obs[[1]])
+sosResult(aug2007.obs[[1]])
 
 # Testplot
-plot(sosResult(dec2003.obs[[1]]))
+plot(sosResult(aug2007.obs[[1]]))
 
 # Was ist die Struktur des Results?
-class(sosResult(dec2003.obs[[1]]))
+class(sosResult(aug2007.obs[[1]]))
 
+# R Hilfe zu data.frame
 ?data.frame
 
 # Wie kann ich die Daten verschiedene Stationen zusammenfügen?
-sosResult(dec2003.obs[100:101])		# Result der 100. und 101. Observations
-sosResult(dec2003.obs)[100:101,]	# Zeile 100, 101 von allen (!) Daten
+sosResult(aug2007.obs[20:21])		# Result der 20. und 21. Observations
+sosResult(aug2007.obs)[20:21,]		# Zeile 20, 21 von allen (!) Daten
 
-dec2003.result <- sosResult(dec2003.obs)
+aug2007.result <- sosResult(aug2007.obs)
 
 # Warum XML parsen, wenn sowieso nur CSV-Werte zur einer "Tabelle" geparst
 # werden? Attribute enthalten Metadaten!
-names(dec2003.result)
-attributes(dec2003.result[["Concentration[NO2]"]])
+names(aug2007.result)
+attributes(aug2007.result[["Concentration[NO2]"]])
 
 # Kombination der results mit den Koordinaten
-dec2003.coords <- sosCoordinates(dec2003.obs)[1:5,]
-merge(x = dec2003.result, y = dec2003.coords)[1:3,]
+aug2007.coords <- sosCoordinates(aug2007.obs)[1:5,]
+merge(x = aug2007.result, y = aug2007.coords)[1:3,]
 
 # Geht viel einfacher!
-dec2003.data <- sosResult(dec2003.obs, coordinates = TRUE)
+aug2007.data <- sosResult(aug2007.obs, coordinates = TRUE)
+aug2007.data[1:3,]
 
 #************#
 # Aufgabe 06 #
@@ -310,14 +316,14 @@ dec2003.data <- sosResult(dec2003.obs, coordinates = TRUE)
 # Was sind der maximale/minimale, der Durchschnittswert, der Median und die
 # Quantile von NO2 für alle heruntergeladenen Daten?
 
-#++ summary(dec2003.data)
-#++ summary(dec2003.data[["Concentration[NO2]"]])
+#++ summary(aug2007.data)
+#++ summary(aug2007.data[["Concentration[NO2]"]])
 
-#++ max(dec2003.data[["Concentration[NO2]"]])
-#++ min(dec2003.data[["Concentration[NO2]"]])
-#++ mean(dec2003.data[["Concentration[NO2]"]])
-#++ median(dec2003.data[["Concentration[NO2]"]])
-#++ quantile(dec2003.data[["Concentration[NO2]"]])
+#++ max(aug2007.data[["Concentration[NO2]"]])
+#++ min(aug2007.data[["Concentration[NO2]"]])
+#++ mean(aug2007.data[["Concentration[NO2]"]])
+#++ median(aug2007.data[["Concentration[NO2]"]])
+#++ quantile(aug2007.data[["Concentration[NO2]"]])
 
 
 # Wie ist das Phänomen Concentration[NO2] definiert?
@@ -339,17 +345,18 @@ time.2007 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 				end = as.POSIXct("2007/12/31")))
 
 sosProcedures(no2.off)
-# Beachte das Benennungsschema: "DE" "NW"
+# Beachte das Benennungsschema: "DE" "NW", "NL"
 # Stationsübersicht: http://www.eea.europa.eu/themes/air/airbase/map-stations
 # Station auswählen -> Meta Data
-myStationID <- "DESH024"
+myStationID <- "NL00639" # "DESH024"
 idx <- grep(pattern = myStationID, x = sosProcedures(no2.off))
-myStation <- sosProcedures(pm10.off)[idx]
+myStation <- sosProcedures(no2.off)[idx]
+myStation
 
 # Filtern mit observed property nicht notwendig, da sowieso ein Offering nur 
 # ein Phänomen liefert.
-obs.myStation.2007 <- getObservation(sos = aqe, offering = no2.off, # inspect = TRUE,
-#		observedProperty = sosObservedProperties(no2.off),
+obs.myStation.2007 <- getObservation(sos = aqe,
+		offering = no2.off, # inspect = TRUE,
 		procedure = myStation,
 		eventTime = time.2007)
 
@@ -357,19 +364,25 @@ result.myStation.2007 <- sosResult(obs.myStation.2007)
 summary(result.myStation.2007)
 
 # Zeitreihenplot:
-plot(data.myStation.2005[["SamplingTime"]], data.denw095.2004[[NO2]], type = "l",
-		main = paste("NO2 in", denw095.id, "2004"), sub = denw095,
+plot(result.myStation.2007[["SamplingTime"]],
+		result.myStation.2007[["Concentration[NO2]"]],
+		type = "l",
+		main = paste("NO2 in", myStation,
+				min(result.myStation.2007[["SamplingTime"]]), "-",
+				max(result.myStation.2007[["SamplingTime"]])),
+		sub = myStation,
 		xlab = "Time",
 		ylab = paste("NO2 (",
-				denw095.NO2.attributes[["unit of measurement"]],
+				attributes(result.myStation.2007[["Concentration[NO2]"]])[["unit of measurement"]],
 				")", sep = ""))
-data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw095.2004[["SamplingTime"]]),
-		data.denw095.2004, enp.target = 30)
-p = predict(data.denw095.2004.locRegr)
-lines(p ~ data.denw095.2004[["SamplingTime"]], col = 'blue',lwd = 4)
+locRegr <- loess(result.myStation.2007[["Concentration[NO2]"]]~
+				as.numeric(result.myStation.2007[["SamplingTime"]]),
+		result.myStation.2007, enp.target = 5)
+p = predict(locRegr)
+lines(p ~ result.myStation.2007[["SamplingTime"]], col = 'blue',lwd = 4)
 
 # Histogramm:
-hist(result.myStation.2005[[""]])
+hist(result.myStation.2007[["Concentration[NO2]"]])
 
 #************#
 # Aufgabe 07 #
@@ -381,59 +394,77 @@ hist(result.myStation.2005[[""]])
 
 ##### Räumliche Ausschnitte ####################################################
 #SosSupportedSpatialOperators()
-sosBoundedBy(off.temp)
+sosBoundedBy(no2.off)
 
-request.bbox <- sosCreateBBOX(lowLat = 49.84, lowLon = 5.98,
-		uppLat = 52.12, uppLon = 10.15, srsName = "urn:ogc:def:crs:EPSG:4326")
+# NRW
+#request.bbox <- sosCreateBBOX(lowLat = 49.84, lowLon = 5.98,
+#		uppLat = 52.12, uppLon = 10.15, srsName = "urn:ogc:def:crs:EPSG:4326")
+request.bbox <- sosCreateBBOX(lowLat = 52.276, lowLon = 4.667,
+		uppLat = 52.450, uppLon = 5.049, srsName = "urn:ogc:def:crs:EPSG::4326")
 request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
 request.bbox.foi
 
-# Alle PM10 Daten von Januar 2007 in Bounding Box
+# Alle NO2 Daten von 2007 in Bounding Box
 obs.2007.bbox <- getObservation(sos = aqe, # inspect = TRUE,
-		offering = pm10.off,
+		offering = no2.off,
 		featureOfInterest = request.bbox.foi,
 		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 						begin = as.POSIXct("2007/01/01"),
-						end = as.POSIXct("2007/01/31"))))
+						end = as.POSIXct("2007/12/31"))))
 obs.2007.bbox
-sosBoundedBy(obs.2007.bbox, convert = TRUE)
-
-bbox.coords <- sosCoordinates(obs.2007.bbox)
-
+sosBoundedBy(obs.2007.bbox, bbox = TRUE)
 
 #************#
 # Aufgabe 08 #
 #************#
-# Wann und wo sind Daten des Offerings PM10 verfügbar?
+# Wann und wo (Koordinaten) sind Daten des Offerings NO2 im Vergleich zu den
+# abgefragten Daten verfügbar?
+#++ Wo:
+#++ sosBoundedBy(no2.off, bbox = TRUE)
+#++ summary(sosCoordinates(obs.2007.bbox)[c("lat","lon")])
 
-# Wann und wo sind Daten in den abgefragten Observations verfügbar?
+#++ Wann:
+#++ result.bbox <- sosResult(obs.2007.bbox)
+#++ range(result.bbox[["SamplingTime"]])
+#++ sosTime(no2.off)
 
-# Wie viele Messstationen gibt es in der bounding box, die PM10-Werte liefern?
-
+# Wie viele Messstationen gibt es in der bounding box, die NO2-Werte liefern?
+#++ length(sosProcedures(obs.2007.bbox))
 
 ##### Daten -> sp ##############################################################
-result.2007.bbox <- sosResult(obs.2007.bbox)
+result.bbox <- sosResult(obs.2007.bbox, coordinates = TRUE)
 obs.crs <- sosGetCRS(obs.2007.bbox)
 
-pm10.spdf <- SpatialPointsDataFrame(
-		coords = result.2007.bbox[,c("lon", "lat")],
-		data = result.2007.bbox[,
+# Die Spalten lon, lat werden für die Koordinaten des SPDF, die anderen Spalten
+# für die Daten des SPDF benutzt.
+no2.spdf <- SpatialPointsDataFrame(
+		coords = result.bbox[,c("lon", "lat")],
+		data = result.bbox[,
 				c("SamplingTime", "feature", "Concentration[NO2]")],
 		proj4string = obs.crs)
-summary(pm10.spdf)
+summary(no2.spdf)
 
-as(obs.2007.bbox[[1]], "SpatialPointsDataFrame")
+# Viele Funktionen aus sp, ... nun verfügbar
+bbox(no2.spdf)
+
+# Kürzerer Weg ist möglich, wenn die Spaltennamen passen sind (und bei 52N SOS
+# sind sie es) - coercion der ObservationCollection:
 spdf <- as(obs.2007.bbox, "SpatialPointsDataFrame")
+summary(spdf)
 
+# Coercion einer einzelnen Observation
+spdf.1 <- as(obs.2007.bbox[[1]], "SpatialPointsDataFrame")
+summary(spdf.1)
+levels(spdf.1[["FeatureOfInterest"]])
 
 #************#
 # Aufgabe 09 #
 #************#
 # Wo sind die Messtationen?
 
-coordinates(spdf)
-plot(map.lines, col = "grey50", lwd = 1)
-plot(spdf)
+#++ coordinates(spdf)
+#++ plot(x = map.lines, col = "grey")
+#++ plot(spdf, pch = 20, col = "blue", add = TRUE)
 
 # Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame.
 

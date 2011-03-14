@@ -628,3 +628,32 @@ obs <- getObservation(sos = aqe, offering = sosOfferings(aqe)[["NO2"]], # verbos
 str(obs)
 # ist auch bei mir mir inapplicable
 
+
+################################################################################
+# EDC Backup SOS
+edc.converters <- SosDataFieldConvertingFunctions(
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble,
+		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
+		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString)
+
+edc <- SOS("http://v-sos.uni-muenster.de:8080/SosAirQuality/sos",
+		dataFieldConverters = edc.converters)
+
+sosOfferings(edc)
+
+
+obs <- getObservation(edc, sosOfferings(edc)[[1]])
+result <- sosResult(obs)
+summary(result)
+
+################################################################################
+# Profiling!
+setwd("D:/")
+Rprof("EDCprof.out")
+obs <- getObservation(edc, sosOfferings(edc)[[1]])
+Rprof(NULL)
+summaryRprof("EDCprof.out")
+# not really useful information
+
