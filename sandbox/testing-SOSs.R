@@ -657,3 +657,50 @@ Rprof(NULL)
 summaryRprof("EDCprof.out")
 # not really useful information
 
+################################################################################
+# FH Kärnten / Kaernten
+# Contact: Hecke Andreas <A.Hecke@fh-kaernten.at>
+cti <- SOS("http://weatherstation.cti.ac.at:8080/52NSOS_CUAS/sos")
+cti
+summary(cti)
+plot(cti)
+
+cti.off <- sosOfferings(cti)
+cti.off
+
+
+cti.off.cuas <- sosOfferings(cti)[["WEATHER_CUAS"]]
+
+time = sosCreateEventTimeList(sosCreateTimePeriod(sos = cti,
+				begin = as.POSIXct(Sys.time() - 3600),
+				end = as.POSIXct(Sys.time())))
+
+cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
+#		inspect = TRUE,
+		eventTime = time)
+#[.sosRequest_1.0.0] response:
+#raw(0)
+#raw as char:   
+#Error in if (regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) { : 
+#  argument is of length zero
+
+# Same request pasted in to basic test client gives result!
+
+# Try with get... even weirder.
+ctiget <- SOS("http://weatherstation.cti.ac.at:8080/52NSOS_CUAS/sos",
+		method = "GET")
+getObservation(ctiget, cti.off.cuas, verbose = TRUE,
+#		inspect = TRUE,
+		eventTime = time)
+#Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
+#1 exception(s) (code @ locator : text):
+#		InvalidRequest @ REQUEST :
+#		The GET request GetObservation is not supported by this SOS. 
+
+#
+#
+#
+cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
+#		inspect = TRUE,
+		procedure = sosProcedures(cti.off.cuas)[[1]],
+		eventTime = time)

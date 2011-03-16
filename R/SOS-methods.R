@@ -290,7 +290,14 @@ SosGetObservationById <- function(
 						SosSupportedConnectionMethods()))
 	}
 	
-	if(regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) {
+	if(verbose) {
+		cat("[.sosRequest_1.0.0] response:\n")
+		print(.response)
+		if(is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
+	}
+	
+	if(length(.response) > 0 & 
+			regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) {
 		stop(paste("ERROR: Got HTML response!:\n", .response, "\n\n"))
 	}
 	

@@ -437,22 +437,26 @@ obs.crs <- sosGetCRS(obs.2007.bbox)
 
 # Die Spalten lon, lat werden für die Koordinaten des SPDF, die anderen Spalten
 # für die Daten des SPDF benutzt.
-no2.spdf <- SpatialPointsDataFrame(
+no2.spdf.bbox <- SpatialPointsDataFrame(
 		coords = result.bbox[,c("lon", "lat")],
 		data = result.bbox[,
 				c("SamplingTime", "feature", "Concentration[NO2]")],
 		proj4string = obs.crs)
-summary(no2.spdf)
+summary(no2.spdf.bbox)
 
 # Viele Funktionen aus sp, ... nun verfügbar
+bbox(no2.spdf.bbox)
+
+# Im Vergleich zu den Daten ohne bounding box, hierbei wird eine "Abkürzung"
+# verwendet wenn die Spaltennamen bekannt sind (sind sie bei 52N SOS)
+obs.no2.2007 <- getObservation(sos = aqe, # inspect = TRUE,
+		offering = no2.off)
+result.no2.2007 <- sosResult(obs.no2.2007, coordinates = TRUE)
+no2.spdf <- as(obs.no2.2007, "SpatialPointsDataFrame")
+summary(no2.spdf)
 bbox(no2.spdf)
 
-# Kürzerer Weg ist möglich, wenn die Spaltennamen passen sind (und bei 52N SOS
-# sind sie es) - coercion der ObservationCollection:
-spdf <- as(obs.2007.bbox, "SpatialPointsDataFrame")
-summary(spdf)
-
-# Coercion einer einzelnen Observation
+# Coercion einer einzelnen Observation ist ebenfalls möglich
 spdf.1 <- as(obs.2007.bbox[[1]], "SpatialPointsDataFrame")
 summary(spdf.1)
 levels(spdf.1[["FeatureOfInterest"]])
@@ -472,9 +476,9 @@ levels(spdf.1[["FeatureOfInterest"]])
 ##### Demos ####################################################################
 demo(package = "sos4R")
 # Demos laufen lassen (enhalten weiterführende Beispiele mit plots usw.):
-demo("weathersos")
-demo("pegel")
-demo("airquality")
+#demo("weathersos")
+#demo("pegel")
+#demo("airquality")
 
 
 ##### Fragen? ##################################################################
