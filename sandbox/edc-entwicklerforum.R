@@ -12,8 +12,10 @@
 #	decoding.
 
 # Workshop #####################################################################
-# Skript öffnen in RGui, dann mit Strg + R aktuelle Zeile oder ausgewählten
+# - Skript öffnen in RGui, dann mit Strg + R aktuelle Zeile oder ausgewählten
 # Code ausführen.
+# - Für R-Neulinge gibt es Tipps und Tricks gleich mit :-).
+# - Funktionen/Features und Baustellen von sos4R immer wieder zwischendurch.
 
 
 ##### Installation #############################################################
@@ -27,11 +29,20 @@ library("sos4R")
 
 ##### Unterstützte und Standard-Features #######################################
 SosSupportedOperations() # jeweils eine entsprechende R Funktion
-SosSupportedServiceVersions()
 SosSupportedConnectionMethods()
+
 SosSupportedResponseFormats()
+SosSupportedServiceVersions()
+# Exchangeability feature: Parsing und encoding-Functionen können einfach 
+# ausgetauscht werden (Liste mit Funktionen)
+
 SosSupportedResponseModes()
-#SosSupportedResultModels()
+
+SosSupportedResultModels()
+## Exkurs: "O&M Profil": sos4R unterstützt, aus offensichtlichen Gründen
+# (52North Innovation Price for Geoinformatics), aber auch aus Ermangelung von
+# allgemeinen Alternativen, das Profil des 52N SOS. Dies gilt auch für die 
+# folgenden Operatoren:
 SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
 
@@ -42,11 +53,8 @@ SosDefaults()
 
 
 ##### Verbindung zu einem SOS erstellen ########################################
-aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos")
-
-# Backup-Server für Niederlande, nur 1 Monat Daten:
+# Minimal-Server für Niederlande, nur 1 Monat Daten:
 aqe <- SOS(url = "http://v-sos.uni-muenster.de:8080/SosAirQuality/sos")
-
 
 # TIPP: Methoden beginnen mit 'sos...'
 # > sos "TAB TAB" in Konsole
@@ -61,9 +69,13 @@ summary(aqe)
 
 
 ##### Capabilities #############################################################
-# http://v-swe.uni-muenster.de:8080/WeatherSOS/sos?service=SOS&request=GetCapabilities
+# Öffnen im Browser: http://v-sos.uni-muenster.de:8080/SosAirQuality/sos?service=SOS&request=GetCapabilities
 # Wurden bereits runtergeladen:
 sosCaps(aqe)
+
+# OWS Common = OGC Web Services Common wurden implementiert für GetCapabilities
+# Request und Exception Handling (OwsExceptionReport), modelliert als Klassen
+# und parsing-Funktionen.
 
 # TIPP: str() Funktion, siehe ?str, insbesondere mit max.level
 str(sosCaps(aqe), max.level = 2)
@@ -144,7 +156,7 @@ title(main = paste("Offering '", sosId(pm10.off), "' at", sosTitle(aqe),
 sensor2 <- describeSensor(aqe, sosProcedures(pm10.off)[[2]])
 sensor2		
 sensor2@xml # Viel Information, einzelne Details über Getter abfragbar, dies
-			# verlangt aber Konformität mit # SensorML Profile for Discovery
+			# verlangt aber Konformität mit SensorML Profile for Discovery
 
 # Getter:
 sosId(sensor2)
@@ -152,7 +164,7 @@ sosId(sensor2)
 #************#
 # Aufgabe 04 #
 #************#
-# Wie ist die Bounding Box von sensor2?
+# Wie ist die Bounding Box von 'sensor2'?
 
 # Wo in Deutschland (Koordinaten und/oder Plot) ist 'sensor2'?
 
@@ -201,6 +213,13 @@ aug2007.obs.small <- getObservation(sos = aqe, offering = "NO2",# verbose = TRUE
 print(aug2007.obs.small)
 str(aug2007.obs.small, max.level = 5) # limitieren der Strukturtiefe
 
+## OmObservationCollection und OmObservation modellieren O&M Datenmodell
+# generisch in R. Dies gibt es in begrenztem Umfang auch für GML, SWE, SensorML,
+# OGC, SA, ... Namespaces.
+## Mittelfristig denkbar: Nicht nur De- und Encoding der Elemente wie sie für 
+# den SOS benötigt werden, sondern generische Transformationsfunktionen
+# (Stichwort "coercion") zwischen O&M/GML/SWE Datenmodell und sp, base-R, ...
+
 # ObservationCollection ist auf vielfältige Art indizierbar:
 aug2007.obs[[1]]
 aug2007.obs[10:14]
@@ -220,8 +239,6 @@ sosBoundedBy(aug2007.obs, bbox = TRUE)
 
 # Wie können die Koordinaten für die Observations 10 bis 20 abgefragt werden?
 
-sosCoordinates(aug2007.obs[10:20])
-
 # Was ist der Unterschied zwischen sosFeatureIds(aug2007.obs)[10:12] und 
 # sosFeatureIds(aug2007.obs[10:12])?
 
@@ -230,14 +247,19 @@ sosCoordinates(aug2007.obs[10:20])
 # sosResult(...) ist die wichtigste Methode:
 sosResult(aug2007.obs[[1]])
 
+# Daten enthalten Zeitreihe an jedem Punkt.
+
 # Testplot
 plot(sosResult(aug2007.obs[[1]]))
 
 # Was ist die Struktur des Results?
 class(sosResult(aug2007.obs[[1]]))
 
-# R Hilfe zu data.frame
+# R Hilfe zu data.frame (und allen anderen Funktionen)
 ?data.frame
+help("data.frame")
+# HTML help:
+help.start()
 
 # Wie kann ich die Daten verschiedene Stationen zusammenfügen?
 sosResult(aug2007.obs[20:21])		# Result der 20. und 21. Observations
@@ -246,7 +268,7 @@ sosResult(aug2007.obs)[20:21,]		# Zeile 20, 21 von allen (!) Daten
 aug2007.result <- sosResult(aug2007.obs)
 
 # Warum XML parsen, wenn sowieso nur CSV-Werte zur einer "Tabelle" geparst
-# werden? Attribute enthalten Metadaten!
+# werden? Attribute enthalten Metadaten aus der Observation!
 names(aug2007.result)
 attributes(aug2007.result[["Concentration[NO2]"]])
 
@@ -284,11 +306,14 @@ idx <- grep(pattern = myStationID, x = sosProcedures(no2.off))
 myStation <- sosProcedures(no2.off)[idx]
 myStation
 
+sosObservedProperties(no2.off)
+
 # Filtern mit observed property nicht notwendig, da sowieso ein Offering nur 
 # ein Phänomen liefert.
 obs.myStation.2007 <- getObservation(sos = aqe,
 		offering = no2.off, # inspect = TRUE,
 		procedure = myStation,
+		observedProperty = sosObservedProperties(no2.off),
 		eventTime = time.2007)
 
 result.myStation.2007 <- sosResult(obs.myStation.2007)
@@ -315,13 +340,6 @@ lines(p ~ result.myStation.2007[["SamplingTime"]], col = 'blue',lwd = 4)
 # Histogramm:
 hist(result.myStation.2007[["Concentration[NO2]"]])
 
-#************#
-# Aufgabe 07 #
-#************#
-# Wie war der maximale Wert von 03 im März 2005 für eine Station in der Nähe 
-# deiner Heimatstadt?
-
-
 
 ##### Räumliche Ausschnitte ####################################################
 #SosSupportedSpatialOperators()
@@ -330,6 +348,7 @@ sosBoundedBy(no2.off)
 # NRW
 #request.bbox <- sosCreateBBOX(lowLat = 49.84, lowLon = 5.98,
 #		uppLat = 52.12, uppLon = 10.15, srsName = "urn:ogc:def:crs:EPSG:4326")
+# Region Amsterdam:
 request.bbox <- sosCreateBBOX(lowLat = 52.276, lowLon = 4.667,
 		uppLat = 52.450, uppLon = 5.049, srsName = "urn:ogc:def:crs:EPSG::4326")
 request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
@@ -355,6 +374,9 @@ sosBoundedBy(obs.2007.bbox, bbox = TRUE)
 
 
 ##### Daten -> sp ##############################################################
+# sp-Object bzw. -Klassen sind die komfortablen Schnittstellen (im Vergleich zu
+# einfachen data.frames) von sos4R in andere Pakete zur Raum-zeitlichen Analyse.
+
 result.bbox <- sosResult(obs.2007.bbox, coordinates = TRUE)
 obs.crs <- sosGetCRS(obs.2007.bbox)
 
@@ -379,17 +401,25 @@ no2.spdf <- as(obs.no2.2007, "SpatialPointsDataFrame")
 summary(no2.spdf)
 bbox(no2.spdf)
 
-# Coercion einer einzelnen Observation ist ebenfalls möglich
+# Coercion einer einzelnen Observation ist ebenfalls möglich, jedoch bis jetzt
+# auf SpatialPointsDataFrame beschränkt. Hier ist natürlich aufwendiges/
+# komfortables/mächtiges Mapping zwischen O&M Datenstrukturen und sp/R/spacetime
+# Datenmodellen ein langfristiges Ziel. Potentiell sogar in beide Richtungen,
+# (Transactional SOS Profile). Funktioniert (nur) für 52N Profil oder ähnliche.
 spdf.1 <- as(obs.2007.bbox[[1]], "SpatialPointsDataFrame")
 summary(spdf.1)
 levels(spdf.1[["FeatureOfInterest"]])
+
 
 #************#
 # Aufgabe 09 #
 #************#
 # Wo sind die Messtationen?
 
-# Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame.
+# Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame, benutze
+# auch den SOS für Deutschland. Wichtig: kleiner zeitlicher oder räumlicher
+# Ausschnitt, damit der Service nicht überansprucht wird.
+aqe.de <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos")
 
 
 ##### Demos ####################################################################
@@ -404,7 +434,7 @@ demo(package = "sos4R")
 vignette("sos4R")
 sosCheatSheet()
 # Mailingliste: http://52north.org/resources/mailing-list-and-forums/
-# 				Bitte den Posting-Guide beachten!
 # Forum:		http://geostatistics.forum.52north.org/
+# Webseite:		http://www.nordholmen.net/sos4r
 # Kontakt:		d.nuest@52north.org
 
