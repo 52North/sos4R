@@ -78,13 +78,6 @@ sosContents(aqe)
 # Die Elemente sind ServiceIdentification, ServiceProvider, OperationsMetadata,
 # Filter_Capabilities.
 
-#++ sosFilter_Capabilities(aqe)
-#++ sosServiceIdentification(aqe)
-#++ sosServiceProvider(aqe)
-#++ sosOperationsMetadata(aqe)
-#++ str(sosOperationsMetadata(aqe))
-#++ sosOperation(aqe, "GetObservation")
-
 # Welche Information sind dort zu finden?
 # Wie viel kostet die Benutzung diese SOS?
 # Wer ist verantwortliche Kontaktperson?
@@ -117,29 +110,8 @@ sosGetCRS(pm10.off)
 # Welche der Funktionen aus diesem Abschnitt funktionieren auch für SOS-Objekte?
 # Was gibt es dabei zu beachten?
 
-#++ sosTime(aqe) # benutzt GetObservation operation description
-#++ sosObservedProperties(aqe)
-#++ str(sosObservedProperties(aqe))
-#++ sosProcedures(aqe)
-#++ sosGetCRS(aqe)
-
-#++ sosId(aqe) # GEHT NICHT! SOS hat keine ID.
-#++ sosBoundedBy(aqe) # GEHT NICHT! BoundingBox ist Offering-spezifisch.
-
 # Welches der Offerings hat die meisten Sensoren?
 # TIPP: ?length
-
-#++ lapply(X = sosProcedures(aqe), FUN = length)
-#++ lapply(X = sosProcedures(sosOfferings(aqe)), FUN = length)
-
-#++ procedures <- sosProcedures(sosOfferings(aqe))
-#++ length(procedures[[1]])
-#++ length(procedures[[2]])
-#++ length(procedures[[3]])
-
-#++ length(sosProcedures(sosOfferings(aqe)[[1]]))
-#++ length(sosProcedures(sosOfferings(aqe)[[2]]))
-#++ length(sosProcedures(sosOfferings(aqe)[[3]]))
 
 
 ##### Grafische Ausgabe von SOS und Offerings ##################################
@@ -166,16 +138,7 @@ title(main = paste("Offering '", sosId(pm10.off), "' at", sosTitle(aqe),
 # Aufgabe 03 #
 #************#
 # Wie können alle Offerings geplottet werden?
-
-#++ plot(map.lines, col = "grey50", lwd = 1)
-#++ plot(sosOfferings(aqe)[[1]], add = TRUE, lwd = 3, border = "green")
-#++ plot(sosOfferings(aqe)[[2]], add = TRUE, lwd = 3, border = "blue")
-#++ plot(sosOfferings(aqe)[[3]], add = TRUE, lwd = 3, border = "red")
-
-#++ plot(map.lines, col = "grey50", lwd = 1)
-#++ plot(aqe, add = TRUE, lwd = 2)
-
-# TIPP: ?text
+# TIPP für Fortgeschrittene: ?text
 
 ##### Sensor Metadaten abfragen ################################################
 sensor2 <- describeSensor(aqe, sosProcedures(pm10.off)[[2]])
@@ -191,12 +154,7 @@ sosId(sensor2)
 #************#
 # Wie ist die Bounding Box von sensor2?
 
-#++ sosBoundedBy(sensor2)
-
 # Wo in Deutschland (Koordinaten und/oder Plot) ist 'sensor2'?
-
-#++ sosCoordinates(sensor2)
-#++ plot(sensor2, add = TRUE, pch = 7, cex = 2)
 
 
 ##### Messungen abfragen #######################################################
@@ -260,22 +218,12 @@ sosBoundedBy(aug2007.obs, bbox = TRUE)
 # Welche procedures, observedProperties und features sind in den erhaltenen
 # Observations zu finden? TIPP: Zugriffsfunktionen!
 
-#++ sosProcedures(aug2007.obs)
-#++ sosObservedProperties(aug2007.obs[[10]])
-
 # Wie können die Koordinaten für die Observations 10 bis 20 abgefragt werden?
 
 sosCoordinates(aug2007.obs[10:20])
 
 # Was ist der Unterschied zwischen sosFeatureIds(aug2007.obs)[10:12] und 
-# sosFeatureIds(aug2007.obs[10:12])
-
-#++ Fragt alle feature ids ab und nimmt von dieser zusammengefügten Liste
-#++ die Elemente 42 bis 44:
-#++ str(sosFeatureIds(aug2007.obs)[10:12]) # List of 3 character
-#++ Frage observations 10 bis 14 ab und ruft auf dieser Liste (!) für jedes
-#++ Element die Funktion sosFeatureIds(...) auf.
-#++ str(sosFeatureIds(aug2007.obs[10:12])) # List of 3 Lists
+# sosFeatureIds(aug2007.obs[10:12])?
 
 
 ##### Tatsächliche Daten erforschen ############################################
@@ -316,24 +264,7 @@ aug2007.data[1:3,]
 # Was sind der maximale/minimale, der Durchschnittswert, der Median und die
 # Quantile von NO2 für alle heruntergeladenen Daten?
 
-#++ summary(aug2007.data)
-#++ summary(aug2007.data[["Concentration[NO2]"]])
-
-#++ max(aug2007.data[["Concentration[NO2]"]])
-#++ min(aug2007.data[["Concentration[NO2]"]])
-#++ mean(aug2007.data[["Concentration[NO2]"]])
-#++ median(aug2007.data[["Concentration[NO2]"]])
-#++ quantile(aug2007.data[["Concentration[NO2]"]])
-
-
 # Wie ist das Phänomen Concentration[NO2] definiert?
-
-#++ "Amount of nitrogen dioxide (NO2) as a fraction of host medium"
-#++ Browser: http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]
-#++ Nur um zu zeigen dass Erweitern mit Paket XML nicht so schlimm ist:
-#++ definition <- getURL("http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]")
-#++ definition.xml <- xmlParse(description)
-#++ getNodeSet(doc = definition.xml, path = "//gml:description/text()")[[1]]
 
 
 ##### Thematische Ausschnitte ##################################################
@@ -419,17 +350,9 @@ sosBoundedBy(obs.2007.bbox, bbox = TRUE)
 #************#
 # Wann und wo (Koordinaten) sind Daten des Offerings NO2 im Vergleich zu den
 # abgefragten Daten verfügbar?
-#++ Wo:
-#++ sosBoundedBy(no2.off, bbox = TRUE)
-#++ summary(sosCoordinates(obs.2007.bbox)[c("lat","lon")])
-
-#++ Wann:
-#++ result.bbox <- sosResult(obs.2007.bbox)
-#++ range(result.bbox[["SamplingTime"]])
-#++ sosTime(no2.off)
 
 # Wie viele Messstationen gibt es in der bounding box, die NO2-Werte liefern?
-#++ length(sosProcedures(obs.2007.bbox))
+
 
 ##### Daten -> sp ##############################################################
 result.bbox <- sosResult(obs.2007.bbox, coordinates = TRUE)
@@ -465,10 +388,6 @@ levels(spdf.1[["FeatureOfInterest"]])
 # Aufgabe 09 #
 #************#
 # Wo sind die Messtationen?
-
-#++ coordinates(spdf)
-#++ plot(x = map.lines, col = "grey")
-#++ plot(spdf, pch = 20, col = "blue", add = TRUE)
 
 # Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame.
 
