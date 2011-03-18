@@ -21,15 +21,15 @@
 ##### Installation #############################################################
 # Dependencies installieren (werden nicht aufgelöst wenn von Datei installiert 
 # wird):
-install.packages("sos4R")
+#install.packages("sos4R")
 # Package laden
 library("sos4R")
 # sessionInfo()
 
 # Weitere packages die benötigt werden für Kartendarstellungen:
-install.packages("maps"); install.packages("mapdata"); install.packages("maptools")
+#install.packages("maps"); install.packages("mapdata"); install.packages("maptools")
 
-##### UnterstÃ¼tzte und Standard-Features #######################################
+##### Unterstützte und Standard-Features #######################################
 SosSupportedOperations() # jeweils eine entsprechende R Funktion
 SosSupportedConnectionMethods()
 
@@ -125,7 +125,6 @@ sosBoundedBy(pm10.off, bbox = TRUE)
 sosTime(pm10.off)
 sosGetCRS(pm10.off)
 
-install.packages("rgdal")
 
 #************#
 # Aufgabe 02 #
@@ -139,8 +138,8 @@ str(sosObservedProperties(aqe))
 sosProcedures(aqe)
 sosGetCRS(aqe)
 
-sosId(aqe) # GEHT NICHT! SOS hat keine ID.
-sosBoundedBy(aqe) # GEHT NICHT! BoundingBox ist Offering-spezifisch.
+#sosId(aqe) # GEHT NICHT! SOS hat keine ID.
+#sosBoundedBy(aqe) # GEHT NICHT! BoundingBox ist Offering-spezifisch.
 
 # Welches der Offerings hat die meisten Sensoren?
 # TIPP: ?length
@@ -454,7 +453,7 @@ obs.2007.bbox
 sosBoundedBy(obs.2007.bbox, bbox = TRUE)
 
 #************#
-# Aufgabe 08 #
+# Aufgabe 07 #
 #************#
 # Wann und wo (Koordinaten) sind Daten des Offerings NO2 im Vergleich zu den
 # abgefragten Daten verfügbar?
@@ -510,18 +509,19 @@ levels(spdf.1[["FeatureOfInterest"]])
 
 
 #************#
-# Aufgabe 09 #
+# Aufgabe 08 #
 #************#
-# Wo sind die Messtationen?
+# Wo sind die Messtationen von no2.spdf?
 
-coordinates(spdf) # nur Koordinates, coordinats ist sp-Funktion
+coordinates(no2.spdf) # nur Koordinates, coordinates ist eine sp-Funktion
 plot(x = map.lines, col = "grey")
 plot(no2.spdf, pch = 20, col = "blue", add = TRUE)
 
 # Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame, benutze
 # auch den SOS für Deutschland. Wichtig: kleiner zeitlicher oder räumlicher
 # Ausschnitt, damit der Service nicht überansprucht wird.
-aqe.de <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos")
+aqe.de <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
+		dataFieldConverters = SosDataFieldConvertingFunctions(aqe.converters))
 
 # ... viel Spass beim Programmieren!
 
