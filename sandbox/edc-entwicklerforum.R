@@ -27,7 +27,7 @@ library("sos4R")
 # sessionInfo()
 
 # Weitere packages die benötigt werden für Kartendarstellungen:
-install.packages("maps"); install.packages("maps"); install.packages("maptools")
+install.packages("maps"); install.packages("mapdata"); install.packages("maptools")
 
 ##### UnterstÃ¼tzte und Standard-Features #######################################
 SosSupportedOperations() # jeweils eine entsprechende R Funktion
@@ -55,7 +55,7 @@ SosDefaults()
 
 
 ##### Verbindung zu einem SOS erstellen ########################################
-# Minimal-Server fÃ¼r Niederlande, nur 1 Monat Daten:
+# Minimal-Server für Niederlande, nur 1 Monat Daten:
 aqe <- SOS(url = "http://v-sos.uni-muenster.de:8080/SosAirQuality/sos")
 
 # TIPP: Methoden beginnen mit 'sos...'
@@ -92,21 +92,28 @@ sosContents(aqe)
 # Die Elemente sind ServiceIdentification, ServiceProvider, OperationsMetadata,
 # Filter_Capabilities.
 
+sosFilter_Capabilities(aqe)
+sosServiceIdentification(aqe)
+sosServiceProvider(aqe)
+sosOperationsMetadata(aqe)
+str(sosOperationsMetadata(aqe))
+sosOperation(aqe, "GetObservation"); sosOperations(aqe)[["GetObservation"]]
+
 # Welche Information sind dort zu finden?
-# Wie viel kostet die Benutzung diese SOS?
-# Wer ist verantwortliche Kontaktperson?
+# Wie viel kostet die Benutzung diese SOS? --> sosServiceIdentification(...)
+# Wer ist verantwortliche Kontaktperson? --> sosServiceProvider(...)
 
 
 ##### Zugriffsfunktionen #######################################################
 # Weitere wichtige Elemente der Capabilities, sind über getter bzw.  accessor 
-# abrufbar, da sie spÃ¤ter zum erstellen der Requests benÃ¶tigt werden:
-sosOfferingIds(aqe) # == names(sosOffering(aqe))
+# abrufbar, da sie später zum erstellen der Requests benÃ¶tigt werden:
+sosOfferingIds(aqe) # == names(sosOfferings(aqe))
 
 sosOfferings(aqe) # > print(sosOfferings(aqe))
 
 # Indexierungsarten (generisch R):
-sosOfferings(aqe)[2:3]			# Subliste
-sosOfferings(aqe)[[3]]			# einzelnes Element
+sosOfferings(aqe)[2:3]				# Subliste
+sosOfferings(aqe)[[3]]				# einzelnes Element
 sosOfferings(aqe)[["PM10"]]		# über die ID 
 
 pm10.off <- sosOfferings(aqe)[["PM10"]]
@@ -118,14 +125,40 @@ sosBoundedBy(pm10.off, bbox = TRUE)
 sosTime(pm10.off)
 sosGetCRS(pm10.off)
 
+install.packages("rgdal")
+
 #************#
 # Aufgabe 02 #
 #************#
 # Welche der Funktionen aus diesem Abschnitt funktionieren auch für SOS-Objekte?
 # Was gibt es dabei zu beachten?
 
+sosTime(aqe) # benutzt GetObservation operation description
+sosObservedProperties(aqe)
+str(sosObservedProperties(aqe))
+sosProcedures(aqe)
+sosGetCRS(aqe)
+
+sosId(aqe) # GEHT NICHT! SOS hat keine ID.
+sosBoundedBy(aqe) # GEHT NICHT! BoundingBox ist Offering-spezifisch.
+
 # Welches der Offerings hat die meisten Sensoren?
 # TIPP: ?length
+
+# Lösung 1:
+lapply(X = sosProcedures(aqe), FUN = length)
+lapply(X = sosProcedures(sosOfferings(aqe)), FUN = length)
+
+# Lösung 2:
+procedures <- sosProcedures(sosOfferings(aqe))
+length(procedures[[1]])
+length(procedures[[2]])
+length(procedures[[3]])
+
+# Lösung 3:
+length(sosProcedures(sosOfferings(aqe)[[1]]))
+length(sosProcedures(sosOfferings(aqe)[[2]]))
+length(sosProcedures(sosOfferings(aqe)[[3]]))
 
 
 ##### Grafische Ausgabe von SOS und Offerings ##################################
@@ -154,6 +187,17 @@ title(main = paste("Offering '", sosId(pm10.off), "' at", sosTitle(aqe),
 # Wie können alle Offerings geplottet werden?
 # TIPP für Fortgeschrittene: ?text
 
+# Lösung 1: "copy und paste"
+plot(map.lines, col = "grey50", lwd = 1)
+plot(sosOfferings(aqe)[[1]], add = TRUE, lwd = 3, border = "green")
+plot(sosOfferings(aqe)[[2]], add = TRUE, lwd = 3, border = "blue")
+plot(sosOfferings(aqe)[[3]], add = TRUE, lwd = 3, border = "red")
+
+# Lösung 2:
+plot(map.lines, col = "grey50", lwd = 1) # neuen Hintergrundplot erzeugen.
+plot(aqe, add = TRUE, lwd = 2)
+
+
 ##### Sensor Metadaten abfragen ################################################
 sensor2 <- describeSensor(aqe, sosProcedures(pm10.off)[[2]])
 sensor2		
@@ -162,13 +206,20 @@ sensor2@xml # Viel Information, einzelne Details Ã¼ber Getter abfragbar, dies
 
 # Getter:
 sosId(sensor2)
+sosBoundedBy(sensor2)
 
 #************#
 # Aufgabe 04 #
 #************#
 # Wie ist die Bounding Box von 'sensor2'?
 
+sosBoundedBy(sensor2)
+
 # Wo in Deutschland (Koordinaten und/oder Plot) ist 'sensor2'?
+
+sosCoordinates(sensor2)
+# geht davon aus dass vorheriger plot nicht geschlossen wurde
+plot(sensor2, add = TRUE, pch = 7, cex = 2)
 
 
 ##### Messungen abfragen #######################################################
@@ -182,7 +233,7 @@ aug2007.6Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 				end = as.POSIXct("2007/08/10 14:00")))
 
 # Daten abrufen, nur zeitlicher Auschnitt:
-aug2007.obs <- getObservation(sos = aqe, # inspect = TRUE,
+aug2007.obs <- getObservation(sos = aqe, inspect = TRUE,
 		offering = pm10.off, eventTime = aug2007.6Hrs)
 warnings()
 
@@ -229,7 +280,7 @@ aug2007.obs[c(17,21)]
 
 # Koordinaten, Features und BoundingBox abfragen:
 sosCoordinates(aug2007.obs[[1]])
-sosCoordinates(aug2007.obs[[1]])
+sosCoordinates(aug2007.obs[10:20])
 sosFeatureIds(aug2007.obs)[10:14]
 sosBoundedBy(aug2007.obs, bbox = TRUE)
 
@@ -239,10 +290,25 @@ sosBoundedBy(aug2007.obs, bbox = TRUE)
 # Welche procedures, observedProperties und features sind in den erhaltenen
 # Observations zu finden? TIPP: Zugriffsfunktionen!
 
-# Wie können die Koordinaten fÃ¼r die Observations 10 bis 20 abgefragt werden?
+sosProcedures(aug2007.obs)
+sosObservedProperties(aug2007.obs[[10]])
+
+# Wie können die Koordinaten für die Observations 10 bis 20 abgefragt werden?
+
+sosCoordinates(aug2007.obs[10:20])
 
 # Was ist der Unterschied zwischen sosFeatureIds(aug2007.obs)[10:12] und 
 # sosFeatureIds(aug2007.obs[10:12])?
+
+sosFeatureIds(aug2007.obs)[10:12]
+# Fragt alle feature ids ab und nimmt von dieser zusammengefügten Liste die
+# Elemente 42 bis 44:
+str(sosFeatureIds(aug2007.obs)[10:12]) # List of 3 character
+
+sosFeatureIds(aug2007.obs[10:12])
+# Fragt observations 10 bis 14 ab und ruft auf dieser Liste (!) für jedes
+# Element die Funktion sosFeatureIds(...) auf.
+str(sosFeatureIds(aug2007.obs[10:12])) # List of 3 Lists
 
 
 ##### Tatsächliche Daten erforschen ############################################
@@ -264,7 +330,7 @@ help("data.frame")
 help.start()
 
 # Wie kann ich die Daten verschiedene Stationen zusammenfügen?
-sosResult(aug2007.obs[20:21])		# Result der 20. und 21. Observations
+sosResult(aug2007.obs[20:21])			# Result der 20. und 21. Observations
 sosResult(aug2007.obs)[20:21,]		# Zeile 20, 21 von allen (!) Daten
 
 aug2007.result <- sosResult(aug2007.obs)
@@ -288,12 +354,33 @@ aug2007.data[1:3,]
 # Was sind der maximale/minimale, der Durchschnittswert, der Median und die
 # Quantile von NO2 für alle heruntergeladenen Daten?
 
+# Lösung 1:
+max(aug2007.data[["Concentration[NO2]"]])
+min(aug2007.data[["Concentration[NO2]"]])
+mean(aug2007.data[["Concentration[NO2]"]])
+median(aug2007.data[["Concentration[NO2]"]])
+quantile(aug2007.data[["Concentration[NO2]"]])
+
+# Lösung 2:
+summary(aug2007.data)
+summary(aug2007.data[["Concentration[NO2]"]])
+
 # Wie ist das Phänomen Concentration[NO2] definiert?
 
+# Antwort: "Amount of nitrogen dioxide (NO2) as a fraction of host medium"
+
+# Lösung 1:
+# Browser: http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]
+
+# Lösung 2: XML parsing
+# Nur um zu zeigen dass Erweitern mit Paket XML nicht so schlimm ist:
+definition <- getURL("http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]")
+definition.xml <- xmlParse(definition)
+getNodeSet(doc = definition.xml, path = "//gml:description/text()")[[1]]
 
 ##### Thematische Ausschnitte ##################################################
 
-# Ein PhÃ¤nomen (auch wenn es sowieso nur eines ist) für eine Station, ein Jahr:
+# Ein Phänomen (auch wenn es sowieso nur eines ist) für eine Station, ein Jahr:
 no2.off <- sosOfferings(aqe)[["NO2"]]
 time.2007 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 				begin = as.POSIXct("2007/01/01"),
@@ -372,8 +459,17 @@ sosBoundedBy(obs.2007.bbox, bbox = TRUE)
 # Wann und wo (Koordinaten) sind Daten des Offerings NO2 im Vergleich zu den
 # abgefragten Daten verfügbar?
 
-# Wie viele Messstationen gibt es in der bounding box, die NO2-Werte liefern?
+# Wo:
+sosBoundedBy(no2.off, bbox = TRUE)
+summary(sosCoordinates(obs.2007.bbox)[c("lat","lon")])
 
+# Wann:
+result.bbox <- sosResult(obs.2007.bbox)
+range(result.bbox[["SamplingTime"]])
+sosTime(no2.off)
+
+# Wie viele Messstationen gibt es in der bounding box, die NO2-Werte liefern?
+length(sosProcedures(obs.2007.bbox))
 
 ##### Daten -> sp ##############################################################
 # sp-Object bzw. -Klassen sind die komfortablen Schnittstellen (im Vergleich zu
@@ -382,7 +478,7 @@ sosBoundedBy(obs.2007.bbox, bbox = TRUE)
 result.bbox <- sosResult(obs.2007.bbox, coordinates = TRUE)
 obs.crs <- sosGetCRS(obs.2007.bbox)
 
-# Die Spalten lon, lat werden fÃ¼r die Koordinaten des SPDF, die anderen Spalten
+# Die Spalten lon, lat werden für die Koordinaten des SPDF, die anderen Spalten
 # für die Daten des SPDF benutzt.
 no2.spdf.bbox <- SpatialPointsDataFrame(
 		coords = result.bbox[,c("lon", "lat")],
@@ -391,10 +487,10 @@ no2.spdf.bbox <- SpatialPointsDataFrame(
 		proj4string = obs.crs)
 summary(no2.spdf.bbox)
 
-# Viele Funktionen aus sp, ... nun verfÃ¼gbar
+# Viele Funktionen aus sp, ... nun verfügbar
 bbox(no2.spdf.bbox)
 
-# Im Vergleich zu den Daten ohne bounding box, hierbei wird eine "AbkÃ¼rzung"
+# Im Vergleich zu den Daten ohne bounding box, hierbei wird eine "Abkürzung"
 # verwendet wenn die Spaltennamen bekannt sind (sind sie bei 52N SOS)
 obs.no2.2007 <- getObservation(sos = aqe, # inspect = TRUE,
 		offering = no2.off)
@@ -418,14 +514,20 @@ levels(spdf.1[["FeatureOfInterest"]])
 #************#
 # Wo sind die Messtationen?
 
+coordinates(spdf) # nur Koordinates, coordinats ist sp-Funktion
+plot(x = map.lines, col = "grey")
+plot(no2.spdf, pch = 20, col = "blue", add = TRUE)
+
 # Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame, benutze
 # auch den SOS für Deutschland. Wichtig: kleiner zeitlicher oder räumlicher
 # Ausschnitt, damit der Service nicht überansprucht wird.
 aqe.de <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos")
 
+# ... viel Spass beim Programmieren!
 
 ##### Demos ####################################################################
 demo(package = "sos4R")
+
 # Demos laufen lassen (enhalten weiterführende Beispiele mit plots usw.):
 #demo("weathersos")
 #demo("pegel")
@@ -439,4 +541,3 @@ sosCheatSheet()
 # Forum:		http://geostatistics.forum.52north.org/
 # Webseite:		http://www.nordholmen.net/sos4r
 # Kontakt:		d.nuest@52north.org
-
