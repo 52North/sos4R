@@ -13,3 +13,5 @@ print(object.size(ades), units=c("Mb"))
 ades.off <- sosOfferingIds(ades)
 
 # TODO
+
+cat("Demo finished, try another one!\n")

@@ -36,3 +36,4 @@ length(ocean.off)
 
 # TODO
 
+cat("Demo finished, try another one!\n")

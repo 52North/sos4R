@@ -236,6 +236,82 @@ setMethod(f = "sosCreateEventTimeList",
 			return(.et)
 		}
 )
+
+#
+# http://de.wikipedia.org/wiki/ISO_8601#Zeitspannen
+# TODO implement function
+# See section "subsetting" in http://cran.r-project.org/web/packages/xts/vignettes/xts.pdf
+#
+if (!isGeneric("sosCreateTime"))
+	setGeneric(name = "sosCreateTime",
+			def = function(sos, time, operator = sosDefaultTemporalOperator) {
+				standardGeneric("sosCreateTime")
+			})
+setMethod(f = "sosCreateTime",
+		signature = signature(sos = "SOS", time = "character"),
+		def = function(sos, time, operator) {
+			if(regexpr(pattern = "::", text = time) > -1) {
+				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
+						operator = operator, seperator = "::")
+			}
+			else if(regexpr(pattern = "P", text = time) > -1) {
+				.l <- .sosCreateEventTimeListFromISOPeriod(sos = sos, 
+						time = time, operator = operator)
+			}
+			else if(regexpr(pattern = "/", text = time) > -1) {
+				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
+						operator = operator, seperator = "/")
+			}
+
+			return(.l)
+		}
+)
+
+.sosCreateEventTimeListFromPeriod <- function(sos, time, operator, seperator) {
+	.times <- strsplit(x = time, split = seperator)[[1]]
+	.start <- .times[[1]]
+	if(length(.times) > 1)
+		.end <- .times[[2]]
+	else .end <- NULL
+	
+#	print(.start); print(.end);	print(nchar(.start)); print(nchar(.end));
+#	str(.start); print(.end); 
+	
+	if(is.null(.end)) {
+		# no end time:
+		.ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.start))
+		.l <- sosCreateEventTimeList(time = .ti,
+				operator = SosSupportedTemporalOperators()[[ogcTempOpTMAfterName]])
+	}
+	else if(nchar(.start) > 0) {
+		.tp <- sosCreateTimePeriod(sos = sos, begin = as.POSIXct(.start),
+				end = as.POSIXct(.end))
+		.l <- sosCreateEventTimeList(.tp)
+	}
+	else if(nchar(.start) < 1) {
+		# no start time:
+		.ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.end))
+		.l <- sosCreateEventTimeList(time = .ti,
+				operator = SosSupportedTemporalOperators()[[ogcTempOpTMBeforeName]])
+	}
+	
+	return(.l)
+}
+
+.sosCreateEventTimeListFromISOPeriod <- function(sos, time, operator) {
+#	* 2005-08-09T18:31:42P3Y6M4DT12H30M17S: bestimmt eine Zeitspanne von 3 Jahren, 6 Monaten, 4 Tagen 12 Stunden, 30 Minuten und 17 Sekunden ab dem 9. August 2005 „kurz nach halb sieben Abends“.
+#	* P1D: „Bis morgen zur jetzigen Uhrzeit.“ Es könnte auch „PT24H“ verwendet werden, doch erstens wären es zwei Zeichen mehr, und zweitens würde es bei der Zeitumstellung nicht mehr zutreffen.
+#	* P0003-06-04T12:30:17
+#	* P3Y6M4DT12H30M17S: gleichbedeutend mit dem ersten Beispiel, allerdings ohne ein bestimmtes Startdatum zu definieren
+#	* PT72H: „Bis in 72 Stunden ab jetzt.“
+#	* 2005-08-09P14W: „Die 14 Wochen nach dem 9. August 2005.“
+#	* 2005-08-09/2005-08-30
+#	* 2005-08-09--30
+#	* 2005-08-09/30: „Vom 9. bis 30. August 2005.“
+	
+	warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
+}
+
 if (!isGeneric("sosCreateEventTime"))
 	setGeneric(name = "sosCreateEventTime",
 			def = function(time, operator = sosDefaultTemporalOperator) {
@@ -484,23 +560,25 @@ setMethod(f = "sosExceptionCodeMeaning",
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "character"),
 		def = function(obj) {
-			if(!require(rgdal, quietly = TRUE))
-				print("rgdal not present: CRS values will not be converted correctly")
-			
-			# get the position of EPSG
+			# get the position of EPSG code
 			.split <- strsplit(as.character(obj), split = ":")
 			.idx <- which(toupper(.split[[1]]) == "EPSG")
 			if(length(.idx) == 0) {
-				# possibly versioned, try one index higher
-				
-				
+				# possibly versioned, try one index higher?
 				warning(paste("Could not create CRS from the given object:", obj))
 				return(NULL)
 			}
 			.epsg <- .split[[1]][[length(.split[[1]])]]
 			
 			.initString <- paste("+init=epsg", .epsg, sep = ":")
+			
+			.rgdal <- require("rgdal", quietly = TRUE)
+			if(!.rgdal) {
+				# if(!("rgdal" %in% .packages())) does only check loaded pkgs
+				warning("rgdal not present: CRS values will not be validated.")
+			}
 			.crs <- CRS(.initString)
+			
 			return(.crs)
 		}
 )
@@ -567,17 +645,6 @@ setMethod(f = "sosGetCRS",
 
 
 #
-# ‘"’, ‘*’, ‘:’, ‘/’, ‘<’, ‘>’, ‘?’, ‘\’, and ‘|’
-#
-.cleanupFileName <- function(obj) {
-	.clean <- gsub(
-			pattern = "[\\/:\"|?<>*,]+",
-			x = obj,
-			replacement = "_")
-	return(.clean)
-}
-
-#
 #
 #
 setMethod(f = "sosGetDCP",
@@ -595,6 +662,40 @@ setMethod(f = "sosGetDCP",
 			else return(.dcps)
 		}
 )
+
+
+################################################################################
+#
+# ‘"’, ‘*’, ‘:’, ‘/’, ‘<’, ‘>’, ‘?’, ‘\’, and ‘|’
+#
+.cleanupFileName <- function(obj) {
+	.clean <- gsub(
+			pattern = "[\\/:\"|?<>*,]+",
+			x = obj,
+			replacement = "_")
+	return(.clean)
+}
+
+.illegalColumnNameCharacters <- list("\\[", "\\]", "@", "\\$", "~",
+		"\\+", "-", "\\*")
+.illegalColumnNameEscapeCharacter <- "."
+
+.cleanupColumnName <- function(name) {
+	# replace illegal characters
+	.name <- name
+	
+	for (.x in .illegalColumnNameCharacters) {
+		# replace multiple escape characters with one
+		.name <- gsub(pattern = .x,
+				replacement = .illegalColumnNameEscapeCharacter,
+				x = .name)
+	}
+	
+	.name <- gsub(pattern = paste("(\\",
+					.illegalColumnNameEscapeCharacter, ")+", sep = ""),
+			replacement = .illegalColumnNameEscapeCharacter, x = .name)
+	return(.name)
+}
 
 
 ################################################################################

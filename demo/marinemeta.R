@@ -48,3 +48,5 @@ plot(data[,c("Temperature", "Salinity", "Conductivity")],
 		sub = "OOSTethys Sensor Observation Service")
 
 cat("\nExpect a warning here because of incomplete swe:Quantitiy.\n")
+
+cat("Demo finished, try another one!\n")

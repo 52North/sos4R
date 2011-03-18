@@ -24,6 +24,10 @@
 \alias{sosCreateTimePeriod-methods}
 \alias{sosCreateTimePeriod,SOS,POSIXt,POSIXt-method}
 
+\alias{sosCreateTime}
+\alias{sosCreateTime-methods}
+\alias{sosCreateTime,SOS,character-method}
+
 \title{Convenience Functions for Request Parameter Creations}
 
 \description{

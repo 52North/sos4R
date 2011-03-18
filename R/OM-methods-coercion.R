@@ -120,6 +120,7 @@ setAs(from = "OmObservation", to = "SpatialPointsDataFrame",
 ################################################################################
 #
 .resultDataFrameToSpatialPointsDataFrame <- function(result, crs) {
+	# TODO fix column order, which is x~y according to ?coordinates
 	.coordCols <- match(c(sosDefaultColumnNameLat, sosDefaultColumnNameLon),
 			colnames(result))
 	

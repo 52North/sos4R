@@ -80,3 +80,5 @@ r1plot <- xyplot(r1clean$Wasserstand ~ r1clean$Time, r1clean, type = "l",
 	xlab = "Time", ylab = "Water level")
 r1plot <- r1plot + layer(panel.quantile(x, y, tau = c(.95, .5, .05)))
 show(r1plot)
+
+cat("Demo finished, try another one!\n")

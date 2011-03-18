@@ -376,7 +376,8 @@ spplot(one.utm, add = TRUE)
 
 spplot(x["var1.var"],  main = "ordinary kriging variance")
 
-
+################################################################################
 # spacetime
 # TODO continue analysis with spacetime package
 
+cat("Demo finished, try another one!\n")

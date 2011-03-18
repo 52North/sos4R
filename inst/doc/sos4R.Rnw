@@ -779,7 +779,7 @@ sosResult(obs.temp.latest, coordinates = TRUE)
 
 The possibly most typical temporal filter is a period of time for which measurements are of interest.
 
-<<temporalFiltering1,eval=TRUE,echo=TRUE>>= 
+<<temporalFiltering1a,eval=TRUE,echo=TRUE>>= 
 # temporal interval creation based on POSIXt classes 
 last.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = (Sys.time() - 3600 * 24 * 7), end = Sys.time())
@@ -791,7 +791,17 @@ oneWeek.eventTime <- sosCreateEventTimeList(oneWeek.period)
 
 Please note that the create function \code{sosCreateEventTimeList()} also wraps the created objects in a list as expected by the method \code{getObservation(...)}.
 
-What was the average temperature during the last week?
+The most comfortable creation function for event times is \code{sosCreateTime(...)}. It supports time intervals with starttime and endtime as character strings seperated by \code{::} or \code{/} as defined by ISO 8601\footnote{\url{http://en.wikipedia.org/wiki/ISO_8601#Time_intervals}}. The respective time stamps have to be parsable by \code{as.POSIXct(...)}. If either one of the time stamps is missing, a \code{GmlTimePosition} wrapped in the appropriate relative temporal operator, e.g. \enquote{before}.
+
+<<temporalFiltering1b,eval=TRUE,echo=TRUE>>= 
+sosCreateTime(sos = mySOS, time = "2007-07-07 07:00::2008-08-08 08:00")
+sosCreateTime(sos = mySOS, time = "2007-07-07 07:00/2010-10-10 10:00")
+
+sosCreateTime(sos = mySOS, time = "::2007-08-05")
+sosCreateTime(sos = mySOS, time = "2007-08-05/")
+@
+
+What was the minimum, average and maximum temperature during the last week?
 		
 <<temporalFiltering2,eval=TRUE,echo=TRUE>>= 
 obs.oneWeek <- getObservation(sos = mySOS,

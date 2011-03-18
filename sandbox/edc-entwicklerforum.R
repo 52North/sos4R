@@ -239,7 +239,7 @@ warnings()
 # PROBLEM: Nicht unterstützte Datenfelder werden abgefragt! Konverter ergänzen:
 aqe.converters <- SosDataFieldConvertingFunctions(
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
-		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
+		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration.NO2." = sosConvertDouble,
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[O3]" = sosConvertDouble,
 		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
 		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString)
@@ -337,7 +337,7 @@ aug2007.result <- sosResult(aug2007.obs)
 # Warum XML parsen, wenn sowieso nur CSV-Werte zur einer "Tabelle" geparst
 # werden? Attribute enthalten Metadaten aus der Observation!
 names(aug2007.result)
-attributes(aug2007.result[["Concentration[NO2]"]])
+attributes(aug2007.result[["Concentration.NO2."]])
 
 # Kombination der results mit den Koordinaten
 aug2007.coords <- sosCoordinates(aug2007.obs)[1:5,]
@@ -354,26 +354,26 @@ aug2007.data[1:3,]
 # Quantile von NO2 für alle heruntergeladenen Daten?
 
 # Lösung 1:
-max(aug2007.data[["Concentration[NO2]"]])
-min(aug2007.data[["Concentration[NO2]"]])
-mean(aug2007.data[["Concentration[NO2]"]])
-median(aug2007.data[["Concentration[NO2]"]])
-quantile(aug2007.data[["Concentration[NO2]"]])
+max(aug2007.data[["Concentration.NO2."]])
+min(aug2007.data[["Concentration.NO2."]])
+mean(aug2007.data[["Concentration.NO2."]])
+median(aug2007.data[["Concentration.NO2."]])
+quantile(aug2007.data[["Concentration.NO2."]])
 
 # Lösung 2:
 summary(aug2007.data)
-summary(aug2007.data[["Concentration[NO2]"]])
+summary(aug2007.data[["Concentration.NO2."]])
 
-# Wie ist das Phänomen Concentration[NO2] definiert?
+# Wie ist das Phänomen Concentration.NO2. definiert?
 
 # Antwort: "Amount of nitrogen dioxide (NO2) as a fraction of host medium"
 
 # Lösung 1:
-# Browser: http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]
+# Browser: http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration.NO2.
 
 # Lösung 2: XML parsing
 # Nur um zu zeigen dass Erweitern mit Paket XML nicht so schlimm ist:
-definition <- getURL("http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]")
+definition <- getURL("http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration.NO2.")
 definition.xml <- xmlParse(definition)
 getNodeSet(doc = definition.xml, path = "//gml:description/text()")[[1]]
 
@@ -409,7 +409,7 @@ summary(result.myStation.2007)
 
 # Zeitreihenplot:
 plot(result.myStation.2007[["SamplingTime"]],
-		result.myStation.2007[["Concentration[NO2]"]],
+		result.myStation.2007[["Concentration.NO2."]],
 		type = "l",
 		main = paste("NO2 in", myStation,
 				min(result.myStation.2007[["SamplingTime"]]), "-",
@@ -417,16 +417,16 @@ plot(result.myStation.2007[["SamplingTime"]],
 		sub = myStation,
 		xlab = "Time",
 		ylab = paste("NO2 (",
-				attributes(result.myStation.2007[["Concentration[NO2]"]])[["unit of measurement"]],
+				attributes(result.myStation.2007[["Concentration.NO2."]])[["unit of measurement"]],
 				")", sep = ""))
-locRegr <- loess(result.myStation.2007[["Concentration[NO2]"]]~
+locRegr <- loess(result.myStation.2007[["Concentration.NO2."]]~
 				as.numeric(result.myStation.2007[["SamplingTime"]]),
 		result.myStation.2007, enp.target = 5)
 p = predict(locRegr)
 lines(p ~ result.myStation.2007[["SamplingTime"]], col = 'blue',lwd = 4)
 
 # Histogramm:
-hist(result.myStation.2007[["Concentration[NO2]"]])
+hist(result.myStation.2007[["Concentration.NO2."]])
 
 
 ##### Räumliche Ausschnitte ####################################################
@@ -482,7 +482,7 @@ obs.crs <- sosGetCRS(obs.2007.bbox)
 no2.spdf.bbox <- SpatialPointsDataFrame(
 		coords = result.bbox[,c("lon", "lat")],
 		data = result.bbox[,
-				c("SamplingTime", "feature", "Concentration[NO2]")],
+				c("SamplingTime", "feature", "Concentration.NO2.")],
 		proj4string = obs.crs)
 summary(no2.spdf.bbox)
 

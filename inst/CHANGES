@@ -173,9 +173,15 @@
 2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-18
+* Bugfix in coordinate order in coercion function for SpatialPointsDataFrame
+* Added function sosCreateTime(...)
+* Removed require(rgdal) from sosGetCRS(...) and replaced it with a check and potential warning as done in sp:::CRS
+* Replacing potentially critical characters from data.frame column names (function .cleanupColumnName(...))
 * ...
 
 # TODO:
 * add function =sosUOM()= extracts a named character vector of all attributes named "uom" from a given data.frame/OmObservation/OmObservationCollection/OmMeasurement, names are the variable/column names.
 * implement =summary= functions for =OmObservation= and =OmMeasurement=, should also contain numerical/statistical information about the contained result, the feature, the name, etc.
+* 	see summary function for STFDF
 * TODOs in testing-SOSs.R
+* Base Vignette on downloaded observation files as far as possible

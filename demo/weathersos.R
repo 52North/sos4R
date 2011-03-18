@@ -128,3 +128,5 @@ for (x in procs.descr) {
 text(sosCoordinates(procs.descr)[c("x", "y")], labels = sosId(procs.descr),
 		pos = 4)
 title(main = paste("Sensors of", sosTitle(weathersos)))
+
+cat("Demo finished, try another one!\n")

@@ -1229,3 +1229,39 @@ spplot(NO2.idw[1], col.regions = bpy.colors(), sp.layout=lt)
 # plot stations, something wrong with projection?
 plot(no2.spdf, add = TRUE)
 
+
+################################################################################
+# Event time list creation based on character strings:
+
+sosCreateTime(sos = aqe, time = "2007-08-01 08:00::2007-08-05 15:00")
+sosCreateTime(sos = aqe, time = "2007-08-01 15:00/2007-08-05 20:00")
+
+# test with request
+getObservation(sos = aqe, offering = sosOfferings(aqe)[[1]],
+		eventTime = sosCreateTime(sos = aqe,
+				time = "2007-08-01 15:00/2007-08-05 20:00"))
+# all good!
+
+sosCreateTime(sos = aqe, time = "::2007-08-05")
+sosCreateTime(sos = aqe, time = "2007-08-05::")
+
+getObservation(sos = aqe, offering = sosOfferings(aqe)[[1]],
+		eventTime = sosCreateTime(sos = aqe, time =  "::2007-08-02"))
+
+sosCreateTime(sos = aqe, time = "/2007-08-05")
+sosCreateTime(sos = aqe, time = "2007-08-05/")
+
+
+################################################################################
+# get all code chunks of a vignette
+edit(vignette("sos4R"))
+
+
+################################################################################
+# there are some characters that should not be used for colum names as they can
+# cause problems when using formula (?formula)
+.escapeColumnName("Concentration[NO2]")
+.escapeColumnName("Concentration[[NO2][und@home.net]]")
+.escapeColumnName("Concentration~A+B-C")
+.escapeColumnName("Concentration**A$A$A**")
+# works.

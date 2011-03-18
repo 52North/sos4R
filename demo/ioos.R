@@ -168,5 +168,6 @@ sosResponseFormats(ioosdif)
 
 # TODO write parser for KML results, return kml as is and export using
 # examples from Spatial-Analyst?
-		
 
+
+cat("Demo finished, try another one!\n")

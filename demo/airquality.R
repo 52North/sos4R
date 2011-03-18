@@ -245,3 +245,4 @@ data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw0
 p = predict(data.denw095.2004.locRegr)
 lines(p ~ data.denw095.2004[["SamplingTime"]], col = 'blue',lwd = 4)
 
+cat("Demo finished, try another one!\n")

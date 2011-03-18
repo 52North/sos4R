@@ -142,3 +142,6 @@ summary(ooe)
 
 # TODO KML export, or make visualization example following howto:
 # http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE
+
+
+cat("Demo finished, try another one!\n")

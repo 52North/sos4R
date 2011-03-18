@@ -146,7 +146,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		
 		# create the names of the new data:
 		.newDataName <- .currentField[[.sosParseFieldName]]		
-		names(.newData) <- .newDataName
+		names(.newData) <- .cleanupColumnName(.newDataName)
 		
 		if(verbose) cat("[parseValues] Added column name:", names(.newData), "\n")
 
