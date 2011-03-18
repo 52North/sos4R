@@ -1,5 +1,5 @@
 # ESRI Development Center (EDC) Entwickerforum Time & Space
-# MÃ¼nster, 17. - 18.02.2011
+# Münster, 17. - 18.02.2011
 # 
 # Author: Daniel Nüst
 # sos4R Webseite (downloads, news): http://www.nordholmen.net/sos4r
