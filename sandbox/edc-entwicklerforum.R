@@ -1,7 +1,7 @@
 # ESRI Development Center (EDC) Entwickerforum Time & Space
 # MÃ¼nster, 17. - 18.02.2011
 # 
-# Author: Daniel NÃ¼st
+# Author: Daniel Nüst
 # sos4R Webseite (downloads, news): http://www.nordholmen.net/sos4r
 ################################################################################
 
@@ -12,20 +12,22 @@
 #	decoding.
 
 # Workshop #####################################################################
-# - Skript Ã¶ffnen in RGui, dann mit Strg + R aktuelle Zeile oder ausgewÃ¤hlten
-# Code ausfÃ¼hren.
-# - FÃ¼r R-Neulinge gibt es Tipps und Tricks gleich mit :-).
+# - Skript öffnen in RGui, dann mit Strg + R aktuelle Zeile oder ausgewählten
+# Code ausführen.
+# - Für R-Neulinge gibt es Tipps und Tricks gleich mit :-).
 # - Funktionen/Features und Baustellen von sos4R immer wieder zwischendurch.
 
 
 ##### Installation #############################################################
-# Dependencies installieren (werden nicht aufgelÃ¶st wenn von Datei installiert 
+# Dependencies installieren (werden nicht aufgelöst wenn von Datei installiert 
 # wird):
-#install.packages("sos4R")
+install.packages("sos4R")
 # Package laden
 library("sos4R")
 # sessionInfo()
 
+# Weitere packages die benötigt werden für Kartendarstellungen:
+install.packages("maps"); install.packages("maps"); install.packages("maptools")
 
 ##### UnterstÃ¼tzte und Standard-Features #######################################
 SosSupportedOperations() # jeweils eine entsprechende R Funktion
@@ -33,15 +35,15 @@ SosSupportedConnectionMethods()
 
 SosSupportedResponseFormats()
 SosSupportedServiceVersions()
-# Exchangeability feature: Parsing und encoding-Functionen kÃ¶nnen einfach 
+# Exchangeability feature: Parsing und encoding-Functionen können einfach 
 # ausgetauscht werden (Liste mit Funktionen)
 
 SosSupportedResponseModes()
 
 SosSupportedResultModels()
-## Exkurs: "O&M Profil": sos4R unterstÃ¼tzt, aus offensichtlichen GrÃ¼nden
+## Exkurs: "O&M Profil": sos4R unterstützt, aus offensichtlichen Gründen
 # (52North Innovation Price for Geoinformatics), aber auch aus Ermangelung von
-# allgemeinen Alternativen, das Profil des 52N SOS. Dies gilt auch fÃ¼r die 
+# allgemeinen Alternativen, das Profil des 52N SOS. Dies gilt auch für die 
 # folgenden Operatoren:
 SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
@@ -63,7 +65,7 @@ sosUrl(aqe)
 sosVersion(aqe)
 sosMethod(aqe)
 
-# Standard R Funktionen werden oft unterstÃ¼tzt:
+# Standard R Funktionen werden oft unterstützt:
 print(aqe)
 summary(aqe)
 
@@ -73,7 +75,7 @@ summary(aqe)
 # Wurden bereits runtergeladen:
 sosCaps(aqe)
 
-# OWS Common = OGC Web Services Common wurden implementiert fÃ¼r GetCapabilities
+# OWS Common = OGC Web Services Common wurden implementiert für GetCapabilities
 # Request und Exception Handling (OwsExceptionReport), modelliert als Klassen
 # und parsing-Funktionen.
 
@@ -86,7 +88,7 @@ sosContents(aqe)
 #************#
 # Aufgabe 01 #
 #************#
-# Wie kÃ¶nnen die weiteren Sektionen der Capabilities abgefragt werden?
+# Wie können die weiteren Sektionen der Capabilities abgefragt werden?
 # Die Elemente sind ServiceIdentification, ServiceProvider, OperationsMetadata,
 # Filter_Capabilities.
 
@@ -96,7 +98,7 @@ sosContents(aqe)
 
 
 ##### Zugriffsfunktionen #######################################################
-# Weitere wichtige Elemente der Capabilities, sind Ã¼ber getter bzw.  accessor 
+# Weitere wichtige Elemente der Capabilities, sind über getter bzw.  accessor 
 # abrufbar, da sie spÃ¤ter zum erstellen der Requests benÃ¶tigt werden:
 sosOfferingIds(aqe) # == names(sosOffering(aqe))
 
@@ -105,7 +107,7 @@ sosOfferings(aqe) # > print(sosOfferings(aqe))
 # Indexierungsarten (generisch R):
 sosOfferings(aqe)[2:3]			# Subliste
 sosOfferings(aqe)[[3]]			# einzelnes Element
-sosOfferings(aqe)[["PM10"]]	# Ã¼ber die ID 
+sosOfferings(aqe)[["PM10"]]		# über die ID 
 
 pm10.off <- sosOfferings(aqe)[["PM10"]]
 
@@ -119,7 +121,7 @@ sosGetCRS(pm10.off)
 #************#
 # Aufgabe 02 #
 #************#
-# Welche der Funktionen aus diesem Abschnitt funktionieren auch fÃ¼r SOS-Objekte?
+# Welche der Funktionen aus diesem Abschnitt funktionieren auch für SOS-Objekte?
 # Was gibt es dabei zu beachten?
 
 # Welches der Offerings hat die meisten Sensoren?
@@ -149,8 +151,8 @@ title(main = paste("Offering '", sosId(pm10.off), "' at", sosTitle(aqe),
 #************#
 # Aufgabe 03 #
 #************#
-# Wie kÃ¶nnen alle Offerings geplottet werden?
-# TIPP fÃ¼r Fortgeschrittene: ?text
+# Wie können alle Offerings geplottet werden?
+# TIPP für Fortgeschrittene: ?text
 
 ##### Sensor Metadaten abfragen ################################################
 sensor2 <- describeSensor(aqe, sosProcedures(pm10.off)[[2]])
@@ -172,7 +174,7 @@ sosId(sensor2)
 ##### Messungen abfragen #######################################################
 # TIPP: "inspect" benutzen um die requests und responses kennen zu lernen!
 
-##### TemporÃ¤re Ausschnitte ####################################################
+##### Temporäre Ausschnitte ####################################################
 # 1 Stunde im Dezember, alle Daten zu viel wegen parallelen Anfragen!
 # TIPP: sosCreate... - Funktionen helfen korrekte Strukturen zu erzeugen:
 aug2007.6Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
@@ -184,7 +186,7 @@ aug2007.obs <- getObservation(sos = aqe, # inspect = TRUE,
 		offering = pm10.off, eventTime = aug2007.6Hrs)
 warnings()
 
-# PROBLEM: Nicht unterstÃ¼tzte Datenfelder werden abgefragt! Konverter ergÃ¤nzen:
+# PROBLEM: Nicht unterstützte Datenfelder werden abgefragt! Konverter ergänzen:
 aqe.converters <- SosDataFieldConvertingFunctions(
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[NO2]" = sosConvertDouble,
@@ -196,12 +198,12 @@ aqe.converters <- SosDataFieldConvertingFunctions(
 aqe <- SOS(sosUrl(aqe), dataFieldConverters = aqe.converters)
 
 # Nochmaliges daten abrufen, diesmal alternativ auf Basis der offering ID:
-# Daten fÃ¼r ganz Deutschland!
+# Daten für ganz Deutschland!
 aug2007.obs <- getObservation(sos = aqe, offering = "NO2", #verbose = TRUE,
 #		saveOriginal = TRUE,
 		eventTime = aug2007.6Hrs)
-# Parsing dauert lÃ¤nger als request -> wenig Daten in vielen Observations, hoher
-# XML overhead.
+# Parsing dauert länger als request -> wenig Daten in vielen Observations, hoher
+# XML overhead?
 
 # Nur einige Stationen, mit 'inspect' Parameter
 aug2007.obs.small <- getObservation(sos = aqe, offering = "NO2",# verbose = TRUE,
@@ -214,13 +216,13 @@ print(aug2007.obs.small)
 str(aug2007.obs.small, max.level = 5) # limitieren der Strukturtiefe
 
 ## OmObservationCollection und OmObservation modellieren O&M Datenmodell
-# generisch in R. Dies gibt es in begrenztem Umfang auch fÃ¼r GML, SWE, SensorML,
+# generisch in R. Dies gibt es in begrenztem Umfang auch für GML, SWE, SensorML,
 # OGC, SA, ... Namespaces.
-## Mittelfristig denkbar: Nicht nur De- und Encoding der Elemente wie sie fÃ¼r 
-# den SOS benÃ¶tigt werden, sondern generische Transformationsfunktionen
+## Mittelfristig denkbar: Nicht nur De- und Encoding der Elemente wie sie für 
+# den SOS benötigt werden, sondern generische Transformationsfunktionen
 # (Stichwort "coercion") zwischen O&M/GML/SWE Datenmodell und sp, base-R, ...
 
-# ObservationCollection ist auf vielfÃ¤ltige Art indizierbar:
+# ObservationCollection ist auf vielfältige Art indizierbar:
 aug2007.obs[[1]]
 aug2007.obs[10:14]
 aug2007.obs[c(17,21)]
@@ -237,13 +239,13 @@ sosBoundedBy(aug2007.obs, bbox = TRUE)
 # Welche procedures, observedProperties und features sind in den erhaltenen
 # Observations zu finden? TIPP: Zugriffsfunktionen!
 
-# Wie kÃ¶nnen die Koordinaten fÃ¼r die Observations 10 bis 20 abgefragt werden?
+# Wie können die Koordinaten fÃ¼r die Observations 10 bis 20 abgefragt werden?
 
 # Was ist der Unterschied zwischen sosFeatureIds(aug2007.obs)[10:12] und 
 # sosFeatureIds(aug2007.obs[10:12])?
 
 
-##### TatsÃ¤chliche Daten erforschen ############################################
+##### Tatsächliche Daten erforschen ############################################
 # sosResult(...) ist die wichtigste Methode:
 sosResult(aug2007.obs[[1]])
 
@@ -261,7 +263,7 @@ help("data.frame")
 # HTML help:
 help.start()
 
-# Wie kann ich die Daten verschiedene Stationen zusammenfÃ¼gen?
+# Wie kann ich die Daten verschiedene Stationen zusammenfügen?
 sosResult(aug2007.obs[20:21])		# Result der 20. und 21. Observations
 sosResult(aug2007.obs)[20:21,]		# Zeile 20, 21 von allen (!) Daten
 
@@ -284,14 +286,14 @@ aug2007.data[1:3,]
 # Aufgabe 06 #
 #************#
 # Was sind der maximale/minimale, der Durchschnittswert, der Median und die
-# Quantile von NO2 fÃ¼r alle heruntergeladenen Daten?
+# Quantile von NO2 für alle heruntergeladenen Daten?
 
-# Wie ist das PhÃ¤nomen Concentration[NO2] definiert?
+# Wie ist das Phänomen Concentration[NO2] definiert?
 
 
 ##### Thematische Ausschnitte ##################################################
 
-# Ein PhÃ¤nomen (auch wenn es sowieso nur eines ist) fÃ¼r eine Station, ein Jahr:
+# Ein PhÃ¤nomen (auch wenn es sowieso nur eines ist) für eine Station, ein Jahr:
 no2.off <- sosOfferings(aqe)[["NO2"]]
 time.2007 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 				begin = as.POSIXct("2007/01/01"),
@@ -299,8 +301,8 @@ time.2007 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 
 sosProcedures(no2.off)
 # Beachte das Benennungsschema: "DE" "NW", "NL"
-# StationsÃ¼bersicht: http://www.eea.europa.eu/themes/air/airbase/map-stations
-# Station auswÃ¤hlen -> Meta Data
+# Stationsübersicht: http://www.eea.europa.eu/themes/air/airbase/map-stations
+# Station auswählen -> Meta Data
 myStationID <- "NL00639" # "DESH024"
 idx <- grep(pattern = myStationID, x = sosProcedures(no2.off))
 myStation <- sosProcedures(no2.off)[idx]
@@ -309,7 +311,7 @@ myStation
 sosObservedProperties(no2.off)
 
 # Filtern mit observed property nicht notwendig, da sowieso ein Offering nur 
-# ein PhÃ¤nomen liefert.
+# ein Phänomen liefert.
 obs.myStation.2007 <- getObservation(sos = aqe,
 		offering = no2.off, # inspect = TRUE,
 		procedure = myStation,
@@ -341,7 +343,7 @@ lines(p ~ result.myStation.2007[["SamplingTime"]], col = 'blue',lwd = 4)
 hist(result.myStation.2007[["Concentration[NO2]"]])
 
 
-##### RÃ¤umliche Ausschnitte ####################################################
+##### Räumliche Ausschnitte ####################################################
 #SosSupportedSpatialOperators()
 sosBoundedBy(no2.off)
 
@@ -368,7 +370,7 @@ sosBoundedBy(obs.2007.bbox, bbox = TRUE)
 # Aufgabe 08 #
 #************#
 # Wann und wo (Koordinaten) sind Daten des Offerings NO2 im Vergleich zu den
-# abgefragten Daten verfÃ¼gbar?
+# abgefragten Daten verfügbar?
 
 # Wie viele Messstationen gibt es in der bounding box, die NO2-Werte liefern?
 
@@ -381,7 +383,7 @@ result.bbox <- sosResult(obs.2007.bbox, coordinates = TRUE)
 obs.crs <- sosGetCRS(obs.2007.bbox)
 
 # Die Spalten lon, lat werden fÃ¼r die Koordinaten des SPDF, die anderen Spalten
-# fÃ¼r die Daten des SPDF benutzt.
+# für die Daten des SPDF benutzt.
 no2.spdf.bbox <- SpatialPointsDataFrame(
 		coords = result.bbox[,c("lon", "lat")],
 		data = result.bbox[,
@@ -401,11 +403,11 @@ no2.spdf <- as(obs.no2.2007, "SpatialPointsDataFrame")
 summary(no2.spdf)
 bbox(no2.spdf)
 
-# Coercion einer einzelnen Observation ist ebenfalls mÃ¶glich, jedoch bis jetzt
-# auf SpatialPointsDataFrame beschrÃ¤nkt. Hier ist natÃ¼rlich aufwendiges/
-# komfortables/mÃ¤chtiges Mapping zwischen O&M Datenstrukturen und sp/R/spacetime
+# Coercion einer einzelnen Observation ist ebenfalls möglich, jedoch bis jetzt
+# auf SpatialPointsDataFrame beschränkt. Hier ist natürlich aufwendiges/
+# komfortables/mächtiges Mapping zwischen O&M Datenstrukturen und sp/R/spacetime
 # Datenmodellen ein langfristiges Ziel. Potentiell sogar in beide Richtungen,
-# (Transactional SOS Profile). Funktioniert (nur) fÃ¼r 52N Profil oder Ã¤hnliche.
+# (Transactional SOS Profile). Funktioniert (nur) für 52N Profil oder ähnliche.
 spdf.1 <- as(obs.2007.bbox[[1]], "SpatialPointsDataFrame")
 summary(spdf.1)
 levels(spdf.1[["FeatureOfInterest"]])
@@ -416,15 +418,15 @@ levels(spdf.1[["FeatureOfInterest"]])
 #************#
 # Wo sind die Messtationen?
 
-# Frage Daten fÃ¼r eine beliebige Woche ab und erzeuge einen data.frame, benutze
-# auch den SOS fÃ¼r Deutschland. Wichtig: kleiner zeitlicher oder rÃ¤umlicher
-# Ausschnitt, damit der Service nicht Ã¼beransprucht wird.
+# Frage Daten für eine beliebige Woche ab und erzeuge einen data.frame, benutze
+# auch den SOS für Deutschland. Wichtig: kleiner zeitlicher oder räumlicher
+# Ausschnitt, damit der Service nicht überansprucht wird.
 aqe.de <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos")
 
 
 ##### Demos ####################################################################
 demo(package = "sos4R")
-# Demos laufen lassen (enhalten weiterfÃ¼hrende Beispiele mit plots usw.):
+# Demos laufen lassen (enhalten weiterführende Beispiele mit plots usw.):
 #demo("weathersos")
 #demo("pegel")
 #demo("airquality")
