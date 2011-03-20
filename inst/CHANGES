@@ -170,7 +170,7 @@
 * Changed vignette to use saved sensor description from file
 * Fixes with exports and documentation to adhere to changes for R 2.13.0
 
-2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-03-20		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2
 * Bugfix in coordinate order in coercion function for SpatialPointsDataFrame
@@ -179,3 +179,8 @@
 * Replacing potentially critical characters from data.frame column names (function .cleanupColumnName(...))
 * Added function sosUOM(...) to extract the unit of measurement from objects
 * Added summary methods for OmObservation and OmObservationCollection
+
+2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.2-01
+* ...
