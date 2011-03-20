@@ -7,11 +7,11 @@
 \description{
 This function provides a high level interface to read data from a SOS connection in an abstract and uncomplicated manner. It wraps the actual request operation (i.e. \verb{GetObservation}) and also uses different terms for soem properties.
 
-\strong{WARNING}: FUNCTIONS ARE NOT IMPLEMENTED YET! But any ideas or input is highly appreciated.
+\strong{WARNING}: FUNCTION IS NOT IMPLEMENTED YET! But any ideas or input is highly appreciated.
 }
 
 \usage{
-read.sos(sos, sensors = NA_character_, phenomena = NA_character_, bbox = NA_character_, times = c(NA), mergeResult = FALSE, addLocation = FALSE, verbose = FALSE)
+read.sos(sos, sensors = NA_character_, phenomena = NA_character_, bbox = NA_character_, times = NA_character_, mergeResult = FALSE, addLocation = FALSE, verbose = FALSE)
 }
 
 \arguments{

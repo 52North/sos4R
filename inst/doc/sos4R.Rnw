@@ -377,7 +377,7 @@ Mre examples for \code{sosGetSRS()} can be found in section \ref{subsubsec:getOb
 
 The content of the capabilities document allows the plotting of a service's offerings. The following example uses the packages \pkg{maps}, \pkg{mapdata} and \pkg{maptools} to create a background map. Plotting functions exist for objects of class \code{SOS} (see Figure \ref{fig:mySOS}) and \code{SosObservationOffering}, so offerings can also be plotted separately.
 
-<<sosPlot,fig=TRUE,include=FALSE>>= 
+<<sosPlot,include=FALSE>>= 
 # background map:
 library(maps); library(mapdata); library(maptools)
 data(worldHiresMapEnv)

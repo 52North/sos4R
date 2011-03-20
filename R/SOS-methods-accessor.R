@@ -647,7 +647,7 @@ setMethod(f = "sosResult", signature = signature(obj = "OmMeasurement"),
 			
 			.result <- data.frame(.value)
 			names(.result) <- .obsProp
-			attributes(.result) <- c(attributes(.result), list("UOM" = .uom))
+			attributes(.result) <- c(attributes(.result), list("uom" = .uom))
 			
 			if(coordinates){
 				.coords <- sosCoordinates(obj)
@@ -901,7 +901,6 @@ setMethod(f = "sosEncoders", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(sos@encoders)
 		})
-
 if (!isGeneric("sosDataFieldConverters"))
 	setGeneric(name = "sosDataFieldConverters", def = function(sos) {
 				standardGeneric("sosDataFieldConverters")
@@ -910,3 +909,84 @@ setMethod(f = "sosDataFieldConverters", signature = signature(sos = "SOS"),
 		def = function(sos) {
 			return(sos@dataFieldConverters)
 		})
+
+#
+#
+#
+if (!isGeneric("sosUOM"))
+	setGeneric(name = "sosUOM",
+			def = function(obj) {
+				standardGeneric("sosUOM")
+			})
+setMethod(f = "sosUOM",
+		signature = c(obj = "list"),
+		def = function(obj) {
+			.crs <- lapply(X = obj, FUN = sosUOM)
+			return(.crs)
+		}
+)
+setMethod(f = "sosUOM",
+		signature = c(obj = "GmlMeasure"),
+		def = function(obj) {
+			return(obj@uom)
+		}
+)
+setMethod(f = "sosUOM",
+		signature = c(obj = "OmMeasurement"),
+		def = function(obj) {
+			return(obj@result@uom)
+		}
+)
+setMethod(f = "sosUOM",
+		signature = c(obj = "OmObservation"),
+		def = function(obj) {
+			.result <- sosResult(obj)
+			.uom <- sosUOM(.result)
+			return(.uom)
+		}
+)
+setMethod(f = "sosUOM",
+		signature = c(obj = "OmObservationCollection"),
+		def = function(obj) {
+			.uom <- sosUOM(obj@members)
+			return(.uom)
+		}
+)
+setMethod(f = "sosUOM",
+		signature = c(obj = "data.frame"),
+		def = function(obj) {
+			.names <- names(obj)
+			
+			.uom <- c()
+			for (x in .names) {
+				# get attribute for column
+				.u <- attributes(obj[[x]])[["unit of measurement"]]
+				if(!is.null(.u)) {
+					names(.u) <- x
+					.uom <- c(.uom, .u)
+				}
+			}
+			
+			return(.uom)
+		}
+)
+
+#
+# get distributed computing point
+#
+setMethod(f = "sosGetDCP",
+		signature = c(sos = "SOS", operation = "character"),
+		def = function(sos, operation, type = NA) {
+			.ops <- sosOperations(sos)
+			
+			if(is.null(.ops)) return(NULL)
+			
+			.dcps <- .ops[[operation]]@DCPs
+			
+			if(!is.na(type)) {
+				return(.dcps[[type]])
+			}
+			else return(.dcps)
+		}
+)
+

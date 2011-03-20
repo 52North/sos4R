@@ -32,6 +32,11 @@
 
 \alias{as.SpatialPointsDataFrame.OmObservation}
 
+\alias{sosUOM,OmObservation-method}
+\alias{print.summary.OmObservation}
+\alias{summary.OmObservation}
+
+
 \title{Classes for om:Observation Elements}
 
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification.}

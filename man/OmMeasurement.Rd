@@ -18,6 +18,9 @@
 \alias{as.data.frame.OmMeasurement}
 \alias{as.SpatialPointsDataFrame.OmMeasurement}
 
+\alias{sosUOM,OmMeasurement-method}
+
+
 \title{Class and Construction Function for om:Measurement Elements}
 
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification.}

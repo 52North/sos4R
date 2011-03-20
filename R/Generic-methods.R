@@ -174,3 +174,80 @@ if (!isGeneric("sosGetDCP"))
 			def = function(sos, operation, type = NA) {
 				standardGeneric("sosGetDCP")
 			})
+
+#
+#
+#
+if (!isGeneric("sosCreateEventTime"))
+	setGeneric(name = "sosCreateEventTime",
+			def = function(time, operator = sosDefaultTemporalOperator) {
+				standardGeneric("sosCreateEventTime")
+			})
+
+if (!isGeneric("sosCreateTimeInstant"))
+	setGeneric(name = "sosCreateTimeInstant", def = function(sos, time,
+					frame = as.character(NA),
+					calendarEraName = as.character(NA),
+					indeterminatePosition = as.character(NA)) {
+				standardGeneric("sosCreateTimeInstant")
+			}
+	)
+
+if (!isGeneric("sosCreateTimePeriod"))
+	setGeneric(name = "sosCreateTimePeriod",
+			def = function(sos, begin, end, frame = as.character(NA),
+					calendarEraName = as.character(NA),
+					indeterminatePosition = as.character(NA),
+					duration = as.character(NA),
+					timeInterval = NULL) {
+				standardGeneric("sosCreateTimePeriod")
+			}
+	)
+
+if (!isGeneric("sosCreateEventTimeList"))
+	setGeneric(name = "sosCreateEventTimeList",
+			def = function(time, operator = sosDefaultTemporalOperator) {
+				standardGeneric("sosCreateEventTimeList")
+			})
+
+if (!isGeneric("sosCreateTime"))
+	setGeneric(name = "sosCreateTime",
+			def = function(sos, time, operator = sosDefaultTemporalOperator) {
+				standardGeneric("sosCreateTime")
+			})
+
+#
+#
+#
+if (!isGeneric("sosCreateFeatureOfInterest"))
+	setGeneric(name = "sosCreateFeatureOfInterest",
+			def = function(objectIDs = list(NA), spatialOps = NULL, bbox = NULL,
+					srsName = NA_character_) {
+				standardGeneric("sosCreateFeatureOfInterest")
+			})
+
+#
+#
+#
+if (!isGeneric("sosCreateBBOX"))
+	setGeneric(name = "sosCreateBBOX",
+			def = function(lowLat, lowLon, uppLat, uppLon, srsName,
+					srsDimension = NA_integer_, axisLabels = NA_character_,
+					uomLabels = NA_character_,
+					propertyName = sosDefaultSpatialOpPropertyName) {
+				standardGeneric("sosCreateBBOX")
+			})
+
+if (!isGeneric("sosCreateBBoxMatrix"))
+	setGeneric(name = "sosCreateBBoxMatrix",
+			def = function(lowLat, lowLon, uppLat, uppLon) {
+				standardGeneric("sosCreateBBoxMatrix")
+			})
+
+#
+#
+#
+if (!isGeneric("sosCapabilitiesDocumentOriginal"))
+	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos) {
+				standardGeneric("sosCapabilitiesDocumentOriginal")
+			})

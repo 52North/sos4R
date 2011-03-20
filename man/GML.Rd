@@ -110,6 +110,9 @@
 \alias{summary.GmlTimePeriod}
 \alias{print.summary.GmlTimePeriod}
 
+\alias{sosUOM,GmlMeasure-method}
+
+
 \title{Classes and Construction Functions from the GML Namespace}
 
 \description{

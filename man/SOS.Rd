@@ -194,8 +194,12 @@
 \alias{summary.SosObservationOffering}
 \alias{summary.SOS}
 
-
 \alias{sosResult,data.frame-method}
+
+\alias{sosUOM}
+\alias{sosUOM,list-method}
+\alias{sosUOM,data.frame-method}
+
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 

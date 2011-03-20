@@ -1265,3 +1265,15 @@ edit(vignette("sos4R"))
 .escapeColumnName("Concentration~A+B-C")
 .escapeColumnName("Concentration**A$A$A**")
 # works.
+
+################################################################################
+# new method sosGetUOM
+
+sosUOM(GmlMeasure(42.0, "m"))
+
+sosUOM(obs.temp.latest[[1]])
+sosUOM(obs.temp.latest[1:2])
+sosUOM(obs.temp.latest)
+sosUOM(sosResult(obs.temp.latest))
+
+

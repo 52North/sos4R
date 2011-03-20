@@ -28,6 +28,11 @@
 \alias{as.SpatialPointsDataFrame.OmObservationCollection}
 \alias{sosGetCRS,OmObservationCollection-method}
 
+\alias{sosUOM,OmObservationCollection-method}
+\alias{print.summary.OmObservationCollection}
+\alias{summary.OmObservationCollection}
+
+
 \title{Class "OmObservationCollection"}
 
 \description{

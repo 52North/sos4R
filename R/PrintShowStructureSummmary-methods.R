@@ -1172,6 +1172,7 @@ summary.SOS = function(object, ...) {
 	obj
 }
 setMethod("summary", "SOS", summary.SOS)
+
 print.summary.SOS = function(x, ...) {
 	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
 	cat("[[version:]]\t")
@@ -1209,6 +1210,7 @@ summary.SosObservationOffering = function(object, ...) {
 	obj
 }
 setMethod("summary", "SosObservationOffering", summary.SosObservationOffering)
+
 print.summary.SosObservationOffering = function(x, ...) {
 	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
 	cat("[[id:]]\t\t")
@@ -1264,8 +1266,63 @@ print.summary.GmlTimePeriod = function(x, ...) {
 	invisible(x)
 }
 
-################################################################################
-# STR FUNCTIONS
+summary.OmObservation = function(object, ...) {
+	obj = list()
+	obj[["class"]] = class(object)
+	obj[["samplingTime"]] = length(object@samplingTime)
+	obj[["procedureCount"]] = length(object@procedure)
+	obj[["obsPropCount"]] = length(object@observedProperty)
+	obj[["featureCount"]] = length(object@featureOfInterest)
+	obj[["result"]] = summary(object@result)
+
+	class(obj) = "summary.OmObservation"
+	obj
+}
+setMethod("summary", "OmObservation", summary.OmObservation)
+print.summary.OmObservation = function(x, ...) {
+	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
+	cat("[[samplingTime:]]\t")
+	print(x[["samplingTime"]])
+	cat("[[procedures:]]\t\t")
+	print(x[["procedureCount"]])
+	cat("[[obs. props:]]\t\t")
+	print(x[["obsPropCount"]])
+	cat("[[features:]]\t\t")
+	print(x[["featureCount"]])
+	cat("[[result summary:]]\n")
+	print(x[["result"]])
+	invisible(x)
+}
+
+summary.OmObservationCollection = function(object, ...) {
+	obj = list()
+	obj[["class"]] = class(object)
+	obj[["memberCount"]] = length(object@members)
+	obj[["boundedBy"]] = toString(object@boundedBy)
+	obj[["procedureCount"]] = length(unique(unlist(sosProcedures(object))))
+	obj[["obsPropCount"]] = length(unique(unlist(
+							sosObservedProperties(object))))
+	obj[["featureCount"]] = length(unique(unlist(sosFeatureIds(object))))
+	
+	class(obj) = "summary.OmObservationCollection"
+	obj
+}
+setMethod("summary", "OmObservationCollection", summary.OmObservationCollection)
+print.summary.OmObservationCollection = function(x, ...) {
+	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
+	cat("[[members:]]\t\t")
+	print(x[["memberCount"]])
+	cat("[[bounded by:]]\t\t")
+	print(x[["boundedBy"]])
+	cat("[[procedures:]]\t\t")
+	print(x[["procedureCount"]])
+	cat("[[obs. props:]]\t\t")
+	print(x[["obsPropCount"]])
+	cat("[[features:]]\t\t")
+	print(x[["featureCount"]])
+	invisible(x)
+}
+
 
 ################################################################################
 # utils
