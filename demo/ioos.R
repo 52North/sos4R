@@ -107,7 +107,6 @@ colnames(obs.wmo52.all)
 # most recent observation:
 obs.csv <- getObservation(ioos, offering = sosName(ioos.off[[100]]),
 		responseFormat = "text/csv",
-#		verbose = TRUE, saveOriginal = TRUE,
 		observedProperty = sosObservedProperties(ioos.off[[100]])[2])
 obs.csv
 

@@ -42,6 +42,7 @@ sosCreateEventTime(time, operator)
 sosCreateEventTimeList(time, operator)
 sosCreateTimeInstant(sos, time, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA))
 sosCreateTimePeriod(sos, begin, end, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA), duration = as.character(NA), timeInterval = NULL)
+sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
 }
 
 \arguments{
@@ -57,7 +58,7 @@ sosCreateTimePeriod(sos, begin, end, frame = as.character(NA), calendarEraName =
   \item{objectIDs}{Identifiers of a feature of interest list.}
   \item{spatialOps}{An object of class \code{\link{OgcSpatialOps-class}} which is inserted into the feature of interest element.}
   \item{bbox}{Shortcut to add a feature of interest with a \code{\link{GmlEnvelope-class}}, object must be a \code{matrix} as created by \code{sosCreateBBoxMatrix(...)}.}
-  \item{time}{Object of class \code{"GmlTimeGeometricPrimitive"} for \code{sosCreateEventTimeList}, or an object of class \code{POSIXt} for \code{sosCreateTimePeriod}.}
+  \item{time}{Object of class \code{"GmlTimeGeometricPrimitive"} for \code{sosCreateEventTimeList}, or an object of class \code{POSIXt} for \code{sosCreateTimePeriod},or an object of class \code{character} for \code{sosCreateTime}.}
   \item{operator}{The operator to be used for the time in \code{sosCreateEventTimeList}, e.g. \samp{"TM_During"}.}
   \item{sos}{An object of class \code{SOS-class} for which the element is created. The \code{SOS} might for example be required for formatting settings.}
   \item{frame}{Provides a URI reference that identifies a description of the reference system.}
@@ -104,7 +105,18 @@ foiBBox2 <- sosCreateFeatureOfInterest(spatialOps = bbox)
 print(foiBBox2)
 
 \dontrun{
-# time examples TBD
+last.period <- sosCreateTimePeriod(sos = mySOS,
+	begin = (Sys.time() - 3600 * 24 * 7), end = Sys.time())
+
+oneWeek.period <- sosCreateTimePeriod(sos = mySOS,
+		begin = as.POSIXct("2010/01/01"), end = as.POSIXct("2010/01/07"))
+oneWeek.eventTime <- sosCreateEventTimeList(oneWeek.period)
+
+sosCreateTime(sos = mySOS, time = "2007-07-07 07:00::2008-08-08 08:00")
+sosCreateTime(sos = mySOS, time = "2007-07-07 07:00/2010-10-10 10:00")
+
+sosCreateTime(sos = mySOS, time = "::2007-08-05")
+sosCreateTime(sos = mySOS, time = "2007-08-05/")
 }
 
 }

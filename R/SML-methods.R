@@ -43,6 +43,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 	if(verbose) cat("Getting coordinates for ",
 				sosId(.sml), "\n")
 	.sml@coords <- sosCoordinates(obj = .sml, sos = sos, verbose = verbose)
+	# TODO add parsing of id and other stuff, but always check for availability!
 	
 	return(.sml)
 }

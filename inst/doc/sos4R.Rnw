@@ -26,7 +26,15 @@
 
 % some global options
 <<options,echo=FALSE,results=hide,print=FALSE>>= 
-useDownloadedFiles <- TRUE
+.goOnline <- TRUE # triggers whether data is downloaded and stored in /doc folder
+#library("cacheSweave")
+#setCacheDir("/tmp/cacheSweave/sos4R")
+
+.getFilePath <- function(name) {
+	.path <- paste(.find.package("sos4R", lib.loc = NULL), "\\doc\\", name,
+			".xml", sep = "")
+	return(.path)
+}
 @
 
 % sets the figure size globally
@@ -52,10 +60,6 @@ The package is published under GPL 2 license within the geostatistics community 
 
 \tableofcontents
 
-%<<load,echo=FALSE,print=FALSE,cache=FALSE>>=
-%library("cacheSweave")
-%setCacheDir("/tmp/cacheSweave/sos4R")
-%@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
@@ -208,7 +212,18 @@ SosDataFieldConvertingFunctions()
 
 The method \code{SOS(...)} is a construction method for classes encapsulating a connection to a SOS. It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class \code{SOS}.
 
-<<conn,echo=TRUE,print=FALSE>>= 
+
+<<conn,echo=FALSE,print=FALSE,eval=TRUE>>=
+.fileMySOS <- "mySOS.RData" 
+if(.goOnline) {
+	mySOS <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+	save(mySOS, file = .fileMySOS)
+} else {
+	load(.fileMySOS)
+}
+@
+
+<<conn,echo=TRUE,print=FALSE,eval=FALSE>>= 
 mySOS <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 @
 
@@ -245,7 +260,7 @@ sosParsers(mySOS)
 sosDataFieldConverters(mySOS)
 @
 
-Print and summary methods are available for important classes.
+Print and summary methods are available for important classes, like \code{SOS}.
 
 <<connDetails3,echo=TRUE,eval=TRUE>>= 
 mySOS
@@ -426,33 +441,25 @@ defaultOutputFormatDescribeSensor <- gsub(pattern = "&quot;", replacement = "'",
     \item \code{procedure}: The identifier of the sensor, so one of the character strings returned by \code{sosProcedures(...)}.
     \item \code{outputFormat}: The format in which the sensor description is to be returned. The default is \code{\Sexpr{defaultOutputFormatDescribeSensor}}.
     \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
+ 	\item \code{saveOriginal}: Saves a copy of the response document in the current working directory. See section \ref{subsec:getObsById} for an example. Accepts boolean values (\code{TRUE} will automatically create file name with time stamp) or character string to be used as file name.
 \end{itemize}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% use a downloaded file if possible:
-<<describeSensor1,echo=FALSE,results=hide,print=FALSE>>= 
-
-# check if file can be found, then load it
-.sensorFile <- "urn_ogc_object_feature_OSIRIS-HWS_3d3b239f-7696-4864-9d07-15447eae2b93_.xml"
-.path <- paste(.find.package("sos4R", lib.loc = NULL), "doc",
-		.sensorFile, sep = "\\")
-
-if (file.exists(.path) && useDownloadedFiles) {
-	sensor.1.1 <- parseFile(mySOS, .path)
-} else {
-	sensor.1.1 <- describeSensor(sos = mySOS, # verbose = TRUE
-			procedure = sosProcedures(obj = mySOS)[[1]][[1]],
-			saveOriginal = TRUE)
-}
-@
 
 A simple example is as follows.
 
+<<describeSensor1,echo=FALSE,results=hide,print=FALSE>>= 
+.sensorFile <- "sensor.1.1"
+if (.goOnline) {
+	sensor.1.1 <- describeSensor(sos = mySOS, # verbose = TRUE
+			procedure = sosProcedures(obj = mySOS)[[1]][[1]],
+			saveOriginal = .sensorFile)
+} else {
+	sensor.1.1 <- parseFile(mySOS, .getFilePath(.sensorFile))
+}
+@
 <<describeSensor1,echo=TRUE,print=TRUE,eval=FALSE>>= 
 sensor.1.1 <- describeSensor(sos = mySOS,
 		procedure = sosProcedures(obj = mySOS)[[1]][[1]])
 @
-
 <<describeSensor1,echo=FALSE,print=FALSE,eval=TRUE>>= 
 sensor.1.1
 @
@@ -478,18 +485,12 @@ This includes the coordinates with unit and reference system information in the 
 <<describeSensorCoords,echo=TRUE,print=TRUE>>=
 sensor.1.1.coords <- sosCoordinates(sensor.1.1)
 attributes(sensor.1.1.coords)
-
 sosBoundedBy(sensor.1.1)
 @
 
-The coordinates also allow the plotting of the sensor positions (see Figure \ref{fig:desribeSensorPlot}). Here it is assumed that the spatial reference system of the SOS is the same for data from the first offering and the sensor positions.
+The coordinates also allow the plotting of the sensor positions (see Figure \ref{fig:desribeSensorPlot}). Here it is assumed that the spatial reference system of the SOS is the same for data from the first offering and the sensor positions!
 
-\begin{figure}[h]
-\label{fig:desribeSensorPlot}
-
-\begin{center}
-<<label=describeSensorPlot,fig=TRUE,echo=FALSE>>=
-# background map data
+<<label=describeSensorPlotCode,echo=TRUE,eval=FALSE>>=
 library(maps); library(mapdata); library(maptools)
 data(worldHiresMapEnv)
 
@@ -497,7 +498,37 @@ data(worldHiresMapEnv)
 procs <- unique(unlist(sosProcedures(mySOS)))
 procs.descr <- lapply(X = procs, FUN = describeSensor, sos = mySOS)
 
-# create background map
+sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
+worldHigh <- pruneMap(map(database = "worldHires",
+				region = c("Germany", "Austria"), plot = FALSE))
+worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
+
+plot(worldHigh.lines, col = "grey50")
+for(x in procs.descr)
+	plot(x, add = TRUE, pch = 19)
+text(sosCoordinates(procs.descr)[c("x", "y")],
+		labels = sosId(procs.descr), pos = 4)
+title(main = paste("Sensors of", sosTitle(mySOS)))
+@
+
+\begin{figure}[h]
+\label{fig:desribeSensorPlot}
+
+\begin{center}
+<<label=describeSensorPlot,fig=TRUE,echo=FALSE>>=
+library(maps); library(mapdata); library(maptools)
+data(worldHiresMapEnv)
+
+# get sensor descriptions
+.fileProcs <- "procs.descr.RData"
+if (.goOnline) {
+	procs <- unique(unlist(sosProcedures(mySOS)))
+	procs.descr <- lapply(X = procs, FUN = describeSensor, sos = mySOS)
+	save(procs.descr, file = .fileProcs)
+} else {
+	load(.fileProcs)
+}
+
 sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
 				region = c("Germany", "Austria"), plot = FALSE))
@@ -618,7 +649,7 @@ sosObservedProperties(mySOS)[1:2]
 sosFeaturesOfInterest(mySOS)[1:2]
 @
 
-Also (parts of a) list of offerings are possible with these functions:
+Also (parts of) a list of offerings are possible with these functions:
 
 <<metadataExtraction10,echo=TRUE,eval=TRUE,print=FALSE>>= 
 sosProcedures(sosOfferings(mySOS)[4:5])
@@ -656,33 +687,37 @@ defaultResponseFormatGetObs <- gsub(pattern = "&quot;", replacement = "'", x = s
   \item \code{responseMode}: The response mode defines the form of the response, e.g. inline, out-of-band, or attached. The available models of a service can be found in the service metadata using \code{sosResponseMode(...)}.
   \item \code{BBOX}: A bounding box to be used only in HTTP GET connections (parameter is discarded for POST connections). The format must one character string with \code{minlon,minlat,maxlon,maxlat,srsURI?}, the spatial reference system is optional.
   \item \code{latest}: A boolean parameter to request the latest observation only (see example below) --- this is not standard conform but only supported by \fivetwon SOS.
-  \item \code{saveOriginal}: Saves a copy of the response document in the current working directory. See section \ref{subsec:getObsById} for an example.
+  \item \code{saveOriginal}: Saves a copy of the response document in the current working directory. See section \ref{subsec:getObsById} for an example. Accepts boolean values (\code{TRUE} will automatically create file name with time stamp) or character string to be used as file name.
 \end{itemize}
 
 The returned data of all GetObservation operations is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely \code{OmObservation}, \code{OmMeasurement}, or \code{OmObservationCollection}.
-
-A request to retrieve the \textbf{latest measured value} is also possible, although not (!) standard conform. \fivetwon SOS realizes this specific request by requesting a sampling time with the fixed value \enquote{latest}.
-
-<<getLatest,eval=TRUE,echo=TRUE>>= 
-obs.temp.latest <- getObservation(sos = mySOS,
-	offering = off.temp,
-	latest = TRUE)
-@
 
 The most straightforward (and most simple to use) methods to query certain observations are to request one (or several) specific \textbf{observed property} (phenomenon) or \textbf{procedure} (sensor). Note that the procedures and observed properties have to match the given offering.
 
 <<getObsPropPhen,eval=FALSE,echo=TRUE>>= 
 obs.temp.procedure.1 <- getObservation(sos = mySOS,
 	offering = off.temp,
-	procedure = sosProcedures(off.temp)[[2]],
-	latest = TRUE)
+	procedure = sosProcedures(off.temp)[[2]])
 
-obs.temp.offering.345 <- getObservation(sos = mySOS,
+obs.temp.offering.34 <- getObservation(sos = mySOS,
 	offering = off.temp,
-	procedure = sosProcedures(off.temp)[2:4],
+	procedure = sosProcedures(off.temp)[3:4],
 	observedProperty =
-		sosObservedProperties(mySOS)[1:5],
-	latest = TRUE)
+		sosObservedProperties(mySOS)[3:4])
+@
+
+These request would potentially retrieve a lot of data, since there is no temporal limitation. The following examples are based on a request for about one day of temperature data stored in the object \code{obs.temp}. How this can be achieved is described in section \ref{subsubsec:temporalfiltering}.
+
+<<getOrDownloadObsTemp,eval=TRUE,echo=FALSE,print=FALSE>>= 
+.obsFile <- "obs.temp"
+if (.goOnline) {
+	obs.temp <- getObservation(sos = mySOS,
+		offering = off.temp,
+		eventTime = sosCreateTime(sos = mySOS, time = "2009-08-20::2009-08-21"),
+		saveOriginal = .obsFile)
+} else {
+	obs.temp <- parseFile(mySOS, .getFilePath(.obsFile))
+}
 @
 
 \subsubsection{Response Subsetting}
@@ -690,72 +725,73 @@ obs.temp.offering.345 <- getObservation(sos = mySOS,
 Subsetting of elements in an \code{OmObservationCollection} can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators \code{[} and \code{[[}.
 
 <<getObs1,eval=TRUE,echo=TRUE>>=
-length(obs.temp.latest)
-obs.temp.latest[[1]]
-obs.temp.latest[2:3]
+length(obs.temp)
+obs.temp[[1]]
+obs.temp[2:3]
+summary(obs.temp)
+summary(obs.temp[[1]])
 @
 
-Addionally, \textbf{collection indexing} is also possible with identifiers of procedure(s), observed property(ies), and feature(s) of interest.
+\textbf{Observation collection indexing} is possible with identifiers of procedure(s), observed property(ies), and feature(s) of interest.
 
 <<getObs1,eval=TRUE,echo=TRUE>>=
-index.foiId <- sosFeatureIds(obs.temp.latest)[[1]]
+index.foiId <- sosFeatureIds(obs.temp)[[1]]
 index.foiId
-obs.temp.latest[index.foiId]
+obs.temp[index.foiId]
 
 index.obsProp <- sosObservedProperties(off.temp)
-obs.temp.latest[index.obsProp]
+obs.temp[index.obsProp]
 
-index.proc <- sosProcedures(obs.temp.latest)[1:4]
+index.proc <- sosProcedures(obs.temp)[1:4]
 index.proc.alternative1 <- sosProcedures(off.temp)[1:4]
 index.proc.alternative2 <- sosProcedures(mySOS)
-obs.temp.latest[index.proc]
+obs.temp[index.proc]
 @
 
 \subsubsection{Result Extraction}
 
-\textbf{Data Values} can be extracted from observations, measurements and observation collections with the function \code{sosResult(...)}.  The function returns an object of class \code{data.frame}. In the case of collections, it automatically binds the data frames (you can turn this off by adding \code{bind = FALSE} as a parameter). Additional metadata, like units or definitions, is accessible via \code{attributes(...)} for every column of the data frame. 
+\textbf{Data Values} can be extracted from observations, measurements and observation collections with the function \code{sosResult(...)}.  The function returns an object of class \code{data.frame}. In the case of collections, it automatically binds the data frames (you can turn this off by adding \code{bind = FALSE} as a parameter).
 
 <<getObs2,eval=TRUE,echo=TRUE,print=TRUE>>= 
-obs.temp.latest.result.2 <- sosResult(obs.temp.latest[[2]])
-obs.temp.latest.result.2
-obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
-obs.temp.latest.result
+obs.temp.result.2 <- sosResult(obs.temp[[2]])
+obs.temp.result.2
+obs.temp.result <- sosResult(obs.temp[1:2])
+obs.temp.result
+@
 
+Additional metadata, like units of measurement or definitions, is accessible via \code{attributes(...)} for every column of the data frame. 
+
+<<getObs3,eval=TRUE,echo=TRUE,print=TRUE>>= 
 temperature.attrs <- attributes(
-	obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
+	obs.temp.result[["urn:ogc:def:property:OGC::Temperature"]])
 @
 
 \textbf{Spatial Information} can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result \code{data.frame}, (ii) within a feature collection in the observation. In the latter case the utility functions \code{sosCoordinates(...)} and \code{sosFeatureIds(...)} can be used to extract the coordinates respectively the identifiers from \code{OmObservationCollection} or \code{OmObservation} classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by \code{sosCoordinates(...)}.
 
 <<getObsSpatial1,eval=TRUE,echo=TRUE>>= 
-obs.temp.latest.foiIDs <- sosFeatureIds(obs.temp.latest)
-obs.temp.latest.coordinates.all <-
-	sosCoordinates(obs.temp.latest)
-obs.temp.latest.coordinates.1 <-
-	sosCoordinates(obs.temp.latest[[1]])
+obs.temp.foiIDs <- sosFeatureIds(obs.temp)
+obs.temp.coords <- sosCoordinates(obs.temp)
+obs.temp.coords.1 <- sosCoordinates(obs.temp[[1]])
 @
 
 An observation collection also contains a bounding box of the contained observations, which can be extracted with the function \code{sosBoundedBy(...)}. The optional attribute \code{bbox} can be used to obtain a bounding box matrix as used by package \pkg{sp}.
 
 <<getObsSpatial1,eval=TRUE,echo=TRUE>>= 
-sosBoundedBy(obs.temp.latest)
-sosBoundedBy(obs.temp.latest, bbox = TRUE)
+sosBoundedBy(obs.temp)
+sosBoundedBy(obs.temp, bbox = TRUE)
 @
 
-The combination of data values and coordinates strongly depends on the use case and existing spatial information. In the case of coordinates encoded in the features, a matching of the two data frames can easily be accomplished with the function \code{merge()}.
+The combination of data values and coordinates strongly depends on the use case and existing spatial information. In the case of coordinates encoded in the features, a matching of the two data frames can easily be accomplished manually with the function \code{merge()}.
 
 <<getObsSpatial2,eval=TRUE,echo=TRUE,print=FALSE>>= 
-obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
-result.names <- names(obs.temp.latest.result)
-coords.names <- names(obs.temp.latest.coords)
+result.names <- names(obs.temp.result)
+coords.names <- names(obs.temp.coords)
 print(toString(result.names))
 print(toString(coords.names))
 
-# Manually merging though not neccessary:
-obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
-obs.temp.latest.data <- merge(
-	x = obs.temp.latest.result,
-	y = obs.temp.latest.coords,
+obs.temp.data <- merge(
+	x = obs.temp.result,
+	y = obs.temp.coords,
 	by.x = result.names[[2]],
 	by.y = coords.names[[4]])
 @
@@ -763,15 +799,15 @@ obs.temp.latest.data <- merge(
 The default column name for the feature identifiers is \code{\Sexpr{sosDefaultColumnNameFeatureIdentifier}}. If the name of the feature identifier attribute in the data table matches (which is the case for \fivetwon SOS), \code{merge} does not need additional information. In that case, the merging reduces to the following code:
 
 <<getObsSpatial3,eval=TRUE,echo=TRUE>>=
-obs.temp.latest.data <- merge(x = obs.temp.latest.result,
-	y = obs.temp.latest.coords)
-print(obs.temp.latest.data)
+obs.temp.data <- merge(x = obs.temp.result,
+	y = obs.temp.coords)
+print(obs.temp.data)
 @
 
 And in that case, you can even save that step by specifying the attribute \code{coordinates} of the function \code{sosResult} which includes the merge of data values and coordinates as shown above.
 
 <<getObsSpatial4,eval=FALSE,echo=TRUE,print=FALSE>>= 
-sosResult(obs.temp.latest, coordinates = TRUE)
+sosResult(obs.temp, coordinates = TRUE)
 @
 
 \subsubsection{Temporal Filtering}
@@ -781,7 +817,7 @@ The possibly most typical temporal filter is a period of time for which measurem
 
 <<temporalFiltering1a,eval=TRUE,echo=TRUE>>= 
 # temporal interval creation based on POSIXt classes 
-last.period <- sosCreateTimePeriod(sos = mySOS,
+lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = (Sys.time() - 3600 * 24 * 7), end = Sys.time())
 
 oneWeek.period <- sosCreateTimePeriod(sos = mySOS,
@@ -801,16 +837,30 @@ sosCreateTime(sos = mySOS, time = "::2007-08-05")
 sosCreateTime(sos = mySOS, time = "2007-08-05/")
 @
 
-What was the minimum, average and maximum temperature during the last week?
-		
+\bf{Example:} What was the minimum, average and maximum temperature during one week?
+	
+<<getOrDownloadTemporalFiltering2,eval=TRUE,echo=FALSE,print=FALSE>>=
+.obsFile <- "obs.oneWeek"
+if(.goOnline) {
+	obs.oneWeek <- getObservation(sos = mySOS,
+		offering = off.temp,
+		procedure = sosProcedures(off.temp),
+		eventTime = oneWeek.eventTime,
+		saveOriginal = .obsFile)
+} else {
+	obs.oneWeek <- parseFile(mySOS, .getFilePath(.obsFile))
+}
+@
 <<temporalFiltering2,eval=TRUE,echo=TRUE>>= 
 obs.oneWeek <- getObservation(sos = mySOS,
 	offering = off.temp,
+	# actually not required, as default is 'all procedures':
 	procedure = sosProcedures(off.temp),
 	eventTime = oneWeek.eventTime)
-
-obs.temp.result <- sosResult(obs.oneWeek)
-summary(obs.temp.result)
+@
+<<temporalFiltering2,eval=TRUE,echo=TRUE>>=
+obs.oneWeek.result <- sosResult(obs.oneWeek)
+summary(obs.oneWeek.result)
 @
 
 The default temporal operator is \enquote{during}, but others are supported as well (see section \ref{sec:supported}). The next example shows how to create a temporal filter for all observations taken \textbf{after} a certain point in time. Here the creation function creates just one object of class \code{SosEventTime} which must be added to a list manually before passing it to \code{getObservation(...)}.
@@ -821,7 +871,6 @@ lastDay.instant <- sosCreateTimeInstant(
 lastDay.eventTime <- sosCreateEventTime(time = lastDay.instant,
 	operator = SosSupportedTemporalOperators()[["TM_After"]])
 print(lastDay.eventTime)
-#print(encodeXML(obj = lastDay.eventTime[[1]], sos = mySOS))
 @
 
 \subsubsection{Spatial Filtering}
@@ -835,6 +884,7 @@ sept09.period <- sosCreateTimePeriod(sos = mySOS,
 	end = as.POSIXct("2009-09-30 00:00"))
 sept09.eventTimeList <- sosCreateEventTimeList(
 	sept09.period)
+
 obs.sept09 <- getObservation(sos = mySOS,
 	offering = off.temp,
 	eventTime = sept09.eventTimeList)
@@ -962,7 +1012,7 @@ str(spdf)
 For following analyses and plotting, the \textbf{spatial reference system} can be extracted as follows (see section \ref{subsubsec:getCapSRS} for a general description).
 
 <<getObsCRS,echo=TRUE,eval=TRUE>>=
-sosGetCRS(obs.temp.latest)
+sosGetCRS(obs.temp)
 sosGetCRS(obs.oneWeek)
 @
 
@@ -973,19 +1023,18 @@ The operation GetObservationById is defined in clause 10.1 of the SOS specificat
 
 In this case the returned observation collection contains an om:Measurement element, which contains just one measured value and is parsed to an object of class \code{OmMeasurement}.
 
-The result extraction works the same as with om:Observation objects.
+The result extraction works the same as with objects of class \code{OmObservation}.
 
 <<getObsById1,eval=TRUE,echo=TRUE>>= 
 obsId <- getObservationById(sos = mySOS,
 	observationId = "o_3508493")
-# str(obsId)
-# obs[[1]]
 sosResult(obsId, coordinates = TRUE)
 @
 
-Just as for \code{getObservation()} you can save the orginal response document. It is saved into the current working directory and the name starts with the observation identifier. You can also read it back using the function \code{sosParse()}.
+Just as for \code{getObservation()} you can \bf{save the orginal response document} with an automatically generated name or a selected one. It is saved into the current working directory and the name starts with the observation identifier. You can also read it back using the function \code{sosParse()}.
 
 <<getObsById3,eval=FALSE,echo=TRUE,print=FALSE>>= 
+# generated file name, find file in working directory:
 obsId <- getObservationById(sos = mySOS, verbose = TRUE,
 	observationId = "o_3508493",
 	saveOriginal = TRUE)
@@ -996,11 +1045,17 @@ for(.f in .files) { # %in% not working with Sweave
 		.observationFiles <- c(.observationFiles, .f)
 }
 obsId <- parseFile(sos = mySOS, file = .observationFiles[[1]])
+
+<<getObsById3,eval=TRUE,echo=TRUE>>=
+# manually selected file name:
+obsId <- getObservationById(sos = mySOS, verbose = TRUE,
+		observationId = "o_3508493",
+		saveOriginal = "myObservation")
 @
 
 % clean up!
 <<getObsById3Cleanup,eval=FALSE,echo=FALSE,print=FALSE>>= 
-file.remove(.observationFiles)
+file.remove("myObservation.xml")
 @
 
 
@@ -1268,11 +1323,11 @@ The output with these parameters enabled is too extensive to show within this do
 <<inspect,eval=FALSE,echo=TRUE,print=FALSE>>= 
 off.4 <- sosOfferings(mySOS)[[4]]
 getObservation(sos = mySOS, offering = off.4,
-	procedure = sosProcedures(off.4)[[1]], latest = TRUE,
+	procedure = sosProcedures(off.4)[[1]],
 	inspect = TRUE)
 
 getObservation(sos = mySOS,	offering = off.4,
-	procedure = sosProcedures(off.4)[[1]], latest = TRUE,
+	procedure = sosProcedures(off.4)[[1]],
 	vebose = TRUE)
 
 verboseSOS <- SOS(sosUrl(mySOS), verboseOutput = TRUE)

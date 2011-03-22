@@ -278,10 +278,29 @@ setMethod(f = "sosBoundedBy",
 				split = " ")[[1]]
 		.uC <- strsplit(x = obj@boundedBy[[gmlUpperCornerName]],
 				split = " ")[[1]]
-		min1 <- as.double(.lC[[1]])
-		min2 <- as.double(.lC[[2]])
-		max1 <- as.double(.uC[[1]])
-		max2 <- as.double(.uC[[2]])
+		
+		warning <- FALSE
+		if((length(.lC) < 2)) {
+			min1 <- 0
+			min2 <- 0
+			warning <- TRUE
+		}
+		else {
+			min1 <- as.double(.lC[[1]])
+			min2 <- as.double(.lC[[2]])
+		}
+		if((length(.uC) < 2)) {
+			max1 <- 0
+			max2 <- 0
+			warning <- TRUE
+		}
+		else {
+			max1 <- as.double(.uC[[1]])
+			max2 <- as.double(.uC[[2]])
+		}
+		
+		if(warning)
+			warning(paste("No valid bounding box found for", sosId(obj)))
 		
 		.bb <- matrix(c(min2, min1, max2, max1), ncol = 2,
 				dimnames = list(c("coords.lon", "coords.lat"),

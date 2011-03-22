@@ -250,7 +250,6 @@ aqe <- SOS(sosUrl(aqe), dataFieldConverters = aqe.converters)
 # Nochmaliges daten abrufen, diesmal alternativ auf Basis der offering ID:
 # Daten für ganz Deutschland!
 aug2007.obs <- getObservation(sos = aqe, offering = "NO2", #verbose = TRUE,
-#		saveOriginal = TRUE,
 		eventTime = aug2007.6Hrs)
 # Parsing dauert länger als request -> wenig Daten in vielen Observations, hoher
 # XML overhead?

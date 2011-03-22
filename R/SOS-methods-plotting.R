@@ -32,7 +32,10 @@
 #
 plot.SosObservationOffering <- function(x, y, ..., add = FALSE) {
 	.off.spatial <- as(x, "Spatial")
-	plot(x = .off.spatial, add = add, ...)
+	
+	if(is.null(.off.spatial))
+		warning("Cannot plot NULL offering!")
+	else plot(x = .off.spatial, add = add, ...)
 }
 setMethod("plot", signature(x = "SosObservationOffering", y = "missing"),
 		plot.SosObservationOffering)

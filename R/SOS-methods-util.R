@@ -502,7 +502,9 @@ setMethod(f = "sosGetCRS",
 		signature = c(obj = "SosObservationOffering"),
 		def = function(obj) {
 			.srsName <- sosBoundedBy(obj)[["srsName"]]
-			.crs <- sosGetCRS(.srsName)
+			if(is.null(.srsName))
+				.crs <- NULL
+			else .crs <- sosGetCRS(.srsName)
 			return(.crs)
 		}
 )

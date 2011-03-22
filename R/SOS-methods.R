@@ -395,9 +395,17 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 		print(.response)
 	}
 	
-	if(saveOriginal) {
-		.filename <- paste(.cleanupFileName(procedure), "_", ".xml",
-				sep = "")
+	if(!is.null(saveOriginal)) {
+		if(is.character(saveOriginal)) {
+			.filename <- paste(saveOriginal, ".xml", sep = "")
+			if(verbose) cat("Using saveOriginal parameter for file name:",
+						.filename, "\n")
+		} 
+		else if(is.logical(saveOriginal)) {
+			if(saveOriginal) .filename <- paste(.cleanupFileName(procedure),
+						".xml", sep = "")
+			if(verbose) cat("Generating file name:", .filename, "\n")
+		}
 		
 		if(verbose) {
 			cat("[.describeSensor_1.0.0] Saving original document...",
@@ -452,9 +460,18 @@ setMethod(f = "getObservationById",
 		cat("[getObservationById] ID", observationId, "\n")
 	}
 	
-	if(saveOriginal) .filename <- paste(observationId, 
-				format(Sys.time(), sosDefaultFilenameTimeFormat),
-				sep = "_")
+	.filename <- NULL
+	if(is.character(saveOriginal)) {
+		.filename <- saveOriginal
+		if(verbose) cat("Using saveOriginal parameter for file name:",
+					.filename, "\n")
+	} 
+	else if(is.logical(saveOriginal)) {
+		if(saveOriginal) .filename <- paste(observationId, 
+					format(Sys.time(), sosDefaultFilenameTimeFormat),
+					sep = "_")
+		if(verbose) cat("Generating file name:", .filename, "\n")
+	}
 	
 	.go <- SosGetObservationById(service = sosService,
 			version = sos@version, observationId = observationId,
@@ -476,14 +493,10 @@ setMethod(f = "getObservationById",
 		print(.response)
 	}
 	
-	if(saveOriginal) {
+	if(!is.null(.filename)) {
 		.filename <- paste(.filename, ".xml", sep = "")
 		saveXML(.response, file = .filename)
-		
-		if(verbose) {
-			cat("[getObservationById] Saved original document:",
-					.filename, "\n")
-		}
+		cat("[sos4R] Original document saved:", .filename, "\n")
 	}
 	
 	if(.isExceptionReport(.response)) {
@@ -506,13 +519,9 @@ setMethod(f = "getObservationById",
 		return(.obs)
 	}
 	
-	if(saveOriginal) {
+	if(!is.null(.filename)) {
 		save(.responseString, file = .filename)
-		
-		if(verbose) {
-			cat("[getObservationById] Saved original document:",
-					.filename, "\n")
-		}
+		cat("[sos4R] Original document saved:", .filename, "\n")
 	}
 	
 	return(.responseString)
@@ -527,8 +536,17 @@ setMethod(f = "getObservationById",
 		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
 		saveOriginal) {
 	
-	if(saveOriginal) .filename <- paste(.cleanupFileName(offeringId), 
-				format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
+	.filename <- NULL
+	if(is.character(saveOriginal)) {
+		.filename <- saveOriginal
+		if(verbose) cat("Using saveOriginal parameter for file name:",
+					.filename, "\n")
+	} 
+	else if(is.logical(saveOriginal)) {
+		if(saveOriginal) .filename <- paste(.cleanupFileName(offeringId), 
+					format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
+		if(verbose) cat("Generating file name:", .filename, "\n")
+	}
 	
 	if(verbose)
 		cat("[.getObservation_1.0.0] to ", sos@url, " with offering ",
@@ -571,7 +589,7 @@ setMethod(f = "getObservationById",
 			print(.response)
 		}
 		
-		if(saveOriginal) {
+		if(!is.null(.filename)) {
 			.filename <- paste(.filename, ".xml", sep = "")
 			saveXML(.response, file = .filename)
 			
@@ -620,8 +638,8 @@ setMethod(f = "getObservationById",
 		.msg <- paste("[sos4R] Finished getObservation to", sos@url,
 				"\n\t--> received", length(.obs), "observation(s) having",
 				.countInfo , "\n")
-		if(saveOriginal) .msg <- paste(.msg, "[sos4R] Original document saved:",
-					.filename, "\n")
+		if(!is.null(.filename)) .msg <- paste(.msg,
+					"[sos4R] Original document saved:", .filename, "\n")
 		cat(.msg)
 		
 		# RETURN ###
@@ -641,7 +659,7 @@ setMethod(f = "getObservationById",
 			.parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
 			.csv <- .parsingFunction(obj = .responseString, verbose = verbose)
 		
-			if(saveOriginal) {
+			if(!is.null(.filename)) {
 				.filename <- paste(file = .filename, ".csv", sep = "")
 				write.csv(.csv, .filename)
 			}
@@ -649,7 +667,7 @@ setMethod(f = "getObservationById",
 			.msg <- paste("[sos4R] Finished getObservation to", sos@url, "\n\t",
 					"--> received observations with dimensions", 
 					toString(dim(.csv)), "\n")
-			if(saveOriginal) .msg <- paste(.msg,
+			if(!is.null(.filename)) .msg <- paste(.msg,
 						"[sos4R] Original document saved:", .filename, "\n")
 			cat(.msg)
 		
@@ -668,10 +686,11 @@ setMethod(f = "getObservationById",
 		warning("Unknown response format!")
 	}
 	
-	if(saveOriginal) {
+	if(!is.null(.filename)) {
 		save(.responseString, file = .filename)
 		cat("[sos4R] Saved original document:", .filename)
 	}
+	else warning("File name is NULL, could not save document!")
 	
 	# RETURN ##############
 	return(.responseString)

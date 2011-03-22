@@ -38,12 +38,18 @@ as.SosObservationOffering.SpatialPolygons = function(from) {
 	.ulat <- .bbox["coords.lat","max"]
 	.ulon <- .bbox["coords.lon","max"]
 	
+	.crs <- sosGetCRS(from)
+	if(is.null(.crs)) {
+		warning(paste("Cannot coerce offering", sosId(from), "-- no CRS given"))
+		return(NULL)
+	}
+	
 	# beginning at lower left corner:
 	.poly <- Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
 					c(.llat, .ulat, .ulat, .llat, .llat)))
 	.spPoly <- SpatialPolygons(list(
 					Polygons(list(.poly), sosName(from))),
-			proj4string = sosGetCRS(from))
+			proj4string = .crs)
 	
 	return(.spPoly)
 }

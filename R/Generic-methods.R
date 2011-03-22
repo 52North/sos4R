@@ -59,7 +59,7 @@ if (!isGeneric("describeSensor"))
 			def = function(sos, procedure,
 					outputFormat = sosDefaultDescribeSensorOutputFormat,
 					verbose = sos@verboseOutput, inspect = FALSE,
-					saveOriginal = FALSE) {
+					saveOriginal = NULL) {
 				standardGeneric("describeSensor")	
 			})
 if (!isGeneric("getObservationById"))
@@ -72,7 +72,7 @@ if (!isGeneric("getObservationById"))
 					srsName = as.character(NA), resultModel = as.character(NA),
 					responseMode = as.character(NA),
 					verbose = sos@verboseOutput, inspect = FALSE,
-					saveOriginal = FALSE) {
+					saveOriginal = NULL) {
 				standardGeneric("getObservationById")
 			})
 if (!isGeneric("getObservation"))
@@ -97,7 +97,7 @@ if (!isGeneric("getObservation"))
 					latest = FALSE,
 					verbose = sos@verboseOutput,
 					inspect = FALSE,
-					saveOriginal = FALSE) {
+					saveOriginal = NULL) {
 				standardGeneric("getObservation")
 			})
 
