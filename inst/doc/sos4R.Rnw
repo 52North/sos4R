@@ -27,6 +27,7 @@
 % some global options
 <<options,echo=FALSE,results=hide,print=FALSE>>= 
 .goOnline <- FALSE # triggers whether data is downloaded and stored in /doc folder
+
 #library("cacheSweave")
 #setCacheDir("/tmp/cacheSweave/sos4R")
 
@@ -142,6 +143,8 @@ A more extensive discussion is available in the the O\&M specification (Cox, 200
 
 A good and extensive introduction into the whole field of SWE, including its history, and an analysis of the current state of the art and future developments is provided in a recent paper (Bröring, 2011).
 
+
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Supported Features}
 \label{sec:supported}
@@ -192,6 +195,7 @@ In the author's experience, \textbf{OOSThetys SOS implementations}\footnote{\url
 An incomplete list of \textbf{tested services} can be found in section \ref{sec:gettingstarted}. Please share your experiences with other SOS implementations with the developers and users of \pkg{sos4R} (see section \ref{sec:support}).
  
 
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Default Options}
 \label{sec:default}
@@ -212,6 +216,7 @@ SosDataFieldConvertingFunctions()
 @
 
 
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Creating a SOS connection}
 \label{sec:creatingconnection}
@@ -272,6 +277,7 @@ Print and summary methods are available for important classes, like \code{SOS}.
 mySOS
 summary(mySOS)
 @
+
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -736,10 +742,12 @@ obs.temp <- getObservation(sos = mySOS,
 .results <- lapply(obs.temp, sosResult)
 .resultLength <- sapply(.results, nrow)
 cat("[sos4R] Received response (size: 27056 bytes), starting parsing ...\n",
-		"[sos4R] Finished getObservation to", sosUrl(mySOS), "\n",
-		"	--> received", length(obs.temp), "observation(s) having",
-		sum(.resultLength), "result values [", toString(.resultLength), "].")
+	"[sos4R] Finished getObservation to", sosUrl(mySOS), "\n",
+	"	--> received", length(obs.temp), "observation(s) having",
+	sum(.resultLength), "result values [", toString(.resultLength), "].")
 @
+
+The logging output above starting with \code{[sos4R]} informs the user when the download of data is complete and when the parsing has finished. It even contains some information about the data, if possible. In following requests, this ouput is \textbf{not} included for brevity.
 
 The response \code{obs.temp} of this request is the base for the next sections.
 
@@ -860,7 +868,7 @@ oneWeek.eventTime <- sosCreateEventTimeList(oneWeek.period)
 
 Please note that the create function \code{sosCreateEventTimeList()} wraps the created objects in a list as required by the method \code{getObservation()}.
 
-The most comfortable creation function for event times is \code{sosCreateTime()}. It supports time intervals with starttime and endtime as character strings seperated by \code{::} or \code{/} as defined by ISO 8601\footnote{\url{http://en.wikipedia.org/wiki/ISO_8601#Time_intervals}}. The respective time stamps have to be parsable by \code{as.POSIXct()}. If either one of the time stamps is missing, a \code{GmlTimePosition} wrapped in the appropriate relative temporal operator, e.g. \enquote{before}.
+The most comfortable creation function for event times is \code{sosCreateTime()}. It supports time intervals with starttime and endtime as character strings seperated by \code{::} or \code{/} as defined by ISO 8601\footnote{\url{http://en.wikipedia.org/wiki/ISO_8601}, section Time intervals}. The respective time stamps have to be parsable by \code{as.POSIXct()}. If either one of the time stamps is missing, a \code{GmlTimePosition} wrapped in the appropriate relative temporal operator, e.g. \enquote{before}.
 
 <<temporalFiltering1b,eval=TRUE,echo=TRUE>>= 
 sosCreateTime(sos = mySOS, time = "2007-07-07 07:00::2008-08-08 08:00")
@@ -872,7 +880,7 @@ sosCreateTime(sos = mySOS, time = "2007-08-05/")
 
 \textbf{Example:} What was the minimum, average and maximum temperature during one week?
 	
-<<loadOrDownload_TemporalFiltering2,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_TemporalFiltering2,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "obs.oneWeek"
 if(.goOnline) {
 	obs.oneWeek <- getObservation(sos = mySOS,
@@ -919,7 +927,7 @@ sept09.eventTimeList <- sosCreateEventTimeList(
 	sept09.period)
 @
 
-<<loadOrDownload_SpatialFiltering,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_SpatialFiltering,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "obs.sept09"
 .obsFile2 <- "obs.sept09.bbox"
 if(.goOnline) {
@@ -985,7 +993,7 @@ encodeXML(obj = request.fois, sos = mySOS)
 
 An exemplary GetObservation operation is as follows.
 
-<<loadOrDownload_FeatureFiltering,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_FeatureFiltering,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "obs.oneWeek.fois"
 if(.goOnline) {
 	obs.oneWeek.fois <- getObservation(sos = mySOS,
@@ -1055,7 +1063,7 @@ obs.oneWeek <- getObservation(sos = mySOS,
 	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]])
 @
 
-<<loadOrDownload_ValueFiltering,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_ValueFiltering,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "obs.oneWeek.filter"
 if(.goOnline) {
 	obs.oneWeek.filter <- getObservation(sos = mySOS,
@@ -1124,7 +1132,7 @@ In this case the returned observation collection contains an om:Measurement elem
 
 The result extraction works the same as with objects of class \code{OmObservation}.
 
-<<loadOrDownload_GetObsById,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_GetObsById,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "obsId"
 if(.goOnline) {
 	obsId <- getObservationById(sos = mySOS,
@@ -1167,6 +1175,7 @@ obsId <- getObservationById(sos = mySOS,
 @
 
 
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Changing Handling Functions}
 \label{sec:exchangeability}
@@ -1203,9 +1212,12 @@ parsers <- SosParsingFunctions(
 		},
 		include = c("GetCapabilities"))
 print(names(parsers))
+@
+
+The following snipped shows how to remove a large part of parsers using \code{exclude} and then plots the names of the remaining ones.
 
 parsers <- SosParsingFunctions(
-		exclude = names(SosParsingFunctions())[1:15])
+		exclude = names(SosParsingFunctions())[5:29])
 print(names(parsers))
 @
 
@@ -1252,9 +1264,9 @@ A complete list of the elements with existing encoders is shown below. These are
 names(sosParsers(mySOS))
 @
 
-If you want to replace only selected parsers use the include parameter as described above. You can also base your own parsing functions on a variety of existing parsing functions. For example you can replace the base function for om:ObservationCollectionm, named \code{ObservationCollection}, but still use the parsing function for om:Observation within your own function if you include it in the parser list. The existing parsing functions are all named in the pattern \code{parse[ElementName]()}. Please be aware that some parsers contain require a parameter of class SOS upon which they rely for encoding information.
+If you want to replace only selected parsers use the include parameter as described above. You can also base your own parsing functions on a variety of existing parsing functions. For example you can replace the base function for om:ObservationCollectionm, named \code{ObservationCollection}, but still use the parsing function for om:Observation within your own function if you include it in the parser list. The existing parsing functions are all named in the pattern \code{parse<ElementName>()}. Please be aware that some parsers contain require a parameter of class SOS upon which they rely for encoding information.
 
-<<loadOrDownload_Parsers3,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_Parsers3,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "err.response.RData"
 .sos2 <- "mySOS2.RData"
 if(.goOnline) {
@@ -1306,7 +1318,7 @@ This is also the recommended way to start if you want to set-up your own parsers
 
 The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class \code{XMLInternalDocument}:
 
-<<loadOrDownload_Parsers5,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_Parsers5,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "response.noparsing.RData"
 .sos2.dis <- "mySOS2.disabled.RData"
 if(.goOnline) {
@@ -1380,7 +1392,7 @@ The following connection shows a typical workflow of connecting to a new SOS for
 
 In Addition, this service shows errorenous behaviour regarding the reponse format (even if it is correctly set), so that the parameter \code{responseFormat} is set to \code{NA\_character} to be excluded in the request encoding. This results in additional warnings.
 
-<<loadOrDownload_Converters3,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_Converters3,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "mbariObs1"
 .mbari <- "mbari.RData"
 if(.goOnline) {
@@ -1411,9 +1423,40 @@ mbariObs1 <- try(
 )
 @
 
-<<converters3b,eval=TRUE,echo=TRUE>>= 
+An excerpt from the warnings list with regard to the conversion reads as follows.
+
+<<converters3b,eval=FALSE,echo=TRUE>>= 
 warnings()
 @
+<<converters3c,eval=TRUE,echo=FALSE>>= 
+# ran manually:
+#converterWarnings <- warnings()[25:29]
+#.convWarnFile <- "converterWarnings.Rdata"
+#save(converterWarnings, file = .convWarnFile)
+#load(.convWarnFile)
+#print(converterWarnings)
+cat("...")
+cat("25: In FUN(X[[7L]], ...) :
+		swe:Quantity given without unit of measurement: Salinity
+26: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+				No converter for the unit of measurement  S/m  with the definition  http://mmisw.org/ont/cf/parameter/conductivity ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().
+27: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+				No converter found! Skipping field Conductivity 
+No converter found! Skipping field http://mmisw.org/ont/cf/parameter/conductivity 
+No converter found! Skipping field S/m 
+
+28: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+				No converter found for the given field Salinity, http://mmisw.org/ont/cf/parameter/sea_water_salinity, NA
+29: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+				No converter found! Skipping field Salinity 
+No converter found! Skipping field http://mmisw.org/ont/cf/parameter/sea_water_salinity 
+No converter found! Skipping field NA 
+
+30: In FUN(X[[7L]], ...) :
+		swe:Quantity given without unit of measurement: Salinity")
+cat("...")
+@
+
 
 % TODO add (saved?) warnings output
 
@@ -1425,7 +1468,7 @@ myConverters <- SosDataFieldConvertingFunctions(
 	"http://mmisw.org/ont/cf/parameter/sea_water_salinity"
 			= sosConvertDouble)
 @
-<<loadOrDownload_Converters4,eval=TRUE,echo=FALSE,print=FALSE>>=
+<<loadOrDownload_Converters4,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "mbariObs2"
 .mbari2 <- "mbari2.RData"
 if(.goOnline) {
@@ -1455,6 +1498,7 @@ Subsequently, the second request results in more fields in the result.
 toString(names(sosResult(mbariObs1)))
 toString(names(sosResult(mbariObs2)))
 @
+
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1494,12 +1538,39 @@ print(xtable(x = OwsExceptionsData()[,1:3],
 		include.rownames = FALSE)
 @
 
-<<exceptionWarning,eval=TRUE,echo=TRUE,print=TRUE>>= 
+<<exceptionWarning1,eval=FALSE,echo=TRUE,print=TRUE>>= 
 response <- try(getObservationById(sos = mySOS,
-	observationId = "o_not_there", inspect = TRUE))
+	observationId = "o_not_there"))
 @
 
-If an exception is received then it is also saved as a warning message.
+If an exception is received then it is also saved as a warning message. In this case, it reads as follows.
+
+<<exceptionWarning2b,eval=TRUE,echo=FALSE>>=
+cat("Warning:
+In .handleExceptionReport(sos, .response) :
+  Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
+ 1 exception(s) (code @ locator : text):
+  NoApplicableCode @ NA :
+	Error while creating observations from database query result set: ERROR: invalid input syntax for integer: \"not_there\" ")
+@
+
+<<exceptionWarning2c,eval=TRUE,echo=FALSE,results=hide>>=
+.file <- "exceptionResponse.Rdata"
+if(.goOnline) {
+	response <- getObservationById(sos = mySOS,
+					observationId = "o_not_there")
+	save(response, file = .file)
+} else {
+	load(.file)
+}
+@
+
+The exception is also stored in the \code{response} object.
+
+<<exceptionWarning2d,eval=TRUE,echo=TRUE>>=
+response
+@
+
 
 \subsection{Inspect Requests and Verbose Printing}
 \label{subsec:inspect}
@@ -1604,8 +1675,7 @@ Please get in touch with the community lead\footnote{\url{http://52north.org/com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Acknowledgements}
 
-The project was generously supported by the \fivetwon Student Innovation Prize for Geoinformatics 2010. 
-
+The start of the project was generously supported by the \fivetwon Student Innovation Prize for Geoinformatics 2010.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{References}

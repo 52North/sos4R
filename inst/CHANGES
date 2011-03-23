@@ -180,42 +180,11 @@
 * Added function sosUOM(...) to extract the unit of measurement from objects
 * Added summary methods for OmObservation and OmObservationCollection
 
-2010-03-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-03-24		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2-01
 * Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot funktion.
 * Extended saveOrginal parameter, now it also accepts file names to be used for the document to be saved.
 * Extended parsing of SensorML, adding slots for all parsed elements
 * Added parsing of exception reports to parseFile(...)
-* Based vignette completely on dowloaded files.
-* ...
-
-
-* put warnings manually in the vignette?
-
-* check whole vignette, remove all statements that have saveOriginal using result=hide
-
-25: In FUN(X[[7L]], ...) :
-  swe:Quantity given without unit of measurement: Salinity
-26: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-  No converter for the unit of measurement  S/m  with the definition  http://mmisw.org/ont/cf/parameter/conductivity ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().
-27: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-  No converter found! Skipping field Conductivity 
-No converter found! Skipping field http://mmisw.org/ont/cf/parameter/conductivity 
-No converter found! Skipping field S/m 
-
-28: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-  No converter found for the given field Salinity, http://mmisw.org/ont/cf/parameter/sea_water_salinity, NA
-29: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-  No converter found! Skipping field Salinity 
-No converter found! Skipping field http://mmisw.org/ont/cf/parameter/sea_water_salinity 
-No converter found! Skipping field NA 
-
-30: In FUN(X[[7L]], ...) :
-  swe:Quantity given without unit of measurement: Salinity
-31: In .handleExceptionReport(sos, .response) :
-  Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
- 1 exception(s) (code @ locator : text):
-  NoApplicableCode @ NA :
-	Error while creating observations from database query result set: ERROR: invalid input syntax for integer: "not_there" 
-
+* Based vignette completely on dowloaded files for releases
