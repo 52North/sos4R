@@ -53,15 +53,11 @@ aqe.off.no2
 summary(aqe.off.no2)
 
 # Get observations, december 2003 is arbitrary choice!
-dec2003.12Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
-				begin = as.POSIXct("2003/12/01 08:00"),
-				end = as.POSIXct("2003/12/01 20:00")))
-dec2003.24Hrs = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
-				begin = as.POSIXct("2003/12/01 08:00"),
-				end = as.POSIXct("2003/12/02 08:00")))
-dec2003 = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
-				begin = as.POSIXct("2003/12/01"),
-				end = as.POSIXct("2003/12/31")))
+dec2003.12Hrs = sosCreateTime(sos = aqe,
+		time = "2003/12/01 08:00::2003/12/01 20:00")
+dec2003.24Hrs = sosCreateTime(sos = aqe,
+		time = "2003/12/01 08:00::2003/12/02 08:00")
+dec2003 = sosCreateTime(sos = aqe, time = "2003/12/01::2003/12/31")
 
 # Request data (request and response can be check by setting the inspect=TRUE):
 obs.no2.12Hrs <- getObservation(sos = aqe, # inspect = TRUE,

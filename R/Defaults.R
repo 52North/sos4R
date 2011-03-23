@@ -341,8 +341,14 @@ names(.sosDisabledParsers) <- list(
 		sosGetObservationByIdName,
 		owsExceptionReportName)
 SosDisabledParsers <- function() {
+#	attributes(.sosDisabledParsers) <- list("isDisabledParsers" = TRUE)
 	return(.sosDisabledParsers)
 }
+#.isDisabledParsers <- function(obj) {
+#	.b <- attributes(obj)[["isDisabledParsers"]]
+#	if(is.null(.b)) return(FALSE)
+#	else return(.b)
+#}
 
 ################################################################################
 # other defaults

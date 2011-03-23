@@ -37,15 +37,20 @@ Objects can be created by calls to the construction method in the form \code{Sen
 
 \section{Slots}{
   \describe{
-    \item{\code{coords}:}{Object of class \code{"data.frame"}, holds the position of the sensor.}
     \item{\code{xml}:}{Object of class \code{"XMLInternalDocument"}, holds the XML representation of the sensor description.}
+    \item{\code{coords}:}{Object of class \code{"data.frame"}, holds the position of the sensor.}
+    \item{\code{id}:}{Object of class \code{"character"}, the main identifier of the sensor.}
+    \item{\code{name}:}{Object of class \code{"character"}, a naming identifier of the sensor.}
+    \item{\code{description}:}{Object of class \code{"character"}, a normal text description of the sensor.}
+    \item{\code{boundedBy}:}{Object of class \code{"matrix"}, the bounding box of the sensor.}
   }
 }
 
 \section{Methods}{
   \describe{
     \item{show}{\code{signature(object = "SensorML")}: Prints a short statement to the command line.}
-	 }
+	\item{plot}{\code{signature(object = "SensorML")}: Plots the sensor using coercion to an object of class \code{"Spatial"}.}
+	}
 }
 
 \references{Botts, M., Robin, A. (Eds.), OpenGIS® Sensor Model Language (SensorML) Implementation Specification, OGC® 07-000
@@ -68,6 +73,7 @@ proc1 <- sosProcedures(weathersos)[[1]][[1]]
 proc1.descr <- describeSensor(weathersos, proc1, verbose = TRUE)
 plot(proc1.descr)
 class(proc1.descr)
+print(proc1.descr
 }
 
 }

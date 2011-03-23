@@ -63,7 +63,7 @@ sosCaps(weathersos)
 climatesosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
 climatesos = SOS(climatesosUrl, verboseOutput = FALSE)
 id = "urn:ogc:object:feature:WMOStation:10280"
-describeSensor(sos = climatesos, procedure = id)
+describeSensor(sos = climatesos, procedure = id, saveOriginal = "D:/text.xml")
 
 # !!! describeSensor does not check if using GET, because Capabilities lack that DCP in current SOS!
 weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"

@@ -185,13 +185,15 @@
 * Version 0.2-01
 * Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot funktion.
 * Extended saveOrginal parameter, now it also accepts file names to be used for the document to be saved.
+* Extended parsing of SensorML, adding slots for all parsed elements
+* Added parsing of exception reports to parseFile(...)
+* Based vignette completely on dowloaded files.
 * ...
 
 
-* spatialFiltering1
-* valueFiltering1
-* use all parsing functions for SensorML at parsing time, so add slots for them!
-* put warnings manually in the vignette
+* put warnings manually in the vignette?
+
+* check whole vignette, remove all statements that have saveOriginal using result=hide
 
 25: In FUN(X[[7L]], ...) :
   swe:Quantity given without unit of measurement: Salinity

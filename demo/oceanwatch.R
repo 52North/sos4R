@@ -23,7 +23,7 @@ ocean.obsProp
 sosCapabilitiesDocumentOriginal(oceanwatch)
 # OK, but missing elements
 
-describeSensor(oceanwatch, ocean.proc[[1]], inspect = TRUE)
+describeSensor(oceanwatch, ocean.proc[[4]], inspect = TRUE)
 # fails
 
 lapply(X = ocean.off, FUN = getObservation, sos = oceanwatch)

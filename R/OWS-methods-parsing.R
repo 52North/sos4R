@@ -114,7 +114,8 @@ parseOwsOperation <- function(obj) {
 #
 # method for parsing an ows:ExceptionReport.
 #
-parseOwsExceptionReport <- function(obj) {
+parseOwsExceptionReport <- function(obj, verbose = FALSE) {
+	if(verbose) cat("[parseOwsExceptionReport] Starting ...")
 	.docRoot <- xmlRoot(obj)
 	## print(.docRoot)
 
@@ -132,6 +133,9 @@ parseOwsExceptionReport <- function(obj) {
 	}
 	
 	.exceptions = sapply(.exceptionsXML, parseOwsException)
+	if(verbose) cat("[parseOwsExceptionReport]", length(.exceptions),
+				"exceptions.")
+	
 	.report <- OwsExceptionReport(version = .version, lang = .lang, exceptions = .exceptions)
 	
 	return(.report)

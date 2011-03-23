@@ -2,9 +2,11 @@
 # This program is free software; you can redistribute and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program (see gpl-2.0.txt). If not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the Free Software Foundation web page, http://www.fsf.org.
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
+library("sos4R")
 
 # establish a connection to a SOS instance with default settings
 weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+summary(weathersos)
 
 # explore SOS, plotting
 library(maps); library(mapdata); library(maptools); data(worldHiresMapEnv)
@@ -29,13 +31,14 @@ sosResult(obs)
 # Request two procedures, then create a plot
 # Attention: plots ignore the fact that the times do NOT perfectly match!
 obs <- getObservation(sos = weathersos, offering = off,
-		procedure = sosProcedures(off),
-		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
-						begin = as.POSIXct("2009-08-10 12:00"),
-						end = as.POSIXct("2009-08-20 12:00"))))
-str(obs[[1]]@result)
+		procedure = sosProcedures(off), inspect = TRUE,
+		eventTime = sosCreateTime(weathersos,
+				time = "2009-08-10 12:00::2009-08-20 12:00"))
+str(obs[[1]])
 str(obs[[2]]@result)
 summary(obs)
+
+sosResult(obs[[1]], coordinates = TRUE)[1:2,]
 
 # plot it!
 x <- 800
@@ -60,13 +63,13 @@ library("xts")
 station <- sosProcedures(weathersos)[[1]]
 temperatureOffering <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
 temperature <- sosObservedProperties(temperatureOffering)[1]
-september <- sosCreateTimePeriod(sos = weathersos,
-		begin = as.POSIXct("2010-09-01 00:00"),
-		end = as.POSIXct("2010-09-30 00:00"))
+september <- sosCreateTime(sos = weathersos,
+		time = "2010-09-01 00:00/2010-09-30 00:00")
 # make the request
 obsSept <- getObservation(sos = weathersos, # verbose = TRUE,
 		observedProperty = temperature,
-		procedure = station, eventTime = sosCreateEventTimeList(september),
+		procedure = station,
+		eventTime = september,
 		offering = temperatureOffering)
 data <- sosResult(obsSept)
 
@@ -91,6 +94,8 @@ lines(data$Time, x$fitted, col = 'red', lwd=3)
 ################################################################################
 # DescribeSensor Operation
 procs <- unique(unlist(sosProcedures(weathersos)))
+
+describeSensor(weathersos, procs[[1]])
 
 procs.descr <- lapply(X = procs, FUN = describeSensor, # verbose = TRUE,
 		sos = weathersos)

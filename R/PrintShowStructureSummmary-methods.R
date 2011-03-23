@@ -219,16 +219,11 @@
 }
 
 .toString.SOS_1.0.0 <- function(x, ...) {
-	.s <- paste("Object of class SOS_1.0.0 -- version:",
-			x@version,
-			", method:",
+	.s <- paste("Object of class SOS_1.0.0 [",
 			x@method,
-			", url:",
+			", ",
 			x@url,
-#			"\n\tCapabilities: ",
-#			toString(x@capabilities)
-			"\n\tTitle:", sosTitle(x),
-			" -- Abstract:", sosAbstract(x))
+			", ", sosTitle(x))
 	return(.s)
 }
 
@@ -329,10 +324,12 @@
 }
 
 .toString.SensorML <- function(x, ...) {
-	.s <- ("Object of class SensorML (wraps unparsed XML, see @xml for details).\n")
+	.s <- ("Object of class SensorML (see @xml for full document).\n")
 	.s <- paste(.s, "\tID: ", sosId(x),
-			"\n\tcoordinates:", toString(sosCoordinates(x)),
-			"\n\tdescription:", toString(sosAbstract(x)))
+			"\n\tname:", sosName(x),
+			"\n\tdescription:", sosAbstract(x),
+			"\n\tcoords:", toString(sosCoordinates(x)),
+			"\n\tboundedBy:", toString(sosBoundedBy(x)))
 	return(.s)
 }
 

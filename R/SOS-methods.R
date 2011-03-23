@@ -67,9 +67,9 @@ SOS <- function(url, method = SosDefaultConnectionMethod(),
 		
 		.sos@capabilities <- .caps
 		
-		if(verboseOutput) cat("Created new SOS:\n", toString(.sos), "\n")
+		if(verboseOutput) cat("[SOS] Created new SOS:\n", toString(.sos), "\n")
 				
-		cat("Created SOS for URL", url, "\n")
+		cat("[sos4R] Created SOS for URL", url, "\n")
 		return(.sos)
 	}
 	else stop("Service version not supported!")
@@ -463,14 +463,14 @@ setMethod(f = "getObservationById",
 	.filename <- NULL
 	if(is.character(saveOriginal)) {
 		.filename <- saveOriginal
-		if(verbose) cat("Using saveOriginal parameter for file name:",
+		if(verbose) cat("[.getObservationById_1.0.0] Using saveOriginal parameter for file name:",
 					.filename, "\n")
 	} 
 	else if(is.logical(saveOriginal)) {
 		if(saveOriginal) .filename <- paste(observationId, 
 					format(Sys.time(), sosDefaultFilenameTimeFormat),
 					sep = "_")
-		if(verbose) cat("Generating file name:", .filename, "\n")
+		if(verbose) cat("[.getObservationById_1.0.0] Generating file name:", .filename, "\n")
 	}
 	
 	.go <- SosGetObservationById(service = sosService,
@@ -539,13 +539,14 @@ setMethod(f = "getObservationById",
 	.filename <- NULL
 	if(is.character(saveOriginal)) {
 		.filename <- saveOriginal
-		if(verbose) cat("Using saveOriginal parameter for file name:",
+		if(verbose) cat("[.getObservation_1.0.0] Using saveOriginal parameter for file name:",
 					.filename, "\n")
 	} 
 	else if(is.logical(saveOriginal)) {
 		if(saveOriginal) .filename <- paste(.cleanupFileName(offeringId), 
 					format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
-		if(verbose) cat("Generating file name:", .filename, "\n")
+		if(verbose) cat("[.getObservation_1.0.0] Generating file name:",
+					.filename, "\n")
 	}
 	
 	if(verbose)
@@ -828,7 +829,8 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	.optionals = ""
 	# is optional for GET
 	if( !is.na(obj@responseFormat)) {
-		if(verbose) cat("Adding response format ", obj@responseFormat, "\n")
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding response format ",
+					obj@responseFormat, "\n")
 		.responseFormat <- paste(
 				"responseFormat", 
 				.kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
@@ -839,7 +841,8 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@srsName)) {
-		if(verbose) cat("Adding SRS name ", obj@srsName, "\n")
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding SRS name ",
+					obj@srsName, "\n")
 		.optionals <- paste(.optionals, paste("srsName", 
 						.kvpEscapeSpecialCharacters(x = obj@srsName),
 						sep = "="),
@@ -847,7 +850,8 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@eventTime)) {
-		if(verbose) cat("Adding event time", toString(obj@eventTime), "\n")
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding event time",
+					toString(obj@eventTime), "\n")
 		if(length(obj@eventTime) > 1)
 			warning("Only first event time in the list is used for KVP!")
 		
@@ -863,7 +867,8 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 					sep = "&")
 		}
 		else {
-			if(verbose) cat("encodeKVP returned NA for eventTime, omitting",
+			if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] ", 
+						"encodeKVP returned NA for eventTime, omitting",
 						"parameter for request for latest observation.")
 		}
 	}
@@ -886,7 +891,8 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@resultModel)) {
-		if(verbose) cat("Adding result model ", obj@resultModel, "\n")
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding result model ",
+					obj@resultModel, "\n")
 		.optionals <- paste(.optionals, paste("resultModel",
 						.kvpEscapeSpecialCharacters(x = obj@resultModel),
 						sep = "="),
@@ -894,7 +900,8 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@responseMode)) {
-		if(verbose) cat("Adding response mode ", obj@responseMode, "\n")
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding response mode ",
+					obj@responseMode, "\n")
 		.optionals <- paste(.optionals, paste("responseMode",
 						.kvpEscapeSpecialCharacters(x = obj@responseMode),
 						sep = "="),
@@ -902,7 +909,8 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !is.na(obj@BBOX)) {
-		if(verbose) cat("Adding BBOX ", obj@BBOX, "\n")
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding BBOX ",
+					obj@BBOX, "\n")
 		.optionals <- paste(.optionals, paste("BBOX", 
 						.kvpEscapeSpecialCharacters(x = obj@BBOX), sep = "="),
 				sep = "&")
@@ -1276,7 +1284,7 @@ setMethod(f = "checkRequest",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			if(verbose) {
-				cat("Checking DescribeSensor... ")
+				cat("[checkRequest] Checking DescribeSensor... ")
 			}
 			
 			# check if operation is for SOS and operation is DescribeSensor
@@ -1324,7 +1332,8 @@ setMethod(f = "checkRequest",
 				warning("Requested method type ist not listed in capablities for this operation, service might return error!")
 			
 			if(verbose) {
-				cat("Checks: procedure contained =", .procContained,
+				cat("[checkRequest] Checks: procedure contained =",
+						.procContained,
 						", output supported =", .oFSupported,
 						", method supported =", .methodSupported, "\n")
 			}

@@ -90,7 +90,7 @@ parseSosObservationOffering <- function(obj, sos) {
 		.time <- parseTimeGeometricPrimitiveFromParent(obj = obj[[sosTimeName]],
 				format = sosTimeFormat(sos))
 		if(sos@verboseOutput)
-			cat("[parseSosObservationOffering] time: ", .time, "\n")
+			cat("[parseSosObservationOffering] time: ", toString(.time), "\n")
 	}
 	else {
 		warning("Mandatory element 'time' missing in offering", .id)
@@ -390,12 +390,27 @@ setMethod(f = "parseFile",
 			.name == omMeasurementName)  {
 		.opName <- sosGetObservationName
 	}
+	else if(.name == owsExceptionReportName) {
+		if(verbose) cat("[parseFile] Parsing ExceptionReport...\n")
+		
+		.opName <- owsExceptionReportName
+		.parsingFunction <- sosParsers(sos)[[.opName]]
+		.obj <- .parsingFunction(obj = .parsed, verbose = verbose)
+		
+		if(verbose) {
+			cat("[parseFile] done:\n")
+			print(.obj)
+		}
+		
+		return(.obj)
+	}
 	else {
 		stop(paste("Root element", .name, "not supported by file parser!"))
 	}
 	
 	if(verbose) cat("[parseFile] parsing with parser for operation", 
 				.opName, "\n")
+	# check if parsers are disabled, then just return the parsed object?
 	
 	.parsingFunction <- sosParsers(sos)[[.opName]]
 	.obj <- .parsingFunction(obj = .parsed, sos = sos,
@@ -405,6 +420,7 @@ setMethod(f = "parseFile",
 		cat("[parseFile] done:\n")
 		print(.obj)
 	}
+	
 	return(.obj)
 }
 

@@ -30,23 +30,131 @@
 #
 #
 #
-SensorML <- function(xml, coords) {
-	new("SensorML", xml = xml, coords = coords)
+SensorML <- function(xml, coords = data.frame(), id = NA_character_,
+		name = NA_character_, description = NA_character_,
+		boundedBy = matrix()) {
+	new("SensorML", xml = xml, coords = coords, id = id, name = name,
+			description = description, boundedBy = boundedBy)
 }
+
+.xPathToken <- "@@@"
+.smlXPathIdentifier <- paste(
+		"//sml:System/sml:identification//sml:identifier/sml:Term[@definition='urn:ogc:def:identifier:OGC::",
+		.xPathToken, 
+		"' or @definition='urn:ogc:def:identifier:OGC:1.0:",
+		.xPathToken,
+		"']/sml:value/text()", sep = "")
+.smlXPathDescription <- "//sml:System/gml:description/text()"
+.smlXPathPosition <- "//sml:System/sml:position/swe:Position"
+.smlXPathObservedBBox <- "//swe:field[@name='observedBBOX']/swe:Envelope"
+
 
 #
 #
 #
 parseSensorML <- function(obj, sos, verbose = FALSE) {
-	.sml = SensorML(xml = obj, coords = data.frame())
+	.root <- xmlRoot(obj)
+	if(verbose) cat("[parseSensorML] Starting... \n")
 	
-	if(verbose) cat("Getting coordinates for ",
-				sosId(.sml), "\n")
-	.sml@coords <- sosCoordinates(obj = .sml, sos = sos, verbose = verbose)
-	# TODO add parsing of id and other stuff, but always check for availability!
+	.id <- .smlIdentifier(.root, "uniqueID", verbose = verbose)
+	.shortName <- .smlIdentifier(.root, "shortName", verbose = verbose)
+	.description <- xmlValue(getNodeSet(doc = .root, path = .smlXPathDescription,
+			namespaces = .sosNamespaceDefinitionsSML)[[1]])
+	if(verbose) cat("[parseSensorML] got ID", .id, "and name", .shortName,
+				"\n")
+
+	# bounded by
+	if(verbose) cat("[parseSensorML] Parsing boundedBy from",
+				.smlXPathObservedBBox, "\n")
+	.observedBBox <- getNodeSet(doc =.root,
+			path = .smlXPathObservedBBox,
+			namespaces = .sosNamespaceDefinitionsSML)[[1]]
+	if(!is.null(.observedBBox)) {
+		.referenceFrame <- .observedBBox[["referenceFrame"]]
+		.llVector <- parseVector(.observedBBox[["lowerCorner"]][["Vector"]],
+				sos = sos, verbose = verbose)
+		.uuVector <- parseVector(.observedBBox[["upperCorner"]][["Vector"]],
+				sos = sos, verbose = verbose)
+		.bb <- matrix(c(.llVector[["x"]][["value"]],
+						.llVector[["y"]][["value"]],
+						.uuVector[["x"]][["value"]],
+						.uuVector[["y"]][["value"]]),
+				ncol = 2,
+				dimnames = list(c("coords.lon", "coords.lat"),
+						c("min", "max")))
+		.oldAttrs <- attributes(.bb)
+		attributes(.bb) <- c(.oldAttrs,
+				list(referenceFrame = .referenceFrame))
+	}
+	.bb <- matrix()
+	
+	# coordinates
+	if(verbose) cat("[parseSensorML] Parsing coordinates from",
+				.smlXPathPosition, "\n")
+	.xmlPosition <- getNodeSet(doc = .root, path = .smlXPathPosition,
+			namespaces = .sosNamespaceDefinitionsSML)
+	if(length((.xmlPosition)) > 0) {
+		.xmlPosition <- .xmlPosition[[1]]
+		.position <- parseSwePosition(.xmlPosition, sos = sos,
+				verbose = verbose)
+		.referenceFrame = attributes(.position)[["referenceFrame"]]			
+		.uom <- lapply(.position, "[[", "uomCode")
+		names(.uom) <- lapply(.position, "[[", "axisID")
+		.name <- lapply(.position, "[[", "name")
+		names(.name) <- lapply(.position, "[[", "axisID")
+		
+		.values <- lapply(.position, "[[", "value")
+		names(.values) <- lapply(.position, "[[", "axisID")
+		if(any(is.na(names(.values)))) {
+			warning("[parseSensorML] No axisID given, cannot name data.frame with them, trying 'name'.")
+			names(.values) <- lapply(.position, "[[", "name")
+		}
+		
+		if(verbose) {
+			cat("[parseSensorML] values: ", toString(.values),	"\n")
+			str(.values)
+			cat("[parseSensorML] names: ", names(.values), "\n")
+		}
+		
+		.coords <- data.frame(.values)
+		.oldAttrs <- attributes(.coords)
+		attributes(.coords) <- c(as.list(.oldAttrs),
+				list(referenceFrame = .referenceFrame,
+						uom = .uom, name = .name))
+		
+		if(!is.na(.id))
+			row.names(.coords) <- .id
+		if(verbose) cat("[parseSensorML]  row names: ", row.names(.coords),
+					"\n")
+	}
+	else {
+		.coords <- data.frame()
+	}
+	
+	
+	.sml = SensorML(xml = obj, coords = .coords, id = .id, name = .shortName, 
+			description = .description, boundedBy = .bb)
+	
+	if(verbose) cat("[parseSensorML]  Done: ", toString(.sml), "\n")
 	
 	return(.sml)
 }
+
+
+#
+#
+#
+.smlIdentifier <- function(doc, identifierName, verbose = FALSE) {
+	.xpath <- gsub(pattern = .xPathToken, replacement = identifierName,
+			x = .smlXPathIdentifier)
+	
+	if(verbose) cat("[.smlIdentifier] Accessing path ", .xpath, "\n")
+	.result <- getNodeSet(doc = doc, path = .xpath,
+			namespaces = .sosNamespaceDefinitionsSML)
+	
+	return(xmlValue(.result[[1]]))
+}
+
 
 #
 #

@@ -61,7 +61,7 @@ length(ioos.procedures); length(ioos.off)
 offerings.wmo52 <- ioos.off[grep(pattern = "wmo:52", x = off.names)]
 obsProps.wmo52 <- unique(unlist(sosObservedProperties(offerings.wmo52)))
 
-last48hrs = sosCreateEventTimeList(sosCreateTimePeriod(ioos.get,
+last48hrs = sosCreateEventTimeList(sosCreateTimePeriod(ioos,
 				begin = as.POSIXct(Sys.time() - 3600 * 48),
 				end = as.POSIXct(Sys.time())))
 phenomenon <- list("http://mmisw.org/ont/cf/parameter/sea_water_temperature")
@@ -95,7 +95,9 @@ hist(obs.wmo52.all[["sea_water_temperature (C)"]])
 colnames(obs.wmo52.all)
 
 # TODO continue here, coordinates seem wrong and there are NA values in the 
-# data.frame
+# data.frame, must be removed
+
+subset(obs.wmo52.all, is.na(latitude (degree)))
 
 .spdf <- SpatialPointsDataFrame(
 		coords = obs.wmo52.all[c(4,3)],
@@ -114,12 +116,16 @@ obs.csv
 ################################################################################
 # describe sensor:
 # requires SensorML 1.0.0
+ioos.get <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
+		method = SosSupportedConnectionMethods()[["GET"]],
+		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
 describeSensorOp <- sosOperation(ioos.get, sosDescribeSensorName)
 describeSensor.outputFormat <- describeSensorOp@parameters[["outputFormat"]][[1]]
+ioos.procedures <- unique(unlist(sosProcedures(ioos.get)))
 ioos.sensor.1.1 <- describeSensor(sos = ioos.get, procedure = ioos.procedures[[1]][[1]],
-		outputFormat = describeSensor.outputFormat)
+		outputFormat = describeSensor.outputFormat, verbose = TRUE)
+ioos.sensor.1.1
 ioos.sensor.1.1@xml
-
 
 ##############
 # time series:
