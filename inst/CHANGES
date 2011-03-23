@@ -182,9 +182,14 @@
 
 2010-03-24		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
-* Version 0.2-01
+* Version 0.2-1
 * Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot funktion.
 * Extended saveOrginal parameter, now it also accepts file names to be used for the document to be saved.
 * Extended parsing of SensorML, adding slots for all parsed elements
 * Added parsing of exception reports to parseFile(...)
 * Based vignette completely on dowloaded files for releases
+
+2010-04-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* Version 0.2-1
+* ...
