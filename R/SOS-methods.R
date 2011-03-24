@@ -298,7 +298,14 @@ SosGetObservationById <- function(
 	
 	if(length(.response) > 0 & 
 			regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) {
-		stop(paste("ERROR: Got HTML response!:\n", .response, "\n\n"))
+		if(verbose) cat("[.sosRequest_1.0.0] Got HTML, probably an error.\n")
+		
+		# might still be KML with embedded HTML!
+		if(regexpr("(http://www.opengis.net/kml/)", .response) > 0) {
+			if(verbose) cat("[.sosRequest_1.0.0] Got KML! Can continue...\n")
+		}
+		else stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response,
+							"\n\n"))
 	}
 	
 	return(.response)
@@ -581,17 +588,38 @@ setMethod(f = "getObservationById",
 	.contentType <- NA_character_
 	.contentType <- attributes(.responseString)[["Content-Type"]]
 	
-	if(isXMLString(.responseString) || .contentType == mimeTypeXML) {
+	if(verbose) cat("[.getObservation_1.0.0] Content-Type:", .contentType, "\n")
+	
+	if(isXMLString(.responseString)) {
 		if(verbose) cat("[.getObservation_1.0.0] Got XML string as response.\n")
-		
+
 		.response <- xmlParseDoc(.responseString, asText = TRUE)
 		if(verbose || inspect) {
 			cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
 			print(.response)
 		}
 		
+		# TODO document this behaviour, because this means that the parser
+		# is not easily exchangeable by operation name!
+		# select the parser and file ending based on the mime type
+		.fileEnding <- ".xml"
+		if(.contentType == mimeTypeXML) {
+			if(verbose) cat("[.getObservation_1.0.0] Got pure XML according to mime type.\n")
+			.parserName <- mimeTypeXML
+		}
+		else if (.contentType == mimeTypeKML) {
+			if(verbose) cat("[.getObservation_1.0.0] Got KML according to mime type.\n")
+			
+			.fileEnding <- ".kml"
+			.parserName <- mimeTypeKML
+		}
+		else {
+			# fall back, or more of a default: the function name
+			.parserName <- sosGetObservationName
+		}
+		
 		if(!is.null(.filename)) {
-			.filename <- paste(.filename, ".xml", sep = "")
+			.filename <- paste(.filename, .fileEnding, sep = "")
 			saveXML(.response, file = .filename)
 			
 			if(verbose) {
@@ -605,10 +633,17 @@ setMethod(f = "getObservationById",
 		}
 		
 		if( !is.na(responseFormat) && 
-				grep(pattern = "text/xml", x = responseFormat) != 1)
+				isTRUE(grep(pattern = "text/xml", x = responseFormat) != 1)) {
 			warning("Got XML string, but request did not require text/xml (or subtype).")
+		}
 		
-		.parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
+		.parsingFunction <- sosParsers(sos)[[.parserName]]
+		
+		if(verbose) {
+			cat("[.getObservation_1.0.0] Parsing with function ")
+			print(.parsingFunction)
+		}
+		
 		.obs <- .parsingFunction(obj = .response, sos = sos,
 				verbose = verbose)
 		
@@ -622,13 +657,13 @@ setMethod(f = "getObservationById",
 		else .resultLength <- NA
 		
 		if(verbose) {
-			cat("[.getObservation_1.0.0] PARSED RESPONSE:\n",
-					toString(.obs), "\n")
+			cat("[.getObservation_1.0.0] PARSED RESPONSE:",
+					class(.obs), "\n")
 			cat("[.getObservation_1.0.0] Result length(s): ",
 					toString(.resultLength), "\n")
 		}
 		
-		if(any(sapply(.obs, is.null))) {
+		if(is.list(.obs) && any(sapply(.obs, is.null))) {
 			.countInfo <- paste("NO DATA, turn on 'verbose' for more information.")
 		}
 		else {

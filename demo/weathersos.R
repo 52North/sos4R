@@ -22,7 +22,8 @@ title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
 
 # get the latest observation (not standard conform!)
 off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
-obs <- getObservation(sos = weathersos, offering = off, latest = TRUE)
+obs <- getObservation(sos = weathersos, offering = off, #verbose = TRUE,
+		latest = TRUE)
 
 # show the result for latest observation
 sosResult(obs)
@@ -30,11 +31,13 @@ sosResult(obs)
 ############################################
 # Request two procedures, then create a plot
 # Attention: plots ignore the fact that the times do NOT perfectly match!
-obs <- getObservation(sos = weathersos, offering = off,
-		procedure = sosProcedures(off), inspect = TRUE,
+obs <- getObservation(sos = weathersos,
+		offering = off,
+		procedure = sosProcedures(off),
+		inspect = TRUE,
 		eventTime = sosCreateTime(weathersos,
 				time = "2009-08-10 12:00::2009-08-20 12:00"))
-str(obs[[1]])
+str(obs[[1]], max.level = 3)
 str(obs[[2]]@result)
 summary(obs)
 
@@ -95,7 +98,7 @@ lines(data$Time, x$fitted, col = 'red', lwd=3)
 # DescribeSensor Operation
 procs <- unique(unlist(sosProcedures(weathersos)))
 
-describeSensor(weathersos, procs[[1]])
+describeSensor(weathersos, procs[[1]]) #, verbose = TRUE)
 
 procs.descr <- lapply(X = procs, FUN = describeSensor, # verbose = TRUE,
 		sos = weathersos)

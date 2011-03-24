@@ -1,4 +1,4 @@
-\name{SosEventTime-class}
+\name{SosEventTime}
 \Rdversion{1.1}
 
 \docType{class}

@@ -1,4 +1,4 @@
-\name{SweCompositePhenomenon-class}
+\name{SWE}
 \Rdversion{1.1}
 
 \docType{class}

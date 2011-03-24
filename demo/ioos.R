@@ -18,6 +18,7 @@ ioos <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
 		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
 ioos.off <- sosOfferings(ioos)
 names(ioos.off)
+sosResponseFormats(ioos)
 
 #############
 # first test:
@@ -148,6 +149,19 @@ obs.001 <- getObservation(sos = ioos,
 		inspect = TRUE, verbose = TRUE)
 
 
+################################################################################
+# KML
+kml <- getObservation(ioos, offering = "urn:ioos:network:noaa.nws.ndbc:all",
+#		verbose = TRUE,
+#		saveOriginal = TRUE,
+		responseFormat = "application/vnd.google-earth.kml+xml",
+		observedProperty = list(
+				"http://mmisw.org/ont/cf/parameter/air_temperature"))
+kml
+
+# TODO do sth. with the KML, e.g. export using examples from Spatial-Analyst?
+
+
 
 
 ################################################################################
@@ -162,6 +176,7 @@ ioos.get <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
 # https://geossregistries.info/geosspub/component_details_ns.jsp?compId=urn:uuid:c1af67f9-4a1b-42d2-b352-e2fdb3bcdeb1
 # request examples at http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/
 # Also good information about existing/active stations!
+# Presentation: http://sdf.ndbc.noaa.gov/sos/IOOS_DIF_SOS_Project.ppt
 ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS")
 #		method = "GET",
 #		verboseOutput = TRUE)
@@ -171,11 +186,10 @@ sosName(ioosdif.off)
 length(ioosdif.off)
 # 771
 
-# check out ioosdif at some point?
+# 
 sosResponseFormats(ioosdif)
 
-# TODO write parser for KML results, return kml as is and export using
-# examples from Spatial-Analyst?
+
 
 
 ###################################

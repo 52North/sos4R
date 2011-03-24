@@ -1,4 +1,4 @@
-\name{SaSamplingPoint-class}
+\name{SA}
 \Rdversion{1.1}
 
 \docType{class}

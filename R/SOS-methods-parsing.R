@@ -425,17 +425,16 @@ setMethod(f = "parseFile",
 }
 
 ################################################################################
-#
-#
+# commma seperated values
 #
 parseCSV <- function(obj, verbose = FALSE) {
-	if(verbose) cat("Processing CSV...\n")
+	if(verbose) cat("[parseCSV] Processing CSV...\n")
 	
-	lines <- strsplit(x = obj, split = "\n")[[1]]
-	data <- do.call(what = "strsplit", args = list(lines, split = ","))
+	.lines <- strsplit(x = obj, split = "\n")[[1]]
+	.data <- do.call(what = "strsplit", args = list(.lines, split = ","))
 	
 	# clean up names (double quotes)
-	.names <- data[[1]]
+	.names <- .data[[1]]
 	.newNames <- c()
 	for (.n in .names) {
 		.newNames <- c(.newNames,
@@ -443,36 +442,48 @@ parseCSV <- function(obj, verbose = FALSE) {
 	}
 	.names <- .newNames
 	
-	.rows <- length(data)
-	if(verbose) cat("Got", .rows, "lines of data.\n")
+	.rows <- length(.data)
+	if(verbose) cat("[parseCSV] Got", .rows, "lines of data.\n")
 	
 	if(.rows == 1) {
-		warnings(paste("Received just one line of data: ", data, "\n"))
-		return(data[[1]])
+		warnings(paste("Received just one line of data: ", .data, "\n"))
+		return(.data[[1]])
 	}
 	
-	df <- NULL
+	.df <- NULL
 	for (.r in seq(2,.rows)) {
-		if(verbose) cat("Processing row in CSV:", data[[.r]], "\n")
+		if(verbose) cat("[parseCSV] Processing row in CSV:", .data[[.r]], "\n")
 		
 		# initialize first column of the data frame so it can be bound in loop
-		.row.df <- as.data.frame(data[[.r]][1])
+		.row.df <- as.data.frame(.data[[.r]][1])
 		names(.row.df) <- .names[[1]]
 		
 		for (i in seq(2,length(.names))) {
-			.df <- as.data.frame(data[[.r]][i])
+			.df <- as.data.frame(.data[[.r]][i])
 			names(.df) <- .names[[i]]
 			.row.df <- cbind(.row.df, .df)
 		}
 #		print(paste("row", .r))
 #		print(.row.df)
 		
-		if(is.null(df))
-			df <- .row.df
+		if(is.null(.df))
+			.df <- .row.df
 		else
-			df <- do.call(rbind, list(df, .row.df))
+			.df <- do.call(rbind, list(.df, .row.df))
 	}
 	
-	return(df)
+	if(verbose) cat("[parseCSV] Done.\n")
+	
+	return(.df)
+}
+
+
+################################################################################
+# KML
+#
+parseKML <- function(obj, sos, verbose = FALSE) {
+	if(verbose) cat("[parseKML] Processing KML...\n")
+	
+	return(obj)
 }
 

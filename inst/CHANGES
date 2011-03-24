@@ -191,5 +191,10 @@
 
 2010-04-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
-* Version 0.2-1
+* Version 0.2-2
+* Added rudimentary support for KML responses (no parsing)
+* Changed parser detection, now uses mime type, too. This changes parser exchangeability for known mime types!
 * ...
+
+# TODO document behaviour for parser selection based on mimeType in vignette, because this means that the parser
+		# is not easily exchangeable by operation name!

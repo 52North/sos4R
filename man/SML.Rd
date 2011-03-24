@@ -1,4 +1,4 @@
-\name{SensorML-class}
+\name{SML}
 \Rdversion{1.1}
 
 \docType{class}

@@ -85,6 +85,9 @@ SosExampleServices <- function() {
 		parseComplexObservation,
 		#
 		parseCSV,
+		parseOM,
+		parseKML,
+		parseKML,
 		parseOM)
 names(.sosDefaultParsers) <- list(
 		sosGetCapabilitiesName,
@@ -115,7 +118,10 @@ names(.sosDefaultParsers) <- list(
 		omComplexObservationName,
 		#
 		mimeTypeCSV,
-		mimeTypeOM)
+		mimeTypeOM,
+		mimeTypeKML,
+		kmlName,
+		mimeTypeXML)
 
 # Using a different approach for the encoders here, because there is more than
 # one way of encoding something (in contrast to parsing). So the different 

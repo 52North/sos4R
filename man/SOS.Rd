@@ -1,4 +1,4 @@
-\name{SOS-class}
+\name{SOS}
 \Rdversion{1.1}
 
 \docType{class}
