@@ -14,4 +14,6 @@ ades.off <- sosOfferingIds(ades)
 
 # TODO
 
-cat("Demo finished, try another one!\n")
+###################################
+# Demo finished, try another one! #
+###################################

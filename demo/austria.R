@@ -144,4 +144,6 @@ summary(ooe)
 # http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE
 
 
-cat("Demo finished, try another one!\n")
+###################################
+# Demo finished, try another one! #
+###################################

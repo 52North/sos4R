@@ -110,4 +110,6 @@ jade1.watertemp <- getObservation(sos = coastlab, offering = jade1,
 jade1.watertemp.result <- sosResult(jade1.watertemp)
 summary(jade1.watertemp.result)
 
-cat("Demo finished, try another one!\n")
+###################################
+# Demo finished, try another one! #
+###################################

@@ -50,4 +50,6 @@ plot(data[,c("Temperature", "Salinity", "Conductivity")],
 
 cat("\nExpect a warning here because of incomplete swe:Quantitiy.\n")
 
-cat("Demo finished, try another one!\n")
+###################################
+# Demo finished, try another one! #
+###################################

@@ -36,8 +36,8 @@ world <- pruneMap(map(database = "world", plot = FALSE))
 world.lines <- map2SpatialLines(world, proj4string = crs)
 
 plot(world.lines, col = "grey50")
-plot(ioos.get, lwd = 3, add = TRUE)
-title(main = sosTitle(ioos.get))
+plot(ioos, lwd = 3, add = TRUE)
+title(main = sosTitle(ioos))
 #text(x = off.coords[,1], y = off.coords[,1], col = "black",
 #		labels = off.names, adj = c(1, 0), cex = 0.75)
 
@@ -91,18 +91,20 @@ summary(obs.wmo52.all)
 dim(obs.wmo52.all)
 
 hist(obs.wmo52.all[["sea_water_temperature (C)"]])
-
 colnames(obs.wmo52.all)
 
-# TODO continue here, coordinates seem wrong and there are NA values in the 
+# coordinates seem wrong and there are NA values in the 
 # data.frame, must be removed
+obs.wmo52.all <- obs.wmo52.all[complete.cases(obs.wmo52.all),]
 
-subset(obs.wmo52.all, is.na(latitude (degree)))
-
-.spdf <- SpatialPointsDataFrame(
+spdf <- SpatialPointsDataFrame(
 		coords = obs.wmo52.all[c(4,3)],
 		data = obs.wmo52.all[-c(4,3)],
 		proj4string = crs)
+summary(spdf)
+
+plot(world.lines, col = "grey50")
+plot(spdf, add = TRUE)
 
 
 ################################################################################
@@ -111,6 +113,7 @@ obs.csv <- getObservation(ioos, offering = sosName(ioos.off[[100]]),
 		responseFormat = "text/csv",
 		observedProperty = sosObservedProperties(ioos.off[[100]])[2])
 obs.csv
+summary(obs.csv)
 
 
 ################################################################################
@@ -175,4 +178,6 @@ sosResponseFormats(ioosdif)
 # examples from Spatial-Analyst?
 
 
-cat("Demo finished, try another one!\n")
+###################################
+# Demo finished, try another one! #
+###################################
