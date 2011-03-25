@@ -5,7 +5,7 @@ Version: 0.2-2
 Date: 2011-03-04
 Author: Daniel Nuest
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 2.11.1), XML, RCurl (>= 1.4-1), sp, methods, graphics
+Depends: R (>= 2.11.1), XML, RCurl (>= 1.4-1), sp, methods, graphics, xtable
 Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata, cshapes, xts
 Description: sos4R is a client for Sensor Observation Services (SOS) as
  specified by the Open Geospatial Consortium (OGC).

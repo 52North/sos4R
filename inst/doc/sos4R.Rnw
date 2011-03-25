@@ -1,6 +1,7 @@
 \documentclass[nogin,a4paper]{article}
 
 %\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
+%\VignetteDepends{xtable}
 
 % RUN WITH 
 % Sweave(file = "/home/daniel/workspace/sos4R/inst/doc/sos4R.Rnw")
@@ -141,7 +142,7 @@ A more extensive discussion is available in the the O\&M specification (Cox, 200
 \end{table}
 \end{center}
 
-A good and extensive introduction into the whole field of SWE, including its history, and an analysis of the current state of the art and future developments is provided in a recent paper (Bröring, 2011).
+A good and extensive introduction into the whole field of SWE, including its history, and an analysis of the current state of the art and future developments is provided in a recent paper (Br?ring, 2011).
 
 
 \newpage

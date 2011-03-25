@@ -194,6 +194,7 @@
 * Version 0.2-2
 * Added rudimentary support for KML responses (no parsing)
 * Changed parser detection, now uses mime type, too. This changes parser exchangeability for known mime types!
+* Added %\VignetteDepends{xtable} to vignette and depedency xtable as well - got NOTEd for that in R 2.13 checks
 * ...
 
 # TODO document behaviour for parser selection based on mimeType in vignette, because this means that the parser
