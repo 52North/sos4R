@@ -1285,4 +1285,25 @@ sosUOM(obs.temp.latest[1:2])
 sosUOM(obs.temp.latest)
 sosUOM(sosResult(obs.temp.latest))
 
+################################################################################
+# adding filename attribute testing
+weathersos <- SOS(SosExampleServices()[[1]])
 
+obs <- getObservationById(weathersos, "o_4995049", verbose = TRUE,
+		saveOriginal = TRUE)
+attributes(obs)
+attributes(obs)[[sosAttributeFileName]]
+# works!
+
+obs2 <- getObservation(weathersos, offering = sosOfferings(weathersos)[[1]],
+#		verbose = TRUE,
+		latest = TRUE,
+		saveOriginal = "testObservation"
+)
+attributes(obs2)
+# works!
+
+sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]][[1]],
+		saveOriginal = "mySensor")
+attributes(sensor)
+# works!

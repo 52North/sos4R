@@ -402,6 +402,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 		print(.response)
 	}
 	
+	.filename <- NULL
 	if(!is.null(saveOriginal)) {
 		if(is.character(saveOriginal)) {
 			.filename <- paste(saveOriginal, ".xml", sep = "")
@@ -430,6 +431,17 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 	else {
 		.parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
 		.sml <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
+		
+		if(!is.null(.filename)) {
+			.oldAttrs <- attributes(.sml)
+			.newAttrs <- list(.filename)
+			names(.newAttrs) <- list(sosAttributeFileName)
+			if(verbose) cat("[.describeSensor_1.0.0] Appending new attributes",
+						toString(.newAttrs), "(names",
+						toString(names(.newAttrs)), ")\n")
+			
+			attributes(.sml) <- c(.oldAttrs, .newAttrs)
+		}
 		
 		return(.sml)
 	}
@@ -464,7 +476,7 @@ setMethod(f = "getObservationById",
 .getObservationById_1.0.0 <- function(sos, observationId, responseFormat, srsName,
 		resultModel, responseMode, verbose, inspect, saveOriginal) {
 	if(verbose) {
-		cat("[getObservationById] ID", observationId, "\n")
+		cat("[.getObservationById_1.0.0] ID", observationId, "\n")
 	}
 	
 	.filename <- NULL
@@ -486,17 +498,17 @@ setMethod(f = "getObservationById",
 			resultModel = resultModel, responseMode = responseMode)
 	
 	if(verbose)
-		cat("[getObservationById] REQUEST:\n", toString(.go), "\n")
+		cat("[.getObservationById_1.0.0] REQUEST:\n", toString(.go), "\n")
 	
 	.responseString = sosRequest(sos = sos, request = .go,
 			verbose = verbose, inspect = inspect)
 	if(verbose || inspect){
-		cat("[getObservationById] RESPONSE:\n", .responseString , "\n")
+		cat("[.getObservationById_1.0.0] RESPONSE:\n", .responseString , "\n")
 	}
 	
 	.response <- xmlParseDoc(.responseString, asText = TRUE)
 	if(verbose || inspect) {
-		cat("[getObservationById] RESPONSE DOC:\n")
+		cat("[.getObservationById_1.0.0] RESPONSE DOC:\n")
 		print(.response)
 	}
 	
@@ -519,16 +531,26 @@ setMethod(f = "getObservationById",
 			.obs <- .obs[[1]]
 		
 		if(verbose) {
-			cat("[getObservationById] PARSED RESPONSE:\n")
+			cat("[.getObservationById_1.0.0] PARSED RESPONSE:\n")
 			print(.obs)
+		}
+		
+		if(!is.null(.filename)) {
+			.oldAttrs <- attributes(.obs)
+			.newAttrs <- list(.filename)
+			names(.newAttrs) <- list(sosAttributeFileName)
+			if(verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
+						toString(.newAttrs), "(names",
+						toString(names(.newAttrs)), ")\n")
+			
+			attributes(.obs) <- c(.oldAttrs, .newAttrs)
 		}
 		
 		return(.obs)
 	}
 	
-	if(!is.null(.filename)) {
-		save(.responseString, file = .filename)
-		cat("[sos4R] Original document saved:", .filename, "\n")
+	if(verbose) {
+		cat("[.getObservationById_1.0.0] returning raw response string.\n")
 	}
 	
 	return(.responseString)
@@ -674,8 +696,19 @@ setMethod(f = "getObservationById",
 		.msg <- paste("[sos4R] Finished getObservation to", sos@url,
 				"\n\t--> received", length(.obs), "observation(s) having",
 				.countInfo , "\n")
-		if(!is.null(.filename)) .msg <- paste(.msg,
+		if(!is.null(.filename)) {
+			.msg <- paste(.msg,
 					"[sos4R] Original document saved:", .filename, "\n")
+			
+			.oldAttrs <- attributes(.obs)
+			.newAttrs <- list(.filename)
+			names(.newAttrs) <- list(sosAttributeFileName)
+			if(verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
+						toString(.newAttrs), "(names",
+						toString(names(.newAttrs)), ")\n")
+			
+			attributes(.obs) <- c(.oldAttrs, .newAttrs)
+		}
 		cat(.msg)
 		
 		# RETURN ###
@@ -703,8 +736,19 @@ setMethod(f = "getObservationById",
 			.msg <- paste("[sos4R] Finished getObservation to", sos@url, "\n\t",
 					"--> received observations with dimensions", 
 					toString(dim(.csv)), "\n")
-			if(!is.null(.filename)) .msg <- paste(.msg,
+			if(!is.null(.filename)) {
+				.msg <- paste(.msg,
 						"[sos4R] Original document saved:", .filename, "\n")
+				
+				.oldAttrs <- attributes(.csv)
+				.newAttrs <- list(.filename)
+				names(.newAttrs) <- list(sosAttributeFileName)
+				if(verbose) cat("[.getObservation_1.0.0] Appending new attributes",
+							toString(.newAttrs), "(names",
+							toString(names(.newAttrs)), ")\n")
+				
+				attributes(.csv) <- c(.oldAttrs, .newAttrs)
+			}
 			cat(.msg)
 		
 			# RETURN ###

@@ -408,3 +408,4 @@ xmlInternalDocumentName <- "XMLInternalDocument"
 xmlTextNodeName <- "text"
 
 .sosCheatSheetDocumentName <- "sos4r_cheat-sheet.pdf"
+sosAttributeFileName <- "savedAsFile"
