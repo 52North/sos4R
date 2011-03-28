@@ -1289,6 +1289,7 @@ sosUOM(sosResult(obs.temp.latest))
 # adding filename attribute testing
 weathersos <- SOS(SosExampleServices()[[1]])
 
+# o_4995049, o_4995048
 obs <- getObservationById(weathersos, "o_4995049", verbose = TRUE,
 		saveOriginal = TRUE)
 attributes(obs)
