@@ -210,6 +210,7 @@
 \alias{mimeTypeXML}
 
 \alias{smlSensorMLName}
+\alias{sosAttributeFileName}
 
 \title{Constants in sos4R}
 
