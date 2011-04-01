@@ -196,3 +196,7 @@
 * Changed parser detection, now uses mime type, too. This changes parser exchangeability for known mime types!
 * Added attribute to observations (if response is saved) with file name (sosAttributeFileName)
 * Added %\VignetteDepends{xtable} to vignette and depedency xtable as well - got NOTEd for that in R 2.13 checks
+
+2010-04-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* ...
