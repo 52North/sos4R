@@ -191,8 +191,6 @@ length(ioosdif.off)
 sosResponseFormats(ioosdif)
 
 
-
-
 ###################################
 # Demo finished, try another one! #
 ###################################

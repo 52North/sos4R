@@ -614,6 +614,12 @@ setMethod(f = "getObservationById",
 	
 	if(isXMLString(.responseString)) {
 		if(verbose) cat("[.getObservation_1.0.0] Got XML string as response.\n")
+		
+		if(length(.contentType) < 1) {
+			if(verbose) cat("[.getObservation_1.0.0] No content type!",
+						"Falling back to '", mimeTypeXML, "'\n")
+			.contentType <- mimeTypeXML
+		}
 
 		.response <- xmlParseDoc(.responseString, asText = TRUE)
 		if(verbose || inspect) {
@@ -621,9 +627,7 @@ setMethod(f = "getObservationById",
 			print(.response)
 		}
 		
-		# TODO document this behaviour, because this means that the parser
-		# is not easily exchangeable by operation name!
-		# select the parser and file ending based on the mime type
+		# select the parser and file ending based on the mime type FIRST
 		.fileEnding <- ".xml"
 		if(.contentType == mimeTypeXML) {
 			if(verbose) cat("[.getObservation_1.0.0] Got pure XML according to mime type.\n")
@@ -714,7 +718,7 @@ setMethod(f = "getObservationById",
 		# RETURN ###
 		return(.obs)
 	}
-	else {
+	else { # response is NOT an XML string:
 		if(verbose)
 			cat("[.getObservation_1.0.0] Did NOT get XML string as response, trying to parse with",
 					responseFormat, "\n")

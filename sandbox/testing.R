@@ -1308,3 +1308,4 @@ sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]][[1]],
 		saveOriginal = "mySensor")
 attributes(sensor)
 # works!
+

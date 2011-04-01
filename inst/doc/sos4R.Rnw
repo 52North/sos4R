@@ -12,7 +12,6 @@
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{Sweave}
-\usepackage[utf8]{inputenc}
 \usepackage{csquotes}
 
 \newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
@@ -123,7 +122,7 @@ The OGC has a particular set of well-defined terms that might differ from usage 
 A more extensive discussion is available in the the O\&M specification (Cox, 2007). The Annex B of that document contains the examples of applicating some terms to specific domains, aerosol analysis and earth observations, which are repeated here for elaboration in table \ref{tab:terms}.
 
 \begin{center}
-\begin{table}[h]
+\begin{table}[ht]
 \begin{tabular}{lp{4cm}p{4cm}}
 	\textbf{O\&M} & \textbf{Particulate Matter\newline 2.5 Concentrations} & \textbf{Earth Observations} \\
 	\hline
@@ -142,7 +141,7 @@ A more extensive discussion is available in the the O\&M specification (Cox, 200
 \end{table}
 \end{center}
 
-A good and extensive introduction into the whole field of SWE, including its history, and an analysis of the current state of the art and future developments is provided in a recent paper (Br?ring, 2011).
+A good and extensive \textbf{introduction into the whole field of SWE}, including its history, and an analysis of the current state of the art and future developments is provided in a recent paper (Br\"oring, 2011).
 
 
 \newpage
@@ -421,7 +420,7 @@ title(main = paste("Offerings by '", sosTitle(mySOS), "'", sep = ""),
 		sub = toString(names(sosOfferings(mySOS))))
 @
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \label{fig:mySOS}
 
 \begin{center}
@@ -524,7 +523,7 @@ text(sosCoordinates(procs.descr)[c("x", "y")],
 title(main = paste("Sensors of", sosTitle(mySOS)))
 @
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \label{fig:desribeSensorPlot}
 
 \begin{center}
@@ -1265,7 +1264,9 @@ A complete list of the elements with existing encoders is shown below. These are
 names(sosParsers(mySOS))
 @
 
-If you want to replace only selected parsers use the include parameter as described above. You can also base your own parsing functions on a variety of existing parsing functions. For example you can replace the base function for om:ObservationCollectionm, named \code{ObservationCollection}, but still use the parsing function for om:Observation within your own function if you include it in the parser list. The existing parsing functions are all named in the pattern \code{parse<ElementName>()}. Please be aware that some parsers contain require a parameter of class SOS upon which they rely for encoding information.
+Parser selection can also be based on the \textbf{mimeType} of the returned document. Please be aware that this also can be a problem if you want to exchange a parse by \textbf{operation name}, which is done \textbf{after} switching the function based on the mime type. In other words, the exchange by operation name only works if the response type is as expected.
+
+If you want to \textbf{replace only selected parsers} use the include parameter as described above. You can also base your own parsing functions on a variety of existing parsing functions. For example you can replace the base function for om:ObservationCollectionm, named \code{ObservationCollection}, but still use the parsing function for om:Observation within your own function if you include it in the parser list. The existing parsing functions are all named in the pattern \code{parse<ElementName>()}. Please be aware that some parsers contain require a parameter of class \code{SOS} upon which they might rely for example for formatting information.
 
 <<loadOrDownload_Parsers3,eval=TRUE,echo=FALSE,results=hide>>=
 .obsFile <- "err.response.RData"
@@ -1399,10 +1400,11 @@ In Addition, this service shows errorenous behaviour regarding the reponse forma
 if(.goOnline) {
 	MBARI <- SOS("http://mmisw.org/oostethys/sos",
 		method = SosSupportedConnectionMethods()[["GET"]])
-		myOff <- sosOfferings(MBARI)[[1]]
-		myProc <- sosProcedures(MBARI)[[1]]
+	myOff <- sosOfferings(MBARI)[[1]]
+	myProc <- sosProcedures(MBARI)[[1]]
+
 	mbariObs1 <- try(
-			getObservation(sos = MBARI, offering = myOff,
+			getObservation(sos = MBARI, offering = myOff, verbose = TRUE,
 				procedure = myProc, responseFormat = NA_character_,
 				saveOriginal = .obsFile)
 		)
@@ -1458,9 +1460,6 @@ No converter found! Skipping field NA
 cat("...")
 @
 
-
-% TODO add (saved?) warnings output
-
 This shows warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field). The next example creates conversion functions for these fields and repeats the operation.
 
 <<converters4,eval=TRUE,echo=TRUE>>= 
@@ -1476,7 +1475,7 @@ if(.goOnline) {
 	MBARI2 <- SOS("http://mmisw.org/oostethys/sos",
 		method = SosSupportedConnectionMethods()[["GET"]],
 		dataFieldConverters = myConverters)
-	mbariObs2 <- getObservation(sos = MBARI2, offering = myOff,
+	mbariObs2 <- getObservation(sos = MBARI2, offering = myOff, #verbose = TRUE,
 		procedure = myProc, responseFormat = NA_character_,
 		saveOriginal = .obsFile)
 	save(MBARI2, file = .mbari2)
@@ -1616,14 +1615,14 @@ The \textbf{demos} are a good way to get started with the package. Please be awa
 demo(package = "sos4R")
 
 # run a demo:
-demo("southesk")
+demo("airquality")
 @
 
 \begin{description}
 \item[ades] SOS with French groundwater level data - \textbf{under construction}.
 \item[airquality] The Air Quality SOS by ifgi provides EEA AirBase\footnote{\url{http://www.eea.europa.eu/themes/air/airbase}} data for Germany (and other countries). It is used for this demo about \textbf{spatio-temporal interpolation with inverse distance weighting} of NO2 observation in Germany using the packages \pkg{gstat} and \pkg{spacetime}.
 \item[austria] SOSs by Research Studios Austria - \textbf{under construction}.
-\item[ioos] Example using SOS by the Integrated Ocean Observing System - \textbf{under construction}.
+\item[ioos] Example using SOS by the Integrated Ocean Observing System which provides data in different formats, of which \textbf{KML} and \textbf{CSV} are shown in the demo - \textbf{under construction}.
 \item[marinemeta] SOS by Marine Metadata Interoperability Initiative - \textbf{under construction}.
 \item[oceanwatch] SOS by NOAA/SWFSC/ERD - \textbf{under construction}.
 \item[pegel] Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.
