@@ -10,8 +10,9 @@ Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata, cshapes, xts
 Description: sos4R is a client for Sensor Observation Services (SOS) as
  specified by the Open Geospatial Consortium (OGC).
  It allows users to retrieve metadata from SOS web services and to interactively
- create requests for observation data based on the available sensors, phenomena,
- observations et cetera using thematical, temporal and spatial filtering. 
+ create requests for near real-time observation data based on the available
+ sensors, phenomena, observations et cetera using thematic, temporal and spatial
+ filtering. 
 License: GPL-2
 URL: http://www.nordholmen.net/sos4r/
 Encoding: UTF-8
