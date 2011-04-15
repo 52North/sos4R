@@ -44,7 +44,7 @@ str(obs[[1]], max.level = 3)
 str(obs[[2]]@result)
 summary(obs)
 
-sosResult(obs[[1]], coordinates = TRUE)[1:2,]
+sosResult(obs[[1]], coordinates = TRUE)[1:10,]
 
 # plot it!
 x <- 800
