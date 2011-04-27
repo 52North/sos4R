@@ -602,6 +602,8 @@ getObservation(sos = stccmop, inspect = TRUE, verbose = TRUE,
 		offering = "saturn04")
 # not time given returns last observation, fixes in parsing required, see above!
 
+# TODO check out "util" sos: 
+stccmoputil <- SOS(url = "http://data.stccmop.org/ws/util/sos.py")
 
 ################################################################################
 # AQE inapplicable error
@@ -704,3 +706,68 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 #		inspect = TRUE,
 		procedure = sosProcedures(cti.off.cuas)[[1]],
 		eventTime = time)
+
+################################################################################
+# some services from the AGILE 2011 paper "Empirical Study ..."
+# TODO test, create demos if interesting data
+
+# WEATHERFLOW
+weatherflow <- SOS(url = "http://www.weatherflow.com/sos/sos.pl")
+
+# offering network-all
+# TODO make demo with weatherflow
+
+# WAVCIS (part of MMI)
+# http://www.wavcis.lsu.edu/SOS/server.asp?request=GetCapabilities
+wavcis <- SOS(url = "http://www.wavcis.lsu.edu/SOS/server.asp")
+
+
+# Sensor Data Bus 
+# http://www.sensordatabus.org/Pages/SOS.aspx
+# http://ogc.codeplex.com/
+# http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
+sdb <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/")
+
+# Pegelonline @ WSV
+pegelonline <- SOS(url = "http://www.pegelonline.wsv.de/webservices/gis/sos")
+
+# ccip projct, degree SOS provided by Lat-Lon
+# http://ccip.lat-lon.de/
+# http://ccip.lat-lon.de/ccip-sos/services?request=GetCapabilities&service=SOS
+ccip <- SOS(url = "http://ccip.lat-lon.de/ccip-sos/services")
+
+# CCIW
+# http://devgeo.cciw.ca/cgi-bin/mapserv/sostest?request=GetCapabilities?service=SOS
+# Supposed to be Mapserv SOS, but strange error messages about WMS and WFS...
+
+# CSE, probably 52N
+# http://sensorweb.cse.unt.edu:8080/teo/sos?request=GetCapabilities&service=SOS
+
+# DISL
+# Dolphins!
+disl <- SOS(url = "http://gcoos.disl.org/cgi-bin/oostethys_sos.cgi")
+
+# RSMAS
+# gulf of mexico!
+# http://gcoos.rsmas.miami.edu/sos_server.php?service=SOS&request=GetCapabilities
+rsmas <- SOS(url = "http://gcoos.rsmas.miami.edu/sos_server.php")
+
+# INESCPORTO
+# several example services for oostethys and pysos
+# http://gis.inescporto.pt/
+
+# HIOOS
+# Hawaii!
+# http://oos.soest.hawaii.edu/oostethys/sos?service=SOS&request=GetCapabilities
+hioos <- SOS(url = "http://oos.soest.hawaii.edu/oostethys/sos")
+
+# NASA Real Time Mission Monitor
+# TODO real interesting data, check it out!
+# http://rtmm.nsstc.nasa.gov/
+# UAH VAST SOS
+# http://rtmm2.nsstc.nasa.gov/SOS/footprint?request=GetCapabilities&service=SOS&version=1.0.0
+footprint <- SOS(url = "http://rtmm2.nsstc.nasa.gov/SOS/footprint")
+# http://rtmm2.nsstc.nasa.gov/SOS/nadir?request=GetCapabilities&service=SOS&version=1.0.0
+nadir <- SOS(url = "http://rtmm2.nsstc.nasa.gov/SOS/nadir")
+
+# 
