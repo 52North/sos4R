@@ -201,3 +201,7 @@
 
 * Bug in sosGetCRS, returns NULL and prints error if the EPSG code is not recognized
 * Fixed non-ASCII characters, Umlaute, and incomplete last lines (when using readLines(...)) throughout the package
+
+2010-05-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+
+* ...
