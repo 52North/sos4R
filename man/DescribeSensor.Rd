@@ -61,7 +61,7 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 
 \references{See OGC 06-009r6 section 8.4, or the XSD schema file at \url{http://schemas.opengis.net/sos/1.0.0/sosDescribeSensor.xsd}.}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{}
 %\section{Warning }{}

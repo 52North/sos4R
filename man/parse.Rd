@@ -148,7 +148,7 @@ Not all parsing function that have a \code{SOS} object or \code{verbose} in thei
 
 %\references{}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 \section{Warning }{
 Functions might result in error if parsed an object of the wrong type, because that is normally not checked.

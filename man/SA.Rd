@@ -23,7 +23,7 @@
 \title{Classes of the Namespace sa}
 
 \description{
-Classes and construction functions for elements from the OGC specification \dQuote{Observations and Measurements – Part 2 - Sampling Features}.
+Classes and construction functions for elements from the OGC specification \dQuote{Observations and Measurements - Part 2 - Sampling Features}.
 }
 
 \section{Objects from the Class}{
@@ -73,7 +73,7 @@ SaSamplingPoint(sampledFeatures, position, relatedObservation = list(NA), relate
 
 \references{Simon Cox (Ed.), Observations and Measurements - Part 2 - Sampling Features, OGC 07-002r3}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

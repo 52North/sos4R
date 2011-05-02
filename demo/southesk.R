@@ -29,14 +29,14 @@ strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS%z")$isdst
 #Sys.setlocale("LC_ALL", "English")
 #Sys.getlocale()
 #Sys.setenv(TZ="GMT") 
-# All this does NOT remove the "Mitteleuropäische Zeit" from the strftime output!!
+# All this does NOT remove the "Mitteleurop_ische Zeit" from the strftime output!!
 
 # Ignore time zone when parsing, but use when creating output:
 strftime(strptime("1995-05-25T15:30:00+10:00", format = sosDefaultTimeFormat),
 		format = .timeFormat)
-# Problem: Output is "1995-05-25T15:30:00Mitteleuropäische Sommerzeit", not numerical!
+# Problem: Output is "1995-05-25T15:30:00Mitteleurop_ische Sommerzeit", not numerical!
 # InvalidParameterValue @ EventTime :
-# Error while parsing eventTime of GetObservation request: Unparseable date: "2011-03-09T16:15:03Mitteleurop�ische+Zeit00" 
+# Error while parsing eventTime of GetObservation request: Unparseable date: "2011-03-09T16:15:03Mitteleurop_ische+Zeit00" 
 
 # Other OwsException for time stamp "2011-03-09T16:15:03":
 # InvalidParameterValue @ EventTime :

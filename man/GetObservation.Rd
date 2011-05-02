@@ -95,7 +95,7 @@ See OGC 06-009r6 section 8.4, or the XSD schema file at \url{http://schemas.open
 See OGC 06-009r6 section 10.1, or the XSD schema file at \url{http://schemas.opengis.net/sos/1.0.0/sosGetObservationById.xsd}.
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 \seealso{\code{\link{SosGetObservation-class}}, \code{\link{SosGetObservationById-class}}}
 

@@ -41,7 +41,7 @@ It is encouraged to rather use these methods than manually set character values 
 
 %\references{}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{}
 %\section{Warning }{}

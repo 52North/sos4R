@@ -1,21 +1,21 @@
-# V+Ü Einführung Modellierung dynamischer räumlicher Prozesse, WS 2010/2011
+# V+ue Einfuehrung Modellierung dynamischer raeumlicher Prozesse, WS 2010/2011
 # 
-# Author: Daniel Nüst
+# Author: Daniel Nuest
 ###############################################################################
 
 # Was ist OGC?
 #	- WMS, KML, GML, WFS, WCS, CSW, OwsCommon
 # Was ist ein SOS?
-# - OGC Standard für Onlinespeicherung von Sensormessungen:
+# - OGC Standard fuer Onlinespeicherung von Sensormessungen:
 #	http://www.opengeospatial.org/standards/sos
-#	- Gute Übersicht: http://de.wikipedia.org/wiki/Sensor_Observation_Service
+#	- Gute uebersicht: http://de.wikipedia.org/wiki/Sensor_Observation_Service
 #	- Begriffe: FOI, Observation, Offering, Phenomenon, Procedure, In-Situ
 #	- Verbindungsarten: HTTP GET, HTTP POST, SOAP
 #	- Dokumentenkodierung: SensorML, O&M, SweCommon, ...
 
-# Warum muss ich mich damit beschäftigen?
+# Warum muss ich mich damit beschaeftigen?
 # - SWSL: http://swsl.uni-muenster.de
-# - Standards = Interoperabilität
+# - Standards = Interoperabilitaet
 #	(semantische ~ --> http://musil.uni-muenster.de/)
 
 # Was muss ich wirklich wissen?
@@ -57,7 +57,7 @@ cities <- read.csv(paste(getwd(), "/cities.csv", sep = ""))
 
 # Was ist sos4R?
 # - Webseite (downloads, news): http://www.nordholmen.net/sos4r
-# - Funktionalität
+# - Funktionalitaet
 # 	- Core Profile (plug GetObservationById)
 #		- GetCapabilities
 #		- GetObservation
@@ -66,7 +66,7 @@ cities <- read.csv(paste(getwd(), "/cities.csv", sep = ""))
 #	- Austauschbarkeit
 
 ##### Installation #############################################################
-# Dependencies installieren (werden nicht aufgelöst wenn von Datei installiert 
+# Dependencies installieren (werden nicht aufgeloest wenn von Datei installiert 
 # wird):
 install.packages("RCurl")
 install.packages("XML")
@@ -83,7 +83,7 @@ install.packages(paste(getwd(), "/", pkgName, sep = ""))
 library("sos4R")
 # sessionInfo()
 
-# Unterstützte Features (werden hoffentlich in Zukunft mehr)
+# Unterstuetzte Features (werden hoffentlich in Zukunft mehr)
 SosSupportedOperations()
 SosSupportedServiceVersions()
 SosSupportedConnectionMethods()
@@ -139,7 +139,7 @@ sosObservedProperties(mySOS)
 sosObservedProperties(off.temp)
 
 sosBoundedBy(off.temp)
-str(sosBoundedBy(off.temp)) # Nicht so schön ...
+str(sosBoundedBy(off.temp)) # Nicht so schoen ...
 
 sosTime(mySOS)
 off.temp.time <- sosTime(off.temp)
@@ -161,7 +161,7 @@ str(sensor2)
 sensor2@xml
 
 ##### Messungen abfragen #######################################################
-# Einfachster Fall: "latest observation" für ein gesamtes offerings
+# Einfachster Fall: "latest observation" fuer ein gesamtes offerings
 obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
 		latest = TRUE, inspect = TRUE)
 # TIPP: "inspect" benutzen um die requests und responses kennen zu lernen!
@@ -169,7 +169,7 @@ obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
 ##### Response erforschen ######################################################
 # print Methoden
 obs.temp.latest
-# TIPP: str(...) für Einblick unter die Motorhaube
+# TIPP: str(...) fuer Einblick unter die Motorhaube
 
 # ObservationCollection behaves like a list in most cases
 length(obs.temp.latest)
@@ -198,8 +198,8 @@ obs.temp.latest.data <- merge(x = obs.temp.latest.result,
 		y = obs.temp.latest.coords)
 obs.temp.latest.data
 
-##### Temporäre Ausschnitte ####################################################
-# Erstellen der event time für GetObservation requests:
+##### Temporaere Ausschnitte ####################################################
+# Erstellen der event time fuer GetObservation requests:
 period.august09 <- sosCreateEventTimeList(
 		sosCreateTimePeriod(sos = mySOS,
 				begin = as.POSIXct("2009-08-01 00:00"),
@@ -219,7 +219,7 @@ summary(obs.temp.august09.result)
 str(obs.temp.august09.result)
 obs.temp.august09.result[100:103,]
 
-##### Räumliche Ausschnitte ####################################################
+##### Raeumliche Ausschnitte ####################################################
 #SosSupportedSpatialOperators()
 
 sosBoundedBy(off.temp)
@@ -238,7 +238,7 @@ obs.august09.bbox <- getObservation(sos = mySOS,
 obs.august09.bbox
 sosCoordinates(obs.august09.bbox)
 
-# Beliebige räumliche Filter über FOI sind auch möglich
+# Beliebige raeumliche Filter ueber FOI sind auch moeglich
 # -> siehe SOS Spec.
 # -> siehe sos4R Code
 
@@ -285,15 +285,15 @@ sosResult(mbariObs)
 
 ##### Daten -> sp/gstat ########################################################
 
-# Typisch für das Geoinformatikerleben: Anwenden von Software anderer Leute...
+# Typisch fuer das Geoinformatikerleben: Anwenden von Software anderer Leute...
 # Viel Erfolg!
 
 ##### Demos ####################################################################
 demo(package = "sos4R")
-# Demos laufen lassen (enhalten weiterführende Beispiele mit plots usw.):
+# Demos laufen lassen (enhalten weiterfuehrende Beispiele mit plots usw.):
 demo("weathersos")
-demo("pegel")		# Möglicherweise SOS defekt/offline/langsam
-demo("airquality")	# Möglicherweise SOS defekt/offline/langsam
+demo("pegel")		# Moeglicherweise SOS defekt/offline/langsam
+demo("airquality")	# Moeglicherweise SOS defekt/offline/langsam
 demo("marinemeta")
 
 

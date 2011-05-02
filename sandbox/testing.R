@@ -507,9 +507,9 @@ summary(obs3@result) # finally!
 plot(x = obs3@result[["Time"]],
 		y = obs3@result[["urn:ogc:def:property:OGC::Temperature"]],
 		type = "l",
-		main = "Temperature in Münster",
+		main = "Temperature in Muenster",
 		xlab = "Time",
-		ylab = "Temperature (°C)")
+		ylab = "Temperature (degree C)")
 
 
 # two procedures
@@ -529,16 +529,16 @@ data.frame(obs4[[1]]@result["Time"][1:10,], obs4[[2]]@result["Time"][1:10,])
 # Attention: plots ignore the fact that the times do NOT perfectly match!
 x <- 800
 plot(x = obs4[[1]]@result[[1]][1:x], y = obs4[[1]]@result[[3]][1:x], type = "l",
-		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
+		col = "steelblue", main = "Temperature in Muenster and Kaernten, 2009",
 		xlab = "Time (00:00 o'clock)",
-		ylab = "Temperature (°C)",
+		ylab = "Temperature (degree C)",
 		xaxt="n") # do not ploplott x-axis
 r <- as.POSIXct(round(range(obs4[[1]]@result[[1]]), "days"))
 axis.POSIXct(side = 1, x = obs4[[1]]@result[[1]][1:x], format = "%d. %h",
 		at = seq(r[1], r[2], by="day"))
 lines(x = obs4[[2]]@result[[1]][1:x], y = obs4[[2]]@result[[3]][1:x],
 		col = "orange")
-legend("topleft", legend = c("Münster", "Kärnten"),
+legend("topleft", legend = c("Muenster", "Kaernten"),
 		col = c("steelblue", "orange"), lty = 1, bty="n")
 
 savePlot(type = "png", filename = "/tmp/temp-MS-K.png")
@@ -1140,17 +1140,17 @@ t2 <- strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS%z")
 
 strftime(t1, format = "%Y-%m-%dT%H:%M:%OS")
 strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%z")
-# Ends in "Mitteleuropäische Sommerzeit", not in +10:00, so time zone is ignored!
+# Ends in "Mitteleuropaeische Sommerzeit", not in +10:00, so time zone is ignored!
 # Also no difference beetween %z and %z !
 strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%Z")
-# All this does NOT remove the "Mitteleuropäische Zeit" from the strftime output!!
+# All this does NOT remove the "Mitteleuropaeische Zeit" from the strftime output!!
 
 # Can locale solve the problem?
 Sys.getlocale(category = "LC_TIME")
 Sys.setlocale("LC_TIME", "English")
 
 strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%z")
-# [1] "1995-05-25T15:30:00Mitteleuropäische Sommerzeit" -- No change.
+# [1] "1995-05-25T15:30:00Mitteleuropaeische Sommerzeit" -- No change.
 
 # does t1 actually have time zone?
 attributes(t1)
@@ -1161,7 +1161,7 @@ format(t1, format = "%Y-%m-%dT%H:%M:%OS%z") # usetz = TRUE) # no change on usetz
 t3 <- strptime("1995-05-25T15:30:00+1000", format = "%Y-%m-%dT%H:%M:%S%z")
 attributes(t3)
 format(t3, format = "%Y-%m-%dT%H:%M:%OS%z")
-# [1] "1995-05-25T07:30:00Mitteleuropäische Sommerzeit"
+# [1] "1995-05-25T07:30:00Mitteleuropaeische Sommerzeit"
 
 strftime(t1, format = "%Y-%m-%dT%H:%M:%OS%z", tz = "+0200") # no effect on setting tz
 
@@ -1192,9 +1192,9 @@ time <- as.POSIXlt(gsub("T", " ", 	# change T to space
 				gsub("(T..:..:.....):", "\\1", "1995-05-25T15:30:00-10:00")),
 		format="%Y-%m-%d %H:%M:%S%z") #, tz="GMT")
 format(x = time, format = "%Y-%m-%d %H:%M:%S%z")
-# [1] "1995-05-26 01:30:00Mitteleuropäische Zeit"
+# [1] "1995-05-26 01:30:00Mitteleuropaeische Zeit"
 strftime(x = time, format = "%Y-%m-%d %H:%M:%S%z")
-# [1] "1995-05-26 03:30:00Mitteleuropäische Sommerzeit"
+# [1] "1995-05-26 03:30:00Mitteleuropaeische Sommerzeit"
 
 x <- as.POSIXlt(gsub("T", " ", #change T to space
 				# but preserve the sign for the %z format string
@@ -1203,9 +1203,9 @@ x <- as.POSIXlt(gsub("T", " ", #change T to space
 x
 # [1] "1995-05-26 01:30:00 GMT"
 format(x, "%Y-%m-%d %H:%M:%S%z")
-# [1] "1995-05-26 03:30:00Mitteleuropäische Zeit"
+# [1] "1995-05-26 03:30:00Mitteleuropaeische Zeit"
 format(x, "%Y-%m-%dT%H:%M:%S%z")
-# [1] "1995-05-26T01:30:00Mitteleuropäische Zeit"
+# [1] "1995-05-26T01:30:00Mitteleuropaeische Zeit"
 
 
 ################################################################################
@@ -1308,4 +1308,35 @@ sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]][[1]],
 		saveOriginal = "mySensor")
 attributes(sensor)
 # works!
+
+
+################################################################################
+# Google CRS
+require("rgdal", quietly = TRUE)
+CRS("+init=epsg:4979")
+# raises error
+
+?try
+
+lala <- function() {
+	.temp <- NULL
+#	try(.temp <- CRS("+init=epsg:4979"))
+#	print("done 1")
+#	print(.temp)
+	
+	tryCatch({
+				.temp <- CRS("+init=epsg:4979")
+			}, error = function(ex) {
+				cat("An error was detected: ", toString(ex))
+			}, finally = {
+				cat("Releasing resources...");
+				cat("done\n");
+			})
+	print("done 1")
+	print(.temp)
+}
+lala()
+
+sosGetCRS("epsg:1234")
+
 

@@ -136,7 +136,7 @@ str(obs.proc123[[1]])
 sosProcedures(obs.proc123)
 
 ################################################################################
-# Land Oberösterreich
+# Land Oberoesterreich
 ooe <- SOS("http://ispacevm10.researchstudio.at/geoservices/ooe", sections = NA,
 		verboseOutput = TRUE)
 ooe

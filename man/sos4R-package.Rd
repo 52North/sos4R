@@ -19,7 +19,7 @@
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
 	Version: \tab 0.2-3\cr
-	Date: \tab 2011-04-XX\cr
+	Date: \tab 2011-05-02\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	Depends: \tab XML, RCurl\cr
@@ -27,7 +27,7 @@
 }
 
 \author{
-Daniel Nüst <daniel.nuest@uni-muenster.de>
+Daniel Nuest <daniel.nuest@uni-muenster.de>
 }
 
 \references{
@@ -41,7 +41,7 @@ The development of this software was gratefully supported by the 52North Student
 
 To stay updated on all matters around \pkg{sos4R} go to the development blog at \url{http://www.nordholmen.net/sos4r/}.
 
-If you want to ask questions about using the software, please go to the 52°North forum for the geostatistics community (\url{http://geostatistics.forum.52north.org/}), or consider subscribing to the mailing list (\url{http://list.52north.org/mailman/listinfo}).
+If you want to ask questions about using the software, please go to the 52North forum for the geostatistics community (\url{http://geostatistics.forum.52north.org/}), or consider subscribing to the mailing list (\url{http://list.52north.org/mailman/listinfo}).
 
 The most extensive documenation is contained in the \strong{package vignette}.
 }

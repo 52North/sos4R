@@ -72,7 +72,7 @@ sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
 
 \value{An object of the respective class, or a list in case of \code{sosEventTimeList}.}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{}
 

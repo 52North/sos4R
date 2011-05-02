@@ -72,7 +72,7 @@ ObservationOffering provides a mechanism for factoring groups of related observa
 See section 6.3, \dQuote{Observation Offerings}, of the SOS specification: Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortium Inc., OGC 06-009r6, Version: 1.0
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

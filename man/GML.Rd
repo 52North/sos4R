@@ -278,7 +278,7 @@ The \verb{"...OrNULL"} classes are used to model optional slots.
 
 \references{GML specification at \url{http://www.opengeospatial.org/standards/gml}.}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

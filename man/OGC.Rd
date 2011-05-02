@@ -115,12 +115,12 @@ The \verb{...OrNULL} classes are used to model optional slots.
 % TODO describe class hierarchy here.
 }
 
-\references{Vretanos, Panagiotis A. (Ed.), OpenGIS® Filter Encoding Implementation Specification, OGC 04-095, Version: 1.1.0
+\references{Vretanos, Panagiotis A. (Ed.), OpenGIS(R) Filter Encoding Implementation Specification, OGC 04-095, Version: 1.1.0
 
 Schemas: \url{http://schemas.opengis.net/filter/1.1.0/}
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 \note{This implementation of the Filter Encoding Specification is not complete.}
 

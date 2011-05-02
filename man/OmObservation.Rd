@@ -100,9 +100,9 @@ The \verb{...OrNULL} classes are used to model optional slots.
 
 \value{The construction functions return an object of the respective class.}
 
-\references{Cox, S. (Ed.), Observations and Measurements – Part 1 - Observation schema, Open Geospatial Consortium Inc., OGC 07-022r1, Version: 1.0}
+\references{Cox, S. (Ed.), Observations and Measurements - Part 1 - Observation schema, Open Geospatial Consortium Inc., OGC 07-022r1, Version: 1.0}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

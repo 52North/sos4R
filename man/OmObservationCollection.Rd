@@ -57,9 +57,9 @@ Objects can be created by calls to the construction function of the form \code{O
 	 }
 }
 
-\references{Cox, S. (Ed.), Observations and Measurements – Part 1 - Observation schema, Open Geospatial Consortium Inc., OGC 07-022r1, Version: 1.0}
+\references{Cox, S. (Ed.), Observations and Measurements  - Part 1 - Observation schema, Open Geospatial Consortium Inc., OGC 07-022r1, Version: 1.0}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{}
 

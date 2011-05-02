@@ -547,8 +547,11 @@ worldHigh <- pruneMap(map(database = "worldHires",
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
 
 plot(worldHigh.lines, col = "grey50")
+# only plot the procedures where I can find the id (and then probably the
+# position can also be found
 for(x in procs.descr)
-	plot(x, add = TRUE, pch = 19)
+	if(!is.na(sosId(x)))
+		plot(x, add = TRUE, pch = 19)
 text(sosCoordinates(procs.descr)[c("x", "y")],
 		labels = sosId(procs.descr), pos = 4)
 title(main = paste("Sensors of", sosTitle(mySOS)))
@@ -1555,7 +1558,7 @@ In .handleExceptionReport(sos, .response) :
 @
 
 <<exceptionWarning2c,eval=TRUE,echo=FALSE,results=hide>>=
-.file <- "exceptionResponse.Rdata"
+.file <- "exceptionResponse.RData"
 if(.goOnline) {
 	response <- getObservationById(sos = mySOS,
 					observationId = "o_not_there")

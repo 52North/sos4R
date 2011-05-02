@@ -30,7 +30,7 @@ read.sos(sos, sensors = NA_character_, phenomena = NA_character_, bbox = NA_char
 
 %\references{}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{}
 %\section{Warning }{}

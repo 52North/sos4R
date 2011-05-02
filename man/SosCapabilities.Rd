@@ -45,7 +45,7 @@ SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", identificati
 
 \arguments{
   \item{version}{The version of the service.}
-  \item{updateSequence}{Service metadata document version, value is “increased” whenever any change is made in complete service metadata document. This can be used to request a certain version of a metadata document. Parameter is found in both request and reponse, but may not be supported by a service.}
+  \item{updateSequence}{Service metadata document version, value is "increased" whenever any change is made in complete service metadata document. This can be used to request a certain version of a metadata document. Parameter is found in both request and reponse, but may not be supported by a service.}
   \item{owsVersion}{The used OWS specification version.}
   \item{identification}{The identification section of a capabilities document, object of class \code{OwsServiceIdentification}.}
   \item{provider}{The provider section of a capabilities document, object of class \code{OwsServiceProvider}.}
@@ -62,7 +62,7 @@ The portions of the GetCapabilities response document that are defined in the OW
 
 \references{Section 8.2.3 of the SOS specification: Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortium Inc., OGC 06-009r6, Version: 1.0}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

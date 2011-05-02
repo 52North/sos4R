@@ -72,16 +72,16 @@ range(pegelObs[[1]]@result[,3]); range(pegelObs[[2]]@result[,3])
 # Attention: plots ignore the fact that the times do NOT perfectly match!
 #x <- 700
 #plot(x = obs4[[1]]@result[[1]][1:x], y = obs4[[1]]@result[[3]][1:x], type = "l",
-#		col = "steelblue", main = "Temperature in Münster and Kärnten, 2009",
+#		col = "steelblue", main = "Temperature in Muenster and Kaernten, 2009",
 #		xlab = "Time (00:00 o'clock)",
-#		ylab = "Temperature (°C)",
+#		ylab = "Temperature (degree C)",
 #		xaxt="n") # do not plot x-axis
 #r <- as.POSIXct(round(range(obs4[[1]]@result[[1]]), "days"))
 #axis.POSIXct(side = 1, x = obs4[[1]]@result[[1]][1:x], format = "%d. %h",
 #		at = seq(r[1], r[2], by="day"))
 #lines(x = obs4[[2]]@result[[1]][1:x], y = obs4[[2]]@result[[3]][1:x],
 #		col = "orange")
-#legend("topleft", legend = c("Münster", "Kärnten"),
+#legend("topleft", legend = c("Muenster", "Kaernten"),
 #		col = c("steelblue", "orange"), lty = 1, bty="n")
 
 plot(x = pegelObs[[1]]@result[,1], y = pegelObs[[1]]@result[,3], type = "l")
@@ -209,8 +209,8 @@ data <- sosResult(obsSept)
 library("xts")
 tempSept <- xts(x = data[["urn:ogc:def:property:OGC::Temperature"]],
 		order.by = data[["Time"]])
-plot(tempSept, main = "Temperature in Münster",
-		xlab = "Time", ylab = "Temperature (°C)", major.ticks = "weeks")
+plot(tempSept, main = "Temperature in Muenster",
+		xlab = "Time", ylab = "Temperature (degree C)", major.ticks = "weeks")
 
 # time series plots
 tsdisplay(tempSept)
@@ -262,7 +262,7 @@ names(sosResult(temp2009))
 library("xts")
 tempSeries2009 <- xts(x = sosResult(temp2009)[["urn:ogc:def:property:OGC::Temperature"]],
 		order.by = sosResult(temp2009)[["Time"]])
-plot(tempSeries2009, main = "Temperature in Münster", xlab = "Time", ylab = "Temperature (°C)", major.ticks = "months")
+plot(tempSeries2009, main = "Temperature in Muenster", xlab = "Time", ylab = "Temperature (degree C)", major.ticks = "months")
 
 # time series plots
 tsdisplay(tempSeries2009)
@@ -660,7 +660,7 @@ summaryRprof("EDCprof.out")
 # not really useful information
 
 ################################################################################
-# FH Kärnten / Kaernten
+# FH Kaernten
 # Contact: Hecke Andreas <A.Hecke@fh-kaernten.at>
 cti <- SOS("http://weatherstation.cti.ac.at:8080/52NSOS_CUAS/sos")
 cti

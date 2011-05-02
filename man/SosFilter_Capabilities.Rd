@@ -60,7 +60,7 @@ The FilterCapabilities section is used to indicate what types of query parameter
 See section 8.2.3.1, \dQuote{FilterCapabilities Section}, the SOS specification: Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortium Inc., OGC 06-009r6, Version: 1.0
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

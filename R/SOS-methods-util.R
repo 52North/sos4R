@@ -215,15 +215,15 @@ setMethod(f = "sosCreateTime",
 }
 
 .sosCreateEventTimeListFromISOPeriod <- function(sos, time, operator) {
-#	* 2005-08-09T18:31:42P3Y6M4DT12H30M17S: bestimmt eine Zeitspanne von 3 Jahren, 6 Monaten, 4 Tagen 12 Stunden, 30 Minuten und 17 Sekunden ab dem 9. August 2005 „kurz nach halb sieben Abends“.
-#	* P1D: „Bis morgen zur jetzigen Uhrzeit.“ Es könnte auch „PT24H“ verwendet werden, doch erstens wären es zwei Zeichen mehr, und zweitens würde es bei der Zeitumstellung nicht mehr zutreffen.
+#	* 2005-08-09T18:31:42P3Y6M4DT12H30M17S: bestimmt eine Zeitspanne von 3 Jahren, 6 Monaten, 4 Tagen 12 Stunden, 30 Minuten und 17 Sekunden ab dem 9. August 2005 "kurz nach halb sieben Abends".
+#	* P1D: "Bis morgen zur jetzigen Uhrzeit." Es koennte auch "PT24H" verwendet werden, doch erstens waeren es zwei Zeichen mehr, und zweitens wuerde es bei der Zeitumstellung nicht mehr zutreffen.
 #	* P0003-06-04T12:30:17
 #	* P3Y6M4DT12H30M17S: gleichbedeutend mit dem ersten Beispiel, allerdings ohne ein bestimmtes Startdatum zu definieren
-#	* PT72H: „Bis in 72 Stunden ab jetzt.“
-#	* 2005-08-09P14W: „Die 14 Wochen nach dem 9. August 2005.“
+#	* PT72H: "Bis in 72 Stunden ab jetzt."
+#	* 2005-08-09P14W: "Die 14 Wochen nach dem 9. August 2005."
 #	* 2005-08-09/2005-08-30
 #	* 2005-08-09--30
-#	* 2005-08-09/30: „Vom 9. bis 30. August 2005.“
+#	* 2005-08-09/30: "Vom 9. bis 30. August 2005."
 	
 	warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
 }
@@ -450,7 +450,9 @@ setMethod(f = "sosExceptionCodeMeaning",
 #
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "character"),
-		def = function(obj) {
+		def = function(obj, verbose = FALSE) {
+			if(verbose) cat("[sosGetCRS] from '", obj, "'\n", sep = "")
+			
 			# get the position of EPSG code
 			.split <- strsplit(as.character(obj), split = ":")
 			.idx <- which(toupper(.split[[1]]) == "EPSG")
@@ -463,20 +465,37 @@ setMethod(f = "sosGetCRS",
 			
 			.initString <- paste("+init=epsg", .epsg, sep = ":")
 			
+			if(verbose) cat("[sosGetCRS] .initString:", .initString, "\n")
+			
 			.rgdal <- require("rgdal", quietly = TRUE)
-			if(!.rgdal) {
+			if(!.rgdal)
 				# if(!("rgdal" %in% .packages())) does only check loaded pkgs
-				warning("rgdal not present: CRS values will not be validated.")
+				warning("[sosGetCRS] rgdal not present: CRS values will not be validated.",
+						immediate. = TRUE)
+			else
+				if(verbose) cat("[sosGetCRS] rgdal loaded! \n")
+				
+			.crs <- NULL
+			tryCatch({
+						.crs <- CRS(.initString)
+					}, error = function(err) {
+						cat("[sosGetCRS] error was detected, probably the EPSG",
+								"code", .epsg, "is not recognized", 
+								"(returning NULL):", toString(err))
+					})
+			
+			if(verbose) {
+				cat("[sosGetCRS] found: ")
+				show(.crs)
 			}
-			.crs <- CRS(.initString)
 			
 			return(.crs)
 		}
 )
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "OmObservationCollection"),
-		def = function(obj) {
-			.l <- lapply(X = obj, FUN = sosGetCRS)
+		def = function(obj, verbose = FALSE) {
+			.l <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
 			.l <- unique(.l)
 			
 			if(length(.l) == 1)
@@ -486,33 +505,33 @@ setMethod(f = "sosGetCRS",
 )
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "OmObservation"),
-		def = function(obj) {
+		def = function(obj, verbose = FALSE) {
 			.crs <- .getCRSfromOM(obj)
 			return(.crs)
 		}
 )
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "OmMeasurement"),
-		def = function(obj) {
+		def = function(obj, verbose = FALSE) {
 			.crs <- .getCRSfromOM(obj)
 			return(.crs)
 		}
 )
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "SosObservationOffering"),
-		def = function(obj) {
+		def = function(obj, verbose = FALSE) {
 			.srsName <- sosBoundedBy(obj)[["srsName"]]
 			if(is.null(.srsName))
 				.crs <- NULL
-			else .crs <- sosGetCRS(.srsName)
+			else .crs <- sosGetCRS(.srsName, verbose = verbose)
 			return(.crs)
 		}
 )
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "SOS"),
-		def = function(obj) {
+		def = function(obj, verbose = FALSE) {
 			.offs <- sosOfferings(obj)
-			.crss <- lapply(.offs, sosGetCRS)
+			.crss <- lapply(.offs, sosGetCRS, verbose = verbose)
 			if(length(.crss) == 1)
 				return(.crss[[1]])
 			return(.crss)
@@ -520,8 +539,8 @@ setMethod(f = "sosGetCRS",
 )
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "list"),
-		def = function(obj) {
-			.crs <- lapply(X = obj, FUN = sosGetCRS)
+		def = function(obj, verbose = FALSE) {
+			.crs <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
 			return(.crs)
 		}
 )
@@ -539,7 +558,7 @@ setMethod(f = "sosGetCRS",
 
 ################################################################################
 #
-# ‘"’, ‘*’, ‘:’, ‘/’, ‘<’, ‘>’, ‘?’, ‘\’, and ‘|’
+# ", *, :, /, <, >, ?, \, and |
 #
 .cleanupFileName <- function(obj) {
 	.clean <- gsub(

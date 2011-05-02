@@ -57,9 +57,10 @@ setMethod(f = "sosAbstract", signature = signature(obj = "SensorML"),
 #
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "SensorML"),
-		def = function(obj) {
+		def = function(obj, verbose = FALSE) {
 			.coords <- sosCoordinates(obj)
-			.crs <- sosGetCRS(attributes(.coords)[["referenceFrame"]])
+			.crs <- sosGetCRS(attributes(.coords)[["referenceFrame"]],
+					verbose = verbose)
 			return(.crs)
 		}
 )

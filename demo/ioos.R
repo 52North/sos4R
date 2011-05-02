@@ -190,6 +190,9 @@ length(ioosdif.off)
 # 
 sosResponseFormats(ioosdif)
 
+# TODO create a map using background data as described in
+# http://r-sig-geo.2731867.n2.nabble.com/Reading-a-WMS-layer-as-a-sp-object-td6311972.html
+
 
 ###################################
 # Demo finished, try another one! #

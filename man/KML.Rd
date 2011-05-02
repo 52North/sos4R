@@ -21,7 +21,7 @@ At the current stage, the parsers simply returns an object from the package \pkg
 \url{http://code.google.com/intl/de-DE/apis/kml/documentation/}
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 \examples{
 #

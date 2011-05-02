@@ -56,7 +56,7 @@ The SosContents section extends the generic ows:Contents elements. It contains t
 \references{See section 8.2.3.2, \dQuote{Contents Section}, of the SOS specification.}
 
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

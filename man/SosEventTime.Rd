@@ -66,7 +66,7 @@ It is recommended to use the creation functions as shown in the examples.
 
 \references{See SOS specification, Table 4: \dQuote{Parameters of GetObservation Request}.}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

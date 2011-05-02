@@ -74,12 +74,12 @@ Class \code{"\linkS4class{OgcBinaryTemporalOpOrNULL}"}, by class "OgcBinaryTempo
 }
 
 \references{
-Vretanos, Panagiotis A. (Ed.), OpenGIS® Filter Encoding Implementation Specification, OGC 04-095, Version: 1.1.0
+Vretanos, Panagiotis A. (Ed.), OpenGIS(R) Filter Encoding Implementation Specification, OGC 04-095, Version: 1.1.0
 
 See the schema file: \url{http://schemas.opengis.net/sos/1.0.0/ogc4sos.xsd}.
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 \seealso{\code{\link{SosGetObservation}}}
 

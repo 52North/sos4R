@@ -7,7 +7,7 @@
     </gml:Envelope>
   </gml:boundedBy>
   <om:member>
-    <om:Observation gml:id="ot_525067">
+    <om:Observation gml:id="ot_525074">
       <om:samplingTime>
         <gml:TimePeriod xsi:type="gml:TimePeriodType">
           <gml:beginPosition>2009-08-20T00:02:00.000+02:00</gml:beginPosition>
@@ -68,7 +68,7 @@
     </om:Observation>
   </om:member>
   <om:member>
-    <om:Observation gml:id="ot_497634">
+    <om:Observation gml:id="ot_497690">
       <om:samplingTime>
         <gml:TimePeriod xsi:type="gml:TimePeriodType">
           <gml:beginPosition>2009-08-20T00:15:00.000+02:00</gml:beginPosition>

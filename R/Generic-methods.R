@@ -153,7 +153,7 @@ if (!isGeneric("encodeKVP"))
 #
 if (!isGeneric("sosGetCRS"))
 	setGeneric(name = "sosGetCRS",
-			def = function(obj) {
+			def = function(obj, verbose = FALSE) {
 				standardGeneric("sosGetCRS")
 			})
 

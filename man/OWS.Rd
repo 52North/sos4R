@@ -239,7 +239,7 @@ Class \code{"\linkS4class{OwsServiceProviderOrNULL}"}, directly.
   \item{serviceTypeVersion}{Version of a service type implemented by a server.}
   \item{spacing}{Regular distance or spacing between allowed values in this range; include when range is not continuous.}
   \item{title}{Title of a server, normally used for display to a human.}
-  \item{updateSequence}{Service metadata document version, value is “increased” whenever any change is made in complete service metadata document. This can be used to request a certain version of a metadata document. Parameter is found in both request and reponse, but may not be supported by a service.}
+  \item{updateSequence}{Service metadata document version, value is "increased" whenever any change is made in complete service metadata document. This can be used to request a certain version of a metadata document. Parameter is found in both request and reponse, but may not be supported by a service.}
   \item{version}{The version of the document.}
 }
 
@@ -256,7 +256,7 @@ Whiteside A. (Ed.), OGC Web Services Common Specification, Open Geospatial Conso
 Whiteside A., Greenwood, J. (Eds.), OGC Web Services Common Standard, Open Geospatial Consortium Inc., OGC 06-121r9, Version: 2.0.0
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

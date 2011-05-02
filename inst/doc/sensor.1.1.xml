@@ -1,1129 +1,894 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<SensorML xmlns="http://www.opengis.net/sensorML/1.0.1" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.1" xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
-	<member>
-		<System>
-			<gml:description>Weather station located on the roof of the
-				Insititute for Geoinformatics of the University Münster, Germany.</gml:description>
-			<keywords>
-				<KeywordList>
-					<keyword>weather station</keyword>
-					<keyword>precipitation</keyword>
-					<keyword>wind speed</keyword>
-					<keyword>temperature</keyword>
-					<keyword>barometric pressure</keyword>
-					<keyword>luminance</keyword>
-					<keyword>relative humidity</keyword>
-					<keyword>Münster</keyword>
-				</KeywordList>
-			</keywords>
-			<!--~~~~~~~~~~~~~~-->
-			<!--Identification-->
-			<!--~~~~~~~~~~~~~~-->
-			<identification>
-				<IdentifierList>
-					<identifier name="uniqueID">
-						<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
-							<value>urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93</value>
-						</Term>
-					</identifier>
-					<identifier name="longName">
-						<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
-							<value>This is a WS2500 weather station setup at the Institute
-								for Geoinformatics of the University of Münster</value>
-						</Term>
-					</identifier>
-					<identifier name="shortName">
-						<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
-							<value>IFGI HWS 1</value>
-						</Term>
-					</identifier>
-					<identifier name="productName">
-						<Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
-							<value>ELV Radio Weather Station WS 2500</value>
-						</Term>
-					</identifier>
-					<identifier name="modelNumber">
-						<Term definition="urn:ogc:def:identifier:OGC:1.0:modelNumber">
-							<value>53759</value>
-						</Term>
-					</identifier>
-					<identifier name="manufacturer">
-						<Term definition="urn:ogc:def:identifier:OGC:1.0:manufacturer">
-							<value>ELV Elektronik AG</value>
-						</Term>
-					</identifier>
-					<identifier name="operator">
-						<Term definition="urn:ogc:def:identifier:OGC:1.0:operator">
-							<value>Institute for Geoinformatics, Muenster, Germany.</value>
-						</Term>
-					</identifier>
-				</IdentifierList>
-			</identification>
-			<!--~~~~~~~~~~~~~~-->
-			<!--Classification-->
-			<!--~~~~~~~~~~~~~~-->
-			<classification>
-				<ClassifierList>
-					<classifier name="intendedApplication">
-						<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
-							<value>weather</value>
-						</Term>
-					</classifier>
-					<classifier name="sensorType">
-						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-							<value>thermometer</value>
-						</Term>
-					</classifier>
-					<classifier name="sensorType">
-						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-							<value>rain gauge</value>
-						</Term>
-					</classifier>
-					<classifier name="sensorType">
-						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-							<value>barometer</value>
-						</Term>
-					</classifier>
-					<classifier name="sensorType">
-						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-							<value>anemometer</value>
-						</Term>
-					</classifier>
-					<classifier name="sensorType">
-						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-							<value>Luminance Sensor</value>
-						</Term>
-					</classifier>
-				</ClassifierList>
-			</classification>
-			<!--~~~~~~~~~~-->
-			<!--Valid time-->
-			<!--~~~~~~~~~~-->
-			<validTime>
-				<gml:TimePeriod>
-					<gml:beginPosition>2010-01-01</gml:beginPosition>
-					<gml:endPosition>2011-12-31</gml:endPosition>
-				</gml:TimePeriod>
-			</validTime>
-			<!--~~~~~~~~~~~~-->
-			<!--Capabilities-->
-			<!--~~~~~~~~~~~~-->
-			<capabilities>
-				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
-					<!--station is collecting data-->
-					<swe:field name="status">
-						<swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
-							<swe:value>true</swe:value>
-						</swe:Boolean>
-					</swe:field>
-					<swe:field name="mobile">
-						<swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isMobile">
-							<swe:value>false</swe:value>
-						</swe:Boolean>
-					</swe:field>
-					<swe:field name="measuringInterval">
-						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:measuringInterval">
-							<gml:description>The measuring interval of the weather station.</gml:description>
-							<swe:uom code="min" xlink:href="urn:ogc:def:uom:UCUM::min"/>
-							<swe:value>3</swe:value>
-						</swe:Quantity>
-					</swe:field>
-					<swe:field name="transmissionFrequency">
-						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:transmissionFrequency">
-							<gml:description>The transmission frequency of the weather
-								station.</gml:description>
-							<swe:uom code="MHz" xlink:href="urn:ogc:def:uom:UCUM::MHz"/>
-							<swe:value>433.92</swe:value>
-						</swe:Quantity>
-					</swe:field>
-					<swe:field name="powerSupply">
-						<swe:Text definition="urn:ogc:def:property:OGC:1.0:powerSupply">
-							<gml:description>The power supply of the weather station.</gml:description>
-							<swe:value>4 Baby cells 1.5V = 7,5 V / 500 mA</swe:value>
-						</swe:Text>
-					</swe:field>
-					<swe:field name="observedBBOX">
-						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
-							<swe:lowerCorner>
-								<swe:Vector>
-									<swe:coordinate name="latitude">
-										<swe:Quantity axisID="y">
-											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-											<swe:value>51.939795</swe:value>
-										</swe:Quantity>
-									</swe:coordinate>
-									<swe:coordinate name="longitude">
-										<swe:Quantity axisID="x">
-											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-											<swe:value>7.608445</swe:value>
-										</swe:Quantity>
-									</swe:coordinate>
-								</swe:Vector>
-							</swe:lowerCorner>
-							<swe:upperCorner>
-								<swe:Vector>
-									<swe:coordinate name="latitude">
-										<swe:Quantity axisID="y">
-											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-											<swe:value>51.941978</swe:value>
-										</swe:Quantity>
-									</swe:coordinate>
-									<swe:coordinate name="longitude">
-										<swe:Quantity axisID="x">
-											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-											<swe:value>7.612007</swe:value>
-										</swe:Quantity>
-									</swe:coordinate>
-								</swe:Vector>
-							</swe:upperCorner>
-						</swe:Envelope>
-					</swe:field>
-				</swe:DataRecord>
-			</capabilities>
-			<!--~~~~~~~-->
-			<!--Contact-->
-			<!--~~~~~~~-->
-			<contact>
-				<ResponsibleParty gml:id="IfGI_contact">
-					<individualName>Jürrens, Eike Hinderk</individualName>
-					<organizationName>Institute for Geoinformatics, Münster,
-						Germany.</organizationName>
-					<contactInfo>
-						<phone>
-							<voice>+49 251 83 30088</voice>
-							<facsimile>+49 251 83 39763</facsimile>
-						</phone>
-						<address>
-							<deliveryPoint>Weselerstraße 253</deliveryPoint>
-							<city>Münster</city>
-							<administrativeArea>North Rhine-Westfalia</administrativeArea>
-							<postalCode>49151</postalCode>
-							<country>Germany</country>
-							<electronicMailAddress>ehjuerrens@uni-muenster.de</electronicMailAddress>
-						</address>
-					</contactInfo>
-				</ResponsibleParty>
-			</contact>
-			<documentation xlink:role="urn:ogc:def:object:OGC:1.0:image">
-				<Document>
-					<gml:description>photo of the weather station</gml:description>
-					<format>image/jpg</format>
-					<onlineResource xlink:href="http://ifgi.uni-muenster.de/~e_juer01/WS2500.jpg"/>
-				</Document>
-			</documentation>
-			<!--in later SOS version this will be editable via the T-interface-->
-			<history>
-				<EventList>
-					<member name="deployDate">
-						<Event>
-							<date>2007-06-01</date>
-							<gml:description>Event of deploying the weather station.</gml:description>
-							<contact xlink:href="#IfGI_contact"/>
-						</Event>
-					</member>
-				</EventList>
-			</history>
-			<!--~~~~~~~~~-->
-			<!--Position -->
-			<!--~~~~~~~~~-->
-			<spatialReferenceFrame>
-				<gml:EngineeringCRS gml:id="STATION_FRAME">
-					<gml:srsName>Spatial Reference System of station</gml:srsName>
-					<gml:usesCS xlink:href="urn:ogc:def:cs:OGC:1.0:Grid2dSquareCS"/>
-					<gml:usesEngineeringDatum>
-						<gml:EngineeringDatum gml:id="STATION_DATUM">
-							<gml:datumName>Spatial Datum of station</gml:datumName>
-							<gml:anchorPoint>Origin is the base of the station.
-								Z is vertical.
-								X and Y are orthogonal to Z.
-								X is orthogonal to Y.
-								Y is parallel to the North-Axis and points to North.
-								X is orthogonal to the North-Axis and points to East.</gml:anchorPoint>
-						</gml:EngineeringDatum>
-					</gml:usesEngineeringDatum>
-				</gml:EngineeringCRS>
-			</spatialReferenceFrame>
-			<position name="stationPosition">
-				<swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG:4326">
-					<swe:location>
-						<swe:Vector gml:id="STATION_LOCATION">
-							<swe:coordinate name="latitude">
-								<swe:Quantity axisID="y">
-									<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-									<swe:value>51.9412</swe:value>
-								</swe:Quantity>
-							</swe:coordinate>
-							<swe:coordinate name="longitude">
-								<swe:Quantity axisID="x">
-									<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-									<swe:value>7.6103</swe:value>
-								</swe:Quantity>
-							</swe:coordinate>
-							<swe:coordinate name="altitude">
-								<swe:Quantity axisID="z">
-									<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-									<swe:value>200</swe:value>
-								</swe:Quantity>
-							</swe:coordinate>
-						</swe:Vector>
-					</swe:location>
-				</swe:Position>
-			</position>
-			<!--~~~~~~~~~~~~~~~~~-->
-			<!--System Interfaces-->
-			<!--~~~~~~~~~~~~~~~~~-->
-			<interfaces>
-				<InterfaceList>
-					<interface name="IFGI-WeatherSOS">
-						<InterfaceDefinition>
-							<serviceLayer>
-								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
-									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
-										<swe:Text>
-											<swe:value>http://v-swe.uni-muenster.de:8080/WeatherSOS/sos
-										</swe:value>
-										</swe:Text>
-									</swe:field>
-									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
-										<swe:Text>
-											<swe:value>SOS</swe:value>
-										</swe:Text>
-									</swe:field>
-									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
-										<swe:Text>
-											<swe:value>urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93</swe:value>
-										</swe:Text>
-									</swe:field>
-								</swe:DataRecord>
-							</serviceLayer>
-						</InterfaceDefinition>
-					</interface>
-				</InterfaceList>
-			</interfaces>
-			<!--~~~~~~~~~~~~~-->
-			<!--System Inputs-->
-			<!--~~~~~~~~~~~~~-->
-			<inputs>
-				<InputList>
-					<input name="precipitation">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Precipitation"/>
-					</input>
-					<input name="atmosphericTemperature">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::AirTemperature"/>
-					</input>
-					<input name="atmosphericPressure">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::AtmosphericPressure"/>
-					</input>
-					<input name="wind">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Wind"/>
-					</input>
-					<input name="luminance">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Luminance"/>
-					</input>
-					<input name="humidity">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::RelativeHumidity"/>
-					</input>
-				</InputList>
-			</inputs>
-			<!--~~~~~~~~~~~~~~-->
-			<!--System Outputs-->
-			<!--~~~~~~~~~~~~~~-->
-			<outputs>
-				<OutputList>
-					<output name="precipitation">
-						<swe:Quantity definition="urn:ogc:def:property:OGC::Precipitation1Hour">
-							<gml:metaDataProperty>
-								<offering>
-									<id>RAIN_GAUGE</id>
-									<name>Rain</name>
-								</offering>
-							</gml:metaDataProperty>
-							<swe:uom code="mm" xlink:href="urn:ogc:def:uom:UCUM::mm"/>
-						</swe:Quantity>
-					</output>
-					<output name="windDirection">
-						<swe:Quantity definition="urn:ogc:def:property:OGC::WindDirection">
-							<gml:metaDataProperty>
-								<offering>
-									<id>WIND_DIRECTION</id>
-									<name>Direction of the wind</name>
-								</offering>
-							</gml:metaDataProperty>
-							<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-						</swe:Quantity>
-					</output>
-					<output name="windSpeed">
-						<swe:Quantity definition="urn:ogc:def:property:OGC::WindSpeed">
-							<gml:metaDataProperty>
-								<offering>
-									<id>WIND_SPEED</id>
-									<name>Speed of the wind</name>
-								</offering>
-							</gml:metaDataProperty>
-							<swe:uom code="m/s" xlink:href="urn:ogc:def:uom:UCUM::m_s"/>
-						</swe:Quantity>
-					</output>
-					<output name="barometricPressure">
-						<swe:Quantity definition="urn:ogc:def:property:OGC::BarometricPressure">
-							<gml:metaDataProperty>
-								<offering>
-									<id>ATMOSPHERIC_PRESSURE</id>
-									<name>Pressure of the atmosphere</name>
-								</offering>
-							</gml:metaDataProperty>
-							<swe:uom code="hPa" xlink:href="urn:ogc:def:uom:UCUM::hPa"/>
-						</swe:Quantity>
-					</output>
-					<output name="temperature">
-						<swe:Quantity definition="urn:ogc:def:property:OGC::Temperature">
-							<gml:metaDataProperty>
-								<offering>
-									<id>ATMOSPHERIC_TEMPERATURE</id>
-									<name>Temperature of the atmosphere</name>
-								</offering>
-							</gml:metaDataProperty>
-							<swe:uom code="Cel" xlink:href="urn:ogc:def:uom:UCUM::degC"/>
-						</swe:Quantity>
-					</output>
-					<output name="luminance">
-						<swe:Quantity definition="urn:ogc:def:property:OGC::Luminance">
-							<gml:metaDataProperty>
-								<offering>
-									<id>LUMINANCE</id>
-									<name>Luminance</name>
-								</offering>
-							</gml:metaDataProperty>
-							<swe:uom code="lx" xlink:href="urn:ogc:def:uom:UCUM::lx"/>
-						</swe:Quantity>
-					</output>
-					<output name="relativeHumidity">
-						<swe:Quantity definition="urn:ogc:def:property:OGC::RelativeHumidity">
-							<gml:metaDataProperty>
-								<offering>
-									<id>HUMIDITY</id>
-									<name>Humidity of the atmosphere</name>
-								</offering>
-							</gml:metaDataProperty>
-							<swe:uom code="%" xlink:href="urn:ogc:def:uom:UCUM::%25"/>
-						</swe:Quantity>
-					</output>
-				</OutputList>
-			</outputs>
-			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-			<!--Components associated with the System-->
-			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-			<components>
-				<ComponentList>
-					<component name="rain-gauge">
-						<Component>
-							<gml:description>Rain gauge within the weather station located on
-								the roof of the Institute for Geoinformatics, University of
-								Münster, Germany.</gml:description>
-							<keywords>
-								<KeywordList>
-									<keyword>rain gauge</keyword>
-									<keyword>rain</keyword>
-									<keyword>precipitation</keyword>
-								</KeywordList>
-							</keywords>
-							<identification>
-								<IdentifierList>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
-											<value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:rain-gauge-3d3b239f-7696-4864-9d07-15447eae2b93</value>
-										</Term>
-									</identifier>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
-											<value>OSIRIS Rain-Gauge at weather station IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
-											<value>OSIRIS Rain-Gauge IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="productName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
-											<value>S2000R-1 precipitation sensor</value>
-										</Term>
-									</identifier>
-								</IdentifierList>
-							</identification>
-							<classification>
-								<ClassifierList>
-									<classifier name="sensorType">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-											<value>Precipitation</value>
-										</Term>
-									</classifier>
-									<classifier name="intendedApplication">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
-											<value>wheather</value>
-										</Term>
-									</classifier>
-								</ClassifierList>
-							</classification>
-							<capabilities>
-								<swe:SimpleDataRecord definition="urn:ogc:def:property:status">
-									<swe:field name="status">
-										<swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
-											<gml:description>The operating status of the sensor.</gml:description>
-											<swe:value>active</swe:value>
-										</swe:Text>
-									</swe:field>
-								</swe:SimpleDataRecord>
-							</capabilities>
-							<contact>
-								<ResponsibleParty>
-									<organizationName>Institute for Geoinformatics, Münster,
-										Germany.</organizationName>
-								</ResponsibleParty>
-							</contact>
-							<position name="rainGaugePosition">
-								<swe:Position referenceFrame="#STATION_FRAME">
-									<swe:location>
-										<swe:Vector>
-											<swe:coordinate name="easting">
-												<swe:Quantity axisID="x">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="northing">
-												<swe:Quantity axisID="y">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="altitude">
-												<swe:Quantity axisID="z">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-										</swe:Vector>
-									</swe:location>
-								</swe:Position>
-							</position>
-							<inputs>
-								<InputList>
-									<input name="precipitation">
-										<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Precipitation"/>
-									</input>
-								</InputList>
-							</inputs>
-							<outputs>
-								<OutputList>
-									<output name="precipitation">
-										<swe:Quantity definition="urn:ogc:def:property:OGC::Precipitation1Hour">
-											<gml:metaDataProperty>
-												<offering>
-													<id>RAIN_GAUGE</id>
-													<name>The rain gauge.</name>
-												</offering>
-											</gml:metaDataProperty>
-											<swe:uom code="mm" xlink:href="urn:ogc:def:uom:UCUM::mm"/>
-										</swe:Quantity>
-									</output>
-								</OutputList>
-							</outputs>
-						</Component>
-					</component>
-					<component name="radiometer">
-						<Component>
-							<gml:description>Radiometer within the weather station located on
-								the roof of the Institute for Geoinformatics, University of
-								Münster, Germany.</gml:description>
-							<keywords>
-								<KeywordList>
-									<keyword>radiometer</keyword>
-									<keyword>luminance</keyword>
-								</KeywordList>
-							</keywords>
-							<identification>
-								<IdentifierList>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
-											<value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:radiometer-3d3b239f-7696-4864-9d07-15447eae2b93</value>
-										</Term>
-									</identifier>
-									<identifier name="longName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
-											<value>OSIRIS Radiometer at weather station IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="shortName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
-											<value>OSIRIS Radiometer IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="productName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
-											<value>S2500H luminance sensor</value>
-										</Term>
-									</identifier>
-								</IdentifierList>
-							</identification>
-							<classification>
-								<ClassifierList>
-									<classifier name="sensorType">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-											<value>radiometer</value>
-										</Term>
-									</classifier>
-									<classifier name="intendedApplication">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
-											<value>wheather</value>
-										</Term>
-									</classifier>
-								</ClassifierList>
-							</classification>
-							<capabilities>
-								<swe:SimpleDataRecord definition="urn:ogc:def:property:status">
-									<swe:field name="status">
-										<swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
-											<gml:description>The operating status of the sensor.</gml:description>
-											<swe:value>active</swe:value>
-										</swe:Text>
-									</swe:field>
-								</swe:SimpleDataRecord>
-							</capabilities>
-							<contact>
-								<ResponsibleParty>
-									<organizationName>Institute for Geoinformatics, Münster,
-										Germany.</organizationName>
-								</ResponsibleParty>
-							</contact>
-							<position name="radiometerPosition">
-								<swe:Position referenceFrame="#STATION_FRAME">
-									<swe:location>
-										<swe:Vector>
-											<swe:coordinate name="easting">
-												<swe:Quantity axisID="x">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="northing">
-												<swe:Quantity axisID="y">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="altitude">
-												<swe:Quantity axisID="z">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-										</swe:Vector>
-									</swe:location>
-								</swe:Position>
-							</position>
-							<inputs>
-								<InputList>
-									<input name="luminance">
-										<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Luminance"/>
-									</input>
-								</InputList>
-							</inputs>
-							<outputs>
-								<OutputList>
-									<output name="luminance">
-										<swe:Quantity definition="urn:ogc:def:property:OGC::Luminance">
-											<gml:metaDataProperty>
-												<offering>
-													<id>LUMINANCE</id>
-													<name>The luminance measured.</name>
-												</offering>
-											</gml:metaDataProperty>
-											<swe:uom code="lx" xlink:href="urn:ogc:def:uom:UCUM::lx"/>
-										</swe:Quantity>
-									</output>
-								</OutputList>
-							</outputs>
-						</Component>
-					</component>
-					<component name="hygrometer">
-						<Component>
-							<gml:description>Hygrometer within the weather station located on
-								the roof of the Institute for Geoinformatics, University of
-								Münster, Germany.</gml:description>
-							<keywords>
-								<KeywordList>
-									<keyword>hygrometer</keyword>
-									<keyword>humidity</keyword>
-								</KeywordList>
-							</keywords>
-							<identification>
-								<IdentifierList>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
-											<value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:hygrometer-3d3b239f-7696-4864-9d07-15447eae2b93</value>
-										</Term>
-									</identifier>
-									<identifier name="longName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
-											<value>OSIRIS Hygrometer at weather station IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="shortName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
-											<value>OSIRIS Hygrometer IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="productName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
-											<value>S2500H humidity sensor</value>
-										</Term>
-									</identifier>
-								</IdentifierList>
-							</identification>
-							<classification>
-								<ClassifierList>
-									<classifier name="sensorType">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-											<value>hygrometer</value>
-										</Term>
-									</classifier>
-									<classifier name="intendedApplication">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
-											<value>wheather</value>
-										</Term>
-									</classifier>
-								</ClassifierList>
-							</classification>
-							<capabilities>
-								<swe:SimpleDataRecord definition="urn:ogc:def:property:status">
-									<swe:field name="status">
-										<swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
-											<gml:description>The operating status of the sensor.</gml:description>
-											<swe:value>active</swe:value>
-										</swe:Text>
-									</swe:field>
-								</swe:SimpleDataRecord>
-							</capabilities>
-							<contact>
-								<ResponsibleParty>
-									<organizationName>Institute for Geoinformatics, Münster,
-										Germany.</organizationName>
-								</ResponsibleParty>
-							</contact>
-							<position name="hygrometerPosition">
-								<swe:Position referenceFrame="#STATION_FRAME">
-									<swe:location>
-										<swe:Vector>
-											<swe:coordinate name="easting">
-												<swe:Quantity axisID="x">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="northing">
-												<swe:Quantity axisID="y">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="altitude">
-												<swe:Quantity axisID="z">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-										</swe:Vector>
-									</swe:location>
-								</swe:Position>
-							</position>
-							<inputs>
-								<InputList>
-									<input name="humidity">
-										<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Humidity"/>
-									</input>
-								</InputList>
-							</inputs>
-							<outputs>
-								<OutputList>
-									<output name="relativeHumidity">
-										<swe:Quantity definition="urn:ogc:def:property:OGC::RelativeHumidity">
-											<gml:metaDataProperty>
-												<offering>
-													<id>HUMIDITY</id>
-													<name>The relative humidity of the atmosphere.</name>
-												</offering>
-											</gml:metaDataProperty>
-											<swe:uom code="%" xlink:href="urn:ogc:def:uom:UCUM::%25"/>
-										</swe:Quantity>
-									</output>
-								</OutputList>
-							</outputs>
-						</Component>
-					</component>
-					<component name="aenometer">
-						<Component>
-							<gml:description>Aenometer within the weather station located on
-								the roof of the Institute for Geoinformatics, University of
-								Münster, Germany.</gml:description>
-							<keywords>
-								<KeywordList>
-									<keyword>aenometer</keyword>
-									<keyword>wind speed</keyword>
-									<keyword>wind</keyword>
-								</KeywordList>
-							</keywords>
-							<identification>
-								<IdentifierList>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
-											<value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:aenometer-3d3b239f-7696-4864-9d07-15447eae2b93</value>
-										</Term>
-									</identifier>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
-											<value>OSIRIS Aenometer at weather station IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
-											<value>OSIRIS Aenometer IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="productName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
-											<value>S2000W windsensor</value>
-										</Term>
-									</identifier>
-								</IdentifierList>
-							</identification>
-							<classification>
-								<ClassifierList>
-									<classifier name="sensorType">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-											<value>windSpeed</value>
-										</Term>
-									</classifier>
-									<classifier name="sensorType">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-											<value>windDirection</value>
-										</Term>
-									</classifier>
-									<classifier name="intendedApplication">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
-											<value>wheather</value>
-										</Term>
-									</classifier>
-								</ClassifierList>
-							</classification>
-							<capabilities>
-								<swe:SimpleDataRecord definition="urn:ogc:def:property:status">
-									<swe:field name="status">
-										<swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
-											<gml:description>The operating status of the sensor.</gml:description>
-											<swe:value>active</swe:value>
-										</swe:Text>
-									</swe:field>
-								</swe:SimpleDataRecord>
-							</capabilities>
-							<contact>
-								<ResponsibleParty>
-									<organizationName>Institute for Geoinformatics, Münster,
-										Germany.</organizationName>
-								</ResponsibleParty>
-							</contact>
-							<position name="aenometerPosition">
-								<swe:Position referenceFrame="#STATION_FRAME">
-									<swe:location>
-										<swe:Vector>
-											<swe:coordinate name="easting">
-												<swe:Quantity axisID="x">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="northing">
-												<swe:Quantity axisID="y">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="altitude">
-												<swe:Quantity axisID="z">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-										</swe:Vector>
-									</swe:location>
-								</swe:Position>
-							</position>
-							<inputs>
-								<InputList>
-									<input name="wind">
-										<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Wind"/>
-									</input>
-								</InputList>
-							</inputs>
-							<outputs>
-								<OutputList>
-									<output name="windSpeed">
-										<swe:Quantity definition="urn:ogc:def:property:OGC::WindSpeed">
-											<gml:metaDataProperty>
-												<offering>
-													<id>WIND_SPEED</id>
-													<name>The speed of the measured wind.</name>
-												</offering>
-											</gml:metaDataProperty>
-											<swe:uom code="m/s" xlink:href="urn:ogc:def:uom:UCUM::m_s"/>
-										</swe:Quantity>
-									</output>
-									<output name="windDirection">
-										<swe:Quantity definition="urn:ogc:def:property:OGC::WindDirection">
-											<gml:metaDataProperty>
-												<offering>
-													<id>WIND_DIRECTION</id>
-													<name>The direction of the measured wind.</name>
-												</offering>
-											</gml:metaDataProperty>
-											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
-										</swe:Quantity>
-									</output>
-								</OutputList>
-							</outputs>
-						</Component>
-					</component>
-					<component name="barmometer">
-						<Component>
-							<gml:description>Barometer within the weather station located on
-								the roof of the Institute for Geoinformatics, University of
-								Münster, Germany.</gml:description>
-							<keywords>
-								<KeywordList>
-									<keyword>barometer</keyword>
-									<keyword>barometric pressure</keyword>
-								</KeywordList>
-							</keywords>
-							<identification>
-								<IdentifierList>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
-											<value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:barometer-3d3b239f-7696-4864-9d07-15447eae2b93</value>
-										</Term>
-									</identifier>
-									<identifier name="longName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
-											<value>OSIRIS Barometer at weather station IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="shortName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
-											<value>OSIRIS Barometer IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="productName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
-											<value>S2000B pressure sensor</value>
-										</Term>
-									</identifier>
-								</IdentifierList>
-							</identification>
-							<classification>
-								<ClassifierList>
-									<classifier name="sensorType">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-											<value>barometer</value>
-										</Term>
-									</classifier>
-									<classifier name="intendedApplication">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
-											<value>wheather</value>
-										</Term>
-									</classifier>
-								</ClassifierList>
-							</classification>
-							<capabilities>
-								<swe:SimpleDataRecord definition="urn:ogc:def:property:status">
-									<swe:field name="status">
-										<swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
-											<gml:description>The operating status of the sensor.</gml:description>
-											<swe:value>active</swe:value>
-										</swe:Text>
-									</swe:field>
-								</swe:SimpleDataRecord>
-							</capabilities>
-							<contact>
-								<ResponsibleParty>
-									<organizationName>Institute for Geoinformatics, Münster,
-										Germany.</organizationName>
-								</ResponsibleParty>
-							</contact>
-							<position name="thermometerPosition">
-								<swe:Position referenceFrame="#STATION_FRAME">
-									<swe:location>
-										<swe:Vector>
-											<swe:coordinate name="easting">
-												<swe:Quantity axisID="x">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="northing">
-												<swe:Quantity axisID="y">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="altitude">
-												<swe:Quantity axisID="z">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-										</swe:Vector>
-									</swe:location>
-								</swe:Position>
-							</position>
-							<inputs>
-								<InputList>
-									<input name="atmosphericPressure">
-										<swe:ObservableProperty definition="urn:ogc:def:property:OGC::AtmospericPressure"/>
-									</input>
-								</InputList>
-							</inputs>
-							<outputs>
-								<OutputList>
-									<output name="barometricPressure">
-										<swe:Quantity definition="urn:ogc:def:property:OGC::BarometricPressure">
-											<gml:metaDataProperty>
-												<offering>
-													<id>ATMOSPHERIC_PRESSURE</id>
-													<name>The pressure of the atmosphere.</name>
-												</offering>
-											</gml:metaDataProperty>
-											<swe:uom code="hPa" xlink:href="urn:ogc:def:uom:UCUM::hPa"/>
-										</swe:Quantity>
-									</output>
-								</OutputList>
-							</outputs>
-						</Component>
-					</component>
-					<component name="thermometer">
-						<Component>
-							<gml:description>Thermometer within the weather station located
-								on the roof of the Institute for Geoinformatics, University of
-								Münster, Germany.</gml:description>
-							<keywords>
-								<KeywordList>
-									<keyword>thermometer</keyword>
-									<keyword>temperature</keyword>
-								</KeywordList>
-							</keywords>
-							<identification>
-								<IdentifierList>
-									<identifier>
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
-											<value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:thermometer-3d3b239f-7696-4864-9d07-15447eae2b93</value>
-										</Term>
-									</identifier>
-									<identifier name="longName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
-											<value>OSIRIS Thermometer at weather station IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="shortName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
-											<value>OSIRIS Thermometer IFGI HWS 1</value>
-										</Term>
-									</identifier>
-									<identifier name="productName">
-										<Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
-											<value>S2001IA temperature sensor</value>
-										</Term>
-									</identifier>
-								</IdentifierList>
-							</identification>
-							<classification>
-								<ClassifierList>
-									<classifier name="sensorType">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
-											<value>thermometer</value>
-										</Term>
-									</classifier>
-									<classifier name="intendedApplication">
-										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
-											<value>wheather</value>
-										</Term>
-									</classifier>
-								</ClassifierList>
-							</classification>
-							<capabilities>
-								<swe:SimpleDataRecord definition="urn:ogc:def:property:status">
-									<swe:field name="status">
-										<swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
-											<gml:description>The operating status of the sensor.</gml:description>
-											<swe:value>active</swe:value>
-										</swe:Text>
-									</swe:field>
-								</swe:SimpleDataRecord>
-							</capabilities>
-							<contact>
-								<ResponsibleParty>
-									<organizationName>Institute for Geoinformatics, Münster,
-										Germany.</organizationName>
-								</ResponsibleParty>
-							</contact>
-							<position name="thermometerPosition">
-								<swe:Position referenceFrame="#STATION_FRAME">
-									<swe:location>
-										<swe:Vector>
-											<swe:coordinate name="easting">
-												<swe:Quantity axisID="x">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="northing">
-												<swe:Quantity axisID="y">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-											<swe:coordinate name="altitude">
-												<swe:Quantity axisID="z">
-													<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
-													<swe:value>0</swe:value>
-												</swe:Quantity>
-											</swe:coordinate>
-										</swe:Vector>
-									</swe:location>
-								</swe:Position>
-							</position>
-							<inputs>
-								<InputList>
-									<input name="atmosphericTemperature">
-										<swe:ObservableProperty definition="urn:ogc:def:property:OGC::AirTemperature"/>
-									</input>
-								</InputList>
-							</inputs>
-							<outputs>
-								<OutputList>
-									<output name="temperature">
-										<swe:Quantity definition="urn:ogc:def:property:OGC::Temperature">
-											<gml:metaDataProperty>
-												<offering>
-													<id>ATMOSPHERIC_TEMPERATURE</id>
-													<name>Temperature of the atmosphere.</name>
-												</offering>
-											</gml:metaDataProperty>
-											<swe:uom code="Cel" xlink:href="urn:ogc:def:uom:UCUM::degC"/>
-										</swe:Quantity>
-									</output>
-								</OutputList>
-							</outputs>
-						</Component>
-					</component>
-				</ComponentList>
-			</components>
-		</System>
-	</member>
-</SensorML>
+<sml:SensorML xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ows="http://www.opengeospatial.net/ows" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.1">
+  <sml:member>
+    <sml:System>
+      <sml:identification>
+        <sml:IdentifierList>
+          <sml:identifier name="uniqueID">
+            <sml:Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+              <sml:value>urn:ogc:object:feature:OSIRIS-HWS:2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier name="longName">
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <sml:value>This is a Davis Vantage Pro2 weatther station setup at home using the WXT520 receiver Class .</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier name="shortName">
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <sml:value>gg_test</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier name="productName">
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
+              <sml:value>ELV Radio Weather Station WS 2500</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier name="modelNumber">
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:modelNumber">
+              <sml:value>53759</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier name="manufacturer">
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:manufacturer">
+              <sml:value>ELV Elektronik AG</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier name="operator">
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:operator">
+              <sml:value>Ger Geertsma</sml:value>
+            </sml:Term>
+          </sml:identifier>
+        </sml:IdentifierList>
+      </sml:identification>
+      <sml:classification>
+        <sml:ClassifierList>
+          <sml:classifier name="intendedApplication">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+              <sml:value>weather</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="sensorType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+              <sml:value>thermometer</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="sensorType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+              <sml:value>rain gauge</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="sensorType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+              <sml:value>barometer</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="sensorType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+              <sml:value>anemometer</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="sensorType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+              <sml:value>Luminance Sensor</sml:value>
+            </sml:Term>
+          </sml:classifier>
+        </sml:ClassifierList>
+      </sml:classification>
+      <sml:capabilities>
+        <swe:SimpleDataRecord definition="urn:ogc:def:property:status">
+          <!--station is collecting data-->
+          <swe:field name="status">
+            <swe:Boolean>
+              <swe:value>true</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="mobile">
+            <swe:Boolean>
+              <swe:value>false</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="measuringInterval">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:measuringInterval">
+              <gml:description>The measuring interval of the weather station.</gml:description>
+              <swe:uom code="min" xlink:href="urn:x-ogc:def:uom:OGC:min"/>
+              <swe:value>3</swe:value>
+            </swe:Quantity>
+          </swe:field>
+          <swe:field name="transmissionFrequency">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:transmissionFrequency">
+              <gml:description>The transmission frequency of the weather station.</gml:description>
+              <swe:uom code="MHz" xlink:href="urn:x-ogc:def:uom:OGC:MHz"/>
+              <swe:value>433.92</swe:value>
+            </swe:Quantity>
+          </swe:field>
+          <swe:field name="powerSupply">
+            <swe:Text definition="urn:ogc:def:property:OGC:1.0:powerSupply">
+              <gml:description>The power supply of the weather station.</gml:description>
+              <swe:value>4 Baby cells 1.5V = 7,5 V / 500 mA</swe:value>
+            </swe:Text>
+          </swe:field>
+        </swe:SimpleDataRecord>
+      </sml:capabilities>
+      <sml:contact>
+        <sml:ResponsibleParty gml:id="IfGI_contact">
+          <sml:individualName>Geertsma, Ger</sml:individualName>
+          <sml:organizationName>private</sml:organizationName>
+          <sml:contactInfo>
+            <sml:phone>
+              <sml:voice/>
+              <sml:facsimile/>
+            </sml:phone>
+            <sml:address>
+              <sml:deliveryPoint>Sweelincklaan 79</sml:deliveryPoint>
+              <sml:city>Alkmaar</sml:city>
+              <sml:administrativeArea>Noord-Hollnad</sml:administrativeArea>
+              <sml:postalCode>1817KD</sml:postalCode>
+              <sml:country>The Netherlands</sml:country>
+              <sml:electronicMailAddress>ger_geertsma@hotmail.com</sml:electronicMailAddress>
+            </sml:address>
+          </sml:contactInfo>
+        </sml:ResponsibleParty>
+      </sml:contact>
+      <sml:documentation xlink:role="urn:ogc:def:object:OGC:1.0:image">
+        <sml:Document>
+          <gml:description>photo of the weather station</gml:description>
+          <sml:format>image/jpg</sml:format>
+          <sml:onlineResource xlink:href="http://ifgi.uni-muenster.de/~e_juer01/WS2500.jpg"/>
+        </sml:Document>
+      </sml:documentation>
+      <!--in later SOS version this will be editable via the T-interface-->
+      <sml:history>
+        <sml:EventList>
+          <sml:member name="deployDate">
+            <sml:Event>
+              <sml:date>2011-04-01</sml:date>
+              <gml:description>Event of deploying the weather station.</gml:description>
+              <sml:contact xlink:href="#IfGI_contact"/>
+            </sml:Event>
+          </sml:member>
+        </sml:EventList>
+      </sml:history>
+      <sml:spatialReferenceFrame>
+        <gml:EngineeringCRS gml:id="STATION_FRAME">
+          <gml:srsName>Spatial Reference System of station</gml:srsName>
+          <gml:usesCS xlink:href="urn:ogc:def:cs:OGC:1.0:Grid2dSquareCS"/>
+          <gml:usesEngineeringDatum>
+            <gml:EngineeringDatum gml:id="STATION_DATUM">
+              <gml:datumName>Spatial Datum of station</gml:datumName>
+              <gml:anchorPoint>Origin is the base of the station.
+		                                Z is vertical.
+		                                X and Y are orthogonal to Z.
+		                                X is orthogonal to Y.
+		                                Y is parallel to the North-Axis and points to North.
+		                                X is orthogonal to the North-Axis and points to East.</gml:anchorPoint>
+            </gml:EngineeringDatum>
+          </gml:usesEngineeringDatum>
+        </gml:EngineeringCRS>
+      </sml:spatialReferenceFrame>
+      <sml:position name="stationPosition">
+        <swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+          <swe:location>
+            <swe:Vector gml:id="STATION_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="deg" xlink:href="urn:x-ogc:def:uom:OGC:deg"/>
+                  <swe:value>51.9412</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:uom code="deg" xlink:href="urn:x-ogc:def:uom:OGC:deg"/>
+                  <swe:value>7.6103</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <!--200-->
+                  <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                  <swe:value>200</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </sml:position>
+      <sml:inputs>
+        <sml:InputList>
+          <sml:input name="precipitation">
+            <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::Precipitation"/>
+          </sml:input>
+          <sml:input name="atmosphericTemperature">
+            <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::AirTemperature"/>
+          </sml:input>
+          <sml:input name="atmosphericPressure">
+            <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::AtmosphericPressure"/>
+          </sml:input>
+          <sml:input name="wind">
+            <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::Wind"/>
+          </sml:input>
+          <sml:input name="luminance">
+            <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::Luminance"/>
+          </sml:input>
+          <sml:input name="humidity">
+            <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::RelativeHumidity"/>
+          </sml:input>
+        </sml:InputList>
+      </sml:inputs>
+      <sml:outputs>
+        <sml:OutputList>
+          <sml:output name="precipitation">
+            <swe:Quantity definition="urn:x-ogc:def:property:OGC::Precipitation1Hour">
+              <gml:metaDataProperty>
+                <offering>
+                  <id>RAIN_GAUGE</id>
+                  <name>Rain</name>
+                </offering>
+              </gml:metaDataProperty>
+              <swe:uom code="mm" xlink:href="urn:x-ogc:def:uom:OGC:mm"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="windDirection">
+            <swe:Quantity definition="urn:x-ogc:def:property:OGC::WindDirection">
+              <gml:metaDataProperty>
+                <offering>
+                  <id>WIND_DIRECTION</id>
+                  <name>Direction of the wind</name>
+                </offering>
+              </gml:metaDataProperty>
+              <swe:uom code="deg" xlink:href="urn:x-ogc:def:uom:OGC:deg"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="windSpeed">
+            <swe:Quantity definition="urn:x-ogc:def:property:OGC::WindSpeed">
+              <gml:metaDataProperty>
+                <offering>
+                  <id>WIND_SPEED</id>
+                  <name>Speed of the wind</name>
+                </offering>
+              </gml:metaDataProperty>
+              <swe:uom code="m/s" xlink:href="urn:x-ogc:def:uom:OGC:m_s"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="barometricPressure">
+            <swe:Quantity definition="urn:x-ogc:def:property:OGC::BarometricPressure">
+              <gml:metaDataProperty>
+                <offering>
+                  <id>ATMOSPHERIC_PRESSURE</id>
+                  <name>Pressure of the atmosphere</name>
+                </offering>
+              </gml:metaDataProperty>
+              <swe:uom code="hPa" xlink:href="urn:x-ogc:def:uom:OGC:hPa"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="temperature">
+            <swe:Quantity definition="urn:x-ogc:def:property:OGC::Temperature">
+              <gml:metaDataProperty>
+                <offering>
+                  <id>ATMOSPHERIC_TEMPERATURE</id>
+                  <name>Temperature of the atmosphere</name>
+                </offering>
+              </gml:metaDataProperty>
+              <swe:uom code="Cel" xlink:href="urn:x-ogc:def:uom:OGC:degC"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="luminance">
+            <swe:Quantity definition="urn:x-ogc:def:property:OGC::Luminance">
+              <gml:metaDataProperty>
+                <offering>
+                  <id>LUMINANCE</id>
+                  <name>Luminance</name>
+                </offering>
+              </gml:metaDataProperty>
+              <swe:uom code="lx" xlink:href="urn:x-ogc:def:uom:OGC:lx"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="relativeHumidity">
+            <swe:Quantity definition="urn:x-ogc:def:property:OGC::RelativeHumidity">
+              <gml:metaDataProperty>
+                <offering>
+                  <id>HUMIDITY</id>
+                  <name>Humidity of the atmosphere</name>
+                </offering>
+              </gml:metaDataProperty>
+              <swe:uom code="%" xlink:href="urn:x-ogc:def:uom:OGC:percent"/>
+            </swe:Quantity>
+          </sml:output>
+        </sml:OutputList>
+      </sml:outputs>
+      <sml:components>
+        <sml:ComponentList>
+          <sml:component name="rain-gauge">
+            <sml:Component>
+              <sml:identification>
+                <sml:IdentifierList>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+                      <!--procedureID-->
+                      <sml:value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:rain-gauge-2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                      <sml:value>OSIRIS Rain-Gauge at weather station gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                      <sml:value>OSIRIS Rain-Gauge gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="productName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
+                      <sml:value>S2000R-1 precipitation sensor</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                </sml:IdentifierList>
+              </sml:identification>
+              <sml:classification>
+                <sml:ClassifierList>
+                  <sml:classifier name="sensorType">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                      <sml:value>Precipitation</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                </sml:ClassifierList>
+              </sml:classification>
+              <sml:capabilities>
+                <swe:SimpleDataRecord definition="urn:ogc:def:property:status">
+                  <swe:field name="status">
+                    <swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
+                      <gml:description>The operating status of the sensor.</gml:description>
+                      <swe:value>active</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:SimpleDataRecord>
+              </sml:capabilities>
+              <sml:position name="rainGaugePosition">
+                <swe:Position>
+                  <swe:location>
+                    <swe:Vector>
+                      <swe:coordinate name="easting">
+                        <swe:Quantity axisID="x">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="northing">
+                        <swe:Quantity axisID="y">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="altitude">
+                        <swe:Quantity axisID="z">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                    </swe:Vector>
+                  </swe:location>
+                </swe:Position>
+              </sml:position>
+              <sml:inputs>
+                <sml:InputList>
+                  <sml:input name="precipitation">
+                    <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::Precipitation"/>
+                  </sml:input>
+                </sml:InputList>
+              </sml:inputs>
+              <sml:outputs>
+                <sml:OutputList>
+                  <sml:output name="precipitation">
+                    <swe:Quantity definition="urn:x-ogc:def:property:OGC::Precipitation1Hour">
+                      <gml:metaDataProperty>
+                        <offering>
+                          <id>RAIN_GAUGE</id>
+                          <name>The rain gauge.</name>
+                        </offering>
+                      </gml:metaDataProperty>
+                      <swe:uom code="mm" xlink:href="urn:x-ogc:def:uom:OGC:mm"/>
+                    </swe:Quantity>
+                  </sml:output>
+                </sml:OutputList>
+              </sml:outputs>
+            </sml:Component>
+          </sml:component>
+          <sml:component name="radiometer">
+            <sml:Component>
+              <sml:identification>
+                <sml:IdentifierList>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+                      <sml:value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:radiometer-2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="longName">
+                    "urn:ogc:object:feature:Sensor:OSIRIS-HWS:796eb6a6-dbbf-402f-a505-65c2bda4c1dc"
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                      <sml:value>OSIRIS Radiometer at weather station gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="shortName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                      <sml:value>OSIRIS Radiometer gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="productName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
+                      <sml:value>S2500H luminance sensor</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                </sml:IdentifierList>
+              </sml:identification>
+              <sml:classification>
+                <sml:ClassifierList>
+                  <sml:classifier name="sensorType">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                      <sml:value>radiometer</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                </sml:ClassifierList>
+              </sml:classification>
+              <sml:capabilities>
+                <swe:SimpleDataRecord definition="urn:ogc:def:property:status">
+                  <swe:field name="status">
+                    <swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
+                      <gml:description>The operating status of the sensor.</gml:description>
+                      <swe:value>active</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:SimpleDataRecord>
+              </sml:capabilities>
+              <sml:position name="radiometerPosition">
+                <swe:Position referenceFrame="#STATION_FRAME">
+                  <swe:location>
+                    <swe:Vector>
+                      <swe:coordinate name="easting">
+                        <swe:Quantity axisID="x">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="northing">
+                        <swe:Quantity axisID="y">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="altitude">
+                        <swe:Quantity axisID="z">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                    </swe:Vector>
+                  </swe:location>
+                </swe:Position>
+              </sml:position>
+              <sml:inputs>
+                <sml:InputList>
+                  <sml:input name="luminance">
+                    <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::Luminance"/>
+                  </sml:input>
+                </sml:InputList>
+              </sml:inputs>
+              <sml:outputs>
+                <sml:OutputList>
+                  <sml:output name="luminance">
+                    <swe:Quantity definition="urn:x-ogc:def:property:OGC::Luminance">
+                      <gml:metaDataProperty>
+                        <offering>
+                          <id>LUMINANCE</id>
+                          <name>The luminance measured.</name>
+                        </offering>
+                      </gml:metaDataProperty>
+                      <swe:uom code="lx" xlink:href="urn:x-ogc:def:uom:OGC:lx"/>
+                    </swe:Quantity>
+                  </sml:output>
+                </sml:OutputList>
+              </sml:outputs>
+            </sml:Component>
+          </sml:component>
+          <sml:component name="hygrometer">
+            <sml:Component>
+              <sml:identification>
+                <sml:IdentifierList>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+                      <sml:value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:hygrometer-2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="longName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                      <sml:value>OSIRIS Hygrometer at weather station gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="shortName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                      <sml:value>OSIRIS Hygrometer gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="productName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
+                      <sml:value>S2500H humidity sensor</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                </sml:IdentifierList>
+              </sml:identification>
+              <sml:classification>
+                <sml:ClassifierList>
+                  <sml:classifier name="sensorType">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                      <sml:value>hygrometer</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                </sml:ClassifierList>
+              </sml:classification>
+              <sml:capabilities>
+                <swe:SimpleDataRecord definition="urn:ogc:def:property:status">
+                  <swe:field name="status">
+                    <swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
+                      <gml:description>The operating status of the sensor.</gml:description>
+                      <swe:value>active</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:SimpleDataRecord>
+              </sml:capabilities>
+              <sml:position name="hygrometerPosition">
+                <swe:Position referenceFrame="#STATION_FRAME">
+                  <swe:location>
+                    <swe:Vector>
+                      <swe:coordinate name="easting">
+                        <swe:Quantity axisID="x">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="northing">
+                        <swe:Quantity axisID="y">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="altitude">
+                        <swe:Quantity axisID="z">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                    </swe:Vector>
+                  </swe:location>
+                </swe:Position>
+              </sml:position>
+              <sml:inputs>
+                <sml:InputList>
+                  <sml:input name="humidity">
+                    <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::Humidity"/>
+                  </sml:input>
+                </sml:InputList>
+              </sml:inputs>
+              <sml:outputs>
+                <sml:OutputList>
+                  <sml:output name="relativeHumidity">
+                    <swe:Quantity definition="urn:x-ogc:def:property:OGC::RelativeHumidity">
+                      <gml:metaDataProperty>
+                        <offering>
+                          <id>HUMIDITY</id>
+                          <name>The relative humidity of the atmosphere.</name>
+                        </offering>
+                      </gml:metaDataProperty>
+                      <swe:uom code="%" xlink:href="urn:x-ogc:def:uom:OGC:percent"/>
+                    </swe:Quantity>
+                  </sml:output>
+                </sml:OutputList>
+              </sml:outputs>
+            </sml:Component>
+          </sml:component>
+          <sml:component name="aenometer">
+            <sml:Component>
+              <sml:identification>
+                <sml:IdentifierList>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+                      <sml:value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:aenometer-2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                      <sml:value>OSIRIS Aenometer at weather station gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                      <sml:value>OSIRIS Aenometer gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="productName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
+                      <sml:value>S2000W windsensor</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                </sml:IdentifierList>
+              </sml:identification>
+              <sml:classification>
+                <sml:ClassifierList>
+                  <!--FIXME kann es 2 classifier fÃƒÂ¼r eine Component geben?-->
+                  <sml:classifier name="sensorType">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                      <sml:value>windSpeed</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                  <sml:classifier name="sensorType">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                      <sml:value>windDirection</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                </sml:ClassifierList>
+              </sml:classification>
+              <sml:capabilities>
+                <swe:SimpleDataRecord definition="urn:ogc:def:property:status">
+                  <swe:field name="status">
+                    <swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
+                      <gml:description>The operating status of the sensor.</gml:description>
+                      <swe:value>active</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:SimpleDataRecord>
+              </sml:capabilities>
+              <sml:position name="aenometerPosition">
+                <swe:Position>
+                  <swe:location>
+                    <swe:Vector>
+                      <swe:coordinate name="easting">
+                        <swe:Quantity axisID="x">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="northing">
+                        <swe:Quantity axisID="y">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="altitude">
+                        <swe:Quantity axisID="z">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                    </swe:Vector>
+                  </swe:location>
+                </swe:Position>
+              </sml:position>
+              <sml:inputs>
+                <sml:InputList>
+                  <sml:input name="wind">
+                    <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::Wind"/>
+                  </sml:input>
+                </sml:InputList>
+              </sml:inputs>
+              <sml:outputs>
+                <sml:OutputList>
+                  <sml:output name="windSpeed">
+                    <swe:Quantity definition="urn:x-ogc:def:property:OGC::WindSpeed">
+                      <gml:metaDataProperty>
+                        <offering>
+                          <id>WIND_SPEED</id>
+                          <name>The speed of the measured wind.</name>
+                        </offering>
+                      </gml:metaDataProperty>
+                      <swe:uom code="m/s" xlink:href="urn:x-ogc:def:uom:OGC:m_s"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="windDirection">
+                    <swe:Quantity definition="urn:x-ogc:def:property:OGC::WindDirection">
+                      <gml:metaDataProperty>
+                        <offering>
+                          <id>WIND_DIRECTION</id>
+                          <name>The direction of the measured wind.</name>
+                        </offering>
+                      </gml:metaDataProperty>
+                      <swe:uom code="deg" xlink:href="urn:x-ogc:def:uom:OGC:deg"/>
+                    </swe:Quantity>
+                  </sml:output>
+                </sml:OutputList>
+              </sml:outputs>
+            </sml:Component>
+          </sml:component>
+          <sml:component name="barometer">
+            <sml:Component>
+              <sml:identification>
+                <sml:IdentifierList>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+                      <sml:value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:barometer-2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="longName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                      <sml:value>OSIRIS Barometer at weather station gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="shortName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                      <sml:value>OSIRIS Barometer gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="productName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
+                      <sml:value>S2000B pressure sensor</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                </sml:IdentifierList>
+              </sml:identification>
+              <sml:classification>
+                <sml:ClassifierList>
+                  <sml:classifier name="sensorType">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                      <sml:value>barometer</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                </sml:ClassifierList>
+              </sml:classification>
+              <sml:capabilities>
+                <swe:SimpleDataRecord definition="urn:ogc:def:property:status">
+                  <swe:field name="status">
+                    <swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
+                      <gml:description>The operating status of the sensor.</gml:description>
+                      <swe:value>active</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:SimpleDataRecord>
+              </sml:capabilities>
+              <sml:position name="thermometerPosition">
+                <swe:Position referenceFrame="#STATION_FRAME">
+                  <swe:location>
+                    <swe:Vector>
+                      <swe:coordinate name="easting">
+                        <swe:Quantity axisID="x">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="northing">
+                        <swe:Quantity axisID="y">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="altitude">
+                        <swe:Quantity axisID="z">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                    </swe:Vector>
+                  </swe:location>
+                </swe:Position>
+              </sml:position>
+              <sml:inputs>
+                <sml:InputList>
+                  <sml:input name="atmosphericPressure">
+                    <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::AtmospericPressure"/>
+                  </sml:input>
+                </sml:InputList>
+              </sml:inputs>
+              <sml:outputs>
+                <sml:OutputList>
+                  <sml:output name="barometricPressure">
+                    <swe:Quantity definition="urn:x-ogc:def:property:OGC::BarometricPressure">
+                      <gml:metaDataProperty>
+                        <offering>
+                          <id>ATMOSPHERIC_PRESSURE</id>
+                          <name>The pressure of the atmosphere.</name>
+                        </offering>
+                      </gml:metaDataProperty>
+                      <swe:uom code="hPa" xlink:href="urn:x-ogc:def:uom:OGC:hPa"/>
+                    </swe:Quantity>
+                  </sml:output>
+                </sml:OutputList>
+              </sml:outputs>
+            </sml:Component>
+          </sml:component>
+          <sml:component name="thermometer">
+            <sml:Component>
+              <sml:identification>
+                <sml:IdentifierList>
+                  <sml:identifier>
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+                      <sml:value>urn:ogc:object:feature:Sensor:OSIRIS-HWS:thermometer-2f673b97-c7ce-48df-b2d2-10b4ecf0cf85</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="longName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                      <sml:value>OSIRIS Thermometer at weather station gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="shortName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                      <sml:value>OSIRIS Thermometer gg_test</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="productName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:productName">
+                      <sml:value>S2001IA temperature sensor</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                </sml:IdentifierList>
+              </sml:identification>
+              <sml:classification>
+                <sml:ClassifierList>
+                  <sml:classifier name="sensorType">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                      <sml:value>thermometer</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                </sml:ClassifierList>
+              </sml:classification>
+              <sml:capabilities>
+                <swe:SimpleDataRecord definition="urn:ogc:def:property:status">
+                  <swe:field name="status">
+                    <swe:Text definition="urn:ogc:def:property:OGC:1.0:status">
+                      <gml:description>The operating status of the sensor.</gml:description>
+                      <swe:value>active</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:SimpleDataRecord>
+              </sml:capabilities>
+              <sml:position name="thermometerPosition">
+                <swe:Position referenceFrame="#STATION_FRAME">
+                  <swe:location>
+                    <swe:Vector>
+                      <swe:coordinate name="easting">
+                        <swe:Quantity axisID="x">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="northing">
+                        <swe:Quantity axisID="y">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="altitude">
+                        <swe:Quantity axisID="z">
+                          <swe:uom code="m" xlink:href="urn:x-ogc:def:uom:OGC:m"/>
+                          <swe:value>0</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                    </swe:Vector>
+                  </swe:location>
+                </swe:Position>
+              </sml:position>
+              <sml:inputs>
+                <sml:InputList>
+                  <sml:input name="atmosphericTemperature">
+                    <swe:ObservableProperty definition="urn:x-ogc:def:property:OGC::AirTemperature"/>
+                  </sml:input>
+                </sml:InputList>
+              </sml:inputs>
+              <sml:outputs>
+                <sml:OutputList>
+                  <sml:output name="temperature">
+                    <swe:Quantity definition="urn:x-ogc:def:property:OGC::Temperature">
+                      <gml:metaDataProperty>
+                        <offering>
+                          <id>ATMOSPHERIC_TEMPERATURE</id>
+                          <name>Temperature of the atmosphere.</name>
+                        </offering>
+                      </gml:metaDataProperty>
+                      <swe:uom code="Cel" xlink:href="urn:x-ogc:def:uom:OGC:degC"/>
+                    </swe:Quantity>
+                  </sml:output>
+                </sml:OutputList>
+              </sml:outputs>
+            </sml:Component>
+          </sml:component>
+        </sml:ComponentList>
+      </sml:components>
+    </sml:System>
+  </sml:member>
+</sml:SensorML>

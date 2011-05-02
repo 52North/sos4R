@@ -33,7 +33,7 @@ There are functions to access the converters of a SOS (\code{\link{sosDataFieldC
 
 \value{An object of the respective class converted from the parameter \code{x}.}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 \seealso{\code{\link{sosDataFieldConverters-methods}}, \code{\link{SosDataFieldConvertingFunctions}}}
 

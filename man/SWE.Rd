@@ -111,7 +111,7 @@ The \verb{...OrNULL} classes are used to model optional slots.
 
 \references{See section 9, SWE Common XML Encoding and Examples, of Botts, M., Robin, A. (Eds.), OpenGIS(R) Sensor Model Language (SensorML) Implementation Specification, Open Geospatial Consortium Inc., OGC 07-000}
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\note{  }
 %\section{Warning }{}

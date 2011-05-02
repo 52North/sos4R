@@ -102,3 +102,42 @@ promptMethods(f = "sosParse", filename = "/tmp/sosParse-methods.Rd")
 library("tools")
 ?codoc # Check Code/Documentation Consistency
 
+################################################################################
+# tools::showNonASCII(readLines('sos4R.Rnw')) 
+library("tools")
+
+# get all files in the workspace
+p <- "D:/workspace/sos4R"
+ps <- c("", "demo", "inst", "inst/doc", "man", "R", "sandbox", "tests")
+dirs <- paste(p, ps, sep = "/")
+
+?showNonASCII
+?readLines
+?dir
+
+filenames <- lapply(dirs, dir)
+
+filepaths <- list()
+for (i in seq(along = dirs)) {
+	.l <- paste(dirs[[i]], filenames[[i]], sep = "/")
+	filepaths <- c(filepaths, .l)
+}
+
+# remove some folders
+filepaths <- filepaths[!grepl(pattern = "//", x = filepaths)]
+filepaths <- filepaths[!grepl("/R$", filepaths)]
+filepaths <- filepaths[!grepl("/inst/doc$", filepaths)]
+filepaths <- filepaths[!grepl(".RData$", filepaths)]
+filepaths <- filepaths[!grepl(".pdf$", filepaths)]
+filepaths
+
+# check characters
+for (i in seq(along = filepaths)) {
+	cat(filepaths[[i]], "\n")
+	.file <- readLines(filepaths[[i]])
+	showNonASCII(.file)
+}
+
+################################################################################
+# tools::compactPDF
+?compactPDF

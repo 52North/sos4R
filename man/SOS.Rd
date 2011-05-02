@@ -302,7 +302,7 @@ Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortiu
 The document is available for download at \url{http://www.opengeospatial.org/standards/sos}.
 }
 
-\author{Daniel Nüst \email{daniel.nuest@uni-muenster.de}}
+\author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 %\section{Warning }{}
 
