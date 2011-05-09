@@ -73,7 +73,7 @@ The \pkg{sos4R} package provides classes and methods for retrieving data from an
 
 At the current state, the output is fixed to a standard data.frame with attributed columns for metadata. In future releases a tighter integration is planned with upcoming space-time packages regarding data structures and classes. 
 
-The motivation to write this package was born out of perceiving a missing link between the Sensor Web community (known as Sensor Web Enablement (SWE) Initiative\footnote{\url{http://www.opengeospatial.org/projects/groups/sensorweb}} in the OGC realm) and the community of (geo-)statisticians. While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it. \pkg{sos4R} can help enabling this.
+The motivation to write this package was born out of perceiving a missing link between the Sensor Web community (known as Sensor Web Enablement (SWE) Initiative\footnote{\url{http://www.opengeospatial.org/projects/groups/sensorweb}} in the OGC realm) and the community of (geo-)statisticians (N\"ust, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it. \pkg{sos4R} can help enabling this.
 
 The project is part of the geostatistics community\footnote{\url{http://52north.org/communities/geostatistics/}} of the \fivetwon Initiative for Geospatial Open Source Software\footnote{\url{http://52north.org/}}. \pkg{sos4R} is available, or will be available soon, on CRAN\footnote{\url{http://cran.r-project.org/}} (the Comprehensive R Archive Network).
 
@@ -459,21 +459,26 @@ defaultOutputFormatDescribeSensor <- gsub(pattern = "&quot;", replacement = "'",
 A simple example is as follows.
 
 <<describeSensor1a,echo=FALSE,results=hide,print=FALSE>>= 
-.sensorFile <- "sensor.1.1"
+.sensorFile <- "mySensor"
 if (.goOnline) {
-	sensor.1.1 <- describeSensor(sos = mySOS, # verbose = TRUE
-			procedure = sosProcedures(obj = mySOS)[[1]][[1]],
+	mySensor <- describeSensor(sos = mySOS, # verbose = TRUE
+			procedure = "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93",
 			saveOriginal = .sensorFile)
 } else {
-	sensor.1.1 <- parseFile(mySOS, .getFilePath(.sensorFile))
+	mySensor <- parseFile(mySOS, .getFilePath(.sensorFile))
 }
 @
 <<describeSensor1b,echo=TRUE,print=TRUE,eval=FALSE>>= 
-sensor.1.1 <- describeSensor(sos = mySOS,
+# manual assignment used because procedure order might change:
+mySensor <- describeSensor(sos = mySOS,
+		procedure = "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93")
+
+# using procedure referencing:
+mySensor <- describeSensor(sos = mySOS,
 		procedure = sosProcedures(obj = mySOS)[[1]][[1]])
 @
 <<describeSensor1c,echo=FALSE,print=FALSE,eval=TRUE>>= 
-sensor.1.1
+mySensor
 @
 
 All additional information presented in the following depends on compliance of the sensor description with the SensorML Profile for Discovery\footnote{\url{http://portal.opengeospatial.org/files/?artifact_id=37944}}).
@@ -481,23 +486,23 @@ All additional information presented in the following depends on compliance of t
 The coordinates data frame of a sensor description can be accessed with the common method \code{sosCoordinates()}.
 
 <<describeSensor2,echo=TRUE,print=TRUE,eval=FALSE>>=
-sosCoordinates(sensor.1.1)
+sosCoordinates(mySensor)
 @
 
 Other possibly useful parts of the sensor description can be accessed as well:
 
 <<describeSensor3,echo=TRUE,print=TRUE>>=
-sosId(sensor.1.1)
-sosName(sensor.1.1)
-sosAbstract(sensor.1.1)
+sosId(mySensor)
+sosName(mySensor)
+sosAbstract(mySensor)
 @
 
 This includes the coordinates with unit and reference system information in the attributes of the returned object. The observed bounding box is also available.
 
 <<describeSensorCoords,echo=TRUE,print=TRUE>>=
-sensor.1.1.coords <- sosCoordinates(sensor.1.1)
-attributes(sensor.1.1.coords)
-sosBoundedBy(sensor.1.1)
+mySensor.coords <- sosCoordinates(mySensor)
+attributes(mySensor.coords)
+sosBoundedBy(mySensor)
 @
 
 The coordinates also allow the plotting of the sensor positions (see Figure \ref{fig:desribeSensorPlot}). Here it is assumed that the spatial reference system of the SOS is the same for data from the first offering and the sensor positions!
@@ -512,7 +517,8 @@ procs.descr <- lapply(X = procs, FUN = describeSensor, sos = mySOS)
 
 sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria"), plot = FALSE))
+				region = c("Germany", "Austria", "Netherlands"),
+				plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
 
 plot(worldHigh.lines, col = "grey50")
@@ -527,7 +533,7 @@ title(main = paste("Sensors of", sosTitle(mySOS)))
 \label{fig:desribeSensorPlot}
 
 \begin{center}
-<<label=describeSensorPlot,fig=TRUE,echo=FALSE>>=
+<<label=describeSensorPlot,fig=TRUE,echo=FALSE,print=FALSE>>=
 library(maps); library(mapdata); library(maptools)
 data(worldHiresMapEnv)
 
@@ -543,15 +549,15 @@ if (.goOnline) {
 
 sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria"), plot = FALSE))
+				region = c("Germany", "Austria", "Netherlands"),
+				plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
 
 plot(worldHigh.lines, col = "grey50")
 # only plot the procedures where I can find the id (and then probably the
 # position can also be found
 for(x in procs.descr)
-	if(!is.na(sosId(x)))
-		plot(x, add = TRUE, pch = 19)
+	plot(x, add = TRUE, pch = 19)
 text(sosCoordinates(procs.descr)[c("x", "y")],
 		labels = sosId(procs.descr), pos = 4)
 title(main = paste("Sensors of", sosTitle(mySOS)))
@@ -1690,9 +1696,20 @@ The start of the project was generously supported by the \fivetwon Student Innov
 \item Cox, S., 2007, OGC Implementation Specification 07-022r1: Observations and Measurements - Part 1 - Observation schema. Open Geospatial Consortium. Tech. Rep.
 \item Cox, S., 2007, OGC Implementation Specification 07-022r3: Observations and Measurements - Part 2 - Sampling Features. Open Geospatial Consortium. Tech. Rep.
 \item Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, \url{http://portal.opengeospatial.org/files/?artifact_id=26667}, Open Geospatial Consortium, Tech. Rep. 
+\item N\"ust, D., Stasch, C. & Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. & Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography. 
 \item Portele, C., 2003, OGC Implementation Specification 07-036: OpenGIS Geography Markup Language (GML) Encoding Standard, version: 3.00. Open Geospatial Consortium, Tech. Rep.
 \item Vretanos, P.A., 2005, OGC Implementation Specification 04-095: OpenGIS Filter Encoding Implementation Specification. Open Geospatial Consortium, Tech. Rep.
 \item Whiteside, A., Greenwood, J., 2008, OGC Implementation Specification 06-121r9: OGC Web Services Common Specification. Open Geospatial Consortium, Tech. Rep.
 \end{description}
+
+<<options,echo=FALSE,results=hide,print=FALSE>>= 
+print("###################################################################")
+if(.goOnline) {
+	print("####### Data for this vignette was downloaded from the web. #######")
+} else {
+	print("####### Data for this vignette was loaded from local files. #######")
+}
+print("###################################################################")
+@
 
 \end{document}
