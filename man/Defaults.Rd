@@ -20,6 +20,7 @@
 \alias{sosDefaultColumnNameLon}
 \alias{sosDefaultColumnNameSRS}
 \alias{sosDefaultColorPalette}
+\alias{sosDefaultReferenceFrameSensorDescription}
 
 \alias{SosParsingFunctions}
 \alias{SosEncodingFunctions}

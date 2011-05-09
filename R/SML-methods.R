@@ -50,7 +50,7 @@ SensorML <- function(xml, coords = data.frame(), id = NA_character_,
 
 
 #
-#
+# parseSensorML(mySensor@xml, sos = mySOS, verbose = TRUE)
 #
 parseSensorML <- function(obj, sos, verbose = FALSE) {
 	.root <- xmlRoot(obj)
@@ -85,8 +85,15 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 		.oldAttrs <- attributes(.bb)
 		attributes(.bb) <- c(.oldAttrs,
 				list(referenceFrame = .referenceFrame))
+		
+		if(verbose) cat("[parseSensorML] Parsed bounding box: ", toString(.bb),
+							"\n")
 	}
-	.bb <- matrix()
+	else {
+		.bb <- matrix()
+		if(verbose) cat("[parseSensorML] No boundedBy element found, bbox is ",
+					.bb, "\n")
+	}
 	
 	# coordinates
 	if(verbose) cat("[parseSensorML] Parsing coordinates from",
@@ -111,9 +118,8 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 		}
 		
 		if(verbose) {
-			cat("[parseSensorML] values: ", toString(.values),	"\n")
-			str(.values)
 			cat("[parseSensorML] names: ", names(.values), "\n")
+			cat("[parseSensorML] values: ", toString(.values),	"\n")
 		}
 		
 		.coords <- data.frame(.values)

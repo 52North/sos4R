@@ -37,6 +37,12 @@ as.SensorML.SpatialPointsDataFrame = function(from) {
 		.crds <- .coords[,c("x", "y")]
 		.crs <- sosGetCRS(from)
 		
+		if(is.null(.crs)) {
+			warning("[as.SensorML.SpatialPointsDataFrame] No CRS from sensor ",
+					"description (using sosGetCRS(...), using default.")
+			.crs <- sosGetCRS(sosDefaultReferenceFrameSensorDescription)
+		}
+		
 		.notCoordCols <- !colnames(.coords)%in%c("x", "y")
 		.otherData <- data.frame(.coords[,.notCoordCols])
 		colnames(.otherData) <- colnames(.coords)[.notCoordCols]

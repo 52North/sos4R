@@ -490,18 +490,18 @@ parseCoordinate <- function(obj, sos, verbose = FALSE) {
 
 	.quantity <- obj[[sweQuantityName]]
 	.axisID <- xmlGetAttr(.quantity, name = "axisID", default = NA_character_)
-	if(verbose) cat("axisID: ", .axisID, "\n")
+	if(verbose) cat("[parseCoordinate] axisID: ", .axisID, "\n")
 	
 	.uomCode <- NA_character_
 	if(!is.null(.quantity[[sweUomName]]))
 		.uomCode <- xmlGetAttr(node = .quantity[[sweUomName]], name = "code",
 				default = NA_character_)
-	if(verbose) cat("uomCode: ", .uomCode, "\n")
+	if(verbose) cat("[parseCoordinate] uomCode: ", .uomCode, "\n")
 	
 	.value <- NA_character_
 	if(!is.null(.quantity[[sweValueName]]))
 		.value <- as.double(xmlValue(.quantity[[sweValueName]]))
-	if(verbose) cat("value: ", .value, "\n")
+	if(verbose) cat("[parseCoordinate] value: ", .value, "\n")
 	
 	return(list(name = .name, axisID = .axisID, uomCode = .uomCode,
 					value = .value))

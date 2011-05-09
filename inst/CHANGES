@@ -204,4 +204,7 @@
 
 2010-05-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
+* Changed name Nuest again in citation file, one directly using the umlaut, another using N\\uest.
+* Fix in as.SensorML.SpatialPointsDataFrame, now using a default CRS (EPSG 4326), if it cannot be detected.
+* Fixed bug in sosBoundedBy(SensorML) always returning empty matrix for bounding box
 * ...

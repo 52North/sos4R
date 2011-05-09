@@ -127,6 +127,7 @@ coords
 #str(coords)
 attributes(coords)
 sosGetCRS(proc1)
+sosGetCRS(procs.descr)
 sosBoundedBy(proc1)
 
 # create spatial representation, which also will be basis for plottting

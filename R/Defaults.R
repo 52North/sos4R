@@ -382,6 +382,8 @@ sosDefaultColorPalette <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
 		"#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A",
 		"#FFFF99", "#B15928")
 
+sosDefaultReferenceFrameSensorDescription <- "urn:ogc:def:crs:EPSG:4326"
+
 SosDefaults <- function() {
 	.defaults <- list(sosDefaultCharacterEncoding,
 			sosDefaultDescribeSensorOutputFormat,
@@ -397,7 +399,8 @@ SosDefaults <- function() {
 			sosDefaultColumnNameFeatureIdentifier,
 			sosDefaultColumnNameLat,
 			sosDefaultColumnNameLon,
-			sosDefaultColumnNameSRS)
+			sosDefaultColumnNameSRS,
+			sosDefaultReferenceFrameSensorDescription)
 	names(.defaults) <- list("sosDefaultCharacterEncoding",
 			"sosDefaultDescribeSensorOutputFormat",
 			"sosDefaultGetCapSections",
@@ -412,7 +415,8 @@ SosDefaults <- function() {
 			"sosDefaultColumnNameFeatureIdentifier",
 			"sosDefaultColumnNameLat",
 			"sosDefaultColumnNameLon",
-			"sosDefaultColumnNameSRS")
+			"sosDefaultColumnNameSRS",
+			"sosDefaultReferenceFrameSensorDescription")
 	
 	return(.defaults)
 }
