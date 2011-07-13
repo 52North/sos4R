@@ -1340,3 +1340,16 @@ lala()
 sosGetCRS("epsg:1234")
 
 
+################################################################################
+# Ben tips about 3d plots in R
+library(gstat)
+library(rgl)
+library(mgcv)
+library(car)
+
+data(meuse)
+
+scatter3d(meuse$dist, meuse$lead, meuse$elev, fit="linear", 
+		residuals=TRUE, groups=meuse$ffreq, parallel=TRUE, bg="white", 
+		axis.scales=TRUE, grid=TRUE, ellipsoid=FALSE, xlab="dist", ylab="lead", 
+		zlab="elev")

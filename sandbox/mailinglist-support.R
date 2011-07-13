@@ -66,5 +66,21 @@ data_coords_ise_chla <- merge(x = data_ise_chla, y = coords_ise_chla)
 data_coords_ise_chla[c(1:3, 101:103, 301:303),]
 
 
+#
+# 2011-07-13: Support for a direct question
+#
+# 1. I managed to connect to the following server, but when I tried the spanish one, I get the error below
+#sos <- SOS(url="http://elcano.dlsi.uji.es:8080/SOS_MCLIMATIC")
+#Error in from:to : result would be too long a vector
+#In addition: Warning messages:
+#		1: In strsplit(str, "\\\r\\\n") : input string 1 is invalid in this locale
+#2: In grep("^[[:space:]]+$", str) :
+#		input string 1 is invalid in this locale
+#3: In grep("^HTTP", lines) : input string 1 is invalid in this locale
+#4: In max(i) : no non-missing arguments to max; returning -Inf
+#5: In parseHTTPHeader(c(header, str)) : NAs introduced by coercion
+#6: In max(i) : no non-missing arguments to max; returning -Inf
 
-
+mclimatic <- SOS(url="http://elcano.dlsi.uji.es:8080/SOS_MCLIMATIC/sos")
+# SOLUTION: wrong endpoint, missing /sos
+summary(mclimatic)
