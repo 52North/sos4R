@@ -1696,7 +1696,7 @@ The start of the project was generously supported by the \fivetwon Student Innov
 \item Cox, S., 2007, OGC Implementation Specification 07-022r1: Observations and Measurements - Part 1 - Observation schema. Open Geospatial Consortium. Tech. Rep.
 \item Cox, S., 2007, OGC Implementation Specification 07-022r3: Observations and Measurements - Part 2 - Sampling Features. Open Geospatial Consortium. Tech. Rep.
 \item Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, \url{http://portal.opengeospatial.org/files/?artifact_id=26667}, Open Geospatial Consortium, Tech. Rep. 
-\item N\"ust, D., Stasch, C. & Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. & Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography. 
+\item N\"ust, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography. 
 \item Portele, C., 2003, OGC Implementation Specification 07-036: OpenGIS Geography Markup Language (GML) Encoding Standard, version: 3.00. Open Geospatial Consortium, Tech. Rep.
 \item Vretanos, P.A., 2005, OGC Implementation Specification 04-095: OpenGIS Filter Encoding Implementation Specification. Open Geospatial Consortium, Tech. Rep.
 \item Whiteside, A., Greenwood, J., 2008, OGC Implementation Specification 06-121r9: OGC Web Services Common Specification. Open Geospatial Consortium, Tech. Rep.
@@ -1705,9 +1705,9 @@ The start of the project was generously supported by the \fivetwon Student Innov
 <<options,echo=FALSE,results=hide,print=FALSE>>= 
 print("###################################################################")
 if(.goOnline) {
-	print("####### Data for this vignette was downloaded from the web. #######")
+	print("####### Data for this vignette was downloaded ONLINE. #############")
 } else {
-	print("####### Data for this vignette was loaded from local files. #######")
+	print("####### Data for this vignette was loaded from LOCAL FILES. #######")
 }
 print("###################################################################")
 @

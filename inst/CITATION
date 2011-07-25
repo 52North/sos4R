@@ -11,9 +11,9 @@ citEntry(entry="misc",
 )
 
 citEntry(entry="inproceedings",
-  textVersion	= paste("Nüst, D., Stasch, C. & Pebesma, E. J.",
+  textVersion	= paste("Nüst, D., Stasch, C. and Pebesma, E. J.",
 	"Connecting R to the Sensor Web",
-	"in Geertman, S.; Reinhardt, W. & Toppen, F. (Eds.)",
+	"in Geertman, S.; Reinhardt, W. and Toppen, F. (Eds.)",
 	"Advancing Geoinformation Science for a Changing World,",
 	"Springer Lecture Notes in Geoinformation and Cartography,",
 	"2011, 227 - 246"),

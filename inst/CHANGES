@@ -204,12 +204,14 @@
 
 2010-07-25		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
+* Version 0.2-4 and 0.2-5
 * Changed name Nuest again in citation file, one directly using the umlaut, another using N\\uest.
 * Fix in as.SensorML.SpatialPointsDataFrame, now using a default CRS (EPSG 4326), if it cannot be detected.
 * Fixed bug in sosBoundedBy(SensorML) which was always returning empty matrix for bounding box
 * Bugfix release, and to see if NOTEs about uncompacted PDFs can be fixed by the according option in R CMD build
+* Fix in latex file, misplaced "&"
 
-2010-07-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2010-07-25		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
-* Version 0.2-5
+* Version 0.2-6
 * ...
