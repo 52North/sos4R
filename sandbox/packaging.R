@@ -149,3 +149,4 @@ checkNonASCII("D:/workspace/sos4R")
 # run this before every commit...
 result <- tools::compactPDF(paths = "D:/workspace/sos4R/inst/doc")
 result
+# or even better: run R CMB build with option "--compact-vignettes"
