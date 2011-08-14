@@ -114,7 +114,7 @@
 * added .Rbuildignore to exclude Eclipse specific files in build
 * Maintenance release to re-trigger generation of vignette with v-swe running
 
-2010-03-03		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-03-03		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-13
 * Added sosGetCRS() for SosObservationOffering based on bounding box
@@ -133,7 +133,7 @@
 * Fixed printing bug for class SOS when capabilities are only partly requested
 * Updates in Vignette for new features
 
-2010-03-04		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-03-04		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.1-14
 * Minor improvements with metadata information for sosCoordinates(SensorML)
@@ -170,7 +170,7 @@
 * Changed vignette to use saved sensor description from file
 * Fixes with exports and documentation to adhere to changes for R 2.13.0
 
-2010-03-20		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-03-20		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2
 * Bugfix in coordinate order in coercion function for SpatialPointsDataFrame
@@ -180,7 +180,7 @@
 * Added function sosUOM(...) to extract the unit of measurement from objects
 * Added summary methods for OmObservation and OmObservationCollection
 
-2010-03-24		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-03-24		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2-1
 * Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot funktion.
@@ -189,7 +189,7 @@
 * Added parsing of exception reports to parseFile(...)
 * Based vignette completely on dowloaded files for releases
 
-2010-04-01		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-04-01		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2-2
 * Added rudimentary support for KML responses (no parsing)
@@ -197,12 +197,12 @@
 * Added attribute to observations (if response is saved) with file name (sosAttributeFileName)
 * Added %\VignetteDepends{xtable} to vignette and depedency xtable as well - got NOTEd for that in R 2.13 checks
 
-2010-05-02		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-05-02		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Bug in sosGetCRS, returns NULL and prints error if the EPSG code is not recognized
 * Fixed non-ASCII characters, Umlaute, and incomplete last lines (when using readLines(...)) throughout the package
 
-2010-07-25		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-07-25		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2-4 and 0.2-5
 * Changed name Nuest again in citation file, one directly using the umlaut, another using N\\uest.
@@ -211,7 +211,7 @@
 * Bugfix release, and to see if NOTEs about uncompacted PDFs can be fixed by the according option in R CMD build
 * Fix in latex file, misplaced "&"
 
-2010-07-25		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-07-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2-6
-* ...
+* THIS FILE IST ABANDONED FOR "NEWS", see also sosNews()

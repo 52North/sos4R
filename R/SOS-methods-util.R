@@ -591,11 +591,21 @@ setMethod(f = "sosGetCRS",
 
 
 ################################################################################
-# Access to changes and other documents shipping with the package
+# Access to CHANGES and NEWS shipping with the package
 #
 #
 sosChanges <- function() {
 	.path <- paste(.find.package("sos4R", lib.loc = NULL), "CHANGES",
+			sep = "\\")
+	.con <- file(.path)
+	.lines <- readLines(.con)
+	close(.con)	
+	
+	cat(.lines, sep = "\n")
+}
+
+sosNews <- function() {
+	.path <- paste(.find.package("sos4R", lib.loc = NULL), "NEWS",
 			sep = "\\")
 	.con <- file(.path)
 	.lines <- readLines(.con)
