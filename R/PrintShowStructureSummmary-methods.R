@@ -223,7 +223,9 @@
 			x@method,
 			", ",
 			x@url,
-			", ", sosTitle(x))
+			", ",
+			sosTitle(x),
+			"]", sep = "")
 	return(.s)
 }
 
