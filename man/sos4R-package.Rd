@@ -7,6 +7,7 @@
 
 \alias{sosChanges}
 \alias{sosCheatSheet}
+\alias{sosNews}
 
 \title{A client for the OGC Sensor Observation Service}
 
@@ -93,11 +94,13 @@ myConverters <- SosDataFieldConvertingFunctions(
 mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)
 
-# print the changes document
-sosChanges()
-
 # get the cheat sheet
 sosCheatSheet()
+
+# view the NEWS file
+sosNews()
+# DEPRECATED: the changes document
+#sosChanges()
 
 }
 
