@@ -35,7 +35,8 @@ jade1.watertemp <- getObservation(sos = coastlab, offering = jade1,
 						begin = as.POSIXct(Sys.time() - 3600 * 24 * 180),
 						end = as.POSIXct(Sys.time()))))
 
-# TODO unhandled response document, it contains om:resultDefinition ...
+# TODO continue implemenation for Coastlab SOS, problem:
+# unhandled response document, it contains om:resultDefinition ...
 #
 #<?xml version="1.0" encoding="UTF-8"?>
 #		<om:Observation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:swe="http://www.opengis.net/swe/0" xmlns:gml="http://www.opengis.net/gml" xmlns:om="http://www.opengis.net/om" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/om http://amb25.stccmop.org/schemas/sos/current/sosGetObservation.xsd" gml:id="WaterTemperature">

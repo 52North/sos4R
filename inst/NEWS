@@ -3,6 +3,10 @@ Changes in sos4R Version 0.2-6 - 2011-08-XX
   o CHANGED documentation of changes from CHANGES to this NEWS file
   
   o ADDED function sosNews() to access this file from an R session
+  
+  o CHANGED syntax in cheat sheet, not using the | character for alternatives.
+  
+  o ADDED file in sandbox: useR-2011.R
 
 
 Changes in sos4R Version 0.2-4 - 2011-07-25

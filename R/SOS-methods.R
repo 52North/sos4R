@@ -283,7 +283,7 @@ SosGetObservationById <- function(
 			print(.encodedRequest)
 		}
 		
-		# TODO SOAP request method
+		# TODO add SOAP request method
 	}
 	else {
 		stop(paste("Unsupported method, has to be one of",

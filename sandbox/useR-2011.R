@@ -6,48 +6,50 @@ library("sos4R")
 sessionInfo()
 
 # establish a connection to a SOS instance with default settings
-weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+weathersos <- SOS(url = 
+				"http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 weathersos
 summary(weathersos)
-sosContents(weathersos)
 
 ################################################################################
 # Request data for specific time intervall and offering
-# (additional filtering possible ...)
-sosOfferings(weathersos)
 names(sosOfferings(weathersos))
+sosOfferings(weathersos)[[1]]
 off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
-class(off)
-# Exploration is NOT the strong side of sos4R
+sosObservedProperties(off)
+# Exploration of new services is NOT the strong side of sos4R
 
-# offering is only mandatory parameter, but filter time intervall to limit data
-# download
+# offering is only mandatory parameter, but use time interval to limit data
 obs <- getObservation(sos = weathersos, offering = off,
 							# alternative: offering = "ATMOSPHERIC_TEMPERATURE"
-		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = weathersos,
-						begin = as.POSIXct("2009-08-10 12:00"),
-						end = as.POSIXct("2009-08-20 12:00"))))
+		eventTime = sosCreateTime(sos = weathersos,
+				time = "2009-08-10 12:00/2009-08-20 12:00"))
 obs
-str(obs)
+#length(obs)
+#str(obs)
+
+# subsettable in the normal way
+sosProcedures(obs[1])
+sosProcedures(obs[[2]])
 
 # accessor functions
+sosBoundedBy(obs)
+sosCoordinates(obs[[2]])
+
 sosProcedures(obs)
 # vs.
 sosProcedures(weathersos)
 
-# subsettable
-sosProcedures(obs[1:2])
-
 ################################################################################
+# get the REAL data
 result <- sosResult(obs) # sosResult(obs[[1]])
 summary(result)
-class(result)
+dim(result); dim(sosResult(obs[[2]]))
 
 # shortcut to spatial data
 obs.spdf <- as(obs, "SpatialPointsDataFrame")
 summary(obs.spdf)
-# Metdata are useful!
-
+# Metadata are useful!
 
 ################################################################################
 # Create plot
@@ -61,7 +63,7 @@ plot(x = obs[[1]]@result[[1]][1:x], y = obs[[1]]@result[[3]][1:x],
 		xaxt="n") # do not plot x-axis
 r <- as.POSIXct(round(range(obs[[1]]@result[[1]]), "days"))
 axis.POSIXct(side = 1, x = obs[[1]]@result[[1]][1:x], format = "%d. %h",
-		at = seq(r[1], r[2], by="day"))
+		at = seq(r[1], r[2], by="days"))
 lines(x = obs[[2]]@result[[1]][1:x], y = obs[[2]]@result[[3]][1:x],
 		col = "orange", lwd = "2")
 legend("topleft", legend = c("Muenster", "Kaernten"),
@@ -95,7 +97,7 @@ timeSeriesDemo <- function(inspect = FALSE) {
 	dataLastWeek <- sosResult(obsLastWeek)
 	
 	# inspect data
-	summary(dataLastWeek)
+	#summary(dataLastWeek)
 	#names(dataLastWeek)
 	
 	# create time series from data and plot
@@ -114,6 +116,9 @@ timeSeriesDemo <- function(inspect = FALSE) {
 			ylab = paste("Temperature in", attributes(temp)[["unit of measurement"]]),
 			major.ticks = "days")
 	lines(dataLastWeek$Time, x$fitted, col = 'red', lwd=3)
+	
+	cat("data values: ")
+	print(periodicity(tempLastWeek))
 }
 
 ################################################################################

@@ -66,7 +66,7 @@ attributes(pegelObs[[1]]@result[,2])
 attributes(pegelObs[[1]]@result[,3])
 
 
-# TODO make plot out of two or three related stations
+# make plot out of two or three related stations?
 range(pegelObs[[1]]@result[,3]); range(pegelObs[[2]]@result[,3])
 
 # Attention: plots ignore the fact that the times do NOT perfectly match!
@@ -710,6 +710,8 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 ################################################################################
 # some services from the AGILE 2011 paper "Empirical Study ..."
 # TODO test, create demos if interesting data
+# use time series analysis like presented at
+# http://www.r-bloggers.com/time-series-analysis-and-mining-with-r/
 
 # WEATHERFLOW
 weatherflow <- SOS(url = "http://www.weatherflow.com/sos/sos.pl")

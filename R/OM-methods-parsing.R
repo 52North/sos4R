@@ -349,7 +349,7 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
 			.foi <- GmlFeatureProperty(feature = .sp)
 		}
 		else if (.name == saSamplingSurface) {
-			# TODO parsing of sampling surface
+			warning("[parseFOI] No parsing for sa:SamplingSurface implemented!")
 			.foi <- GmlFeatureProperty(href = .name)
 		}
 		else if (.name == gmlFeatureCollectionName) {

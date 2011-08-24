@@ -250,7 +250,7 @@ w = processWSDL(
 		useInternalNodes = FALSE)
 
 
-# ********************** TODO CONTINUE HERE ********************************** #
+# TODO CONTINUE HERE with SOAP implementation
 
 
 iface = genSOAPClientInterface(def = sosWsdl, verbose = TRUE)

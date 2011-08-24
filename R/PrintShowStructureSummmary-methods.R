@@ -1088,9 +1088,6 @@ setMethod("toString", "OgcOverlaps", function(x, ...) .toString.OgcOverlaps(x, .
 
 ################################################################################
 # SHOW FUNCTIONS
-#
-# TODO write actual shorter 'show' functions where appropriate.
-#
 setMethod("show", "OwsServiceOperation", function(object) .print.OwsServiceOperation(object))
 setMethod("show", "OwsGetCapabilities", function(object) .print.OwsGetCapabilities(object))
 setMethod("show", "OwsGetCapabilities_1.1.0", function(object) .print.OwsGetCapabilities(object))
