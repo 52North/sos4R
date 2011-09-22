@@ -8,19 +8,26 @@ library("sos4R")
 # WeatherSOS
 #
 # establish a connection to a SOS instance with default settings
-weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+weathersos <- SOS(
+		url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 summary(weathersos)
 
 # explore SOS, plotting
-library(maps); library(mapdata); library(maptools); data(worldHiresMapEnv)
+library(maps);
+library(mapdata);
+library(maptools);
+data(worldHiresMapEnv)
+
 crs <- sosGetCRS(weathersos)[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria"), plot = FALSE))
+				region = c("Germany", "Austria", "Netherlands"),
+				plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
 plot(worldHigh.lines, col = "grey50")
 plot(weathersos, add = TRUE, lwd = 3)
-title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
+title(main = paste("Offerings by '",
+				sosTitle(weathersos), "'", sep = ""),
 		sub = toString(names(sosOfferings(weathersos))))
 
 # get the latest observation (not standard conform!)
@@ -36,7 +43,7 @@ sosResult(obs)
 # Attention: plots ignore the fact that the times do NOT perfectly match!
 obs <- getObservation(sos = weathersos,
 		offering = off,
-		procedure = sosProcedures(off),
+		#procedure = sosProcedures(off),
 		inspect = TRUE,
 		eventTime = sosCreateTime(weathersos,
 				time = "2009-08-10 12:00::2009-08-20 12:00"))
@@ -45,6 +52,11 @@ str(obs[[2]]@result)
 summary(obs)
 
 sosResult(obs[[1]], coordinates = TRUE)[1:10,]
+str(sosResult(obs[[1]], coordinates = TRUE)[1:10,])
+
+# why do we want to use time classes? because we can calculate with them!
+# "10.08.2009" - "08.08.2009"
+as.POSIXct("2009/10/10") - as.POSIXct("2009/10/08")
 
 # plot it!
 x <- 800
@@ -90,12 +102,21 @@ time <- as.numeric(data[["Time"]])
 x = loess(temp~time,
 		na.omit(data),enp.target=10)
 
+attr(x, "myAttribute") <- "Hej, I am Daniel."
+str(x)
+
 # create plot
 plot(tempSept, main = "Temperature at WeatherSOS-Station in Muenster",
 		xlab = "Time", ylab = paste("Temperature in", attributes(temp)[["unit of measurement"]]),
 		major.ticks = "weeks")
+?points
+?lines
 lines(data$Time, x$fitted, col = 'red', lwd=3)
 #savePlot(type = "png", filename = "usecase.png")
+
+head(x$residuals)
+head(x[["residuals"]])
+head(x[[3]])
 
 ################################################################################
 # DescribeSensor Operation
