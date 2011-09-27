@@ -56,6 +56,13 @@ parseSosObservationOffering <- function(obj, sos) {
 	
 	# can be transformed to character vectors
 	.procedure <- sapply(obj[sosProcedureName], xmlGetAttr, "href")
+	# handle missing procedures
+	if(length(.procedure) < 1) {
+		print("lala")
+		.procedure <- as.character(c())
+		warning(paste("Mandatory element 'procedure' missing in offering",
+						.id))
+	}
 	if(sos@verboseOutput)
 		cat("[parseSosObservationOffering] procedure:",
 				toString(.procedure), "\n")
