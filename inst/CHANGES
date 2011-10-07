@@ -211,7 +211,7 @@
 * Bugfix release, and to see if NOTEs about uncompacted PDFs can be fixed by the according option in R CMD build
 * Fix in latex file, misplaced "&"
 
-2011-07-XX		Daniel Nuest	<daniel.nuest@uni-muenster.de>
+2011-10-07		Daniel Nuest	<daniel.nuest@uni-muenster.de>
 
 * Version 0.2-6
-* THIS FILE IST ABANDONED FOR "NEWS", see also sosNews()
+* THIS FILE IST ABANDONED FOR "NEWS", see > sosNews() in an R session or the document sos4R/NEWS.

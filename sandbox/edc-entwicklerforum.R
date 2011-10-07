@@ -493,9 +493,9 @@ bbox(no2.spdf.bbox)
 obs.no2.2007 <- getObservation(sos = aqe, # inspect = TRUE,
 		offering = no2.off)
 result.no2.2007 <- sosResult(obs.no2.2007, coordinates = TRUE)
-no2.spdf <- as(obs.no2.2007, "SpatialPointsDataFrame")
-summary(no2.spdf)
-bbox(no2.spdf)
+no2_spdf <- as(obs.no2.2007, "SpatialPointsDataFrame")
+summary(no2_spdf)
+bbox(no2_spdf)
 
 # Coercion einer einzelnen Observation ist ebenfalls moeglich, jedoch bis jetzt
 # auf SpatialPointsDataFrame beschraenkt. Hier ist natuerlich aufwendiges/
@@ -512,9 +512,9 @@ levels(spdf.1[["FeatureOfInterest"]])
 #************#
 # Wo sind die Messtationen von no2.spdf?
 
-coordinates(no2.spdf) # nur Koordinates, coordinates ist eine sp-Funktion
+coordinates(no2_spdf) # nur Koordinates, coordinates ist eine sp-Funktion
 plot(x = map.lines, col = "grey")
-plot(no2.spdf, pch = 20, col = "blue", add = TRUE)
+plot(no2_spdf, pch = 20, col = "blue", add = TRUE)
 
 # Frage Daten fuer eine beliebige Woche ab und erzeuge einen data.frame, benutze
 # auch den SOS fuer Deutschland. Wichtig: kleiner zeitlicher oder raeumlicher

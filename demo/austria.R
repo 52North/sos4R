@@ -14,14 +14,14 @@ library("sos4R")
 
 ################################################################################
 # Nationalpark Berchtesgaden
-npbg.converter <- SosDataFieldConvertingFunctions(
+npbg_converter <- SosDataFieldConvertingFunctions(
 		"urn:ogc:def:property:OGC:Time:iso8601" = sosConvertTime,
 		"urn:ogc:def:property:OGC:Reflection" = sosConvertDouble,
 		"urn:ogc:def:property:OGC:Insolation" = sosConvertDouble)
 npbg <- SOS("http://ispacevm10.researchstudio.at/geoservices/npbg",
 		method = "GET",
 		#verboseOutput = TRUE,
-		dataFieldConverters = npbg.converter,
+		dataFieldConverters = npbg_converter,
 		sections = NA)
 npbg
 summary(npbg)
@@ -33,15 +33,51 @@ data(worldHiresMapEnv)
 crs <- unique(sosGetCRS(npbg))[[1]]
 worldHigh <- pruneMap(map(database = "worldHires", region = "Austria",
 				plot = FALSE))
-worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
+worldHigh_Lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
-plot(worldHigh.lines, col = "grey50")
+plot(worldHigh_Lines, col = "grey50")
 plot(npbg, add = TRUE, lwd = 2)
 map.axes()
 map.scale()
-.offNames <- sapply(names(sosOfferings(npbg)), FUN = strsplit, split = ":")
+offNames <- sapply(names(sosOfferings(npbg)), FUN = strsplit, split = ":")
 title(main = paste("Offerings by '", sosTitle(npbg), "'", sep = ""),
-		sub = toString(sapply(.offNames, "[[", 3)))
+		sub = toString(sapply(offNames, "[[", 3)))
+
+##########
+# zoom in:
+poly1 <- as(sosOfferings(npbg)[[1]], "Spatial")
+bbox(poly1)
+
+bounds <- sosBoundedBy(sosOfferings(npbg), bbox = TRUE)
+bounds_xlim <- c(min(sapply(bounds, "[[", "coords.lon", "min")) - 0.2,
+		max(sapply(bounds, "[[", "coords.lon", "max")) + 0.2)
+bounds_ylim <- c(min(sapply(bounds, "[[", "coords.lat", "min") - 0.2),
+		max(sapply(bounds, "[[", "coords.lat", "max")) + 0.2)
+# increase a little bit (works only because all > 0
+
+# run same code again:
+plot(worldHigh_Lines, col = "grey50", xlim = bounds_xlim, ylim = bounds_ylim)
+plot(npbg, add = TRUE, lwd = 2)
+map.axes()
+map.scale()
+offNames <- sapply(names(sosOfferings(npbg)), FUN = strsplit, split = ":")
+title(main = paste("Offerings by '", sosTitle(npbg), "'", sep = ""),
+		sub = toString(sapply(offNames, "[[", 3)))
+
+# plot stations NOT POSSIBLE because SOS expects parameter "SensorId", not
+# "procedure":
+# http://ispacevm10.researchstudio.at/geoservices/npbg?service=SOS&request=DescribeSensor&version=1.0.0&SensorId=org%3Anpbg%3ABlaueis&outputFormat=text/xml;subtype%3D%22sensorML/1.0.1%22
+#describeSensor(npbg, procedure = "org:npbg:Blaueis", verbose = TRUE)
+#npbg_procedures <- unique(unlist(sosProcedures(npbg)))
+#procs_descr <- lapply(X = npbg_procedures, FUN = describeSensor, # verbose = TRUE,
+#		sos = npbg)
+#procs_descr[[1]]
+#for (x in procs_descr) {
+#	plot(x, add = TRUE, pch = 19)
+#}
+#text(sosCoordinates(procs_descr)[c("x", "y")], labels = sosId(procs_descr),
+#		pos = 4)
+
 
 #########################
 # superordinate offering:
@@ -49,18 +85,18 @@ np.off <- sosOfferings(npbg)[["org:npbg:Nationalpark"]]
 #np.off
 summary(np.off)
 
-np.obsProp <- sosObservedProperties(np.off)
-np.obsProp
-np.proc <- sosProcedures(np.off)
-np.proc
+npbg_obsProp <- sosObservedProperties(np.off)
+npbg_obsProp
+npbg_proc <- sosProcedures(np.off)
+npbg_proc
 
 ###########
 # Get data:
 lastDay <- sosCreateTimePeriod(sos = npbg, begin = (Sys.time() - 3600 * 24),
 		end = Sys.time())
 
-obs.proc1 <- getObservation(sos = npbg, offering = np.off, inspect = TRUE,
-	procedure = np.proc[[1]],
+obs_proc1 <- getObservation(sos = npbg, offering = np.off, inspect = TRUE,
+	procedure = npbg_proc[[1]],
 	eventTime = sosCreateEventTimeList(lastDay)
 	)
 
@@ -70,44 +106,44 @@ obs.proc1 <- getObservation(sos = npbg, offering = np.off, inspect = TRUE,
 #spdf.proc1 <- as(obs.proc1, "Spatial")
 
 # Coordinates inline:
-result.proc1 <- sosResult(obs.proc1)
-summary(result.proc1)
+result_proc1 <- sosResult(obs_proc1)
+summary(result_proc1)
 
-coords.proc1 <- unique(result.proc1[c("Latitude", "Longitude")])
+coords.proc1 <- unique(result_proc1[c("Latitude", "Longitude")])
 coords.proc1
 
 
 ##################
 # plot all values:
-names(result.proc1)
-plot(result.proc1[8:9],
-		main = paste(np.proc[[1]], "at", toString(coords.proc1), "from, to",
-				toString(range(result.proc1[["Time"]]))))
+names(result_proc1)
+plot(result_proc1[8:9],
+		main = paste(npbg_proc[[1]], "at", toString(coords.proc1), "from, to",
+				toString(range(result_proc1[["Time"]]))))
 
 ######################
 # xyplot, dotplot ...:
-xyplot(Insolation ~ RelativeHumidity, data = result.proc1, 
-		main = paste(np.proc[[1]], "(", 
+xyplot(Insolation ~ RelativeHumidity, data = result_proc1, 
+		main = paste(npbg_proc[[1]], "(", 
 				toString(coords.proc1), ")"),
-		sub = paste("Time range: ", toString(range(result.proc1[["Time"]]))))
+		sub = paste("Time range: ", toString(range(result_proc1[["Time"]]))))
 
 xyplot(Insolation ~ RelativeHumidity | AirTemperature,
-		data = result.proc1[1:100,])
+		data = result_proc1[1:100,])
 
-dotplot(Insolation ~ RelativeHumidity, data = result.proc1)
+dotplot(Insolation ~ RelativeHumidity, data = result_proc1)
 
 
 ####################################
 # plot values against time with xts:
-proc1.times <- unique(result.proc1[["Time"]])
+result_proc1_times <- unique(result_proc1[["Time"]])
 
 library(xts)
-proc1.xts.refl <- xts(x = result.proc1[["Reflection"]],
-		order.by = result.proc1[["Time"]], unique = TRUE)
-proc1.xts.inso <- xts(x = result.proc1[["Insolation"]],
-		order.by = result.proc1[["Time"]], unique = TRUE)
-plot(proc1.xts.refl,
-		main = paste("Reflection at", np.proc[[1]], "(", 
+proc1_xts_refl <- xts(x = result_proc1[["Reflection"]],
+		order.by = result_proc1[["Time"]], unique = TRUE)
+proc1_xts_inso <- xts(x = result_proc1[["Insolation"]],
+		order.by = result_proc1[["Time"]], unique = TRUE)
+plot(proc1_xts_refl,
+		main = paste("Reflection at", npbg_proc[[1]], "(", 
 				toString(coords.proc1), ")"),
 		type = "bars")
 
@@ -115,25 +151,23 @@ plot(proc1.xts.refl,
 # plot time series with zoo:
 library(zoo)
 
-proc1.zoo <- zoo(x = as.matrix(result.proc1[5:9]),
-		order.by = result.proc1[["Time"]])
-str(proc1.zoo)
-plot(proc1.zoo, main = paste("Time Series at", np.proc[[1]], "(", 
+proc1_zoo <- zoo(x = as.matrix(result_proc1[5:9]),
+		order.by = result_proc1[["Time"]])
+str(proc1_zoo)
+plot(proc1_zoo, main = paste("Time Series at", npbg_proc[[1]], "(", 
 				toString(coords.proc1), ")"),
 		plot.type = "multiple")
 
 
 ####################
 # request more data:
-obs.proc123 <- getObservation(sos = npbg, offering = np.off, # inspect = TRUE,
-		procedure = np.proc[1:3])
+obs_proc123 <- getObservation(sos = npbg, offering = np.off, # inspect = TRUE,
+		procedure = npbg_proc[1:3])
 #Finished getObservation to http://ispacevm10.researchstudio.at/geoservices/npbg 
 #--> received 3 observation(s) having 31345 result values [ 8942, 11112, 11291 ].
-obs.proc123
-
-str(obs.proc123[[1]])
-
-sosProcedures(obs.proc123)
+obs_proc123
+str(obs_proc123[[1]])
+sosProcedures(obs_proc123)
 
 ################################################################################
 # Land Oberoesterreich

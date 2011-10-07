@@ -6,6 +6,8 @@
 % RUN WITH 
 % Sweave(file = "/home/daniel/workspace/sos4R/inst/doc/sos4R.Rnw")
 % OR
+% Sweave(file = "D:/workspace/sos4R/inst/doc/sos4R.Rnw")
+% OR
 % library(cacheSweave)
 % Sweave("sos4R.Rnw", driver = cacheSweaveDriver)
 
@@ -94,9 +96,9 @@ The Open Geospatial Consortium\footnote{\url{http://www.opengeospatial.org/}} (O
 
 Providing data via web services is more powerful than local file copies (with issues like being outdated, redundancy, \ldots). Flexible filtering of data on the service side reduces download size. That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain. For example \enquote{Get measurements from sensor urn:mySensor:001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees}.
 
-In general, the SOS supports two methods of requesting data: (i) HTTP GET as defined in the OOSTethys best practice document\footnote{This best-practice paper takes the place of a section in the specification that was left out by mistake. It is well established and (loosely) followed by several SOS implementations. See \url{http://www.oostethys.org/best-practices/best-practices-get}.} with key-value-pair (KVP) encoding of request, and (ii) POST as defined in the standard document with requests encoded in eXtensible Markup Language (XML). Both request types always returns XML documents as response.
+In general, the SOS supports two methods of requesting data: (i) HTTP GET as defined in the OOSTethys best practice document\footnote{This best-practice paper takes the place of a section in the specification that was left out by mistake. It is well established and (loosely) followed by several SOS implementations. See \url{http://www.oostethys.org/best-practices/best-practices-get}.} with key-value-pair (KVP) encoding of request, and (ii) POST as defined in the standard document with requests encoded in eXtensible Markup Language (XML)\footnote{\url{http://www.w3.org/XML/}}. Both request types always returns XML documents as response.
 
-Standards that are referenced, respectively used, by SOS are as follows.
+OGC Standards that are referenced and used, by the SOS standard are as follows.
 
 \begin{description}
 \item[Observations and Measurements (O\&M)] O\&M (Cox, 2007) defines the markup of sensor measurements results. An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result.
@@ -153,7 +155,7 @@ The package provides accessor functions for the supported parameters. It is reco
 
 This section only lists the possibilities. Explanations follow in this document or can be found in the SOS specification.
 
-<<supported,echo=TRUE,print=TRUE>>=
+<<supported01,echo=TRUE,print=TRUE>>=
 SosSupportedOperations()
 SosSupportedServiceVersions()
 SosSupportedConnectionMethods()
@@ -162,24 +164,24 @@ SosSupportedResponseFormats()
 
 The response format \enquote{text/csv} is not standard conform, but used by services as a well established alternative to XML encodings.
 
-<<supported,echo=TRUE,print=TRUE>>=
+<<supported02,echo=TRUE,print=TRUE>>=
 SosSupportedResponseModes()
 SosSupportedResultModels()
 @
 
 The output of the following calls are named lists (the name being the same as the value) which are simplified here for brevity using \code{toString()}.
 
-<<supported,echo=TRUE,eval=FALSE,print=FALSE>>=
+<<supported03,echo=TRUE,eval=FALSE,print=FALSE>>=
 SosSupportedSpatialOperators()
 @
-<<supported,echo=FALSE,eval=TRUE,print=TRUE>>=
+<<supported04,echo=FALSE,eval=TRUE,print=TRUE>>=
 toString(SosSupportedSpatialOperators())
 @
 
-<<supported,echo=TRUE,eval=FALSE,print=FALSE>>=
+<<supported05,echo=TRUE,eval=FALSE,print=FALSE>>=
 SosSupportedTemporalOperators()
 @
-<<supported,echo=FALSE,eval=TRUE,print=TRUE>>=
+<<supported06,echo=FALSE,eval=TRUE,print=TRUE>>=
 toString(SosSupportedTemporalOperators())
 @
 
@@ -1251,10 +1253,43 @@ Here the idea of organizing the encoding functions becomes clear: One base encod
 myPostEncoding <- function(object, sos, verbose) {
 	return(str(object))
 }
-# Will fail:
+# Connection will not be establihsed because of mising objects
 mySOS2 = SOS(sosUrl(mySOS),
 	encoders = SosEncodingFunctions("POST" = myPostEncoding))
 @
+
+Encoding functions can be overriden for many specific objects. The signature of the encoding function consists of the object, \code{obj}, a SOS object, \code{sos}, and the optional \code{verbose} parameter.
+
+<<encoders4,echo=TRUE,eval=TRUE>>=
+showMethods("encodeXML")
+showMethods("encodeKVP")
+@
+
+A useful example can be overriding the encoding method for time classes (\code{POSIXt}) as presented below--see the demo \textbf{southesk} (section 
+\ref{subsec:demos}) for the application of this code.
+
+<<encoders5,echo=TRUE,eval=FALSE>>=
+setMethod(f = "encodeXML",
+  signature = signature(obj = "POSIXt", sos = "SOS"),
+    def = function(obj, sos, verbose) {
+      if(verbose) cat("Using my own time encoding... ")
+
+      # time zone hack to fix that the time format option
+      # %z does not work on windows machines:
+      .time <- obj + 11 * 60 * 60 # add 11 hours
+      .formatted <- strftime(x = .time,
+        format = sosTimeFormat(sos))
+      .formatted <- paste(.formatted, 
+        "+11:00", sep = "")	# append 11:00
+
+      if(verbose) cat("Formatted ", toString(obj),
+        " to ", .formatted, "\n")
+      return(.formatted)
+    }
+)
+@
+
+All later calls for encoding any classes with time will then reference this newly defined method. Be aware that this changes the encoding \textbf{globally}, in contrast to converters and parsers which can be changed for every object of class \code{SOS}.
 
 \subsection{Parsers/Decoders}
 \label{subsec:parsers}
@@ -1635,7 +1670,7 @@ demo("airquality")
 \item[marinemeta] SOS by Marine Metadata Interoperability Initiative - \textbf{under construction}.
 \item[oceanwatch] SOS by NOAA/SWFSC/ERD - \textbf{under construction}.
 \item[pegel] Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.
-\item[southesk] SOSs from South Esk Testbed by CSIRO, focuses on \textbf{data consolidation/fusion} and \textbf{plotting}.
+\item[southesk] SOSs from South Esk Testbed by CSIRO, focuses on \textbf{data consolidation/fusion} and \textbf{plotting}. It also contains an example for partially changing the encoding by overriding a specific \code{encodeXML} function.
 \item[weathersos] Time series analysis demo with weather data by ifgi, includes examples for \textbf{DescribeSensor} and data extraction from and plotting of \textbf{SensorML sensor descriptions}.
 \end{description}
 
@@ -1671,7 +1706,7 @@ You can download (and also browse) the source code of \pkg{sos4R} directly from 
 \item \textbf{Web access}: \url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
 \end{itemize}
 
-The latest changes for every version are documented in the file \textbf{CHANGES} in the package root directory, which you can directly print to the console by calling \code{sosChanges()}.
+The latest changes for every version are documented in the file \textbf{NEWS} in the package root directory, which you can directly print to the console by calling \code{sosNews()}, respectively the file \textbf{CHANGES} and \code{sosChanges()} for older entries.
 
 \subsection*{Developer Documentation}
 
@@ -1683,11 +1718,13 @@ Please get in touch with the community lead\footnote{\url{http://52north.org/com
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Acknowledgements}
+\label{sec:acknowledgements}
 
-The start of the project was generously supported by the \fivetwon Student Innovation Prize for Geoinformatics 2010.
+The start of the project was generously supported by the \fivetwon Student Innovation Prize for Geoinformatics 2010. Thanks go also to Edzer Pebesma for contributing analyses to the demos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{References}
+\label{sec:references}
 
 \begin{description}
 \item Botts, M., 2007, OGC Implementation Specification 07-000: OpenGIS Sensor Model Language (SensorML)- Open Geospatial Consortium, Tech. Rep.

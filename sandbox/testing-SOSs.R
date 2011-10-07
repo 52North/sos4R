@@ -602,7 +602,8 @@ getObservation(sos = stccmop, inspect = TRUE, verbose = TRUE,
 		offering = "saturn04")
 # not time given returns last observation, fixes in parsing required, see above!
 
-# TODO check out "util" sos: 
+################################################################################
+# TODO try out "util" sos @ http://data.stccmop.org/ws/util/sos.py
 stccmoputil <- SOS(url = "http://data.stccmop.org/ws/util/sos.py")
 
 ################################################################################
@@ -772,4 +773,78 @@ footprint <- SOS(url = "http://rtmm2.nsstc.nasa.gov/SOS/footprint")
 # http://rtmm2.nsstc.nasa.gov/SOS/nadir?request=GetCapabilities&service=SOS&version=1.0.0
 nadir <- SOS(url = "http://rtmm2.nsstc.nasa.gov/SOS/nadir")
 
-# 
+
+################################################################################
+# http://sensorweb.forum.52north.org/52-North-thin-client-and-istSOS-tp3370604p3370604.html
+# TODO check it out!
+#
+sadco.url <- "http://ict4eo.meraka.csir.co.za/sadcosos/sos.py"
+sadco <- SOS(url = sadco.url, verboseOutput = TRUE)
+# problem: missing elements in one ObservationOffering so the object cannot be
+# created:
+#Error in validObject(.Object) : 
+#		invalid class "SosObservationOffering" object: invalid object for slot "procedure" in class "SosObservationOffering": got class "list", should be or extend class "character"
+#In addition: Warning messages:
+#		1: In FUN(X[[1L]], ...) :
+#		Mandatory element 'responseFormat' missing in offering temporary
+#2: In FUN(X[[1L]], ...) :
+#		Mandatory element 'responseMode' missing in offering temporary
+#3: In FUN(X[[1L]], ...) :
+#		Mandatory element 'time' missing in offeringtemporary
+xmlstring <- '<sos:ObservationOffering gml:id="temporary">
+		<gml:name>urn:x-sadco::offering:temporary</gml:name>
+		<gml:description>temporary offering to hold self-registered procedures/sensors waiting for service adimistration acceptance</gml:description>
+		<gml:boundedBy>
+		<gml:null>inapplicable</gml:null>
+		</gml:boundedBy>
+		</sos:ObservationOffering>'
+offering <- xmlParseString(xmlstring)
+
+weathersos <- SOS(SosExampleServices()[[1]])
+weathersos@verboseOutput <- TRUE
+
+.procedure <- offering[sosProcedureName]
+if(length(.procedure) < 1) {
+	print("lala")
+	.procedure <- as.character(c())
+}
+str(.procedure)
+
+offering_parsed <- parseSosObservationOffering(offering, weathersos)
+str(offering_parsed)
+# fixed it!
+
+sadco <- SOS(url = sadco.url, verboseOutput = TRUE)
+# WORKS with a few warning messages
+
+sosCapabilitiesDocumentOriginal(sos=sadco)
+sosContents(sadco)
+
+getObservation(sadco, offering = sosOfferings(sadco)[[2]],
+		eventTime = sosCreateTime(sadco, "2010-01-01::2010-01-05"))
+# must be some error in SOS... response:
+#
+#Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
+#1 exception(s) (code @ locator : text):
+#		1 @ service :
+#		
+#		Parameter "offering" is mandatory with multiplicity 1
+#
+# but there is an offering in the request!
+# TODO check getting data from service again
+
+################################################################################
+# Spatial Data Infrastructure of the CNR-Institute for Atmospheric Pollution
+# - http://sdi.iia.cnr.it/geoint/
+# - is a 52N SOS
+library("sos4R")
+iia <- SOS("http://sdi.iia.cnr.it/sos/sos")
+
+# has 52N dummy data
+sosOfferings(iia)
+
+# check out offering "SEA CRUISE 2003"
+seacruise <- sosOfferings(iia)["SEA CRUISE 2003"]
+
+# TODO plot it, use spacetime classes
+

@@ -1328,6 +1328,23 @@ setMethod(f = "encodeXML",
 		}
 )
 
+#
+# to make just the time encoding interchangeable by users
+#
+setMethod(f = "encodeXML",
+		signature = signature(obj = "POSIXt", sos = "SOS"),
+		def = function(obj, sos, verbose = FALSE) {
+			if(verbose) cat("[encodeXML] POSIXt with value", toString(obj),
+						"\n")
+			
+			.formatted <- strftime(x = obj, format = sosTimeFormat(sos))
+			
+			if(verbose)
+				cat("Formatted ", obj, " to ", .formatted)
+			
+			return(.formatted)
+		}
+)
 
 #
 # 
@@ -1356,6 +1373,24 @@ setMethod(f = "encodeKVP",
 			}
 			# if eventTime is not given in GET binding, then the latest observation is returned
 			return(NA_character_)
+		}
+)
+
+#
+# to make just the time encoding interchangeable by users
+#
+setMethod(f = "encodeKVP",
+		signature = signature(obj = "POSIXt", sos = "SOS"),
+		def = function(obj, sos, verbose) {
+			if(verbose) cat("[encodeKVP] POSIXt with value", toString(obj),
+						"\n")
+			
+			.formatted <- strftime(obj = obj, format = sosTimeFormat(sos))
+			
+			if(verbose)
+				cat("Formatted ", obj, " to ", .formatted)
+			
+			return(.formatted)
 		}
 )
 

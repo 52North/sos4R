@@ -8,6 +8,8 @@ library("sos4R"); library("ggplot2"); library("latticeExtra");
 # PegelOnlineSOS
 pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
 
+# TODO fix, use official pegelonline sos
+
 # what data do I get?
 cat("\nNames of offerings:\n")
 print(names(sosOfferings(pegelsos)))

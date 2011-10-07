@@ -23,8 +23,8 @@ aqe <- SOS(url = "http://giv-uw.uni-muenster.de:8080/AQE/sos",
 summary(aqe)
 
 # Get the available offerings:
-aqe.offerings <- sosOfferings(aqe)
-names(aqe.offerings)
+aqe_offerings <- sosOfferings(aqe)
+names(aqe_offerings)
 
 ###########
 # Plot SOS:
@@ -34,23 +34,23 @@ if(!require(rgdal, quietly = TRUE))
 data(worldHiresMapEnv)
 crs <- sosGetCRS(aqe)[[1]]
 region <- map.where(database = "worldHires",
-		sosCoordinates(aqe.offerings)) # find region
+		sosCoordinates(aqe_offerings)) # find region
 worldHigh <- pruneMap(map(database = "worldHires", region = region,
 				plot = FALSE))
-worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
+worldHigh_Lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
-plot(worldHigh.lines, col = "grey50")
+plot(worldHigh_Lines, col = "grey50")
 plot(aqe, add = TRUE, lwd = 3)
 title(main = paste("Offerings Germany by '", sosTitle(aqe), "'", sep = ""),
-		sub = toString(names(aqe.offerings)))
+		sub = toString(names(aqe_offerings)))
 
 ################################################################################
 # NO2
 #
 # Extract one offering of interest and explore:
-aqe.off.no2 <- aqe.offerings[["NO2"]]
-aqe.off.no2
-summary(aqe.off.no2)
+aqe_off_no2 <- aqe_offerings[["NO2"]]
+aqe_off_no2
+summary(aqe_off_no2)
 
 # Get observations, december 2003 is arbitrary choice!
 dec2003.12Hrs = sosCreateTime(sos = aqe,
@@ -60,8 +60,8 @@ dec2003.24Hrs = sosCreateTime(sos = aqe,
 dec2003 = sosCreateTime(sos = aqe, time = "2003/12/01::2003/12/31")
 
 # Request data (request and response can be check by setting the inspect=TRUE):
-obs.no2.12Hrs <- getObservation(sos = aqe, # inspect = TRUE,
-		offering = aqe.off.no2,
+obs_no2_12Hrs <- getObservation(sos = aqe, # inspect = TRUE,
+		offering = aqe_off_no2,
 		#procedure = sosProcedures(aqe.off.no2)[1:20],
 		saveOriginal = TRUE, # saves file in getwd()
 		eventTime = dec2003.12Hrs)
@@ -71,24 +71,24 @@ obs.no2.12Hrs <- getObservation(sos = aqe, # inspect = TRUE,
 # Reloading the file later for further analysis:
 # Use the file name printed out by the getObservation(...) call or check your
 # working directory:
-list.files(path = getwd(), pattern = sosName(aqe.off.no2))
+list.files(path = getwd(), pattern = sosName(aqe_off_no2))
 #parseFile("NO2_2011-03-03_11:31:23.xml")
 
 ##############################################
 # Explore the returned observation collection:
-obs.no2.12Hrs
+obs_no2_12Hrs
 # There is one observatio for every FOI / procedure combination :
-names(obs.no2.12Hrs)[1:3]
+names(obs_no2_12Hrs)[1:3]
 
 ########################
 # Subset the collection:
 # (features, observed properties and procedures):
 # sosFeatureIds(obs.no2.12Hrs)[c(1,100)]
-obs.no2.12Hrs[sosFeatureIds(obs.no2.12Hrs)[c(1,100)]]
+obs_no2_12Hrs[sosFeatureIds(obs_no2_12Hrs)[c(1,100)]]
 # sosObservedProperties(obs.no2.12Hrs)[2]
-obs.no2.12Hrs[sosObservedProperties(obs.no2.12Hrs)[2]]
+obs_no2_12Hrs[sosObservedProperties(obs_no2_12Hrs)[2]]
 # sosProcedures(obs.no2.12Hrs)[200:201]
-obs.no2.12Hrs[sosProcedures(obs.no2.12Hrs)[200:201]]
+obs_no2_12Hrs[sosProcedures(obs_no2_12Hrs)[200:201]]
 
 # More requests for more data for testing of response time:
 #obs.no2.24Hrs <- getObservation(sos = aqe, # inspect = TRUE,
@@ -105,69 +105,69 @@ obs.no2.12Hrs[sosProcedures(obs.no2.12Hrs)[200:201]]
 
 ################################################################################
 # Get the result data for all observations, with coordinates:
-result.no2.12Hrs <- sosResult(obs.no2.12Hrs, coordinates = TRUE)
+result_no2_12Hrs <- sosResult(obs_no2_12Hrs, coordinates = TRUE)
 # Coordinates only:
 #sosCoordinates(obs.no2.12Hrs[1:10])
 # One observation only
 # sosResult(obs.no2.12Hrs[[42]])
 
-summary(result.no2.12Hrs)
-NO2 <- colnames(result.no2.12Hrs)[[3]]
+summary(result_no2_12Hrs)
+NO2 <- colnames(result_no2_12Hrs)[[3]]
 
 #################################################
 # Subset and sort the data with subset or sort_df
-subset(result.no2.12Hrs, feature=="foi_DEBY109")
+subset(result_no2_12Hrs, feature=="foi_DEBY109")
 library("reshape")
 # The ten highest values:
-tail(sort_df(result.no2.12Hrs, NO2), 10)
+tail(sort_df(result_no2_12Hrs, NO2), 10)
 
 ########################
 # Histogram of NO2 data:
-hist(result.no2.12Hrs[,3], main = "NO2")
+hist(result_no2_12Hrs[,3], main = "NO2")
 # Test plot:
-plot(result.no2.12Hrs[["SamplingTime"]], result.no2.12Hrs[[NO2]])
+plot(result_no2_12Hrs[["SamplingTime"]], result_no2_12Hrs[[NO2]])
 
 
 ################################################################################
 # Get the result data and create sp object:
-obs.no2.crs <- sosGetCRS(obs.no2.12Hrs)
-no2.spdf <- SpatialPointsDataFrame(
-		coords = result.no2.12Hrs[,c("lon", "lat")],
-		data = result.no2.12Hrs[,c("SamplingTime", "feature", NO2)],
+obs.no2.crs <- sosGetCRS(obs_no2_12Hrs)
+no2_spdf <- SpatialPointsDataFrame(
+		coords = result_no2_12Hrs[,c("lon", "lat")],
+		data = result_no2_12Hrs[,c("SamplingTime", "feature", NO2)],
 		proj4string = obs.no2.crs)
-bbox(no2.spdf)
+bbox(no2_spdf)
 #obs.no2.bbox <- sosBoundedBy(obs.no2.12Hrs, bbox = TRUE) # equal
-summary(no2.spdf)
+summary(no2_spdf)
 
 #########################################
 # Shortcut to get SpatialPointsDataFrame:
 #as(obs.no2.12Hrs[[1]], "SpatialPointsDataFrame")
-no2.spdf.shortcut <- as(obs.no2.12Hrs, "SpatialPointsDataFrame")
-summary(no2.spdf.shortcut)
+no2_spdf_shortcut <- as(obs_no2_12Hrs, "SpatialPointsDataFrame")
+summary(no2_spdf_shortcut)
 
 ####################################
 # Plot stations with background map:
 library("mapdata")
-germany.p <- pruneMap(map(database = "worldHires", region = "Germany",
+germany_p <- pruneMap(map(database = "worldHires", region = "Germany",
 				plot = FALSE))
-germany.sp <- map2SpatialLines(germany.p, proj4string = obs.no2.crs)
-proj4string(germany.sp) <- obs.no2.crs
-plot(x = germany.sp, col = "grey")
-plot(no2.spdf, pch = 20, col = "blue", add = TRUE)
+germany_sp <- map2SpatialLines(germany_p, proj4string = obs.no2.crs)
+proj4string(germany_sp) <- obs.no2.crs
+plot(x = germany_sp, col = "grey")
+plot(no2_spdf, pch = 20, col = "blue", add = TRUE)
 title("NO2 Germany")
 
 ##############
 # Bubble plot:
-bubble(no2.spdf, zcol = 3, maxsize = 2, col = c("#1155ff"),
+bubble(no2_spdf, zcol = 3, maxsize = 2, col = c("#1155ff"),
 		main = "NO2 in Germany", do.sqrt = TRUE)
 
 ################################################################################
 # Transform to UTM for kriging and background map:
 utm32 = CRS("+proj=utm +zone=32 +datum=WGS84")
-germany.utm <- spTransform(germany.sp, utm32)
-no2.spdf.utm = spTransform(no2.spdf, utm32)
-plot(germany.utm, col = "grey")
-points(no2.spdf.utm, cex=.5, pch=3)
+germany_utm <- spTransform(germany_sp, utm32)
+no2_spdf_utm = spTransform(no2_spdf, utm32)
+plot(germany_utm, col = "grey")
+points(no2_spdf_utm, cex=.5, pch=3)
 title(main = "NO2 Sensor Stations, Germany", sub = "UTM projection")
  
 ################################################################################
@@ -176,49 +176,49 @@ library(cshapes) # get a polygon of Germany, rather than a set of lines:
 cs = cshp()
 g = spTransform(cs[cs$CNTRY_NAME=="Germany",], utm32)
 # create a grid of points within Germany:
-grdpoints = SpatialPoints(makegrid(germany.utm),utm32)
+grdpoints = SpatialPoints(makegrid(germany_utm),utm32)
 grd = SpatialPixels(grdpoints)[g]
-names(no2.spdf.utm)[3] = "NO2"
+names(no2_spdf_utm)[3] = "NO2"
 library(gstat)
-no2.id = idw(NO2~1, no2.spdf.utm, grd)
+no2.id = idw(NO2~1, no2_spdf_utm, grd)
 lt=list(list("sp.polygons", g),
-	list("sp.points", no2.spdf.utm, col=grey(.7), cex=.5))
+	list("sp.points", no2_spdf_utm, col=grey(.7), cex=.5))
 spplot(no2.id[1], sp.layout = lt, col.regions = bpy.colors(),
 		main = paste("IDW Interpolation of NO2,",
-				min(no2.spdf.utm$SamplingTime), "to",
-				max(no2.spdf.utm$SamplingTime)))
+				min(no2_spdf_utm$SamplingTime), "to",
+				max(no2_spdf_utm$SamplingTime)))
 
 ## now get the values of 2003-12-01 12:00:00 CET, or the third time stamp
 # by creating a spatio-temporal structure, and indexing the time axis:
-t12h = unique(no2.spdf.utm$SamplingTime)[3]
+t12h = unique(no2_spdf_utm$SamplingTime)[3]
 library(spacetime)
-no2.stidf = STIDF(as(no2.spdf.utm, "SpatialPoints"), 
-	no2.spdf.utm$SamplingTime, data.frame(NO2 = no2.spdf.utm$NO2))
-no2.stfdf = as(no2.stidf, "STFDF")
-no2.12h = no2.stfdf[,3,"NO2"]
-no2.12h2 = no2.stfdf[,t12h,"NO2"]
-all.equal(no2.12h, no2.12h2)
+no2_stidf = STIDF(as(no2_spdf_utm, "SpatialPoints"), 
+	no2_spdf_utm$SamplingTime, data.frame(NO2 = no2_spdf_utm$NO2))
+no2_stfdf = as(no2_stidf, "STFDF")
+no2_12h = no2_stfdf[,3,"NO2"]
+no2_12h2 = no2_stfdf[,t12h,"NO2"]
+all.equal(no2_12h, no2_12h2)
 # inverse distance interpolation of the 12:00h NO2 values:
-no2.12h.id = idw(NO2~1, no2.12h[!is.na(no2.12h$NO2),], grd)
-spplot(no2.12h.id[1], sp.layout = lt, col.regions = bpy.colors(),
+no2_12h_id = idw(NO2~1, no2_12h[!is.na(no2_12h$NO2),], grd)
+spplot(no2_12h_id[1], sp.layout = lt, col.regions = bpy.colors(),
 		main = paste("IDW Interpolation of NO2,", t12h))
 
 ################################################################################
 # Plot with whole year 2004 for one station:
 # See http://www.eea.europa.eu/themes/air/airbase/map-stations.
 denw095 <- "urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DENW095"
-denw095.descr <- describeSensor(aqe, denw095)
-denw095.descr
+denw095_descr <- describeSensor(aqe, denw095)
+denw095_descr
 #denw095.descr@xml
 
 # Get the identifier of the station:
-denw095.id <- xmlValue(getNodeSet(doc = denw095.descr@xml,
+denw095_id <- xmlValue(getNodeSet(doc = denw095_descr@xml,
 		path = "//sml:Term[@definition='urn:ogc:def:identifier:OGC:1.0:longName']/sml:value/text()",
 		namespaces = sos4R:::.sosNamespaceDefinitionsSML)[[1]])
 
 # Request observations:
-obs.denw095.2004 <- getObservation(sos = aqe, # inspect = TRUE,
-		offering = aqe.off.no2,
+obs_denw095_2004 <- getObservation(sos = aqe, # inspect = TRUE,
+		offering = aqe_off_no2,
 		procedure = denw095,
 		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(sos = aqe,
 						begin = as.POSIXct("2004/01/01"),
@@ -226,20 +226,20 @@ obs.denw095.2004 <- getObservation(sos = aqe, # inspect = TRUE,
 )
 
 # Print statistical information and plot time series:
-data.denw095.2004 <- sosResult(obs.denw095.2004)
-summary(data.denw095.2004)
+data_denw095_2004 <- sosResult(obs_denw095_2004)
+summary(data_denw095_2004)
 
-denw095.NO2.attributes <- attributes(data.denw095.2004[[NO2]])
-plot(data.denw095.2004[["SamplingTime"]], data.denw095.2004[[NO2]], type = "l",
-		main = paste("NO2 in", denw095.id, "2004"), sub = denw095,
+denw095.NO2.attributes <- attributes(data_denw095_2004[[NO2]])
+plot(data_denw095_2004[["SamplingTime"]], data_denw095_2004[[NO2]], type = "l",
+		main = paste("NO2 in", denw095_id, "2004"), sub = denw095,
 		xlab = "Time",
 		ylab = paste("NO2 (",
 				denw095.NO2.attributes[["unit of measurement"]],
 				")", sep = ""))
-data.denw095.2004.locRegr = loess(data.denw095.2004[[NO2]]~as.numeric(data.denw095.2004[["SamplingTime"]]),
-		data.denw095.2004, enp.target = 30)
+data.denw095.2004.locRegr = loess(data_denw095_2004[[NO2]]~as.numeric(data_denw095_2004[["SamplingTime"]]),
+		data_denw095_2004, enp.target = 30)
 p = predict(data.denw095.2004.locRegr)
-lines(p ~ data.denw095.2004[["SamplingTime"]], col = 'blue',lwd = 4)
+lines(p ~ data_denw095_2004[["SamplingTime"]], col = 'blue',lwd = 4)
 
 ###################################
 # Demo finished, try another one! #

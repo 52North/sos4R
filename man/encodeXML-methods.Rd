@@ -29,6 +29,7 @@
 \alias{encodeXML,XMLNode,SOS-method}
 \alias{encodeXML,character,SOS-method}
 \alias{encodeXML,XMLInternalElementNode,SOS-method}
+\alias{encodeXML,POSIXt,SOS-method}
 
 \title{Encode Classes as XML}
 
@@ -57,6 +58,8 @@ These methods convert the given objects to XML representations for \code{HTTP PO
 	\item{\code{signature(obj = "GmlTimePeriod", sos = "SOS")}}{Convert the given object to an XML representation.}
 	
 	\item{\code{signature(obj = "GmlTimePosition", sos = "SOS")}}{Convert the given object to an XML representation.}
+	
+	\item{\code{signature(obj = "POSIXt", sos = "SOS")}}{Converts the time object to a string that is suitable to be used as the value of XML time elements.}
 	
 	\item{\code{signature(obj = "OgcBBOX", sos = "SOS")}}{Convert the given object to an XML representation.}
 	

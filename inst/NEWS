@@ -1,4 +1,4 @@
-Changes in sos4R Version 0.2-6 - 2011-08-XX
+Changes in sos4R Version 0.2-6 - 2011-10-07
 
   o CHANGED documentation of changes from CHANGES to this NEWS file
   
@@ -8,6 +8,11 @@ Changes in sos4R Version 0.2-6 - 2011-08-XX
   
   o ADDED file in sandbox: useR-2011.R
 
+  o Change in parseSosObservationOffering: does not break anymore if procedures (though mandatory!) are missing
+
+  o Change in encodeXML: Now a specific function for objects of class POSIXt exists so that only the encoding of time can be overridden by users, this is demonstrated in demo("southesk") and documented in the vignette.
+
+  o Change in encodeKVP: Specific function for objects of class POSIXt, see above.
 
 Changes in sos4R Version 0.2-4 - 2011-07-25
 
@@ -20,3 +25,6 @@ Changes in sos4R Version 0.2-4 - 2011-07-25
   o CHANGED way of building the package to see if NOTEs about uncompacted PDFs can be fixed by the according option in R CMD build
 
   o BUGFIX in latex file, misplaced "&"
+  
+
+For older news entries see > sosChanges() in an R session or the document sos4R/CHANGES.

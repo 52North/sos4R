@@ -243,8 +243,8 @@ setMethod(f = "encodeKVP",
 			if(class(.tempOpTime) == "GmlTimeInstant") {
 				if(verbose)
 					cat("[encodeKVP] Encoding instant.\n")
-				.time <- format(.tempOpTime@timePosition@time,
-						sosTimeFormat(sos))
+				.time <- encodeKVP(.tempOpTime@timePosition@time, sos = sos,
+						verbose = verbose)
 			}
 			# ignore type, because temporal operators are not supportded by the
 			# GET binding
@@ -252,20 +252,20 @@ setMethod(f = "encodeKVP",
 				if(!is.null(.tempOpTime@begin) && !is.null(.tempOpTime@end)) {
 					if(verbose)
 						cat("[encodeKVP] Encoding period with begin and end.\n")
-					.begin <- format(.tempOpTime@begin@time@timePosition,
-							sosTimeFormat(sos))
-					.end <- format(.tempOpTime@end@time@timePosition,
-							sosTimeFormat(sos))
+					.begin <- encodeKVP(.tempOpTime@begin@time@timePosition, sos = sos,
+							verbose = verbose)
+					.end <- encodeKVP(.tempOpTime@end@time@timePosition, sos = sos,
+							verbose = verbose)
 					.time <- paste(.begin, "/", .end, sep = "")
 				}
 				else if(!is.null(.tempOpTime@beginPosition)
 						&& !is.null(.tempOpTime@endPosition)) {
 					if(verbose)
 						cat("[encodeKVP] Encoding period with beginPosition and endPosition.\n")
-					.begin <- format(.tempOpTime@beginPosition@time,
-							sosTimeFormat(sos))
-					.end <- format(.tempOpTime@endPosition@time,
-							sosTimeFormat(sos))
+					.begin <- encodeKVP(.tempOpTime@beginPosition@time, sos = sos,
+							verbose = verbose)
+					.end <- encodeKVP(.tempOpTime@endPosition@time, sos = sos,
+							verbose = verbose)
 					.time <- paste(.begin, "/", .end, sep = "")
 				}
 				else {

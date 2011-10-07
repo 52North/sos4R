@@ -14,16 +14,26 @@ cat("Go to the following website for details of the South Esk Hydrological Senso
 
 # See also:
 # http://external.opengis.org/twiki_public/bin/view/ClimateChallenge2009/ServiceOfferingCSIRO
+# www.csiro.au/sensorweb2/catalog/setup/ --> a catalog with the SOS urls!
 
-###################
-# Time zone issues:
+csiro <- SOS("http://www.csiro.au/sensorweb/CSIRO_SOS/sos")
+
+################################################################################
+# TIME FORMAT ISSUES
+################################################################################
 #?Sys.timezone
 Sys.timezone()
-strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS")$isdst
+strptime("1995-05-25T15:30:00+11:00", format = "%Y-%m-%dT%H:%M:%OS")$isdst
 # 1
-strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS%z")$isdst
+strptime("1995-05-25T15:30:00+11:00", format = "%Y-%m-%dT%H:%M:%OS%z")$isdst
 # -1
-# This does not work on windows machines!
+# isdst: Daylight Savings Time flag. Positive if in force, zero if not, negative if unknown.
+
+#########################################
+# This does not work on windows machines: the %z does not work for numerical
+# outputs, so the create time string is never suitable and the timeFormat
+# parameter cannot solve the problem.
+
 # Try fixing with locale...
 #Sys.getlocale(category = "LC_TIME")
 #Sys.setlocale("LC_ALL", "English")
@@ -31,55 +41,80 @@ strptime("1995-05-25T15:30:00+10:00", format = "%Y-%m-%dT%H:%M:%OS%z")$isdst
 #Sys.setenv(TZ="GMT") 
 # All this does NOT remove the "Mitteleurop_ische Zeit" from the strftime output!!
 
-# Ignore time zone when parsing, but use when creating output:
-strftime(strptime("1995-05-25T15:30:00+10:00", format = sosDefaultTimeFormat),
-		format = .timeFormat)
-# Problem: Output is "1995-05-25T15:30:00Mitteleurop_ische Sommerzeit", not numerical!
-# InvalidParameterValue @ EventTime :
-# Error while parsing eventTime of GetObservation request: Unparseable date: "2011-03-09T16:15:03Mitteleurop_ische+Zeit00" 
-
-# Other OwsException for time stamp "2011-03-09T16:15:03":
-# InvalidParameterValue @ EventTime :
-#	Error while parsing eventTime of GetObservation request: Unparseable date: "2011-03-09T161503" 
-
-# NOTE: The default time format works for parsing, it just ignores the time zone.
-
-# Specific handling for time format required for output only:
-.timeFormat <- paste(sosDefaultTimeFormat, "%z", sep = "")
-csiroTimeParser = function(x, sos) {
+################################################################################
+# REPLACE TIME CONVERTER
+csiroTimeConverter = function(x, sos) {
+#	cat("Using adapted time parser for ", toString(x), "\n")
 	.x <- paste (x, "00", sep = "")
 	.value <- sosConvertTime(.x, sos = sos)
 	return(.value)
 }
+# works:
+#> csiroTimeConverter("2011-10-06T14:35:00+11", csiro)
+#Using adapted time parser for  2011-10-06T14:35:00+11 
+#[1] "2011-10-06 05:35:00 CEST"
 
-# Bureau of Meteorology (red and dark blue on map)
-bom <- SOS("http://wron.net.au/BOM_SOS/sos", #timeFormat = .timeFormat,
+# Ignore time zone when parsing, but use when creating output:
+strftime(strptime("1995-05-25T15:30:00+11:00", format = sosDefaultTimeFormat), 
+		format = paste(sosDefaultTimeFormat, "%z", sep  =""))
+# Problem: Output is "1995-05-25T15:30:00Mitteleurop_ische Sommerzeit", not numerical!
+
+##################
+# REQUIRED OUTPUT (detected manually based on capabilities):
+# 2011-10-06T10:28:10+11:00
+
+################################################################################
+# REPLACE only POSIXt encoder with a hack!
+testtime <- strptime("2011-10-06T14:35:00+11", format = sosDefaultTimeFormat)
+# returns POSIXlt - good.
+strftime(testtime, format = sosDefaultTimeFormat)
+format(testtime, format = sosDefaultTimeFormat)
+
+setMethod(f = "encodeXML",
+		signature = signature(obj = "POSIXt", sos = "SOS"),
+		def = function(obj, sos, verbose) {
+			if(verbose) cat("CSIRO encoding... ")
+			
+			# time zone hack!
+			.time <- obj + 11 * 60 * 60							# add 11 hours
+			.formatted <- strftime(x = .time, format = sosTimeFormat(sos))
+			.formatted <- paste(.formatted, "+11:00", sep = "")	# append 11:00
+			
+			if(verbose)
+				cat("Formatted ", toString(obj), " to ", .formatted, "\n")
+			
+			return(.formatted)
+		}
+)
+
+# CSIRO (orange, purple on map), replace testing one from above!
+csiro <- SOS("http://www.csiro.au/sensorweb/CSIRO_SOS/sos",
 		dataFieldConverters = SosDataFieldConvertingFunctions(
-				"urn:ogc:data:time:iso8601" = csiroTimeParser,
+				"urn:ogc:data:time:iso8601" = csiroTimeConverter,
 				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble),
 		switchCoordinates = TRUE)
+
+# Bureau of Meteorology (red and dark blue on map)
+bom <- SOS("http://www.csiro.au/sensorweb/BOM_SOS/sos",
+		dataFieldConverters = SosDataFieldConvertingFunctions(
+				"urn:ogc:data:time:iso8601" = csiroTimeConverter,
+				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble),
+		switchCoordinates = TRUE, # verbose = TRUE
+		)
 sosTimeFormat(bom)
 sosOfferings(bom)[[1]]
 
-# CSIRO (orange, purple on map)
-# What about rainfalltoday?
-csiro <- SOS("http://wron.net.au/CSIRO_SOS/sos", timeFormat = .timeFormat,
-		dataFieldConverters = SosDataFieldConvertingFunctions(
-				"urn:ogc:data:time:iso8601" = csiroTimeParser,
-				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble),
-		switchCoordinates = TRUE)
-
 # Tasmania Department of Primary Industries, Parks, Wildlife and Environment (DPIPWE, white on map)
-# http://140.79.3.21/DPIPWE_SOS/sos
-#dpiw <- SOS("http://wron.net.au/DPIW_SOS/sos", switchCoordinates = TRUE)
+dpiw <- SOS("http://www.csiro.au/sensorweb/DPIW_SOS/sos?Service=SOS&Request=GetCapabilities", switchCoordinates = TRUE)
 
-# Hydro Tasmania Consulting (yellow on map)
-#ht <- SOS("http://140.79.3.21/HT_SOS/sos")
-# not available... maybe in offering in CSIRO_SOS
+# Hydro Tasmania Consulting – Remote Monitoring and Investigation Unit (yellow on map)
+ht <- SOS("http://www.csiro.au/sensorweb/HT_SOS/sos")
 
-# Forestry Tasmania (green on map)
-#ft <- SOS("http://140.79.3.21/Forestry_SOS/sos")
-# not available...
+# Forestry Tasmania – Fire Risk Management Branch (green on map)
+forestry <- SOS("http://www.csiro.au/sensorweb/Forestry_SOS/sos")
+
+# Tasmania Department of Primary Industries, Parks, Wildlife and Environment (DPIPWE) - Water Assessment Branch
+dpipwe <- SOS("http://www.csiro.au/sensorweb/DPIPWE_SOS/sos")
 
 # What about these?
 #hutchins <- SOS("http://150.229.66.73/HutchinsSOS/sos")
@@ -125,9 +160,9 @@ data(worldHiresMapEnv)
 region <- map.where(database = "worldHires", sosCoordinates(off))
 worldHigh <- pruneMap(map(database = "worldHires", region = region,
 				plot = FALSE))
-worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs[[2]])
+worldHigh_Lines <- map2SpatialLines(worldHigh, proj4string = crs[[2]])
 
-plot(worldHigh.lines, col = "grey50")
+plot(worldHigh_Lines, col = "grey50")
 data(world.cities)
 map.cities(label = TRUE, pch = 19, col = "black")
 
@@ -140,7 +175,7 @@ map.scale(metric = TRUE, ratio = FALSE)
 
 
 ################################################################################
-# Data consilidation based on three SOS: bom, csiro and dpiw
+# Data request and consolidation based on three SOS: bom, csiro and dpiw
 
 # phenomenon rainfall or rainfalltoday is available at all stations
 rainfall <- "urn:ogc:def:phenomenon:OGC:rainfall"
@@ -233,11 +268,12 @@ rainfall.data.csiro <- subset(rainfall.result.csiro,
 		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfall"))
 rainfall.data.csiro <- cbind(rainfall.data.csiro, offering = c("csiro"))
 
-rainfall.data.time.ht <- unique(rainfall.result.ht[,"Time"])[[1]]
-rainfall.data.ht <- subset(rainfall.result.ht,
-		Time == rainfall.data.time.ht,
-		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfall"))
-rainfall.data.ht <- cbind(rainfall.data.ht, offering = c("ht"))
+# some error here, remove for now
+#rainfall.data.time.ht <- unique(rainfall.result.ht[,"Time"])[[1]]
+#rainfall.data.ht <- subset(rainfall.result.ht,
+#		Time == rainfall.data.time.ht,
+#		c("lat", "lon", "feature", "urn:ogc:def:phenomenon:OGC:rainfall"))
+#rainfall.data.ht <- cbind(rainfall.data.ht, offering = c("ht"))
 
 rainfall.data.time.dc <- unique(rainfall.result.dc[["Time"]])[[1]]
 rainfall.data.dc <- subset(rainfall.result.dc,
@@ -250,14 +286,13 @@ rainfall.data.dc <- cbind(rainfall.data.dc, offering = c("dc"))
 #
 # Bind data frames together
 #
-rainfall.data <- rbind(rainfall.data.bom, rainfall.data.csiro,
-		rainfall.data.ht, rainfall.data.dc)
+rainfall.data <- rbind(rainfall.data.bom, 
+		rainfall.data.csiro,
+#		rainfall.data.ht,
+		rainfall.data.dc)
 names(rainfall.data) <- list("lat", "lon", "feature", "rainfall", "offering")
 summary(rainfall.data)
 # see offering!
-
-# Eastwood is outlier in , remove it
-rainfall.data <- subset(rainfall.data, feature != "Eastwood")
 
 # Create SpatialPointsDataFrame, use just the CRS of one observation
 crs <- sosGetCRS(rainfall.obs.csiro)[[2]]
@@ -272,7 +307,7 @@ summary(rainfall.spdf)
 cat("Please be aware that the times that are combined in the following are NOT equal!\n")
 cat(paste("BOM:\t", toString(rainfall.data.time.bom), "\n"),
 		paste("CSIRO:\t", toString(rainfall.data.time.csiro), "\n"),
-		paste("HT:\t", toString(rainfall.data.time.ht), "\n"),
+#		paste("HT:\t", toString(rainfall.data.time.ht), "\n"),
 		paste("DC:\t", toString(rainfall.data.time.dc), "\n"))
 
 
@@ -313,7 +348,8 @@ bgmap = map2SpatialLines(map("worldHires", region = "Australia:Tasmania",
 				plot=F))
 proj4string(bgmap) <- "+proj=longlat +datum=WGS84"
 bgmap.utm <- spTransform(bgmap, utm55)
-rainfall.spdf.utm = spTransform(rainfall.spdf, utm55)
+rainfall.spdf.utm = spTransform(x = rainfall.spdf, CRSobj = utm55)
+# error with spTransform, it makes all coordinates the same!
 plot(bgmap.utm, col = "grey")
 plot(rainfall.spdf.utm, add = TRUE)
 
@@ -333,9 +369,10 @@ plot(rainfall.spdf.utm, add = TRUE)
 library("automap")
 # Ordinary kriging, no new_data object
 kriging_result = autoKrige(
-		log(rainfall.spdf.utm[["rainfall"]])~1,
-		input_data = rainfall.spdf.utm,
-		new_data = SpatialPixels(SpatialPoints(makegrid(rainfall.spdf.utm, n = 300))))
+		log(rainfall.spdf[["rainfall"]])~1,
+		input_data = rainfall.spdf,
+		new_data = SpatialPixels(
+				SpatialPoints(makegrid(rainfall.spdf, n = 300))))
 plot(kriging_result)
 
 ################################################################################
@@ -355,7 +392,8 @@ spplot(x["var1.var"],  main = "ordinary kriging variance")
 
 ################################################################################
 # spacetime
-# TODO continue analysis with spacetime package
+# TODO continue analysis with spacetime package or make a forecast 
+# See http://robjhyndman.com/researchtips/forecast3/
 
 ###################################
 # Demo finished, try another one! #

@@ -8,26 +8,20 @@ library("sos4R")
 # WeatherSOS
 #
 # establish a connection to a SOS instance with default settings
-weathersos <- SOS(
-		url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 summary(weathersos)
 
 # explore SOS, plotting
-library(maps);
-library(mapdata);
-library(maptools);
-data(worldHiresMapEnv)
-
+library(maps); library(mapdata); library(maptools); data(worldHiresMapEnv)
 crs <- sosGetCRS(weathersos)[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
 				region = c("Germany", "Austria", "Netherlands"),
 				plot = FALSE))
-worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
+worldHigh_Lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
-plot(worldHigh.lines, col = "grey50")
+plot(worldHigh_Lines, col = "grey50")
 plot(weathersos, add = TRUE, lwd = 3)
-title(main = paste("Offerings by '",
-				sosTitle(weathersos), "'", sep = ""),
+title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
 		sub = toString(names(sosOfferings(weathersos))))
 
 # get the latest observation (not standard conform!)
@@ -102,15 +96,10 @@ time <- as.numeric(data[["Time"]])
 x = loess(temp~time,
 		na.omit(data),enp.target=10)
 
-attr(x, "myAttribute") <- "Hej, I am Daniel."
-str(x)
-
 # create plot
 plot(tempSept, main = "Temperature at WeatherSOS-Station in Muenster",
 		xlab = "Time", ylab = paste("Temperature in", attributes(temp)[["unit of measurement"]]),
 		major.ticks = "weeks")
-?points
-?lines
 lines(data$Time, x$fitted, col = 'red', lwd=3)
 #savePlot(type = "png", filename = "usecase.png")
 
@@ -124,11 +113,11 @@ procs <- unique(unlist(sosProcedures(weathersos)))
 
 describeSensor(weathersos, procs[[1]]) #, verbose = TRUE)
 
-procs.descr <- lapply(X = procs, FUN = describeSensor, # verbose = TRUE,
+procs_descr <- lapply(X = procs, FUN = describeSensor, # verbose = TRUE,
 		sos = weathersos)
-procs.descr
+procs_descr
 
-proc1 <- procs.descr[[1]]
+proc1 <- procs_descr[[1]]
 proc1
 
 # original xml:
@@ -148,17 +137,17 @@ coords
 #str(coords)
 attributes(coords)
 sosGetCRS(proc1)
-sosGetCRS(procs.descr)
+sosGetCRS(procs_descr)
 sosBoundedBy(proc1)
 
 # create spatial representation, which also will be basis for plottting
 as(proc1, "Spatial")
 
-plot(worldHigh.lines, col = "grey50")
-for (x in procs.descr) {
+plot(worldHigh_Lines, col = "grey50")
+for (x in procs_descr) {
 	plot(x, add = TRUE, pch = 19)
 }
-text(sosCoordinates(procs.descr)[c("x", "y")], labels = sosId(procs.descr),
+text(sosCoordinates(procs_descr)[c("x", "y")], labels = sosId(procs_descr),
 		pos = 4)
 title(main = paste("Sensors of", sosTitle(weathersos)))
 

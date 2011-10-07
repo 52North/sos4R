@@ -9,6 +9,7 @@
 \alias{encodeKVP,SosEventTime,SOS-method}
 \alias{encodeKVP,SosEventTime,ANY-method}
 \alias{encodeKVP,SosEventTimeLatest,SOS-method}
+\alias{encodeKVP,POSIXt,SOS-method}
 
 \title{Encode Classes as KVP}
 
@@ -21,6 +22,8 @@ These methods convert a given object to a key-value-pair representation to be us
 	\item{\code{signature(obj = "OgcBinaryTemporalOp", sos = "SOS")}}{Convert the given object to a KVP representation.}
 	
 	\item{\code{signature(obj = "SosEventTime", sos = "ANY")}}{Convert the given object to a KVP representation.}
+	
+	\item{\code{signature(obj = "POSIXt", sos = "ANY")}}{Convert the given object to a string format suitable for KVP representation.}
 }
 
 }

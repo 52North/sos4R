@@ -1218,10 +1218,10 @@ RD = CRS(paste("+init=epsg:28992",
 				"+towgs84=565.237,50.0087,465.658,-0.406857,0.350733,-1.87035,4.0812"))
 
 library(rgdal)
-no2.spdf = spTransform(no2.spdf, RD)
+no2_spdf = spTransform(no2_spdf, RD)
 map.lines = spTransform(map.lines, RD)
 
-no2.T1 = no2.spdf[no2.spdf$SamplingTime == min(no2.spdf$SamplingTime),]
+no2.T1 = no2_spdf[no2_spdf$SamplingTime == min(no2_spdf$SamplingTime),]
 
 grd = SpatialPixels(SpatialPoints(makegrid(bbox(map.lines), n = 1000)),
 		proj4string = proj4string(map.lines))
@@ -1236,7 +1236,7 @@ lt = list(list("sp.lines", map.lines),
 spplot(NO2.idw[1], col.regions = bpy.colors(), sp.layout=lt)
 
 # plot stations, something wrong with projection?
-plot(no2.spdf, add = TRUE)
+plot(no2_spdf, add = TRUE)
 
 
 ################################################################################
