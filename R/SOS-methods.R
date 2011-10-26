@@ -380,8 +380,22 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 #
 .describeSensor_1.0.0 <- function(sos, procedure, outputFormat, verbose,
 		inspect, saveOriginal) {
-	if(verbose) {
-		cat("[.describeSensor_1.0.0] ", procedure, "@", sos@url, "\n")
+	if(verbose) cat("[.describeSensor_1.0.0] ", procedure, "@", sos@url, "\n")
+	
+	# check if multiple sensors
+	if(length(procedure) > 1) {
+		if(verbose) cat("[.describeSensor_1.0.0] multiple sensors: ", procedure,
+					"\n")
+		
+		.descriptions <- list()
+		for (p in procedure) {
+			.description <- .describeSensor_1.0.0(sos = sos, procedure = p,
+					outputFormat = outputFormat, verbose = verbose,
+					inspect = inspect, saveOriginal = saveOriginal)
+			.descriptions <- c(.descriptions, .description)
+		}
+		
+		return(.descriptions)
 	}
 	
 	.ds <- SosDescribeSensor(service = sosService, version = sos@version,
@@ -450,9 +464,10 @@ setMethod(f = "describeSensor",
 		signature = signature(sos = "SOS_1.0.0", procedure  = "character"), 
 		def = function(sos, procedure, outputFormat, verbose, inspect,
 				saveOriginal) {
-			return(.describeSensor_1.0.0(sos = sos, procedure = procedure,
-							outputFormat = outputFormat, verbose = verbose,
-							inspect = inspect, saveOriginal = saveOriginal))
+			.result <- .describeSensor_1.0.0(sos = sos, procedure = procedure,
+					outputFormat = outputFormat, verbose = verbose,
+					inspect = inspect, saveOriginal = saveOriginal)
+			return(.result)
 		}
 )
 

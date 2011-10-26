@@ -20,5 +20,6 @@
 		<nature>de.walware.statet.base.StatetNature</nature>
 		<nature>de.walware.statet.r.RNature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
+		<nature>de.walware.statet.r.RPkgNature</nature>
 	</natures>
 </projectDescription>

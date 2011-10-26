@@ -848,3 +848,49 @@ seacruise <- sosOfferings(iia)["SEA CRUISE 2003"]
 
 # TODO plot it, use spacetime classes
 
+
+################################################################################
+# TODO check out SOSs in ERDDAP
+# these are NOAA SOSs, but maybe new ones, you never know...
+#
+# http://coastwatch.pfeg.noaa.gov/erddap/info/index.html
+
+################################################################################
+# TODO check out Wupperverband SOS
+#
+library("sos4R")
+fluggs <- SOS(url = "http://fluggs.wupperverband.de/sos/sos")
+
+sosContents(fluggs)
+
+sosProcedures(fluggs)
+sosObservedProperties(fluggs)
+
+
+################################################################################
+# TODO check out SOS from Sandre, French National Service for Water Data and 
+#                         Common Repositories Management 
+#                         http://sandre.eaufrance.fr/
+#
+# WaterML response format!
+#
+# http://services.sandre.eaufrance.fr/52nSOSv3_WML/sos?request=GetCapabilities&service=SOS
+library("sos4R")
+
+sandre <- SOS(url = "http://services.sandre.eaufrance.fr/52nSOSv3_WML/sos")
+sosObservedProperties(sandre)
+sosProcedures(sandre)
+
+sosResponseFormats(sandre)$GetObservation
+# not mentioning WaterML...
+
+sensor_1_1 <- describeSensor(sos = sandre, # verbose = TRUE,
+		procedure = sosProcedures(sandre)[[1]])
+str(sensor_1_1)
+# not discovery profile, no elements are found:
+sensor_1_1[[1]]@xml
+
+sosCoordinates(sensor_1_1)
+plot(sensor_1_1) # does not work... yet
+
+

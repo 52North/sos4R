@@ -210,6 +210,9 @@ setClass("SosDescribeSensor",
 			#print("Entering validation: sosDescribeSensor")
 			# TODO implement validity function
 			# check format of version, sensorid and outputformat?!
+			if(length(object@procedure) > 1)
+				return("can only request one procedure at a time!")
+			
 			return(TRUE)
 		}
 )

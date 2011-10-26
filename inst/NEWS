@@ -1,3 +1,9 @@
+Changes in sos4R Version 0.2-x - 2011-xx-xx
+
+  o ADDED describeSensor can now handle a character vector of procedures, will return a list with the sensor descriptions
+
+  o ...
+  
 Changes in sos4R Version 0.2-6 - 2011-10-07
 
   o CHANGED documentation of changes from CHANGES to this NEWS file

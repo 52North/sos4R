@@ -1353,3 +1353,24 @@ scatter3d(meuse$dist, meuse$lead, meuse$elev, fit="linear",
 		residuals=TRUE, groups=meuse$ffreq, parallel=TRUE, bg="white", 
 		axis.scales=TRUE, grid=TRUE, ellipsoid=FALSE, xlab="dist", ylab="lead", 
 		zlab="elev")
+
+
+################################################################################
+# Try StatET 2.0's new visual debugger 
+testfunction <- function(x, y) {
+	for (i in seq(from = 1, to = x)) {
+		print(i + y)
+		
+		if(i %% 2 == 1) { # odd number
+			var <- othertestfunction(i, y)
+			
+			print(var)
+		}
+	}
+}
+
+othertestfunction <- function(x, z) {
+	return(x - z)
+}
+
+# loading sos4R via library does not work!
