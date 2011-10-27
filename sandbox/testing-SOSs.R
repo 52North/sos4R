@@ -877,20 +877,71 @@ sosObservedProperties(fluggs)
 # http://services.sandre.eaufrance.fr/52nSOSv3_WML/sos?request=GetCapabilities&service=SOS
 library("sos4R")
 
-sandre <- SOS(url = "http://services.sandre.eaufrance.fr/52nSOSv3_WML/sos")
+sandre_converters <- SosDataFieldConvertingFunctions(
+	"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString)
+sandre <- SOS(url = "http://services.sandre.eaufrance.fr/52nSOSv3_WML/sos",
+		dataFieldConverters = sandre_converters)
+
 sosObservedProperties(sandre)
 sosProcedures(sandre)
 
 sosResponseFormats(sandre)$GetObservation
 # not mentioning WaterML...
+sosResultModels(sandre)[["GetObservation"]]
+# wml2:TimeseriesObservation !
+#
+# TODO try to request WaterML TimeseriesObservation, must add the namespace to the request
+# TODO parse WaterML TimeseriesObservation
+#
 
+#
+# PROCEDURES
+#
+# testing handling of multiple sensors in describeSensor
 sensor_1_1 <- describeSensor(sos = sandre, # verbose = TRUE,
 		procedure = sosProcedures(sandre)[[1]])
 str(sensor_1_1)
 # not discovery profile, no elements are found:
 sensor_1_1[[1]]@xml
 
+# multiple sensors work, but saving, too?
+getwd()
+describeSensor(sos = sandre, procedure = sosProcedures(sandre)[[1]],
+		saveOriginal = TRUE)
+
 sosCoordinates(sensor_1_1)
 plot(sensor_1_1) # does not work... yet
 
+#
+# DATA
+#
+sosOfferings(sandre)[[1]] # check valid time interval
+myTime <- sosCreateTime(sos = sandre, time = "2011-10-18::2011-10-20")
+myOffering <- sosOfferings(sandre)[[1]]
+obs_1 <- getObservation(sos = sandre, verbose = TRUE,
+		offering = myOffering, inspect = TRUE,
+		procedure = sosProcedures(myOffering)[[1]],
+		# limit to one procedure during testing, works
+		eventTime = myTime)
+# first time run with warnings for missing converters, added to defaults, was
+# http://www.opengis.net/def/property/OGC/0/SamplingTime and
+str(obs_1)
 
+#################
+#Warning message:
+#		In if (.contentType == mimeTypeXML) { :
+#					the condition has length > 1 and only the first element will be used
+
+
+# TODO fix observed properties for OmObservation and OmObservationCollection
+sosObservedProperties(obs_1_[[1]])
+obs_1[[1]]@observedProperty
+
+
+obs <- getObservation(sos = sandre, verbose = TRUE,
+		offering = myOffering, inspect = TRUE,
+		eventTime = myTime)
+#######
+# Error in match.names(clabs, names(xi)) : 
+#  names do not match previous names
+# FIXME

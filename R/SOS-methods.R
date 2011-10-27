@@ -635,6 +635,12 @@ setMethod(f = "getObservationById",
 						"Falling back to '", mimeTypeXML, "'\n")
 			.contentType <- mimeTypeXML
 		}
+		else if(length(.contentType) > 1) {
+			warning("[.getObservation_1.0.0] More than one content type: '",
+					toString(.contentType),
+					"'\n\tUsing the first one: '", .contentType[[1]], "'\n")
+			.contentType <- .contentType[[1]]
+		}
 
 		.response <- xmlParseDoc(.responseString, asText = TRUE)
 		if(verbose || inspect) {

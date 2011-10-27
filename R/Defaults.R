@@ -144,6 +144,13 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
+		sosConvertTime,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
+		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertDouble,
@@ -201,14 +208,20 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertString
+		#, sosConvertString
 		)
 names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:time:iso8601",
 		"urn:ogc:property:time:iso8601",
 		"urn:ogc:phenomenon:time:iso8601",
+		"http://www.opengis.net/def/property/OGC/0/SamplingTime",
 		sosTimeName,
 		"m", # meter
+		"m2", # square meter
+		"m3", # cubic meter
 		"s", # second
+		"ms", # millisecond
+		"us", # microsecond
 		"g", # gram
 		"rad", # radian
 		"K", # Kelvin
@@ -260,10 +273,13 @@ names(.sosDefaultFieldConverters) <- list(
 		"cm", # centimeter
 		"km", # kilometer
 		"m/s", # meter per second
+		"m2/s", # square meter per second
+		"m3/s", # cubic meter per second
 		"kg", # kilogramm
 		"mg", # milligram
 		"uom", # fallback if actual unit is not given
 		"urn:ogc:data:feature"
+		#, "http://www.opengis.net/def/property/OGC/0/FeatureOfInterest"
 		)
 
 

@@ -2,6 +2,8 @@ Changes in sos4R Version 0.2-x - 2011-xx-xx
 
   o ADDED describeSensor can now handle a character vector of procedures, will return a list with the sensor descriptions
 
+  o ADDED warning about multiple content types in .getObservation_1.0.0
+  
   o ...
   
 Changes in sos4R Version 0.2-6 - 2011-10-07

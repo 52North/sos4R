@@ -46,7 +46,8 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 		if(verbose) cat("[parseOM] rootName is", .rootName, "\n") #, "with: "); print(.parsingFunction)
 		.om <- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
 		if(verbose) cat("[parseOM] Done!", .rootName, ":",
-					substr(toString(.om), 0, 74), "...\n")
+					#substr(toString(.om), 0, 200), "...\n")
+					toString(.om), "\n")
 	}
 	else {
 		warning(paste("[parseOM] No parsing function for given element", .rootName))
