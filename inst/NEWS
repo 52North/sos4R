@@ -4,6 +4,8 @@ Changes in sos4R Version 0.2-x - 2011-xx-xx
 
   o ADDED warning about multiple content types in .getObservation_1.0.0
   
+  o ADDED demo with EO2Heaven SOS, called "eo2heaven", deals with data download and plotting and some analysis
+    
   o ...
   
 Changes in sos4R Version 0.2-6 - 2011-10-07

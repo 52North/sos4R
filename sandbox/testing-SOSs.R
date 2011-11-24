@@ -868,6 +868,37 @@ sosObservedProperties(fluggs)
 
 
 ################################################################################
+# TODO try out new CO-OPS SOSs
+# 
+#CO-OPS has expanded its SOS services with an addition of the following 7 new services.
+#
+#One Minute Water Level Data
+#Six Minute Water Level Data
+#Hourly Height Water Level Data
+#High Low Water Level Data
+#Daily Mean Water Level Data
+#Harmonic Constituents
+#Datums
+
+#These services are offered for single station and as collections.
+#In addition, CO-OPS is now providing its observational data in KML format. All
+#CO-OPS SOS services, including the newly added ones, can be retrieved in KML.
+#
+#Please note that these service are presently available on the evaluation test
+#site (http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos-test/) till November
+#30th 2011.
+#
+#On December 1, 2011 at 10 am EDT, CO-OPS will add these new changes to our
+#operational SOS web site (http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/).
+#A reminder email will be sent out that week.
+
+ioos_testing <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos-test/SOS",
+#		method = SosSupportedConnectionMethods()[["GET"]]
+)
+sosObservedProperties(ioos_testing)[["network-All"]]
+unique(unlist(sosObservedProperties(ioos_testing)))
+
+################################################################################
 # TODO check out SOS from Sandre, French National Service for Water Data and 
 #                         Common Repositories Management 
 #                         http://sandre.eaufrance.fr/

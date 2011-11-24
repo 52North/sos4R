@@ -8,3 +8,4 @@ oceanwatch		demo script for SOS by NOAA/SWFSC/ERD
 pegel			demo script for water gauge data in Germany by Pegelonline
 southesk		plotting and data consilidation demo for SOSs from South Esk Testbed by CSIRO
 weathersos		time series analysis demo with weather data by ifgi
+eo2heaven		health-related and air quality SOS for the state of Saxony, Germany, and Durban, South Africa by TU Dresden

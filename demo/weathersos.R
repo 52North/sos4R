@@ -89,12 +89,12 @@ data <- sosResult(obsSept)
 summary(data); data[1:2,]; names(data)
 
 # create time series from data and plot
-tempSept <- xts(x = data[["urn:ogc:def:property:OGC::Temperature"]], order.by = data[["Time"]])
+tempSept <- xts(x = data[["urn:ogc:def:property:OGC::Temperature"]],
+								order.by = data[["Time"]])
 # calculate regression (polynomial fitting)
 temp <- data[["urn:ogc:def:property:OGC::Temperature"]]
 time <- as.numeric(data[["Time"]])
-x = loess(temp~time,
-		na.omit(data),enp.target=10)
+x = loess(temp~time, na.omit(data),enp.target=10)
 
 # create plot
 plot(tempSept, main = "Temperature at WeatherSOS-Station in Muenster",
@@ -106,6 +106,53 @@ lines(data$Time, x$fitted, col = 'red', lwd=3)
 head(x$residuals)
 head(x[["residuals"]])
 head(x[[3]])
+
+##############
+library("forecast")
+tempSept_ts <- as(tempSept, "ts")
+summary(tempSept_ts)
+
+as.xts(data, descr="test")
+Fehler in as.POSIXlt.character(x, tz, ...) : 
+  character string is not in a standard unambiguous format
+
+##############
+library("zoo")
+tempSept_zoo <- zoo(x = data[["urn:ogc:def:property:OGC::Temperature"]],
+								order.by = data[["Time"]])
+is.regular(tempSept_zoo)
+summary(tempSept_zoo)
+str(tempSept_zoo)
+
+plot(tempSept_zoo)
+tempSept.mean <- rollmean(x = tempSept_zoo, k = 4 * 24) # 4 val/hour = one day
+lines(tempSept.mean, col = "blue", lwd = 2)
+
+tempSept_forecast <- forecast(tempSept_zoo)
+
+# http://addictedtor.free.fr/graphiques/sources/source_51.R
+model <- arima(tempSept_zoo)
+forecast <- predict(model,5000)
+lines(forecast$pred, lwd = 3, col = "red")
+
+
+########
+library("tseries")
+
+tempSept.arma <- arma(tempSept_zoo)
+any(is.na(tempSept_zoo))
+
+########
+library("robfilter")
+
+filtered <- dw.filter(tempSept_zoo, outer.width = 201, inner.width = 101,
+											method = c("RM"))
+plot(filtered)
+
+
+tempSept.rf <- robust.filter(tempSept_zoo, width=23)
+plot(tempSept.rf)
+
 
 ################################################################################
 # DescribeSensor Operation
