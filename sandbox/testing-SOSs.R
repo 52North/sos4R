@@ -976,3 +976,12 @@ obs <- getObservation(sos = sandre, verbose = TRUE,
 # Error in match.names(clabs, names(xi)) : 
 #  names do not match previous names
 # FIXME
+
+################################################################################
+# TODO check out SOS from Spain with environmental data
+# http://elcano.dlsi.uji.es:8082/SOSM2/sos?request=GetCapabilities&service=SOS
+elcano <- SOS(url = "http://elcano.dlsi.uji.es:8082/SOSM2/sos")
+
+sosContents(elcano)
+
+sosOfferings(elcano)
