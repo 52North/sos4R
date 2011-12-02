@@ -208,6 +208,7 @@
 \alias{mimeTypeOM}
 \alias{mimeTypeSML}
 \alias{mimeTypeXML}
+\alias{mimeSubtypeOM}
 
 \alias{smlSensorMLName}
 \alias{sosAttributeFileName}
@@ -226,6 +227,8 @@ Constants for names of XML elements start with a lowercase character string of t
 Examples: code{gmlEnvelopeName}, \code{ogcGeometryOperandLineStringName}, \code{ogcTempOpTMEqualsName}.
 
 The \code{OwsExceptionsData()} function provides access to the fixed exception codes, meanings and respective HTTP codes and messages. 
+
+The \strong{mime types} are used for automatic detection of the best fitting parser.
 }
 
 \references{See also \code{\link{Defaults}} for default parameter settings.

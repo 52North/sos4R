@@ -1,12 +1,12 @@
-Changes in sos4R Version 0.2-x - 2011-xx-xx
+Changes in sos4R Version 0.2-7 - 2011-12-02
 
   o ADDED describeSensor can now handle a character vector of procedures, will return a list with the sensor descriptions
 
-  o ADDED warning about multiple content types in .getObservation_1.0.0
+  o ADDED note in verbose mode about multiple content types in .getObservation_1.0.0
+  
+  o ADDED handling of OM mime subtype  
   
   o ADDED demo with EO2Heaven SOS, called "eo2heaven", deals with data download and plotting and some analysis
-    
-  o ...
   
 Changes in sos4R Version 0.2-6 - 2011-10-07
 

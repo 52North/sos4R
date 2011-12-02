@@ -20,7 +20,7 @@
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
 	Version: \tab 0.2-7\cr
-	Date: \tab 2011-10-07\cr
+	Date: \tab 2011-12-02\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	Depends: \tab XML, RCurl\cr

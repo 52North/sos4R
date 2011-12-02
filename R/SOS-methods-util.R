@@ -604,6 +604,9 @@ sosChanges <- function() {
 	cat(.lines, sep = "\n")
 }
 
+#
+#
+#
 sosNews <- function() {
 	.path <- paste(.find.package("sos4R", lib.loc = NULL), "NEWS",
 			sep = "\\")
@@ -614,7 +617,9 @@ sosNews <- function() {
 	cat(.lines, sep = "\n")
 }
 
+#
 # based on vignette-function
+#
 sosCheatSheet <- function() {
 	.path <- paste(.find.package("sos4R", lib.loc = NULL), "doc",
 			.sosCheatSheetDocumentName, sep = "\\")

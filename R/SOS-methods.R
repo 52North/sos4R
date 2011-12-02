@@ -628,17 +628,31 @@ setMethod(f = "getObservationById",
 	if(verbose) cat("[.getObservation_1.0.0] Content-Type:", .contentType, "\n")
 	
 	if(isXMLString(.responseString)) {
-		if(verbose) cat("[.getObservation_1.0.0] Got XML string as response.\n")
+		if(verbose) cat("[.getObservation_1.0.0] Got XML string as response",
+					"(based on isXMLString()).\n")
 		
+		.hasSubtype <- FALSE
+		.contentSubtype <- NA
 		if(length(.contentType) < 1) {
 			if(verbose) cat("[.getObservation_1.0.0] No content type!",
 						"Falling back to '", mimeTypeXML, "'\n")
 			.contentType <- mimeTypeXML
 		}
 		else if(length(.contentType) > 1) {
-			warning("[.getObservation_1.0.0] More than one content type: '",
-					toString(.contentType),
-					"'\n\tUsing the first one: '", .contentType[[1]], "'\n")
+			# check if subtype is present or take just the first
+			.subtypeIdx <- which(names(.contentType) == "subtype")
+			if(.subtypeIdx > 0) {
+				.hasSubtype <- TRUE
+				.contentSubtype <- .contentType[[.subtypeIdx]]
+				if(verbose) cat("[.getObservation_1.0.0] Found mime subtype: ",
+							toString(.contentSubtype), "'\n")
+			}
+			else if(verbose) cat(
+						"[.getObservation_1.0.0] More than one content type, ",
+								"no subtype detected : '",
+								toString(.contentType),
+								"'\n\tUsing the first one: '",
+								.contentType[[1]], "'\n")
 			.contentType <- .contentType[[1]]
 		}
 
@@ -647,12 +661,20 @@ setMethod(f = "getObservationById",
 			cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
 			print(.response)
 		}
-		
 		# select the parser and file ending based on the mime type FIRST
 		.fileEnding <- ".xml"
 		if(.contentType == mimeTypeXML) {
-			if(verbose) cat("[.getObservation_1.0.0] Got pure XML according to mime type.\n")
-			.parserName <- mimeTypeXML
+			if(.hasSubtype && .contentSubtype == mimeSubtypeOM) {
+				if(verbose)
+					cat("[.getObservation_1.0.0] Got OM according to mime type.\n")
+				.parserName <- mimeTypeOM
+			}
+			else {
+				if(verbose)
+					cat("[.getObservation_1.0.0] Got pure XML according to mime type. ",
+							"Trying to parse with default parser, see SosParsingFunctions().\n")
+				.parserName <- mimeTypeXML
+			}
 		}
 		else if (.contentType == mimeTypeKML) {
 			if(verbose) cat("[.getObservation_1.0.0] Got KML according to mime type.\n")

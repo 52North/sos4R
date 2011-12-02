@@ -75,6 +75,7 @@ mimeTypeXML <- "text/xml"
 mimeTypeOM <- "text/xml;subtype=&quot;om/1.0.0&quot;"
 mimeTypeSML <- "text/xml;subtype=&quot;sensorML/1.0.1&quot;"
 mimeTypeKML <- "application/vnd.google-earth.kml+xml"
+mimeSubtypeOM <- "\"om/1.0.0\""
 
 .sosSupportedResponseFormats <- c(
 		mimeTypeOM,

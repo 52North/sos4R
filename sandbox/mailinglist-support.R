@@ -84,3 +84,82 @@ data_coords_ise_chla[c(1:3, 101:103, 301:303),]
 mclimatic <- SOS(url="http://elcano.dlsi.uji.es:8080/SOS_MCLIMATIC/sos")
 # SOLUTION: wrong endpoint, missing /sos
 summary(mclimatic)
+
+
+
+################################################################################
+# [52N Geostatistics] SOS error
+# 01.12.2011 17:50
+# http://geostatistics.forum.52north.org/SOS-error-td3552095.html
+
+library(sos4R)
+library(sp)
+library(rgdal)
+watershapSOSConverters <-
+		SosDataFieldConvertingFunctions(
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22045DS"=
+						sosConvertDouble,
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22047DS"=
+						sosConvertDouble,
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22020DS"=
+						sosConvertDouble,
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22020US"=
+						sosConvertDouble,
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22045US"=
+						sosConvertDouble,
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22046DS"=
+						sosConvertDouble,
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22019DS"=
+						sosConvertDouble,
+				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22046US"=
+						sosConvertDouble,
+				"http://www.opengis.net/def/property/OGC/0/SamplingTime" = 
+						sosConvertTime,
+				"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" =
+						sosConvertString)
+watershapSOS <-
+		SOS(url="http://137.224.18.29:8080/WS_VenE_SOSv3/sos",
+				dataFieldConverters = watershapSOSConverters)
+summary(watershapSOS)
+watershapOffering <- sosOfferings(watershapSOS)
+watershapTimeSOS= sosCreateTime(sos = watershapSOS, time =
+				"2011-10-03::2011-11-10")
+waterLevel<-watershapOffering[["WATERLEVEL"]]
+obsWaterLevel=getObservation(sos=watershapSOS, offering=waterLevel,
+		eventTime=watershapTimeSOS)
+WaterLevelGauges=sosResult(obsWaterLevel, coordinates = TRUE)
+##Get CRS of Observations
+obsWaterLevelCRS<-sosGetCRS(obsWaterLevel)
+##Create spatial objects from observations
+coordinates(WaterLevelGauges)=~lat+lon
+proj4string(WaterLevelGauges)=obsWaterLevelCRS
+##Set Coordinate System Amersfoort
+Amersfoort.RD.New=CRS("+proj=sterea +lat_0=52.15616055555555
+				+lon_0=5.38763888888889 +k=0.999908 +x_0=155000 +y_0=463000 +ellps=bessel
+				+units=m
+				+towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812
+				+no_defs +no_defs")
+WaterLevelGaugesProj<-spTransform(WaterLevelGauges,Amersfoort.RD.New)
+
+#*Everything seems to be OK, but I am receiving an error message with the
+#following text*
+#		
+#[sos4R] Received response (size: 418928 bytes), parsing ...
+#[sos4R] Finished getObservation to
+#http://137.224.18.29:8080/WS_VenE_SOSv3/sos 
+#--> received 7 observation(s) having 9041 result values [ 1380, 1138, 1138,
+#		1300, 1301, 1392, 1392 ]. 
+#Warning message:
+#		In if (.contentType == mimeTypeXML) { :
+#					the condition has length > 1 and only the first element will be used
+
+# DN:
+plot(WaterLevelGaugesProj)
+
+getObservation(sos = watershapSOS, offering = waterLevel,
+		# inspect = TRUE,
+		verbose = TRUE,
+		eventTime = watershapTimeSOS)
+
+# SOLUTION:
+# Error message can be ignored, warning is handled with verbose message in 0.2-7
