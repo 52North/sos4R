@@ -21,6 +21,7 @@ worldHigh_Lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
 plot(worldHigh_Lines, col = "grey50")
 plot(weathersos, add = TRUE, lwd = 3)
+
 title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
 		sub = toString(names(sosOfferings(weathersos))))
 
@@ -108,13 +109,13 @@ head(x[["residuals"]])
 head(x[[3]])
 
 ##############
-library("forecast")
-tempSept_ts <- as(tempSept, "ts")
-summary(tempSept_ts)
-
-as.xts(data, descr="test")
-Fehler in as.POSIXlt.character(x, tz, ...) : 
-  character string is not in a standard unambiguous format
+#library("forecast")
+#tempSept_ts <- as(tempSept, "ts")
+#summary(tempSept_ts)
+#
+#as.xts(data, descr="test")
+#Fehler in as.POSIXlt.character(x, tz, ...) : 
+#  character string is not in a standard unambiguous format
 
 ##############
 library("zoo")
@@ -136,22 +137,22 @@ forecast <- predict(model,5000)
 lines(forecast$pred, lwd = 3, col = "red")
 
 
-########
-library("tseries")
-
-tempSept.arma <- arma(tempSept_zoo)
-any(is.na(tempSept_zoo))
-
-########
-library("robfilter")
-
-filtered <- dw.filter(tempSept_zoo, outer.width = 201, inner.width = 101,
-											method = c("RM"))
-plot(filtered)
-
-
-tempSept.rf <- robust.filter(tempSept_zoo, width=23)
-plot(tempSept.rf)
+#########
+#library("tseries")
+#
+#tempSept.arma <- arma(tempSept_zoo)
+#any(is.na(tempSept_zoo))
+#
+#########
+#library("robfilter")
+#
+#filtered <- dw.filter(tempSept_zoo, outer.width = 201, inner.width = 101,
+#											method = c("RM"))
+#plot(filtered)
+#
+#
+#tempSept.rf <- robust.filter(tempSept_zoo, width=23)
+#plot(tempSept.rf)
 
 
 ################################################################################

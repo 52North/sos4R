@@ -31,7 +31,11 @@
 #
 #
 plot.SosObservationOffering <- function(x, y, ..., add = FALSE) {
-	.off.spatial <- as(x, "Spatial")
+	.off.spatial <- NULL
+	tryCatch({.off.spatial <- as(x, "Spatial") },
+			error = function(e) { 
+				warning(paste("Could not coerce offering", toString(x), "\nError: ", e))
+			})
 	
 	if(is.null(.off.spatial))
 		warning("Cannot plot NULL offering!")

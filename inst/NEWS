@@ -1,5 +1,7 @@
 Changes in sos4R Version 0.2-8 - 2011-XX-XX
 
+  o ADDED error handling for plotting methods so that plot(sos) does not break if one offering cannot be coerced to spatial
+
   o ...
 
 Changes in sos4R Version 0.2-7 - 2011-12-02
