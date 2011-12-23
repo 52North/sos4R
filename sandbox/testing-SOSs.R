@@ -917,17 +917,49 @@ sosObservedProperties(sandre)
 sosProcedures(sandre)
 
 sosResponseFormats(sandre)$GetObservation
-# not mentioning WaterML...
+# not mentioning WaterML, probably OK
 sosResultModels(sandre)[["GetObservation"]]
 # wml2:TimeseriesObservation !
 #
-# TODO try to request WaterML TimeseriesObservation, must add the namespace to the request
+# TODO try to request WaterML TimeseriesObservation, must add the namespace to
+# the request and need a mechanism for that.
 # TODO parse WaterML TimeseriesObservation
 #
 
-#
+##########
+# GET DATA
+myOffering <- sosOfferings(sandre)[["A2140100"]]
+
+# TODO the time handling workflow based on the available time should be easier
+# TODO implement sosTime with convert option, possible default it to TRUE?
+lastTime <- sosTime(sosTime(myOffering)@endPosition)
+lastTime.posix <- as.POSIXct(lastTime)
+startTime.posix <- lastTime.posix - 3600 * 24 * 7 # one week
+myTimeString <- paste(startTime.posix, "::", lastTime.posix, sep = "")
+myTime <- sosCreateTime(sos = sandre, time = myTimeString)
+myTime
+
+lastDayA2140100 <- getObservation(sos = sandre, offering = myOffering,
+		eventTime = myTime)
+summary(sosResult(lastDayA2140100[[1]]))
+summary(sosResult(lastDayA2140100[[2]]))
+
+sosResult(lastDayA2140100)
+# cannot join because there are two differen observations
+
+waterheight <- sosResult(lastDayA2140100[[2]])
+plot(waterheight)
+
+plot(x = waterheight$SamplingTime, y = waterheight$WATERHEIGHT, type = "l",
+		main = paste(sosId(myOffering), sosName(myOffering)),
+		# TODO should work with sosName(waterheight) or better sosName(lastDayA2140100[[1]])
+		ylab = paste("Waterheight [", sosUOM(waterheight), "]"),
+		xlab = "sampling time")
+
+
+
+############
 # PROCEDURES
-#
 # testing handling of multiple sensors in describeSensor
 sensor_1_1 <- describeSensor(sos = sandre, # verbose = TRUE,
 		procedure = sosProcedures(sandre)[[1]])

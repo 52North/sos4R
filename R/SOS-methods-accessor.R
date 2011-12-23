@@ -568,6 +568,7 @@ setMethod(f = "sosTime", signature = signature(
 			if(!convert)
 				return(obj@time)
 			
+			# TODO implement time conversion
 			.time <- obj@time
 			if(is(.time, "GmlTimePeriod")) {
 				return(sosTime(.time))

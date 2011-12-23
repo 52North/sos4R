@@ -65,7 +65,7 @@ read.sos <- function(sos,
 }
 
 
-# method creates a list (whose items can are named and can be used to read data,
+# TODO method creates a list (whose items can are named and can be used to read data,
 # or just used in function read.sos)
 # for all available and valid combinations of off/foi/phen/proc
 #
@@ -74,8 +74,7 @@ read.sos <- function(sos,
 #}
 
 
-#
-# get all the matching ungiven parameters for that are available for a set of 
+# TODO get all the matching ungiven parameters for that are available for a set of 
 # parameters that are given, e.g. all offerings that offer observed property
 # "A" for feature of interest "X", or all procedures measuring an observed
 # property "B".
