@@ -163,3 +163,72 @@ getObservation(sos = watershapSOS, offering = waterLevel,
 
 # SOLUTION:
 # Error message can be ignored, warning is handled with verbose message in 0.2-7
+
+
+################################################################################
+# [Bug 697]
+# https://bugzilla.52north.org/show_bug.cgi?id=697
+#
+# Summary: [sos4R : getObservation] Erreur dans sum(.resultLength) : 'type'
+#		(list) de l'argument incorrect
+#		Product: 52N Geostatistics
+#		Version: unspecified
+#		Platform: PC
+#		OS/Version: Windows
+#		Status: NEW
+#		Severity: enhancement
+#		Priority: Lowest
+#		Component: sos4R
+#		AssignedTo: d.nuest@52north.org
+#		ReportedBy: guillaume.wattelez@univ-nc.nc
+#		Estimated Hours: 0.0
+
+#:sos4R package:
+#		Overview : Error with the function getObservation of the R package sos4R on my
+#SOS DataBase and the eo2h DataBase.
+
+#Steps to reproduce : In R.
+library(sos4R);
+eo2h = SOS(url = "http://141.30.100.135:8080/eo2heavenSOS/sos");
+
+eo2h_off = sosOfferings(eo2h);
+obs = getObservation(eo2h, offering = eo2h_off[[16]]);
+obs = getObservation(eo2h, offering = eo2h_off[[14]]);
+#Erreur dans sum(.resultLength) : 'type' (list) de l'argument incorrect
+#		De plus : Il y a eu 50 avis ou plus (utilisez warnings() pour voir les 50
+#		premiers)
+#		>     # There's an error #
+
+#Description : 
+#		I have the same error when I try with my SOS DataBase
+#Actual Result : 
+#		"[sos4R] Received response (size: 2746928 bytes), parsing ...
+#		Erreur dans sum(.resultLength) : 'type' (list) de l'argument incorrect"
+#with some warnings (put at the end).
+#Finally, I don't know if the problem is from R or the SOS DataBase filling. If
+#		it can help, a xml response is send when I request a getObservation in my
+#		browser.
+
+# FIX:
+
+# First, fix the warnings, see demo("eo2heaven")
+eo2h_converters <- SosDataFieldConvertingFunctions(
+		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString,
+		"http://www.eo2heaven.org/classifier/parameter/daily_average/BEN" = sosConvertDouble)
+eo2h = SOS(url = "http://141.30.100.135:8080/eo2heavenSOS/sos",
+		dataFieldConverter = eo2h_converters);
+
+eo2h_off = sosOfferings(eo2h);
+obs16 = getObservation(eo2h, offering = eo2h_off[[16]]); # NOX
+# works fine, no warnings
+summary(obs16)
+obs16_data <- sosResult(obs16)
+summary(obs16_data)
+# all OK!
+
+eo2h_off[[14]] # benzene
+obs14 = getObservation(eo2h, offering = eo2h_off[[14]]);
+# again, warnings > add another field to converters
+# actually fixed in next release because of adding ug/m3 to known unit list.
+
+# Solution: None, the error does not occur on my system!

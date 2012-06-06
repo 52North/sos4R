@@ -161,6 +161,7 @@ kml <- getObservation(ioos, offering = "urn:ioos:network:noaa.nws.ndbc:all",
 kml
 
 # TODO do sth. with the KML, e.g. export using examples from Spatial-Analyst?
+# TODO use plotKML to create an output?
 
 
 ################################################################################

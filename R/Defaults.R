@@ -207,8 +207,9 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertDouble,
-		sosConvertString
-		#, sosConvertString
+		sosConvertString, # urn:ogc:data:feature
+		sosConvertString,
+		sosConvertDouble
 		)
 names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:time:iso8601",
@@ -278,8 +279,9 @@ names(.sosDefaultFieldConverters) <- list(
 		"kg", # kilogramm
 		"mg", # milligram
 		"uom", # fallback if actual unit is not given
-		"urn:ogc:data:feature"
-		#, "http://www.opengis.net/def/property/OGC/0/FeatureOfInterest"
+		"urn:ogc:data:feature",
+		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest",
+		"ug/m3" # micrograms per cubic meter
 		)
 
 

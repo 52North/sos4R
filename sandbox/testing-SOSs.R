@@ -1017,3 +1017,41 @@ elcano <- SOS(url = "http://elcano.dlsi.uji.es:8082/SOSM2/sos")
 sosContents(elcano)
 
 sosOfferings(elcano)
+
+################################################################################
+# TODO check out SOS from Sensors4All Framework, FH Kärnten
+sensors4all <- SOS(url = "http://weatherstation.cti.ac.at:8080/52nSOSv3_CUAS/sos")
+
+sosOfferings(sensors4all)
+sensors4all_off <- sosOfferings(sensors4all)[[1]]
+plot(sensors4all)
+
+library(maps); library(mapdata); library(maptools)
+if(!require(rgdal, quietly = TRUE))
+	print("rgdal not present: CRS values will not be converted correctly")
+data(worldHiresMapEnv)
+crs <- sosGetCRS(sensors4all)
+region <- map.where(database = "worldHires",
+		sosCoordinates(sensors4all_off)) # find region
+worldHigh <- pruneMap(map(database = "worldHires", region = region,
+				plot = FALSE))
+worldHigh_Lines <- map2SpatialLines(worldHigh, proj4string = crs)
+plot(worldHigh_Lines, col = "grey50")
+plot(sensors4all_off, add = TRUE, lwd = 3)
+
+
+################################################################################
+# TODO check out VITO SOS with air quality data (live data planned) for Antwerp
+library(sos4R)
+idea <- SOS(url = "http://sensorweb.vito.be:8080/IDEA_52nSOSv3.2/sos")
+
+idea_offs <- sosOfferings(idea)
+sosObservedProperties(idea)
+
+alix5_off_time <- sosTime(idea_offs$alix5)
+alix5_time <- sosCreateEventTimeList(alix5_off_time)
+#myTime <- sosCreateTime(sos = idea, time = "2011-10-18::2011-10-20")
+
+alix5_observation <- getObservation(sos = idea, offering = idea_offs$alix5,
+		eventTime = alix5_time, verbose = FALSE)
+alix5_result <- sosResult(alix5_observation)

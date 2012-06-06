@@ -28,16 +28,17 @@ offering_nox <- sosOfferings(eo2h)[["NOX"]]
 sosObservedProperties(offering_nox)
 sosFeaturesOfInterest(offering_nox)
 
-observations_nox <- getObservation(sos = eo2h, offering = offering_nox,
-		eventTime = sosCreateTime(sos = eo2h, time = "2011-01-01::2011-01-03"))
+#observations_nox <- getObservation(sos = eo2h, offering = offering_nox,
+#		eventTime = sosCreateTime(sos = eo2h, time = "2011-01-01::2011-01-03"))
 # 29 warnings, because of missing parsers:
-warnings()
+#warnings()
 
-eo2h_converters <- SosDataFieldConvertingFunctions(
-		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString,
-		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime)
-eo2h <- SOS(url = sosUrl(eo2h),
-		dataFieldConverters = eo2h_converters)
+#eo2h_converters <- SosDataFieldConvertingFunctions(
+#		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString,
+#		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime)
+# FIELDS ADDED IN VERSION 0.2-8
+#eo2h <- SOS(url = sosUrl(eo2h))
+#		dataFieldConverters = eo2h_converters)
 
 observations_nox <- getObservation(sos = eo2h, offering = offering_nox,
 		inspect = TRUE,
