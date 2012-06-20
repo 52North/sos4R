@@ -1055,3 +1055,11 @@ alix5_time <- sosCreateEventTimeList(alix5_off_time)
 alix5_observation <- getObservation(sos = idea, offering = idea_offs$alix5,
 		eventTime = alix5_time, verbose = FALSE)
 alix5_result <- sosResult(alix5_observation)
+
+
+################################################################################
+# TODO check out IRCEL - CELINE SOS with air quality data
+library(sos4R)
+ircel <- SOS(url = "http://sos.irceline.be/sos")
+
+sosOfferings(ircel)
