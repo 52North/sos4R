@@ -107,10 +107,10 @@ sosOfferings(bom)[[1]]
 # Tasmania Department of Primary Industries, Parks, Wildlife and Environment (DPIPWE, white on map)
 dpiw <- SOS("http://www.csiro.au/sensorweb/DPIW_SOS/sos?Service=SOS&Request=GetCapabilities", switchCoordinates = TRUE)
 
-# Hydro Tasmania Consulting – Remote Monitoring and Investigation Unit (yellow on map)
+# Hydro Tasmania Consulting - Remote Monitoring and Investigation Unit (yellow on map)
 ht <- SOS("http://www.csiro.au/sensorweb/HT_SOS/sos")
 
-# Forestry Tasmania – Fire Risk Management Branch (green on map)
+# Forestry Tasmania - Fire Risk Management Branch (green on map)
 forestry <- SOS("http://www.csiro.au/sensorweb/Forestry_SOS/sos")
 
 # Tasmania Department of Primary Industries, Parks, Wildlife and Environment (DPIPWE) - Water Assessment Branch
