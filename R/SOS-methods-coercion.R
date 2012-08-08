@@ -40,7 +40,8 @@ as.SosObservationOffering.SpatialPolygons = function(from) {
 	
 	.crs <- sosGetCRS(from)
 	if(is.null(.crs)) {
-		warning(paste("Cannot coerce offering", sosId(from), "-- no CRS given"))
+		warning(paste("Cannot coerce offering", sosId(from),
+						"to SpatialPolygons -- no CRS given."))
 		return(NULL)
 	}
 	

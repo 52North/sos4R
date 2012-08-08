@@ -43,6 +43,8 @@ SensorML <- function(xml, coords = data.frame(), id = NA_character_,
 		.xPathToken, 
 		"' or @definition='urn:ogc:def:identifier:OGC:1.0:",
 		.xPathToken,
+		"' or @definition='urn:ogc:def:identifier:OGC:", # technically this is invalid, but common
+		.xPathToken,
 		"']/sml:value/text()", sep = "")
 .smlXPathDescription <- "//sml:System/gml:description/text()"
 .smlXPathPosition <- "//sml:System/sml:position/swe:Position"
@@ -58,10 +60,14 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 	
 	.id <- .smlIdentifier(.root, "uniqueID", verbose = verbose)
 	.shortName <- .smlIdentifier(.root, "shortName", verbose = verbose)
-	.description <- xmlValue(getNodeSet(doc = .root, path = .smlXPathDescription,
-			namespaces = .sosNamespaceDefinitionsSML)[[1]])
-	if(verbose) cat("[parseSensorML] got ID", .id, "and name", .shortName,
-				"\n")
+	.descrNodeSet <- getNodeSet(doc = .root, path = .smlXPathDescription,
+			namespaces = .sosNamespaceDefinitionsSML)
+	if(is.null(.descrNodeSet))
+		.description <- NA_character_
+	else
+		.description <- xmlValue(.descrNodeSet[[1]])
+	if(verbose) cat("[parseSensorML] Got ID", .id, "and shortName", .shortName,
+				"and description", .description, "\n")
 
 	# bounded by
 	if(verbose) cat("[parseSensorML] Parsing boundedBy from",
@@ -137,7 +143,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 		.coords <- data.frame()
 	}
 	
-	
+	# create instance
 	.sml = SensorML(xml = obj, coords = .coords, id = .id, name = .shortName, 
 			description = .description, boundedBy = .bb)
 	

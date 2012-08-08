@@ -28,6 +28,7 @@
 \alias{SosDataFieldConvertingFunctions}
 \alias{SosExampleServices}
 \alias{SosDefaults}
+\alias{SosResetParsingFunctions}
 
 \title{Default Parameter Settings and Handling Functions}
 
@@ -47,12 +48,15 @@ SosDisabledParsers()
 SosExampleServices()
 
 SosDefaults()
+
+SosResetParsingFunctions(sos)
 }
 
 \arguments{
   \item{\dots}{Named references to functions to be used for the respective element during parsing, encoding oder conversion, e.g. \code{"myUnit" = myUnitParser}.}
   \item{include}{A list of names of elements whose functions shall be included in the returned list, e.g. \code{include = c("GetObservation", "DescribeSensor")}. This inclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
   \item{exclude}{A list of names of elements whose functions shall be excluced in the returned list, e.g. \code{exclude = c("DescribeSensor")}. This exclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
+  \item{sos}{An object of class \code{SOS}.}
 }
 
 \details{
@@ -63,6 +67,8 @@ Some defaults are accessed directly, others should be accessed using a function.
 A special case are the functions to access the default functions for specific purposes, which are the parsing functions, the encoding functions and the field converting functions. See the examples on how to use them.
 
 The function \code{SosDisabledParsers} can be used to use no parsing at all (despite the parsing for the capabilities response, which is required for establishing a connection to a SOS. This function is helpful to inspect the unprocessed responses from a service.
+
+The function \code{SosResetParsingFunctions} can be used to replace the included parsing functions of a \code{SOS} object with the default ones. This is even useful for development of the default parsing functions.
 
 \bold{The default parameter values are:}
 \describe{
@@ -147,6 +153,11 @@ SosExampleServices()
 
 # a named list of all defaults
 SosDefaults()
+
+# replace the parsing functions with the default ones
+\dontrun{
+sos <- SosResetParsingFunctions(sos)
+}
 
 }
 

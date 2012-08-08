@@ -109,7 +109,9 @@ head(x[["residuals"]])
 head(x[[3]])
 
 ##############
-#library("forecast")
+library("forecast")
+
+##############
 #tempSept_ts <- as(tempSept, "ts")
 #summary(tempSept_ts)
 #
@@ -157,13 +159,28 @@ lines(forecast$pred, lwd = 3, col = "red")
 
 ################################################################################
 # DescribeSensor Operation
-procs <- unique(unlist(sosProcedures(weathersos)))
 
-describeSensor(weathersos, procs[[1]]) #, verbose = TRUE)
+#weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+
+procs <- unique(unlist(sosProcedures(weathersos)))
+sensor1 <- describeSensor(weathersos, procs[[1]]) #, verbose = TRUE)
+sensor1
+
+###########
+# debugging
+# If working on SensorML stuff, and changing a function and sourcing it, one
+# must regenerate weathersos so that the new functions are utilized!
+# weathersos <- SosResetParsingFunctions(weathersos)
+# To check see: sosParsers(weathersos)[[sosDescribeSensorName]]
+#
+
+debugSensor <- describeSensor(weathersos, procs[[12]], verbose = TRUE)
+sosCoordinates(debugSensor)
+as.SensorML.SpatialPointsDataFrame(debugSensor)
 
 procs_descr <- lapply(X = procs, FUN = describeSensor, # verbose = TRUE,
 		sos = weathersos)
-procs_descr
+str(procs_descr, max.level = 3)
 
 proc1 <- procs_descr[[1]]
 proc1
@@ -185,7 +202,7 @@ coords
 #str(coords)
 attributes(coords)
 sosGetCRS(proc1)
-sosGetCRS(procs_descr)
+sosGetCRS(procs_descr)[1:2]
 sosBoundedBy(proc1)
 
 # create spatial representation, which also will be basis for plottting

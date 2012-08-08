@@ -56,72 +56,79 @@ SosExampleServices <- function() {
 
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
-.sosDefaultParsers <- list(
-		parseSosCapabilities,
-		parseSensorML,
-		parseOM,
-		parseOM,
-		parseOwsExceptionReport,
-		#
-		parseMeasurement,
-		parseObservationProperty,
-		parseObservation,
-		parseObservationCollection,
-		parseResult,
-		parseDataArray,
-		parseElementType,
-		parseEncoding,
-		parseValues,
-		parseSwePosition,
-		parseLocation,
-		parseVector,
-		parseCoordinate,
-		#
-		parseGeometryObservation,
-		parseCategoryObservation,
-		parseCountObservation,
-		parseTruthObservation,
-		parseTemporalObservation,
-		parseComplexObservation,
-		#
-		parseCSV,
-		parseOM,
-		parseKML,
-		parseKML,
-		parseOM)
-names(.sosDefaultParsers) <- list(
-		sosGetCapabilitiesName,
-		sosDescribeSensorName,
-		sosGetObservationName,
-		sosGetObservationByIdName,
-		owsExceptionReportName,
-		#
-		omMeasurementName,
-		omMemberName,
-		omObservationName,
-		omObservationCollectionName,
-		omResultName,
-		sweDataArrayName,
-		sweElementTypeName,
-		sweEncodingName,
-		sweValuesName,
-		swePositionName,
-		sweLocationName,
-		sweVectorName,
-		sweCoordinateName,
-		#
-		omGeometryObservationName,
-		omCategoryObservationName,
-		omCountObservationName,
-		omTruthObservationName,
-		omTemporalObservationName,
-		omComplexObservationName,
-		#
-		mimeTypeCSV,
-		mimeTypeOM,
-		mimeTypeKML,
-		kmlName,
-		mimeTypeXML)
+.createDefaultParsers <- function() {
+	.defP <- list(
+			parseSosCapabilities,
+			parseSensorML,
+			parseOM,
+			parseOM,
+			parseOwsExceptionReport,
+			#
+			parseMeasurement,
+			parseObservationProperty,
+			parseObservation,
+			parseObservationCollection,
+			parseResult,
+			parseDataArray,
+			parseElementType,
+			parseEncoding,
+			parseValues,
+			parseSwePosition,
+			parseLocation,
+			parseVector,
+			parseCoordinate,
+			#
+			parseGeometryObservation,
+			parseCategoryObservation,
+			parseCountObservation,
+			parseTruthObservation,
+			parseTemporalObservation,
+			parseComplexObservation,
+			#
+			parseCSV,
+			parseOM,
+			parseKML,
+			parseKML,
+			parseOM)
+	
+	names(.defP) <- list(
+			sosGetCapabilitiesName,
+			sosDescribeSensorName,
+			sosGetObservationName,
+			sosGetObservationByIdName,
+			owsExceptionReportName,
+			#
+			omMeasurementName,
+			omMemberName,
+			omObservationName,
+			omObservationCollectionName,
+			omResultName,
+			sweDataArrayName,
+			sweElementTypeName,
+			sweEncodingName,
+			sweValuesName,
+			swePositionName,
+			sweLocationName,
+			sweVectorName,
+			sweCoordinateName,
+			#
+			omGeometryObservationName,
+			omCategoryObservationName,
+			omCountObservationName,
+			omTruthObservationName,
+			omTemporalObservationName,
+			omComplexObservationName,
+			#
+			mimeTypeCSV,
+			mimeTypeOM,
+			mimeTypeKML,
+			kmlName,
+			mimeTypeXML)
+	
+	return(.defP)
+}
+
+.sosDefaultParsers <- .createDefaultParsers()
 
 # Using a different approach for the encoders here, because there is more than
 # one way of encoding something (in contrast to parsing). So the different 
@@ -373,6 +380,15 @@ SosDisabledParsers <- function() {
 #	if(is.null(.b)) return(FALSE)
 #	else return(.b)
 #}
+
+#
+#
+#
+SosResetParsingFunctions <- function(sos) {
+	sos@parsers <- .createDefaultParsers()
+	
+	return(sos)
+}
 
 ################################################################################
 # other defaults

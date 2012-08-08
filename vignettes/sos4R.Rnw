@@ -1,4 +1,5 @@
 \documentclass[nogin,a4paper]{article}
+\usepackage[utf8]{inputenc}
 
 %\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
 %\VignetteDepends{xtable}
@@ -26,9 +27,10 @@
 % otherwise removes line breaks etc.
 \SweaveOpts{keep.source=TRUE}
 
-% some global options
+% some global options and helper function
 <<options,echo=FALSE,results=hide,print=FALSE>>= 
-.goOnline <- FALSE # triggers whether data is downloaded and stored in /doc folder
+.goOnline <- FALSE # triggers whether data is downloaded and stored in /vignettes folder
+.verbose <- TRUE
 
 #library("cacheSweave")
 #setCacheDir("/tmp/cacheSweave/sos4R")
@@ -38,8 +40,12 @@
 		.fileEnding <- ""
 	else .fileEnding <- ".xml"
 
-	.path <- paste(.find.package("sos4R", lib.loc = NULL), "/doc/",
-			name, .fileEnding, sep = "")
+	# since Vignette is in /vignettes/ this doesn't seem to work anymore...
+#	.path <- paste(.find.package("sos4R", lib.loc = NULL), "/vignettes/",
+#			name, .fileEnding, sep = "")
+	.path <- paste0(name, .fileEnding)
+	if(.verbose) cat("Loading file", .path, "\n")
+	
 	return(.path)
 }
 @
@@ -48,6 +54,19 @@
 \setkeys{Gin}{width=0.6\textwidth} 
 
 \begin{document}
+
+% http://www.stat.auckland.ac.nz/~stat782/downloads/Sweave-customisation.pdf
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+<<echo=false>>=
+options(width=60)
+options(SweaveHooks=list(fig=function()
+					par(mar=c(5.1, 4.1, 1.1, 2.1))))
+@
+
 
 \title{Accessing Data from Sensor Observation Services:\\ the \pkg{sos4R} Package}
 \author{Daniel N\"{u}st\footnote{Institute for Geoinformatics, University of Muenster, Germany.}\\ {\tt daniel.nuest@uni-muenster.de}\\ {\tt \url{http://www.nordholmen.net/sos4r}}}
@@ -68,6 +87,7 @@ The package is published under GPL 2 license within the geostatistics community 
 \tableofcontents
 
 
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
@@ -125,17 +145,21 @@ A more extensive discussion is available in the the O\&M specification (Cox, 200
 
 \begin{center}
 \begin{table}[ht]
-\begin{tabular}{lp{4cm}p{4cm}}
+\begin{tabular}{p{0.3\textwidth}p{0.3\textwidth}p{0.3\textwidth}}
 	\textbf{O\&M} & \textbf{Particulate Matter\newline 2.5 Concentrations} & \textbf{Earth Observations} \\
 	\hline
 	\hline\noalign{\smallskip}
-	Observation::result & 35 ug/m3 & observation value,\newline measurement value \\
+	result & 35 ug/m3 & observation value, measurement value
+	\\
 	\hline\noalign{\smallskip}
-	Observation::procedure & U.S. EPA Federal\newline Reference Method for PM 2.5 & method, sensor \\
+	procedure & U.S. EPA Federal Reference Method for PM 2.5
+	& method, sensor \\
 	\hline\noalign{\smallskip}
-	Observation::observedProperty & Particulate Matter 2.5 & parameter, variable \\
+	observedProperty & Particulate Matter 2.5 & parameter, variable
+	\\
 	\hline\noalign{\smallskip}
-	Observation::featureOfInterest & troposphere & media (air, water, \ldots),\newline Global Change\newline Master Directory \enquote{Topic} \\
+	featureOfInterest & troposphere & media (air, water,
+	\ldots), Global Change Master Directory \enquote{Topic} \\
 	\hline
 \end{tabular}
 \caption{Domain specific variants of O\&M terms.}
@@ -411,8 +435,10 @@ The content of the capabilities document allows the plotting of a service's offe
 library(maps); library(mapdata); library(maptools)
 data(worldHiresMapEnv)
 crs <- sosGetCRS(mySOS)[[1]]
-worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria"), plot = FALSE))
+worldHigh <- pruneMap(
+		map(database = "worldHires",
+			region = c("Germany", "Austria", "Netherlands"),
+			plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
 # the plot:
@@ -426,7 +452,7 @@ title(main = paste("Offerings by '", sosTitle(mySOS), "'", sep = ""),
 \label{fig:mySOS}
 
 \begin{center}
-<<label=sosPlotFigure,fig=TRUE,echo=FALSE>>=
+<<sosPlotFigure,fig=TRUE,echo=FALSE>>=
 <<sosPlot>>
 @
 \end{center}
@@ -467,7 +493,9 @@ if (.goOnline) {
 			procedure = "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93",
 			saveOriginal = .sensorFile)
 } else {
-	mySensor <- parseFile(mySOS, .getFilePath(.sensorFile))
+	# mySensor <- parseFile(mySOS, .getFilePath(.sensorFile), verbose = TRUE)
+	#mySensor <- parseFile(mySOS, paste0(.sensorFile, ".xml")) #, verbose = TRUE)
+	mySensor <- parseFile(mySOS, .getFilePath(.sensorFile), verbose = .verbose)
 }
 @
 <<describeSensor1b,echo=TRUE,print=TRUE,eval=FALSE>>= 
@@ -509,7 +537,7 @@ sosBoundedBy(mySensor)
 
 The coordinates also allow the plotting of the sensor positions (see Figure \ref{fig:desribeSensorPlot}). Here it is assumed that the spatial reference system of the SOS is the same for data from the first offering and the sensor positions!
 
-<<label=describeSensorPlotCode,echo=TRUE,eval=FALSE>>=
+<<describeSensorPlotCodeForText,echo=TRUE,eval=FALSE>>=
 library(maps); library(mapdata); library(maptools)
 data(worldHiresMapEnv)
 
@@ -519,15 +547,16 @@ procs.descr <- lapply(X = procs, FUN = describeSensor, sos = mySOS)
 
 sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria", "Netherlands"),
+				region = c("Germany", "Austria", "Netherlands",
+						"Italy"),
 				plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
 
-plot(worldHigh.lines, col = "grey50")
+plot(worldHigh.lines, col = "grey50", ylim = c(44.0, 54.8))
 for(x in procs.descr)
 	plot(x, add = TRUE, pch = 19)
 text(sosCoordinates(procs.descr)[c("x", "y")],
-		labels = sosId(procs.descr), pos = 4)
+		labels = sosId(procs.descr), pos = 4, cex = 0.8)
 title(main = paste("Sensors of", sosTitle(mySOS)))
 @
 
@@ -535,7 +564,7 @@ title(main = paste("Sensors of", sosTitle(mySOS)))
 \label{fig:desribeSensorPlot}
 
 \begin{center}
-<<label=describeSensorPlot,fig=TRUE,echo=FALSE,print=FALSE>>=
+<<describeSensorPlot,fig=TRUE,echo=FALSE,print=FALSE,width=8>>=
 library(maps); library(mapdata); library(maptools)
 data(worldHiresMapEnv)
 
@@ -551,23 +580,27 @@ if (.goOnline) {
 
 sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
 worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria", "Netherlands"),
+				region = c("Germany", "Austria", "Netherlands",
+						"Italy"),
 				plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
 
-plot(worldHigh.lines, col = "grey50")
+plot(worldHigh.lines, col = "grey50", ylim = c(44, 55))
 # only plot the procedures where I can find the id (and then probably the
 # position can also be found
 for(x in procs.descr)
 	plot(x, add = TRUE, pch = 19)
 text(sosCoordinates(procs.descr)[c("x", "y")],
-		labels = sosId(procs.descr), pos = 4)
+		labels = sosId(procs.descr), pos = 4, cex = 0.6)
 title(main = paste("Sensors of", sosTitle(mySOS)))
 @
 \end{center}
 \caption{Plot of procedure positions and identifiers}
 \end{figure}
 
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{GetObservation}
 \label{sub:getobservation}
 
@@ -1134,6 +1167,9 @@ sosGetCRS(obs.temp)
 sosGetCRS(obs.oneWeek)
 @
 
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{GetObservationById}
 \label{subsec:getObsById}
 
@@ -1199,6 +1235,7 @@ Step (i), the building of requests, i.e. the assembly of the request parameters 
 
 In the remainder of this section it is explained how this applies to the steps (ii), (iv) and (v) of the fixed workflow. 
 
+
 \subsection{Include and Exclude Functions}
 \label{subsec:inexclusion}
 
@@ -1232,6 +1269,9 @@ parsers <- SosParsingFunctions(
 print(names(parsers))
 @
 
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Encoders}
 \label{subsec:encoders}
 
@@ -1291,6 +1331,9 @@ setMethod(f = "encodeXML",
 
 All later calls for encoding any classes with time will then reference this newly defined method. Be aware that this changes the encoding \textbf{globally}, in contrast to converters and parsers which can be changed for every object of class \code{SOS}.
 
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Parsers/Decoders}
 \label{subsec:parsers}
 
@@ -1395,6 +1438,9 @@ print(xmlName(xmlRoot(response.noparsing)))
 # document and the name of an element.)
 @
 
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data Converters}
 \label{subsec:converters}
 
@@ -1692,27 +1738,59 @@ Please note that the author of this document does not control these services and
 \section{Getting Support}
 \label{sec:support}
 
-If you want to ask questions about using the software, please go first to the \fivetwon \textbf{forum} for the geostatistics community at \url{http://geostatistics.forum.52north.org/} and check if a solution is described there. If you are a frequent user please consider subscribing to the geostatistics \textbf{mailing list} (\url{http://list.52north.org/mailman/listinfo/geostatistics}) which is linked to the forum.
+If you want to ask \textbf{questions} about using the software, please go first
+to the \fivetwon \textbf{forum} for the geostatistics community at
+\url{http://geostatistics.forum.52north.org/} and check if a solution is
+described there. If you are a frequent user please consider subscribing to the
+geostatistics \textbf{mailing list}
+(\url{http://list.52north.org/mailman/listinfo/geostatistics}). The forum and
+mailing list are synchronized, so you only have to join respectively post at
+either one.
 
+If you are sure you \textbf{found a bug}, please submit it to the \fivetwon
+Bugzilla at
+\url{https://bugzilla.52north.org/enter_bug.cgi?product=52N\%20Geostatistics}
+for the component \textbf{sos4R}. You can also brows a list of existing
+bugs\footnote{\url{https://bugzilla.52north.org/buglist.cgi?product=52N\%20Geostatistics&component=sos4R}}.
+
+
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Developing sos4R}
 \label{sec:developing}
 
 \subsection*{Code Repository}
 
-You can download (and also browse) the source code of \pkg{sos4R} directly from the \fivetwon repository:
+You can download (and also browse) the source code of \pkg{sos4R} directly from
+the \fivetwon repository:
 
 \begin{itemize}
-\item \textbf{SVN resource URL}: \url{https://svn.52north.org/svn/geostatistics/main/sos4R}. Please read the documentation (especially the posting guide) of the \fivetwon repositories\footnote{\url{http://52north.org/resources/source-repositories/}}. Anonymous access for download is possible.
-\item \textbf{Web access}: \url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
+\item \textbf{SVN resource URL}:
+\url{https://svn.52north.org/svn/geostatistics/main/sos4R}. Please read the
+documentation (especially the posting guide) of the \fivetwon
+repositories\footnote{\url{http://52north.org/resources/source-repositories/}}.
+Anonymous access for download is possible.
+\item \textbf{Web access}:
+\url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
 \end{itemize}
 
-The latest changes for every version are documented in the file \textbf{NEWS} in the package root directory, which you can directly print to the console by calling \code{sosNews()}, respectively the file \textbf{CHANGES} and \code{sosChanges()} for older entries.
+The latest changes for every version are documented in the file \textbf{NEWS} in
+the package root directory, which you can directly print to the console by
+calling \code{sosNews()}, respectively the file \textbf{CHANGES} and
+\code{sosChanges()} for older entries.
 
 \subsection*{Developer Documentation}
 
-See the developer documentation at the \fivetwon Wiki for detailed information on how to use the checked out source project: \url{https://wiki.52north.org/bin/view/Geostatistics/Sos4R }. You will find a detailed description of the folder and class structure, the file naming scheme, and an extensive list of tasks for future development.
+See the developer documentation at the \fivetwon Wiki for detailed information
+on how to use the checked out source project:
+\url{https://wiki.52north.org/bin/view/Geostatistics/Sos4R }. You will find a
+detailed description of the folder and class structure, the file naming scheme,
+and an extensive list of tasks for future development.
 
-Please get in touch with the community lead\footnote{\url{http://52north.org/communities/geostatistics/community-contact}} of the geostatistics community if you want to \textbf{become a contributor}.
+\subsection*{Contribute}
+Please get in touch with the community
+lead\footnote{\url{http://52north.org/communities/geostatistics/community-contact}}
+of the geostatistics community if you want to \textbf{become a contributor}.
 
 
 \newpage

@@ -434,6 +434,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 					.filename, "in", getwd(), "\n")
 		}
 		
+		# TODO alternatively one could use tempfile() instead of implicit getwd()
 		saveXML(.response, file = .filename)
 		
 		cat("[sos4R] Original document saved:", .filename, "\n")

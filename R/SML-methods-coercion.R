@@ -31,9 +31,11 @@
 #
 #
 as.SensorML.SpatialPointsDataFrame = function(from) {
-	.coords <- sosCoordinates(from)
+	.coords <- sosCoordinates(from, handleNames = TRUE)
+	.coordsNames <- names(.coords)
 	
-	if(all(dim(.coords) > 0)) {
+	if(all(dim(.coords) > 0, any(.coordsNames == "y"),
+			any(.coordsNames == "x"))) {
 		.crds <- .coords[,c("x", "y")]
 		.crs <- sosGetCRS(from)
 		
@@ -54,7 +56,10 @@ as.SensorML.SpatialPointsDataFrame = function(from) {
 		return(.sp)
 	}
 	else {
-		warning("No coordinates found for SensorML object, cannot coerce.")
+		warning(paste0("Cannot coerce SensorML to SpatialPointsDataFrame ",
+						" because no coordinates found for object. Check that ",
+						" sosCoordinates(obj) returns a matrix with colum ",
+						"names 'x' and 'y'."))
 		return(SpatialPointsDataFrame(data.frame(0,0),
 						data = data.frame(NA_character_)))
 	}

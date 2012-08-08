@@ -478,8 +478,8 @@ setMethod(f = "sosGetCRS",
 			tryCatch({
 						.crs <- CRS(.initString)
 					}, error = function(err) {
-						cat("[sosGetCRS] error was detected, probably the EPSG",
-								"code", .epsg, "is not recognized", 
+						warning("[sosGetCRS] error was detected, probably the ",
+								"EPSG code ", .epsg, " is not recognized ", 
 								"(returning NULL):", toString(err))
 					})
 			

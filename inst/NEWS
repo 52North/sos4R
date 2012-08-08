@@ -4,8 +4,18 @@ Changes in sos4R Version 0.2-8 - 2011-XX-XX
 
   o ADDED 'ug/m3' and 'http://www.opengis.net/def/property/OGC/0/FeatureOfInterest' to known list of fields > converted with sosConvertDouble and sosConvertString respectively
 
-  o ...
-
+  o FIXED weathersos demo
+  
+  o MOVED vignette to now suggested directory vignettes/, see http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes
+  
+  o CHANGED DESCRIPTION file: moved xtable to Suggests - section, set ByteCompile: TRUE, added Authors@R (http://journal.r-project.org/archive/2012-1/RJournal_2012-1_Hornik~et~al.pdf), changed minumum R version to 2.14.0, 
+   
+  o UPDATED cheat sheet and vignette: added link to Bugzilla
+  
+  o ADDED minor improvements for sensor description parsing and coecion: sosCoordinates(SensorML) tries to handle 'easting'/'northing', 'longitude'/'latitude', and 'elevation'/'altitude' coordinates and subsequently plotting does not break if 'x'/'y' are not given.
+  
+  o ADDED function to reset the parsers to default: sos <- SosResetParsingFunctions(sos)
+  
 Changes in sos4R Version 0.2-7 - 2011-12-02
 
   o ADDED describeSensor can now handle a character vector of procedures, will return a list with the sensor descriptions

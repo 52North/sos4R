@@ -2,11 +2,11 @@ Package: sos4R
 Type: Package
 Title: An R client for the OGC Sensor Observation Service
 Version: 0.2-8
-Date: 2011-XX-XX
-Author: Daniel Nuest
-Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 2.11.1), XML, RCurl (>= 1.4-1), sp, methods, graphics, xtable
-Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata, cshapes, xts
+Date: 2012-07-08
+Authors@R: c(person("Nüst", "Daniel", role = c("cre", "aut"),
+		email = "daniel.nuest@uni-muenster.de"))
+Depends: R (>= 2.14.0), XML, RCurl (>= 1.4-1), sp, methods, graphics
+Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata, cshapes, xts, xtable
 Description: sos4R is a client for Sensor Observation Services (SOS) as
  specified by the Open Geospatial Consortium (OGC).
  It allows users to retrieve metadata from SOS web services and to interactively
@@ -14,9 +14,10 @@ Description: sos4R is a client for Sensor Observation Services (SOS) as
  sensors, phenomena, observations et cetera using thematic, temporal and spatial
  filtering. 
 License: GPL-2
-URL: http://www.nordholmen.net/sos4r/
+URL: http://www.nordholmen.net/sos4r/, http://www.52north.org/geostatistics
 Encoding: UTF-8
-LazyLoad: yes
+LazyLoad: TRUE
+ByteCompile: TRUE
 Collate:
 	Constants.R
 	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R

@@ -58,7 +58,7 @@ setMethod(f = "sosAbstract", signature = signature(obj = "SensorML"),
 setMethod(f = "sosGetCRS",
 		signature = c(obj = "SensorML"),
 		def = function(obj, verbose = FALSE) {
-			.coords <- sosCoordinates(obj)
+			.coords <- sosCoordinates(obj, handleNames = FALSE)
 			.crs <- sosGetCRS(attributes(.coords)[["referenceFrame"]],
 					verbose = verbose)
 			return(.crs)
@@ -79,7 +79,49 @@ setMethod(f = "sosBoundedBy",
 # extract the coordinates from the SensorML document and return as a data.frame
 #
 setMethod(f = "sosCoordinates", signature = signature(obj = "SensorML"),
-		def = function(obj) {
-			return(obj@coords)
+		def = function(obj, handleNames = TRUE, verbose = FALSE) {
+			.coords <- obj@coords
+			
+			if(handleNames) {
+				if(verbose) cat("Handling coordinate names enabled!\n")
+				
+				# handle coord name variations
+				.coordsNames <- names(.coords)
+				
+				# easting/northing
+				if(any(.coordsNames == "easting")) {
+					.coordsNames[which(.coordsNames == "easting")] <- "x"
+					warning("Changed coordinate name for 'easting' to 'x'.")
+				}
+				if(any(.coordsNames == "northing")) {
+					.coordsNames[which(.coordsNames == "northing")] <- "y"
+					warning("Changed coordinate name for 'northing' to 'y'.")
+				}
+				
+				# longitude/latitude
+				if(any(.coordsNames == "longitude")) {
+					.coordsNames[which(.coordsNames == "longitude")] <- "x"
+					warning("Changed coordinate name for 'longitude' to 'x'.")
+				}
+				if(any(.coordsNames == "latitude")) {
+					.coordsNames[which(.coordsNames == "latitude")] <- "y"
+					warning("Changed coordinate name for 'latitude' to 'y'.")
+				}
+				
+				# elevation/altitude
+				if(any(.coordsNames == "elevation")) {
+					.coordsNames[which(.coordsNames == "elevation")] <- "z"
+					warning("Changed coordinate name for 'elevation' to 'z'.")
+				}
+				if(any(.coordsNames == "altitude")) {
+					.coordsNames[which(.coordsNames == "altitude")] <- "z"
+					warning("Changed coordinate name for 'altitude' to 'z'.")
+				}
+				
+				names(.coords) <- .coordsNames
+				#cat(.coordsNames)
+			}
+			
+			return(.coords)
 		}
 )

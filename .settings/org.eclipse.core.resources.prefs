@@ -1,6 +1,5 @@
-#Fri Mar 25 11:35:48 CET 2011
 eclipse.preferences.version=1
-encoding//inst/doc/sos4R.Rnw=UTF-8
 encoding//sandbox/edc-entwicklerforum.R=ISO-8859-1
+encoding//vignettes/sos4R.Rnw=UTF-8
 encoding/<project>=UTF-8
-encoding/DESCRIPTION=US-ASCII
+encoding/DESCRIPTION=UTF-8
