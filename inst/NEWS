@@ -1,4 +1,4 @@
-Changes in sos4R Version 0.2-8 - 2011-XX-XX
+Changes in sos4R Version 0.2-9 - 2012-08-08
 
   o ADDED error handling for plotting methods so that plot(sos) does not break if one offering cannot be coerced to spatial
 
@@ -8,7 +8,7 @@ Changes in sos4R Version 0.2-8 - 2011-XX-XX
   
   o MOVED vignette to now suggested directory vignettes/, see http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes
   
-  o CHANGED DESCRIPTION file: moved xtable to Suggests - section, set ByteCompile: TRUE, added Authors@R (http://journal.r-project.org/archive/2012-1/RJournal_2012-1_Hornik~et~al.pdf), changed minumum R version to 2.14.0, 
+  o CHANGED DESCRIPTION file: moved xtable to Suggests - section, set ByteCompile: TRUE, added Authors@R (http://journal.r-project.org/archive/2012-1/RJournal_2012-1_Hornik~et~al.pdf), changed minumum R version to 2.14.0
    
   o UPDATED cheat sheet and vignette: added link to Bugzilla
   

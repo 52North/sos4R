@@ -100,7 +100,7 @@ bom <- SOS("http://www.csiro.au/sensorweb/BOM_SOS/sos",
 				"urn:ogc:data:time:iso8601" = csiroTimeConverter,
 				"urn:ogc:def:phenomenon:OGC:rainfall" = sosConvertDouble),
 		switchCoordinates = TRUE, # verbose = TRUE
-		)
+)
 sosTimeFormat(bom)
 sosOfferings(bom)[[1]]
 
@@ -147,7 +147,7 @@ text(labels = labels, col = sosDefaultColorPalette,
 		x = labelCoords[,1],
 		y = labelCoords[,2])
 title(main = paste(sosTitle(csiro), "and", sosTitle(bom)),
-				sub = paste(sosAbstract(csiro), "\n", sosAbstract(bom)))
+		sub = paste(sosAbstract(csiro), "\n", sosAbstract(bom)))
 
 ################################################################################
 # plot one offering with high resolution background map and cities, including 

@@ -36,7 +36,7 @@ sosFeaturesOfInterest(offering_nox)
 #eo2h_converters <- SosDataFieldConvertingFunctions(
 #		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" = sosConvertString,
 #		"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime)
-# FIELDS ADDED IN VERSION 0.2-8
+# FIELDS ADDED IN VERSION 0.2-9
 #eo2h <- SOS(url = sosUrl(eo2h))
 #		dataFieldConverters = eo2h_converters)
 

@@ -1,5 +1,5 @@
 \documentclass[nogin,a4paper]{article}
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc} % doesn not work with check --as-cran
 
 %\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
 %\VignetteDepends{xtable}
