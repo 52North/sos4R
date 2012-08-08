@@ -1429,7 +1429,7 @@ setMethod(f = "encodeKVP",
 			if(verbose) cat("[encodeKVP] POSIXt with value", toString(obj),
 						"\n")
 			
-			.formatted <- strftime(obj = obj, format = sosTimeFormat(sos))
+			.formatted <- strftime(x = obj, format = sosTimeFormat(sos))
 			
 			if(verbose)
 				cat("Formatted ", obj, " to ", .formatted)

@@ -32,7 +32,7 @@ jade1.watertemp <- getObservation(sos = coastlab, offering = jade1,
 		observedProperty = list("WaterTemperature"), verbose = TRUE,
 		eventTime = sosCreateEventTimeList(sosCreateTimePeriod(
 						sos = coastlab,
-						begin = as.POSIXct(Sys.time() - 3600 * 24 * 180),
+						begin = as.POSIXct(Sys.time() - 3600 * 24), #* 180),
 						end = as.POSIXct(Sys.time()))))
 
 # TODO continue implemenation for Coastlab SOS, problem:
