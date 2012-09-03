@@ -251,3 +251,12 @@ if (!isGeneric("sosCapabilitiesDocumentOriginal"))
 	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos) {
 				standardGeneric("sosCapabilitiesDocumentOriginal")
 			})
+
+#
+#
+#
+if (!isGeneric("sosCapabilitiesUrl"))
+	setGeneric(name = "sosCapabilitiesUrl",
+			def = function(sos) {
+				standardGeneric("sosCapabilitiesUrl")
+			})

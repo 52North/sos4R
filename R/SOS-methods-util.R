@@ -357,6 +357,20 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 )
 
 #
+# Helper function to get the capabilities URL, e.g. in Sweave documents
+#
+setMethod(f = "sosCapabilitiesUrl",
+		signature = signature(sos = "SOS"),
+		def = function(sos) {
+			.gc <- OwsGetCapabilities(service = sosService,
+					acceptVersions = c(sos@version))
+			
+			.request <- paste0(sosUrl(sos), "?", encodeRequestKVP(.gc, sos))
+			return(.request)
+		}
+)
+
+#
 # helper methods for exception response handling
 #
 .isExceptionReport <- function(document) {
