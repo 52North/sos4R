@@ -54,6 +54,7 @@
 \setkeys{Gin}{width=0.6\textwidth} 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 % http://www.stat.auckland.ac.nz/~stat782/downloads/Sweave-customisation.pdf
 \DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
@@ -99,7 +100,7 @@ The motivation to write this package was born out of perceiving a missing link b
 
 The project is part of the geostatistics community\footnote{\url{http://52north.org/communities/geostatistics/}} of the \fivetwon Initiative for Geospatial Open Source Software\footnote{\url{http://52north.org/}}. \pkg{sos4R} is available, or will be available soon, on CRAN\footnote{\url{http://cran.r-project.org/}} (the Comprehensive R Archive Network).
 
-On the package home page, \url{http://www.nordholmen.net/sos4r/}, you can stay updated with the development blog, find example code and services, and download source packages.
+On the package home page, \url{http://www.nordholmen.net/sos4r/}, you can stay updated with the development blog and find example code and services.
 
 This software is released under a GPL 2 license\footnote{\url{http://www.gnu.org/licenses/gpl-2.0.html}} and contributions are very welcome---please see section \ref{sec:developing}.
 
@@ -109,6 +110,10 @@ library("sos4R")
 @
 
 This document was build for \textbf{package version \Sexpr{sessionInfo()[["otherPkgs"]][["sos4R"]][["Version"]]}}.
+
+\subsection{Quick Start}
+
+If you are familiar with the OGC SOS standard specification, know how to use content assist in your favourite R editor, and you do not need to extend the functionality of \pkg{sos4R}, then feel free to fast forward to Section \ref{sec:gettingstarted} and get started straightaway.
 
 \subsection{Related Specifications}
 
@@ -1696,12 +1701,31 @@ verboseSOS <- SOS(sosUrl(mySOS), verboseOutput = TRUE)
 \section{Getting Started}
 \label{sec:gettingstarted}
 
+\subsection{Installation}
+\label{subsec:installation}
+
+<<install,echo=TRUE,eval=FALSE>>= 
+install.packages("sos4R")
+@
+
+\subsection{Quick Reference}
+\label{subsec:quickref}
+
+The package comes with a one page quick reference card, also known as a "cheat sheet", which shows everything that you need to know in an extremely concise manner. This is suitable for users with some experience with \pkg{sos4R}. You can open the document by loading the package and calling
+
+<<cheatSheet,echo=TRUE,print=TRUE,eval=FALSE>>= 
+sosCheatSheet()
+@
+
+and then printing it or saving it for later use. The most useful functions are highlighted in \textbf{bold font}.
+
 \subsection{Demos}
 \label{subsec:demos}
 
 The \textbf{demos} are a good way to get started with the package. Please be aware that you need an internet connection for these demos, the used SOSs might be temporarily unavailable, and some of the demos are under construction.
 
 <<demo,echo=TRUE,eval=FALSE>>= 
+# list available demos:
 demo(package = "sos4R")
 
 # run a demo:
@@ -1731,7 +1755,6 @@ SosExampleServices()
 @
 
 Please note that the author of this document does not control these services and does not guarantee for any factors like correctness of data or availability.
-
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

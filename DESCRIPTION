@@ -1,11 +1,11 @@
 Package: sos4R
 Type: Package
 Title: An R client for the OGC Sensor Observation Service
-Version: 0.2-9
-Date: 2012-08-08
+Version: 0.2-10
+Date: 2012-11-19
 Authors@R: person(given = "Daniel", family = "Nuest", role = c("cre", "aut"), email = "daniel.nuest@uni-muenster.de")
 Depends: R (>= 2.14.0), XML, RCurl (>= 1.4-1), sp, methods, graphics
-Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata, cshapes, xts, xtable
+Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata, cshapes, xts, xtable, rgdal
 Description: sos4R is a client for Sensor Observation Services (SOS) as
  specified by the Open Geospatial Consortium (OGC).
  It allows users to retrieve metadata from SOS web services and to interactively

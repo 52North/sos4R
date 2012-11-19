@@ -52,6 +52,10 @@ if (!isGeneric("getCapabilities"))
 					acceptLanguages = c(NA)) {
 				standardGeneric("getCapabilities")	
 			})
+
+#
+#
+#
 if (!isGeneric("describeSensor"))
 	setGeneric(name = "describeSensor",
 			signature = signature("sos", "procedure", "outputFormat", "verbose",
@@ -62,6 +66,10 @@ if (!isGeneric("describeSensor"))
 					saveOriginal = NULL) {
 				standardGeneric("describeSensor")	
 			})
+
+#
+#
+#
 if (!isGeneric("getObservationById"))
 	setGeneric(name = "getObservationById",
 			signature = signature("sos", "observationId", "responseFormat",
@@ -75,6 +83,10 @@ if (!isGeneric("getObservationById"))
 					saveOriginal = NULL) {
 				standardGeneric("getObservationById")
 			})
+
+#
+#
+#
 if (!isGeneric("getObservation"))
 	setGeneric(name = "getObservation",
 			signature = signature("sos", "offering", "observedProperty",
@@ -101,7 +113,6 @@ if (!isGeneric("getObservation"))
 				standardGeneric("getObservation")
 			})
 
-
 #
 #
 #
@@ -110,16 +121,28 @@ if (!isGeneric("checkRequest"))
 			def = function(service, operation, verbose) {
 				standardGeneric("checkRequest")
 			})
+
+#
+#
+#
 if (!isGeneric("encodeRequestKVP"))
 	setGeneric(name = "encodeRequestKVP",
 			def = function(obj, sos, verbose = FALSE) {
 				standardGeneric("encodeRequestKVP")
 			})
+
+#
+#
+#
 if (!isGeneric("encodeRequestXML"))
 	setGeneric(name = "encodeRequestXML",
 			def = function(obj, sos, verbose = FALSE) {
 				standardGeneric("encodeRequestXML")
 			})
+
+#
+#
+#
 if (!isGeneric("encodeRequestSOAP"))
 	setGeneric(name = "encodeRequestSOAP",
 			def = function(obj, sos, verbose = FALSE) {
@@ -142,6 +165,10 @@ if (!isGeneric("encodeXML"))
 			def = function(obj, sos, verbose = FALSE, ...) {
 				standardGeneric("encodeXML")
 			})
+
+#
+#
+#
 if (!isGeneric("encodeKVP"))
 	setGeneric(name = "encodeKVP",
 			def = function(obj, sos, verbose = FALSE, ...) {
@@ -184,6 +211,9 @@ if (!isGeneric("sosCreateEventTime"))
 				standardGeneric("sosCreateEventTime")
 			})
 
+#
+#
+#
 if (!isGeneric("sosCreateTimeInstant"))
 	setGeneric(name = "sosCreateTimeInstant", def = function(sos, time,
 					frame = as.character(NA),
@@ -193,6 +223,9 @@ if (!isGeneric("sosCreateTimeInstant"))
 			}
 	)
 
+#
+#
+#
 if (!isGeneric("sosCreateTimePeriod"))
 	setGeneric(name = "sosCreateTimePeriod",
 			def = function(sos, begin, end, frame = as.character(NA),
@@ -204,12 +237,18 @@ if (!isGeneric("sosCreateTimePeriod"))
 			}
 	)
 
+#
+#
+#
 if (!isGeneric("sosCreateEventTimeList"))
 	setGeneric(name = "sosCreateEventTimeList",
 			def = function(time, operator = sosDefaultTemporalOperator) {
 				standardGeneric("sosCreateEventTimeList")
 			})
 
+#
+#
+#
 if (!isGeneric("sosCreateTime"))
 	setGeneric(name = "sosCreateTime",
 			def = function(sos, time, operator = sosDefaultTemporalOperator) {
@@ -238,6 +277,9 @@ if (!isGeneric("sosCreateBBOX"))
 				standardGeneric("sosCreateBBOX")
 			})
 
+#
+#
+#
 if (!isGeneric("sosCreateBBoxMatrix"))
 	setGeneric(name = "sosCreateBBoxMatrix",
 			def = function(lowLat, lowLon, uppLat, uppLon) {

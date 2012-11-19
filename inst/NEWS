@@ -1,10 +1,15 @@
-Changes in sos4R Version 0.2-10 - 2012-xx-xx
+Changes in sos4R Version 0.2-10 - 2012-11-19
 
-  o ADDED sosCapabilitiesUrl to generate a capabilities request URL in KVP encoding to include in Documentation, e.g. Sweave
+  o ADDED function sosCapabilitiesUrl to generate a capabilities request URL in KVP encoding to include in Documentation, e.g. Sweave
+  
+  o ADDED rgdal to suggests list in DESCRIPTION
   
   o FIXED pegel demo, now using the actual PegelOnline web service
-   
 
+  o FIXED a NOTE about partial argument match in getObservation,SOS_1.0.0 for 'offering' to 'offeringId': had to use the correct name offeringId when calling .getObservation_1.0.0(...)
+  
+  o EXTENDED documentation: added reference to cheat sheet in Vignette, added subsection "Quick Start" to Introduction
+  
 Changes in sos4R Version 0.2-9 - 2012-08-08
 
   o ADDED error handling for plotting methods so that plot(sos) does not break if one offering cannot be coerced to spatial

@@ -823,6 +823,10 @@ setMethod(f = "getObservationById",
 	# RETURN ##############
 	return(.responseString)
 }
+
+#
+#
+#
 setMethod(f = "getObservation",
 		signature = signature(sos = "SOS_1.0.0",
 				offering = "SosObservationOffering"),
@@ -845,6 +849,10 @@ setMethod(f = "getObservation",
 							inspect = inspect, saveOriginal = saveOriginal))
 		}
 )
+
+#
+#
+#
 setMethod(f = "getObservation",
 		signature = signature(sos = "SOS_1.0.0",
 				offering = "character"),
@@ -866,7 +874,7 @@ setMethod(f = "getObservation",
 				.obsProps <- observedProperty
 			}
 			
-			return(.getObservation_1.0.0(sos = sos, offering = offering,
+			return(.getObservation_1.0.0(sos = sos, offeringId = offering,
 							observedProperty = .obsProps,
 							responseFormat = responseFormat,
 							srsName = srsName, eventTime = eventTime,

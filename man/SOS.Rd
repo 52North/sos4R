@@ -200,6 +200,11 @@
 \alias{sosUOM,list-method}
 \alias{sosUOM,data.frame-method}
 
+\alias{sosCapabilitiesUrl}
+\alias{sosCapabilitiesUrl-method}
+\alias{sosCapabilitiesUrl,SOS-method}
+
+
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -327,6 +332,9 @@ sosExceptionCodeMeaning(ex@exceptionCode)
 
 # create a CRS object from a URN CRS string
 sosGetCRS("urn:ogc:def:crs:EPSG:4217")
+
+# create the URL to a GET request for GetCapabilities
+sosCapabilitiesUrl(mysos)
 }
 
 
