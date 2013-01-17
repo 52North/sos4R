@@ -1063,3 +1063,47 @@ library(sos4R)
 ircel <- SOS(url = "http://sos.irceline.be/sos")
 
 sosOfferings(ircel)
+
+
+################################################################################
+# TODO check out NZ groundwater data: https://geier.gns.cri.nz/ngmp-sos/
+library(sos4R)
+
+gwl.converters <- SosDataFieldConvertingFunctions(
+	"http://data.gns.cri.nz/ggwdata/phenomenon/groundwaterlevel" = sosConvertDouble,
+	"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
+	"http://www.opengis.net/def/property/OGC/0/    /FeatureOfInterest" = sosConvertString)
+
+myopts <- curlOptions(ssl.verifyhost=FALSE, ssl.verifypeer=FALSE, followlocation=TRUE)
+handle <- getCurlHandle( .opts= myopts)
+
+gwl <- SOS(url = "https://geier.gns.cri.nz/ngmp-sos/sos" , dataFieldConverters = gwl.converters, curlHandle=handle)
+
+sosOfferings(gwl)
+sosObservedProperties(gwl)
+sosFeaturesOfInterest(gwl)
+
+# get data
+sosOfferingIds(gwl)
+off <- sosOfferingIds(gwl)[[6]]
+sosOfferings(gwl)[[off]]
+
+time <- sosCreateTime(sos = gwl, time = "1995-07-01::1998-07-01")
+obs <- getObservation(sos = gwl, offering = off, eventTime= time, verbose = TRUE)
+
+result <- sosResult(obs)
+plot(result)
+summary(result)
+
+# TODO fix handling of om:ObservationCollection with "...inapplicable"
+getObservation(sos = gwl, offering = off, eventTime = sosCreateTime(sos = gwl, time = "2010-07-10::2010-07-17"), verbose = TRUE)
+
+
+################################################################################
+# TODO check out USGS SOS used in WPS-R script at
+# https://github.com/USGS-CIDA/WaterSMART/blob/master/watersmart-wps/src/main/webapp/R/r_scripts/stats_compare_wps.R
+library(sos4R)
+
+sos_url_temp="http://waterservices.usgs.gov/nwis/dv/?format=waterml,1.1&sites="
+offering_temp='00003'
+property_temp='00060'

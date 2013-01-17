@@ -1,8 +1,14 @@
+Changes in sos4R Version 0.2-11 - 2012-xx-xx
+
+  o ADDED handling for time instances to sosCreateTime
+
+  o ...
+  
 Changes in sos4R Version 0.2-10 - 2012-11-19
 
   o ADDED function sosCapabilitiesUrl to generate a capabilities request URL in KVP encoding to include in Documentation, e.g. Sweave
   
-  o ADDED rgdal to suggests list in DESCRIPTION
+  o FIXED rgdal dependency by adding it to suggests list in DESCRIPTION
   
   o FIXED pegel demo, now using the actual PegelOnline web service
 

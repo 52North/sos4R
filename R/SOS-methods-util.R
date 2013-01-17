@@ -160,7 +160,7 @@ setMethod(f = "sosCreateEventTimeList",
 )
 
 #
-#
+# test for instance: encodeXML(sosCreateTime(sos = sos, time = "2011-01-01", operator = "TM_Equals")[[1]], sos = sos)
 #
 setMethod(f = "sosCreateTime",
 		signature = signature(sos = "SOS", time = "character"),
@@ -177,10 +177,25 @@ setMethod(f = "sosCreateTime",
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "/")
 			}
+			# not a period
+			.l <- .sosCreateEventTimeListFromInstance(sos = sos, time = time,
+					operator = operator)
 
 			return(.l)
 		}
 )
+
+#
+# test: encodeXML(.sosCreateEventTimeListFromInstance(sos = sos, time = "2011-01-01", operator = SosSupportedTemporalOperators()[["TM_Equals"]])[[1]], sos = sos)
+#
+.sosCreateEventTimeListFromInstance <- function(sos, time,
+		operator = SosSupportedTemporalOperators()[["TM_Equals"]]) {
+	.ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(time))
+	.l <- sosCreateEventTimeList(time = .ti,
+					operator = SosSupportedTemporalOperators()[[operator]])
+	
+	return(.l)
+}
 
 .sosCreateEventTimeListFromPeriod <- function(sos, time, operator, seperator) {
 	.times <- strsplit(x = time, split = seperator)[[1]]
