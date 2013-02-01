@@ -245,7 +245,7 @@ SosGetObservationById <- function(
 			
 		if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
 			warning("Given url already contains a '?', appending arguments!")
-			.url = paste(.dcp, .encodedRequest, sep = "&")
+			.url = paste0(.dcp, .encodedRequest)
 		}
 		else .url = paste(.dcp, .encodedRequest, sep = "?")
 		
@@ -572,11 +572,10 @@ setMethod(f = "getObservationById",
 	return(.responseString)
 }
 
-
 #
 #
 #
-.getObservation_1.0.0 <- function(sos, offeringId, observedProperty,
+.createGetObservation_1.0.0 <- function(sos, offeringId, observedProperty,
 		responseFormat, srsName, eventTime,	procedure, featureOfInterest,
 		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
 		saveOriginal) {
@@ -613,7 +612,22 @@ setMethod(f = "getObservationById",
 			BBOX = BBOX)
 	
 	if(verbose)
-		cat("[.getObservation_1.0.0] REQUEST:\n", toString(.go), "\n")
+		cat("[.createGetObservation_1.0.0] Done:\n", toString(.go), "\n")
+}
+
+
+#
+#
+#
+.getObservation_1.0.0 <- function(sos, offeringId, observedProperty,
+		responseFormat, srsName, eventTime,	procedure, featureOfInterest,
+		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+		saveOriginal) {
+	
+	.go <- .createGetObservation_1.0.0()
+	
+#	if(verbose)
+#		cat("[.getObservation_1.0.0] REQUEST:\n", toString(.go), "\n")
 	
 	.responseString = sosRequest(sos = sos, request = .go,
 			verbose = verbose, inspect = inspect)
@@ -767,6 +781,13 @@ setMethod(f = "getObservationById",
 			cat("[.getObservation_1.0.0] Did NOT get XML string as response, trying to parse with",
 					responseFormat, "\n")
 		
+		if(is.na(responseFormat) || is.null(responseFormat)) {
+			if(verbose)
+				cat("[.getObservation_1.0.0] responseFormat is ",
+						responseFormat, " >>> returning response string...\n")
+			return(.responseString)
+		}
+		
 		if(mimeTypeCSV == responseFormat) {
 			if(verbose || inspect) {
 				cat("[.getObservation_1.0.0] CSV RESPONSE:\n")
@@ -803,10 +824,10 @@ setMethod(f = "getObservationById",
 			return(.csv)
 		} # grep(pattern = mimeTypeCSV...
 		
-		# Add other non-XML encodings here.
+		# TODO Add other non-XML encodings here.
 	} # else
 
-	# not xml nor csv
+	# not xml nor csv nore otherwise handled
 	if(verbose || inspect) {
 		cat("[.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT:\n")
 		cat(.responseString, "\n")
@@ -941,24 +962,24 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 .sosEncodeRequestKVPGetObservation_1.0.0 <- function(obj, sos,
 		verbose = FALSE) {
 	if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] encoding",
-				toString(obj))
+				toString(obj), "\n")
 	
 	# required:
-	.request <- paste("request" , sosGetObservationName, sep = "=")
-	.service <- paste("service",
+	.request <- paste(sosGETParamNameRequest, sosGetObservationName, sep = "=")
+	.service <- paste(sosGETParamNameService,
 			.kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-	.version <- paste("version",
+	.version <- paste(sosGETParamNameVersion,
 			.kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
-	.offering <- paste("offering",
+	.offering <- paste(sosGETParamNameOffering,
 			.kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
-	.observedProperty <- .kvpKeyAndValues("observedProperty", 
+	.observedProperty <- .kvpKeyAndValues(sosGETParamNameObsProp, 
 			obj@observedProperty)
 	
 	.mandatory <- paste(.service, .request, .version, .offering,
 			.observedProperty, sep = "&")
 	
 	if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0]",
-				"mandatory elements: ", .mandatory)
+				"mandatory elements: ", .mandatory, "\n")
 	
 	# optional:
 	.optionals = ""
@@ -967,7 +988,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding response format ",
 					obj@responseFormat, "\n")
 		.responseFormat <- paste(
-				"responseFormat", 
+				sosGETParamNameResponseFormat, 
 				.kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
 								pattern = "&quot;",
 								replacement = '"')),
@@ -978,7 +999,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@srsName)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding SRS name ",
 					obj@srsName, "\n")
-		.optionals <- paste(.optionals, paste("srsName", 
+		.optionals <- paste(.optionals, paste(sosGETParamNameSrsName, 
 						.kvpEscapeSpecialCharacters(x = obj@srsName),
 						sep = "="),
 				sep = "&")
@@ -1009,16 +1030,23 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	}
 	
 	if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
-		if(verbose) cat("Adding procedures ", obj@procedure, "\n")
-		.optionals <- paste(.optionals, .kvpKeyAndValues("procedure",
-						obj@procedure), sep = "&")
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding procedures ",
+					obj@procedure, "\n")
+		.optionals <- paste(.optionals,
+				.kvpKeyAndValues(sosGETParamNameProcedure, obj@procedure),
+				sep = "&")
 	}
 	
 	if( !is.null(obj@featureOfInterest)) {
-#		print(obj@featureOfInterest)
-#		.optionals <- paste(.optionals, .kvpKeyAndValues("featureOfInterest",
-#						obj@featureOfInterest), sep = "&")
-		warning("'featureOfInterest' is not supported for 'GET' - parameter is discarded, use another method to include it!")
+		.foiIDs <- obj@featureOfInterest@objectIDs
+		
+		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding features ",
+					toString(obj@featureOfInterest), "by IDs ", toString(.foiIDs), "\n")
+		
+		.optionals <- paste(.optionals,
+				.kvpKeyAndValues(sosGETParamNameFoi, .foiIDs),
+				sep = "&")
+#		warning("'featureOfInterest' is not supported for 'GET' - parameter is discarded, use another method to include it!")
 	}
 	
 	if( !is.null(obj@result)) {
@@ -1028,7 +1056,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@resultModel)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding result model ",
 					obj@resultModel, "\n")
-		.optionals <- paste(.optionals, paste("resultModel",
+		.optionals <- paste(.optionals, paste(sosGETParamNameResultModel,
 						.kvpEscapeSpecialCharacters(x = obj@resultModel),
 						sep = "="),
 				sep = "&")
@@ -1037,7 +1065,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@responseMode)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding response mode ",
 					obj@responseMode, "\n")
-		.optionals <- paste(.optionals, paste("responseMode",
+		.optionals <- paste(.optionals, paste(sosGETParamNameResponseMode,
 						.kvpEscapeSpecialCharacters(x = obj@responseMode),
 						sep = "="),
 				sep = "&")
@@ -1046,13 +1074,13 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@BBOX)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding BBOX ",
 					obj@BBOX, "\n")
-		.optionals <- paste(.optionals, paste("BBOX", 
+		.optionals <- paste(.optionals, paste(sosGETParamNameBBOX, 
 						.kvpEscapeSpecialCharacters(x = obj@BBOX), sep = "="),
 				sep = "&")
 	}
 	
 	if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0]",
-				"optional elements: ", .optionals)
+				"optional elements: ", .optionals, "\n")
 	
 	.kvpString <- paste(.mandatory, .optionals, sep = "")
 	
@@ -1421,10 +1449,11 @@ setMethod(f = "encodeKVP",
 		signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
 		function(obj, sos, verbose = FALSE) {
 			if(verbose) {
-				cat("ENCODE KVP ", class(obj), "\n")
+				cat("ENCODE KVP latest ", class(obj), "\n")
 			}
+			
 			# if eventTime is not given in GET binding, then the latest observation is returned
-			return(NA_character_)
+			return(sosDefaultGetBindingParamLatest)
 		}
 )
 

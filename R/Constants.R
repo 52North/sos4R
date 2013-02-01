@@ -58,6 +58,22 @@ SosSupportedOperations <- function() {
 	return(.supported)
 }
 
+###############################################################################
+# GET parameter names
+sosGETParamNameRequest <- "request"
+sosGETParamNameService <- "service"
+sosGETParamNameVersion <- "version"
+sosGETParamNameOffering <- "offering"
+sosGETParamNameObsProp <- "observedProperty"
+sosGETParamNameFoi <- "featureOfInterest" 
+sosGETParamNameResponseFormat <- "responseFormat"
+sosGETParamNameSrsName <- "srsName"
+sosGETParamNameEventTime <- "eventTime"
+sosGETParamNameProcedure <- "procedure"
+sosGETParamNameResultModel <- "resultModel"
+sosGETParamNameResponseMode <- "responseMode"
+sosGETParamNameBBOX <- "BBOX"
+
 ################################################################################
 # not exported SOS
 .sosConnectionMethodGet <- "GET"

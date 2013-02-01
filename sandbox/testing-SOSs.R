@@ -1107,3 +1107,49 @@ library(sos4R)
 sos_url_temp="http://waterservices.usgs.gov/nwis/dv/?format=waterml,1.1&sites="
 offering_temp='00003'
 property_temp='00060'
+
+################################################################################
+# USGS/CIDA NWIS SOS
+# Environmental Data Discovery and Transformation - Beta Service Version
+# About: http://nwisvaws02.er.usgs.gov/ogc-swie/index.jsp
+
+# GetObservation - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)
+#
+# observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 
+# - corresponds to: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH 
+# beginPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to earliest record)
+# endPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to most recent record)
+# Interval: Today, ThisWeek Future plan to implement ISO-8601 Duration option
+# Latest: only the most recent data point is reported
+# offering: UNIT (defaults to UNIT)
+#
+# Gage height observation by feature ID and begin time:
+# 	http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=2013-01-25 
+nwis <- SOS(url = "http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos",
+						method = "GET",
+						parsers = SosParsingFunctions( # disable parsing of getobs responses
+							sosGetObservationName = parseNoParsing))
+summary(nwis)
+sosCapabilitiesDocumentOriginal(nwis)
+
+sosOfferings(nwis)
+sosFeaturesOfInterest(nwis) # > GetFeature request on WFS...
+
+
+# TODO: write simple getData wrapper function that takes fois and observed properties as strings
+sosGETParamNameFoi <- "featureId" # non-standard request param name
+sosDefaultGetBindingParamLatest <- "latest"
+SosDefaults()
+obs <- getObservation(sos = nwis, offering = "UNIT", observedProperty = list("00060"),
+						featureOfInterest = SosFeatureOfInterest(objectIDs = list("05407000")),
+						responseFormat = as.character(NA),
+						latest = TRUE, # latest not standard-conform
+						inspect = FALSE, verbose = TRUE)
+
+# implement latest > FIXME so that user can set the value...
+# TODO add settings parameter to SOS classes and the default content is SosDefaults()!!!
+encodeKVP(obj = sos4R:::.createLatestEventTime(TRUE), sos = nwis, verbose = TRUE)
+
+
+# TODO implement WML parser
+# TODO implement SOS 2.0.0 POST binding

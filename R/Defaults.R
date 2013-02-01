@@ -418,6 +418,12 @@ sosDefaultColorPalette <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
 
 sosDefaultReferenceFrameSensorDescription <- "urn:ogc:def:crs:EPSG:4326"
 
+# default values for non-standard stuff
+sosDefaultGetBindingParamLatest <- NA_character_ # e.g. time=latest
+
+#
+#
+#
 SosDefaults <- function() {
 	.defaults <- list(sosDefaultCharacterEncoding,
 			sosDefaultDescribeSensorOutputFormat,
@@ -434,7 +440,8 @@ SosDefaults <- function() {
 			sosDefaultColumnNameLat,
 			sosDefaultColumnNameLon,
 			sosDefaultColumnNameSRS,
-			sosDefaultReferenceFrameSensorDescription)
+			sosDefaultReferenceFrameSensorDescription,
+			sosDefaultGetBindingParamLatest)
 	names(.defaults) <- list("sosDefaultCharacterEncoding",
 			"sosDefaultDescribeSensorOutputFormat",
 			"sosDefaultGetCapSections",
@@ -450,7 +457,12 @@ SosDefaults <- function() {
 			"sosDefaultColumnNameLat",
 			"sosDefaultColumnNameLon",
 			"sosDefaultColumnNameSRS",
-			"sosDefaultReferenceFrameSensorDescription")
+			"sosDefaultReferenceFrameSensorDescription",
+			"sosDefaultGetBindingParamLatest")
 	
 	return(.defaults)
+}
+
+SosDefaults2 <- function (...) {
+	.merge(els = list(...), defaults = SosDefaults())
 }

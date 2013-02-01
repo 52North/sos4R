@@ -1,8 +1,12 @@
 Changes in sos4R Version 0.2-11 - 2012-xx-xx
 
   o ADDED handling for time instances to sosCreateTime
-
-  o ...
+  
+  o ADDED feature of interest for GET URL, using sosGETParamNameFoi for naming the parameter
+  
+  o ADDED support for "latest" time request in GET using sosDefaultGetBindingParamLatest (e.g. "time=latest" or "latest")
+  
+  o CHANGED all GET request paramters to constant names (sosGETParamNames...)
   
 Changes in sos4R Version 0.2-10 - 2012-11-19
 
