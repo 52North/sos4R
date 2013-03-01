@@ -2,6 +2,8 @@ Changes in sos4R Version 0.2-11 - 2012-xx-xx
 
   o ADDED handling for time instances to sosCreateTime
   
+  o FIXED bug in getObservation, improved handling for saveOriginal (if not provided for getObservation(byId))
+  
   o ADDED feature of interest for GET URL, using sosGETParamNameFoi for naming the parameter
   
   o ADDED support for "latest" time request in GET using sosDefaultGetBindingParamLatest (e.g. "time=latest" or "latest")

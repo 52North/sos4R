@@ -419,6 +419,6 @@ setMethod("encodeRequestSOAP", "OwsGetCapabilities",
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}
 			
-			stop("Function not implemented yet...")
+			stop("[encodeRequestSOAP] SOAP functionality not implemented yet...")
 		}
 )

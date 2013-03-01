@@ -1153,3 +1153,50 @@ encodeKVP(obj = sos4R:::.createLatestEventTime(TRUE), sos = nwis, verbose = TRUE
 
 # TODO implement WML parser
 # TODO implement SOS 2.0.0 POST binding
+
+
+###############################################################################
+# SOS 1.0.0 in new 52N SOS 4.0
+# http://localhost:8080/sos/
+# 4.0.0-SNAPSHOT, Revision: 0, Build date: 2013-03-01 09:33:03
+#
+# "Testsuite"
+
+.sos4Rpath <- "D:/workspace-R/sos4R"
+source("D:/workspace-R/sos4R/sandbox/loadSources.R")
+# send a funtion to R again to use the debug points in StatET
+
+#
+# GET
+#
+fourGet <- SOS(url = "http://localhost:8080/sos/sos/kvp", method = "GET",
+		verboseOutput = TRUE)
+cat("wupp\n")
+sosCapabilitiesDocumentOriginal(fourGet)
+sosOperations(fourGet)
+sosContents(fourGet)
+sosProcedures(fourGet)
+sosOfferings(fourGet)
+# OK
+
+describeSensor(sos = fourGet, procedure = sosProcedures(fourGet)[[1]])
+# No decoder implementation is available for KvpBinding (KvpOperationDecoderKey[service=SOS, version=1.0.0, operation=DescribeSensor])!
+
+getObservation(sos = fourGet, offering = sosOfferings(fourGet)[[1]], verbose = TRUE)
+
+
+
+#
+# POST
+#
+fourPost <- SOS(url = "http://localhost:8080/sos/pox", method = "POST",
+		verboseOutput = TRUE)
+
+getObservationById(sos = fourGet, observationId = "1")
+
+#,
+#		parsers = SosParsingFunctions( # disable parsing of getobs responses
+#				sosGetObservationName = parseNoParsing))
+summary(four)
+sosCapabilitiesDocumentOriginal(nwis)
+

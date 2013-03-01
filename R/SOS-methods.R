@@ -264,15 +264,17 @@ SosGetObservationById <- function(
 			print(.encodedRequest)
 		}
 		
-		.dcp <- sosGetDCP(sos, sosName(request), "Post") #sos@url
+		.dcp <- sosGetDCP(sos, sosName(request), "Post") #sos@url as fallback
 		if(is.null(.dcp) || is.na(.dcp)) {
 			.dcp <- sos@url
-			if(verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description.  This is OK for first GetCapabilities request.\n")
+			if(verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
 		}
+		
+		.requestString <- toString(.encodedRequest)
 		
 		# using 'POST' for application/x-www-form-urlencoded content
 		.response <- postForm(uri = .dcp,
-				request = toString(.encodedRequest),
+				request = .requestString,
 				style = "POST", .opts = sos@curlOptions,
 				curl = sos@curlHandle,
 				.encoding = sosDefaultCharacterEncoding)
@@ -284,6 +286,7 @@ SosGetObservationById <- function(
 		}
 		
 		# TODO add SOAP request method
+		stop("[sos4R] ERROR: SOAP is not implemented for SOS 1.0.0.\n")
 	}
 	else {
 		stop(paste("Unsupported method, has to be one of",
@@ -297,7 +300,7 @@ SosGetObservationById <- function(
 	}
 	
 	if(length(.response) > 0 & 
-			regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) {
+			regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
 		if(verbose) cat("[.sosRequest_1.0.0] Got HTML, probably an error.\n")
 		
 		# might still be KML with embedded HTML!
@@ -496,16 +499,18 @@ setMethod(f = "getObservationById",
 	}
 	
 	.filename <- NULL
-	if(is.character(saveOriginal)) {
-		.filename <- saveOriginal
-		if(verbose) cat("[.getObservationById_1.0.0] Using saveOriginal parameter for file name:",
-					.filename, "\n")
-	} 
-	else if(is.logical(saveOriginal)) {
-		if(saveOriginal) .filename <- paste(observationId, 
-					format(Sys.time(), sosDefaultFilenameTimeFormat),
-					sep = "_")
-		if(verbose) cat("[.getObservationById_1.0.0] Generating file name:", .filename, "\n")
+	if(!is.null(saveOriginal)) {
+		if(is.character(saveOriginal)) {
+			.filename <- saveOriginal
+			if(verbose) cat("[.getObservationById_1.0.0] Using saveOriginal parameter for file name:",
+						.filename, "\n")
+		} 
+		else if(is.logical(saveOriginal)) {
+			if(saveOriginal) .filename <- paste(observationId, 
+						format(Sys.time(), sosDefaultFilenameTimeFormat),
+						sep = "_")
+			if(verbose) cat("[.getObservationById_1.0.0] Generating file name:", .filename, "\n")
+		}
 	}
 	
 	.go <- SosGetObservationById(service = sosService,
@@ -580,23 +585,6 @@ setMethod(f = "getObservationById",
 		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
 		saveOriginal) {
 	
-	.filename <- NULL
-	if(is.character(saveOriginal)) {
-		.filename <- saveOriginal
-		if(verbose) cat("[.getObservation_1.0.0] Using saveOriginal parameter for file name:",
-					.filename, "\n")
-	} 
-	else if(is.logical(saveOriginal)) {
-		if(saveOriginal) .filename <- paste(.cleanupFileName(offeringId), 
-					format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
-		if(verbose) cat("[.getObservation_1.0.0] Generating file name:",
-					.filename, "\n")
-	}
-	
-	if(verbose)
-		cat("[.getObservation_1.0.0] to ", sos@url, " with offering ",
-				offeringId, "\n")
-	
 	if(latest) .eventTime <- list(.createLatestEventTime(verbose))
 	else .eventTime <- eventTime
 	
@@ -613,6 +601,8 @@ setMethod(f = "getObservationById",
 	
 	if(verbose)
 		cat("[.createGetObservation_1.0.0] Done:\n", toString(.go), "\n")
+	
+	return(.go)
 }
 
 
@@ -624,10 +614,32 @@ setMethod(f = "getObservationById",
 		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
 		saveOriginal) {
 	
-	.go <- .createGetObservation_1.0.0()
+	.filename <- NULL
+	if(is.null(saveOriginal)) {
+		if(is.character(saveOriginal)) {
+			.filename <- saveOriginal
+			if(verbose) cat("[.getObservation_1.0.0] Using saveOriginal parameter for file name:",
+						.filename, "\n")
+		} 
+		else if(is.logical(saveOriginal)) {
+			if(saveOriginal) .filename <- paste(.cleanupFileName(offeringId), 
+						format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
+			if(verbose) cat("[.getObservation_1.0.0] Generating file name:",
+						.filename, "\n")
+		}
+	}
 	
-#	if(verbose)
-#		cat("[.getObservation_1.0.0] REQUEST:\n", toString(.go), "\n")
+	if(verbose)
+		cat("[.getObservation_1.0.0] to ", sos@url, " with offering ",
+				offeringId, "\n")
+	
+	.go <- .createGetObservation_1.0.0(sos, offeringId, observedProperty,
+			responseFormat, srsName, eventTime,	procedure, featureOfInterest,
+			result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+			saveOriginal)
+	
+	if(verbose)
+		cat("[.getObservation_1.0.0] REQUEST:\n\n", toString(.go), "\n")
 	
 	.responseString = sosRequest(sos = sos, request = .go,
 			verbose = verbose, inspect = inspect)
