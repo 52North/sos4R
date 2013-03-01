@@ -29,7 +29,7 @@
 
 ################################################################################
 # PegelOnlineSOS
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
 print(object.size(pegelsos), units = c("Mb"))
 # works so far... :-)
 
@@ -45,7 +45,7 @@ latestObs <- getObservation(sos = pegelsos,
 sosResult(latestObs)
 
 # three procedures, but only getting 1 element with one procedure...
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
 pegelObs <- getObservation(sos = pegelsos,
 		observedProperty = sosObservedProperties(sosOfferings(pegelsos)[[1]])[3],
 		offering = sosOfferings(pegelsos)[[1]],
@@ -114,7 +114,7 @@ plot(x = elster[[1]]@result$Time, y = elster[[1]]@result$Wasserstand, ylim = c(1
 # not so nice: not exactly reproducible because data is only stored for 30 days!
 
 # create connection to SOS
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
 
 # what data do I get?
 names(sosOfferings(pegelsos))
@@ -297,15 +297,6 @@ stl(tempSeries2009)
 #Fehler in stl(tempSept) : 
 #  Zeitreihe ist nicht periodisch oder umfasst weniger als zwei Perioden
 
-
-################################################################################
-# ClimateSOS
-climatesos <- SOS("http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos")
-
-length(sosProcedures(climatesos))
-# 6
-
-lapply(sosOfferings(climatesos), slot, "name")
 
 ################################################################################
 # MoodSOS
@@ -1162,7 +1153,7 @@ encodeKVP(obj = sos4R:::.createLatestEventTime(TRUE), sos = nwis, verbose = TRUE
 #
 # "Testsuite"
 
-.sos4Rpath <- "D:/workspace-R/sos4R"
+.sos4Rpath <- "D:/workspace-R/sos4R";
 source("D:/workspace-R/sos4R/sandbox/loadSources.R")
 # send a funtion to R again to use the debug points in StatET
 
@@ -1200,3 +1191,8 @@ getObservationById(sos = fourGet, observationId = "1")
 summary(four)
 sosCapabilitiesDocumentOriginal(nwis)
 
+
+###############################################################################
+#
+sosCreateTime(sos = pegelsos, time = "2007-07-07 07:00::2008-08-08 08:00")
+# # FIXME error: invalid class "TM_During" object: invalid object for slot "time" in class "TM_During": got class "GmlTimeInstant", should be or extend class "GmlTimePeriod"

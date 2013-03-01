@@ -165,6 +165,8 @@ setMethod(f = "sosCreateEventTimeList",
 setMethod(f = "sosCreateTime",
 		signature = signature(sos = "SOS", time = "character"),
 		def = function(sos, time, operator) {
+			.l <- NULL
+			
 			if(regexpr(pattern = "::", text = time) > -1) {
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "::")
@@ -177,10 +179,14 @@ setMethod(f = "sosCreateTime",
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "/")
 			}
-			# not a period
-			.l <- .sosCreateEventTimeListFromInstance(sos = sos, time = time,
-					operator = operator)
-
+			else {
+				# not a period
+				.l <- .sosCreateEventTimeListFromInstance(sos = sos, time = time,
+						operator = operator)
+			}
+			
+			if(is.null(.l)) warning("[sosCreateTime] could not create time.")
+			
 			return(.l)
 		}
 )
