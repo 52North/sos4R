@@ -35,7 +35,8 @@ setClass("SOS",
 				capabilities = "OwsCapabilities", parsers = "list",
 				encoders = "list", dataFieldConverters = "list",
 				timeFormat = "character", verboseOutput = "logical",
-				switchCoordinates = "logical"),
+				switchCoordinates = "logical", useDCPs = "logical",
+				dcpFilter = "list"),
 		contains = c("VIRTUAL"))
 
 #
@@ -52,13 +53,15 @@ setClass("SOS_1.0.0",
 		validity = function(object) {
 			#print("Entering validation: SOS")
 			
-			# method has to be one of GET, POST, SOAP
-			.allowedMethods = c(.sosConnectionMethodGet,
-					.sosConnectionMethodPost, .sosConnectionMethodSOAP)
-			if(!any(sapply(.allowedMethods, "==", object@method), na.rm = TRUE))
-				return(paste("method has to be one of", paste(.allowedMethods,
-										sep = ", ", collapse = " ")))
+			if(!any(sapply(SosSupportedBindings(), "==", object@method), na.rm = TRUE)) {
+				return(paste("Method has to be one of",
+								toString(SosSupportedBindings()),
+								"- given:", object@method))
+			}
 				
+			if(object@version != sos100_version)
+				return(paste0("Version must be 1.0.0 but is", object@version))
+			
 			# url has to match an URL pattern
 			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
 			.result = regexpr(.urlPattern, object@url)
@@ -73,6 +76,44 @@ setClass("SOS_1.0.0",
 			return(TRUE)
 		}
 )
+
+setClass("SOS_2.0",
+		representation(url = "character", method = "character",
+				curlHandle = "CURLHandle", curlOptions = "ANY"),
+		prototype = list(
+				url = as.character(NA),
+				method = as.character(NA),
+				version = as.character(NA)),
+		contains = c("SOS"),
+		validity = function(object) {
+			#print("Entering validation: SOS")
+			
+			if(!any(sapply(SosSupportedBindings(), "==", object@method), na.rm = TRUE)) {
+				return(paste("Method has to be one of",
+								toString(SosSupportedBindings()),
+								"- given:", object@method))
+			}
+			
+			if(object@version != sos20_version)
+				return(paste0("Version must be 2.0 but is", object@version))
+			
+			# url has to match an URL pattern
+			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
+			.result = regexpr(.urlPattern, object@url)
+			if (.result == -1)
+				return("url not matching URL-pattern (http://www.example.com)")
+			
+			# test for complete match removed, does not work yet
+			#.urlLength = nchar(object@url)
+			#if (.urlLength == attr(.result, "match.length"))
+			#	return("url not completely matching URL-pattern")
+			
+			return(TRUE)
+		}
+)
+
+setClassUnion(name = "SOS_versioned",
+		members = c("SOS_1.0.0", "SOS_2.0"))
 
 #
 #
@@ -96,6 +137,19 @@ setClassUnion(name = "SosFilter_CapabilitiesOrNULL",
 # See OWS Common 1.1.0, OGC 06-121r3
 #
 setClass("SosCapabilities_1.0.0",
+		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
+		contains = "OwsCapabilities_1.1.0",
+		validity = function(object) {
+			#print("Entering validation: SosCapabilities_1.0.0")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)
+
+#
+#
+#
+setClass("SosCapabilities_2.0",
 		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {

@@ -1141,56 +1141,70 @@ obs <- getObservation(sos = nwis, offering = "UNIT", observedProperty = list("00
 # TODO add settings parameter to SOS classes and the default content is SosDefaults()!!!
 encodeKVP(obj = sos4R:::.createLatestEventTime(TRUE), sos = nwis, verbose = TRUE)
 
-
 # TODO implement WML parser
-# TODO implement SOS 2.0.0 POST binding
-
 
 ###############################################################################
-# SOS 1.0.0 in new 52N SOS 4.0
+# SOS 1.0.0 in new 52N SOS 4.0 - a "Testsuite"
 # http://localhost:8080/sos/
 # 4.0.0-SNAPSHOT, Revision: 0, Build date: 2013-03-01 09:33:03
 #
-# "Testsuite"
 
 .sos4Rpath <- "D:/workspace-R/sos4R";
 source("D:/workspace-R/sos4R/sandbox/loadSources.R")
 # send a funtion to R again to use the debug points in StatET
 
 #
-# GET
+# POST
 #
-fourGet <- SOS(url = "http://localhost:8080/sos/sos/kvp", method = "GET",
+four.converters <- SosDataFieldConvertingFunctions(
+		"test_observable_property_6" = sosConvertDouble)
+
+# must implement handling of several endpoints for the same protocol
+# METHOD ONE: disable DCPs
+.sosFilterDCPs(c("http://localhost:8080/sos/sos/pox",
+				"http://localhost:8080/sos/sos/soap"),
+		pattern = "pox")
+four.test <- SOS(url = "http://localhost:8080/sos/sos/pox", method = "POX",
+		useDCPs = FALSE)
+sosCapabilitiesDocumentOriginal(four.test, verbose = TRUE)
+# works - good!
+
+# METHOD TWO: allow DCP filtering/selection
+four <- SOS(url = "http://localhost:8080/sos/sos/pox",
+		method = "POX",
+		dataFieldConverters = four.converters,
+		dcpFilter = list("POX" = "/pox"))
+summary(four)
+sosGetDCP(four, "GetCapabilities")
+
+sosCapabilitiesDocumentOriginal(four, verbose = TRUE)
+# FIXME
+#Fehler in .postForm(curl, .opts, .params, style) : 
+#		Unhandled case for the value of curl_easy_setopt (R type = 19, option 10002)
+
+# 
+four_offerings <- sosOfferings(four.test)
+fout_off_no6 <- four_offerings[["test_offering_6"]]
+observ <- getObservation(sos = four.test, offering = sosOfferings(four)[[1]],
+		verbose = TRUE,
+		inspect = TRUE)
+# works almost, some parsing errors and invalid objects...
+
+#
+# KVP - NOT IMPLEMENTED YET
+#
+fourGet <- SOS(url = "http://localhost:8080/sos/sos/kvp", method = "KVP",
 		verboseOutput = TRUE)
-cat("wupp\n")
 sosCapabilitiesDocumentOriginal(fourGet)
 sosOperations(fourGet)
 sosContents(fourGet)
 sosProcedures(fourGet)
 sosOfferings(fourGet)
 # OK
-
 describeSensor(sos = fourGet, procedure = sosProcedures(fourGet)[[1]])
 # No decoder implementation is available for KvpBinding (KvpOperationDecoderKey[service=SOS, version=1.0.0, operation=DescribeSensor])!
-
 getObservation(sos = fourGet, offering = sosOfferings(fourGet)[[1]], verbose = TRUE)
-
-
-
-#
-# POST
-#
-fourPost <- SOS(url = "http://localhost:8080/sos/pox", method = "POST",
-		verboseOutput = TRUE)
-
-getObservationById(sos = fourGet, observationId = "1")
-
-#,
-#		parsers = SosParsingFunctions( # disable parsing of getobs responses
-#				sosGetObservationName = parseNoParsing))
-summary(four)
-sosCapabilitiesDocumentOriginal(nwis)
-
+# ...
 
 ###############################################################################
 #

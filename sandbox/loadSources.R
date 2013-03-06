@@ -74,5 +74,6 @@ source(paste(.sos4Rpath, "R", "SOS-methods-util.R",  sep = "/"))
 source(paste(.sos4Rpath, "R", "SML-methods-util.R",  sep = "/"))
 
 source(paste(.sos4Rpath, "R", "SOS-methods.R",  sep = "/"))
+source(paste(.sos4Rpath, "R", "SOS_20-methods.R",  sep = "/"))
 
 source(paste(.sos4Rpath, "R", "Defaults.R",  sep = "/"))

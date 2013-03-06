@@ -33,6 +33,11 @@
 #
 
 #
+#
+#
+sosDefaultServiceVersion <- sos100_version
+
+#
 # A short list of some example services, no guarantee about compatibility with 
 # sos4R or quality of data, accessible using accessor/getter function.
 #
@@ -136,11 +141,15 @@ SosExampleServices <- function() {
 .sosDefaultEncoders <- list(
 		encodeRequestKVP,
 		encodeRequestXML,
-		encodeRequestSOAP)
+		encodeRequestSOAP,
+		encodeRequestXML,
+		encodeRequestKVP)
 names(.sosDefaultEncoders) <- list(
-		.sosConnectionMethodGet,
-		.sosConnectionMethodPost,
-		.sosConnectionMethodSOAP
+		.sosConnectionMethodGet_Deprecated,
+		.sosConnectionMethodPost_Deprecated,
+		.sosBindingSOAP,
+		.sosBindingPOX,
+		.sosBindingKVP
 		)
 		
 #
@@ -216,7 +225,8 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertString, # urn:ogc:data:feature
 		sosConvertString,
-		sosConvertDouble
+		sosConvertDouble,
+		sosConvertTime
 		)
 names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:time:iso8601",
@@ -288,7 +298,8 @@ names(.sosDefaultFieldConverters) <- list(
 		"uom", # fallback if actual unit is not given
 		"urn:ogc:data:feature",
 		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest",
-		"ug/m3" # micrograms per cubic meter
+		"ug/m3", # micrograms per cubic meter
+		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
 		)
 
 
@@ -301,8 +312,8 @@ SosDataFieldConvertingFunctions <- function (..., include = character(0),
 			include = include, exclude = exclude)
 }
 
-SosDefaultConnectionMethod <- function() {
-	return(.sosConnectionMethodPost)
+SosDefaultBinding <- function() {
+	return(.sosBindingPOX)
 }
 
 SosEncodingFunctions <- function (..., include = character(0),
@@ -465,4 +476,18 @@ SosDefaults <- function() {
 
 SosDefaults2 <- function (...) {
 	.merge(els = list(...), defaults = SosDefaults())
+}
+
+#
+#
+#
+SosDefaultDCPs <- function() {
+	.defaults <- list()
+	.names <- list()
+	for (.x in SosSupportedBindings()) {
+		.names <- c(.names, .x)
+		.defaults <- c(.defaults, "*")
+	}
+	names(.defaults) <- .names
+	return(.defaults)
 }

@@ -200,7 +200,7 @@ parseObservationCollection <- function(obj, sos, verbose) {
 				upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
 		
 		if(verbose) cat("[parseObservationCollection] Parsed envelope:",
-					toString(.boundedBy))
+					toString(.boundedBy), "\n")
 		
 		if(sosSwitchCoordinates(sos)) {
 			warning("Switching coordinates in envelope of ObservationCollection!")
@@ -213,7 +213,7 @@ parseObservationCollection <- function(obj, sos, verbose) {
 		}
 	}
 	else {
-		if(verbose) cat("[parseObservationCollection] Empty envelope! ")
+		if(verbose) cat("[parseObservationCollection] Empty envelope!\n")
 		.boundedBy <- list()
 	}
 	
@@ -242,7 +242,7 @@ parseObservationCollection <- function(obj, sos, verbose) {
 #
 parseResult <- function(obj, sos, verbose = FALSE) {
 	if(verbose) {
-		cat("[parseResult]\n")
+		cat("[parseResult] Starting ...\n")
 #		print(obj)
 	}
 	.result <- NULL
@@ -281,6 +281,9 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 		stop("[parseResult] result is null! Given result:\n")
 		print(obj)
 	}
+	
+	if(verbose) cat("[parseResult] ... done.\n")
+	
 	else return(.result)
 }
 

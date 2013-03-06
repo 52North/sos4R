@@ -113,6 +113,10 @@ setMethod(f = "sosUrl", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
 			return(sos@url)
 		})
+setMethod(f = "sosUrl", signature = signature(sos = "SOS_2.0"),
+		def = function(sos) {
+			return(sos@url)
+		})
 
 if (!isGeneric("sosVersion"))
 	setGeneric(name = "sosVersion", def = function(sos) {
@@ -137,6 +141,10 @@ if (!isGeneric("sosMethod"))
 				standardGeneric("sosMethod")
 			})
 setMethod(f = "sosMethod", signature = signature(sos = "SOS_1.0.0"),
+		def = function(sos) {
+			return(sos@method)
+		})
+setMethod(f = "sosMethod", signature = signature(sos = "SOS_2.0"),
 		def = function(sos) {
 			return(sos@method)
 		})
@@ -1004,7 +1012,8 @@ setMethod(f = "sosGetDCP",
 			.dcps <- .ops[[operation]]@DCPs
 			
 			if(!is.na(type)) {
-				return(.dcps[[type]])
+				.idxs <- grep(pattern = type, x = names(.dcps))
+				return(.dcps[.idxs])
 			}
 			else return(.dcps)
 		}

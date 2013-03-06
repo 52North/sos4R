@@ -1,5 +1,9 @@
-Changes in sos4R Version 0.2-11 - 2012-xx-xx
+Changes in sos4R Version 0.3 - 2012-xx-xx
 
+  o ADDED starting support for SOS 2.0 (ALPHA)
+  
+  o ADDED handling of multiple DCPs for the same operation type using a regex list dcpFilter and useDCPs as a switch
+  
   o ADDED handling for time instances to sosCreateTime
   
   o FIXED bug in getObservation, improved handling for saveOriginal (if not provided for getObservation(byId))
@@ -7,8 +11,10 @@ Changes in sos4R Version 0.2-11 - 2012-xx-xx
   o ADDED feature of interest for GET URL, using sosGETParamNameFoi for naming the parameter
   
   o ADDED support for "latest" time request in GET using sosDefaultGetBindingParamLatest (e.g. "time=latest" or "latest")
-  
-  o CHANGED all GET request paramters to constant names (sosGETParamNames...)
+   
+  o CHANGED name of bindings from GET to KVP and POST to POX. Warnings added, started renaming of "method" stuff to "binding"
+   
+  o CHANGED all GET request parameters to constant names (sosGETParamNames...)
   
 Changes in sos4R Version 0.2-10 - 2012-11-19
 

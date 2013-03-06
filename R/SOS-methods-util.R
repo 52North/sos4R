@@ -367,11 +367,12 @@ setMethod(f = "sosCreateBBoxMatrix",
 #
 setMethod(f = "sosCapabilitiesDocumentOriginal",
 		signature = signature(sos = "SOS"),
-		def = function(sos) {
+		def = function(sos, verbose = FALSE) {
+			.verbose <- sos@verboseOutput || verbose
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
 			.responseString = sosRequest(sos = sos, request = .gc,
-					verbose = sos@verboseOutput, inspect = FALSE)
+					verbose = .verbose, inspect = FALSE)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			return(.response)
 		}
@@ -669,4 +670,27 @@ sosCheatSheet <- function() {
 	class(.z) <- "vignette"
 
 	return(.z)
+}
+
+#
+#
+#
+.sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
+	if(length(pattern) == 0) {
+		if(verbose)
+			cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
+		return(dcp)
+	}
+	
+	if(verbose)
+		cat("[.sosFilterDCPs] Applying pattern", pattern, "to", toString(dcp),
+				"\n")
+	
+	.idx <- grep(pattern = pattern, x = dcp)
+	.filtered <- dcp[.idx]
+	if(verbose)
+		cat("[.sosFilterDCPs] Filtered from\n\t", toString(dcp), "\n\tto\n\t", 
+				toString(.filtered), "\n")
+	
+	return(.filtered)
 }

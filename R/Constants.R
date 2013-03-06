@@ -30,6 +30,8 @@
 #
 # Constants for version 1.0.0 of SOS
 #
+sos100_version <- "1.0.0"
+sos20_version <- "2.0"
 
 ################################################################################
 # SOS
@@ -76,13 +78,19 @@ sosGETParamNameBBOX <- "BBOX"
 
 ################################################################################
 # not exported SOS
-.sosConnectionMethodGet <- "GET"
-.sosConnectionMethodPost <- "POST"
-.sosConnectionMethodSOAP <- "SOAP"
+.sosConnectionMethodGet_Deprecated <- "GET"
+.sosBindingKVP <- "KVP"
+.sosConnectionMethodPost_Deprecated <- "POST"
+.sosBindingPOX <- "POX"
+.sosBindingSOAP <- "SOAP"
 
-SosSupportedConnectionMethods <- function() {
-	.supported <- c(.sosConnectionMethodGet, .sosConnectionMethodPost)
-	names(.supported) <- c(.sosConnectionMethodGet, .sosConnectionMethodPost)
+SosSupportedBindings <- function() {
+	.supported <- c(.sosConnectionMethodGet_Deprecated,
+			.sosConnectionMethodPost_Deprecated,
+			.sosBindingKVP,
+			.sosBindingPOX)
+	names(.supported) <- c("DEPRECATED", "DEPRECATED", "Key-value-pair (GET)",
+			"Plain old XML (POST)")
 	return(.supported)
 }
 
@@ -112,27 +120,28 @@ SosSupportedResponseModes <- function() {
 	return(.sosSupportedResponseModes)
 }
 
-.sosSupportedServiceVersions <- c("1.0.0")
+.sosSupportedServiceVersions <- c(sos100_version, sos20_version)
 SosSupportedServiceVersions <- function() {
 	return(.sosSupportedServiceVersions)
 }
 
-.sosNamespaceDefinitionsForAll <- c(sos = "http://www.opengis.net/sos/1.0",
+.sos100_NamespaceDefinitionsForAll <- c(sos = "http://www.opengis.net/sos/1.0",
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
-.sosNamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
+.sos100_NamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
 		om = "http://www.opengis.net/om/1.0",
 		ogc = "http://www.opengis.net/ogc",
 		gml = "http://www.opengis.net/gml")
-.sosNamespaceDefinitionsGetCap <- c(ows = "http://www.opengis.net/ows/1.1",
+.sos100_NamespaceDefinitionsGetCap <- c(ows = "http://www.opengis.net/ows/1.1",
 		ogc = "http://www.opengis.net/ogc")
-.sosNamespaceDefinitionsSML <- c(sml = "http://www.opengis.net/sensorML/1.0.1",
+.sos100_NamespaceDefinitionsSML <- c(sml = "http://www.opengis.net/sensorML/1.0.1",
 		gml = "http://www.opengis.net/gml",
 		swe = "http://www.opengis.net/swe/1.0.1",
 		xlink = "http://www.w3.org/1999/xlink",
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
-		
+# TODO fix schema locations for SOS 2.0	
 
-.xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
+.sos100_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
+.sos20_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd")
 
 ################################################################################
 # SOS
