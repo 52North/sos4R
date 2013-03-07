@@ -43,20 +43,20 @@ setClass("SOS",
 #
 #
 setClass("SOS_1.0.0",
-		representation(url = "character", method = "character",
+		representation(url = "character", binding = "character",
 				curlHandle = "CURLHandle", curlOptions = "ANY"),
 		prototype = list(
 				url = as.character(NA),
-				method = as.character(NA),
+				binding = as.character(NA),
 				version = as.character(NA)),
 		contains = c("SOS"),
 		validity = function(object) {
 			#print("Entering validation: SOS")
 			
-			if(!any(sapply(SosSupportedBindings(), "==", object@method), na.rm = TRUE)) {
-				return(paste("Method has to be one of",
+			if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+				return(paste("Binding has to be one of",
 								toString(SosSupportedBindings()),
-								"- given:", object@method))
+								"- given:", object@binding))
 			}
 				
 			if(object@version != sos100_version)
@@ -78,20 +78,20 @@ setClass("SOS_1.0.0",
 )
 
 setClass("SOS_2.0",
-		representation(url = "character", method = "character",
+		representation(url = "character", binding = "character",
 				curlHandle = "CURLHandle", curlOptions = "ANY"),
 		prototype = list(
 				url = as.character(NA),
-				method = as.character(NA),
+				binding = as.character(NA),
 				version = as.character(NA)),
 		contains = c("SOS"),
 		validity = function(object) {
 			#print("Entering validation: SOS")
 			
-			if(!any(sapply(SosSupportedBindings(), "==", object@method), na.rm = TRUE)) {
-				return(paste("Method has to be one of",
+			if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+				return(paste("Binding has to be one of",
 								toString(SosSupportedBindings()),
-								"- given:", object@method))
+								"- given:", object@binding))
 			}
 			
 			if(object@version != sos20_version)

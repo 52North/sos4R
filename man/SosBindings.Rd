@@ -1,11 +1,12 @@
 \name{SosBindings}
 
-\alias{connection methods}
 \alias{bindings}
 \alias{SosBinding}
 \alias{SosBindings}
 \alias{GET}
 \alias{POST}
+\alias{KVP}
+\alias{POX}
 \alias{SOAP}
 \alias{HTTP}
 
@@ -25,16 +26,16 @@ The connection method can be changed on creation of a \code{SOS} object.
 
 \references{Wikipedia page for HTTP request methods: \url{http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods}.}
 
-\seealso{\code{\link{SosSupportedConnectionMethods}}}
+\seealso{\code{\link{SosSupportedBindings}}}
 
 \examples{
 
 # HTTP connection methods supported by this sos4R implementation
-supported <- SosSupportedConnectionMethods()
+supported <- SosSupportedBindings()
 supported
 
 \dontrun{
-sos <- SOS("http://sosurl.org/", method = "GET")
+sos <- SOS("http://sosurl.org/", binding = "KVP")
 }
 
 }

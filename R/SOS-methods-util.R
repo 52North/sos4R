@@ -683,8 +683,8 @@ sosCheatSheet <- function() {
 	}
 	
 	if(verbose)
-		cat("[.sosFilterDCPs] Applying pattern", pattern, "to", toString(dcp),
-				"\n")
+		cat("[.sosFilterDCPs] Applying pattern", toString(pattern), "to",
+				toString(dcp), "\n")
 	
 	.idx <- grep(pattern = pattern, x = dcp)
 	.filtered <- dcp[.idx]

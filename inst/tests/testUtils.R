@@ -27,12 +27,17 @@
 #                                                                              #
 ################################################################################
 
+context("utils")
 
-.sos4Rpath <- "D:/workspace-R/sos4R";
-source("D:/workspace-R/sos4R/sandbox/loadSources.R")
+dcps <- c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two",
+		"Get" = "some.thing.com/different/")
 
-twozero <- SOS(url = "http://localhost:8080/sos/sos/pox", version = "2.0",
-		binding = "POX",
-		dcpFilter = list("POX" = "/pox"))
-summary(twozero)
-sosCapabilitiesDocumentOriginal(twozero, verbose = TRUE)
+test_that(".sosFilterDCPs works", {
+	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
+			is_equivalent_to("url.to/endpoint/two"))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
+	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
+			"http://url/with/endpoint/one")
+})

@@ -27,7 +27,9 @@
 #                                                                              #
 ################################################################################
 
-# TODO implement tests
+# http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
+library("testthat")
+test_package("sos4R")
 
 # use assertions with stopifnot(), identical(), all.equal() ...
 # (page 103 Chambers), do not use .Rout.save (!)

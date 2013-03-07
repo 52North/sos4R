@@ -220,7 +220,7 @@
 
 .toString.SOS_1.0.0 <- function(x, ...) {
 	.s <- paste("Object of class SOS_1.0.0 [",
-			x@method,
+			x@binding,
 			", ",
 			x@url,
 			", ",
@@ -236,7 +236,7 @@
 
 .toString.SOS_2.0 <- function(x, ...) {
 	.s <- paste("Object of class SOS_2.0 [",
-			x@method,
+			x@binding,
 			", ",
 			x@url,
 			", ",
@@ -1171,7 +1171,7 @@ summary.SOS_versioned = function(object, ...) {
 	obj[["class"]] = class(object)
 	obj[["version"]] = sosVersion(object)
 	obj[["url"]] = sosUrl(object)
-	obj[["method"]] = sosMethod(object)
+	obj[["binding"]] = sosBinding(object)
 	obj[["title"]] = sosTitle(object)
 	obj[["abstract"]] = sosAbstract(object)
 	

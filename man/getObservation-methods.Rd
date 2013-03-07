@@ -13,6 +13,10 @@
 \alias{getObservationById,SOS,character-method}
 \alias{getObservationById,SOS_1.0.0,character-method}
 
+\alias{getObservation,SOS_2.0,character-method}
+\alias{getObservation,SOS_2.0,SosObservationOffering-method}
+\alias{getObservationById,SOS_2.0,character-method}
+
 \title{Request Observations}
 
 \description{

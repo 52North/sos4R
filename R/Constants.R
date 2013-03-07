@@ -61,20 +61,20 @@ SosSupportedOperations <- function() {
 }
 
 ###############################################################################
-# GET parameter names
-sosGETParamNameRequest <- "request"
-sosGETParamNameService <- "service"
-sosGETParamNameVersion <- "version"
-sosGETParamNameOffering <- "offering"
-sosGETParamNameObsProp <- "observedProperty"
-sosGETParamNameFoi <- "featureOfInterest" 
-sosGETParamNameResponseFormat <- "responseFormat"
-sosGETParamNameSrsName <- "srsName"
-sosGETParamNameEventTime <- "eventTime"
-sosGETParamNameProcedure <- "procedure"
-sosGETParamNameResultModel <- "resultModel"
-sosGETParamNameResponseMode <- "responseMode"
-sosGETParamNameBBOX <- "BBOX"
+# KVP parameter names
+sosKVPParamNameRequest <- "request"
+sosKVPParamNameService <- "service"
+sosKVPParamNameVersion <- "version"
+sosKVPParamNameOffering <- "offering"
+sosKVPParamNameObsProp <- "observedProperty"
+sosKVPParamNameFoi <- "featureOfInterest" 
+sosKVPParamNameResponseFormat <- "responseFormat"
+sosKVPParamNameSrsName <- "srsName"
+sosKVPParamNameEventTime <- "eventTime"
+sosKVPParamNameProcedure <- "procedure"
+sosKVPParamNameResultModel <- "resultModel"
+sosKVPParamNameResponseMode <- "responseMode"
+sosKVPParamNameBBOX <- "BBOX"
 
 ################################################################################
 # not exported SOS

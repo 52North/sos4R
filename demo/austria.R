@@ -19,7 +19,7 @@ npbg_converter <- SosDataFieldConvertingFunctions(
 		"urn:ogc:def:property:OGC:Reflection" = sosConvertDouble,
 		"urn:ogc:def:property:OGC:Insolation" = sosConvertDouble)
 npbg <- SOS("http://ispacevm10.researchstudio.at/geoservices/npbg",
-		method = "GET",
+		binding = "GET",
 		#verboseOutput = TRUE,
 		dataFieldConverters = npbg_converter,
 		sections = NA)

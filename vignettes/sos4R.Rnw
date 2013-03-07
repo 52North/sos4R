@@ -29,7 +29,7 @@
 
 % some global options and helper function
 <<options,echo=FALSE,results=hide,print=FALSE>>= 
-.goOnline <- FALSE # triggers whether data is downloaded and stored in /vignettes folder
+.goOnline <- TRUE # triggers whether data is downloaded and stored in /vignettes folder
 .verbose <- TRUE
 
 #library("cacheSweave")
@@ -92,9 +92,9 @@ The package is published under GPL 2 license within the geostatistics community 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-The \pkg{sos4R} package provides classes and methods for retrieving data from an OGC Sensor Observation Service (Na, 2007). The goal of this package is to provide easy access with a low entry threshold for everyone to information available via SOSs. The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possiblities for advanced users. This package uses S4 classes and methods style (Chambers, 1998).
+The \pkg{sos4R} package provides classes and methods for retrieving data from an OGC Sensor Observation Service in version 1.0.0 (Na, 2007) and 2.0 (Br\"oring, 2010) [under development]. The goal of this package is to provide easy access with a low entry threshold for everyone to information available via SOSs. The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possiblities for advanced users. This package uses S4 classes and methods style (Chambers, 1998).
 
-At the current state, the output is fixed to a standard data.frame with attributed columns for metadata. In future releases a tighter integration is planned with upcoming space-time packages regarding data structures and classes. 
+At the current state, the output is fixed to a standard data.frame with attributed columns for metadata. In future releases a tighter integration is planned with the \pkg{spacetime} package (Pebesma, 2012) regarding output data structures and classes. 
 
 The motivation to write this package was born out of perceiving a missing link between the Sensor Web community (known as Sensor Web Enablement (SWE) Initiative\footnote{\url{http://www.opengeospatial.org/projects/groups/sensorweb}} in the OGC realm) and the community of (geo-)statisticians (N\"ust, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it. \pkg{sos4R} can help enabling this.
 
@@ -121,22 +121,23 @@ The Open Geospatial Consortium\footnote{\url{http://www.opengeospatial.org/}} (O
 
 Providing data via web services is more powerful than local file copies (with issues like being outdated, redundancy, \ldots). Flexible filtering of data on the service side reduces download size. That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain. For example \enquote{Get measurements from sensor urn:mySensor:001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees}.
 
-In general, the SOS supports two methods of requesting data: (i) HTTP GET as defined in the OOSTethys best practice document\footnote{This best-practice paper takes the place of a section in the specification that was left out by mistake. It is well established and (loosely) followed by several SOS implementations. See \url{http://www.oostethys.org/best-practices/best-practices-get}.} with key-value-pair (KVP) encoding of request, and (ii) POST as defined in the standard document with requests encoded in eXtensible Markup Language (XML)\footnote{\url{http://www.w3.org/XML/}}. Both request types always returns XML documents as response.
+In general, the SOS supports different methods of requesting data, so called bindings: (i) Key-value-pair (KVP) binding using HTTP GET as defined in the OOSTethys best practice document\footnote{This best-practice paper takes the place of a section in the specification that was left out by mistake. It is well established and (loosely) followed by several SOS implementations. See \url{http://www.oostethys.org/best-practices/best-practices-get}.}, (ii) XML, or plain old XML (POX) using HTTP POST as defined in the standard document with requests encoded in eXtensible Markup Language (XML)\footnote{\url{http://www.w3.org/XML/}}, and (iii) SOAP\footnote{Simple Object Access Protocol, see \url{http://en.wikipedia.org/wiki/SOAP}}. All bindings can return responses using different encodings, but most common are XML documents.
 
-OGC Standards that are referenced and used, by the SOS standard are as follows.
+Other OGC Standards that are referenced and used, by the SOS standard are as follows.
 
 \begin{description}
-\item[Observations and Measurements (O\&M)] O\&M (Cox, 2007) defines the markup of sensor measurements results. An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result.
-\item[Sensor Model Language (SensorML)] SensorML (Botts, 2007) is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer).
-\item[Geography Markup Language (GML)] (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots).
-\item[SweCommon] SWE Common defines data markup. It is contained in the SensorML specification (see above).
-\item[Filter Encoding] Filter Encoding (Vretanos, 2005) defines operators and operands for filtering values.
+\item[Observations and Measurements (O\&M)] O\&M (Cox, 2007) defines the markup of sensor measurements results. An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result. Different versions are used in the different SOS specifications\footnote{\url{http://www.opengeospatial.org/standards/om}}.
+\item[Sensor Model Language (SensorML)] SensorML (Botts, 2007) is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer)\footnote{\url{http://www.opengeospatial.org/standards/sensorml}}.
+\item[Geography Markup Language (GML)] (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots)\footnote{\url{http://www.opengeospatial.org/standards/gml}}.
+\item[SWE Common] SWE Common defines data markup. Version 1 is contained in the SensorML specification (see above), version 2.0 is an independent specification\footnote{\url{http://www.opengeospatial.org/standards/owscommon}}.
+\item[Filter Encoding] Filter Encoding (Vretanos, 2005) defines operators and operands for filtering values\footnote{\url{http://www.opengeospatial.org/standards/filter}}.
 \item[OWS Common] OGC Web Services Common (Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.
+\item[SWES] The SWE Service Model Implementation Standard defines data types for common use across SWE services, e.g. for contents or sensor description management.
 \end{description}
 
 \subsection{Terms and Definitions}
 
-The OGC has a particular set of well-defined terms that might differ from usage of words in specific domains. The most important are as follows\footnote{Based on \url{http://de.wikipedia.org/wiki/Sensor_Observation_Service}}.
+The OGC has a particular set of well-defined terms that might differ from usage of words in specific domains. The most important are as follows\footnote{Based on \url{http://en.wikipedia.org/wiki/Sensor_Observation_Service}}.
 
 \begin{description}
 \item[Feature of Interest (FOI)] The FOI represents the geo-object, for which measurements are made by sensors. It is ordinarily used for the spatial referencing of measuring points, i.e. the geoobject has coordinates like latitude, longitude and height. The feature is project specific and can be anything from a point (e.g. the position of a measuring station) or a real-world object (e.g. the region that is observed).
@@ -172,7 +173,7 @@ A more extensive discussion is available in the the O\&M specification (Cox, 200
 \end{table}
 \end{center}
 
-A good and extensive \textbf{introduction into the whole field of SWE}, including its history, and an analysis of the current state of the art and future developments is provided in a recent paper (Br\"oring, 2011).
+A very good and extensive \textbf{introduction into the whole field of SWE}, including its history, and an analysis of the current state of the art and future developments is provided in a recent paper (Br\"oring, 2011).
 
 
 \newpage
@@ -187,7 +188,7 @@ This section only lists the possibilities. Explanations follow in this document 
 <<supported01,echo=TRUE,print=TRUE>>=
 SosSupportedOperations()
 SosSupportedServiceVersions()
-SosSupportedConnectionMethods()
+SosSupportedBindings()
 SosSupportedResponseFormats()
 @
 
@@ -234,7 +235,7 @@ An incomplete list of \textbf{tested services} can be found in section \ref{sec:
 Two kinds of default values can be found in (function calls in) \pkg{sos4R}: (i) default depending on other function parameters, and (ii) global defaults. Global defaults can be inspected (not changed!) using the following functions. If you want to use a different value please change the respective argument in function calls.
 
 <<default,echo=TRUE,print=TRUE>>=
-SosDefaultConnectionMethod()
+SosDefaultBinding()
 SosDefaults()
 @
 
@@ -269,12 +270,12 @@ if(.goOnline) {
 mySOS <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 @
 
-To create a SOS connection you only need the URL of the service (i.e. the URL which can be used for HTTP GET or POST requests). The service connection created above is used for all examples throughout this document.
+To create a SOS connection you only need the URL of the service (i.e. the URL endpoint which can be used for HTTP requests). The service connection created above is used for all examples throughout this document.
 
 All parameters except the service endpoint are optional and use default settings (see also section \ref{sec:default}):
  
 \begin{itemize}
-    \item \code{method}: The transport protocol. Currently available are \Sexpr{toString(names(SosSupportedConnectionMethods()))}, the default is \Sexpr{SosDefaultConnectionMethod()}. \code{GET} is less powerful, especially regarding filtering operations. Section \ref{subsec:converters} contains an example of such a connection, whereas the majority of examples is based on a \code{POST} connection.
+    \item \code{method}: The transport protocol. Currently available are \Sexpr{toString(names(SosSupportedBindings()))}, the default is \Sexpr{SosDefaultBinding()}. \code{GET} is less powerful, especially regarding filtering operations. Section \ref{subsec:converters} contains an example of such a connection, whereas the majority of examples is based on a \code{POST} connection.
     \item \code{version}: The service version. Currently available version(s) is/are \Sexpr{SosSupportedServiceVersions()}.
     \item \code{parsers}: The list of parsing functions. See section \ref{subsec:parsers}.
     \item \code{encoders}: The list of encoding functions. See section \ref{subsec:encoders}.
@@ -293,7 +294,7 @@ sosTitle(mySOS)
 sosAbstract(mySOS)
 sosVersion(mySOS)
 sosTimeFormat(mySOS)
-sosMethod(mySOS)
+sosBinding(mySOS)
 @
 
 <<connDetails2,echo=TRUE,eval=FALSE>>= 
@@ -1236,7 +1237,7 @@ The flexibility of the specifications that model the markup requests and respons
 
 The process of data download comprises (i) building request, (ii) encoding requests, (iii) sending and receiving data, (iv) decoding responses, and (v) applying the correct R data type to the respective data values. This can be seen as a fixed, ordered workflow a user has to follow where each step build upon the input of the previous. To ensure flexibility within these steps of the workflow but also to maximize reusability of existing functionality, a mechanism to exchange the functions that are used in these steps is provided. 
 
-Step (i), the building of requests, i.e. the assembly of the request parameters into an R object, is documented in section \ref{sub:getobservation}. Step (iii), the sending of the sending and receiving of documents to respectively from a service, does not need to be influenced directly but the user (apart from the connection method).
+Step (i), the building of requests, i.e. the assembly of the request parameters into an R object, is documented in section \ref{sub:getobservation}. Step (iii), the sending of the sending and receiving of documents to respectively from a service, does not need to be influenced directly but the user (apart from selecting the binding).
 
 In the remainder of this section it is explained how this applies to the steps (ii), (iv) and (v) of the fixed workflow. 
 
@@ -1494,7 +1495,7 @@ In Addition, this service shows errorenous behaviour regarding the reponse forma
 .mbari <- "mbari.RData"
 if(.goOnline) {
 	MBARI <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]])
+		binding = SosSupportedBindings()[["KVP"]])
 	myOff <- sosOfferings(MBARI)[[1]]
 	myProc <- sosProcedures(MBARI)[[1]]
 
@@ -1512,7 +1513,7 @@ if(.goOnline) {
 <<converters3a,eval=FALSE,echo=TRUE>>= 
 # GET connection
 MBARI <- SOS("http://mmisw.org/oostethys/sos",
-	method = SosSupportedConnectionMethods()[["GET"]])
+	binding = SosSupportedBindings()[["KVP"]])
 myOff <- sosOfferings(MBARI)[[1]]
 myProc <- sosProcedures(MBARI)[[1]]
 mbariObs1 <- try(
@@ -1568,7 +1569,7 @@ myConverters <- SosDataFieldConvertingFunctions(
 .mbari2 <- "mbari2.RData"
 if(.goOnline) {
 	MBARI2 <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]],
+		binding = SosSupportedBindings()[["KVP"]],
 		dataFieldConverters = myConverters)
 	mbariObs2 <- getObservation(sos = MBARI2, offering = myOff, #verbose = TRUE,
 		procedure = myProc, responseFormat = NA_character_,
@@ -1581,7 +1582,7 @@ if(.goOnline) {
 @
 <<converters4a,eval=FALSE,echo=TRUE>>= 
 MBARI2 <- SOS("http://mmisw.org/oostethys/sos",
-	method = SosSupportedConnectionMethods()[["GET"]],
+	binding = SosSupportedBindings()[["KVP"]],
 	dataFieldConverters = myConverters)
 mbariObs2 <- getObservation(sos = MBARI2, offering = myOff,
 	procedure = myProc, responseFormat = NA_character_)
@@ -1830,11 +1831,14 @@ The start of the project was generously supported by the \fivetwon Student Innov
 \begin{description}
 \item Botts, M., 2007, OGC Implementation Specification 07-000: OpenGIS Sensor Model Language (SensorML)- Open Geospatial Consortium, Tech. Rep.
 \item Br\"oring A., Echterhoff J., Jirka S., Simonis I., Everding T., Stasch C., Liang S., Lemmens R. New Generation Sensor Web Enablement. Sensors. 2011; 11(3):2652-2699.
+\item Br\"oring, A., C. Stasch, and J. Echterhoff. "OGC Interface Standard 10-037: SOS 2.0 Interface Standard." Open Geospatial Consortium (2010).
 \item Chambers, J.M., 2008, Software for Data Analysis, Programming with R. Springer, New York.
 \item Cox, S., 2007, OGC Implementation Specification 07-022r1: Observations and Measurements - Part 1 - Observation schema. Open Geospatial Consortium. Tech. Rep.
 \item Cox, S., 2007, OGC Implementation Specification 07-022r3: Observations and Measurements - Part 2 - Sampling Features. Open Geospatial Consortium. Tech. Rep.
 \item Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, \url{http://portal.opengeospatial.org/files/?artifact_id=26667}, Open Geospatial Consortium, Tech. Rep. 
-\item N\"ust, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography. 
+\item N\"ust, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography.
+\item Pebesma, E., 2012, spacetime: Spatio-Temporal Data in R. Journal of Statistical
+  Software, 51(7), 1-30. \url{http://www.jstatsoft.org/v51/i07/}.
 \item Portele, C., 2003, OGC Implementation Specification 07-036: OpenGIS Geography Markup Language (GML) Encoding Standard, version: 3.00. Open Geospatial Consortium, Tech. Rep.
 \item Vretanos, P.A., 2005, OGC Implementation Specification 04-095: OpenGIS Filter Encoding Implementation Specification. Open Geospatial Consortium, Tech. Rep.
 \item Whiteside, A., Greenwood, J., 2008, OGC Implementation Specification 06-121r9: OGC Web Services Common Specification. Open Geospatial Consortium, Tech. Rep.

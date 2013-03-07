@@ -20,7 +20,7 @@ library("sos4R")
 # You can also plot the data here: http://tsdata.hzg.de/index.cgi?seite=plot_form
 #
 coastlab <- SOS(url = "http://kopc02.gkss.de/sos/sos.py",
-		method = SosSupportedConnectionMethods()[["GET"]])
+		binding = SosSupportedBindings()[["KVP"]])
 
 coastlab.off <- sosOfferings(coastlab)
 names(coastlab.off)

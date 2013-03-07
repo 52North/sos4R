@@ -346,7 +346,7 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 # http://www.openioos.org/real_time_data/gm_sos.html
 #
 oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
-		method = "GET", verboseOutput = TRUE)
+		binding = "KVP", verboseOutput = TRUE)
 ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos")
 
 sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
@@ -373,7 +373,7 @@ obs01 <- getObservation(var01, offering = sosOfferings(var01)[[1]],
 # feature filter neccessary, otherwise too much data -> works!
 
 var02 <- SOS(":82/cgi-bin/mapserv?map=/tmp/umn/umn_sos.map",
-		method = "GET",
+		binding = "KVP",
 		verboseOutput = TRUE)
 # no getcapabilities possible:
 # 1. url already contains a "?", so if "GET" the error is --- msEvalRegex(): Regular expression error. String failed expression test.
@@ -385,8 +385,8 @@ var03.converters <- SosDataFieldConvertingFunctions(
 		"urn:terrestris:foss4g:feature" = sosConvertString)
 var03 <- SOS(":8280/deegree-sos-cite100/services",
 		dataFieldConverters = var03.converters,
-#		method = "POST",
-		method = "GET")
+#		binding = "POX",
+		binding = "KVP")
 #		verboseOutput = TRUE)
 var03.off <- sosOfferings(var03)[[1]]
 obs03 <- getObservation(sos = var03, offering = var03.off,
@@ -452,7 +452,7 @@ ise.rain3 <- getObservation(sos = ise,
 ################################################################################
 # .NET implementation from http://ogc.codeplex.com/ (http://sensordatabus.org/)
 # TODO
-ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOutput = TRUE)
+ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP", verboseOutput = TRUE)
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
 # Seems not to work with additional request parameters...
 
@@ -460,11 +460,11 @@ ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOut
 ################################################################################
 # Renaissance Computing Institute
 # TODO
-renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET")
+renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP")
 # does not support sections parameter, capabilities are empty if it's given
 
 # This works:
-renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET",
+renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP",
 		verboseOutput = TRUE, sections = NA)
 renci
 renci.off <- sosOfferings(renci)
@@ -489,7 +489,7 @@ ist.converters <- SosDataFieldConvertingFunctions(
 
 # GET #
 ist.get <- SOS(url = "http://geoservice.ist.supsi.ch/sos",#verboseOutput = TRUE,
-		method = "GET", dataFieldConverters = ist.converters)
+		binding = "KVP", dataFieldConverters = ist.converters)
 sosOfferings(ist.get)
 
 ist.timeperiod <- sosCreateEventTimeList(sosCreateTimePeriod(sos = ist.get,
@@ -516,7 +516,7 @@ plot(ist.result[["Time"]], ist.result[["air-temperature"]], type = "l")
 
 # POST #
 ist.post <- SOS(url = "http://geoservice.ist.supsi.ch/sos",#verboseOutput = TRUE,
-		method = "POST", dataFieldConverters = ist.converters)
+		binding = "POX", dataFieldConverters = ist.converters)
 sosOfferings(ist.post)
 ist.obs.post <- getObservation(sos = ist.post, verbose = TRUE,
 		offering = ist.offering,
@@ -535,7 +535,7 @@ sosOfferings(istraw)
 # TODO
 brgm <- SOS(url = "http://swe.brgm.fr/constellation-envision/WS/sos-discovery",
 #		verboseOutput = TRUE,
-		method = "GET")
+		binding = "KVP")
 summary(brgm)
 
 brgm.offerings <- sosOfferings(brgm)
@@ -568,7 +568,7 @@ stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 	return(.val)
 }
 print(omResultName)
-stccmop <- SOS("http://data.stccmop.org/ws/sos.py", method = "GET",
+stccmop <- SOS("http://data.stccmop.org/ws/sos.py", binding = "KVP",
 		parsers = SosParsingFunctions("result" = stccmopParseResult))
 sosParsers(stccmop)[[omResultName]]
 sosCaps(stccmop)
@@ -682,7 +682,7 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 
 # Try with get... even weirder.
 ctiget <- SOS("http://weatherstation.cti.ac.at:8080/52NSOS_CUAS/sos",
-		method = "GET")
+		binding = "KVP")
 getObservation(ctiget, cti.off.cuas, verbose = TRUE,
 #		inspect = TRUE,
 		eventTime = time)
@@ -884,7 +884,7 @@ sosObservedProperties(fluggs)
 #A reminder email will be sent out that week.
 
 ioos_testing <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos-test/SOS",
-#		method = SosSupportedConnectionMethods()[["GET"]]
+#		binding = SosSupportedBindings()[["KVP"]]
 )
 sosObservedProperties(ioos_testing)[["network-All"]]
 unique(unlist(sosObservedProperties(ioos_testing)))
@@ -1117,7 +1117,7 @@ property_temp='00060'
 # Gage height observation by feature ID and begin time:
 # 	http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=2013-01-25 
 nwis <- SOS(url = "http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos",
-						method = "GET",
+						binding = "KVP",
 						parsers = SosParsingFunctions( # disable parsing of getobs responses
 							sosGetObservationName = parseNoParsing))
 summary(nwis)
@@ -1128,7 +1128,7 @@ sosFeaturesOfInterest(nwis) # > GetFeature request on WFS...
 
 
 # TODO: write simple getData wrapper function that takes fois and observed properties as strings
-sosGETParamNameFoi <- "featureId" # non-standard request param name
+sosKVPParamNameFoi <- "featureId" # non-standard request param name
 sosDefaultGetBindingParamLatest <- "latest"
 SosDefaults()
 obs <- getObservation(sos = nwis, offering = "UNIT", observedProperty = list("00060"),
@@ -1164,14 +1164,14 @@ four.converters <- SosDataFieldConvertingFunctions(
 .sosFilterDCPs(c("http://localhost:8080/sos/sos/pox",
 				"http://localhost:8080/sos/sos/soap"),
 		pattern = "pox")
-four.test <- SOS(url = "http://localhost:8080/sos/sos/pox", method = "POX",
+four.test <- SOS(url = "http://localhost:8080/sos/sos/pox", binding = "POX",
 		useDCPs = FALSE)
 sosCapabilitiesDocumentOriginal(four.test, verbose = TRUE)
 # works - good!
 
 # METHOD TWO: allow DCP filtering/selection
 four <- SOS(url = "http://localhost:8080/sos/sos/pox",
-		method = "POX",
+		binding = "POX",
 		dataFieldConverters = four.converters,
 		dcpFilter = list("POX" = "/pox"))
 summary(four)
@@ -1193,7 +1193,7 @@ observ <- getObservation(sos = four.test, offering = sosOfferings(four)[[1]],
 #
 # KVP - NOT IMPLEMENTED YET
 #
-fourGet <- SOS(url = "http://localhost:8080/sos/sos/kvp", method = "KVP",
+fourGet <- SOS(url = "http://localhost:8080/sos/sos/kvp", binding = "KVP",
 		verboseOutput = TRUE)
 sosCapabilitiesDocumentOriginal(fourGet)
 sosOperations(fourGet)

@@ -15,6 +15,15 @@
 \alias{print,SOS_1.0.0-method}
 \alias{toString,SOS_1.0.0-method}
 
+\alias{SOS_2.0}
+\alias{SOS_2.0-class}
+\alias{show,SOS_2.0-method}
+\alias{print,SOS_2.0-method}
+\alias{toString,SOS_2.0-method}
+
+\alias{SOS_versioned}
+\alias{SOS_versioned-class}
+
 \alias{sosCapabilitiesDocumentOriginal}
 \alias{sosCapabilitiesDocumentOriginal,SOS-method}
 
@@ -45,10 +54,11 @@
 \alias{sosFeaturesOfInterest,SOS,character-method}
 \alias{sosFeaturesOfInterest,SosObservationOffering-method}
 
-\alias{sosMethod}
-\alias{sosMethod-methods}
-\alias{sosMethod,SOS-method}
-\alias{sosMethod,SOS_1.0.0-method}
+\alias{sosBinding}
+\alias{sosBinding-methods}
+\alias{sosBinding,SOS-method}
+\alias{sosBinding,SOS_1.0.0-method}
+\alias{sosBinding,SOS_2.0-method}
 
 \alias{sosObservedProperties}
 \alias{sosObservedProperties-methods}
@@ -113,10 +123,13 @@
 \alias{sosTimeFormat}
 \alias{sosTimeFormat-methods}
 \alias{sosTimeFormat,SOS-method}
+
 \alias{sosUrl}
 \alias{sosUrl-methods}
 \alias{sosUrl,SOS-method}
 \alias{sosUrl,SOS_1.0.0-method}
+\alias{sosUrl,SOS_2.0-method}
+
 \alias{sosVersion}
 \alias{sosVersion-methods}
 \alias{sosVersion,SOS-method}
@@ -174,6 +187,7 @@
 \alias{sosOperations,SOS-method}
 \alias{sosOperations,OwsCapabilities-method}
 \alias{sosOperations,SosCapabilities_1.0.0-method}
+\alias{sosOperations,SosCapabilities_2.0-method}
 
 \alias{sosGetDCP}
 \alias{sosGetDCP,SOS,character-method}
@@ -193,6 +207,7 @@
 
 \alias{summary.SosObservationOffering}
 \alias{summary.SOS}
+\alias{summary.SOS_versioned}
 
 \alias{sosResult,data.frame-method}
 
@@ -203,7 +218,6 @@
 \alias{sosCapabilitiesUrl}
 \alias{sosCapabilitiesUrl-method}
 \alias{sosCapabilitiesUrl,SOS-method}
-
 
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
@@ -219,22 +233,25 @@ Object from the class can be used in calls to function for metadata retrieval of
 \section{Slots}{
   \describe{
     \item{\code{url}:}{Object of class \code{"character"}: The endpoint of the service, e.g. \code{http://myUrl.org/SOS1/sos}.}
-    \item{\code{method}:}{Object of class \code{"character"}: The method, or transport protocol, see \code{\link{SosSupportedConnectionMethods}} for available ones.}
+    \item{\code{binding}:}{Object of class \code{"character"}: The binding, or transport protocol, see \code{\link{SosSupportedBindings}} for available ones.}
     \item{\code{version}:}{Object of class \code{"character"}: The connected service's version, e.g. \code{"1.0.0"}.}
     \item{\code{capabilities}:}{Object of class \code{"OwsCapabilities"} ~~ }
-    \item{\code{parsers}:}{Object of class \code{"list"} ~~ }
-    \item{\code{encoders}:}{Object of class \code{"list"} ~~ }
+    \item{\code{parsers}:}{Object of class \code{"list"}: A list of named functions for parsing of SOS responses.}
+    \item{\code{encoders}:}{Object of class \code{"list"}: A list of named functions for encoding of SOS requests.}
     \item{\code{dataFieldConverters}:}{Object of class \code{"list"}: A list of named functions to be used by the parsing methods to convert data values to the correct \R type, see \code{\link{SosDataFieldConvertingFunctions}} for the default functions and how to add your own converters.}
     \item{\code{curlHandle}:}{Object of class \code{"CURLHandle"}: The curl options to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
     \item{\code{curlOptions}:}{Object of class \code{"ANY"}: The curl handle to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
     \item{\code{timeFormat}:}{Object of class \code{"character"}: The time format to be used or decoding and encoding time character strings to and from \code{POSIXt} classes.}
     \item{\code{verboseOutput}:}{Object of class \code{"logical"}: Trigger parameter for extensive debugging information on the console.}
-    \item{\code{switchCoordinates}:}{Object of class \code{"logical"}: Trigger switching of lat/long during parsing stage.}
+    \item{\code{switchCoordinates}:}{Object of class \code{"logical"}: Trigger enabling switching of lat/long during parsing stage.}
+    \item{\code{useDCPs}:}{Object of class \code{"logical"}: Trigger for not using DCP endpoints from the capabilities but just the URL.}
+    \item{\code{dcpFilter}:}{Object of class \code{"list"}: Named list of regular expressions to be applied (using \code{grep}) to DCPs if there is more than one for the chosen binding.}
   }
 }
 \section{Methods}{
   \describe{
     \item{sosAbstract}{\code{signature(obj = "SOS")}: ... }
+    \item{sosBinding}{\code{signature(sos = "SOS")}: The protocol used for a connection to the service. }
     \item{sosCapabilitiesDocumentOriginal}{\code{signature(sos = "SOS")}: To retrieve the full original service metadata document.}
     \item{sosCaps}{\code{signature(sos = "SOS")}: ... }
     \item{sosContents}{\code{signature(sos = "SOS")}: ... }
@@ -249,7 +266,6 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosFeatureIds}{\code{signature(obj = "list")}: ... }
     \item{sosFeaturesOfInterest}{\code{signature(obj = "list")}: ... }
     \item{sosGetCRS}{\code{signature(obj = "character")}: Get an object of class \code{sp:::CRS} for a given OGC URN depicting a reference system, like \code{urn:ogc:def:crs:EPSG:1000}.}
-    \item{sosMethod}{\code{signature(sos = "SOS")}: ... }
     \item{sosName}{\code{signature(obj = "...")}: ... }
     \item{sosObservedProperties}{\code{signature(sos = "SOS")}: ... }
     \item{sosOffering}{\code{signature(sos = "SOS", offeringId = "character")}: ... }
@@ -275,14 +291,20 @@ Object from the class can be used in calls to function for metadata retrieval of
 }
 
 \usage{
-SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(), dataFieldConverters = SosDataFieldConvertingFunctions(), curlOptions = list(), curlHandle = getCurlHandle(), timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, switchCoordinates = FALSE, ...)
+SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
+	parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
+	dataFieldConverters = SosDataFieldConvertingFunctions(),
+	curlOptions = list(), curlHandle = getCurlHandle(),
+	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
+	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
+	...)
 
 # accessor methods ...
 }
 
 \arguments{
   \item{url}{See the corresponding slot description.}
-  \item{method}{See the corresponding slot description.}
+  \item{binding}{See the corresponding slot description.}
   \item{version}{See the corresponding slot description.}
   \item{parsers}{See the corresponding slot description.}
   \item{encoders}{See the corresponding slot description.}
@@ -292,6 +314,8 @@ SOS(url, method = SosDefaultConnectionMethod(), version = "1.0.0", parsers = Sos
   \item{timeFormat}{See the corresponding slot description.}
   \item{verboseOutput}{See the corresponding slot description.}
   \item{switchCoordinates}{See the corresponding slot description.}
+  \item{useDCPs}{See the corresponding slot description.}
+  \item{dcpFilter}{See the corresponding slot description.}
   \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
 }
 
@@ -322,7 +346,7 @@ mysos <- SOS(url = "http://mysos.org/sos")
 
 # create a SOS connetion with a specific connection method and time format
 mysos <- SOS(url = "http://mysos.org/sos",
-    method = "GET", timeFormat = "%Y-%m-%d")
+    binding = "KVP", timeFormat = "%Y-%m-%d")
 
 # turn on verbose output for all methods and functions
 SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)

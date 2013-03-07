@@ -136,17 +136,17 @@ setMethod(f = "sosSwitchCoordinates", signature = signature(sos = "SOS"),
 		})
 
 
-if (!isGeneric("sosMethod"))
-	setGeneric(name = "sosMethod", def = function(sos) {
-				standardGeneric("sosMethod")
+if (!isGeneric("sosBinding"))
+	setGeneric(name = "sosBinding", def = function(sos) {
+				standardGeneric("sosBinding")
 			})
-setMethod(f = "sosMethod", signature = signature(sos = "SOS_1.0.0"),
+setMethod(f = "sosBinding", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
-			return(sos@method)
+			return(sos@binding)
 		})
-setMethod(f = "sosMethod", signature = signature(sos = "SOS_2.0"),
+setMethod(f = "sosBinding", signature = signature(sos = "SOS_2.0"),
 		def = function(sos) {
-			return(sos@method)
+			return(sos@binding)
 		})
 
 if (!isGeneric("sosProcedures"))

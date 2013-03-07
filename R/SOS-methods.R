@@ -29,7 +29,7 @@
 
 ################################################################################
 # construction functions
-SOS <- function(url, method = SosDefaultBinding(),
+SOS <- function(url, binding = SosDefaultBinding(),
 		version = sosDefaultServiceVersion,
 		parsers = SosParsingFunctions(),
 		encoders = SosEncodingFunctions(),
@@ -42,15 +42,15 @@ SOS <- function(url, method = SosDefaultBinding(),
 		dcpFilter = SosDefaultDCPs(),
 		...) {
 	
-	if(method == .sosConnectionMethodPost_Deprecated)
+	if(binding == .sosConnectionMethodPost_Deprecated)
 		.curlOpts <- curlOptions(url = url)
 	else .curlOpts <- curlOptions
 	
-	if(method == .sosConnectionMethodPost_Deprecated) {
+	if(binding == .sosConnectionMethodPost_Deprecated) {
 		warning("You use a deprecated method parameter, please use 'POX' from now on.")
 		method <- "POX"
 	}
-	if(method == .sosConnectionMethodGet_Deprecated) {
+	if(binding == .sosConnectionMethodGet_Deprecated) {
 		warning("You use a deprecated method parameter, please use 'KVP' from now on.")
 		method <- "KVP"
 	}
@@ -58,7 +58,7 @@ SOS <- function(url, method = SosDefaultBinding(),
 	if(version == sos100_version) {
 		.sos <- new("SOS_1.0.0",
 				url = url,
-				method = method,
+				binding = binding,
 				version = version,
 				# dummy capabilities to be replaced below
 				capabilities = new("OwsCapabilities", version = "NA",
@@ -91,7 +91,7 @@ SOS <- function(url, method = SosDefaultBinding(),
 	if(version == sos20_version) {
 		.sos <- new("SOS_2.0",
 				url = url,
-				method = method,
+				binding = binding,
 				version = version,
 				# dummy capabilities to be replaced below
 				capabilities = new("OwsCapabilities", version = "NA",
@@ -272,7 +272,7 @@ SosGetObservationById <- function(
 	.response = ""
 	
 	# get encoding function for the respective method
-	.encodingFunction <- sos@encoders[[sos@method]]
+	.encodingFunction <- sos@encoders[[sos@binding]]
 	if(verbose) {
 		.f <- functionBody(.encodingFunction)
 		cat("[.sosRequest_1.0.0] Encoding Function (beginning of function body): ",
@@ -284,7 +284,7 @@ SosGetObservationById <- function(
 	.encodedRequest = .encodingFunction(obj = request, sos = sos,
 			verbose = verbose)
 	
-	if(sos@method == .sosBindingKVP) {
+	if(sos@binding == .sosBindingKVP) {
 		.dcp <- sos@url
 		
 		if(sos@useDCPs) {
@@ -325,7 +325,7 @@ SosGetObservationById <- function(
 		
 		if(verbose) cat("[.sosRequest_1.0.0] ... done.")
 	}
-	else if(sos@method == .sosBindingPOX) {
+	else if(sos@binding == .sosBindingPOX) {
 		if(verbose || inspect) {
 			cat("[.sosRequest_1.0.0] POST!\n[.sosRequest_1.0.0] REQUEST:\n")
 			print(.encodedRequest)
@@ -367,7 +367,7 @@ SosGetObservationById <- function(
 		
 		if(verbose) cat("[.sosRequest_1.0.0] ... done.")
 	}
-	else if(sos@method == .sosBindingSOAP) {
+	else if(sos@binding == .sosBindingSOAP) {
 		if(verbose || inspect) {
 			print("[.sosRequest_1.0.0] SOAP! REQUEST:\n")
 			print(.encodedRequest)
@@ -378,7 +378,7 @@ SosGetObservationById <- function(
 	}
 	else {
 		stop(paste("Unsupported method, has to be one of",
-						SosSupportedBindings(), "but is", sos@method))
+						SosSupportedBindings(), "but is", sos@binding))
 	}
 	
 	if(verbose) {
@@ -1071,14 +1071,14 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 				toString(obj), "\n")
 	
 	# required:
-	.request <- paste(sosGETParamNameRequest, sosGetObservationName, sep = "=")
-	.service <- paste(sosGETParamNameService,
+	.request <- paste(sosKVPParamNameRequest, sosGetObservationName, sep = "=")
+	.service <- paste(sosKVPParamNameService,
 			.kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-	.version <- paste(sosGETParamNameVersion,
+	.version <- paste(sosKVPParamNameVersion,
 			.kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
-	.offering <- paste(sosGETParamNameOffering,
+	.offering <- paste(sosKVPParamNameOffering,
 			.kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
-	.observedProperty <- .kvpKeyAndValues(sosGETParamNameObsProp, 
+	.observedProperty <- .kvpKeyAndValues(sosKVPParamNameObsProp, 
 			obj@observedProperty)
 	
 	.mandatory <- paste(.service, .request, .version, .offering,
@@ -1094,7 +1094,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding response format ",
 					obj@responseFormat, "\n")
 		.responseFormat <- paste(
-				sosGETParamNameResponseFormat, 
+				sosKVPParamNameResponseFormat, 
 				.kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
 								pattern = "&quot;",
 								replacement = '"')),
@@ -1105,7 +1105,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@srsName)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding SRS name ",
 					obj@srsName, "\n")
-		.optionals <- paste(.optionals, paste(sosGETParamNameSrsName, 
+		.optionals <- paste(.optionals, paste(sosKVPParamNameSrsName, 
 						.kvpEscapeSpecialCharacters(x = obj@srsName),
 						sep = "="),
 				sep = "&")
@@ -1139,7 +1139,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding procedures ",
 					obj@procedure, "\n")
 		.optionals <- paste(.optionals,
-				.kvpKeyAndValues(sosGETParamNameProcedure, obj@procedure),
+				.kvpKeyAndValues(sosKVPParamNameProcedure, obj@procedure),
 				sep = "&")
 	}
 	
@@ -1150,7 +1150,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 					toString(obj@featureOfInterest), "by IDs ", toString(.foiIDs), "\n")
 		
 		.optionals <- paste(.optionals,
-				.kvpKeyAndValues(sosGETParamNameFoi, .foiIDs),
+				.kvpKeyAndValues(sosKVPParamNameFoi, .foiIDs),
 				sep = "&")
 #		warning("'featureOfInterest' is not supported for 'GET' - parameter is discarded, use another method to include it!")
 	}
@@ -1162,7 +1162,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@resultModel)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding result model ",
 					obj@resultModel, "\n")
-		.optionals <- paste(.optionals, paste(sosGETParamNameResultModel,
+		.optionals <- paste(.optionals, paste(sosKVPParamNameResultModel,
 						.kvpEscapeSpecialCharacters(x = obj@resultModel),
 						sep = "="),
 				sep = "&")
@@ -1171,7 +1171,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@responseMode)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding response mode ",
 					obj@responseMode, "\n")
-		.optionals <- paste(.optionals, paste(sosGETParamNameResponseMode,
+		.optionals <- paste(.optionals, paste(sosKVPParamNameResponseMode,
 						.kvpEscapeSpecialCharacters(x = obj@responseMode),
 						sep = "="),
 				sep = "&")
@@ -1180,7 +1180,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 	if( !is.na(obj@BBOX)) {
 		if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding BBOX ",
 					obj@BBOX, "\n")
-		.optionals <- paste(.optionals, paste(sosGETParamNameBBOX, 
+		.optionals <- paste(.optionals, paste(sosKVPParamNameBBOX, 
 						.kvpEscapeSpecialCharacters(x = obj@BBOX), sep = "="),
 				sep = "&")
 	}
@@ -1632,7 +1632,7 @@ setMethod(f = "checkRequest",
 			
 			# check if method is supported
 			.methodSupported <- any(sapply(SosSupportedBindings(),
-							"==", service@method))
+							"==", service@binding))
 			if(!.methodSupported)
 				warning("Requested method type ist not listed in capablities for this operation, service might return error!")
 			
