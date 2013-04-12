@@ -1210,3 +1210,11 @@ getObservation(sos = fourGet, offering = sosOfferings(fourGet)[[1]], verbose = T
 #
 sosCreateTime(sos = pegelsos, time = "2007-07-07 07:00::2008-08-08 08:00")
 # # FIXME error: invalid class "TM_During" object: invalid object for slot "time" in class "TM_During": got class "GmlTimeInstant", should be or extend class "GmlTimePeriod"
+
+
+###############################################################################
+# TODO Test 52N SOS for IOOS by Axiom Alaska
+# http://ioossos.axiomalaska.com/test/
+ioosaxiom <- SOS(url = "http://ioossos.axiomalaska.com/test/sos", binding = "KVP",
+		version = "1.0.0", verboseOutput = TRUE)
+sosOfferings(axiom)
