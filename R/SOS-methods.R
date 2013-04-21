@@ -351,7 +351,7 @@ SosGetObservationById <- function(
 				cat("[.sosRequest_1.0.0] Using DCP:", toString(.dcp), "\n")
 		}
 		else if(verbose)
-			cat("[.sosRequest_1.0.0] Not using DCP from capabilities:",
+			cat("[.sosRequest_1.0.0] *NOT* using DCP from capabilities:",
 					.dcp, "\n")
 		
 		.requestString <- toString(.encodedRequest)
@@ -1375,10 +1375,13 @@ setMethod("encodeRequestXML", "SosDescribeSensor",
 			}
 			
 			if(obj@version == sos100_version) {
+				if(verbose) {
+					cat("[encodeRequestXML] encoding vor SOS 1.0.0\n")
+				}
 				return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj))
 			}
 			else {
-				stop("Version not supported!")
+				stop("[encodeRequestXML] Version not supported for operation DescribeSensor!")
 			}
 		}
 )

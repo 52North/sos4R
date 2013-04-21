@@ -1,0 +1,36 @@
+\documentclass[nogin,a4paper]{article}
+\usepackage{Sweave}
+
+<<load,echo=TRUE>>= 
+library("sos4R")
+mySOS <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+@
+
+% GIVES ERRORS:
+<<getCap1>>= 
+getCapabilities(sos = mySOS, inspect = TRUE)
+@
+
+% WORKS, though that is just what should be happening in the function
+<<getCap2>>= 
+response <- postForm(uri = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
+				 request = '<sos:GetCapabilities xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd" service="SOS" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:ogc="http://www.opengis.net/ogc">
+ <ows:AcceptVersions>
+  <ows:Version>1.0.0</ows:Version>
+ </ows:AcceptVersions>
+ <ows:Sections>
+  <ows:Section>All</ows:Section>
+ </ows:Sections>
+ <ows:AcceptFormats>
+  <ows:OutputFormat>text/xml</ows:OutputFormat>
+ </ows:AcceptFormats>		 
+</sos:GetCapabilities>',
+										 style = "POST",
+										 .opts = mySOS@curlOptions,
+										 curl = mySOS@curlHandle,
+				 .encoding = sosDefaultCharacterEncoding)
+
+response
+@
+
+\end{document}

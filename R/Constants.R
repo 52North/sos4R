@@ -96,10 +96,10 @@ SosSupportedBindings <- function() {
 
 mimeTypeCSV <- "text/csv"
 mimeTypeXML <- "text/xml"
-mimeTypeOM <- "text/xml;subtype=&quot;om/1.0.0&quot;"
-mimeTypeSML <- "text/xml;subtype=&quot;sensorML/1.0.1&quot;"
+mimeTypeOM <- 'text/xml;subtype="om/1.0.0"'
+mimeTypeSML <- 'text/xml;subtype="sensorML/1.0.1"'
 mimeTypeKML <- "application/vnd.google-earth.kml+xml"
-mimeSubtypeOM <- "\"om/1.0.0\""
+mimeSubtypeOM <- '"om/1.0.0"'
 
 .sosSupportedResponseFormats <- c(
 		mimeTypeOM,

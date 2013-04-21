@@ -1,8 +1,6 @@
 Changes in sos4R Version 0.3 - 2012-03-07
 
   o TESTED compatibility with 52°North SOS 4.0 implementation of SOS 1.0
- 
-  o NEW starting testthat tests
    
   o NEW starting support for SOS 2.0 (pre-ALPHA, no implementation yet just classes and empty methods)
   
@@ -16,6 +14,10 @@ Changes in sos4R Version 0.3 - 2012-03-07
    
   o FIXED bug in getObservation, improved handling for saveOriginal (if not provided for getObservation(byId))
   
+  o FIXED usage of .find.packages, which is deprecated
+  
+  o FIXED bug in mimeType definition with subtypes which were incorrectly encoded by RCurl by using different quotation: "text/xml;subtype=&quot;sensorML/1.0.1&quot;" > changed to: 'text/xml;subtype="sensorML/1.0.1"' (and similar for OM) 
+   
   o CHANGED name of bindings from GET to KVP and POST to POX. Warnings added, started renaming of "connection method" stuff to "binding" to reflect more widely used terms.
    
   o CHANGED all GET request parameters to constant names (sosKVPParamNames...)

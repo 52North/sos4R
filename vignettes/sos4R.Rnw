@@ -41,7 +41,7 @@
 	else .fileEnding <- ".xml"
 
 	# since Vignette is in /vignettes/ this doesn't seem to work anymore...
-#	.path <- paste(.find.package("sos4R", lib.loc = NULL), "/vignettes/",
+#	.path <- paste(find.package("sos4R", lib.loc = NULL), "/vignettes/",
 #			name, .fileEnding, sep = "")
 	.path <- paste0(name, .fileEnding)
 	if(.verbose) cat("Loading file", .path, "\n")
@@ -478,14 +478,10 @@ The DescribeSensor operation is useful for obtaining detailed information of sen
 
 The parameters of the operation are as follows. Please see section \ref{sec:supported} and \ref{subsubsec:exploringcapabilities} of this document for supported values respectively allowed values of request parameters.
 
-<<defaultValue,echo=FALSE,print=FALSE,eval=TRUE>>=
-defaultOutputFormatDescribeSensor <- gsub(pattern = "&quot;", replacement = "'", x = sosDefaultDescribeSensorOutputFormat)
-@
-
 \begin{itemize}
     \item \code{sos}: The SOS connection to request a sensor description from.
     \item \code{procedure}: The identifier of the sensor, so one of the character strings returned by \code{sosProcedures()}.
-    \item \code{outputFormat}: The format in which the sensor description is to be returned. The default is \code{\Sexpr{defaultOutputFormatDescribeSensor}}.
+    \item \code{outputFormat}: The format in which the sensor description is to be returned. The default is \code{\Sexpr{sosDefaultDescribeSensorOutputFormat}}.
     \item \code{inspect} and \code{verbose}: See section \ref{subsec:inspect}.
  	\item \code{saveOriginal}: Saves a copy of the response document in the current working directory. See section \ref{subsec:getObsById} for an example. Accepts boolean values (\code{TRUE} will automatically create file name with time stamp) or character string to be used as file name.
 \end{itemize}
