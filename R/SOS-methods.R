@@ -359,19 +359,19 @@ SosGetObservationById <- function(
 		# using 'POST' for application/x-www-form-urlencoded content
 		if(verbose) cat("[.sosRequest_1.0.0] Do request...")
 		
-# 		.response <- postForm(uri = .dcp,
-# 				request = .requestString,
-# 				style = "POST", .opts = sos@curlOptions,
-# 				curl = sos@curlHandle,
-# 				.encoding = sosDefaultCharacterEncoding)
+		.response <- postForm(uri = .dcp,
+				request = .requestString,
+				style = "POST", .opts = sos@curlOptions,
+				curl = sos@curlHandle,
+				.encoding = sosDefaultCharacterEncoding)
 		
-		# FIXME this is a hack to get the package working again
-				.response <- postForm(uri = .dcp,
-						request = .requestString,
-						style = "POST",
-						#.opts = sos@curlOptions,
-						#curl = sos@curlHandle,
-						.encoding = sosDefaultCharacterEncoding)
+# 		# FIXME this is a hack to get the package working again
+# 				.response <- postForm(uri = .dcp,
+# 						request = .requestString,
+# 						style = "POST",
+# 						#.opts = sos@curlOptions,
+# 						#curl = sos@curlHandle,
+# 						.encoding = sosDefaultCharacterEncoding)
 		
 		if(verbose) cat("[.sosRequest_1.0.0] ... done.")
 	}
