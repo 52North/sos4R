@@ -1,7 +1,7 @@
 Package: sos4R
 Type: Package
 Title: An R client for the OGC Sensor Observation Service
-Version: 0.2-12
+Version: 0.2-11
 Date: 2013-05-14
 Authors@R: person(given = "Daniel", family = "Nuest", role = c("cre",
         "aut"), email = "daniel.nuest@uni-muenster.de")
