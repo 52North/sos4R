@@ -5,8 +5,8 @@ Version: 0.3
 Date: 2013-04-21
 Authors@R: person(given = "Daniel", family = "Nuest", role = c("cre", "aut"), email = "daniel.nuest@uni-muenster.de")
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 2.15.0), XML, RCurl (>= 1.4-1), sp, methods, graphics
-Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata, cshapes, xts, xtable, rgdal
+Depends: R (>= 2.15.0), XML (>= 3.95), RCurl (>= 1.95), sp, methods, graphics
+Suggests: spacetime (>= 1.0), gstat, maps, maptools, mapdata, cshapes, xts, xtable, rgdal
 Description: sos4R is a client for Sensor Observation Services (SOS) as
  specified by the Open Geospatial Consortium (OGC) - an interoperable interface
  for time series data.

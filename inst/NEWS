@@ -1,3 +1,6 @@
+
+TODO: move over stuff from CHANGES to NEWS
+
 Changes in sos4R Version 0.3 - 2012-03-07
 
   o TESTED compatibility with 52°North SOS 4.0 implementation of SOS 1.0
@@ -14,13 +17,15 @@ Changes in sos4R Version 0.3 - 2012-03-07
    
   o FIXED bug in getObservation, improved handling for saveOriginal (if not provided for getObservation(byId))
   
-  o FIXED usage of .find.packages, which is deprecated
+  o FIXED usage of .find.package, which is deprecated, for loading the cheat sheet and news/changes file (now using find.package)
   
   o FIXED bug in mimeType definition with subtypes which were incorrectly encoded by RCurl by using different quotation: "text/xml;subtype=&quot;sensorML/1.0.1&quot;" > changed to: 'text/xml;subtype="sensorML/1.0.1"' (and similar for OM) 
    
   o CHANGED name of bindings from GET to KVP and POST to POX. Warnings added, started renaming of "connection method" stuff to "binding" to reflect more widely used terms.
    
   o CHANGED all GET request parameters to constant names (sosKVPParamNames...)
+
+  o CHANGED minimum R version to 2.15.0 since older ones will not be tested anymore, and increased version of important dependencies RCurl and XML
   
 Changes in sos4R Version 0.2-10 - 2012-11-19
 
