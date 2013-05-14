@@ -1,0 +1,44 @@
+citHeader("To cite package sos4R in publications use:")
+
+citEntry(entry="misc",
+  author       = "Daniel Nüst",
+  title        = "{sos4R: An R client for the OGC Sensor Observation Service}",
+  year         = 2010,
+  url          = "http://www.nordholmen.net/sos4r/",
+  textVersion = paste("Nüst, D. 2010.",
+	"sos4R: An R client for the OGC Sensor Observation Service.", 
+  	"http://www.nordholmen.net/sos4r/.")
+)
+
+citEntry(entry="inproceedings",
+  textVersion	= paste("Nüst, D., Stasch, C. and Pebesma, E. J.",
+	"Connecting R to the Sensor Web",
+	"in Geertman, S.; Reinhardt, W. and Toppen, F. (Eds.)",
+	"Advancing Geoinformation Science for a Changing World,",
+	"Springer Lecture Notes in Geoinformation and Cartography,",
+	"2011, 227 - 246"),
+  author = "Daniel Nüst and Christoph Stasch and Edzer J. Pebesma",
+  title = "Connecting R to the Sensor Web",
+  booktitle = "Advancing Geoinformation Science for a Changing World",
+  year = "2011",
+  editor = "Stan Geertman and Wolfgang Reinhardt and Fred Toppen",
+  series = "Proceedings of AGILE",
+  pages = "227 - 246",
+  publisher = "Springer Lecture Notes in Geoinformation and Cartography",
+  abstract = "Interoperable data exchange and reproducibility are increasingly 
+  	important for modern scientific research. This paper shows how three open
+  	source projects work together to realize this: (i) the R project, providing
+	the lingua franca for statistical analysis, (ii) the Open Geospatial
+	Consortium's Sensor Observation Service (SOS), a standardized data
+	warehouse service for storing and retrieving sensor measurements,
+	and (iii) sos4R, a new project that connects the former two. We show
+	how sos4R can bridge the gap between two communities in science:
+	spatial statistical analysis and visualization on one side, and the
+	Sensor Web community on the other. sos4R enables R users to integrate
+	(near real-time) sensor observations directly into R. Finally, we
+	evaluate the functionality of sos4R. The software encapsulates the
+	service's complexity with typical R function calls in a common analysis
+	workflow, but still gives users full flexibility to handle interoperability
+	issues. We conclude that it is able to close the gap between R and
+	the sensor web."
+)
