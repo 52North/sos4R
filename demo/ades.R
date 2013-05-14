@@ -7,7 +7,7 @@ library("sos4R")
 ##############################################################################
 # ADES
 ades <- SOS(url = "http://sosades.brgm.fr/REST/sos",
-		binding = SosSupportedBinding()[["KVP"]])
+		method = SosSupportedConnectionMethods()[["GET"]])
 print(object.size(ades), units=c("Mb"))
 # 7.8 Mb, large capabilities file!
 

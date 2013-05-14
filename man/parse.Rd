@@ -56,7 +56,6 @@
 \alias{parseFile}
 \alias{parseFile-method}
 \alias{parseFile,SOS_1.0.0,character-method}
-\alias{parseFile,SOS_versioned,character-method}
 
 
 \alias{parseCoordinate}

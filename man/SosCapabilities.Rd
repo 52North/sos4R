@@ -1,4 +1,4 @@
-\name{SosCapabilities}
+\name{SosCapabilities_1.0.0-class}
 \Rdversion{1.1}
 
 \docType{class}
@@ -6,9 +6,8 @@
 \alias{SosCapabilities_1.0.0-class}
 \alias{SosCapabilities}
 \alias{SosCapabilities-class}
-\alias{SosCapabilities_2.0-class}
 
-\title{Class and Construction Function for "SosCapabilities"}
+\title{Class and Construction Function for "SosCapabilities_1.0.0"}
 
 \description{
 The service metadata document of a Sensor Observation Service.

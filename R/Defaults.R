@@ -33,11 +33,6 @@
 #
 
 #
-#
-#
-sosDefaultServiceVersion <- sos100_version
-
-#
 # A short list of some example services, no guarantee about compatibility with 
 # sos4R or quality of data, accessible using accessor/getter function.
 #
@@ -141,15 +136,11 @@ SosExampleServices <- function() {
 .sosDefaultEncoders <- list(
 		encodeRequestKVP,
 		encodeRequestXML,
-		encodeRequestSOAP,
-		encodeRequestXML,
-		encodeRequestKVP)
+		encodeRequestSOAP)
 names(.sosDefaultEncoders) <- list(
-		.sosConnectionMethodGet_Deprecated,
-		.sosConnectionMethodPost_Deprecated,
-		.sosBindingSOAP,
-		.sosBindingPOX,
-		.sosBindingKVP
+		.sosConnectionMethodGet,
+		.sosConnectionMethodPost,
+		.sosConnectionMethodSOAP
 		)
 		
 #
@@ -225,8 +216,7 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertString, # urn:ogc:data:feature
 		sosConvertString,
-		sosConvertDouble,
-		sosConvertTime
+		sosConvertDouble
 		)
 names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:time:iso8601",
@@ -298,8 +288,7 @@ names(.sosDefaultFieldConverters) <- list(
 		"uom", # fallback if actual unit is not given
 		"urn:ogc:data:feature",
 		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest",
-		"ug/m3", # micrograms per cubic meter
-		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
+		"ug/m3" # micrograms per cubic meter
 		)
 
 
@@ -312,8 +301,8 @@ SosDataFieldConvertingFunctions <- function (..., include = character(0),
 			include = include, exclude = exclude)
 }
 
-SosDefaultBinding <- function() {
-	return(.sosBindingPOX)
+SosDefaultConnectionMethod <- function() {
+	return(.sosConnectionMethodPost)
 }
 
 SosEncodingFunctions <- function (..., include = character(0),
@@ -429,12 +418,6 @@ sosDefaultColorPalette <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
 
 sosDefaultReferenceFrameSensorDescription <- "urn:ogc:def:crs:EPSG:4326"
 
-# default values for non-standard stuff
-sosDefaultGetBindingParamLatest <- NA_character_ # e.g. time=latest
-
-#
-#
-#
 SosDefaults <- function() {
 	.defaults <- list(sosDefaultCharacterEncoding,
 			sosDefaultDescribeSensorOutputFormat,
@@ -451,8 +434,7 @@ SosDefaults <- function() {
 			sosDefaultColumnNameLat,
 			sosDefaultColumnNameLon,
 			sosDefaultColumnNameSRS,
-			sosDefaultReferenceFrameSensorDescription,
-			sosDefaultGetBindingParamLatest)
+			sosDefaultReferenceFrameSensorDescription)
 	names(.defaults) <- list("sosDefaultCharacterEncoding",
 			"sosDefaultDescribeSensorOutputFormat",
 			"sosDefaultGetCapSections",
@@ -468,26 +450,7 @@ SosDefaults <- function() {
 			"sosDefaultColumnNameLat",
 			"sosDefaultColumnNameLon",
 			"sosDefaultColumnNameSRS",
-			"sosDefaultReferenceFrameSensorDescription",
-			"sosDefaultGetBindingParamLatest")
+			"sosDefaultReferenceFrameSensorDescription")
 	
-	return(.defaults)
-}
-
-SosDefaults2 <- function (...) {
-	.merge(els = list(...), defaults = SosDefaults())
-}
-
-#
-#
-#
-SosDefaultDCPs <- function() {
-	.defaults <- list()
-	.names <- list()
-	for (.x in SosSupportedBindings()) {
-		.names <- c(.names, .x)
-		.defaults <- c(.defaults, "*")
-	}
-	names(.defaults) <- .names
 	return(.defaults)
 }

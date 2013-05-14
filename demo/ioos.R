@@ -122,7 +122,7 @@ summary(obs.csv)
 # describe sensor:
 # requires SensorML 1.0.0
 ioos.get <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
-		binding = SosSupportedBindings()[["KVP"]],
+		method = SosSupportedConnectionMethods()[["GET"]],
 		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
 describeSensorOp <- sosOperation(ioos.get, sosDescribeSensorName)
 describeSensor.outputFormat <- describeSensorOp@parameters[["outputFormat"]][[1]]
@@ -167,7 +167,7 @@ kml
 ################################################################################
 # GET
 ioos.get <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
-		binding = SosSupportedBindings()[["KVP"]],
+		method = SosSupportedConnectionMethods()[["GET"]],
 		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
 #		parsers = SosParsingFunctions("GetObservation" = parseNoParsing)
 

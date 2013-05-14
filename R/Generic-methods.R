@@ -290,8 +290,7 @@ if (!isGeneric("sosCreateBBoxMatrix"))
 #
 #
 if (!isGeneric("sosCapabilitiesDocumentOriginal"))
-	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos,
-					verbose = FALSE) {
+	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos) {
 				standardGeneric("sosCapabilitiesDocumentOriginal")
 			})
 

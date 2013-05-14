@@ -31,7 +31,7 @@ library("sos4R")
 
 ##### Unterstuetzte und Standard-Features #######################################
 SosSupportedOperations() # jeweils eine entsprechende R Funktion
-SosSupportedBindings()
+SosSupportedConnectionMethods()
 
 SosSupportedResponseFormats()
 SosSupportedServiceVersions()
@@ -48,7 +48,7 @@ SosSupportedResultModels()
 SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
 
-SosDefaultBinding()
+SosDefaultConnectionMethod()
 # SosDataFieldConvertingFunctions()
 names(SosDataFieldConvertingFunctions())
 SosDefaults()
@@ -63,7 +63,7 @@ aqe <- SOS(url = "http://v-sos.uni-muenster.de:8080/SosAirQuality/sos")
 # sos "CTRL Space" in StatET
 sosUrl(aqe)
 sosVersion(aqe)
-sosBinding(aqe)
+sosMethod(aqe)
 
 # Standard R Funktionen werden oft unterstuetzt:
 print(aqe)

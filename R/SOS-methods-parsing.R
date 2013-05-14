@@ -377,7 +377,7 @@ parseSosFilter_Capabilities <- function(obj, sos) {
 ################################################################################
 # parse saved documents
 setMethod(f = "parseFile",
-		signature = signature(sos = "SOS_versioned", file = "character"),
+		signature = signature(sos = "SOS_1.0.0", file = "character"),
 		def = function(sos, file, verbose, ...) {
 			.parseFile(sos, file, verbose, ...)
 		}

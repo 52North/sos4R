@@ -61,7 +61,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 	.id <- .smlIdentifier(.root, "uniqueID", verbose = verbose)
 	.shortName <- .smlIdentifier(.root, "shortName", verbose = verbose)
 	.descrNodeSet <- getNodeSet(doc = .root, path = .smlXPathDescription,
-			namespaces = sos4R:::.sos100_NamespaceDefinitionsSML)
+			namespaces = .sosNamespaceDefinitionsSML)
 	if(is.null(.descrNodeSet))
 		.description <- NA_character_
 	else
@@ -74,7 +74,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 				.smlXPathObservedBBox, "\n")
 	.observedBBox <- getNodeSet(doc =.root,
 			path = .smlXPathObservedBBox,
-			namespaces = .sos100_NamespaceDefinitionsSML)[[1]]
+			namespaces = .sosNamespaceDefinitionsSML)[[1]]
 	if(!is.null(.observedBBox)) {
 		.referenceFrame <- .observedBBox[["referenceFrame"]]
 		.llVector <- parseVector(.observedBBox[["lowerCorner"]][["Vector"]],
@@ -105,7 +105,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 	if(verbose) cat("[parseSensorML] Parsing coordinates from",
 				.smlXPathPosition, "\n")
 	.xmlPosition <- getNodeSet(doc = .root, path = .smlXPathPosition,
-			namespaces = .sos100_NamespaceDefinitionsSML)
+			namespaces = .sosNamespaceDefinitionsSML)
 	if(length((.xmlPosition)) > 0) {
 		.xmlPosition <- .xmlPosition[[1]]
 		.position <- parseSwePosition(.xmlPosition, sos = sos,
@@ -162,7 +162,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 	
 	if(verbose) cat("[.smlIdentifier] Accessing path ", .xpath, "\n")
 	.result <- getNodeSet(doc = doc, path = .xpath,
-			namespaces = .sos100_NamespaceDefinitionsSML)
+			namespaces = .sosNamespaceDefinitionsSML)
 	
 	return(xmlValue(.result[[1]]))
 }

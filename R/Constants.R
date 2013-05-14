@@ -30,8 +30,6 @@
 #
 # Constants for version 1.0.0 of SOS
 #
-sos100_version <- "1.0.0"
-sos20_version <- "2.0"
 
 ################################################################################
 # SOS
@@ -60,46 +58,24 @@ SosSupportedOperations <- function() {
 	return(.supported)
 }
 
-###############################################################################
-# KVP parameter names
-sosKVPParamNameRequest <- "request"
-sosKVPParamNameService <- "service"
-sosKVPParamNameVersion <- "version"
-sosKVPParamNameOffering <- "offering"
-sosKVPParamNameObsProp <- "observedProperty"
-sosKVPParamNameFoi <- "featureOfInterest" 
-sosKVPParamNameResponseFormat <- "responseFormat"
-sosKVPParamNameSrsName <- "srsName"
-sosKVPParamNameEventTime <- "eventTime"
-sosKVPParamNameProcedure <- "procedure"
-sosKVPParamNameResultModel <- "resultModel"
-sosKVPParamNameResponseMode <- "responseMode"
-sosKVPParamNameBBOX <- "BBOX"
-
 ################################################################################
 # not exported SOS
-.sosConnectionMethodGet_Deprecated <- "GET"
-.sosBindingKVP <- "KVP"
-.sosConnectionMethodPost_Deprecated <- "POST"
-.sosBindingPOX <- "POX"
-.sosBindingSOAP <- "SOAP"
+.sosConnectionMethodGet <- "GET"
+.sosConnectionMethodPost <- "POST"
+.sosConnectionMethodSOAP <- "SOAP"
 
-SosSupportedBindings <- function() {
-	.supported <- c(.sosConnectionMethodGet_Deprecated,
-			.sosConnectionMethodPost_Deprecated,
-			.sosBindingKVP,
-			.sosBindingPOX)
-	names(.supported) <- c("DEPRECATED", "DEPRECATED", "Key-value-pair (GET)",
-			"Plain old XML (POST)")
+SosSupportedConnectionMethods <- function() {
+	.supported <- c(.sosConnectionMethodGet, .sosConnectionMethodPost)
+	names(.supported) <- c(.sosConnectionMethodGet, .sosConnectionMethodPost)
 	return(.supported)
 }
 
 mimeTypeCSV <- "text/csv"
 mimeTypeXML <- "text/xml"
-mimeTypeOM <- 'text/xml;subtype="om/1.0.0"'
-mimeTypeSML <- 'text/xml;subtype="sensorML/1.0.1"'
+mimeTypeOM <- "text/xml;subtype=&quot;om/1.0.0&quot;"
+mimeTypeSML <- "text/xml;subtype=&quot;sensorML/1.0.1&quot;"
 mimeTypeKML <- "application/vnd.google-earth.kml+xml"
-mimeSubtypeOM <- '"om/1.0.0"'
+mimeSubtypeOM <- "\"om/1.0.0\""
 
 .sosSupportedResponseFormats <- c(
 		mimeTypeOM,
@@ -120,28 +96,27 @@ SosSupportedResponseModes <- function() {
 	return(.sosSupportedResponseModes)
 }
 
-.sosSupportedServiceVersions <- c(sos100_version, sos20_version)
+.sosSupportedServiceVersions <- c("1.0.0")
 SosSupportedServiceVersions <- function() {
 	return(.sosSupportedServiceVersions)
 }
 
-.sos100_NamespaceDefinitionsForAll <- c(sos = "http://www.opengis.net/sos/1.0",
+.sosNamespaceDefinitionsForAll <- c(sos = "http://www.opengis.net/sos/1.0",
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
-.sos100_NamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
+.sosNamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
 		om = "http://www.opengis.net/om/1.0",
 		ogc = "http://www.opengis.net/ogc",
 		gml = "http://www.opengis.net/gml")
-.sos100_NamespaceDefinitionsGetCap <- c(ows = "http://www.opengis.net/ows/1.1",
+.sosNamespaceDefinitionsGetCap <- c(ows = "http://www.opengis.net/ows/1.1",
 		ogc = "http://www.opengis.net/ogc")
-.sos100_NamespaceDefinitionsSML <- c(sml = "http://www.opengis.net/sensorML/1.0.1",
+.sosNamespaceDefinitionsSML <- c(sml = "http://www.opengis.net/sensorML/1.0.1",
 		gml = "http://www.opengis.net/gml",
 		swe = "http://www.opengis.net/swe/1.0.1",
 		xlink = "http://www.w3.org/1999/xlink",
 		xsi = "http://www.w3.org/2001/XMLSchema-instance")
-# TODO fix schema locations for SOS 2.0	
+		
 
-.sos100_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
-.sos20_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd")
+.xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
 
 ################################################################################
 # SOS

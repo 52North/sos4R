@@ -41,7 +41,7 @@
 	else .fileEnding <- ".xml"
 
 	# since Vignette is in /vignettes/ this doesn't seem to work anymore...
-#	.path <- paste(find.package("sos4R", lib.loc = NULL), "/vignettes/",
+#	.path <- paste(.find.package("sos4R", lib.loc = NULL), "/vignettes/",
 #			name, .fileEnding, sep = "")
 	.path <- paste0(name, .fileEnding)
 	if(.verbose) cat("Loading file", .path, "\n")

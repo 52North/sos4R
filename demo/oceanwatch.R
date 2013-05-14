@@ -8,7 +8,7 @@ library("sos4R")
 # Oceanwatch
 # http://las.pfeg.noaa.gov/oceanWatch/oceanwatch.php
 oceanwatch <- SOS(url = "http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
-		binding = SosSupportedBindings()[["KVP"]])
+		method = SosSupportedConnectionMethods()[["GET"]])
 # warnings about missing response modes for offerings
 warnings()
 

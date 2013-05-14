@@ -315,9 +315,9 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
 .sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
-					.sos100_NamespaceDefinitionsGetCap),
-			attrs=c(.sos100_xsiSchemaLocationAttribute,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
+					.sosNamespaceDefinitionsGetCap),
+			attrs=c(.xsiSchemaLocationAttribute,
 					service=obj@service))
 	
 	# optional:
@@ -366,9 +366,9 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
 .sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
-					.sos100_NamespaceDefinitionsGetCap),
-			attrs=c(.sos100_xsiSchemaLocationAttribute,
+			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
+					.sosNamespaceDefinitionsGetCap),
+			attrs=c(.xsiSchemaLocationAttribute,
 					service=obj@service))
 	
 	# optional:
@@ -419,6 +419,6 @@ setMethod("encodeRequestSOAP", "OwsGetCapabilities",
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}
 			
-			stop("[encodeRequestSOAP] SOAP functionality not implemented yet...")
+			stop("Function not implemented yet...")
 		}
 )
