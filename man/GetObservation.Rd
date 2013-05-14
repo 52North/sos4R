@@ -21,8 +21,14 @@
 \description{Classes (and their construction functions) to request observations from a Sensor Observation Service.}
 
 \usage{
-SosGetObservation(service, version, offering, observedProperty, responseFormat, srsName = as.character(NA), eventTime = list(NA), procedure = as.character(NA), featureOfInterest = NULL, result = NULL, resultModel = as.character(NA), responseMode = as.character(NA), BBOX = as.character(NA))
-SosGetObservationById(service, version, observationId, responseFormat, srsName = as.character(NA), resultModel = as.character(NA), responseMode = as.character(NA))
+SosGetObservation(service, version, offering, observedProperty, responseFormat, 
+	srsName = as.character(NA), eventTime = list(NA), 
+	procedure = as.character(NA), featureOfInterest = NULL, result = NULL, 
+	resultModel = as.character(NA), responseMode = as.character(NA), 
+	BBOX = as.character(NA))
+SosGetObservationById(service, version, observationId, responseFormat, 
+	srsName = as.character(NA), resultModel = as.character(NA), 
+	responseMode = as.character(NA))
 }
 
 \section{Objects from the Class}{
@@ -103,10 +109,15 @@ See OGC 06-009r6 section 10.1, or the XSD schema file at \url{http://schemas.ope
 showClass("SosGetObservation")
 showClass("SosGetObservationById")
 
-observationRequest <- SosGetObservation(service = "SOS", version = "1.0.0", offering = "temperatures", observedProperty = list("urn:property:AirTemperature"), responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
+observationRequest <- SosGetObservation(service = "SOS", version = "1.0.0",
+	offering = "temperatures",
+	observedProperty = list("urn:property:AirTemperature"),
+	responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
 print(observationRequest)
 
-observationByIdRequest <- SosGetObservationById(service = "SOS", version = "1.0.0", observationId = "o_12345", responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
+observationByIdRequest <- SosGetObservationById(service = "SOS",
+	version = "1.0.0", observationId = "o_12345",
+	responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
 print(observationByIdRequest)
 
 \dontrun{

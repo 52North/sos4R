@@ -40,7 +40,9 @@ No methods defined with class "SosCapabilities_1.0.0" in the signature.
 }
 
 \usage{
-SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", identification = NULL, provider = NULL, operations = NULL, filterCapabilities = NULL, contents = NULL)
+SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", 
+	identification = NULL, provider = NULL, operations = NULL, 
+	filterCapabilities = NULL, contents = NULL)
 }
 
 \arguments{

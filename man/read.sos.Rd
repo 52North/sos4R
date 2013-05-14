@@ -11,7 +11,9 @@ This function provides a high level interface to read data from a SOS connection
 }
 
 \usage{
-read.sos(sos, sensors = NA_character_, phenomena = NA_character_, bbox = NA_character_, times = NA_character_, mergeResult = FALSE, addLocation = FALSE, verbose = FALSE)
+read.sos(sos, sensors = NA_character_, phenomena = NA_character_, 
+	bbox = NA_character_, times = NA_character_, mergeResult = FALSE, 
+	addLocation = FALSE, verbose = FALSE)
 }
 
 \arguments{

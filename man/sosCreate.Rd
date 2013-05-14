@@ -35,13 +35,21 @@ These methods can be seen as convenience functions or shortcuts to regularly use
 }
 
 \usage{
-sosCreateBBOX(lowLat, lowLon, uppLat, uppLon, srsName, srsDimension = NA_integer_, axisLabels = NA_character_, uomLabels = NA_character_, propertyName = sosDefaultSpatialOpPropertyName)
+sosCreateBBOX(lowLat, lowLon, uppLat, uppLon, srsName, 
+	srsDimension = NA_integer_, axisLabels = NA_character_, 
+	uomLabels = NA_character_, propertyName = sosDefaultSpatialOpPropertyName)
 sosCreateBBoxMatrix(lowLat, lowLon, uppLat, uppLon)
-sosCreateFeatureOfInterest(objectIDs = list(NA), spatialOps = NULL, bbox = NULL, srsName = NA_character_)
+sosCreateFeatureOfInterest(objectIDs = list(NA), spatialOps = NULL, bbox = NULL,
+	srsName = NA_character_)
 sosCreateEventTime(time, operator)
 sosCreateEventTimeList(time, operator)
-sosCreateTimeInstant(sos, time, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA))
-sosCreateTimePeriod(sos, begin, end, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA), duration = as.character(NA), timeInterval = NULL)
+sosCreateTimeInstant(sos, time, frame = as.character(NA), 
+	calendarEraName = as.character(NA), 
+	indeterminatePosition = as.character(NA))
+sosCreateTimePeriod(sos, begin, end, frame = as.character(NA), 
+	calendarEraName = as.character(NA), 
+	indeterminatePosition = as.character(NA), duration = as.character(NA), 
+	timeInterval = NULL)
 sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
 }
 
@@ -95,12 +103,17 @@ foiObj <- sosCreateFeatureOfInterest(objectIDs = foiIDs[1:2])
 print(foiObj)
 
 # create a bounding box matrix and use it to create a spatial feature of interest
-bboxMatrix <- sosCreateBBoxMatrix(lowLat = 50.0, lowLon = 7.0, uppLat = 53.0, uppLon = 10.0)
-foiBBox <- sosCreateFeatureOfInterest(bbox = bboxMatrix, srsName = "urn:ogc:def:crs:EPSG:6.8:4326")
+bboxMatrix <- sosCreateBBoxMatrix(lowLat = 50.0, lowLon = 7.0, 
+	uppLat = 53.0, uppLon = 10.0)
+foiBBox <- sosCreateFeatureOfInterest(bbox = bboxMatrix, 
+	srsName = "urn:ogc:def:crs:EPSG:6.8:4326")
 print(foiBBox)
 
 # create a foi with a bounding box
-bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 7.0, uppLat = 53.0, uppLon = 10.0, srsName = "urn:ogc:def:crs:EPSG:6.8:4326", srsDimension = as.integer(2), axisLabels = "lat,lon", uomLabels = "deg,deg", propertyName = "bboxName")
+bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 7.0, uppLat = 53.0, 
+	uppLon = 10.0, srsName = "urn:ogc:def:crs:EPSG:6.8:4326", 
+	srsDimension = as.integer(2), axisLabels = "lat,lon", 
+	uomLabels = "deg,deg", propertyName = "bboxName")
 foiBBox2 <- sosCreateFeatureOfInterest(spatialOps = bbox)
 print(foiBBox2)
 

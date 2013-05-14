@@ -92,7 +92,9 @@ showClass("TM_Equals")
 \dontrun{
 # create times to use for operators
 t1 <- sosCreateTimeInstant(sos = weathersos, time = Sys.time())
-p1 <- sosCreateTimePeriod(sos = weathersos, begin = as.POSIXct("2010-03-01 12:15"), end = as.POSIXct("2010-03-02 12:15"))
+p1 <- sosCreateTimePeriod(sos = weathersos, 
+	begin = as.POSIXct("2010-03-01 12:15"), 
+	end = as.POSIXct("2010-03-02 12:15"))
 
 # create temporal operator
 afterNow <- TM_After(time = t1)

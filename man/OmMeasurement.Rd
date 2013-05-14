@@ -30,7 +30,9 @@ Objects can be created by calls to the construction function of the form \code{O
 }
 
 \usage{
-OmMeasurement(samplingTime, procedure, observedProperty, featureOfInterest, result, metadata = NA, resultTime = NULL, resultQuality = NA,	parameter = NA) 
+OmMeasurement(samplingTime, procedure, observedProperty, featureOfInterest, 
+	result, metadata = NA, resultTime = NULL, resultQuality = NA, 
+	parameter = NA) 
 }
 
 \section{Slots}{

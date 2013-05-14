@@ -124,18 +124,30 @@ Objects can be created by calling the according construction functions. e.g. in 
 }
 
 \usage{
-GmlDirectPosition(pos, srsName = as.character(NA), srsDimension = NA_integer_, axisLabels = as.character(NA), uomLabels = as.character(NA))
-GmlDirectPositionLatLon(lat, lon, srsName = as.character(NA), srsDimension = NA_integer_, axisLabels = as.character(NA), uomLabels = as.character(NA))
-GmlEnvelope(lowerCorner, upperCorner, srsName = as.character(NA), srsDimension = NA_integer_, axisLabels = as.character(NA), uomLabels = as.character(NA))
+GmlDirectPosition(pos, srsName = as.character(NA), srsDimension = NA_integer_,
+	axisLabels = as.character(NA), uomLabels = as.character(NA))
+GmlDirectPositionLatLon(lat, lon, srsName = as.character(NA), 
+	srsDimension = NA_integer_, axisLabels = as.character(NA), 
+	uomLabels = as.character(NA))
+GmlEnvelope(lowerCorner, upperCorner, srsName = as.character(NA), 
+	srsDimension = NA_integer_, axisLabels = as.character(NA), 
+	uomLabels = as.character(NA))
 GmlFeatureCollection(featureMembers, id = as.character(NA))
-GmlPoint(pos, id = as.character(NA), srsName = as.character(NA), srsDimension = NA_integer_, axisLabels = as.character(NA), uomLabels = as.character(NA))
+GmlPoint(pos, id = as.character(NA), srsName = as.character(NA), 
+	srsDimension = NA_integer_, axisLabels = as.character(NA), 
+	uomLabels = as.character(NA))
 GmlPointProperty(href = as.character(NA), point = NULL)
 GmlFeatureProperty(href = as.character(NA), feature = NULL)
-GmlTimeInstant(timePosition, id = as.character(NA), relatedTimes = list(NA), frame = as.character(NA))
+GmlTimeInstant(timePosition, id = as.character(NA), relatedTimes = list(NA), 
+	frame = as.character(NA))
 GmlTimeInstantProperty(href = as.character(NA), time = NULL)
 GmlTimeInterval(interval, unit, radix = NA, factor = NA)
-GmlTimePeriod(begin = NULL, beginPosition = NULL, end = NULL, endPosition = NULL, duration = as.character(NA), timeInterval = NULL, id = as.character(NA), relatedTimes = list(NA), frame = as.character(NA))
-GmlTimePosition(time, frame = as.character(NA), calendarEraName = as.character(NA), indeterminatePosition = as.character(NA))
+GmlTimePeriod(begin = NULL, beginPosition = NULL, end = NULL, 
+	endPosition = NULL, duration = as.character(NA), timeInterval = NULL, 
+	id = as.character(NA), relatedTimes = list(NA), frame = as.character(NA))
+GmlTimePosition(time, frame = as.character(NA), 
+	calendarEraName = as.character(NA), 
+	indeterminatePosition = as.character(NA))
 GmlMeasure(value, uom)
 }
 
@@ -345,11 +357,14 @@ GmlTimeInstantProperty(href = "http://link.to/timeInstant")
 
 # create different variants of time periods
 # one hour with time positions
-GmlTimePeriod(beginPosition = timePos1, endPosition = GmlTimePosition(time = timePos1@time+3600))
+GmlTimePeriod(beginPosition = timePos1, 
+	endPosition = GmlTimePosition(time = timePos1@time+3600))
 
 # one week backwards from now
-aWeekAgo <- GmlTimeInstantProperty(time = GmlTimeInstant(time = GmlTimePosition(time = Sys.time()-(3600*24*7))))
-now <- GmlTimeInstantProperty(time = GmlTimeInstant(time = GmlTimePosition(time = Sys.time())))
+aWeekAgo <- GmlTimeInstantProperty(time = GmlTimeInstant(
+	time = GmlTimePosition(time = Sys.time()-(3600*24*7))))
+now <- GmlTimeInstantProperty(time = GmlTimeInstant(
+	time = GmlTimePosition(time = Sys.time())))
 GmlTimePeriod(begin = aWeekAgo, end = now)
 
 }

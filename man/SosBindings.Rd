@@ -28,7 +28,6 @@ The connection method can be changed on creation of a \code{SOS} object.
 \seealso{\code{\link{SosSupportedConnectionMethods}}}
 
 \examples{
-
 # HTTP connection methods supported by this sos4R implementation
 supported <- SosSupportedConnectionMethods()
 supported

@@ -23,7 +23,10 @@ Objects can be created by calls to the construction functions of the form \code{
 }
 
 \usage{
-SosObservationOffering(id, name = as.character(NA), time, procedure, observedProperty, featureOfInterest, responseFormat, intendedApplication = as.character(NA), resultModel = as.character(NA), responseMode = as.character(NA), boundedBy = list())
+SosObservationOffering(id, name = as.character(NA), time, procedure, 
+	observedProperty, featureOfInterest, responseFormat, 
+	intendedApplication = as.character(NA), resultModel = as.character(NA), 
+	responseMode = as.character(NA), boundedBy = list())
 }
 
 \section{Slots}{

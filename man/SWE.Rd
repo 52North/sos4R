@@ -44,10 +44,12 @@ The following classes are virtual, no objects may be created from them: \code{Sw
 }
 
 \usage{
-SweCompositePhenomenon(id, name, description = as.character(NA), dimension, components, base = NULL)
+SweCompositePhenomenon(id, name, description = as.character(NA), dimension, 
+	components, base = NULL)
 SwePhenomenon(id, name, description = as.character(NA))
 SwePhenomenonProperty(href = as.character(NA), phenomenon = NULL)
-SweTextBlock(tokenSeparator, blockSeparator, decimalSeparator, id = as.character(NA))
+SweTextBlock(tokenSeparator, blockSeparator, decimalSeparator, 
+	id = as.character(NA))
 }
 
 \section{Slots}{

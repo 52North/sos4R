@@ -1,6 +1,11 @@
-[.]project
-[.]settings$
-[.].svn$
-
+\.project
+\.settings
+[.]svn$
+[.]gitignore
+\.Rhistory
+\.Rcheck
+aux$
+log$
+out$
 ^.*\.Rproj$
 ^\.Rproj\.user$

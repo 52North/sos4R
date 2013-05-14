@@ -79,7 +79,8 @@ showClass("SosEventTimeLatest")
 
 \dontrun{
 # create SosEventTime for all times after the given time stamp
-tOps <- TM_After(time = GmlTimeInstant(timePosition = GmlTimePosition(as.POSIXct("2010-01-01 12:00"))))
+tOps <- TM_After(time = GmlTimeInstant(
+	timePosition = GmlTimePosition(as.POSIXct("2010-01-01 12:00"))))
 time1 <- SosEventTime(tOps)
 
 # encode it as XML and KVP
