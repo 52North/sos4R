@@ -27,12 +27,15 @@
 #                                                                              #
 ################################################################################
 
-context("utils")
+# test_file(paste(.sos4Rpath, "inst/tests/testUtils.R", sep = "/"))
 
-dcps <- c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two",
-		"Get" = "some.thing.com/different/")
+#context("utils")
 
 test_that(".sosFilterDCPs works", {
+	dcps <- c("Post" = "http://url/with/endpoint/one",
+			"Post" = "url.to/endpoint/two",
+			"Get" = "some.thing.com/different/")
+			
 	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
 	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
 			is_equivalent_to("url.to/endpoint/two"))
@@ -41,3 +44,11 @@ test_that(".sosFilterDCPs works", {
 	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
 			"http://url/with/endpoint/one")
 })
+
+test_that("addional KVPs are concatenated correctly", {
+			expected <- "this=is&working=correctly"
+			actual <- list("this" = "is", "working" = "correctly")
+			
+			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
+			
+		})

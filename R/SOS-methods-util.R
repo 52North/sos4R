@@ -61,7 +61,7 @@ read.sos <- function(sos,
 		mergeResult = FALSE,
 		addLocation = FALSE,
 		verbose = FALSE) {
-	warning("Method is not implemented yet!")
+	warning("Method is 'read.sos' not implemented yet!")
 }
 
 
@@ -693,4 +693,19 @@ sosCheatSheet <- function() {
 				toString(.filtered), "\n")
 	
 	return(.filtered)
+}
+
+#
+#
+#
+.encodeAdditionalKVPs <- function(kvps) {
+	.kvpsString <- ""
+	for (i in seq(1:length(kvps))) {
+		.kvp <- paste(names(kvps)[[i]], kvps[[i]], sep = "=")
+		.kvpsString <- paste(.kvpsString, .kvp, sep = "&")
+	}
+	# remove starting &
+	.kvpsString <- substring(.kvpsString, 2, nchar(.kvpsString))
+	
+	return(.kvpsString)
 }
