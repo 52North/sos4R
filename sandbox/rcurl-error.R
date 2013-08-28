@@ -37,4 +37,25 @@ response <- postForm(uri = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 				 .encoding = sosDefaultCharacterEncoding)
 # works!
 
-# TODO create an example only using RCurl...
+###############################################################################
+# an example only using RCurl...
+
+# test problem once more
+# http://141.30.100.135:8080/eo2heavenSOS/sos?request=GetCapabilities&service=SOS
+mySOS2 <- SOS(url = "http://141.30.100.135:8080/eo2heavenSOS/sos")
+sosCapabilitiesDocumentOriginal(sos = mySOS2)
+# does NOT work
+
+.gc <- "http://141.30.100.135:8080/eo2heavenSOS/sos?request=GetCapabilities&service=SOS"
+.responseString = getURL(url = .gc)
+.responseString
+.response <- xmlParseDoc(.responseString, asText = TRUE)
+# WORKS
+
+.responseString = getURL(url = .gc,
+		.opts = mySOS2@curlOptions,
+		curl = mySOS2@curlHandle,
+		.encoding = sosDefaultCharacterEncoding)
+.response <- xmlParseDoc(.responseString, asText = TRUE)
+.response
+# works.
