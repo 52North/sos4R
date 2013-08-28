@@ -32,4 +32,4 @@ Collate:
 	SOS-methods-accessor.R PrintShowStructureSummmary-methods.R
 	SOS-methods-util.R SOS-methods.R SOS-methods-plotting.R
 	SOS-methods-coercion.R SML-methods-util.R SML-methods-coercion.R
-	Defaults.R SOS_20-methods.R
+	Defaults.R SOS_20-methods-impl.R SOS_20-methods.R
