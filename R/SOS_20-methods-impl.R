@@ -27,6 +27,22 @@
 #                                                                              #
 ################################################################################
 
+#
+# try re-using 1.0.0 function
+#
+.sosRequest_2.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
+	}
+	
+	.result <- .sosRequest_1.0.0(sos, request, verbose = verbose,
+			inspect = inspect)
+	return(.result)
+	
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
+	}
+}
 
 .getCapabilities_2.0 <- function(sos, verbose, inspect, sections,
 		acceptFormats, updateSequence, owsVersion,	acceptLanguages) {

@@ -27,18 +27,43 @@
 #                                                                              #
 ################################################################################
 
-setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0"),
-		def = function(sos, verbose, inspect, sections, acceptFormats,
-				updateSequence, owsVersion,	acceptLanguages) {
-			stop("Not implemented yet!")
+#
+#
+#
+setMethod(f = "sosRequest",
+		signature = signature(sos = "SOS_2.0", request = "OwsServiceOperation",
+				verbose = "logical", inspect = "logical"),
+		def = function(sos, request, verbose, inspect) {
+			.sosRequest_2.0(sos = sos, request = request, verbose = verbose,
+					inspect = inspect)
 		}
 )
 
+#
+#
+#
+setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0"),
+		def = function(sos, verbose, inspect, sections, acceptFormats,
+				updateSequence, owsVersion,	acceptLanguages) {
+			return(.getCapabilities_2.0(sos = sos, verbose = verbose,
+							inspect = inspect, sections = sections,
+							acceptFormats = acceptFormats,
+							updateSequence = updateSequence,
+							owsVersion = owsVersion,
+							acceptLanguages = acceptLanguages))
+			
+			#stop("getCapabilities for SOS_2.0 not implemented yet!")
+		}
+)
+
+#
+#
+#
 setMethod(f = "describeSensor",
 		signature = signature(sos = "SOS_2.0", procedure  = "character"), 
 		def = function(sos, procedure, outputFormat, verbose, inspect,
 				saveOriginal) {
-			stop("Not implemented yet!")
+			stop("describeSensor for SOS_2.0 not implemented yet!")
 		}
 )
 
@@ -50,7 +75,7 @@ setMethod(f = "getObservationById",
 		signature = signature(sos = "SOS_2.0", observationId = "character"), 
 		def = function(sos, observationId, responseFormat, srsName,
 				resultModel, responseMode, verbose, inspect, saveOriginal) {
-			stop("Not implemented yet!")
+			stop("getObservationById for SOS_2.0 not implemented yet!")
 		}
 )
 
@@ -63,7 +88,7 @@ setMethod(f = "getObservation",
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
 				responseMode, BBOX, latest, verbose, inspect, saveOriginal) {
-			stop("Not implemented yet!")
+			stop("getObservation for SOS_2.0 with offering object not implemented yet!")
 		}
 )
 
@@ -77,6 +102,6 @@ setMethod(f = "getObservation",
 				srsName, eventTime,	procedure, featureOfInterest, result,
 				resultModel, responseMode, BBOX, latest, verbose, inspect,
 				saveOriginal) {
-			stop("Not implemented yet!")
+			stop("getObservation for SOS_2.0 with charecter offering not implemented yet!")
 		}
 )

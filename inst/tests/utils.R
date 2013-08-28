@@ -27,7 +27,7 @@
 #                                                                              #
 ################################################################################
 
-# test_file(paste(.sos4Rpath, "inst/tests/testUtils.R", sep = "/"))
+# library("testthat"); test_file(paste(.sos4Rpath, "inst/tests/utils.R", sep = "/"))
 
 #context("utils")
 

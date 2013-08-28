@@ -3,11 +3,11 @@ TODO: move over stuff from CHANGES to NEWS
 
 Changes in sos4R Version 0.3 - 2012-03-07
 
-  o TESTED compatibility with 52°North SOS 4.0 implementation of SOS 1.0
+  o ADDED 'additionalKVPs' to SOS(...) to add specific key-value-pairs for KVP requests
    
   o NEW starting support for SOS 2.0 (pre-ALPHA, no implementation yet just classes and empty methods)
   
-  o ADDED handling of multiple DCPs for the same operation type using a regex list dcpFilter and useDCPs as a switch
+  o ADDED handling of multiple DCPs for the same operation type using a regex list dcpFilter and parameter 'useDCPs' as a switch
   
   o ADDED handling for time instances to sosCreateTime
   

@@ -246,6 +246,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{switchCoordinates}:}{Object of class \code{"logical"}: Trigger enabling switching of lat/long during parsing stage.}
     \item{\code{useDCPs}:}{Object of class \code{"logical"}: Trigger for not using DCP endpoints from the capabilities but just the URL.}
     \item{\code{dcpFilter}:}{Object of class \code{"list"}: Named list of regular expressions to be applied (using \code{grep}) to DCPs if there is more than one for the chosen binding.}
+    \item{\code{addtionalKVPs}:}{A nam of class \code{"list"}: Named list of key-value-pairs to be appended to an KVP request.}
   }
 }
 \section{Methods}{
@@ -297,7 +298,7 @@ SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
 	curlOptions = list(), curlHandle = getCurlHandle(),
 	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
 	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
-	...)
+	additionalKVPs = list, ...)
 
 # accessor methods ...
 }
@@ -316,6 +317,7 @@ SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
   \item{switchCoordinates}{See the corresponding slot description.}
   \item{useDCPs}{See the corresponding slot description.}
   \item{dcpFilter}{See the corresponding slot description.}
+  \item{additionalKVPs}{See the corresponding slot description.}
   \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
 }
 

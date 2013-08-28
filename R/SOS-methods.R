@@ -40,6 +40,7 @@ SOS <- function(url, binding = SosDefaultBinding(),
 		switchCoordinates = FALSE,
 		useDCPs = TRUE,
 		dcpFilter = SosDefaultDCPs(),
+		additionalKVPs = list(),
 		...) {
 	
 	if(binding == .sosConnectionMethodPost_Deprecated)
@@ -73,7 +74,8 @@ SOS <- function(url, binding = SosDefaultBinding(),
 				verboseOutput = verboseOutput,
 				switchCoordinates = switchCoordinates,
 				useDCPs = useDCPs,
-				dcpFilter = dcpFilter)
+				dcpFilter = dcpFilter,
+				additionalKVPs = additionalKVPs)
 		
 		.caps <- getCapabilities(sos = .sos, verbose = verboseOutput, ...)
 		if(!is(.caps, "OwsCapabilities")) {
@@ -106,7 +108,8 @@ SOS <- function(url, binding = SosDefaultBinding(),
 				verboseOutput = verboseOutput,
 				switchCoordinates = switchCoordinates,
 				useDCPs = useDCPs,
-				dcpFilter = dcpFilter)
+				dcpFilter = dcpFilter,
+				additionalKVPs = additionalKVPs)
 		
 		.caps <- getCapabilities(sos = .sos, verbose = verboseOutput, ...)
 		if(!is(.caps, "OwsCapabilities")) {
@@ -312,9 +315,20 @@ SosGetObservationById <- function(
 		}
 		else .url = paste(.dcp, .encodedRequest, sep = "?")
 		
+		if(!is.na(sos@additionalKVPs) && length(sos@additionalKVPs) > 0) {
+			.kvps <- sos@additionalKVPs
+			
+			if(verbose)
+				cat("[.sosRequest_1.0.0] adding extra KVP parameters:\n\t",
+						toString(.kvps))
+			
+			.kvpsString <- .encodeAdditionalKVPs(.kvps)
+			.url <- paste(.url, .kvpsString, sep = "&")
+		}
+		
 		if(verbose || inspect) {
-			cat("[.sosRequest_1.0.0] GET!\n[.sosRequest_1.0.0] REQUEST:\n\t", .url,
-					"\n")
+			cat("[.sosRequest_1.0.0] GET!\n[.sosRequest_1.0.0] REQUEST:\n\t",
+					.url, "\n")
 		}
 		
 		if(verbose) cat("[.sosRequest_1.0.0] Do request...")
@@ -471,12 +485,6 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 							updateSequence = updateSequence,
 							owsVersion = owsVersion,
 							acceptLanguages = acceptLanguages))
-		}
-)
-setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0"),
-		def = function(sos, verbose, inspect, sections, acceptFormats,
-				updateSequence, owsVersion,	acceptLanguages) {
-			stop("Not implemented yet!")
 		}
 )
 

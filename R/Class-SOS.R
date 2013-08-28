@@ -36,7 +36,7 @@ setClass("SOS",
 				encoders = "list", dataFieldConverters = "list",
 				timeFormat = "character", verboseOutput = "logical",
 				switchCoordinates = "logical", useDCPs = "logical",
-				dcpFilter = "list", additionalKVP = "list"),
+				dcpFilter = "list", additionalKVPs = "list"),
 		contains = c("VIRTUAL"))
 
 #

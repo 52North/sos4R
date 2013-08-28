@@ -123,7 +123,7 @@ setMethod(f = "encodeXML",
 				cat("[encodeXML] GmlTimeInstantProperty with", toString(obj),
 						"\n")
 			
-			stop("Function not implemented yet!")
+			stop("Function encodeXML for GmlTimeInstantProperty not implemented yet!")
 		}
 )
 
