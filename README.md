@@ -1,4 +1,4 @@
-sos4R - An R client for the OGC Sensor Observation Service.
+sos4R - R client for OGC SOS
 =====
 
 sos4R is an extension for the R environment for statistical computing and visualization. It allows to query data from standard conform SOS instances using simple R function calls and does no require any knowledge about the Sensor Web. It is easily extendible for new data models and opens the huge amount of analysis and visualization features of the R environment for the Sensor Web.
