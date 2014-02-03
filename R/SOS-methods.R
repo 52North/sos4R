@@ -631,9 +631,18 @@ setMethod(f = "getObservationById",
 	if(isXMLString(.responseString)) {
 		if(verbose) cat("[.getObservation_1.0.0] Got XML string as response",
 					"(based on isXMLString()).\n")
-		
+	}
+	
+	.isXML <- (isXMLString(.responseString) ||
+						 	length(
+						 		grep(pattern = paste0(mimeTypesXML, collapse = "|"),
+						 				 .contentType)) > 0)
+	
+	if(.isXML) {
 		.hasSubtype <- FALSE
 		.contentSubtype <- NA
+		
+		# find out more about the content type
 		if(length(.contentType) < 1) {
 			if(verbose) cat("[.getObservation_1.0.0] No content type!",
 						"Falling back to '", mimeTypeXML, "'\n")
