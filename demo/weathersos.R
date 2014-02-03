@@ -8,7 +8,15 @@ library("sos4R")
 # WeatherSOS
 #
 # establish a connection to a SOS instance with default settings
-weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+#weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
+									#verboseOutput = TRUE,
+#									method = "GET",
+#									curlHandle = getCurlHandle(followlocation = TRUE))
+# follow redirects with a curl option
+
+# alternative URL (the one redirected to) supporting POST
+weathersos <- SOS(url = "http://geoviqua.dev.52north.org/SOS-Q/sos/pox")
+
 summary(weathersos)
 
 # explore SOS, plotting
@@ -26,8 +34,8 @@ title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
 		sub = toString(names(sosOfferings(weathersos))))
 
 # get the latest observation (not standard conform!)
-off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
-obs <- getObservation(sos = weathersos, offering = off, #verbose = TRUE,
+off <- sosOfferings(weathersos)[[2]]
+obs <- getObservation(sos = weathersos, offering = off, verbose = TRUE,
 		latest = TRUE)
 
 # show the result for latest observation
@@ -35,13 +43,14 @@ sosResult(obs)
 
 ############################################
 # Request two procedures, then create a plot
-# Attention: plots ignore the fact that the times do NOT perfectly match!
+# Attention: plots ignore the fact that the times might NOT perfectly match!
 obs <- getObservation(sos = weathersos,
 		offering = off,
 		#procedure = sosProcedures(off),
-		inspect = TRUE,
+		#inspect = TRUE,
+		verbose = TRUE,
 		eventTime = sosCreateTime(weathersos,
-				time = "2009-08-10 12:00::2009-08-20 12:00"))
+				time = "2014-01-20 12:00::2014-01-30 12:00"))
 str(obs[[1]], max.level = 3)
 str(obs[[2]]@result)
 summary(obs)
