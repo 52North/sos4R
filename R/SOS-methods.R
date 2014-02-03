@@ -642,7 +642,7 @@ setMethod(f = "getObservationById",
 		else if(length(.contentType) > 1) {
 			# check if subtype is present or take just the first
 			.subtypeIdx <- which(names(.contentType) == "subtype")
-			if(.subtypeIdx > 0) {
+			if(length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
 				.hasSubtype <- TRUE
 				.contentSubtype <- .contentType[[.subtypeIdx]]
 				if(verbose) cat("[.getObservation_1.0.0] Found mime subtype: ",
