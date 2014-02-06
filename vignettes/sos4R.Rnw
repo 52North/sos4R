@@ -1783,16 +1783,13 @@ bugs\footnote{\url{https://bugzilla.52north.org/buglist.cgi?product=52N\%20Geost
 \subsection*{Code Repository}
 
 You can download (and also browse) the source code of \pkg{sos4R} directly from
-the \fivetwon repository:
+the \fivetwon GitHub organisation:
 
 \begin{itemize}
-\item \textbf{SVN resource URL}:
-\url{https://svn.52north.org/svn/geostatistics/main/sos4R}. Please read the
-documentation (especially the posting guide) of the \fivetwon
-repositories\footnote{\url{http://52north.org/resources/source-repositories/}}.
-Anonymous access for download is possible.
+\item \textbf{GitHub repository}:
+\url{https://github.com/52North/sos4R.git}
 \item \textbf{Web access}:
-\url{https://svn.52north.org/cgi-bin/viewvc.cgi/main/sos4R/?root=geostatistics}
+\url{https://github.com/52North/sos4R}
 \end{itemize}
 
 The latest changes for every version are documented in the file \textbf{NEWS} in

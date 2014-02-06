@@ -208,6 +208,8 @@
 \alias{mimeTypeOM}
 \alias{mimeTypeSML}
 \alias{mimeTypeXML}
+\alias{mimeTypeXML2}
+\alias{mimeTypesXML}
 \alias{mimeSubtypeOM}
 
 \alias{smlSensorMLName}

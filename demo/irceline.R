@@ -47,7 +47,7 @@ attributes(sosResult(observation)[,1])
 
 
 ################################################################################
-# example addapted from: http://www.nördholmen.net/sos4r/tag/example/
+# example addapted from: http://www.nordholmen.net/sos4r/tag/example/
 # fetch UFP data (90500 - PN1) and plot a simple graph 
 
 # if you want to consult the CheatSheet uncomment the following line
@@ -77,5 +77,5 @@ length(PN$"90500 . PN1")
 length(PN$SamplingTime)
 
 plot(PN$SamplingTime,PN$"90500 . PN1"[1:length(PN$"90500 . PN1")],type = "l", main = "Particle Numbers", 
-		 xlab = "Time", ylab = "PN (#/cm³)")
+		 xlab = "Time", ylab = "PN (#/cm3)")
 

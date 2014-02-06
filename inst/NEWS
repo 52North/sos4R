@@ -1,3 +1,13 @@
+Changes in sos4R Version 0.2-12 - 2014-02-06
+
+  o FIXED minor bugs, probably related to 52N SOS 4.0.0 changed defaults
+
+  o FIXED check error on CRAN by Edzer Pebesma
+
+  o CHANGED project documentation, now hosted on GitHub
+
+  o ADDED dems for BAS SOS and IRCEL SOS
+
 Changes in sos4R Version 0.2-11 - 2013-05-14
 
   o FIXED line lengths of \example and \usage sections in .Rd files
