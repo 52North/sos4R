@@ -47,8 +47,8 @@ sosResult(obs)
 obs <- getObservation(sos = weathersos,
 		offering = off,
 		#procedure = sosProcedures(off),
-		#inspect = TRUE,
-		verbose = TRUE,
+		inspect = TRUE,
+		#verbose = TRUE,
 		eventTime = sosCreateTime(weathersos,
 				time = "2014-01-20 12:00::2014-01-30 12:00"))
 str(obs[[1]], max.level = 3)
@@ -62,10 +62,13 @@ str(sosResult(obs[[1]], coordinates = TRUE)[1:10,])
 # "10.08.2009" - "08.08.2009"
 as.POSIXct("2009/10/10") - as.POSIXct("2009/10/08")
 
+# TODO fix parsing or reponse format, right now GmlMeasure is returned, which is not properly parsed
+# not all values are provided via sosResult!
+
 # plot it!
 x <- 800
 plot(x = obs[[1]]@result[[1]][1:x], y = obs[[1]]@result[[3]][1:x], type = "l",
-		col = "steelblue", main = "Temperature in Muenster and Kaernten, 2009",
+		col = "steelblue", main = "Temperature 2014",
 		xlab = "Time (00:00 o'clock)",
 		ylab = "Temperature (degree C)",
 		xaxt="n") # do not plot x-axis
