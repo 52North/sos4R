@@ -1,4 +1,3 @@
-
 # Authors: 	Sandy Adriaenssens <adriaenssens@irceline.be>,
 #						Olav Peeters <peeters@irceline.be>
 # Project: Joaquin (Joint Air Quality Initiative) - http://www.joaquin.eu/
@@ -32,10 +31,10 @@ tPeriod <- sosCreateEventTimeList(
 		end = Sys.time()))
 # Request data for all observed properties and procedures of a certain offering
 observation <- getObservation(sos = sos_irceline,
-															offering = sosOfferings(sos_irceline)[["90500 - PN1"]],
-															observedProperty = sosObservedProperties(sos_irceline)[["90500 - PN1"]],
-															procedure = sosProcedures(sos_irceline)[["90500 - PN1"]],
-															eventTime = tPeriod)
+			offering = sosOfferings(sos_irceline)[["90500 - PN1"]],
+			observedProperty = sosObservedProperties(sos_irceline)[["90500 - PN1"]],
+			procedure = sosProcedures(sos_irceline)[["90500 - PN1"]],
+			eventTime = tPeriod)
 
 
 # Inspect result
@@ -57,16 +56,17 @@ names(sosOfferings(sos_irceline))
 go.offering = sosOfferings(sos_irceline)[["90500 - PN1"]] # UFP
 go.observedProperty = sosObservedProperties(sos_irceline)[["90500 - PN1"]] # UFP
 go.eventTime3 = sosCreateEventTimeList(sosCreateTimePeriod(sos = sos_irceline, 
-																													 begin = as.POSIXct("2014-01-01 18:00"), end = as.POSIXct("2014-01-10 18:00")))
+											begin = as.POSIXct("2014-01-01 18:00"),
+											end = as.POSIXct("2014-01-10 18:00")))
 
 
 obs3 <- getObservation(sos = sos_irceline,observedProperty = go.observedProperty,
-											 procedure = sosProcedures(sos_irceline)[["90500 - PN1"]][1], 
-											 #procedure = list(sosProcedures(sos)[["6924"]]),
-											 verbose = TRUE,
-											 inspect = TRUE,
-											 eventTime = tPeriod,
-											 offering = go.offering)
+					procedure = sosProcedures(sos_irceline)[["90500 - PN1"]][1], 
+					#procedure = list(sosProcedures(sos)[["6924"]]),
+					#verbose = TRUE,
+					#inspect = TRUE,
+					eventTime = tPeriod,
+					offering = go.offering)
 
 PN <- sosResult(obs3)
 head(PN)
@@ -76,6 +76,13 @@ summary(PN$SamplingTime)
 length(PN$"90500 . PN1")
 length(PN$SamplingTime)
 
-plot(PN$SamplingTime,PN$"90500 . PN1"[1:length(PN$"90500 . PN1")],type = "l", main = "Particle Numbers", 
-		 xlab = "Time", ylab = "PN (#/cm3)")
+attributes(PN$SamplingTime)
+attributes(PN$"90500 . PN1")
+
+plot(PN$SamplingTime, PN$"90500 . PN1"[1:length(PN$"90500 . PN1")], type = "l",
+		 main = "Particle Numbers",
+		 xlab = paste0(attributes(PN$SamplingTime)$"name", "\n",
+		 							attributes(PN$SamplingTime)$"definition"), # "Time",
+		 ylab = paste0("PN in ", 
+		 							attributes(PN$"90500 . PN1")$"unit of measurement")) #"PN (#/cm3)")
 
