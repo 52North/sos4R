@@ -19,11 +19,11 @@ URL: http://www.nordholmen.net/sos4r, http://www.52north.org/geostatistics
 Encoding: UTF-8
 LazyLoad: TRUE
 ByteCompile: TRUE
-BugReports: https://bugzilla.52north.org/buglist.cgi?product=52N%20Geostatistics&component=sos4R&resolution=---
+BugReports: https://github.com/52North/sos4R/issues
 Collate:
 	Constants.R
 	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R
-	Class-OGC.R Class-SOS_10.R Class-SOS_200.R Class-SOS.R Class-SML.R
+	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_20.R Class-SML.R
 	Generic-methods.R OWS-methods.R
 	OWS-methods-parsing.R SOS-methods-parsing.R OM-methods.R
 	OM-methods-coercion.R OM-methods-parsing.R SA-methods.R

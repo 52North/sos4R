@@ -69,6 +69,11 @@ setClass("SOS_2.0",
 #
 #
 #
+setIs("SOS_2.0", "SOS_versioned")
+
+#
+#
+#
 setClass("SosCapabilities_2.0",
 		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
 		contains = "OwsCapabilities_1.1.0",

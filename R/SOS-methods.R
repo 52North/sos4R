@@ -361,6 +361,7 @@ SosGetObservationById <- function(
 			.dcp <- .sosFilterDCPs(dcp = .dcp,
 					pattern = sos@dcpFilter[[.sosBindingPOX]],
 					verbose = verbose)
+			.dcp <- unlist(.dcp)
 			if(verbose)
 				cat("[.sosRequest_1.0.0] Using DCP:", toString(.dcp), "\n")
 		}

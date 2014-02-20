@@ -68,6 +68,11 @@ setClass("SOS_1.0.0",
 #
 #
 #
+setClassUnion(name = "SOS_versioned",	members = "SOS_1.0.0")
+
+#
+#
+#
 setClass("SosFilter_Capabilities",
 		representation(spatial = "list", temporal = "list", scalar = "list",
 				id = "list"),

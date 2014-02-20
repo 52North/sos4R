@@ -38,9 +38,3 @@ setClass("SOS",
 				switchCoordinates = "logical", useDCPs = "logical",
 				dcpFilter = "list", additionalKVPs = "list"),
 		contains = c("VIRTUAL"))
-
-#
-#
-#
-setClassUnion(name = "SOS_versioned",
-		members = c("SOS_1.0.0", "SOS_2.0"))
