@@ -22,6 +22,10 @@ library("sos4R")
 coastlab <- SOS(url = "http://kopc02.gkss.de/sos/sos.py",
 		method = SosSupportedConnectionMethods()[["GET"]])
 
+#
+# potentially same server? > http://sos.hzg.de/sos.py?request=GetCapabilities&service=SOS
+#
+
 coastlab.off <- sosOfferings(coastlab)
 names(coastlab.off)
 
