@@ -25,6 +25,12 @@ Changes in sos4R Version 0.3 - 2012-03-07
    
   o CHANGED all GET request parameters to constant names (sosKVPParamNames...)
 
+Changes in sos4R Version 0.2-11 - 2013-05-14
+
+  o FIXED line lengths of \example and \usage sections in .Rd files
+  
+  o FIXED usage of .find.packages which is deprecated for compatibility with R 3.0.0
+
   o CHANGED minimum R version to 2.15.0 since older ones will not be tested anymore, and increased version of important dependencies RCurl and XML
   
 Changes in sos4R Version 0.2-10 - 2012-11-19
