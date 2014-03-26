@@ -856,8 +856,13 @@ setMethod(f = "getObservationById",
 		
 		# calculate result length vector
 		if(inherits(.obs, "OmObservationCollection")) {
-			.resultLength <- sapply(sosResult(.obs, bind = FALSE,
-							coordinates = FALSE), nrow)
+			if(verbose) cat("[.getObservationById_1.0.0] Got OmObservationCollection", 
+											"... calculating length with sosResult()")
+				
+			.result <- sosResult(.obs, bind = FALSE, coordinates = FALSE)
+			if(verbose) cat("[.getObservationById_1.0.0] result: ", toString(.result))
+			
+			.resultLength <- sapply(.result, nrow)
 			if(length(.resultLength) == 0) # nothing
 				.resultLength = 0
 		}
