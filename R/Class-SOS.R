@@ -38,3 +38,51 @@ setClass("SOS",
 				switchCoordinates = "logical", useDCPs = "logical",
 				dcpFilter = "list", additionalKVPs = "list"),
 		contains = c("VIRTUAL"))
+
+#
+# SOS class for local testing, i.e. without an URL and default verbose output
+#
+setClass("SOS_Test",
+				 representation(name = "character", binding = "character"),
+				 prototype = list(name = as.character(NA)),
+				 contains = c("SOS"),
+				 validity = function(object) {
+				 	#print("Entering validation: SOS_Test")
+				 	return(TRUE)
+				 }
+)
+
+SOS_Test <- function(name = "test",
+								binding = SosDefaultBinding(),
+								version = "testing",
+								parsers = SosParsingFunctions(),
+								encoders = SosEncodingFunctions(),
+								dataFieldConverters = SosDataFieldConvertingFunctions(),
+								timeFormat = sosDefaultTimeFormat,
+								verboseOutput = TRUE, 
+								switchCoordinates = FALSE,
+								useDCPs = TRUE,
+								dcpFilter = SosDefaultDCPs(),
+								additionalKVPs = list(),
+								...) {
+	
+		.sos <- new("SOS_Test",
+								name = name,
+								binding = binding,
+								version = version,
+								capabilities = new("OwsCapabilities", version = "NA",
+																	 updateSequence = as.character(NA),
+																	 owsVersion = sosDefaultGetCapOwsVersion),
+								parsers = parsers,
+								encoders = encoders,
+								dataFieldConverters = dataFieldConverters,
+								timeFormat = timeFormat,
+								verboseOutput = verboseOutput,
+								switchCoordinates = switchCoordinates,
+								useDCPs = useDCPs,
+								dcpFilter = dcpFilter,
+								additionalKVPs = additionalKVPs)
+		
+		if(verboseOutput) cat("[SOS] Created new SOS_Test:\n", toString(.sos), "\n")
+		return(.sos)
+}
