@@ -19,8 +19,8 @@
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
-	Version: \tab 0.2-12\cr
-	Date: \tab 2014-02-06\cr
+	Version: \tab 0.3\cr
+	Date: \tab 2012-11-19\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr
@@ -89,11 +89,10 @@ else {
 	attributes(sosResult(pegelObs)[,1])
 }
 
-# Use custom converting function and connection method. This mechanism works 
-# the same for encoders and decoders.
+# Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
 myConverters <- SosDataFieldConvertingFunctions(
 	"myNumericUnit" = sosConvertDouble)
-mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
+mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)
 
 # get the cheat sheet

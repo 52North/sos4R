@@ -22,22 +22,61 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2013-03-06                                                          #
+# Created: 2013-08-28                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
-context("utils")
+#
+# try re-using 1.0.0 function
+#
+.sosRequest_2.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
+	}
+	
+	.result <- .sosRequest_1.0.0(sos, request, verbose = verbose,
+			inspect = inspect)
+	return(.result)
+	
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
+	}
+}
 
-dcps <- c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two",
-		"Get" = "some.thing.com/different/")
-
-test_that(".sosFilterDCPs works", {
-	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
-			is_equivalent_to("url.to/endpoint/two"))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
-			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
-	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
-			"http://url/with/endpoint/one")
-})
+.getCapabilities_2.0 <- function(sos, verbose, inspect, sections,
+		acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
+	if (verbose) {
+		cat("[.getCapabilities_2.0] of", sosUrl(sos), "\n")
+	}
+	
+	.gc <- OwsGetCapabilities(service = sosService,
+			acceptVersions = c(sosVersion(sos)), sections = sections,
+			acceptFormats = acceptFormats, updateSequence = updateSequence,
+			owsVersion = owsVersion, acceptLanguages = acceptLanguages)
+	if(verbose) cat("[.getCapabilities_2.0] REQUEST:\n", toString(.gc), "\n")
+	
+	.responseString = sosRequest(sos = sos, request = .gc,
+			verbose = verbose, inspect = inspect)
+	if(verbose){
+		cat("[.getCapabilities_2.0] RESPONSE:\n", .responseString , "\n")
+	}
+	
+	.response <- xmlParseDoc(file = .responseString, asText = TRUE)
+	if(verbose || inspect) {
+		cat("[.getCapabilities_2.0] RESPONSE DOC:\n")
+		print(.response)
+	}
+	
+	if(.isExceptionReport(.response)) {
+		return(.handleExceptionReport(sos, .response))
+	}
+	else {
+		.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
+		.caps <- .parsingFunction(obj = .response, sos = sos)
+		if (verbose) {
+			cat("[.getCapabilities_2.0] DONE WITH PARSING!\n")
+		} 
+		return(.caps)
+	}
+}

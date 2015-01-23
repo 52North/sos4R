@@ -22,67 +22,33 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2013-08-28                                                          #
+# Created: 2013-03-06                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
-#
-#
-#
-setClass("SOS",
-		representation(version = "character",
-				capabilities = "OwsCapabilities", parsers = "list",
-				encoders = "list", dataFieldConverters = "list",
-				timeFormat = "character", verboseOutput = "logical",
-				switchCoordinates = "logical", useDCPs = "logical",
-				dcpFilter = "list", additionalKVPs = "list"),
-		contains = c("VIRTUAL"))
+# library("testthat"); test_file(paste(.sos4Rpath, "inst/tests/utils.R", sep = "/"))
 
-#
-# SOS class for local testing, i.e. without an URL and default verbose output
-#
-setClass("SOS_Test",
-				 representation(name = "character", binding = "character"),
-				 prototype = list(name = as.character(NA)),
-				 contains = c("SOS"),
-				 validity = function(object) {
-				 	#print("Entering validation: SOS_Test")
-				 	return(TRUE)
-				 }
-)
+#context("utils")
 
-SOS_Test <- function(name = "test",
-								binding = SosDefaultBinding(),
-								version = "testing",
-								parsers = SosParsingFunctions(),
-								encoders = SosEncodingFunctions(),
-								dataFieldConverters = SosDataFieldConvertingFunctions(),
-								timeFormat = sosDefaultTimeFormat,
-								verboseOutput = TRUE, 
-								switchCoordinates = FALSE,
-								useDCPs = TRUE,
-								dcpFilter = SosDefaultDCPs(),
-								additionalKVPs = list(),
-								...) {
-	
-		.sos <- new("SOS_Test",
-								name = name,
-								binding = binding,
-								version = version,
-								capabilities = new("OwsCapabilities", version = "NA",
-																	 updateSequence = as.character(NA),
-																	 owsVersion = sosDefaultGetCapOwsVersion),
-								parsers = parsers,
-								encoders = encoders,
-								dataFieldConverters = dataFieldConverters,
-								timeFormat = timeFormat,
-								verboseOutput = verboseOutput,
-								switchCoordinates = switchCoordinates,
-								useDCPs = useDCPs,
-								dcpFilter = dcpFilter,
-								additionalKVPs = additionalKVPs)
-		
-		if(verboseOutput) cat("[SOS] Created new SOS_Test:\n", toString(.sos), "\n")
-		return(.sos)
-}
+test_that(".sosFilterDCPs works", {
+	dcps <- c("Post" = "http://url/with/endpoint/one",
+			"Post" = "url.to/endpoint/two",
+			"Get" = "some.thing.com/different/")
+			
+	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
+			is_equivalent_to("url.to/endpoint/two"))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
+	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
+			"http://url/with/endpoint/one")
+})
+
+test_that("addional KVPs are concatenated correctly", {
+			expected <- "this=is&working=correctly"
+			actual <- list("this" = "is", "working" = "correctly")
+			
+			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
+			
+		})

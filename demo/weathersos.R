@@ -8,15 +8,7 @@ library("sos4R")
 # WeatherSOS
 #
 # establish a connection to a SOS instance with default settings
-#weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-									#verboseOutput = TRUE,
-#									method = "GET",
-#									curlHandle = getCurlHandle(followlocation = TRUE))
-# follow redirects with a curl option
-
-# alternative URL (the one redirected to) supporting POST
-weathersos <- SOS(url = "http://geoviqua.dev.52north.org/SOS-Q/sos/pox")
-
+weathersos <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 summary(weathersos)
 
 # explore SOS, plotting
@@ -34,8 +26,8 @@ title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
 		sub = toString(names(sosOfferings(weathersos))))
 
 # get the latest observation (not standard conform!)
-off <- sosOfferings(weathersos)[[2]]
-obs <- getObservation(sos = weathersos, offering = off, verbose = TRUE,
+off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
+obs <- getObservation(sos = weathersos, offering = off, #verbose = TRUE,
 		latest = TRUE)
 
 # show the result for latest observation
@@ -43,14 +35,13 @@ sosResult(obs)
 
 ############################################
 # Request two procedures, then create a plot
-# Attention: plots ignore the fact that the times might NOT perfectly match!
+# Attention: plots ignore the fact that the times do NOT perfectly match!
 obs <- getObservation(sos = weathersos,
 		offering = off,
 		#procedure = sosProcedures(off),
 		inspect = TRUE,
-		#verbose = TRUE,
 		eventTime = sosCreateTime(weathersos,
-				time = "2014-01-20 12:00::2014-01-30 12:00"))
+				time = "2009-08-10 12:00::2009-08-20 12:00"))
 str(obs[[1]], max.level = 3)
 str(obs[[2]]@result)
 summary(obs)
@@ -62,13 +53,10 @@ str(sosResult(obs[[1]], coordinates = TRUE)[1:10,])
 # "10.08.2009" - "08.08.2009"
 as.POSIXct("2009/10/10") - as.POSIXct("2009/10/08")
 
-# TODO fix parsing or reponse format, right now GmlMeasure is returned, which is not properly parsed
-# not all values are provided via sosResult!
-
 # plot it!
 x <- 800
 plot(x = obs[[1]]@result[[1]][1:x], y = obs[[1]]@result[[3]][1:x], type = "l",
-		col = "steelblue", main = "Temperature 2014",
+		col = "steelblue", main = "Temperature in Muenster and Kaernten, 2009",
 		xlab = "Time (00:00 o'clock)",
 		ylab = "Temperature (degree C)",
 		xaxt="n") # do not plot x-axis

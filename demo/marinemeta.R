@@ -19,7 +19,7 @@ myConverters <- SosDataFieldConvertingFunctions(
 		"S/m" = sosConvertDouble,
 		# mapping for definition:
 		"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
-MBARI <- SOS("http://mmisw.org/oostethys/sos", method = "GET",
+MBARI <- SOS("http://mmisw.org/oostethys/sos", binding = "KVP",
 		dataFieldConverters = myConverters)
 
 myOff <- sosOfferings(MBARI)[[1]]

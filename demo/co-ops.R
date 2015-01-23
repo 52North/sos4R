@@ -22,7 +22,7 @@ library("sos4R")
 
 ################################################################################
 ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS")
-#		method = "GET",
+#		binding = "GET",
 #		verboseOutput = TRUE)
 ioosdif_off <- sosOfferings(ioosdif)
 sosName(ioosdif_off)
