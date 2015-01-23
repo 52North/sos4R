@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2013 by 52°North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
