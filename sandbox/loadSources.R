@@ -34,7 +34,7 @@ library("sp")
 
 # load required source files for testing
 if(!exists(".sos4Rpath"))
-	.sos4Rpath = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R"
+	.sos4Rpath = "C:/Users/Daniel/dev/git/sos4R"
 	
 source(paste(.sos4Rpath, "R", "Constants.R",  sep = "/"))
 
@@ -45,6 +45,9 @@ source(paste(.sos4Rpath, "R", "Class-OM.R",  sep = "/"))
 source(paste(.sos4Rpath, "R", "Class-SA.R",  sep = "/"))
 source(paste(.sos4Rpath, "R", "Class-OGC.R",  sep = "/"))
 source(paste(.sos4Rpath, "R", "Class-SOS.R",  sep = "/"))
+source(paste(.sos4Rpath, "R", "Class-SOS_100.R",  sep = "/"))
+source(paste(.sos4Rpath, "R", "Class-SOS_20.R",  sep = "/"))
+
 source(paste(.sos4Rpath, "R", "Class-SML.R",  sep = "/"))
 
 source(paste(.sos4Rpath, "R", "Generic-methods.R",  sep = "/"))
@@ -74,5 +77,8 @@ source(paste(.sos4Rpath, "R", "SOS-methods-util.R",  sep = "/"))
 source(paste(.sos4Rpath, "R", "SML-methods-util.R",  sep = "/"))
 
 source(paste(.sos4Rpath, "R", "SOS-methods.R",  sep = "/"))
+#source(paste(.sos4Rpath, "R", "SOS_20-methods-impl.R",  sep = "/"))
+#source(paste(.sos4Rpath, "R", "SOS_20-methods.R",  sep = "/"))
+	
 
 source(paste(.sos4Rpath, "R", "Defaults.R",  sep = "/"))

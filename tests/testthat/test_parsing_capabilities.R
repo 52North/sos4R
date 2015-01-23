@@ -13,7 +13,16 @@ test_that("composite phenomenon name is parsed", {
 
 context("parsing: capabilities: Mapserver")
 
-testsos <- SOS_Test(name = "testcaps")
+setClass("SOS_Test",
+				 representation(name = "character", binding = "character"),
+				 prototype = list(name = as.character(NA)),
+				 contains = c("SOS"),
+				 validity = function(object) {
+				 	#print("Entering validation: SOS_Test")
+				 	return(TRUE)
+				 }
+)
+testsos <- new("SOS_Test", name = "testcaps")
 
 test_that("observed properties are parsed correctly", {
     xmlCaps <- xmlParseDoc("tests//responses//GetCapabilities_Mapserver.xml")

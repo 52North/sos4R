@@ -1600,7 +1600,7 @@ setMethod(f = "encodeKVP",
 			.formatted <- strftime(x = obj, format = sosTimeFormat(sos))
 			
 			if(verbose)
-				cat("Formatted ", obj, " to ", .formatted)
+				cat("Formatted ", obj, " to ", .formatted, "\n")
 			
 			return(.formatted)
 		}
@@ -1614,17 +1614,18 @@ setMethod(f = "checkRequest",
 				verbose = "logical"),
 		def = function(service, operation, verbose) {
 			if(verbose) {
-				cat("[checkRequest] Checking DescribeSensor... ")
+				cat("[checkRequest] Checking DescribeSensor... \n")
+				cat(toString(operation), "\n")
 			}
 			
 			# check if operation is for SOS and operation is DescribeSensor
 			if(!(operation@service == sosService && 
 						operation@request == sosDescribeSensorName)) {
-				stop("Wrong input! Require classes 'SOS' as service and ''SosDescribeSensor' as operation.")
+				stop("Wrong input for Method checkReuqest! Require classes 'SOS' as service and ''SosDescribeSensor' as operation.")
 				return(FALSE)
 			}
 			
-			# check if sensor in in listed in procedures
+			# check if sensor is in listed in procedures
 			.procedures = unique(unlist(sosProcedures(service)))
 			.dsOperation <- sosOperation(service, sosDescribeSensorName)
 			
@@ -1643,32 +1644,29 @@ setMethod(f = "checkRequest",
 			.format <- gsub(operation@outputFormat, pattern = "\\&quot;",
 					replacement = '"')
 			
-			if(!any(sapply(.supportedFormats,
-							"==",
-							.format),
-					na.rm = TRUE)) {
+			if(!any(sapply(.supportedFormats, "==", .format), na.rm = TRUE)) {
 				warning(paste("Outputformat has to be one of",
 								paste(.supportedFormats, sep = ", ",
-										collapse = " ")))
+										collapse = " "), "but is", .format, " (", operation@outputFormat, ")"))
 			}
 			else {
 				.oFSupported <- TRUE
 			}
 			
-			# check if method is supported
-			.methodSupported <- any(sapply(SosSupportedBindings(),
+			# check if binding is supported
+			.bindingSupported <- any(sapply(SosSupportedBindings(),
 							"==", service@binding))
-			if(!.methodSupported)
+			if(!.bindingSupported)
 				warning("Requested method type ist not listed in capablities for this operation, service might return error!")
 			
 			if(verbose) {
 				cat("[checkRequest] Checks: procedure contained =",
 						.procContained,
-						", output supported =", .oFSupported,
-						", method supported =", .methodSupported, "\n")
+						", output format supported =", .oFSupported,
+						", binding supported =", .bindingSupported, "\n")
 			}
 			
-			return(.procContained && .oFSupported && .methodSupported)
+			return(.procContained && .oFSupported && .bindingSupported)
 		})
 		
 setMethod(f = "checkRequest",
