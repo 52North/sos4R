@@ -1072,10 +1072,11 @@ setMethod("encodeRequestKVP", "SosDescribeSensor",
 			.format, sep = "&")
 	
 	if(verbose)
-		cat(.kvpString)
+		cat("[.sosEncodeRequestKVPDescribeSensor_1.0.0] ", .kvpString)
 	
 	return(.kvpString)
 }
+
 setMethod("encodeRequestKVP", "SosGetObservation", 
 		function(obj, sos, verbose = FALSE) {
 			if(obj@version == sos100_version) {

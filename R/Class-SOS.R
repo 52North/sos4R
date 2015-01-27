@@ -54,7 +54,7 @@ setClass("SOS_Test",
 
 SOS_Test <- function(name = "test",
 								binding = SosDefaultBinding(),
-								version = "testing",
+								version = sos100_version,
 								parsers = SosParsingFunctions(),
 								encoders = SosEncodingFunctions(),
 								dataFieldConverters = SosDataFieldConvertingFunctions(),
