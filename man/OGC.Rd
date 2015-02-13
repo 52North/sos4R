@@ -51,12 +51,9 @@ The following classes are virtual, no objects may be created from them: \code{Og
 
 \usage{
 OgcBBOX(propertyName = sosDefaultSpatialOpPropertyName, envelope)
-OgcContains(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, 
-	envelope = NULL)
-OgcIntersects(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, 
-	envelope = NULL)
-OgcOverlaps(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, 
-	envelope = NULL)
+OgcContains(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, envelope = NULL)
+OgcIntersects(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, envelope = NULL)
+OgcOverlaps(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, envelope = NULL)
 }
 
 \section{Slots}{

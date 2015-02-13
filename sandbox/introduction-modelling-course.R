@@ -86,7 +86,7 @@ library("sos4R")
 # Unterstuetzte Features (werden hoffentlich in Zukunft mehr)
 SosSupportedOperations()
 SosSupportedServiceVersions()
-SosSupportedConnectionMethods()
+SosSupportedBindings()
 SosSupportedResponseFormats()
 SosSupportedResponseModes()
 SosSupportedResultModels()
@@ -94,7 +94,7 @@ SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
 
 # Default Features
-SosDefaultConnectionMethod()
+SosDefaultBinding()
 SosDataFieldConvertingFunctions()
 SosDefaults() # TODO named list with defaults
 
@@ -108,7 +108,7 @@ mySOS = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 sosUrl(mySOS)
 sosVersion(mySOS)
 sosTimeFormat(mySOS)
-sosMethod(mySOS)
+sosBinding(mySOS)
 
 ##### Capabilities abfragen ####################################################
 # http://v-swe.uni-muenster.de:8080/WeatherSOS/sos?service=SOS&request=GetCapabilities
@@ -258,7 +258,7 @@ obs.august09.fois
 ##### Neue Konverter ###########################################################
 # GET Verbindung
 MBARI <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]])
+		binding = SosSupportedBindings()[["KVP"]])
 myOff <- sosOfferings(MBARI)[[1]]
 myProc <- sosProcedures(MBARI)[[1]]
 mbariObs <- getObservation(sos = MBARI, offering = myOff, procedure = myProc,
@@ -275,7 +275,7 @@ myConverters <- SosDataFieldConvertingFunctions(
 		# mapping for definition:
 		"http://mmisw.org/ont/cf/parameter/sea_water_salinity" = sosConvertDouble)
 MBARI <- SOS("http://mmisw.org/oostethys/sos",
-		method = SosSupportedConnectionMethods()[["GET"]],
+		binding = SosSupportedBindings()[["KVP"]],
 		dataFieldConverters = myConverters)
 myOff <- sosOfferings(MBARI)[[1]]
 myProc <- sosProcedures(MBARI)[[1]]

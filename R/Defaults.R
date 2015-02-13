@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -31,6 +31,11 @@
 # This class is inspired by a suggestion from Duncan Murdoch
 # (https://stat.ethz.ch/pipermail/r-help/2010-July/245480.html)
 #
+
+#
+#
+#
+sosDefaultServiceVersion <- sos100_version
 
 #
 # A short list of some example services, no guarantee about compatibility with 
@@ -136,11 +141,15 @@ SosExampleServices <- function() {
 .sosDefaultEncoders <- list(
 		encodeRequestKVP,
 		encodeRequestXML,
-		encodeRequestSOAP)
+		encodeRequestSOAP,
+		encodeRequestXML,
+		encodeRequestKVP)
 names(.sosDefaultEncoders) <- list(
-		.sosConnectionMethodGet,
-		.sosConnectionMethodPost,
-		.sosConnectionMethodSOAP
+		.sosConnectionMethodGet_Deprecated,
+		.sosConnectionMethodPost_Deprecated,
+		.sosBindingSOAP,
+		.sosBindingPOX,
+		.sosBindingKVP
 		)
 		
 #
@@ -216,7 +225,8 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertString, # urn:ogc:data:feature
 		sosConvertString,
-		sosConvertDouble
+		sosConvertDouble,
+		sosConvertTime
 		)
 names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:time:iso8601",
@@ -288,7 +298,8 @@ names(.sosDefaultFieldConverters) <- list(
 		"uom", # fallback if actual unit is not given
 		"urn:ogc:data:feature",
 		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest",
-		"ug/m3" # micrograms per cubic meter
+		"ug/m3", # micrograms per cubic meter
+		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
 		)
 
 
@@ -301,8 +312,8 @@ SosDataFieldConvertingFunctions <- function (..., include = character(0),
 			include = include, exclude = exclude)
 }
 
-SosDefaultConnectionMethod <- function() {
-	return(.sosConnectionMethodPost)
+SosDefaultBinding <- function() {
+	return(.sosBindingPOX)
 }
 
 SosEncodingFunctions <- function (..., include = character(0),
@@ -418,6 +429,12 @@ sosDefaultColorPalette <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
 
 sosDefaultReferenceFrameSensorDescription <- "urn:ogc:def:crs:EPSG:4326"
 
+# default values for non-standard stuff
+sosDefaultGetBindingParamLatest <- NA_character_ # e.g. time=latest
+
+#
+#
+#
 SosDefaults <- function() {
 	.defaults <- list(sosDefaultCharacterEncoding,
 			sosDefaultDescribeSensorOutputFormat,
@@ -434,7 +451,8 @@ SosDefaults <- function() {
 			sosDefaultColumnNameLat,
 			sosDefaultColumnNameLon,
 			sosDefaultColumnNameSRS,
-			sosDefaultReferenceFrameSensorDescription)
+			sosDefaultReferenceFrameSensorDescription,
+			sosDefaultGetBindingParamLatest)
 	names(.defaults) <- list("sosDefaultCharacterEncoding",
 			"sosDefaultDescribeSensorOutputFormat",
 			"sosDefaultGetCapSections",
@@ -450,7 +468,26 @@ SosDefaults <- function() {
 			"sosDefaultColumnNameLat",
 			"sosDefaultColumnNameLon",
 			"sosDefaultColumnNameSRS",
-			"sosDefaultReferenceFrameSensorDescription")
+			"sosDefaultReferenceFrameSensorDescription",
+			"sosDefaultGetBindingParamLatest")
 	
+	return(.defaults)
+}
+
+SosDefaults2 <- function (...) {
+	.merge(els = list(...), defaults = SosDefaults())
+}
+
+#
+#
+#
+SosDefaultDCPs <- function() {
+	.defaults <- list()
+	.names <- list()
+	for (.x in SosSupportedBindings()) {
+		.names <- c(.names, .x)
+		.defaults <- c(.defaults, "*")
+	}
+	names(.defaults) <- .names
 	return(.defaults)
 }

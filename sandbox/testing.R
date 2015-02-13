@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -67,7 +67,7 @@ describeSensor(sos = climatesos, procedure = id, saveOriginal = "D:/text.xml")
 
 # !!! describeSensor does not check if using GET, because Capabilities lack that DCP in current SOS!
 weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"
-weathersos = SOS(weathersosUrl, method = "POST", verboseOutput = TRUE)
+weathersos = SOS(weathersosUrl, binding = "POX, verboseOutput = TRUE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
 sensor <- describeSensor(weathersos, "manniK")
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]], verbose = FALSE)
@@ -129,7 +129,7 @@ input4 <- "urn@lala@home+home+home+lat,lon,lat,lon"
 .kvpEscapeSpecialCharacters(input4)
 
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-		method = SosSupportedConnectionMethods()[[1]], verboseOutput = TRUE)
+		binding = SosSupportedBindings()[[1]], verboseOutput = TRUE)
 
 describeSensor(sos = weathersos, procedure = "sos@home+street:name,one,two")
 getObservation(sos = weathersos, offering = sosOfferingIds(weathersos)[[1]])
@@ -170,7 +170,7 @@ parseOwsOperation(xmlRoot(opXml))
 # accessor functions
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 sosUrl(weathersos)
-sosMethod(weathersos)
+sosBinding(weathersos)
 sosVersion(weathersos)
 sosCaps(weathersos)
 
@@ -188,9 +188,9 @@ caps.doc <- xmlParseDoc(caps.response)
 caps <- parseSosCapabilities(caps.doc)
 
 # GetCapabilities
-sos = SOS("http://localhost:8080/ClimateSOS-local/sos", method = "POST",
+sos = SOS("http://localhost:8080/ClimateSOS-local/sos", binding = "POX,
 		verboseOutput = TRUE)
-sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST",
+sos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", binding = "POX,
 		verboseOutput = TRUE)
 caps = sosCaps(sos)
 
@@ -228,7 +228,7 @@ SosParsingFunctions("DescribeSensor" = myParseSensorML, exclude = c("GetObservat
 
 
 weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-		method = "POST",
+		binding = "POX,
 		parsers = SosParsingFunctions("DescribeSensor" = myParseSensorML, "ExceptionReport" = myER),
 		verboseOutput = FALSE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]], inspect = TRUE)
@@ -245,7 +245,7 @@ myPostEncoding <- function(object, v) {
 }
 
 weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-		method = "POST",
+		binding = "POX,
 		encoders = SosEncodingFunctions("POST" = myPostEncoding),
 		verboseOutput = TRUE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]],
@@ -255,7 +255,7 @@ sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]],
 ################################################################################
 # inspecting XML using dummy parsing function
 weathersos2 = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-		method = "POST",
+		binding = "POX,
 		parsers = SosDisabledParsers,
 		verboseOutput = FALSE)
 sensor2 <- describeSensor(weathersos2, sosProcedures(weathersos2)[[1]])
@@ -309,7 +309,7 @@ str(timeDF)
 # WORKS, but only if value5 is NOT A LIST
 
 # procedure as in parsing method:
-weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST", verboseOutput = FALSE)
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", binding = "POX, verboseOutput = FALSE)
 rawTestCurrentValues <- list("2010-03-01T12:15:00.000+01:00",
 		"2010-03-02T12:30:00.000+01:00")
 testCurrentValues <- lapply(rawTestCurrentValues, sosConvertTime, sos = weathersos)
@@ -345,7 +345,7 @@ tempData[,!colnames(tempData)%in%tempId]
 # parsing om:Observation
 
 obsDoc <- xmlParseDoc('<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:Observation><om:samplingTime><gml:TimePeriod xsi:type="gml:TimePeriodType"><gml:beginPosition>2010-09-08T09:45:00.000+02:00</gml:beginPosition><gml:endPosition>2010-09-08T09:45:00.000+02:00</gml:endPosition></gml:TimePeriod></om:samplingTime><om:procedure xlink:href="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/><om:observedProperty><swe:CompositePhenomenon gml:id="cpid0" dimension="1"><gml:name>resultComponents</gml:name><swe:component xlink:href="urn:ogc:data:time:iso8601"/><swe:component xlink:href="urn:ogc:def:property:OGC::Temperature"/></swe:CompositePhenomenon></om:observedProperty><om:featureOfInterest><gml:FeatureCollection/></om:featureOfInterest><om:result><swe:DataArray><swe:elementCount><swe:Count><swe:value>1</swe:value></swe:Count></swe:elementCount><swe:elementType name="Components"><swe:SimpleDataRecord><swe:field name="Time"><swe:Time definition="urn:ogc:data:time:iso8601"/></swe:field><swe:field name="feature"><swe:Text definition="urn:ogc:data:feature"/></swe:field><swe:field name="urn:ogc:def:property:OGC::Temperature"><swe:Quantity definition="urn:ogc:def:property:OGC::Temperature"><swe:uom code="Cel"/></swe:Quantity></swe:field></swe:SimpleDataRecord></swe:elementType><swe:encoding><swe:TextBlock decimalSeparator="." tokenSeparator="," blockSeparator=";"/></swe:encoding><swe:values>2010-03-01T12:15:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,73.0;2010-03-01T12:30:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,68.0;2010-03-01T12:45:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,69.0;2010-03-01T13:00:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,65.0;2010-03-01T13:15:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,61.0;2010-03-01T13:30:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,56.0;2010-03-01T13:45:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,60.0;2010-03-01T14:00:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,57.0;</swe:values></swe:DataArray></om:result></om:Observation></om:member></om:ObservationCollection>')
-weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST", verboseOutput = FALSE)
+weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", binding = "POX, verboseOutput = FALSE)
 
 # testing parts of the observation document:
 tempPP <- parsePhenomenonProperty(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]][[omObservedPropertyName]])
@@ -383,7 +383,7 @@ getobsbyid
 encodeRequestXML(getobsbyid) # is valid!
 
 weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-		method = "POST", verboseOutput = TRUE)
+		binding = "POX, verboseOutput = TRUE)
 ids = paste("o_33765", c(80:99), sep = "")
 obs <- getObservationById(sos = weathersos, observationId = ids[[1]],
 		resultModel = SosSupportedResultModels()[[2]])
@@ -401,7 +401,7 @@ obs <- getObservationById(sos = weathersos, observationId = ids[[1]], resultMode
 
 ################################################################################
 # temporal operations
-weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", method = "POST")
+weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", binding = "POX)
 
 #format(as.POSIXct("2010-07-01 12:00"), weathersos@timeFormat)
 t1 <- sosCreateTimeInstant(sos = weathersos, time = as.POSIXct("2010-07-01 12:00"), frame = "frameLala", calendarEraName = "calName", indeterminatePosition = "YES")
@@ -1374,20 +1374,3 @@ othertestfunction <- function(x, z) {
 }
 
 # loading sos4R via library does not work!
-
-################################################################################
-# test parsing multiline file for shorte lines in example section of .Rd files
-library("XML")
-er.doc <- xmlParseDoc(paste0("<ows:ExceptionReport ", 
-	"xmlns:ows=\"http://www.opengis.net/ows/1.1\" ",
-	"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
-	"version=\"1.0.0\" ",
-	"xsi:schemaLocation=",
-	"\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\">",
-	"<ows:Exception exceptionCode=\"VersionNegotiationFailed\" ",
-	"locator=\"AcceptVersions\">",
-	"<ows:ExceptionText>The parameter 'AcceptVersions' does not contain the ",
-	"version of this SOS: '1.0.0'</ows:ExceptionText>",
-	"</ows:Exception>",
-	"</ows:ExceptionReport>"))
-er.doc

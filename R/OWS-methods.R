@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -203,6 +203,7 @@ setMethod(f = "checkRequest",
 # http://www.oostethys.org/best-practices/best-practices-get and
 # http://www.opengeospatial.org/standards/common (Section 11.3)
 # and maybe also http://www.blooberry.com/indexdot/html/topics/urlencoding.htm
+# and http://www.degraeve.com/reference/urlencoding.php
 #
 # Special character  	Escaped encoding
 # :					 	%3A
@@ -210,6 +211,7 @@ setMethod(f = "checkRequest",
 # # 					%23
 # ? 					%3F
 # = 					%3D
+#   (space)             %20
 #
 .kvpEscapeSpecialCharacters <- function(x) {
 	.escaped <- gsub(x = x, pattern = ":", replacement = "%3A")
@@ -221,6 +223,8 @@ setMethod(f = "checkRequest",
 	.escaped <- gsub(x = .escaped, pattern = ",", replacement = "%2C")
 	.escaped <- gsub(x = .escaped, pattern = "\\+", replacement = "%2B")
 	.escaped <- gsub(x = .escaped, pattern = "@", replacement = "%40")
+	.escaped <- gsub(x = .escaped, pattern = " ", replacement = "%20")
+	#.escaped <- gsub(x = .escaped, pattern = "\"", replacement = "%22")
 	return(.escaped)
 }
 
@@ -315,9 +319,9 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
 .sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
-					.sosNamespaceDefinitionsGetCap),
-			attrs=c(.xsiSchemaLocationAttribute,
+			namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
+					.sos100_NamespaceDefinitionsGetCap),
+			attrs=c(.sos100_xsiSchemaLocationAttribute,
 					service=obj@service))
 	
 	# optional:
@@ -366,9 +370,9 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
 .sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
 	.xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
 			namespace = sosNamespacePrefix,
-			namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
-					.sosNamespaceDefinitionsGetCap),
-			attrs=c(.xsiSchemaLocationAttribute,
+			namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
+					.sos100_NamespaceDefinitionsGetCap),
+			attrs=c(.sos100_xsiSchemaLocationAttribute,
 					service=obj@service))
 	
 	# optional:
@@ -419,6 +423,6 @@ setMethod("encodeRequestSOAP", "OwsGetCapabilities",
 				cat("ENCODE SOAP ", class(obj), "\n")
 			}
 			
-			stop("Function not implemented yet...")
+			stop("[encodeRequestSOAP] SOAP functionality not implemented yet...")
 		}
 )

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -29,7 +29,7 @@
 
 ################################################################################
 # PegelOnlineSOS
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
 print(object.size(pegelsos), units = c("Mb"))
 # works so far... :-)
 
@@ -45,7 +45,7 @@ latestObs <- getObservation(sos = pegelsos,
 sosResult(latestObs)
 
 # three procedures, but only getting 1 element with one procedure...
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
 pegelObs <- getObservation(sos = pegelsos,
 		observedProperty = sosObservedProperties(sosOfferings(pegelsos)[[1]])[3],
 		offering = sosOfferings(pegelsos)[[1]],
@@ -114,7 +114,7 @@ plot(x = elster[[1]]@result$Time, y = elster[[1]]@result$Wasserstand, ylim = c(1
 # not so nice: not exactly reproducible because data is only stored for 30 days!
 
 # create connection to SOS
-pegelsos <- SOS(url = "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos")
+pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
 
 # what data do I get?
 names(sosOfferings(pegelsos))
@@ -299,15 +299,6 @@ stl(tempSeries2009)
 
 
 ################################################################################
-# ClimateSOS
-climatesos <- SOS("http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos")
-
-length(sosProcedures(climatesos))
-# 6
-
-lapply(sosOfferings(climatesos), slot, "name")
-
-################################################################################
 # MoodSOS
 #
 # offerings worth checking out: SummerVillerest, PatientCondition,
@@ -355,7 +346,7 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 # http://www.openioos.org/real_time_data/gm_sos.html
 #
 oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
-		method = "GET", verboseOutput = TRUE)
+		binding = "KVP", verboseOutput = TRUE)
 ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos")
 
 sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
@@ -382,7 +373,7 @@ obs01 <- getObservation(var01, offering = sosOfferings(var01)[[1]],
 # feature filter neccessary, otherwise too much data -> works!
 
 var02 <- SOS(":82/cgi-bin/mapserv?map=/tmp/umn/umn_sos.map",
-		method = "GET",
+		binding = "KVP",
 		verboseOutput = TRUE)
 # no getcapabilities possible:
 # 1. url already contains a "?", so if "GET" the error is --- msEvalRegex(): Regular expression error. String failed expression test.
@@ -394,8 +385,8 @@ var03.converters <- SosDataFieldConvertingFunctions(
 		"urn:terrestris:foss4g:feature" = sosConvertString)
 var03 <- SOS(":8280/deegree-sos-cite100/services",
 		dataFieldConverters = var03.converters,
-#		method = "POST",
-		method = "GET")
+#		binding = "POX",
+		binding = "KVP")
 #		verboseOutput = TRUE)
 var03.off <- sosOfferings(var03)[[1]]
 obs03 <- getObservation(sos = var03, offering = var03.off,
@@ -461,7 +452,7 @@ ise.rain3 <- getObservation(sos = ise,
 ################################################################################
 # .NET implementation from http://ogc.codeplex.com/ (http://sensordatabus.org/)
 # TODO
-ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOutput = TRUE)
+ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP", verboseOutput = TRUE)
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
 # Seems not to work with additional request parameters...
 
@@ -469,11 +460,11 @@ ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET", verboseOut
 ################################################################################
 # Renaissance Computing Institute
 # TODO
-renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET")
+renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP")
 # does not support sections parameter, capabilities are empty if it's given
 
 # This works:
-renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", method = "GET",
+renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP",
 		verboseOutput = TRUE, sections = NA)
 renci
 renci.off <- sosOfferings(renci)
@@ -498,7 +489,7 @@ ist.converters <- SosDataFieldConvertingFunctions(
 
 # GET #
 ist.get <- SOS(url = "http://geoservice.ist.supsi.ch/sos",#verboseOutput = TRUE,
-		method = "GET", dataFieldConverters = ist.converters)
+		binding = "KVP", dataFieldConverters = ist.converters)
 sosOfferings(ist.get)
 
 ist.timeperiod <- sosCreateEventTimeList(sosCreateTimePeriod(sos = ist.get,
@@ -525,7 +516,7 @@ plot(ist.result[["Time"]], ist.result[["air-temperature"]], type = "l")
 
 # POST #
 ist.post <- SOS(url = "http://geoservice.ist.supsi.ch/sos",#verboseOutput = TRUE,
-		method = "POST", dataFieldConverters = ist.converters)
+		binding = "POX", dataFieldConverters = ist.converters)
 sosOfferings(ist.post)
 ist.obs.post <- getObservation(sos = ist.post, verbose = TRUE,
 		offering = ist.offering,
@@ -544,7 +535,7 @@ sosOfferings(istraw)
 # TODO
 brgm <- SOS(url = "http://swe.brgm.fr/constellation-envision/WS/sos-discovery",
 #		verboseOutput = TRUE,
-		method = "GET")
+		binding = "KVP")
 summary(brgm)
 
 brgm.offerings <- sosOfferings(brgm)
@@ -577,7 +568,7 @@ stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 	return(.val)
 }
 print(omResultName)
-stccmop <- SOS("http://data.stccmop.org/ws/sos.py", method = "GET",
+stccmop <- SOS("http://data.stccmop.org/ws/sos.py", binding = "KVP",
 		parsers = SosParsingFunctions("result" = stccmopParseResult))
 sosParsers(stccmop)[[omResultName]]
 sosCaps(stccmop)
@@ -691,7 +682,7 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 
 # Try with get... even weirder.
 ctiget <- SOS("http://weatherstation.cti.ac.at:8080/52NSOS_CUAS/sos",
-		method = "GET")
+		binding = "KVP")
 getObservation(ctiget, cti.off.cuas, verbose = TRUE,
 #		inspect = TRUE,
 		eventTime = time)
@@ -893,7 +884,7 @@ sosObservedProperties(fluggs)
 #A reminder email will be sent out that week.
 
 ioos_testing <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos-test/SOS",
-#		method = SosSupportedConnectionMethods()[["GET"]]
+#		binding = SosSupportedBindings()[["KVP"]]
 )
 sosObservedProperties(ioos_testing)[["network-All"]]
 unique(unlist(sosObservedProperties(ioos_testing)))
@@ -1063,3 +1054,167 @@ library(sos4R)
 ircel <- SOS(url = "http://sos.irceline.be/sos")
 
 sosOfferings(ircel)
+
+
+################################################################################
+# TODO check out NZ groundwater data: https://geier.gns.cri.nz/ngmp-sos/
+library(sos4R)
+
+gwl.converters <- SosDataFieldConvertingFunctions(
+	"http://data.gns.cri.nz/ggwdata/phenomenon/groundwaterlevel" = sosConvertDouble,
+	"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
+	"http://www.opengis.net/def/property/OGC/0/    /FeatureOfInterest" = sosConvertString)
+
+myopts <- curlOptions(ssl.verifyhost=FALSE, ssl.verifypeer=FALSE, followlocation=TRUE)
+handle <- getCurlHandle( .opts= myopts)
+
+gwl <- SOS(url = "https://geier.gns.cri.nz/ngmp-sos/sos" , dataFieldConverters = gwl.converters, curlHandle=handle)
+
+sosOfferings(gwl)
+sosObservedProperties(gwl)
+sosFeaturesOfInterest(gwl)
+
+# get data
+sosOfferingIds(gwl)
+off <- sosOfferingIds(gwl)[[6]]
+sosOfferings(gwl)[[off]]
+
+time <- sosCreateTime(sos = gwl, time = "1995-07-01::1998-07-01")
+obs <- getObservation(sos = gwl, offering = off, eventTime= time, verbose = TRUE)
+
+result <- sosResult(obs)
+plot(result)
+summary(result)
+
+# TODO fix handling of om:ObservationCollection with "...inapplicable"
+getObservation(sos = gwl, offering = off, eventTime = sosCreateTime(sos = gwl, time = "2010-07-10::2010-07-17"), verbose = TRUE)
+
+
+################################################################################
+# TODO check out USGS SOS used in WPS-R script at
+# https://github.com/USGS-CIDA/WaterSMART/blob/master/watersmart-wps/src/main/webapp/R/r_scripts/stats_compare_wps.R
+library(sos4R)
+
+sos_url_temp="http://waterservices.usgs.gov/nwis/dv/?format=waterml,1.1&sites="
+offering_temp='00003'
+property_temp='00060'
+
+################################################################################
+# USGS/CIDA NWIS SOS
+# Environmental Data Discovery and Transformation - Beta Service Version
+# About: http://nwisvaws02.er.usgs.gov/ogc-swie/index.jsp
+
+# GetObservation - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)
+#
+# observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 
+# - corresponds to: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH 
+# beginPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to earliest record)
+# endPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to most recent record)
+# Interval: Today, ThisWeek Future plan to implement ISO-8601 Duration option
+# Latest: only the most recent data point is reported
+# offering: UNIT (defaults to UNIT)
+#
+# Gage height observation by feature ID and begin time:
+# 	http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=2013-01-25 
+nwis <- SOS(url = "http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos",
+						binding = "KVP",
+						parsers = SosParsingFunctions( # disable parsing of getobs responses
+							sosGetObservationName = parseNoParsing))
+summary(nwis)
+sosCapabilitiesDocumentOriginal(nwis)
+
+sosOfferings(nwis)
+sosFeaturesOfInterest(nwis) # > GetFeature request on WFS...
+
+
+# TODO: write simple getData wrapper function that takes fois and observed properties as strings
+sosKVPParamNameFoi <- "featureId" # non-standard request param name
+sosDefaultGetBindingParamLatest <- "latest"
+SosDefaults()
+obs <- getObservation(sos = nwis, offering = "UNIT", observedProperty = list("00060"),
+						featureOfInterest = SosFeatureOfInterest(objectIDs = list("05407000")),
+						responseFormat = as.character(NA),
+						latest = TRUE, # latest not standard-conform
+						inspect = FALSE, verbose = TRUE)
+
+# implement latest > FIXME so that user can set the value...
+# TODO add settings parameter to SOS classes and the default content is SosDefaults()!!!
+encodeKVP(obj = sos4R:::.createLatestEventTime(TRUE), sos = nwis, verbose = TRUE)
+
+# TODO implement WML parser
+
+###############################################################################
+# SOS 1.0.0 in new 52N SOS 4.0 - a "Testsuite"
+# http://localhost:8080/sos/
+# 4.0.0-SNAPSHOT, Revision: 0, Build date: 2013-03-01 09:33:03
+#
+
+.sos4Rpath <- "D:/workspace-R/sos4R";
+source("D:/workspace-R/sos4R/sandbox/loadSources.R")
+# send a funtion to R again to use the debug points in StatET
+
+#
+# POST
+#
+four.converters <- SosDataFieldConvertingFunctions(
+		"test_observable_property_6" = sosConvertDouble)
+
+# must implement handling of several endpoints for the same protocol
+# METHOD ONE: disable DCPs
+.sosFilterDCPs(c("http://localhost:8080/sos/sos/pox",
+				"http://localhost:8080/sos/sos/soap"),
+		pattern = "pox")
+four.test <- SOS(url = "http://localhost:8080/sos/sos/pox", binding = "POX",
+		useDCPs = FALSE)
+sosCapabilitiesDocumentOriginal(four.test, verbose = TRUE)
+# works - good!
+
+# METHOD TWO: allow DCP filtering/selection
+four <- SOS(url = "http://localhost:8080/sos/sos/pox",
+		binding = "POX",
+		dataFieldConverters = four.converters,
+		dcpFilter = list("POX" = "/pox"))
+summary(four)
+sosGetDCP(four, "GetCapabilities")
+
+sosCapabilitiesDocumentOriginal(four, verbose = TRUE)
+# FIXME
+#Fehler in .postForm(curl, .opts, .params, style) : 
+#		Unhandled case for the value of curl_easy_setopt (R type = 19, option 10002)
+
+# 
+four_offerings <- sosOfferings(four.test)
+fout_off_no6 <- four_offerings[["test_offering_6"]]
+observ <- getObservation(sos = four.test, offering = sosOfferings(four)[[1]],
+		verbose = TRUE,
+		inspect = TRUE)
+# works almost, some parsing errors and invalid objects...
+
+#
+# KVP - NOT IMPLEMENTED YET
+#
+fourGet <- SOS(url = "http://localhost:8080/sos/sos/kvp", binding = "KVP",
+		verboseOutput = TRUE)
+sosCapabilitiesDocumentOriginal(fourGet)
+sosOperations(fourGet)
+sosContents(fourGet)
+sosProcedures(fourGet)
+sosOfferings(fourGet)
+# OK
+describeSensor(sos = fourGet, procedure = sosProcedures(fourGet)[[1]])
+# No decoder implementation is available for KvpBinding (KvpOperationDecoderKey[service=SOS, version=1.0.0, operation=DescribeSensor])!
+getObservation(sos = fourGet, offering = sosOfferings(fourGet)[[1]], verbose = TRUE)
+# ...
+
+###############################################################################
+#
+sosCreateTime(sos = pegelsos, time = "2007-07-07 07:00::2008-08-08 08:00")
+# # FIXME error: invalid class "TM_During" object: invalid object for slot "time" in class "TM_During": got class "GmlTimeInstant", should be or extend class "GmlTimePeriod"
+
+
+###############################################################################
+# TODO Test 52N SOS for IOOS by Axiom Alaska
+# http://ioossos.axiomalaska.com/test/
+ioosaxiom <- SOS(url = "http://ioossos.axiomalaska.com/test/sos", binding = "KVP",
+		version = "1.0.0", verboseOutput = TRUE)
+sosOfferings(axiom)
