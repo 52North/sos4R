@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2010 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -22,57 +22,11 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-09-08                                                          #
+# Created: 2010-09-24                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
-#
-# Classes are based on Observations & Measurements - Part 2 - Sampling Features
-# 
-# http://www.opengeospatial.org/standards/om
-#
-
-#
-# 
-#
-setClass("SaSamplingPoint",
-		representation(sampledFeatures = "list",
-				position = "GmlPointProperty",
-				# optional:
-				relatedObservation = "list",
-				relatedSamplingFeature = "list",
-				surveyDetails = "ANY"),
-		prototype = list(sampledFeatures = list(NA), position = NULL),
-		contains = "GmlFeature",
-		validity = function(object) {
-			#print("Entering validation: SaSamplingPoint")
-			# TODO implement validity function
-			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observations must be OmObservationProperty
-			return(TRUE)
-		}
-)
-
-#
-#
-#
-setClass("SaSamplingSurface",
-		representation(sampledFeatures = "list",
-				shape = "ANY",
-				# optional:
-				relatedObservation = "list",
-				relatedSamplingFeature = "list",
-				surveyDetails = "ANY",
-				area = "ANY"),
-		prototype = list(sampledFeatures = list(NA), shape = NULL),
-		contains = "GmlFeature",
-		validity = function(object) {
-			#print("Entering validation: SaSamplingSurface")
-			# TODO implement validity function
-			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observations must be of type OmObservationProperty
-			return(TRUE)
-		}
-)
-
+# http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
+library("testthat")
+test_package("sos4R")

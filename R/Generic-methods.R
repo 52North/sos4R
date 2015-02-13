@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -290,7 +290,8 @@ if (!isGeneric("sosCreateBBoxMatrix"))
 #
 #
 if (!isGeneric("sosCapabilitiesDocumentOriginal"))
-	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos) {
+	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos,
+					verbose = FALSE) {
 				standardGeneric("sosCapabilitiesDocumentOriginal")
 			})
 

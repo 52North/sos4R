@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -123,7 +123,7 @@ setMethod(f = "encodeXML",
 				cat("[encodeXML] GmlTimeInstantProperty with", toString(obj),
 						"\n")
 			
-			stop("Function not implemented yet!")
+			stop("Function encodeXML for GmlTimeInstantProperty not implemented yet!")
 		}
 )
 

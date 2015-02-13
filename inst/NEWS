@@ -1,22 +1,52 @@
+Changes in sos4R Version 0.2-12 - 2014-12-05
+
+TODO: move over stuff from CHANGES to NEWS
+
+Changes in sos4R Version 0.3 - 2012-03-07
+
+  o ADDED 'additionalKVPs' to SOS(...) to add specific key-value-pairs for KVP requests
+   
+  o NEW starting support for SOS 2.0 (pre-ALPHA, no implementation yet just classes and empty methods)
+  
+  o ADDED handling of multiple DCPs for the same operation type using a regex list dcpFilter and parameter 'useDCPs' as a switch
+  
+  o ADDED handling for time instances to sosCreateTime
+  
+  o ADDED feature of interest for GET URL, using sosKVPParamNameFoi for naming the parameter
+  
+  o ADDED support for "latest" time request in GET using sosDefaultGetBindingParamLatest (e.g. "time=latest" or "latest")
+   
+  o FIXED bug in getObservation, improved handling for saveOriginal (if not provided for getObservation(byId))
+  
+  o FIXED usage of .find.package, which is deprecated, for loading the cheat sheet and news/changes file (now using find.package)
+  
+  o FIXED bug in mimeType definition with subtypes which were incorrectly encoded by RCurl by using different quotation: "text/xml;subtype=&quot;sensorML/1.0.1&quot;" > changed to: 'text/xml;subtype="sensorML/1.0.1"' (and similar for OM) 
+   
+  o CHANGED name of bindings from GET to KVP and POST to POX. Warnings added, started renaming of "connection method" stuff to "binding" to reflect more widely used terms.
+   
+  o CHANGED all GET request parameters to constant names (sosKVPParamNames...)
+
+  o ADDED parsing of CompositePhenomenon
+  
 Changes in sos4R Version 0.2-11 - 2013-05-14
 
   o FIXED line lengths of \example and \usage sections in .Rd files
   
   o FIXED usage of .find.packages which is deprecated for compatibility with R 3.0.0
 
-  o CHANGED minimum R version to 2.15.0 since older ones will not be tested anymore
-
+  o CHANGED minimum R version to 2.15.0 since older ones will not be tested anymore, and increased version of important dependencies RCurl and XML
+  
 Changes in sos4R Version 0.2-10 - 2012-11-19
 
   o ADDED function sosCapabilitiesUrl to generate a capabilities request URL in KVP encoding to include in Documentation, e.g. Sweave
   
-  o ADDED rgdal to suggests list in DESCRIPTION
+  o FIXED rgdal dependency by adding it to suggests list in DESCRIPTION
   
   o FIXED pegel demo, now using the actual PegelOnline web service
 
   o FIXED a NOTE about partial argument match in getObservation,SOS_1.0.0 for 'offering' to 'offeringId': had to use the correct name offeringId when calling .getObservation_1.0.0(...)
   
-  o EXTENDED documentation: added reference to cheat sheet in Vignette
+  o EXTENDED documentation: added reference to cheat sheet in Vignette, added subsection "Quick Start" to Introduction
   
 Changes in sos4R Version 0.2-9 - 2012-08-08
 

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -377,7 +377,7 @@ parseSosFilter_Capabilities <- function(obj, sos) {
 ################################################################################
 # parse saved documents
 setMethod(f = "parseFile",
-		signature = signature(sos = "SOS_1.0.0", file = "character"),
+		signature = signature(sos = "SOS_versioned", file = "character"),
 		def = function(sos, file, verbose, ...) {
 			.parseFile(sos, file, verbose, ...)
 		}

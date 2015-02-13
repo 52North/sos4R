@@ -1,4 +1,3 @@
-import("methods")
 import("XML")
 importFrom("RCurl", "getURL", "postForm")
 importFrom("graphics", "plot")
@@ -39,7 +38,7 @@ exportMethods(
     "sosFeaturesOfInterest",
     "sosGetCRS",
     "sosId",
-    "sosMethod",
+    "sosBinding",
     "sosName",
     "sosObservedProperties",
     "sosOfferingIds",
@@ -126,6 +125,7 @@ exportClasses(
      "SensorML",
      "SOS",
      "SOS_1.0.0",
+     "SOS_2.0",
      "SosCapabilities_1.0.0",
      "SosContents",
      "SosContentsOrNULL",

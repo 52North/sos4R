@@ -213,6 +213,23 @@
 \alias{smlSensorMLName}
 \alias{sosAttributeFileName}
 
+\alias{sos100_version}
+\alias{sos20_version}
+
+\alias{sosKVPParamNameRequest}
+\alias{sosKVPParamNameService}
+\alias{sosKVPParamNameVersion}
+\alias{sosKVPParamNameOffering}
+\alias{sosKVPParamNameObsProp}
+\alias{sosKVPParamNameFoi}
+\alias{sosKVPParamNameResponseFormat}
+\alias{sosKVPParamNameSrsName}
+\alias{sosKVPParamNameEventTime}
+\alias{sosKVPParamNameProcedure}
+\alias{sosKVPParamNameResultModel}
+\alias{sosKVPParamNameResponseMode}
+\alias{sosKVPParamNameBBOX}
+
 \title{Constants in sos4R}
 
 \description{

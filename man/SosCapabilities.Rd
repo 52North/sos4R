@@ -1,4 +1,4 @@
-\name{SosCapabilities_1.0.0-class}
+\name{SosCapabilities}
 \Rdversion{1.1}
 
 \docType{class}
@@ -6,8 +6,9 @@
 \alias{SosCapabilities_1.0.0-class}
 \alias{SosCapabilities}
 \alias{SosCapabilities-class}
+\alias{SosCapabilities_2.0-class}
 
-\title{Class and Construction Function for "SosCapabilities_1.0.0"}
+\title{Class and Construction Function for "SosCapabilities"}
 
 \description{
 The service metadata document of a Sensor Observation Service.
@@ -40,9 +41,7 @@ No methods defined with class "SosCapabilities_1.0.0" in the signature.
 }
 
 \usage{
-SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", 
-	identification = NULL, provider = NULL, operations = NULL, 
-	filterCapabilities = NULL, contents = NULL)
+SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", identification = NULL, provider = NULL, operations = NULL, filterCapabilities = NULL, contents = NULL)
 }
 
 \arguments{

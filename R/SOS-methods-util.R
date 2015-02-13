@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -61,7 +61,7 @@ read.sos <- function(sos,
 		mergeResult = FALSE,
 		addLocation = FALSE,
 		verbose = FALSE) {
-	warning("Method is not implemented yet!")
+	warning("Method is 'read.sos' not implemented yet!")
 }
 
 
@@ -160,11 +160,13 @@ setMethod(f = "sosCreateEventTimeList",
 )
 
 #
-#
+# test for instance: encodeXML(sosCreateTime(sos = sos, time = "2011-01-01", operator = "TM_Equals")[[1]], sos = sos)
 #
 setMethod(f = "sosCreateTime",
 		signature = signature(sos = "SOS", time = "character"),
 		def = function(sos, time, operator) {
+			.l <- NULL
+			
 			if(regexpr(pattern = "::", text = time) > -1) {
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "::")
@@ -177,10 +179,29 @@ setMethod(f = "sosCreateTime",
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "/")
 			}
-
+			else {
+				# not a period
+				.l <- .sosCreateEventTimeListFromInstance(sos = sos, time = time,
+						operator = operator)
+			}
+			
+			if(is.null(.l)) warning("[sosCreateTime] could not create time.")
+			
 			return(.l)
 		}
 )
+
+#
+# test: encodeXML(.sosCreateEventTimeListFromInstance(sos = sos, time = "2011-01-01", operator = SosSupportedTemporalOperators()[["TM_Equals"]])[[1]], sos = sos)
+#
+.sosCreateEventTimeListFromInstance <- function(sos, time,
+		operator = SosSupportedTemporalOperators()[["TM_Equals"]]) {
+	.ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(time))
+	.l <- sosCreateEventTimeList(time = .ti,
+					operator = SosSupportedTemporalOperators()[[operator]])
+	
+	return(.l)
+}
 
 .sosCreateEventTimeListFromPeriod <- function(sos, time, operator, seperator) {
 	.times <- strsplit(x = time, split = seperator)[[1]]
@@ -346,11 +367,12 @@ setMethod(f = "sosCreateBBoxMatrix",
 #
 setMethod(f = "sosCapabilitiesDocumentOriginal",
 		signature = signature(sos = "SOS"),
-		def = function(sos) {
+		def = function(sos, verbose = FALSE) {
+			.verbose <- sos@verboseOutput || verbose
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
 			.responseString = sosRequest(sos = sos, request = .gc,
-					verbose = sos@verboseOutput, inspect = FALSE)
+					verbose = .verbose, inspect = FALSE)
 			.response <- xmlParseDoc(.responseString, asText = TRUE)
 			return(.response)
 		}
@@ -648,4 +670,42 @@ sosCheatSheet <- function() {
 	class(.z) <- "vignette"
 
 	return(.z)
+}
+
+#
+#
+#
+.sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
+	if(length(pattern) == 0) {
+		if(verbose)
+			cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
+		return(dcp)
+	}
+	
+	if(verbose)
+		cat("[.sosFilterDCPs] Applying pattern", toString(pattern), "to",
+				toString(dcp), "\n")
+	
+	.idx <- grep(pattern = pattern, x = dcp)
+	.filtered <- dcp[.idx]
+	if(verbose)
+		cat("[.sosFilterDCPs] Filtered from\n\t", toString(dcp), "\n\tto\n\t", 
+				toString(.filtered), "\n")
+	
+	return(.filtered)
+}
+
+#
+#
+#
+.encodeAdditionalKVPs <- function(kvps) {
+	.kvpsString <- ""
+	for (i in seq(1:length(kvps))) {
+		.kvp <- paste(names(kvps)[[i]], kvps[[i]], sep = "=")
+		.kvpsString <- paste(.kvpsString, .kvp, sep = "&")
+	}
+	# remove starting &
+	.kvpsString <- substring(.kvpsString, 2, nchar(.kvpsString))
+	
+	return(.kvpsString)
 }

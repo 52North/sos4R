@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -33,46 +33,52 @@ library("RCurl")
 library("sp")
 
 # load required source files for testing
-if(!exists(".sos4Rpath"))
-	.sos4Rpath = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R"
+	.sos4Rpath = "C:/Users/Daniel/dev/git/sos4R"
+if(!exists(".sos4Rpath")) {
+	stop("variable .sos4Rpath must be set to use this script to load all files.")
+} else {
+	source(paste(.sos4Rpath, "R", "Constants.R",  sep = "/"))
 	
-source(paste(.sos4Rpath, "R", "Constants.R",  sep = "/"))
-
-source(paste(.sos4Rpath, "R", "Class-OWS.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "Class-GML.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "Class-SWE.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "Class-OM.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "Class-SA.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "Class-OGC.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "Class-SOS.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "Class-SML.R",  sep = "/"))
-
-source(paste(.sos4Rpath, "R", "Generic-methods.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "OWS-methods.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "OWS-methods-parsing.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SOS-methods-parsing.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SOS-methods-plotting.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "OM-methods.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "OM-methods-parsing.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "OM-methods-coercion.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SA-methods.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "GML-methods.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SWE-methods.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "GML-methods-parsing.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SA-methods-parsing.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SWE-methods-parsing.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "OGC-methods.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SML-methods.R",  sep = "/"))
-
-source(paste(.sos4Rpath, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
-
-source(paste(.sos4Rpath, "R", "SOS-methods-coercion.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SML-methods-coercion.R",  sep = "/"))
-
-source(paste(.sos4Rpath, "R", "SOS-methods-accessor.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SOS-methods-util.R",  sep = "/"))
-source(paste(.sos4Rpath, "R", "SML-methods-util.R",  sep = "/"))
-
-source(paste(.sos4Rpath, "R", "SOS-methods.R",  sep = "/"))
-
-source(paste(.sos4Rpath, "R", "Defaults.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-OWS.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-GML.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-SWE.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-OM.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-SA.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-OGC.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-SOS_100.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-SOS_20.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-SOS.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "Class-SML.R",  sep = "/"))
+	
+	source(paste(.sos4Rpath, "R", "Generic-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "OWS-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "OWS-methods-parsing.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SOS-methods-parsing.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SOS-methods-plotting.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "OM-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "OM-methods-parsing.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "OM-methods-coercion.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SA-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "GML-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SWE-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "GML-methods-parsing.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SA-methods-parsing.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SWE-methods-parsing.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "OGC-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SML-methods.R",  sep = "/"))
+	
+	source(paste(.sos4Rpath, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"))
+	
+	source(paste(.sos4Rpath, "R", "SOS-methods-coercion.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SML-methods-coercion.R",  sep = "/"))
+	
+	source(paste(.sos4Rpath, "R", "SOS-methods-accessor.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SOS-methods-util.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SML-methods-util.R",  sep = "/"))
+	
+	source(paste(.sos4Rpath, "R", "SOS-methods.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SOS_20-methods-impl.R",  sep = "/"))
+	source(paste(.sos4Rpath, "R", "SOS_20-methods.R",  sep = "/"))
+	
+	source(paste(.sos4Rpath, "R", "Defaults.R",  sep = "/"))
+}
