@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -113,6 +113,10 @@ setMethod(f = "sosUrl", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
 			return(sos@url)
 		})
+setMethod(f = "sosUrl", signature = signature(sos = "SOS_2.0"),
+		def = function(sos) {
+			return(sos@url)
+		})
 
 if (!isGeneric("sosVersion"))
 	setGeneric(name = "sosVersion", def = function(sos) {
@@ -132,13 +136,17 @@ setMethod(f = "sosSwitchCoordinates", signature = signature(sos = "SOS"),
 		})
 
 
-if (!isGeneric("sosMethod"))
-	setGeneric(name = "sosMethod", def = function(sos) {
-				standardGeneric("sosMethod")
+if (!isGeneric("sosBinding"))
+	setGeneric(name = "sosBinding", def = function(sos) {
+				standardGeneric("sosBinding")
 			})
-setMethod(f = "sosMethod", signature = signature(sos = "SOS_1.0.0"),
+setMethod(f = "sosBinding", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
-			return(sos@method)
+			return(sos@binding)
+		})
+setMethod(f = "sosBinding", signature = signature(sos = "SOS_2.0"),
+		def = function(sos) {
+			return(sos@binding)
 		})
 
 if (!isGeneric("sosProcedures"))
@@ -1004,7 +1012,8 @@ setMethod(f = "sosGetDCP",
 			.dcps <- .ops[[operation]]@DCPs
 			
 			if(!is.na(type)) {
-				return(.dcps[[type]])
+				.idxs <- grep(pattern = type, x = names(.dcps))
+				return(.dcps[.idxs])
 			}
 			else return(.dcps)
 		}

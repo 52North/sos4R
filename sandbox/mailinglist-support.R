@@ -232,3 +232,85 @@ obs14 = getObservation(eo2h, offering = eo2h_off[[14]]);
 # actually fixed in next release because of adding ug/m3 to known unit list.
 
 # Solution: None, the error does not occur on my system!
+
+# http://geostatistics.forum.52north.org/Encoding-of-parameter-in-describeSensor-request-in-sos4R-td4022931.html
+# Encoding of parameter in describeSensor-request in sos4R with 52N SOS 4.x
+axiom <- SOS(url = "http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/kvp", binding = "KVP")
+#axiom <- SOS(url = "http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/kvp", binding = "KVP")
+#str(axiom)
+
+sosProcedures(axiom)
+
+describeSensorOp <- sosOperation(axiom, sosDescribeSensorName)
+
+#
+# helper function to encode manually build requests using sosOperation(...)
+#
+# setMethod("encodeRequestXML", "OwsOperation", 
+#           function(obj, sos, verbose = FALSE, ...) {
+#               .name <- slot(object = obj, name = "name")
+#               if(verbose) {
+#                   cat("[encodeRequestXML]", class(obj), " with name", .name, "\n")
+#               }
+#               
+#               str(...)
+#               .op <- NULL
+#               
+#               if(.name == sosGetObservationName) {
+#                   stop(paste("Helper function for encoding of OwsOperation not implemented for operation ", .name))
+#               }
+#               else if(.name == sosGetObservationByIdName) {
+#                   stop(paste("Helper function for encoding of OwsOperation not implemented for operation ", .name))
+#               }
+#               else if(.name == sosGetCapabilitiesName) {
+#                   stop(paste("Helper function for encoding of OwsOperation not implemented for operation ", .name))
+#               }
+#               else if(.name == sosDescribeSensorName) {
+#                   .op <- SosDescribeSensor(service = sosService, version = sos@version,
+#                                            procedure = procedure, outputFormat = outputFormat)
+#               }
+#               else {
+#                   stop("Operation name not supported!")
+#               }
+#               
+#               .xml <- encodeRequestXML(.op)
+#               if(verbose) {
+#                   cat("[encodeRequestXML] encoded ", class(obj), " to\n", toString(.xml), "\n")
+#               }
+#               return(.xml)
+#           }
+# )
+# THIS DOES NOT WORK as planned, since SosDescribeSensor needs information that is not in the OwsOperation object!
+# AND encodeRequestXML does not support ...
+
+procedure.2 <- sosProcedures(axiom)[[2]]
+op <- SosDescribeSensor(service = sosService, version = axiom@version, procedure = procedure.2,
+                        outputFormat = "test")
+encodeRequestXML(op, sos = axiom, verbose = TRUE)
+# looks good
+
+# test with 52N SOS latest
+demo.kvp <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/sos/kvp", binding = "KVP")
+# fix DCPs
+wrongUrl <- demo.kvp@capabilities@operations@operations$DescribeSensor@DCPs$Get
+demo.kvp@capabilities@operations@operations$DescribeSensor@DCPs$Get <- "http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp?"
+kvp.1 <- describeSensor(sos = demo.kvp, procedure = sosProcedures(demo.kvp)[[1]], verbose = TRUE)
+# works
+
+describeSensor(sos = demo.kvp, procedure = sosProcedures(demo.kvp)[[1]],
+               outputFormat = 'text/xml;subtype="sensorML/1.0.1"', verbose = TRUE)
+# works
+
+describeSensor(sos = demo.kvp, procedure = sosProcedures(demo.kvp)[[1]],
+               outputFormat = "text/xml;subtype=\"sensorML/1.0.1\"", verbose = TRUE)
+# works
+
+describeSensor(sos = demo.kvp, procedure = sosProcedures(demo.kvp)[[1]],
+               outputFormat = "text/xml; subtype=\"sensorML/1.0.1\"", verbose = TRUE)
+# works (after adding fix for spaces)
+
+demo.pox <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox", binding = "POX")
+# see tests/testthat/sensors.R for unit tests based on this report
+
+pox.1 <- describeSensor(sos = demo.pox, procedure = sosProcedures(demo.pox)[[1]], verbose = TRUE)
+# crash!
