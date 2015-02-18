@@ -232,3 +232,54 @@ obs14 = getObservation(eo2h, offering = eo2h_off[[14]]);
 # actually fixed in next release because of adding ug/m3 to known unit list.
 
 # Solution: None, the error does not occur on my system!
+
+
+
+
+# getObservation in sos4R with 52N SOS 4.x > "Internal Server Error"
+# http://geostatistics.forum.52north.org/getObservation-in-sos4R-tp4022949p4022951.html
+# 
+library("sos4R"); sessionInfo()
+testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox")
+testsosoffering <- sosOfferings(testsos)[["ttp___www.52north.org_test_offering_6"]] # [["http://www.52north.org/test/offering/6"]]
+sosObservedProperties(testsosoffering)
+testsosobsprop <- sosObservedProperties(testsosoffering)[1]
+
+getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop, verbose = TRUE)
+# for sos4R version 0.2-12:
+# Error in function (type, msg, asError = TRUE)  : <url> malformed 
+# [.sosRequest_1.0.0] Using DCP: http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox, http://sensorweb.demo.52north.org/52n-sos-webapp/service/soap 
+# [.sosRequest_1.0.0] Do request...
+# trying to use two DCPs at the same time
+###
+# for sos4R version 0.2-11: 
+#[sos4R] Received response (size: 632 bytes), parsing ...
+#[1] ""
+#attr(,"Content-Type")
+#charset 
+#"application/xml"           "UTF-8" 
+#Warning message:
+#	In .getObservation_1.0.0(sos = sos, offeringId = .offeringId, observedProperty = observedProperty,  :
+#													 	File name is NULL, could not save document!
+mimeTypeOM
+mimeTypeOM <- 'text/xml;subtype="om/1.0.0"'
+getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop, verbose = TRUE)
+
+# [.sosRequest_1.0.0] response:
+#[1] ""
+#attr(,"Content-Type")
+#charset 
+#"application/xml"           "UTF-8" 
+#[sos4R] Received response (size: 632 bytes), parsing ...
+# response is actually EMPTY STRING! This is because of an error in the query... 
+# so this is a faliure to communicate this more than anything else.
+# FIXED when using offering and procedure '6'
+
+# request works, but resposne not:
+testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox")
+testsosoffering <- sosOfferings(testsos)[[5]]
+getObservation(sos = testsos, offering = testsosoffering, observedProperty = sosObservedProperties(testsosoffering)[1], verbose = TRUE)
+# Error in if (.subtypeIdx > 0) { : argument is of length zero
+# Problem with parsing of content type:
+i <- which(names("application/xml") == "subtype")
+i > 0
