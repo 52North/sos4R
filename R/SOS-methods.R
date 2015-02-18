@@ -765,10 +765,18 @@ setMethod(f = "getObservationById",
 	
 	if(verbose) cat("[.getObservation_1.0.0] Content-Type:", .contentType, "\n")
 	
+	if(nchar(.responseString) < 1) {
+		warning(paste("Response string has length ", nchar(.responseString), 
+									". Please re-check query parameters."))
+	}
+	
 	if(isXMLString(.responseString)) {
-		if(verbose) cat("[.getObservation_1.0.0] Got XML string as response",
+		if(verbose) {
+			cat("[.getObservation_1.0.0] Got XML string as response",
 					"(based on isXMLString()).\n")
-		
+			cat("[.getObservation_1.0.0] Content type: '", toString(.contentType), "'.\n")
+		}
+
 		.hasSubtype <- FALSE
 		.contentSubtype <- NA
 		if(length(.contentType) < 1) {
@@ -957,8 +965,8 @@ setMethod(f = "getObservationById",
 
 	# not xml nor csv nore otherwise handled
 	if(verbose || inspect) {
-		cat("[.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT:\n")
-		cat(.responseString, "\n")
+		cat("[.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response string: \n'")
+		cat(.responseString, "'\n")
 		cat("[.getObservation_1.0.0] Content-Type: ", .contentType)
 		warning("Unknown response format!")
 	}
