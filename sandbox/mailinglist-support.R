@@ -281,5 +281,4 @@ testsosoffering <- sosOfferings(testsos)[[5]]
 getObservation(sos = testsos, offering = testsosoffering, observedProperty = sosObservedProperties(testsosoffering)[1], verbose = TRUE)
 # Error in if (.subtypeIdx > 0) { : argument is of length zero
 # Problem with parsing of content type:
-i <- which(names("application/xml") == "subtype")
-i > 0
+# fixed, see https://github.com/52North/sos4R/issues/37
