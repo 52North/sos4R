@@ -151,7 +151,7 @@ xmlns:gml="http://www.opengis.net/gml">
 
 test_that("offering id is parsed correctly", {
     .doc3 <- parseXmlSnippet(.axiomOffering)
-    .obsProp <- parseSosObservedProperty(.doc3[sosObservedPropertyName], verbose = TRUE)
+    .obsProp <- parseSosObservedProperty(.doc3[sosObservedPropertyName]) #, verbose = TRUE)
     expect_equal(.obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
     expect_equal(length(.obsProp), 2)
 })
