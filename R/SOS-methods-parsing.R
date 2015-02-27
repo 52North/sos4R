@@ -42,9 +42,10 @@ parseSosObservationOffering <- function(obj, sos) {
 	if(sos@verboseOutput)
 		cat("[parseSosObservationOffering] id:", .id, "name:", .name, "\n")
 	
-	# can be references or containes, so use lists
-	.observedProperty <- lapply(obj[sosObservedPropertyName], xmlGetAttr,
-			"href")
+	# can be references or contained inline, so use lists
+	.observedProperty <- parseSosObservedProperty(obj[sosObservedPropertyName],
+	                                              verbose = sos@verboseOutput)
+	
 	if(sos@verboseOutput)
 		cat("[parseSosObservationOffering] observedProperty:",
 				toString(.observedProperty), "\n")
@@ -164,6 +165,44 @@ parseSosObservationOffering <- function(obj, sos) {
 		cat("[parseSosObservationOffering] done: ", toString(.ob), "\n")
 	
 	return(.ob)
+}
+
+#
+#
+#
+parseSosObservedProperty <- function(obj = list(), verbose = FALSE) {
+    if(verbose)
+        cat("[parseSosObservedProperty] entered,", length(obj), "input elements ... \n")
+    
+    .obsProps <- lapply(X = obj, FUN = function(obj) {
+        .name <- xmlName(obj)
+        if(verbose)
+            cat("[parseSosObservedProperty] found ", .name, "\n")
+        
+        .href <- xmlGetAttr(node = obj, name = "href")
+        if(!is.null(.href)) {
+            if(verbose)
+                cat("[parseSosObservedProperty] found href:", .href, "\n")
+            return(.href)
+        }
+        else  {
+            .comp <- obj[[sweCompositePhenomenonName]]
+            str(.comp)
+            cat(xmlName(.comp), "\n")
+            
+            if(!is.null(.comp)) {
+                .parsed <- parseCompositePhenomenon(.comp)
+                .id <- slot(.parsed, "id")
+                if(verbose)
+                    cat("[parseSosObservedProperty] parsed phenomenon: ", toString(.parsed), 
+                        ", returning id '", .id, "'\n", sep = "")
+                return(.id)
+            }
+            warn(paste("could not parse observed property:", toString(obj)))
+        }
+    })
+        
+    return(.obsProps)
 }
 
 #
