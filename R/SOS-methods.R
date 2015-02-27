@@ -442,7 +442,8 @@ setMethod(f = "sosRequest",
 #
 #
 .getCapabilities_1.0.0 <- function(sos, verbose, inspect, sections,
-		acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
+		acceptFormats, updateSequence, owsVersion,	acceptLanguages,
+		xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
 	if (verbose) {
 		cat("[.getCapabilities_1.0.0] of", sosUrl(sos), "\n")
 	}
@@ -459,7 +460,8 @@ setMethod(f = "sosRequest",
 		cat("[.getCapabilities_1.0.0] RESPONSE:\n", .responseString , "\n")
 	}
 	
-	.response <- xmlParseDoc(file = .responseString, asText = TRUE)
+	.response <- xmlParseDoc(file = .responseString, options = xmlParseOptions,
+	                         asText = TRUE)
 	if(verbose || inspect) {
 		cat("[.getCapabilities_1.0.0] RESPONSE DOC:\n")
 		print(.response)
@@ -493,7 +495,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 #
 #
 .describeSensor_1.0.0 <- function(sos, procedure, outputFormat, verbose,
-		inspect, saveOriginal) {
+		inspect, saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
 	if(verbose) cat("[.describeSensor_1.0.0] ", procedure, "@", sos@url, "\n")
 	
 	# check if multiple sensors
@@ -524,7 +526,8 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 		cat("[.describeSensor_1.0.0] RESPONSE:\n", .responseString , "\n")
 	}
 	
-	.response <- xmlParseDoc(.responseString, asText = TRUE)
+	.response <- xmlParseDoc(.responseString, asText = TRUE,
+	                         options = xmlParseOptions)
 	if(verbose || inspect) {
 		cat("[.describeSensor_1.0.0] RESPONSE DOC:\n")
 		print(.response)
@@ -604,7 +607,8 @@ setMethod(f = "getObservationById",
 )
 
 .getObservationById_1.0.0 <- function(sos, observationId, responseFormat, srsName,
-		resultModel, responseMode, verbose, inspect, saveOriginal) {
+		resultModel, responseMode, verbose, inspect, saveOriginal,
+		xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
 	if(verbose) {
 		cat("[.getObservationById_1.0.0] ID", observationId, "\n")
 	}
@@ -638,7 +642,8 @@ setMethod(f = "getObservationById",
 		cat("[.getObservationById_1.0.0] RESPONSE:\n", .responseString , "\n")
 	}
 	
-	.response <- xmlParseDoc(.responseString, asText = TRUE)
+	.response <- xmlParseDoc(.responseString, asText = TRUE,
+	                         options = xmlParseOptions)
 	if(verbose || inspect) {
 		cat("[.getObservationById_1.0.0] RESPONSE DOC:\n")
 		print(.response)
@@ -723,7 +728,7 @@ setMethod(f = "getObservationById",
 .getObservation_1.0.0 <- function(sos, offeringId, observedProperty,
 		responseFormat, srsName, eventTime,	procedure, featureOfInterest,
 		result, resultModel, responseMode, BBOX, latest, verbose, inspect,
-		saveOriginal) {
+		saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
 	
 	.filename <- NULL
 	if(is.null(saveOriginal)) {
@@ -802,7 +807,8 @@ setMethod(f = "getObservationById",
 			.contentType <- .contentType[[1]]
 		}
 
-		.response <- xmlParseDoc(.responseString, asText = TRUE)
+		.response <- xmlParseDoc(.responseString, asText = TRUE,
+		                         options = xmlParseOptions)
 		if(verbose || inspect) {
 			cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
 			print(.response)
