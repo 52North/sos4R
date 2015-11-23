@@ -19,10 +19,19 @@ sos4R is developed on GitHub using the [fork & pull development model](https://h
 
 The `master` branch represents the current version that is [published on CRAN](http://cran.r-project.org/package=sos4R), the `dev` branch is the current development version.
 
+### Install the development version
+
+You can install the current development version (= the next release for CRAN) directly from GitHub with the following commands.
+```r
+install.packages("devtools")
+devtools::install_github("52North/sos4R", ref = "dev")
+# To also install the vignettes run: devtools::install_github("52North/sos4R", build_vignettes = TRUE)
+```
+
 ### Contributors
 
-* [\@nuest](https://github.com/nuest)
-* [\@edzer](https://github.com/edzer)
+* [@nuest](https://github.com/nuest)
+* [@edzer](https://github.com/edzer)
 
 ### Contact
 

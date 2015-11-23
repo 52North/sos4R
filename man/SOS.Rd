@@ -244,7 +244,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{timeFormat}:}{Object of class \code{"character"}: The time format to be used or decoding and encoding time character strings to and from \code{POSIXt} classes.}
     \item{\code{verboseOutput}:}{Object of class \code{"logical"}: Trigger parameter for extensive debugging information on the console.}
     \item{\code{switchCoordinates}:}{Object of class \code{"logical"}: Trigger enabling switching of lat/long during parsing stage.}
-    \item{\code{useDCPs}:}{Object of class \code{"logical"}: Trigger for not using DCP endpoints from the capabilities but just the URL.}
+    \item{\code{useDCPs}:}{Object of class \code{"logical"}: Trigger for not using DCP endpoints from the capabilities but just the URL defined when creating the SOS connection. If there is a specific endpoint for a specific binding the user must make sure the configured binding and DCP match.}
     \item{\code{dcpFilter}:}{Object of class \code{"list"}: Named list of regular expressions to be applied (using \code{grep}) to DCPs if there is more than one for the chosen binding.}
     \item{\code{addtionalKVPs}:}{A nam of class \code{"list"}: Named list of key-value-pairs to be appended to an KVP request.}
   }
@@ -361,6 +361,14 @@ sosGetCRS("urn:ogc:def:crs:EPSG:4217")
 
 # create the URL to a GET request for GetCapabilities
 sosCapabilitiesUrl(mysos)
+
+# create a SOS for a specific binding at a specific endpoint
+SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
+		useDCPs = FALSE)
+		
+# create a SOS using only the DCPs from the capabilities that match a specific pattern with the default binding
+SOS(url = "http://localhost:8080/52n-sos/sos/service",
+		dcpFilter = list("POX" = "/pox"))
 }
 
 

@@ -2,7 +2,7 @@ Changes in sos4R Version 0.2-12 - 2014-12-05
 
 TODO: move over stuff from CHANGES to NEWS
 
-Changes in sos4R Version 0.3 - 2012-03-07
+Changes in sos4R Version 0.3 - 201x-xx-xx
 
   o ADDED 'additionalKVPs' to SOS(...) to add specific key-value-pairs for KVP requests
    
