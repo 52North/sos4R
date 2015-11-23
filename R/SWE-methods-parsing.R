@@ -386,12 +386,13 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 #
 parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {
 	.id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
-	
 	if(verbose) cat("[parseCompositePhenomenon] with id", .id, "\n")
 	
 	.dimension <- as.integer(
 			xmlGetAttr(node = obj, name = "dimension", default = NA_character_))
 	.name <- xmlValue(obj[[gmlNameName]])
+	if(verbose) cat("[parseCompositePhenomenon] parsed name '", .id,
+	                "' and dimension '", .dimension, "'\n", sep = "")
 	
 	.components <- lapply(obj[sweComponentName], parseComponent, sos = sos,
 			verbose = verbose)
@@ -420,8 +421,9 @@ parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {
 #
 #
 parseComponent <- function(obj, sos, verbose = FALSE) {
+    if(verbose) cat("[parseComponent] ", obj, "\n")
 	# 52N SOS only sets the href property on swe components, but still reuse function
-	.component <- parsePhenomenonProperty(obj)
+	.component <- parsePhenomenonProperty(obj, sos, verbose)
 	return(.component)
 }
 

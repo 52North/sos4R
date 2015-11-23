@@ -565,6 +565,7 @@
 		toString(x@base),
 		";\ncomponents:\t",
 		sapply(sapply(x@components, toString), paste, "\t\t\t"),
+		"\n",
 		sep = "")
 	return(.s)
 }

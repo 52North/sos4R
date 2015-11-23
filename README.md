@@ -15,12 +15,23 @@ sos4R is an extension for the R environment for statistical computing and visual
 
 ## Development
 
-sos4R is developed on GitHub uing the [fork & pull development model](https://help.github.com/articles/using-pull-requests/#fork--pull). The [main repository's issue tracker](https://github.com/52North/sos4R/issues) is used to coordinate development.
+sos4R is developed on GitHub using the [fork & pull development model](https://help.github.com/articles/using-pull-requests/#fork--pull). The [main repository's issue tracker](https://github.com/52North/sos4R/issues) is used to coordinate development.
+
+The `master` branch represents the current version that is [published on CRAN](http://cran.r-project.org/package=sos4R), the `dev` branch is the current development version.
+
+### Install the development version
+
+You can install the current development version (= the next release for CRAN) directly from GitHub with the following commands.
+```r
+install.packages("devtools")
+devtools::install_github("52North/sos4R", ref = "dev")
+# To also install the vignettes run: devtools::install_github("52North/sos4R", build_vignettes = TRUE)
+```
 
 ### Contributors
 
-* [\@nuest](https://github.com/nuest)
-* [\@edzer](https://github.com/edzer)
+* [@nuest](https://github.com/nuest)
+* [@edzer](https://github.com/edzer)
 
 ### Contact
 
