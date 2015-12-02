@@ -102,12 +102,6 @@ elsterClean <- subset(elster[[1]]@result, Wasserstand > 0)
 plot(x = elster[[1]]@result$Time, y = elster[[1]]@result$Wasserstand, ylim = c(100, 600),
 		type = "l")
 
-# optional: install the package
-#install.packages("sos4R")
-
-# load the sos4R package
-#library("sos4R")
-#source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
 
 ################################################################################
 # pegelonlinesos

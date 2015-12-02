@@ -27,75 +27,6 @@
 #                                                                              #
 ################################################################################
 
-?package.skeleton
-
-.path = "/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R"
-files <- c(
-		paste(.path, "R", "Constants.R",  sep = "/"),
-		paste(.path, "R", "Class-OWS.R",  sep = "/"),
-		paste(.path, "R", "Class-GML.R",  sep = "/"),
-		paste(.path, "R", "Class-SWE.R",  sep = "/"),
-		paste(.path, "R", "Class-OM.R",  sep = "/"),
-		paste(.path, "R", "Class-SA.R",  sep = "/"),
-		paste(.path, "R", "Class-OGC.R",  sep = "/"),
-		paste(.path, "R", "Class-SOS.R",  sep = "/"),
-		paste(.path, "R", "Class-SML.R",  sep = "/"),
-		paste(.path, "R", "Generic-methods.R",  sep = "/"),
-		paste(.path, "R", "OWS-methods.R",  sep = "/"),
-		paste(.path, "R", "OWS-methods-parsing.R",  sep = "/"),
-		paste(.path, "R", "SOS-methods-parsing.R",  sep = "/"),
-		paste(.path, "R", "OM-methods.R",  sep = "/"),
-		paste(.path, "R", "OM-methods-parsing.R",  sep = "/"),
-		paste(.path, "R", "SA-methods.R",  sep = "/"),
-		paste(.path, "R", "GML-methods.R",  sep = "/"),
-		paste(.path, "R", "SWE-methods.R",  sep = "/"),
-		paste(.path, "R", "SML-methods.R",  sep = "/"),
-		paste(.path, "R", "GML-methods-parsing.R",  sep = "/"),
-		paste(.path, "R", "SA-methods-parsing.R",  sep = "/"),
-		paste(.path, "R", "SWE-methods-parsing.R",  sep = "/"),
-		paste(.path, "R", "OGC-methods.R",  sep = "/"),
-		paste(.path, "R", "PrintShowStructureSummmary-methods.R",  sep = "/"),
-		paste(.path, "R", "SOS-methods-util.R",  sep = "/"),
-		paste(.path, "R", "SOS-methods.R",  sep = "/"),
-		paste(.path, "R", "Defaults.R",  sep = "/")
-	)
-
-#
-# create to temp folder, then copied manually
-#
-package.skeleton(name = "sos4R", namespace = TRUE, code_files = files,
-		path = "/tmp/")
-
-
-#
-# if the package is attached to the session, this method can be used to add only
-# certain files and create documentation for them
-#
-library("SoDA")
-?packageAdd
-?promptAll
-
-#
-# alternatively: create documentation files manually
-#
-?prompt
-?promptMethods
-?promptClass
-?promptPackage
-
-# for print methods
-promptMethods(f = "print", filename = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/man/print-methods.Rd")
-
-# 
-promptClass(clName = "OmObservationCollection",
-		filename = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/man/OmObservationCollection.Rd")
-
-#
-promptMethods(f = "sosFeatureIds", filename = "/tmp/sosFeatureIds-methods.Rd")
-promptMethods(f = "sosParse", filename = "/tmp/sosParse-methods.Rd")
-
-
-
 #
 #
 #
@@ -140,13 +71,13 @@ checkNonASCII <- function(pkgPath) {
 	}
 }
 
-checkNonASCII("D:/workspace/sos4R")
+checkNonASCII(".")
 
 ################################################################################
 # tools::compactPDF
 #?tools::compactPDF
 
 # run this before every commit...
-result <- tools::compactPDF(paths = "D:/workspace/sos4R/inst/doc")
+result <- tools::compactPDF(paths = "./inst/doc")
 result
 # or even better: run R CMB build with option "--compact-vignettes"
