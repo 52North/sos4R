@@ -15,11 +15,11 @@
 \alias{print,SOS_1.0.0-method}
 \alias{toString,SOS_1.0.0-method}
 
-\alias{SOS_2.0}
-\alias{SOS_2.0-class}
-\alias{show,SOS_2.0-method}
-\alias{print,SOS_2.0-method}
-\alias{toString,SOS_2.0-method}
+\alias{SOS_2.0.0}
+\alias{SOS_2.0.0-class}
+\alias{show,SOS_2.0.0-method}
+\alias{print,SOS_2.0.0-method}
+\alias{toString,SOS_2.0.0-method}
 
 \alias{SOS_versioned}
 \alias{SOS_versioned-class}
@@ -58,7 +58,7 @@
 \alias{sosBinding-methods}
 \alias{sosBinding,SOS-method}
 \alias{sosBinding,SOS_1.0.0-method}
-\alias{sosBinding,SOS_2.0-method}
+\alias{sosBinding,SOS_2.0.0-method}
 
 \alias{sosObservedProperties}
 \alias{sosObservedProperties-methods}
@@ -128,7 +128,7 @@
 \alias{sosUrl-methods}
 \alias{sosUrl,SOS-method}
 \alias{sosUrl,SOS_1.0.0-method}
-\alias{sosUrl,SOS_2.0-method}
+\alias{sosUrl,SOS_2.0.0-method}
 
 \alias{sosVersion}
 \alias{sosVersion-methods}

@@ -27,59 +27,56 @@
 #                                                                              #
 ################################################################################
 
+#
+# try re-using 1.0.0 function
+#
+.sosRequest_2.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
+	}
+	
+	.result <- .sosRequest_1.0.0(sos, request, verbose = verbose,
+			inspect = inspect)
+	return(.result)
+	
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
+	}
+}
 
-#
-#
-#
-setClass("SOS_2.0",
-		representation(url = "character", binding = "character",
-				curlHandle = "CURLHandle", curlOptions = "ANY"),
-		prototype = list(
-				url = as.character(NA),
-				binding = as.character(NA),
-				version = as.character(NA)),
-		contains = c("SOS"),
-		validity = function(object) {
-			#print("Entering validation: SOS")
-			
-			if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
-				return(paste("Binding has to be one of",
-								toString(SosSupportedBindings()),
-								"- given:", object@binding))
-			}
-			
-			if(object@version != sos20_version)
-				return(paste0("Version must be 2.0 but is", object@version))
-			
-			# url has to match an URL pattern
-			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
-			.result = regexpr(.urlPattern, object@url)
-			if (.result == -1)
-				return("url not matching URL-pattern (http://www.example.com)")
-			
-			# test for complete match removed, does not work yet
-			#.urlLength = nchar(object@url)
-			#if (.urlLength == attr(.result, "match.length"))
-			#	return("url not completely matching URL-pattern")
-			
-			return(TRUE)
-		}
-)
-
-#
-#
-#
-setIs("SOS_2.0", "SOS_versioned")
-
-#
-#
-#
-setClass("SosCapabilities_2.0",
-		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
-		contains = "OwsCapabilities_1.1.0",
-		validity = function(object) {
-			#print("Entering validation: SosCapabilities_1.0.0")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
+.getCapabilities_2.0 <- function(sos, verbose, inspect, sections,
+		acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
+	if (verbose) {
+		cat("[.getCapabilities_2.0] of", sosUrl(sos), "\n")
+	}
+	
+	.gc <- OwsGetCapabilities(service = sosService,
+			acceptVersions = c(sosVersion(sos)), sections = sections,
+			acceptFormats = acceptFormats, updateSequence = updateSequence,
+			owsVersion = owsVersion, acceptLanguages = acceptLanguages)
+	if(verbose) cat("[.getCapabilities_2.0] REQUEST:\n", toString(.gc), "\n")
+	
+	.responseString = sosRequest(sos = sos, request = .gc,
+			verbose = verbose, inspect = inspect)
+	if(verbose){
+		cat("[.getCapabilities_2.0] RESPONSE:\n", .responseString , "\n")
+	}
+	
+	.response <- xmlParseDoc(file = .responseString, asText = TRUE)
+	if(verbose || inspect) {
+		cat("[.getCapabilities_2.0] RESPONSE DOC:\n")
+		print(.response)
+	}
+	
+	if(.isExceptionReport(.response)) {
+		return(.handleExceptionReport(sos, .response))
+	}
+	else {
+		.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
+		.caps <- .parsingFunction(obj = .response, sos = sos)
+		if (verbose) {
+			cat("[.getCapabilities_2.0] DONE WITH PARSING!\n")
+		} 
+		return(.caps)
+	}
+}
