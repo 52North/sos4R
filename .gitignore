@@ -6,3 +6,12 @@
 
 .Rproj.user
 *.Rproj
+vignettes/Rplots.pdf
+vignettes/mySOS.RData
+vignettes/mySensor.xml
+vignettes/procs.descr.RData
+vignettes/sos4R-describeSensorPlot.pdf
+vignettes/sos4R-sosPlotFigure.pdf
+vignettes/sos4R.tex
+sos4R.tex
+sos4R-sosPlotFigure.pdf
