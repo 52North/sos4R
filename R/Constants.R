@@ -31,7 +31,7 @@
 # Constants for version 1.0.0 of SOS
 #
 sos100_version <- "1.0.0"
-sos20_version <- "2.0.0"
+sos200_version <- "2.0.0"
 
 ################################################################################
 # SOS
@@ -120,7 +120,7 @@ SosSupportedResponseModes <- function() {
 	return(.sosSupportedResponseModes)
 }
 
-.sosSupportedServiceVersions <- c(sos100_version, sos20_version)
+.sosSupportedServiceVersions <- c(sos100_version, sos200_version)
 SosSupportedServiceVersions <- function() {
 	return(.sosSupportedServiceVersions)
 }
@@ -388,7 +388,7 @@ kmlName <- "kml"
 
 ################################################################################
 owsNamespacePrefix <- "ows"
-.owsNamespace <- c(ows = "http://www.opengis.net/ows/1.1")
+owsNamespaceContext <- c(ows = "http://www.opengis.net/ows/1.1")
 .owsCodes = c(
 		"OperationNotSupported",
 		"MissingParameterValue",

@@ -68,7 +68,7 @@ parseOwsOperation <- function(obj) {
 						owsValueName, sep = "")
 				.allowedValues <- lapply(
 						getNodeSet(doc = .p, path = .xpathAllowedValues,
-								namespaces = .owsNamespace),
+								namespaces = owsNamespaceContext),
 						xmlValue)
 				# list of ranges
 				.xpathRanges <- paste("./", owsNamespacePrefix, ":",
@@ -78,7 +78,7 @@ parseOwsOperation <- function(obj) {
 						getNodeSet(
 								.p,
 								.xpathRanges,
-								.owsNamespace
+								owsNamespaceContext
 						),
 						parseOwsRange)
 				.allowedValuesAndRanges <- c(.allowedValues, .ranges)

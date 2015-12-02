@@ -90,7 +90,7 @@ SOS <- function(url, binding = SosDefaultBinding(),
 		return(.sos)
 	}
 	
-	if(version == sos20_version) {
+	if(version == sos200_version) {
 		.sos <- new("SOS_2.0.0",
 				url = url,
 				binding = binding,

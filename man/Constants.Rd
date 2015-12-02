@@ -214,7 +214,7 @@
 \alias{sosAttributeFileName}
 
 \alias{sos100_version}
-\alias{sos20_version}
+\alias{sos200_version}
 
 \alias{sosKVPParamNameRequest}
 \alias{sosKVPParamNameService}
