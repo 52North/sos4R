@@ -4,14 +4,6 @@
 %\VignetteIndexEntry{sos4R: Accessing Sensor Observation Services from R}
 %\VignetteDepends{xtable}
 
-% RUN WITH 
-% Sweave(file = "/home/daniel/workspace/sos4R/inst/doc/sos4R.Rnw")
-% OR
-% Sweave(file = "D:/workspace/sos4R/inst/doc/sos4R.Rnw")
-% OR
-% library(cacheSweave)
-% Sweave("sos4R.Rnw", driver = cacheSweaveDriver)
-
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{Sweave}
@@ -28,12 +20,12 @@
 \SweaveOpts{keep.source=TRUE}
 
 % some global options and helper function
+%
+%%%%% see DEV-README.md for instructions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 <<options,echo=FALSE,results=hide,print=FALSE>>= 
 .goOnline <- TRUE # triggers whether data is downloaded and stored in /vignettes folder
-.verbose <- TRUE
-
-#library("cacheSweave")
-#setCacheDir("/tmp/cacheSweave/sos4R")
+.verbose <- FALSE
 
 .getFilePath <- function(name) {
 	if(regexpr(pattern = ".RData", text = name) > 0)
@@ -259,7 +251,7 @@ The method \code{SOS()} is a construction method for classes encapsulating a con
 <<conn,echo=FALSE,print=FALSE,eval=TRUE>>=
 .fileMySOS <- "mySOS.RData" 
 if(.goOnline) {
-	mySOS <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+	mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/sos/kvp", binding = "KVP")
 	save(mySOS, file = .fileMySOS)
 } else {
 	load(.fileMySOS)
@@ -267,7 +259,7 @@ if(.goOnline) {
 @
 
 <<conn,echo=TRUE,print=FALSE,eval=FALSE>>= 
-mySOS <- SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/sos/kvp", binding = "KVP")
 @
 
 To create a SOS connection you only need the URL of the service (i.e. the URL endpoint which can be used for HTTP requests). The service connection created above is used for all examples throughout this document.
@@ -492,22 +484,23 @@ A simple example is as follows.
 .sensorFile <- "mySensor"
 if (.goOnline) {
 	mySensor <- describeSensor(sos = mySOS, # verbose = TRUE
-			procedure = "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93",
+			procedure = "wxt520",
+			outputFormat = 'text/xml; subtype="sensorML/1.0.1"',
 			saveOriginal = .sensorFile)
 } else {
-	# mySensor <- parseFile(mySOS, .getFilePath(.sensorFile), verbose = TRUE)
-	#mySensor <- parseFile(mySOS, paste0(.sensorFile, ".xml")) #, verbose = TRUE)
 	mySensor <- parseFile(mySOS, .getFilePath(.sensorFile), verbose = .verbose)
 }
 @
 <<describeSensor1b,echo=TRUE,print=TRUE,eval=FALSE>>= 
 # manual assignment used because procedure order might change:
 mySensor <- describeSensor(sos = mySOS,
-		procedure = "urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93")
+                           procedure = "wxt520",
+                           outputFormat = 'text/xml; subtype="sensorML/1.0.1"')
 
 # using procedure referencing:
-mySensor <- describeSensor(sos = mySOS,
-		procedure = sosProcedures(obj = mySOS)[[1]][[1]])
+myOtherSensor <- describeSensor(sos = mySOS,
+		procedure = sosProcedures(obj = mySOS)[[1]][[1]],
+		outputFormat = "http://www.opengis.net/sensorML/1.0.1")
 @
 <<describeSensor1c,echo=FALSE,print=FALSE,eval=TRUE>>= 
 mySensor
@@ -619,7 +612,7 @@ The class \code{SosContents} simply contains a list of objects of the class \cod
 
 <<metadataExtraction1,echo=TRUE,eval=FALSE>>= 
 sosOfferings(mySOS)
-sosOfferings(mySOS, name = "Rain")
+sosOfferings(mySOS, name = "wxt520")
 @
 
 The output when printing this list is quite extensive, so we concentrate on just on element of it in the following examples. Printing and summary methods are available of objects of the class \code{SosObservationOffering}.
@@ -641,52 +634,52 @@ The offering identifier is is used in the example below to extract the offering 
 \textbf{Note:} The order of the offering list (as all other lists, e.g. procedures or observed properties) is not guaranteed to be the same upon every connection to a service. So indexing by name (though counteracting the mentioned forward compatibility, as names might change) is recommended at at least one point in the analysis so that changes in the contents of a service result in an error.
 
 <<metadataExtraction3,echo=TRUE,eval=TRUE,print=TRUE>>= 
-off.temp <- sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]]
+off.wxt <- sosOfferings(mySOS)[["wxt520"]]
 @
 
 Metadata about the whole \textbf{offering} are identifier, name, and spatial and temporal extends.
 
 <<metadataExtraction4,echo=TRUE,eval=TRUE,print=TRUE>>= 
-off.temp.id <- sosId(off.temp)
-off.temp.name <- sosName(off.temp)
+off.wxt.id <- sosId(off.wxt)
+off.wxt.name <- sosName(off.wxt)
 @
 
 The offerings also contains metadata about the format and model that are supported.
 
 <<metadataExtraction4b,echo=TRUE,eval=TRUE,print=TRUE>>= 
-sosResultModels(off.temp)
-sosResponseMode(off.temp)
-sosResponseFormats(off.temp)
+sosResultModels(off.wxt)
+sosResponseMode(off.wxt)
+sosResponseFormats(off.wxt)
 @
 
 The \textbf{spatial extend} is given as a rectangular bounding box with two coordinates. The structure of the bounding box is kept flexible, as it simply returns a named list of lower and upper corner.
 
 <<metadataExtraction5,echo=TRUE,eval=TRUE,print=TRUE>>= 
-off.temp.boundedBy <- sosBoundedBy(off.temp)
+off.wxt.boundedBy <- sosBoundedBy(off.wxt)
 @
 
 The optional attribute \code{bbox} can be used to obtain a bounding box matrix as used by package \pkg{sp}.
 
 <<metadataExtraction6,echo=TRUE,eval=TRUE,print=TRUE>>= 
-off.temp.boundedBy.bbox <- sosBoundedBy(off.temp, bbox = TRUE)
+off.wxt.boundedBy.bbox <- sosBoundedBy(off.wxt, bbox = TRUE)
 @
 
 The \textbf{temporal extend} is modeled as an object of the respective class of the element in the offering description, which normally is a gml:TimePeriod, but does not have to be. The last two statements in the following snipped show how one can access the actual data and what their class is.
 
 <<metadataExtraction7,echo=TRUE,eval=TRUE,print=TRUE>>= 
-off.temp.time <- sosTime(off.temp)
-str(off.temp.time)
+off.wxt.time <- sosTime(off.wxt)
+str(off.wxt.time)
 
-off.temp.time@beginPosition@time
-off.temp.time@endPosition@time
-class(off.temp.time@endPosition@time)
+off.wxt.time@beginPosition@time
+off.wxt.time@endPosition@time
+class(off.wxt.time@endPosition@time)
 @
 
 The structure of these elements is very flexible (with some of optional elements) and not self-explanatory. Therefore the parameter \code{convert} can be used to try to create R objects and return these instead. Please be aware that this might not work for temporal elements returned by all service.
 
 <<metadataExtraction8,echo=TRUE,eval=TRUE,print=TRUE>>= 
-off.temp.time.converted <- sosTime(off.temp, convert = TRUE)
-str(off.temp.time.converted)
+off.wxt.time.converted <- sosTime(off.wxt, convert = TRUE)
+str(off.wxt.time.converted)
 @
 
 Furthermore the offering comprises \textbf{lists of procedures}, \textbf{observed properties}, and \textbf{features of interest}. In our example the feature and procedure identifiers are the same --- this does not have to be the case.
@@ -694,9 +687,9 @@ Furthermore the offering comprises \textbf{lists of procedures}, \textbf{observe
 \textbf{Important Note:} The order of these lists is not guaranteed to be the same upon every connection to a service.
 
 <<metadataExtraction9,echo=TRUE,eval=TRUE,print=TRUE>>= 
-sosProcedures(off.temp)
-sosObservedProperties(off.temp)
-sosFeaturesOfInterest(off.temp)
+sosProcedures(off.wxt)
+sosObservedProperties(off.wxt)
+sosFeaturesOfInterest(off.wxt)
 @
 
 All of the above can not only be requested for single offerings but also for complete SOS connections or for lists of offerings. The following examples only print out a part of the returned lists.
@@ -710,9 +703,9 @@ sosFeaturesOfInterest(mySOS)[1:2]
 Also (parts of) a list of offerings are possible with these functions:
 
 <<metadataExtraction10,echo=TRUE,eval=TRUE,print=FALSE>>= 
-sosProcedures(sosOfferings(mySOS)[4:5])
-sosObservedProperties(sosOfferings(mySOS)[4:5])
-sosFeaturesOfInterest(sosOfferings(mySOS)[3:4])
+sosProcedures(sosOfferings(mySOS)[2:3])
+sosObservedProperties(sosOfferings(mySOS)[2:3])
+sosFeaturesOfInterest(sosOfferings(mySOS)[1:4])
 @
 
 Please carefully inspect the structure in each case, as these functions will return named lists of lists and not combine procedures from different offerings. Consequently, some procedures could appear several times, but the association to the offering is still intact which is preferred at this stage.
@@ -753,53 +746,44 @@ The returned data of all GetObservation operations is an XML document of type om
 The most straightforward (and most simple to use) methods to query certain observations are to request one (or several) specific \textbf{observed property} (phenomenon) or \textbf{procedure} (sensor). Note that the procedures and observed properties have to match the given offering.
 
 <<getObsPropPhen,eval=FALSE,echo=TRUE>>= 
-obs.temp.procedure.1 <- getObservation(sos = mySOS,
-	offering = off.temp,
-	procedure = sosProcedures(off.temp)[[2]])
+obs.wxt.procedure.1 <- getObservation(sos = mySOS,
+	offering = off.wxt,
+	procedure = sosProcedures(off.wxt)[[2]])
 
-obs.temp.offering.34 <- getObservation(sos = mySOS,
-	offering = off.temp,
-	procedure = sosProcedures(off.temp)[3:4],
+obs.wxt.offering.34 <- getObservation(sos = mySOS,
+	offering = off.wxt,
+	procedure = sosProcedures(off.wxt),
 	observedProperty =
 		sosObservedProperties(mySOS)[3:4])
 @
 
-These request would potentially retrieve a lot of data, since there is no temporal (or thematical/spatial) limitation. The following example requests data for about one day of temperature data and stores it in the object \code{obs.temp}. This feature is described extensively in section \ref{subsubsec:temporalfiltering}.
+These request would potentially retrieve a lot of data, since there is no temporal (or thematical/spatial) limitation. The following example requests data for about one day of temperature data and stores it in the object \code{obs.wxt}. This feature is described extensively in section \ref{subsubsec:temporalfiltering}.
 
 <<loadOrDownload_ObsTemp,eval=TRUE,echo=FALSE,results=hide>>= 
-.obsFile <- "obs.temp"
+.obsFile <- "obs.wxt"
 if (.goOnline) {
-	obs.temp <- getObservation(sos = mySOS,
-		offering = off.temp,
-		eventTime = sosCreateTime(sos = mySOS, time = "2009-08-20::2009-08-21"),
+	obs.wxt <- getObservation(sos = mySOS,
+		offering = off.wxt,
+		eventTime = sosCreateTime(sos = mySOS, time = "2015-11-01::2015-11-02"),
 		saveOriginal = .obsFile)
 } else {
-	obs.temp <- parseFile(mySOS, .getFilePath(.obsFile))
+	obs.wxt <- parseFile(mySOS, .getFilePath(.obsFile))
 }
 @
+% not executed
 <<getObs0a,eval=FALSE>>=
-obs.temp <- getObservation(sos = mySOS,
-		offering = off.temp,
-		eventTime = sosCreateTime(sos = mySOS, time = "2009-08-20::2009-08-21"),
-		saveOriginal = .obsFile)
-@
-% Fake the response:
-<<getObs0b,eval=TRUE,echo=FALSE>>=
-.results <- lapply(obs.temp, sosResult)
-.resultLength <- sapply(.results, nrow)
-cat("[sos4R] Received response (size: 27056 bytes), starting parsing ...\n",
-	"[sos4R] Finished getObservation to", sosUrl(mySOS), "\n",
-	"	--> received", length(obs.temp), "observation(s) having",
-	sum(.resultLength), "result values [", toString(.resultLength), "].")
+obs.wxt <- getObservation(sos = mySOS,
+		offering = off.wxt,
+		eventTime = sosCreateTime(sos = mySOS, time = "2015-11-01::2015-11-02"))
 @
 
 The logging output above starting with \code{[sos4R]} informs the user when the download of data is complete and when the parsing has finished. It even contains some information about the data, if possible. In following requests, this ouput is \textbf{not} included for brevity.
 
-The response \code{obs.temp} of this request is the base for the next sections.
+The response \code{obs.wxt} of this request is the base for the next sections.
 
 <<getObs1,eval=TRUE,echo=TRUE>>=
-class(obs.temp)
-str(obs.temp, max.level = 2)
+class(obs.wxt)
+str(obs.wxt, max.level = 2)
 @
 
 \subsubsection{Response Subsetting}
@@ -807,32 +791,35 @@ str(obs.temp, max.level = 2)
 Subsetting of elements in an \code{OmObservationCollection} can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators \code{[} and \code{[[}. Summary functions are available for single observations or an observation collection.
 
 <<getObs1,eval=TRUE,echo=TRUE>>=
-length(obs.temp)
-obs.temp[[1]]
-summary(obs.temp)
-summary(obs.temp[[1]])
+length(obs.wxt)
+obs.wxt[[1]]
+summary(obs.wxt)
+summary(obs.wxt[[1]])
 @
 
 The collection can also be subset in parts:
 
 <<getObs1,eval=FALSE,echo=TRUE>>=
-obs.temp[2:3]
+obs.wxt[2:3]
 @
 
 \textbf{Observation collection indexing} is possible with identifiers of procedure(s), observed property(ies), and feature(s) of interest.
 
 <<getObs1,eval=TRUE,echo=TRUE>>=
-index.foiId <- sosFeatureIds(obs.temp)[[1]]
+index.foiId <- sosFeaturesOfInterest(off.wxt)[[1]]
 index.foiId
-obs.temp[index.foiId]
+obs.wxt[index.foiId]
 
-index.obsProp <- sosObservedProperties(off.temp)
-obs.temp[index.obsProp]
+index.obsProp <- sosObservedProperties(off.wxt)[[1]]
+obs.wxt[index.obsProp]
 
-index.proc <- sosProcedures(obs.temp)[1:4]
-index.proc.alternative1 <- sosProcedures(off.temp)[1:4]
+index.obsProp.several <- sosObservedProperties(off.wxt)[4:6]
+obs.wxt[index.obsProp.several]
+
+index.proc <- sosProcedures(off.wxt)
+index.proc.alternative1 <- sosProcedures(off.wxt)[1]
 index.proc.alternative2 <- sosProcedures(mySOS)
-obs.temp[index.proc]
+obs.wxt[index.proc]
 @
 
 \subsubsection{Result Extraction}
@@ -840,59 +827,64 @@ obs.temp[index.proc]
 \textbf{Data Values} can be extracted from observations, measurements and observation collections with the function \code{sosResult()}.  The function returns an object of class \code{data.frame}. In the case of collections, it automatically binds the data frames (you can turn this off by adding \code{bind = FALSE} as a parameter).
 
 <<getObs2,eval=TRUE,echo=TRUE,print=FALSE>>= 
-obs.temp.result.2 <- sosResult(obs.temp[[2]])
-obs.temp.result <- sosResult(obs.temp[1:2])
+names(obs.wxt)
+obs.wxt.result.2 <- sosResult(obs.wxt[[2]])
+# FIXME:
+# obs.wxt.result <- sosResult(obs.wxt[1:2])
 @
 
 Additional metadata, like units of measurement or definitions, is accessible via \code{attributes()} for every column of the data frame. 
 
 <<getObs3,eval=TRUE,echo=TRUE,print=TRUE>>= 
-temperature.attrs <- attributes(
-	obs.temp.result[["urn:ogc:def:property:OGC::Temperature"]])
+attrs <- attributes(obs.wxt.result.2) # [["AirTemperature"]]
+
+attributes(obs.wxt.result.2[["phenomenonTime"]])
+attributes(obs.wxt.result.2[["AthmosphericPressure"]])
 @
 
 \textbf{Spatial Information} can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result \code{data.frame}, (ii) within a feature collection in the observation. In the latter case the utility functions \code{sosCoordinates()} and \code{sosFeatureIds()} can be used to extract the coordinates respectively the identifiers from \code{OmObservationCollection} or \code{OmObservation} classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by \code{sosCoordinates()}.
 
 <<getObsSpatial1,eval=TRUE,echo=TRUE>>= 
-obs.temp.foiIDs <- sosFeatureIds(obs.temp)
-obs.temp.coords <- sosCoordinates(obs.temp)
-obs.temp.coords.1 <- sosCoordinates(obs.temp[[1]])
+obs.wxt.foiIDs <- sosFeatureIds(obs.wxt)
+obs.wxt.coords <- sosCoordinates(obs.wxt)
+obs.wxt.coords.1 <- sosCoordinates(obs.wxt[[1]])
 @
 
 An observation collection also contains a bounding box of the contained observations, which can be extracted with the function \code{sosBoundedBy()}. The optional attribute \code{bbox} can be used to obtain a bounding box matrix as used by package \pkg{sp}.
 
 <<getObsSpatial1,eval=TRUE,echo=TRUE>>= 
-sosBoundedBy(obs.temp)
-sosBoundedBy(obs.temp, bbox = TRUE)
+sosBoundedBy(obs.wxt)
+sosBoundedBy(obs.wxt, bbox = TRUE)
 @
 
 The combination of data values and coordinates strongly depends on the use case and existing spatial information. In the case of coordinates encoded in the features, a matching of the two data frames can easily be accomplished manually with the function \code{merge()}.
 
 <<getObsSpatial2,eval=TRUE,echo=TRUE,print=FALSE>>= 
-result.names <- names(obs.temp.result)
-coords.names <- names(obs.temp.coords)
-print(toString(result.names))
+# FIXME:
+#result.names <- names(obs.wxt.result)
+coords.names <- names(obs.wxt.coords)
+# print(toString(result.names))
 print(toString(coords.names))
 
-obs.temp.data <- merge(
-	x = obs.temp.result,
-	y = obs.temp.coords,
-	by.x = result.names[[2]],
-	by.y = coords.names[[4]])
+# FIXME
+# obs.wxt.data <- merge(
+# 	x = obs.wxt.result,
+# 	y = obs.wxt.coords,
+# 	by.x = result.names[[2]],
+# 	by.y = coords.names[[4]])
 @
 
 The default column name for the feature identifiers is \code{\Sexpr{sosDefaultColumnNameFeatureIdentifier}}. If the name of the feature identifier attribute in the data table matches (which is the case for \fivetwon SOS), \code{merge} does not need additional information. In that case, the merging reduces to the following code:
 
 <<getObsSpatial3,eval=TRUE,echo=TRUE>>=
-obs.temp.data <- merge(x = obs.temp.result,
-	y = obs.temp.coords)
-str(obs.temp.data, max.level = 2)
+obs.wxt.data <- merge(x = obs.wxt.result.2, y = obs.wxt.coords)
+str(obs.wxt.data, max.level = 2)
 @
 
 And in that case, you can even save that step by specifying the attribute \code{coordinates} of the function \code{sosResult} which includes the merge of data values and coordinates as shown above.
 
 <<getObsSpatial4,eval=FALSE,echo=TRUE,print=FALSE>>= 
-sosResult(obs.temp, coordinates = TRUE)
+head(sosResult(obs.wxt[1], coordinates = TRUE))
 @
 
 \subsubsection{Temporal Filtering}
@@ -907,8 +899,8 @@ lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
 	end = Sys.time())
 
 oneWeek.period <- sosCreateTimePeriod(sos = mySOS,
-		begin = as.POSIXct("2010/01/01"),
-		end = as.POSIXct("2010/01/07"))
+		begin = as.POSIXct("2015/11/01"),
+		end = as.POSIXct("2015/11/07"))
 oneWeek.eventTime <- sosCreateEventTimeList(oneWeek.period)
 @
 
@@ -930,8 +922,9 @@ sosCreateTime(sos = mySOS, time = "2007-08-05/")
 .obsFile <- "obs.oneWeek"
 if(.goOnline) {
 	obs.oneWeek <- getObservation(sos = mySOS,
-		offering = off.temp,
-		procedure = sosProcedures(off.temp),
+		offering = off.wxt,
+		procedure = sosProcedures(off.wxt),
+		observedProperty = sosObservedProperties(off.wxt)[c(1,2,13)],
 		eventTime = oneWeek.eventTime,
 		saveOriginal = .obsFile)
 } else {
@@ -940,14 +933,16 @@ if(.goOnline) {
 @
 <<temporalFiltering2a,eval=FALSE,echo=TRUE>>= 
 obs.oneWeek <- getObservation(sos = mySOS,
-	offering = off.temp,
+	offering = off.wxt,
 	# actually not required, as default is 'all procedures':
-	procedure = sosProcedures(off.temp),
+	procedure = sosProcedures(off.wxt),
 	eventTime = oneWeek.eventTime)
 @
 <<temporalFiltering2b,eval=TRUE,echo=TRUE>>=
-obs.oneWeek.result <- sosResult(obs.oneWeek)
-summary(obs.oneWeek.result[,"urn:ogc:def:property:OGC::Temperature"])
+obs.oneWeek.result <- sosResult(obs.oneWeek[[1]])
+head(obs.oneWeek.result)
+# FIXME
+# summary(obs.oneWeek.result[,"urn:ogc:def:property:OGC::Temperature"])
 @
 
 The default temporal operator is \enquote{during}, but others are supported as well (see section \ref{sec:supported}). The next example shows how to create a temporal filter for all observations taken \textbf{after} a certain point in time. Here the creation function creates just one object of class \code{SosEventTime} which must be added to a list manually before passing it to \code{getObservation()}.
@@ -966,61 +961,62 @@ print(lastDay.eventTime)
 The possibly most typical spatial filter is a bounding box\footnote{\url{http://en.wikipedia.org/wiki/Bounding_box}} within which measurements of interest must have been made. Here the creation function returns an object of class \code{OgcBBOX}, which can be wrapped in an object of class \code{SosFeatureOfInterest}, which is passed into the get-observation call.
 
 <<spatialFiltering1,eval=TRUE,echo=TRUE>>=
-sept09.period <- sosCreateTimePeriod(sos = mySOS,
-	begin = as.POSIXct("2009-09-01 00:00"),
-	end = as.POSIXct("2009-09-30 00:00"))
-sept09.eventTimeList <- sosCreateEventTimeList(
-	sept09.period)
+sept15.period <- sosCreateTimePeriod(sos = mySOS,
+	begin = as.POSIXct("2015-09-01 00:00"), end = as.POSIXct("2015-09-30 00:00"))
+sept15.eventTimeList <- sosCreateEventTimeList(sept15.period)
 @
 
 <<loadOrDownload_SpatialFiltering,eval=TRUE,echo=FALSE,results=hide>>=
-.obsFile <- "obs.sept09"
-.obsFile2 <- "obs.sept09.bbox"
-if(.goOnline) {
-	obs.sept09 <- getObservation(sos = mySOS,
-		offering = off.temp,
-		eventTime = sept09.eventTimeList,
-		saveOriginal = .obsFile)
-
-	request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 5.0,
-			uppLat = 55.0, uppLon = 10.0,
-			srsName = "urn:ogc:def:crs:EPSG:4326")
-	request.bbox.foi <- sosCreateFeatureOfInterest(
-			spatialOps = request.bbox)
-	
-	obs.sept09.bbox <- getObservation(sos = mySOS,
-			offering = off.temp,
-			featureOfInterest = request.bbox.foi,
-			eventTime = sept09.eventTimeList,
-			saveOriginal = .obsFile2)
-} else {
-	obs.sept09 <- parseFile(mySOS, .getFilePath(.obsFile))
-	obs.sept09.bbox <- parseFile(mySOS, .getFilePath(.obsFile2))
-}
+# FIXME find a spatial filter that has a result
+# .obsFile <- "obs.sept15"
+# .obsFile2 <- "obs.sept15.bbox"
+# if(.goOnline) {
+# 	obs.sept15 <- getObservation(sos = mySOS,
+# 		offering = off.wxt,
+# 		eventTime = sept15.eventTimeList,
+# 		saveOriginal = .obsFile)
+# 
+# 	request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 5.0,
+# 			uppLat = 55.0, uppLon = 10.0,
+# 			srsName = "urn:ogc:def:crs:EPSG:4326")
+# 	request.bbox.foi <- sosCreateFeatureOfInterest(
+# 			spatialOps = request.bbox)
+# 	
+# 	obs.sept15.bbox <- getObservation(sos = mySOS,
+# 			offering = off.wxt,
+# 			featureOfInterest = request.bbox.foi,
+# 			eventTime = sept15.eventTimeList,
+# 			saveOriginal = .obsFile2)
+# } else {
+# 	obs.sept15 <- parseFile(mySOS, .getFilePath(.obsFile))
+# 	obs.sept15.bbox <- parseFile(mySOS, .getFilePath(.obsFile2))
+# }
 @
 <<spatialFiltering2,eval=FALSE,echo=TRUE>>= 
-obs.sept09 <- getObservation(sos = mySOS,
-	offering = off.temp,
-	eventTime = sept09.eventTimeList)
+obs.sept15 <- getObservation(sos = mySOS,
+	offering = off.wxt,
+	eventTime = sept15.eventTimeList)
 @
 
 <<spatialFiltering3,eval=FALSE,echo=TRUE>>=
-request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 5.0,
-	uppLat = 55.0, uppLon = 10.0,
-	srsName = "urn:ogc:def:crs:EPSG:4326")
-request.bbox.foi <- sosCreateFeatureOfInterest(
-	spatialOps = request.bbox)
-obs.sept09.bbox <- getObservation(sos = mySOS,
-	offering = off.temp,
-	featureOfInterest = request.bbox.foi,
-	eventTime = sept09.eventTimeList)
+# FIXME find a spatial filter that has a result
+# request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 5.0,
+# 	uppLat = 55.0, uppLon = 10.0,
+# 	srsName = "urn:ogc:def:crs:EPSG:4326")
+# request.bbox.foi <- sosCreateFeatureOfInterest(
+# 	spatialOps = request.bbox)
+# obs.sept09.bbox <- getObservation(sos = mySOS,
+# 	offering = off.wxt,
+# 	featureOfInterest = request.bbox.foi,
+# 	eventTime = sept09.eventTimeList)
 @
 
 Unfiltered versus spatially filtered coordinates of the responses:
 
 <<spatialFiltering1,eval=TRUE,echo=TRUE>>=
-print(sosCoordinates(obs.sept09)[,1:2])
-print(sosCoordinates(obs.sept09.bbox)[,1:2])
+# FIXME
+# print(sosCoordinates(obs.sept09)[,1:2])
+# print(sosCoordinates(obs.sept09.bbox)[,1:2])
 @
 
 More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented. This could be implemented by implementing subclasses for \code{GmlGeometry} (including encoders) which must be wrapped in \code{OgcBinarySpatialOp} which extends \code{OgcSpatialOps} and can therefore be added to an object of class \code{SosFeatureOfInterest} as the spatial parameter.
@@ -1031,9 +1027,9 @@ More advanced spatial filtering, for example based on arbitrary shapes et cetera
 The feature can not only be used for spatial filtering, but also to query specific FOIs. The following example extracts the identifiers from an offering and then creates an object of class \code{SosFeatureOfInterest}, which is passed into the get-observation call. Here the encoding function is called to show how the content of the result element will look like.
 
 <<featureFiltering1,eval=TRUE,echo=TRUE>>= 
-off.temp.fois <- sosFeaturesOfInterest(off.temp)
+off.wxt.fois <- sosFeaturesOfInterest(off.wxt)
 request.fois <- sosCreateFeatureOfInterest(
-	objectIDs = list(off.temp.fois[[1]]))
+	objectIDs = list(off.wxt.fois[[1]]))
 encodeXML(obj = request.fois, sos = mySOS)
 @
 
@@ -1043,7 +1039,7 @@ An exemplary GetObservation operation is as follows.
 .obsFile <- "obs.oneWeek.fois"
 if(.goOnline) {
 	obs.oneWeek.fois <- getObservation(sos = mySOS,
-		offering = off.temp,
+		offering = off.wxt,
 		featureOfInterest = request.fois,
 		eventTime = oneWeek.eventTime,
 		saveOriginal = .obsFile)
@@ -1053,7 +1049,7 @@ if(.goOnline) {
 @
 <<featureFiltering1a,eval=FALSE,echo=TRUE,print=FALSE>>= 
 obs.oneWeek.fois <- getObservation(sos = mySOS,
-	offering = off.temp,
+	offering = off.wxt,
 	featureOfInterest = request.fois,
 	eventTime = oneWeek.eventTime)
 @
@@ -1106,7 +1102,7 @@ First, we request the unfiltered values for comparison, then again with the filt
 <<valueFiltering3a,eval=FALSE,echo=TRUE>>= 
 obs.oneWeek <- getObservation(sos = mySOS,
 	eventTime = oneWeek.eventTime,
-	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]])
+	offering = sosOfferings(mySOS)[["wxt520"]])
 @
 
 <<loadOrDownload_ValueFiltering,eval=TRUE,echo=FALSE,results=hide>>=
@@ -1114,7 +1110,7 @@ obs.oneWeek <- getObservation(sos = mySOS,
 if(.goOnline) {
 	obs.oneWeek.filter <- getObservation(sos = mySOS,
 		eventTime = oneWeek.eventTime,
-		offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]],
+		offering = sosOfferings(mySOS)[["wxt520"]],
 		result = filter.result,
 		saveOriginal = .obsFile)
 } else {
@@ -1127,9 +1123,10 @@ obs.oneWeek.filter <- getObservation(sos = mySOS,
 	eventTime = oneWeek.eventTime,
 	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]],
 	result = filter.result)
-<<valueFiltering3c,eval=TRUE,echo=TRUE>>= 
-print(paste("Filtered:", dim(sosResult(obs.oneWeek.filter))[[1]], 
-	"-vs.- Unfiltered:", dim(sosResult(obs.oneWeek))[[1]]))
+<<valueFiltering3c,eval=TRUE,echo=TRUE>>=
+# FIXME
+# print(paste("Filtered:", dim(sosResult(obs.oneWeek.filter))[[1]], 
+#	"-vs.- Unfiltered:", dim(sosResult(obs.oneWeek))[[1]]))
 @
 
 \subsubsection{Result Exporting}
@@ -1145,8 +1142,8 @@ library("sp")
 % ran before:
 <<resultExporting2,eval=FALSE,echo=TRUE>>=
 obs.oneWeek <- getObservation(sos = mySOS,
-	offering = off.temp,
-	procedure = sosProcedures(off.temp),
+	offering = off.wxt,
+	procedure = sosProcedures(off.wxt),
 	eventTime = oneWeek.eventTime)
 @
 
@@ -1165,7 +1162,7 @@ str(spdf)
 For following analyses and plotting, the \textbf{spatial reference system} can be extracted as follows (see section \ref{subsubsec:getCapSRS} for a general description).
 
 <<getObsCRS,echo=TRUE,eval=TRUE>>=
-sosGetCRS(obs.temp)
+sosGetCRS(obs.wxt)
 sosGetCRS(obs.oneWeek)
 @
 
@@ -1182,45 +1179,47 @@ In this case the returned observation collection contains an om:Measurement elem
 The result extraction works the same as with objects of class \code{OmObservation}.
 
 <<loadOrDownload_GetObsById,eval=TRUE,echo=FALSE,results=hide>>=
-.obsFile <- "obsId"
-if(.goOnline) {
-	obsId <- getObservationById(sos = mySOS,
-		observationId = "o_3508493",
-		saveOriginal = .obsFile)
-} else {
-	obsId <- parseFile(mySOS, .getFilePath(.obsFile))
-}
+# Not supported by SOS anymore
+# .obsFile <- "obsId"
+# if(.goOnline) {
+# 	obsId <- getObservationById(sos = mySOS,
+# 		observationId = "o_3508493",
+# 		saveOriginal = .obsFile)
+# } else {
+# 	obsId <- parseFile(mySOS, .getFilePath(.obsFile))
+# }
 @
-<<getObsById1a,eval=FALSE,echo=TRUE>>= 
-obsId <- getObservationById(sos = mySOS,
-	observationId = "o_3508493")
-@
-<<getObsById1b,eval=TRUE,echo=TRUE>>= 
-sosResult(obsId, coordinates = TRUE)
-@
+
+%' <<getObsById1a,eval=FALSE,echo=TRUE>>= 
+%' obsId <- getObservationById(sos = mySOS,
+%' 	observationId = "o_3508493")
+%' @
+%' <<getObsById1b,eval=TRUE,echo=TRUE>>= 
+%' sosResult(obsId, coordinates = TRUE)
+%' @
 
 Just as for \code{getObservation()} you can \textbf{save the orginal} response document with an automatically generated name or a selected one. It is saved into the current working directory and the name starts with the observation identifier. You can also read it back using the function \code{sosParse()}.
 
 <<getObsById3,eval=FALSE,echo=TRUE>>= 
 # generated file name, find file in working directory:
-obsId <- getObservationById(sos = mySOS,
-	observationId = "o_3508493",
-	saveOriginal = TRUE)
-.files <- list.files(getwd())
-.observationFiles <- c()
-for(.f in .files) { # %in% not working with Sweave
-	if(length(grep("^o_", .f, value=TRUE)) > 0)
-		.observationFiles <- c(.observationFiles, .f)
-}
-obsId <- parseFile(sos = mySOS,
-	file = .observationFiles[[1]])
+# obsId <- getObservationById(sos = mySOS,
+# 	observationId = "o_3508493",
+# 	saveOriginal = TRUE)
+# .files <- list.files(getwd())
+# .observationFiles <- c()
+# for(.f in .files) { # %in% not working with Sweave
+# 	if(length(grep("^o_", .f, value=TRUE)) > 0)
+# 		.observationFiles <- c(.observationFiles, .f)
+# }
+# obsId <- parseFile(sos = mySOS,
+# 	file = .observationFiles[[1]])
 
 <<getObsById3,eval=FALSE,echo=TRUE>>=
 # manually selected file name:
-obsId <- getObservationById(sos = mySOS,
-	#verbose = TRUE,
-	observationId = "o_3508493",
-	saveOriginal = "myObservation")
+# obsId <- getObservationById(sos = mySOS,
+# 	#verbose = TRUE,
+# 	observationId = "o_3508493",
+# 	saveOriginal = "myObservation")
 @
 
 
@@ -1365,7 +1364,7 @@ if(.goOnline) {
 		return("EXCEPTION!!!11")
 	}
 	myParsers <- SosParsingFunctions("ExceptionReport" = myER)
-	mySOS2 <- SOS(sosUrl(mySOS), parsers = myParsers)
+	mySOS2 <- SOS(sosUrl(mySOS), binding = sosBinding(mySOS), parsers = myParsers)
 	save(mySOS2, file = .sos2)
 	
 	err.response <- getObservation(mySOS2,
@@ -1413,8 +1412,9 @@ The next example shows how the response (in this case the request is intentional
 .obsFile <- "response.noparsing.RData"
 .sos2.dis <- "mySOS2.disabled.RData"
 if(.goOnline) {
-	mySOS2.disabled <- SOS(sosUrl(mySOS), # verboseOutput = TRUE,
-			parsers = SosDisabledParsers())
+	mySOS2.disabled <- SOS(url = sosUrl(mySOS), # verboseOutput = TRUE,
+	                       binding = sosBinding(mySOS),
+	                       parsers = SosDisabledParsers())
 	response.noparsing <- getObservation(mySOS2.disabled,
 			offering = sosOfferings(mySOS2.disabled)[[1]],
 			observedProperty = list("Bazinga!"))
@@ -1486,7 +1486,9 @@ The following connection shows a typical workflow of connecting to a new SOS for
 
 In Addition, this service shows errorenous behaviour regarding the reponse format (even if it is correctly set), so that the parameter \code{responseFormat} is set to \code{NA\_character} to be excluded in the request encoding. This results in additional warnings.
 
-<<loadOrDownload_Converters3,eval=TRUE,echo=FALSE,results=hide>>=
+% <<loadOrDownload_Converters3,eval=TRUE,echo=FALSE,results=hide>>=
+<<loadOrDownload_Converters3,eval=FALSE,echo=FALSE,results=hide>>=
+# FIXME SOS unavailable
 .obsFile <- "mbariObs1"
 .mbari <- "mbari.RData"
 if(.goOnline) {
@@ -1560,7 +1562,10 @@ myConverters <- SosDataFieldConvertingFunctions(
 	"http://mmisw.org/ont/cf/parameter/sea_water_salinity"
 			= sosConvertDouble)
 @
-<<loadOrDownload_Converters4,eval=TRUE,echo=FALSE,results=hide>>=
+
+%<<loadOrDownload_Converters4,eval=TRUE,echo=FALSE,results=hide>>=
+<<loadOrDownload_Converters4,eval=FALSE,echo=FALSE,results=hide>>=
+# FIXME: SOS unavailable
 .obsFile <- "mbariObs2"
 .mbari2 <- "mbari2.RData"
 if(.goOnline) {
@@ -1586,7 +1591,9 @@ mbariObs2 <- getObservation(sos = MBARI2, offering = myOff,
 
 Subsequently, the second request results in more fields in the result.
  
-<<converters5,eval=TRUE,echo=TRUE,print=TRUE>>= 
+%<<converters5,eval=TRUE,echo=TRUE,print=TRUE>>= 
+<<converters5,eval=FALSE,echo=TRUE,print=TRUE>>= 
+# FIXME: use other SOS
 toString(names(sosResult(mbariObs1)))
 toString(names(sosResult(mbariObs2)))
 @
@@ -1646,7 +1653,9 @@ In .handleExceptionReport(sos, .response) :
 	Error while creating observations from database query result set: ERROR: invalid input syntax for integer: \"not_there\" ")
 @
 
-<<exceptionWarning2c,eval=TRUE,echo=FALSE,results=hide>>=
+%<<exceptionWarning2c,eval=TRUE,echo=FALSE,results=hide>>=
+<<exceptionWarning2c,eval=FALSE,echo=FALSE,results=hide>>=
+# FIXME: not supported by SOS anymore!
 .file <- "exceptionResponse.RData"
 if(.goOnline) {
 	response <- getObservationById(sos = mySOS,
@@ -1657,11 +1666,11 @@ if(.goOnline) {
 }
 @
 
-The exception is also stored in the \code{response} object.
-
-<<exceptionWarning2d,eval=TRUE,echo=TRUE>>=
-response
-@
+%' The exception is also stored in the \code{response} object.
+%' 
+%' <<exceptionWarning2d,eval=TRUE,echo=TRUE>>=
+%' response
+%' @
 
 
 \subsection{Inspect Requests and Verbose Printing}
