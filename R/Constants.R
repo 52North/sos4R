@@ -156,12 +156,18 @@ sosResponseModeName <- "responseMode"
 sosObservationOfferingName <- "ObservationOffering"
 sosObservationOfferingListName <- "ObservationOfferingList"
 sosContentsName <- "Contents"
+sosLowerCaseContentsName <- "contents"
 sosFilterCapabilitiesName <- "Filter_Capabilities"
 sosCapabilitiesName <- "Capabilities"
 sosEventTimeName <- "eventTime"
 sosEventTimeLatestValue <- "latest"
 sosObjectIDName <- "ObjectID"
 sosResultName <- "result"
+sosResultTimeName <- "resultTime"
+sosPhenomenonTimeName <- "phenomenonTime"
+sosObservationTypeName <- "observationType"
+sosFeatureOfInterestTypeName <- "featureOfInterestType"
+sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
 
 ################################################################################
 # O&M
@@ -241,6 +247,14 @@ sweVectorName <- "Vector"
 sweLocationName <- "location"
 sweCoordinateName <- "coordinate"
 swePositionName <- "Position"
+
+################################################################################
+# SWE Service Model
+swesOfferingName = "offering"
+swesIdentifierName = "identifier"
+swesNameName = "name"
+swesObservablePropertyName = "observableProperty"
+
 
 ################################################################################
 # OGC

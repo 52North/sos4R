@@ -161,3 +161,10 @@ context("parsing: SOS Capabilities 2.0.0")
 testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
 axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
 
+context("parsing: SOS Capabilities 2.0.0 swes:offering")
+
+testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+parseSosObservationOffering_200(xmlRoot(xmlParseDoc("../xml-elements/swes-offering1.xml")), testsos)
+
+testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
+axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_100_Example.xml"), testsos)

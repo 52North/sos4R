@@ -83,3 +83,29 @@ setClass("SosCapabilities_2.0",
 			return(TRUE)
 		}
 )
+
+#
+# See OGC 12-006, clause 8.1.2.2
+#
+# If possible, character vectors are used for slots if elements can be
+# represented by character strings.
+# TODO: FeatureRelationship
+setClass("SosObservationOffering_2.0.0",
+         representation(id = "character", name = "character",
+                        resultTime = "GmlTimeGeometricPrimitive", phenomenonTime = "GmlTimeGeometricPrimitive", 
+                        procedure = "character", observableProperty = "list", featureOfInterestType = "list",
+                        observationType = "list", observedArea="GmlEnvelope", procedureDescriptionFormat = "list", responseFormat = "list"),
+         prototype = list(id = as.character(NA), name = as.character(NA),
+                          resultTime = NULL, phenomenonTime = NULL, 
+                          procedure = as.character(NA), observableProperty = list(NA), featureOfInterestType = list(NA),
+                          observationType = list(NA), observedArea=NULL, procedureDescriptionFormat = list(NA), responseFormat = list(NA)),
+         validity = function(object) {
+           #print("Entering validation: ObservationOffering")
+           # TODO implement validity function
+           
+           # time is required
+           # procedure, observedProperty, featureOfInterest, responseFormat are all "one or more"
+           
+           return(TRUE)
+         }
+)
