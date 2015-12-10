@@ -292,6 +292,26 @@
 	invisible(x)
 }
 
+.toString.SosObservationOffering_2.0.0 <- function(x, ...) {
+  .s <- paste("Object of class SosObservationOffering_2.0.0; ",
+              "id: ", x@id, ", name: ", x@name,
+              "\n\tresultTime: ", .addTabIndent(toString(x@resultTime)),
+              "\n\tphenomenonTime: ", .addTabIndent(toString(x@phenomenonTime)),
+              "\n\tprocedure(s): ", toString(paste(x@procedure)),
+              "\n\tobservableProperty(s): ", toString(paste(x@observableProperty)),
+              "\n\tfeatureOfInterestType(s): ", toString(paste(x@featureOfInterestType)),
+              "\n\tobservationType(s): ",  toString(paste(x@observationType)),
+              "\n\tresponseFormat(s): ",  toString(paste(x@responseFormat)),
+              "\n\tprocedureDescriptionFormat(s): ",  toString(paste(x@procedureDescriptionFormat)),
+              "\n\tobservedArea: ",  toString(paste(x@observedArea)))
+  return(.s)
+}
+
+.print.SosObservationOffering_2.0.0 <- function(x, ...) {
+  cat(.toString.SosObservationOffering_2.0.0(x, ...), "\n")
+  invisible(x)
+}
+
 .toString.SosContents <- function(x, ...) {
 	.s <- paste("Object of class SosContents with observation offerings (names):\n\t",
 			toString(paste(names(x@observationOfferings))))
@@ -1066,6 +1086,7 @@ setMethod("toString", "SOS_1.0.0", function(x, ...) .toString.SOS_1.0.0(x, ...))
 setMethod("toString", "SOS_2.0.0", function(x, ...) .toString.SOS_2.0.0(x, ...))
 setMethod("toString", "SosFilter_Capabilities", function(x, ...) .toString.SosFilter_Capabilities(x, ...))
 setMethod("toString", "SosObservationOffering", function(x, ...) .toString.SosObservationOffering(x, ...))
+setMethod("toString", "SosObservationOffering_2.0.0", function(x, ...) .toString.SosObservationOffering_2.0.0(x, ...))
 setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, ...))
 setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
 setMethod("toString", "SosFeatureOfInterest", function(x, ...) .toString.SosFeatureOfInterest(x, ...))

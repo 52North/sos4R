@@ -156,7 +156,6 @@ sosResponseModeName <- "responseMode"
 sosObservationOfferingName <- "ObservationOffering"
 sosObservationOfferingListName <- "ObservationOfferingList"
 sosContentsName <- "Contents"
-sosLowerCaseContentsName <- "contents"
 sosFilterCapabilitiesName <- "Filter_Capabilities"
 sosCapabilitiesName <- "Capabilities"
 sosEventTimeName <- "eventTime"
@@ -168,6 +167,10 @@ sosPhenomenonTimeName <- "phenomenonTime"
 sosObservationTypeName <- "observationType"
 sosFeatureOfInterestTypeName <- "featureOfInterestType"
 sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
+sosObservedAreaName <- "observedArea"
+sos200ContentsName <- "contents"
+sos200FilterCapabilitiesName = "filterCapabilities"
+
 
 ################################################################################
 # O&M
@@ -254,6 +257,7 @@ swesOfferingName = "offering"
 swesIdentifierName = "identifier"
 swesNameName = "name"
 swesObservablePropertyName = "observableProperty"
+swesProcedureDescriptionFormatName = "procedureDescriptionFormat"
 
 
 ################################################################################

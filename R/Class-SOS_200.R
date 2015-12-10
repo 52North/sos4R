@@ -74,7 +74,7 @@ setIs("SOS_2.0.0", "SOS_versioned")
 #
 #
 #
-setClass("SosCapabilities_2.0",
+setClass("SosCapabilities_2.0.0",
 		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {
@@ -94,7 +94,10 @@ setClass("SosObservationOffering_2.0.0",
          representation(id = "character", name = "character",
                         resultTime = "GmlTimeGeometricPrimitive", phenomenonTime = "GmlTimeGeometricPrimitive", 
                         procedure = "character", observableProperty = "list", featureOfInterestType = "list",
-                        observationType = "list", observedArea="GmlEnvelope", procedureDescriptionFormat = "list", responseFormat = "list"),
+                        observationType = "list", 
+                        #observedArea="GmlEnvelope", 
+                        observedArea="list", 
+                        procedureDescriptionFormat = "list", responseFormat = "list"),
          prototype = list(id = as.character(NA), name = as.character(NA),
                           resultTime = NULL, phenomenonTime = NULL, 
                           procedure = as.character(NA), observableProperty = list(NA), featureOfInterestType = list(NA),

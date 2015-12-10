@@ -159,12 +159,17 @@ test_that("offering id is parsed correctly", {
 context("parsing: SOS Capabilities 2.0.0")
 
 testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
-axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
+sos200Caps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
 
 context("parsing: SOS Capabilities 2.0.0 swes:offering")
 
 testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
-parseSosObservationOffering_200(xmlRoot(xmlParseDoc("../xml-elements/swes-offering1.xml")), testsos)
 
+test_that("offering is parsed correctly", {
+  .obs <- parseSosObservationOffering_200(xmlRoot(xmlParseDoc("../xml-elements/swes-offering1.xml")), testsos)
+  expect_equal(.obs@id, "ws2500")
+  #TODO test other parameters
+})
+ 
 testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
 axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_100_Example.xml"), testsos)

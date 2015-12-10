@@ -138,7 +138,7 @@ SosFilter_Capabilities <- function(spatial = list(NA_character_),
 SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
 		identification = NULL, provider = NULL, operations = NULL,
 		filterCapabilities = NULL, contents = NULL) {
-	if(owsVersion == "1.1.0") {
+	if(version == "1.0.0") {
 		new("SosCapabilities_1.0.0",
 				version = version, updateSequence = updateSequence,
 				owsVersion = owsVersion,
@@ -146,8 +146,13 @@ SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
 				provider = provider, operations = operations,
 				filterCapabilities = filterCapabilities, contents = contents)
 	}
-	else if(owsVersion == "2.0.0") {
-		stop("Version 2.0.0 not supported!")
+	else if(version == "2.0.0") {
+	  new("SosCapabilities_2.0.0",
+	      version = version, updateSequence = updateSequence,
+	      owsVersion = owsVersion,
+	      identification = identification,
+	      provider = provider, operations = operations,
+	      filterCapabilities = filterCapabilities, contents = contents)
 	}
 	else {
 		new("OwsCapabilities",

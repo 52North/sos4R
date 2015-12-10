@@ -45,7 +45,7 @@ setMethod(f = "sosRequest",
 setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0.0"),
 		def = function(sos, verbose, inspect, sections, acceptFormats,
 				updateSequence, owsVersion,	acceptLanguages) {
-			return(.getCapabilities_2.0(sos = sos, verbose = verbose,
+			return(.getCapabilities_2.0.0(sos = sos, verbose = verbose,
 							inspect = inspect, sections = sections,
 							acceptFormats = acceptFormats,
 							updateSequence = updateSequence,
@@ -84,7 +84,7 @@ setMethod(f = "getObservationById",
 #
 setMethod(f = "getObservation",
 		signature = signature(sos = "SOS_2.0.0",
-				offering = "SosObservationOffering"),
+				offering = "SosObservationOffering_2.0.0"),
 		def = function(sos, offering, observedProperty, responseFormat, srsName,
 				eventTime,	procedure, featureOfInterest, result, resultModel,
 				responseMode, BBOX, latest, verbose, inspect, saveOriginal) {
@@ -105,3 +105,18 @@ setMethod(f = "getObservation",
 			stop("getObservation for SOS_2.0.0 with charecter offering not implemented yet!")
 		}
 )
+
+SosObservationOffering_2.0.0 <- function(id, name = as.character(NA),
+                                   time, procedure, observedProperty,
+                                   featureOfInterest, responseFormat,
+                                   intendedApplication = as.character(NA), resultModel = as.character(NA),
+                                   responseMode = as.character(NA), boundedBy = list()) {
+  new("SosObservationOffering_2.0.0", id = id, name = name,
+      time = time, procedure = procedure,
+      observedProperty = observedProperty,
+      featureOfInterest = featureOfInterest,
+      responseFormat = responseFormat,
+      intendedApplication = intendedApplication,
+      resultModel = resultModel, responseMode = responseMode,
+      boundedBy = boundedBy)
+}

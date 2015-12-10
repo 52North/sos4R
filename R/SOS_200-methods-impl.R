@@ -62,7 +62,15 @@
 		cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
 	}
 	
-	.response <- xmlParseDoc(file = .responseString, asText = TRUE)
+	tmpStoredXMLCaps = tempfile()
+	
+	fileConn<-file(tmpStoredXMLCaps)
+	writeLines(.responseString, fileConn)
+	close(fileConn)
+	
+	#dump(xmlCaps, file = tmpStoredXMLCaps)
+	
+	.response <- xmlParseDoc(file = tmpStoredXMLCaps)
 	if(verbose || inspect) {
 		cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
 		print(.response)
