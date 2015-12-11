@@ -69,7 +69,7 @@ setClass("SOS_2.0.0",
 #
 #
 #
-setIs("SOS_2.0.0", "SOS_versioned")
+setClassUnion(name = "SOS_versioned",	members = "SOS_2.0.0")
 
 #
 #

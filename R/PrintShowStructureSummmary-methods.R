@@ -1025,6 +1025,7 @@ setMethod("print", "SOS_1.0.0", function(x, ...) .print.SOS_1.0.0(x, ...))
 setMethod("print", "SOS_2.0.0", function(x, ...) .print.SOS_2.0.0(x, ...))
 setMethod("print", "SosFilter_Capabilities", function(x, ...) .print.SosFilter_Capabilities(x, ...))
 setMethod("print", "SosObservationOffering", function(x, ...) .print.SosObservationOffering(x, ...))
+setMethod("print", "SosObservationOffering_2.0.0", function(x, ...) .print.SosObservationOffering_2.0.0(x, ...))
 setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
 setMethod("print", "SosEventTime", function(x, ...) .print.SosEventTime(x, ...))
 setMethod("print", "SosFeatureOfInterest", function(x, ...) .print.SosFeatureOfInterest(x, ...))
@@ -1148,6 +1149,7 @@ setMethod("show", "SOS_1.0.0", function(object) .print.SOS_1.0.0(object))
 setMethod("show", "SOS_2.0.0", function(object) .print.SOS_2.0.0(object))
 setMethod("show", "SosFilter_Capabilities", function(object) .print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) .print.SosObservationOffering(object))
+setMethod("show", "SosObservationOffering_2.0.0", function(object) .print.SosObservationOffering_2.0.0(object))
 setMethod("show", "SosContents", function(object) .print.SosContents(object))
 setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
 setMethod("show", "SosFeatureOfInterest", function(object) .print.SosFeatureOfInterest(object))
@@ -1191,7 +1193,10 @@ setMethod("show", "OgcOverlaps", function(object) .print.OgcOverlaps(object))
 summary.SOS_versioned = function(object, ...) {
 	obj = list()
 	obj[["class"]] = class(object)
-	obj[["version"]] = sosVersion(object)
+	
+	sosVersion = sosVersion(object)
+	
+	obj[["version"]] = sosVersion
 	obj[["url"]] = sosUrl(object)
 	obj[["binding"]] = sosBinding(object)
 	obj[["title"]] = sosTitle(object)
@@ -1203,7 +1208,13 @@ summary.SOS_versioned = function(object, ...) {
 	
 	obj[["offeringCount"]] = length(sosOfferingIds(object))
 	obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
-	obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
+	
+	if(sosVersion == sos100_version){
+	  obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
+	}
+	else if(sosVersion == sos200_version){
+	  obj[["observablePropCount"]] = length(unlist(sosObservableProperties(object)))
+	}
 
 	class(obj) = "summary.SOS"
 	obj
@@ -1213,7 +1224,8 @@ setMethod("summary", "SOS_versioned", summary.SOS_versioned)
 print.summary.SOS = function(x, ...) {
 	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
 	cat("[[version:]]\t")
-	print(x[["version"]])
+	sosVersion = x[["version"]]
+	print(sosVersion)
 	cat("[[url:]]\t")
 	print(x[["url"]])
 	cat("[[title:]]\t")
@@ -1228,8 +1240,13 @@ print.summary.SOS = function(x, ...) {
 	print(x[["offeringCount"]])
 	cat("[[procedures:]]\t")
 	print(x[["procedureCount"]])
-	cat("[[observed properties:]]\t")
-	print(x[["observedPropCount"]])
+	if(sosVersion == sos100_version){
+	  cat("[[observed properties:]]\t")
+	  print(x[["observedPropCount"]])
+	}else if(sosVersion == sos200_version){
+	  cat("[[observable properties:]]\t")
+	  print(x[["observablePropCount"]])
+	}
 	invisible(x)
 }
 
@@ -1265,6 +1282,40 @@ print.summary.SosObservationOffering = function(x, ...) {
 	cat("[[obsProps:]]\t")
 	print(x[["observedPropCount"]])
 	invisible(x)
+}
+
+summary.SosObservationOffering_2.0.0 = function(object, ...) {
+  obj = list()
+  obj[["class"]] = class(object)
+  obj[["id"]] = sosId(object)
+  obj[["name"]] = sosName(object)
+  obj[["time"]] = summary(sosTime(object))
+  obj[["bbox"]] = toString(sosBoundedBy(object))
+  obj[["foiCount"]] = length(sosFeaturesOfInterest(object))
+  obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
+  obj[["observablePropCount"]] = length(unlist(sosObserableProperties(object)))
+  class(obj) = "summary.SosObservationOffering_2.0.0"
+  obj
+}
+setMethod("summary", "SosObservationOffering_2.0.0", summary.SosObservationOffering_2.0.0)
+
+print.summary.SosObservationOffering_2.0.0 = function(x, ...) {
+  cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
+  cat("[[id:]]\t\t")
+  print(x[["id"]])
+  cat("[[name:]]\t")
+  print(x[["name"]])
+  cat("[[time:]]\t")
+  print(x[["time"]])
+  cat("[[bbox:]]\t")
+  print(x[["bbox"]])
+  cat("[[fois:]]\t")
+  print(x[["foiCount"]])
+  cat("[[procs:]]\t")
+  print(x[["procedureCount"]])
+  cat("[[obsProps:]]\t")
+  print(x[["observablePropCount"]])
+  invisible(x)
 }
 
 summary.OwsRange = function(object, ...) {
