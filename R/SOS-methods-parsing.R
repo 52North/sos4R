@@ -277,10 +277,10 @@ parseSosCapabilities200 <- function(obj, sos) {
     .observations = sapply(.offeringsXML, parseSosObservationOffering_200,
                            sos = sos)
     # add names to list
-    #names(.observations) <- lapply(.observations,
-    #                               function(obj) {
-    #                                 return(obj@id)
-    #                               })
+    names(.observations) <- lapply(.observations,
+                                   function(obj) {
+                                     return(obj@id)
+                                   })
     
     .caps.contents <- SosContents(observationOfferings = .observations)
   }
