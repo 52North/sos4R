@@ -42,6 +42,7 @@ sosNamespacePrefix <- "sos"
 sosGetCapabilitiesName <- "GetCapabilities"
 sosDescribeSensorName <- "DescribeSensor"
 sosGetObservationName <- "GetObservation"
+sosGetObservationResponseName <- "GetObservationResponse"
 # Transaction Operations Profile
 sosRegisterSensorName <- "RegisterSensor"
 sosInsertObservationName <- "InsertObservation"

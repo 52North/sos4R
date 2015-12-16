@@ -6,7 +6,7 @@ testsos <- SOS(url = "http://fluggs.wupperverband.de/sos2/sos", version = "2.0.0
 
 offs <- sosOfferings(testsos)
 
-getObservation(sos = testsos, offering = sosOfferingIds(testsos)[[1]])
+getObservation(sos = testsos, offering = sosOfferingIds(testsos)[[1]], responseFormat = "http://www.opengis.net/om/2.0")
 
 xmlCaps <- xmlParseDoc("../responses/Capabilities_100_Example.xml")
 

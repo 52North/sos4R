@@ -1101,7 +1101,10 @@ setMethod("encodeRequestKVP", "SosGetObservation",
 			if(obj@version == sos100_version) {
 				return(.sosEncodeRequestKVPGetObservation_1.0.0(obj, sos,
 								verbose))		
-			}
+			}else if(obj@version == sos200_version) {
+		    return(.sosEncodeRequestKVPGetObservation_2.0.0(obj, sos,
+		                                                    verbose))		
+		  }
 			else {
 				stop("Version not supported!")
 			}

@@ -131,6 +131,7 @@ exportClasses(
      "SosContentsOrNULL",
      "SosDescribeSensor",
      "SosGetObservation",
+     "SosGetObservation_2.0.0",
      "SosGetObservationById",
      "SosEventTime",
      "SosEventTimeLatest",
