@@ -36,8 +36,8 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
   
   .offeringsXML <- .filterXmlChildren(
     node = obj,
-    childrenName = "OM_Observation")
-  .observations = sapply(.offeringsXML, parseOM,
+    childrenName = "observationData")
+  .observations = sapply(.offeringsXML, parseObservation_2.0,
                          sos = sos)
   
   
@@ -45,3 +45,5 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
   
   return(.obs)
 }
+
+

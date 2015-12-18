@@ -8,13 +8,6 @@ offs <- sosOfferings(testsos)
 
 getObservation(sos = testsos, offering = sosOfferingIds(testsos)[[1]], responseFormat = "http://www.opengis.net/om/2.0")
 
-xmlCaps <- xmlParseDoc("../responses/Capabilities_100_Example.xml")
+testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
 
-tmpStoredXMLCaps = tempfile()
-
-save(xmlCaps, file = tmpStoredXMLCaps)
-
-cat(tmpStoredXMLCaps)
-
-#parsedCaps <- parseSosCapabilities(obj = xmlCaps, sos = testsos)
-#testsos@capabilities <- parsedCaps
+parseGetObservationResponse(xmlRoot(xmlParseDoc("../responses/GetObservationResponse.xml")), testsos)

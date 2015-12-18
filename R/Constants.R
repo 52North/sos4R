@@ -193,6 +193,10 @@ omTemporalObservationName <- "TemporalObservation"
 omComplexObservationName <- "ComplexObservation"
 
 ################################################################################
+# O&M
+om20OM_Observation <- "OM_Observation"
+
+################################################################################
 # SA
 saSamplingPointName <- "SamplingPoint"
 saSamplingSurface <- "SamplingSurface"

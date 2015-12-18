@@ -26,7 +26,7 @@ Collate:
 	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SML.R
 	Generic-methods.R OWS-methods.R
 	OWS-methods-parsing.R SOS-methods-parsing.R OM-methods.R
-	OM-methods-coercion.R OM-methods-parsing.R SA-methods.R
+	OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R SA-methods.R
 	GML-methods.R SWE-methods.R SML-methods.R GML-methods-parsing.R
 	SA-methods-parsing.R SWE-methods-parsing.R OGC-methods.R 
 	SOS-methods-accessor.R PrintShowStructureSummmary-methods.R
