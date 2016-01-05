@@ -99,6 +99,28 @@ setClass("SweTextBlock",
 )
 
 
+# SWE 2.0
+
+#
+#
+#
+setClass("SweTextEncoding",
+         representation(tokenSeparator = "character",
+                        blockSeparator = "character",
+                        #optional:
+                        decimalSeparator = "character",
+                        id = "character"),
+         prototype = list(tokenSeparator = NA_character_,
+                          blockSeparator = NA_character_,
+                          decimalSeparator = NA_character_),
+         validity = function(object) {
+           #print("Entering validation: SweTextEncoding")
+           # TODO implement validity function
+           return(TRUE)
+         }
+)
+
+
 ################################################################################
 #
 # Other SOS related SWE elements, like DataRecord, SimpleDataRecord, values, and

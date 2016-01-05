@@ -67,7 +67,7 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
 parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 	if(verbose) cat("[parseValues] Parsing swe:values using", toString(encoding), "and",
 				length(fields), "fields:", toString(names(fields)), "\n")
-	if(!inherits(encoding, "SweTextBlock")) {
+	if(!(inherits(encoding, "SweTextBlock") || inherits(encoding, "SweTextEncoding"))) {
 		stop("Handling for given encoding not implemented!")
 	}
 	
@@ -226,14 +226,19 @@ parseElementType <- function(obj, sos, verbose = FALSE) {
 #
 parseEncoding <- function(obj, sos, verbose = FALSE) {
 	.textBlock <- obj[[sweTextBlockName]]
+	.textEncoding <- obj[[sweTextEncodingName]]
 	
-	if(is.null(.textBlock)) {
-		stop(paste("Cannot parse swe:encoding, only", sweTextBlockName,
-						"is supported!"))
+	if(!(is.null(.textBlock))) {
+	  .tb <- parseTextBlock(.textBlock)
+	  return(.tb)
+	}
+	else if(!(is.null(.textEncoding))) {
+	.tb <- parseTextEncoding(.textEncoding)
+	return(.tb)
 	}
 	else {
-		.tb <- parseTextBlock(.textBlock)
-		return(.tb)
+	  stop(paste("Cannot parse swe:encoding, only", sweTextBlockName, "and", sweTextEncodingName, 
+	             "are supported!"))
 	}
 }
 
@@ -342,6 +347,20 @@ parseTextBlock <- function(obj) {
 	.tb <- SweTextBlock(tokenSeparator = .tS, blockSeparator = .bS,
 			decimalSeparator = .dS, id = .id)
 	return(.tb)
+}
+
+#
+#
+#
+parseTextEncoding <- function(obj) {
+  .id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+  .tS <- xmlGetAttr(node = obj, name = "tokenSeparator")
+  .bS <- xmlGetAttr(node = obj, name = "blockSeparator")
+  .dS <- xmlGetAttr(node = obj, name = "decimalSeparator", default = NA_character_)
+  
+  .tb <- SweTextEncoding(tokenSeparator = .tS, blockSeparator = .bS,
+                      decimalSeparator = .dS, id = .id)
+  return(.tb)
 }
 
 #

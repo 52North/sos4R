@@ -47,12 +47,12 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 	.observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
 			sos = sos, verbose = verbose)
 	
-	if(!is.null(obj[[omSamplingTimeName]])) {
-		.samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
+	if(!is.null(obj[[omPhenomenonTimeName]])) {
+		.phenomenonTime <- parseTime(obj = obj[[omPhenomenonTimeName]],
 				format = sosTimeFormat(sos = sos), verbose = verbose)
 	} else {
-		warning("om:samplingTime is mandatory in om:Observation, but is missing!")
-		.samplingTime <- NULL
+		warning("om:phenomenonTime is mandatory in om:Observation, but is missing!")
+		.phenomenonTime <- NULL
 	}
 	
 	if(!is.null(obj[[omFeatureOfInterestName]])) {
@@ -82,9 +82,36 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 	#.parameter
 	#.metadata
 	
-	.obs <- OmObservation(samplingTime = .samplingTime,
+	.obs <- OmOM_Observation(phenomenonTime = .phenomenonTime,
 			procedure = .procedure, observedProperty = .observedProperty,
 			featureOfInterest = .featureOfInterest, result = .result)
 	
 	return(.obs)
+}
+
+#
+# create according GmlTimeObject from om:samplingTime
+#
+parseTime <- function(obj, format, verbose = FALSE) {
+  if(verbose) cat("[parseTime]\n")
+  
+  .tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
+  .tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
+  .timeObject <- NULL
+  if(!is.null(.tiXML)) {
+    if(verbose) cat("[parseTime] time instant.\n")
+    .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
+  }
+  else if(!is.null(.tpXML)) {
+    if(verbose) cat("[parseTime] time period.\n")
+    .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
+  }
+  else {
+    warning(paste("Could not create GmlTimeObject from given samplingTime,", 
+                  " require gml:TimeInstant or gml:TimePeriod as children."))
+    .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
+      time = as.POSIXct(x = NA)))
+  }
+  
+  return(.timeObject)
 }

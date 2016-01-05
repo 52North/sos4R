@@ -163,6 +163,7 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
+		sosConvertTime,
 		sosConvertDouble,
 		sosConvertDouble,
 		sosConvertDouble,
@@ -235,6 +236,7 @@ names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:property:time:iso8601",
 		"urn:ogc:phenomenon:time:iso8601",
 		"http://www.opengis.net/def/property/OGC/0/SamplingTime",
+		"http://www.opengis.net/def/property/OGC/0/PhenomenonTime",
 		sosTimeName,
 		"m", # meter
 		"m2", # square meter

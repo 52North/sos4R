@@ -39,11 +39,7 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
     childrenName = "observationData")
   .observations = sapply(.offeringsXML, parseObservation_2.0,
                          sos = sos)
-  
-  
-  .obs <- SosObservationOffering_2.0.0(id = "test_id")
-  
-  return(.obs)
+  return(.observations)
 }
 
 
