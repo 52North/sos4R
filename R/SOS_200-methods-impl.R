@@ -27,23 +27,6 @@
 #                                                                              #
 ################################################################################
 
-#
-# try re-using 1.0.0 function
-#
-.sosRequest_2.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
-	if (verbose) {
-		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
-	}
-	
-	.result <- .sosRequest_2.0.0(sos, request, verbose = verbose,
-			inspect = inspect)
-	return(.result)
-	
-	if (verbose) {
-		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
-	}
-}
-
 ################################################################################
 # main request method
 #
@@ -94,7 +77,7 @@
           .dcp, "\n")
     
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
-      warning("Given url already contains a '?', appending arguments!")
+      cat("Given url already contains a '?', appending arguments!")
       .url = paste0(.dcp, .encodedRequest)
     }
     else .url = paste(.dcp, .encodedRequest, sep = "?")

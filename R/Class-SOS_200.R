@@ -172,3 +172,30 @@ setClass("SosGetObservation_2.0.0",
            return(TRUE)
          }
 )
+
+################################################################################
+# See SOS specification, OGC 12-006, section 9.1
+#
+setClass("SosGetFeatureOfInterest_2.0.0",
+         representation(
+           featureOfInterest = "character"),
+         prototype = list(
+           service = as.character(NA),
+           version = as.character(NA),
+           featureOfInterest = as.character(NA)),
+           contains = "OwsServiceOperation",
+           validity = function(object) {
+           #print("Entering validation: SosGetObservation")
+           # TODO implement validity function
+           
+           # service, version, offering, observedProperty, and identifier are mandatory
+           if(is.na(object@service))
+             return("service parameter must be given")
+           if(is.na(object@version))
+             return("version must be given")
+           if(is.na(object@featureOfInterest))
+             return("featureOfInterest parameter must be given")
+           
+           return(TRUE)
+         }
+)

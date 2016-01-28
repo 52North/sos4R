@@ -67,6 +67,7 @@ SosExampleServices <- function() {
 			parseSensorML,
 			parseOM,
 			parseGetObservationResponse,
+			parseGetFeatureOfInterestResponse,
 			parseOM,
 			parseOwsExceptionReport,
 			#
@@ -102,7 +103,9 @@ SosExampleServices <- function() {
 			sosDescribeSensorName,
 			sosGetObservationName,
 			sosGetObservationResponseName,
+			sosGetFeatureOfInterestResponseName,
 			sosGetObservationByIdName,
+			#sosGetFeatureOfInterestResponseName,
 			owsExceptionReportName,
 			#
 			omMeasurementName,

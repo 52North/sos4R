@@ -54,6 +54,7 @@ sosGetFeatureOfInterestTimeName <- "GetFeatureOfInterestTime"
 sosDescribeFeatureTypeName <- "DescribeFeatureType"
 sosDescribeObservationTypeName <- "DescribeObservationType"
 sosDescribeResultModelName <- "DescribeResultModel"
+sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
 
 SosSupportedOperations <- function() {
 	.supported <- c(sosGetCapabilitiesName, sosDescribeSensorName, 
@@ -194,7 +195,7 @@ omTemporalObservationName <- "TemporalObservation"
 omComplexObservationName <- "ComplexObservation"
 
 ################################################################################
-# O&M
+# O&M 2.0
 om20OM_Observation <- "OM_Observation"
 
 ################################################################################
@@ -204,6 +205,10 @@ saSamplingSurface <- "SamplingSurface"
 saPositionName <- "position"
 saSampledFeatureName <- "sampledFeature"
 saSamplingTimeName <- "samplingTime"
+
+################################################################################
+# SAMS
+samsShapeName <- "shape"
 
 ################################################################################
 # GML
@@ -229,6 +234,7 @@ gmlTimeLengthName <- "timeLength"
 gmlDurationName <- "duration"
 gmlTimeIntervalName <- "timeInterval"
 gmlFeatureMemberName <- "featureMember"
+gmlIdentifierName = "identifier"
 
 ################################################################################
 # SWE
@@ -266,6 +272,9 @@ swesNameName = "name"
 swesObservablePropertyName = "observableProperty"
 swesProcedureDescriptionFormatName = "procedureDescriptionFormat"
 
+################################################################################
+# WML 2.0
+wmlMonitoringPointName = "MonitoringPoint"
 
 ################################################################################
 # OGC

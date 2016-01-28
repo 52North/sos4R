@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2016 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -22,53 +22,20 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Benjamin Pross (b.pross@52north.org)                                 #
-# Created: 2013-03-06                                                          #
+# Created: 2016-01-27                                                          #
 # Project: sos4R - visit the project web page,                                 #
 #      http://52north.org/communities/sensorweb/clients/sos4R/                 #
 ################################################################################
 
-parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
-  
-  if(sos@verboseOutput) {
-    cat("[parseGetObservationResponse] entering... \n")
-    print(obj)
-  }
-  
-  .offeringsXML <- .filterXmlChildren(
-    node = obj,
-    childrenName = "observationData")
-  .observations = sapply(.offeringsXML, parseObservation_2.0,
-                         sos = sos)
-  return(.observations)
-}
+#
+#
+#
+parseSamsShape <- function(obj, sos) {
+	
+  #TODO other shape types, check syntax [[1]]
+	.point <- parsePoint(obj[[1]][gmlPointName][[1]], sos = sos)
 
-parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
-  
-  if(sos@verboseOutput) {
-    cat("[parseGetFeatureOfInterestResponse] entering... \n")
-    print(obj)
-  }
-  
-  .offeringsXML <- .filterXmlChildren(
-    node = obj,
-    childrenName = "featureMember")
-  .foi = sapply(.offeringsXML, .parseFeatureMember,
-                         sos = sos)
-  return(.foi)
-}
-
-.parseFeatureMember <- function(obj, sos) {
-  .noneTexts <- .filterXmlOnlyNoneTexts(obj)
-  .member <- .noneTexts[[1]]
-  
-  .name <- xmlName(.member)
-  
-  if(.name == wmlMonitoringPointName) {
-    .sp <- parseMonitoringPoint(.member, sos = sos)
-    .member.parsed <- GmlFeatureProperty(feature = .sp)
-  }
-  else {
-    warning(paste("No handling for given sos:featureMember available: ", .name))
-  }
-  return(.member.parsed)
+	.sSh = SamsShape(point = .point)
+	
+	return(.sSh)
 }

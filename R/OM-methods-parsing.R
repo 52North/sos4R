@@ -359,6 +359,9 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
 		else if (.name == gmlFeatureCollectionName) {
 			.foi <- parseFeatureCollection(.feature, sos = sos)
 		}
+		else if (.name == wmlMonitoringPointName) {
+		  .foi <- parseMonitoringPoint(.feature, sos = sos)
+		}
 		else {
 			warning("[parseFOI] No parsing for given feature implemented!")
 			.foi <- GmlFeatureProperty(href = .name)

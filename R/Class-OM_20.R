@@ -86,3 +86,6 @@ setClass("OmMeasurement",
 		}
 )
 
+setClassUnion(name = "FoiOrNULL",
+              members = c("GmlFeatureOrGmlFeaturePropertyOrNULL", "MonitoringPoint", "NULL"))
+

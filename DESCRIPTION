@@ -22,7 +22,7 @@ ByteCompile: TRUE
 BugReports: https://github.com/52North/sos4R/issues
 Collate:
 	Constants.R
-	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-OM_20.R Class-SA.R
+	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
 	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SML.R
 	Generic-methods.R OWS-methods.R
 	OWS-methods-parsing.R SOS-methods-parsing.R OM-methods.R
@@ -32,4 +32,5 @@ Collate:
 	SOS-methods-accessor.R PrintShowStructureSummmary-methods.R
 	SOS-methods-util.R SOS-methods.R SOS-methods-plotting.R
 	SOS-methods-coercion.R SML-methods-util.R SML-methods-coercion.R
-	SOS_200-methods-parsing.R Defaults.R SOS_200-methods-impl.R SOS_200-methods.R
+	SOS_200-methods-parsing.R Defaults.R SOS_200-methods-impl.R SOS_200-methods.R 
+	WML_200-methods-parsing.R WML_200-methods.R SAMS-methods.R SAMS-methods-parsing.R

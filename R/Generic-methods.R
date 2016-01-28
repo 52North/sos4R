@@ -116,6 +116,17 @@ if (!isGeneric("getObservation"))
 #
 #
 #
+if (!isGeneric("getFeatureOfInterest"))
+  setGeneric(name = "getFeatureOfInterest",
+             signature = signature("sos", "featureOfInterest", "verbose", "inspect"),
+             def = function(sos, featureOfInterest,
+                            verbose = sos@verboseOutput, inspect = FALSE) {
+               standardGeneric("getFeatureOfInterest")
+             })
+
+#
+#
+#
 if (!isGeneric("checkRequest"))
 	setGeneric(name = "checkRequest",
 			def = function(service, operation, verbose) {

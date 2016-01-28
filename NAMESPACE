@@ -17,6 +17,7 @@ exportMethods(
     "getCapabilities",
     "getObservationById",
     "getObservation",
+    "getFeatureOfInterest",
 	"plot",
 	"print",
     "saveXML",
@@ -155,5 +156,6 @@ exportClasses(
      "TM_Equals",
      "GmlDirectPositionOrNULL",
      "GmlFeatureOrGmlFeaturePropertyOrNULL",
-     "GmlPointOrNULL"
+     "GmlPointOrNULL",
+     "SamsShape"
 )
