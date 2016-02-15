@@ -259,6 +259,25 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 	if(length(.noneText) == 0) {
 		.children <- xmlChildren(obj)
 		cat("[parseResult] No non-text nodes in result, returning NULL.\n")
+		
+		#in O&M 2.0 there can be (literal) results of type MeasurementType
+		.typeAttributValue <- xmlGetAttr(node = obj, name = om2ResultTypeAttributeName, default = NA_character_)
+		
+		.typeWithQualifiedname <- strsplit(.typeAttributValue, ":")
+		
+		.type <- NA_character_
+		
+		if(length(.typeWithQualifiedname) > 0){
+		  
+		  if(length(.typeWithQualifiedname[[1]]) > 1){
+		    .type <- .typeWithQualifiedname[[1]][2]
+		  }
+		}
+		
+		if(.type == om2ResultMeasureTypeName){
+		  return(xmlValue(obj))
+		}
+		
 		return(NULL)
 	}
 	
