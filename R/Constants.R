@@ -197,6 +197,8 @@ omComplexObservationName <- "ComplexObservation"
 ################################################################################
 # O&M 2.0
 om20OM_Observation <- "OM_Observation"
+om2ResultTypeAttributeName <- "type"
+om2ResultMeasureTypeName <- "MeasureType"
 
 ################################################################################
 # SA
