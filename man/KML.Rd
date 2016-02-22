@@ -17,8 +17,7 @@ At the current stage, the parsers simply returns an object from the package \pkg
 
 \references{
 \url{http://www.opengeospatial.org/standards/kml}
-
-\url{http://code.google.com/intl/de-DE/apis/kml/documentation/}
+\url{https://developers.google.com/kml/documentation/}
 }
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}

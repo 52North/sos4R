@@ -1,11 +1,5 @@
-\.project
-\.settings
-[.]svn$
-[.]gitignore
-\.Rhistory
-\.Rcheck
-aux$
-log$
-out$
-^.*\.Rproj$
-^\.Rproj\.user$
+.travis.yml
+sandbox
+sos4R-Ex.R
+sos4R.Rproj
+README.md

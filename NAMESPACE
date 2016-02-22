@@ -1,7 +1,8 @@
 import("methods")
 import("XML")
-importFrom("RCurl", "getURL", "postForm")
+importFrom("RCurl", "getURL", "postForm", "getCurlHandle")
 importFrom("graphics", "plot")
+importFrom("utils", "object.size", "str", "write.csv")
 import("sp")
 
 exportPattern("^[[:alpha:]]+")
@@ -153,3 +154,27 @@ exportClasses(
      "GmlFeatureOrGmlFeaturePropertyOrNULL",
      "GmlPointOrNULL"
 )
+
+S3method(as.data.frame, OmMeasurement)
+S3method(as.data.frame, OmObservation)
+S3method(as.list, OmObservationCollection)
+S3method(length, OmObservationCollection)
+S3method(names, OmMeasurement)
+S3method(names, OmObservation)
+S3method(names, OmObservationCollection)
+S3method(plot, SOS)
+S3method(plot, SensorML)
+S3method(plot, SosObservationOffering)
+S3method(print, summary.GmlTimePeriod)
+S3method(print, summary.OmObservation)
+S3method(print, summary.OmObservationCollection)
+S3method(print, summary.OwsRange)
+S3method(print, summary.SOS)
+S3method(print, summary.SosObservationOffering)
+S3method(summary, GmlTimePeriod)
+S3method(summary, OmObservation)
+S3method(summary, OmObservationCollection)
+S3method(summary, OwsRange)
+S3method(summary, SOS)
+S3method(summary, SosObservationOffering)
+
