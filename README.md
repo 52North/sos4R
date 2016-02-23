@@ -2,6 +2,7 @@
 
 sos4R is an extension for the R environment for statistical computing and visualization. It allows to query data from standard conform SOS instances using simple R function calls and does no require any knowledge about the Sensor Web. It is easily extendible for new data models and opens the huge amount of analysis and visualization features of the R environment for the Sensor Web.
 
+Build status: [![Build Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/sos4R)
 
 ## Documentation & Links
 
@@ -14,6 +15,8 @@ sos4R is an extension for the R environment for statistical computing and visual
 * Source code: https://github.com/52North/sos4R
 
 ## Development
+
+Branch status: [![Build Status](https://travis-ci.org/52North/sos4R.png?branch=dev)](https://travis-ci.org/52North/sos4R)
 
 sos4R is developed on GitHub using the [fork & pull development model](https://help.github.com/articles/using-pull-requests/#fork--pull). The [main repository's issue tracker](https://github.com/52North/sos4R/issues) is used to coordinate development.
 

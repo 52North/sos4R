@@ -221,7 +221,7 @@ myProcessWSDL <- function (fileName, handlers = WSDLParseHandlers(fileName),
 # works fine:
 # tmp = processWSDL(system.file("examples", "KEGG.wsdl", package = "SSOAP"))
 
-sosWsdlFile = "/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/data/SOS.wsdl"
+sosWsdlFile = "data/SOS.wsdl"
 
 # figure out why R crashes on processWSDL... might be problem with parseSchemaDoc
 sosWsdl <- myParseSchemaDoc(sosWsdlFile)
@@ -240,7 +240,7 @@ w = myProcessWSDL(
 		fileName = sosWsdlFile,
 		verbose = TRUE,
 		useInternalNodes = TRUE)
-# useInternalNodes = FALSE -> Error: /home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/data/sosCommon.xsd  does not seem to be XML, nor to identify a file name
+# useInternalNodes = FALSE -> Error: ../sos4R/data/sosCommon.xsd  does not seem to be XML, nor to identify a file name
 # Probably a resolvement issue.
 # uesInternaLnodes = TRUE  -> crashes as well...
 

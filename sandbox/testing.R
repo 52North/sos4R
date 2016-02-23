@@ -33,10 +33,6 @@
 ################################################################################
 
 ################################################################################
-source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-
-
-################################################################################
 # RCurl
 
 sosUrl = "http://giv-sos.uni-muenster.de:8080/ClimateSOS/sos"
@@ -67,7 +63,7 @@ describeSensor(sos = climatesos, procedure = id, saveOriginal = "D:/text.xml")
 
 # !!! describeSensor does not check if using GET, because Capabilities lack that DCP in current SOS!
 weathersosUrl = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos"
-weathersos = SOS(weathersosUrl, binding = "POX, verboseOutput = TRUE)
+weathersos = SOS(weathersosUrl, binding = "POX", verboseOutput = TRUE)
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
 sensor <- describeSensor(weathersos, "manniK")
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]], verbose = FALSE)
@@ -133,10 +129,6 @@ weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
 
 describeSensor(sos = weathersos, procedure = "sos@home+street:name,one,two")
 getObservation(sos = weathersos, offering = sosOfferingIds(weathersos)[[1]])
-
-################################################################################
-source("/home/daniel/Dropbox/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
 
 ################################################################################
 # problem with "/" character
@@ -363,8 +355,6 @@ tempObs <- parseObservation(xmlRoot(obsDoc)[[omMemberName]][[omObservationName]]
 # if the observation has a foi with a coordinate, add that to all data rows?
 
 ################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
 # GetObservationById
 
 # some ids for weathersos
@@ -423,10 +413,6 @@ encodeKVP(eventTime2[[1]], sos = weathersos)
 # works!
 
 ################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
-
-################################################################################
 # spatial operations
 
 # valid foi ids for WeatherSOS:
@@ -452,10 +438,6 @@ foiBBox2 <- sosCreateFeatureOfInterest(
 				propertyName = "lalaUndPooh"))
 encodeXML(foiBBox2, weathersos)
 # ok!
-
-################################################################################
-source("/home/daniel/Dokumente/2010_SOS4R/workspace/sos4R/sandbox/loadSources.R")
-################################################################################
 
 ################################################################################
 # GetObservations

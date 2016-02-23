@@ -1,15 +1,14 @@
 Package: sos4R
 Type: Package
-Title: An R client for the OGC Sensor Observation Service
+Title: An R Client for the OGC Sensor Observation Service
 Version: 0.3
 Date: 2013-04-21
 Authors@R: person(given = "Daniel", family = "Nuest", role = c("cre", "aut"), email = "daniel.nuest@uni-muenster.de")
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
 Depends: R (>= 2.15.0), XML (>= 3.95), RCurl (>= 1.95), sp, methods, graphics
 Suggests: spacetime (>= 1.0), gstat, maps, maptools, mapdata, cshapes, xts, xtable, rgdal, testthat
-Description: sos4R is a client for Sensor Observation Services (SOS) as
- specified by the Open Geospatial Consortium (OGC) - an interoperable interface
- for time series data.
+Description: A plain R client for Sensor Observation Services (SOS) as specified by the Open Geospatial Consortium (OGC). 
+ The SOS provides an interoperable interface for time series data.
  sos4R allows users to retrieve metadata from SOS web services and to
  interactively create requests for near real-time observation data based on the
  available sensors, phenomena, observations et cetera using thematic, temporal
@@ -23,7 +22,7 @@ BugReports: https://github.com/52North/sos4R/issues
 Collate:
 	Constants.R
 	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R
-	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_20.R Class-SML.R
+	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SML.R
 	Generic-methods.R OWS-methods.R
 	OWS-methods-parsing.R SOS-methods-parsing.R OM-methods.R
 	OM-methods-coercion.R OM-methods-parsing.R SA-methods.R
@@ -32,4 +31,4 @@ Collate:
 	SOS-methods-accessor.R PrintShowStructureSummmary-methods.R
 	SOS-methods-util.R SOS-methods.R SOS-methods-plotting.R
 	SOS-methods-coercion.R SML-methods-util.R SML-methods-coercion.R
-	Defaults.R SOS_20-methods-impl.R SOS_20-methods.R
+	Defaults.R SOS_200-methods-impl.R SOS_200-methods.R

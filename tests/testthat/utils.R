@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2013 by 52°North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -22,64 +22,31 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2013-08-28                                                          #
+# Created: 2013-03-06                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
+context("utils")
 
-#
-#
-#
-setClass("SOS_2.0",
-		representation(url = "character", binding = "character",
-				curlHandle = "CURLHandle", curlOptions = "ANY"),
-		prototype = list(
-				url = as.character(NA),
-				binding = as.character(NA),
-				version = as.character(NA)),
-		contains = c("SOS"),
-		validity = function(object) {
-			#print("Entering validation: SOS")
+test_that(".sosFilterDCPs works", {
+	dcps <- c("Post" = "http://url/with/endpoint/one",
+			"Post" = "url.to/endpoint/two",
+			"Get" = "some.thing.com/different/")
 			
-			if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
-				return(paste("Binding has to be one of",
-								toString(SosSupportedBindings()),
-								"- given:", object@binding))
-			}
-			
-			if(object@version != sos20_version)
-				return(paste0("Version must be 2.0 but is", object@version))
-			
-			# url has to match an URL pattern
-			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
-			.result = regexpr(.urlPattern, object@url)
-			if (.result == -1)
-				return("url not matching URL-pattern (http://www.example.com)")
-			
-			# test for complete match removed, does not work yet
-			#.urlLength = nchar(object@url)
-			#if (.urlLength == attr(.result, "match.length"))
-			#	return("url not completely matching URL-pattern")
-			
-			return(TRUE)
-		}
-)
+	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
+			is_equivalent_to("url.to/endpoint/two"))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
+	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
+			"http://url/with/endpoint/one")
+})
 
-#
-#
-#
-setIs("SOS_2.0", "SOS_versioned")
-
-#
-#
-#
-setClass("SosCapabilities_2.0",
-		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
-		contains = "OwsCapabilities_1.1.0",
-		validity = function(object) {
-			#print("Entering validation: SosCapabilities_1.0.0")
-			# TODO implement validity function
-			return(TRUE)
-		}
-)
+test_that("addional KVPs are concatenated correctly", {
+			expected <- "this=is&working=correctly"
+			actual <- list("this" = "is", "working" = "correctly")
+			
+			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
+			
+		})

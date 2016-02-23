@@ -206,9 +206,77 @@ parseSosObservedProperty <- function(obj = list(), verbose = FALSE) {
 }
 
 #
-#
+# function for parsing Capabilities
 #
 parseSosCapabilities <- function(obj, sos) {
+  if (sos@version == sos100_version){
+    .caps <- parseSosCapabilities100(obj,sos)
+  }
+  else if (sos@version == sos200_version){
+    .caps <- parseSosCapabilities200(obj,sos)
+  }
+}
+
+#
+# function for parsing Capabilities SOS v 2.0.0
+#
+parseSosCapabilities200 <- function(obj, sos) {
+  if(sos@verboseOutput)
+    cat("[parseSosCapabilities] entered... \n")
+  
+  .caps.root <- xmlRoot(obj)
+  
+  # attributes:
+  .caps.version <- xmlGetAttr(node = .caps.root, name = "version",
+                              default = NA_character_)
+  .caps.updateSequence <- xmlGetAttr(node = .caps.root,
+                                     name = "updateSequence", default = NA_character_)
+  if(sos@verboseOutput)
+    cat("[parseSosCapabilities] version, update sequence:", .caps.version,
+        .caps.updateSequence, "\n")
+  
+  if(!is.null(.caps.root[[owsServiceIdentificationName]])) {
+    .caps.si <- parseOwsServiceIdentification(
+      .caps.root[[owsServiceIdentificationName]])
+  }
+  else .caps.si <- NULL
+  
+  if(!is.null(.caps.root[[owsServiceProviderName]])) {
+    .caps.sp <- parseOwsServiceProvider(.caps.root[[owsServiceProviderName]])
+  }
+  else .caps.sp <- NULL
+  
+  if(!is.null(.caps.root[[owsServiceProviderName]])) {
+    .caps.sp <- parseOwsServiceProvider(.caps.root[[owsServiceProviderName]])
+  }
+  else .caps.sp <- NULL
+  
+  if(!is.null(.caps.root[[owsOperationsMetadataName]])) {
+    if(sos@verboseOutput)
+      cat("[parseSosCapabilities] entering", owsOperationsMetadataName,
+          "... \n")
+    
+    .operationsXML <- .filterXmlChildren(
+      node = .caps.root[[owsOperationsMetadataName]],
+      childrenName = owsOperationName)
+    
+    .operations <- lapply(.operationsXML, parseOwsOperation)
+    # add names for indexing of list
+    names(.operations) <- lapply(.operations,
+                                 function(obj) {
+                                   return(obj@name)
+                                 })
+    .caps.om <- OwsOperationsMetadata(operations = .operations)
+  }
+  else .caps.om <- NULL
+  
+}
+
+
+#
+# function for parsing Capabilities SOS v 1.0.0
+#
+parseSosCapabilities100 <- function(obj, sos) {
 	if(sos@verboseOutput)
 		cat("[parseSosCapabilities] entered... \n")
 	

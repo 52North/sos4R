@@ -1,0 +1,10 @@
+language: r
+sudo: required
+
+# Be strict when checking our package
+warnings_are_errors: true
+
+# rgdal is not available
+env:
+  global:
+    - _R_CHECK_FORCE_SUGGESTS_=FALSE

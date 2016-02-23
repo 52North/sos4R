@@ -155,3 +155,9 @@ test_that("offering id is parsed correctly", {
     expect_equal(.obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
     expect_equal(length(.obsProp), 2)
 })
+
+context("parsing: SOS Capabilities 2.0.0")
+
+testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
+

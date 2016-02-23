@@ -226,6 +226,9 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertString, # urn:ogc:data:feature
 		sosConvertString,
 		sosConvertDouble,
+		sosConvertTime,
+		sosConvertDouble,
+		# 52N SOS 4.x
 		sosConvertTime
 		)
 names(.sosDefaultFieldConverters) <- list(
@@ -299,7 +302,10 @@ names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:data:feature",
 		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest",
 		"ug/m3", # micrograms per cubic meter
-		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
+		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
+		"degC", # degree celsius
+		# 52N SOS 4.x
+		"http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
 		)
 
 

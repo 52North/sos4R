@@ -22,62 +22,64 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-06-18                                                          #
+# Created: 2013-08-28                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
+
 #
 #
 #
-library("tools")
-?codoc # Check Code/Documentation Consistency
+setClass("SOS_2.0.0",
+		representation(url = "character", binding = "character",
+				curlHandle = "CURLHandle", curlOptions = "ANY"),
+		prototype = list(
+				url = as.character(NA),
+				binding = as.character(NA),
+				version = as.character(NA)),
+		contains = c("SOS"),
+		validity = function(object) {
+			#print("Entering validation: SOS")
+			
+			if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+				return(paste("Binding has to be one of",
+								toString(SosSupportedBindings()),
+								"- given:", object@binding))
+			}
+			
+			if(object@version != sos200_version)
+				return(paste0("Version must be 2.0.0 but is", object@version))
+			
+			# url has to match an URL pattern
+			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
+			.result = regexpr(.urlPattern, object@url)
+			if (.result == -1)
+				return("url not matching URL-pattern (http://www.example.com)")
+			
+			# test for complete match removed, does not work yet
+			#.urlLength = nchar(object@url)
+			#if (.urlLength == attr(.result, "match.length"))
+			#	return("url not completely matching URL-pattern")
+			
+			return(TRUE)
+		}
+)
 
-################################################################################
-# tools::showNonASCII(readLines('sos4R.Rnw')) 
-checkNonASCII <- function(pkgPath) {
-	require("tools")
-	
-	# get all files in the workspace
-	p <- pkgPath
-	ps <- c("", "demo", "inst", "inst/doc", "man", "R", "sandbox", "tests")
-	dirs <- paste(p, ps, sep = "/")
-	
-	?showNonASCII
-	?readLines
-	?dir
-	
-	filenames <- lapply(dirs, dir)
-	
-	filepaths <- list()
-	for (i in seq(along = dirs)) {
-		.l <- paste(dirs[[i]], filenames[[i]], sep = "/")
-		filepaths <- c(filepaths, .l)
-	}
-	
-	# remove some folders
-	filepaths <- filepaths[!grepl(pattern = "//", x = filepaths)]
-	filepaths <- filepaths[!grepl("/R$", filepaths)]
-	filepaths <- filepaths[!grepl("/inst/doc$", filepaths)]
-	filepaths <- filepaths[!grepl(".RData$", filepaths)]
-	filepaths <- filepaths[!grepl(".pdf$", filepaths)]
-	filepaths
-	
-	# check characters
-	for (i in seq(along = filepaths)) {
-		cat(filepaths[[i]], "\n")
-		.file <- readLines(filepaths[[i]])
-		showNonASCII(.file)
-	}
-}
+#
+#
+#
+setIs("SOS_2.0.0", "SOS_versioned")
 
-checkNonASCII(".")
-
-################################################################################
-# tools::compactPDF
-#?tools::compactPDF
-
-# run this before every commit...
-result <- tools::compactPDF(paths = "./inst/doc")
-result
-# or even better: run R CMB build with option "--compact-vignettes"
+#
+#
+#
+setClass("SosCapabilities_2.0",
+		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
+		contains = "OwsCapabilities_1.1.0",
+		validity = function(object) {
+			#print("Entering validation: SosCapabilities_1.0.0")
+			# TODO implement validity function
+			return(TRUE)
+		}
+)

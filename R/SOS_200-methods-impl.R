@@ -22,62 +22,61 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-06-18                                                          #
+# Created: 2013-08-28                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
 #
+# try re-using 1.0.0 function
 #
-#
-library("tools")
-?codoc # Check Code/Documentation Consistency
-
-################################################################################
-# tools::showNonASCII(readLines('sos4R.Rnw')) 
-checkNonASCII <- function(pkgPath) {
-	require("tools")
-	
-	# get all files in the workspace
-	p <- pkgPath
-	ps <- c("", "demo", "inst", "inst/doc", "man", "R", "sandbox", "tests")
-	dirs <- paste(p, ps, sep = "/")
-	
-	?showNonASCII
-	?readLines
-	?dir
-	
-	filenames <- lapply(dirs, dir)
-	
-	filepaths <- list()
-	for (i in seq(along = dirs)) {
-		.l <- paste(dirs[[i]], filenames[[i]], sep = "/")
-		filepaths <- c(filepaths, .l)
+.sosRequest_2.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
 	}
 	
-	# remove some folders
-	filepaths <- filepaths[!grepl(pattern = "//", x = filepaths)]
-	filepaths <- filepaths[!grepl("/R$", filepaths)]
-	filepaths <- filepaths[!grepl("/inst/doc$", filepaths)]
-	filepaths <- filepaths[!grepl(".RData$", filepaths)]
-	filepaths <- filepaths[!grepl(".pdf$", filepaths)]
-	filepaths
+	.result <- .sosRequest_1.0.0(sos, request, verbose = verbose,
+			inspect = inspect)
+	return(.result)
 	
-	# check characters
-	for (i in seq(along = filepaths)) {
-		cat(filepaths[[i]], "\n")
-		.file <- readLines(filepaths[[i]])
-		showNonASCII(.file)
+	if (verbose) {
+		cat("[.sosRequest_2.0] of", sosUrl(sos), "\n")
 	}
 }
 
-checkNonASCII(".")
-
-################################################################################
-# tools::compactPDF
-#?tools::compactPDF
-
-# run this before every commit...
-result <- tools::compactPDF(paths = "./inst/doc")
-result
-# or even better: run R CMB build with option "--compact-vignettes"
+.getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
+		acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
+	if (verbose) {
+		cat("[.getCapabilities_2.0.0] of", sosUrl(sos), "\n")
+	}
+	
+	.gc <- OwsGetCapabilities(service = sosService,
+			acceptVersions = c(sosVersion(sos)), sections = sections,
+			acceptFormats = acceptFormats, updateSequence = updateSequence,
+			owsVersion = owsVersion, acceptLanguages = acceptLanguages)
+	if(verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
+	
+	.responseString = sosRequest(sos = sos, request = .gc,
+			verbose = verbose, inspect = inspect)
+	if(verbose){
+		cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
+	}
+	
+	.response <- xmlParseDoc(file = .responseString, asText = TRUE)
+	if(verbose || inspect) {
+		cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
+		print(.response)
+	}
+	
+	if(.isExceptionReport(.response)) {
+		return(.handleExceptionReport(sos, .response))
+	}
+	else {
+		.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
+		.caps <- .parsingFunction(obj = .response, sos = sos)
+		if (verbose) {
+			cat("[.getCapabilities_2.0.0] DONE WITH PARSING!\n")
+		} 
+		return(.caps)
+	}
+}

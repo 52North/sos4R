@@ -234,8 +234,8 @@
 	invisible(x)
 }
 
-.toString.SOS_2.0 <- function(x, ...) {
-	.s <- paste("Object of class SOS_2.0 [",
+.toString.SOS_2.0.0 <- function(x, ...) {
+	.s <- paste("Object of class SOS_2.0.0 [",
 			x@binding,
 			", ",
 			x@url,
@@ -245,8 +245,8 @@
 	return(.s)
 }
 
-.print.SOS_2.0 <- function(x, ...) {
-	cat(.toString.SOS_2.0(x, ...), "\n")
+.print.SOS_2.0.0 <- function(x, ...) {
+	cat(.toString.SOS_2.0.0(x, ...), "\n")
 	invisible(x)
 }
 
@@ -1002,7 +1002,7 @@ setMethod("print", "OwsException", function(x, ...) .print.OwsException(x, ...))
 setMethod("print", "OwsRange", function(x, ...) .print.OwsRange(x, ...))
 setMethod("print", "SOS", function(x, ...) .print.SOS(x, ...))
 setMethod("print", "SOS_1.0.0", function(x, ...) .print.SOS_1.0.0(x, ...))
-setMethod("print", "SOS_2.0", function(x, ...) .print.SOS_2.0(x, ...))
+setMethod("print", "SOS_2.0.0", function(x, ...) .print.SOS_2.0.0(x, ...))
 setMethod("print", "SosFilter_Capabilities", function(x, ...) .print.SosFilter_Capabilities(x, ...))
 setMethod("print", "SosObservationOffering", function(x, ...) .print.SosObservationOffering(x, ...))
 setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
@@ -1063,7 +1063,7 @@ setMethod("toString", "OwsException", function(x, ...) .toString.OwsException(x,
 setMethod("toString", "OwsRange", function(x, ...) .toString.OwsRange(x, ...))
 setMethod("toString", "SOS", function(x, ...) .toString.SOS(x, ...))
 setMethod("toString", "SOS_1.0.0", function(x, ...) .toString.SOS_1.0.0(x, ...))
-setMethod("toString", "SOS_2.0", function(x, ...) .toString.SOS_2.0(x, ...))
+setMethod("toString", "SOS_2.0.0", function(x, ...) .toString.SOS_2.0.0(x, ...))
 setMethod("toString", "SosFilter_Capabilities", function(x, ...) .toString.SosFilter_Capabilities(x, ...))
 setMethod("toString", "SosObservationOffering", function(x, ...) .toString.SosObservationOffering(x, ...))
 setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, ...))
@@ -1124,7 +1124,7 @@ setMethod("show", "OwsException", function(object) .print.OwsException(object))
 setMethod("show", "OwsRange", function(object) .print.OwsRange(object))
 setMethod("show", "SOS", function(object) .print.SOS(object))
 setMethod("show", "SOS_1.0.0", function(object) .print.SOS_1.0.0(object))
-setMethod("show", "SOS_2.0", function(object) .print.SOS_2.0(object))
+setMethod("show", "SOS_2.0.0", function(object) .print.SOS_2.0.0(object))
 setMethod("show", "SosFilter_Capabilities", function(object) .print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) .print.SosObservationOffering(object))
 setMethod("show", "SosContents", function(object) .print.SosContents(object))

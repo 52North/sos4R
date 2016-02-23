@@ -113,7 +113,7 @@ setMethod(f = "sosUrl", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
 			return(sos@url)
 		})
-setMethod(f = "sosUrl", signature = signature(sos = "SOS_2.0"),
+setMethod(f = "sosUrl", signature = signature(sos = "SOS_2.0.0"),
 		def = function(sos) {
 			return(sos@url)
 		})
@@ -144,7 +144,7 @@ setMethod(f = "sosBinding", signature = signature(sos = "SOS_1.0.0"),
 		def = function(sos) {
 			return(sos@binding)
 		})
-setMethod(f = "sosBinding", signature = signature(sos = "SOS_2.0"),
+setMethod(f = "sosBinding", signature = signature(sos = "SOS_2.0.0"),
 		def = function(sos) {
 			return(sos@binding)
 		})
