@@ -52,9 +52,18 @@ as.SpatialPointsDataFrame.list.Om_OMObservation <- function (obs) {
 
 ## 
 
-testsos <- SOS(url = "http://fluggs.wupperverband.de/sos2/sos", version = "2.0.0", binding = "KVP")
-observation <- parseGetObservationResponse(xmlRoot(xmlParseDoc("tests/responses/GetObservationResponse_measure_results.xml")), testsos)
 
+source("~//52North//secOpts.R") # sets passwd and user for SOS as curlOptions
+testsos <- SOS(url = "http://fluggs.wupperverband.de/sos2-tamis/service", version = "2.0.0", binding = "KVP", curlOptions = .opts)
+offerings <- sosOfferingIds(testsos)
+
+observation <- getObservation(testsos,
+                              offering = offerings[[1]],
+                              observedProperty =sosObservableProperties(testsos)[[offerings[[1]]]][7],
+                              eventTime = sosCreateTime(testsos,
+                                                        time = "2016/01/01 08:00::2016/01/08 20:00"),
+                              verbose=TRUE)
+                              
 spDf <- as.SpatialPointsDataFrame.list.Om_OMObservation(observation)
 spplot(spDf, scales=list(draw=T))
 
