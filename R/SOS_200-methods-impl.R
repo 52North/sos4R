@@ -102,7 +102,13 @@
     
     .response = getURL(url = .url, .opts = sos@curlOptions,
                        curl = sos@curlHandle,
-                       .encoding = sosDefaultCharacterEncoding)
+                       .encoding = sosDefaultCharacterEncoding, httpauth = 1L)
+    
+    pos = regexpr('<\\?xml', .response)
+    
+    if(pos > 1){
+      .response = substr(.response, pos, nchar(.response))
+    }
     
     if(verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
