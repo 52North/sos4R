@@ -65,6 +65,9 @@ library(gstat)
 gridDf <- krige(Abfluss ~ 1, spDf, grid)
 spplot(gridDf, "var1.pred")
 
+library(rgdal)
+writeGDAL(gridDf, "gridDf.tiff", drivername = "GTiff")
+
 library(plotKML)
 plotKML(spDf)
 
