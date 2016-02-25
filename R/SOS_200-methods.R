@@ -706,7 +706,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     # if the eventTime is a latest request, it returns NA, the GET binding
     # says for the latest observation eventTime is omitted
     if(!is.na(.timeString)) {
-      .optionals <- paste(.optionals, paste("eventTime", 
+      .optionals <- paste(.optionals, paste("temporalFilter", 
                                             .kvpEscapeSpecialCharacters(x = .timeString), 
                                             sep = "="), 
                           sep = "&")
