@@ -1184,10 +1184,15 @@ summary.SOS_versioned = function(object, ...) {
 	obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
 	obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
 
-	class(obj) = "summary.SOS"
+	class(obj) = "summary.SOS_versioned"
 	obj
 }
 setMethod("summary", "SOS_versioned", summary.SOS_versioned)
+
+summary.SOS = function(object, ...) {
+  summary.SOS_versioned(object = object, ...)
+}
+setMethod("summary", "SOS", summary.SOS)
 
 print.summary.SOS = function(x, ...) {
 	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))

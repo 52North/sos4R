@@ -176,5 +176,6 @@ S3method(summary, OmObservation)
 S3method(summary, OmObservationCollection)
 S3method(summary, OwsRange)
 S3method(summary, SOS)
+S3method(summary, SOS_versioned)
 S3method(summary, SosObservationOffering)
 
