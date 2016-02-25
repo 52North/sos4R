@@ -228,6 +228,7 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertTime,
 		sosConvertDouble,
+		sosConvertDouble,
 		# 52N SOS 4.x
 		sosConvertTime
 		)
@@ -304,6 +305,7 @@ names(.sosDefaultFieldConverters) <- list(
 		"ug/m3", # micrograms per cubic meter
 		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
 		"degC", # degree celsius
+		"°C", # degree Celsius
 		# 52N SOS 4.x
 		"http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
 		)
