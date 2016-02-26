@@ -1,17 +1,10 @@
-#context("parsing: O&M 2.0.0 observation")
+.opts <- curlOptions(header = TRUE, userpwd = "tamis:vmV#GnX?U837.8,?", netrc = TRUE)
 
-#testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
+testsos <- SOS(url = "http://fluggs.wupperverband.de/sos2-tamis/service", version = "2.0.0", binding = "KVP", curlOptions = .opts)
+offerings <- sosOfferingIds(testsos)
 
-testsos <- SOS(url = "http://fluggs.wupperverband.de/sos2/sos", version = "2.0.0", binding = "KVP")
-
-offs <- sosOfferings(testsos)
-
-observation <- getObservation(sos = testsos, offering = sosOfferingIds(testsos)[[1]], responseFormat = "http://www.opengis.net/om/2.0")
-
-testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
-
-testsos <- SOS(url = "http://fluggs.wupperverband.de/sos2/sos", version = "2.0.0", binding = "KVP")
-
-obs2 <- parseGetObservationResponse(xmlRoot(xmlParseDoc("../responses/GetObservationResponse.xml")), testsos)
-
-print(length(obs2))
+observation <- getObservation(testsos,
+                              offering = offerings[[1]],
+                              observedProperty =sosObservableProperties(testsos)[[offerings[[1]]]][7],
+                              eventTime = "om:phenomenonTime,2016-01-01T08:00/2016-01-08T20:00", responseFormat = "http://www.opengis.net/om/2.0",
+                              verbose=TRUE)

@@ -122,7 +122,7 @@ setClass("SosGetObservation_2.0.0",
            observedProperty = "list",
            responseFormat = "character",
            srsName = "character",
-           eventTime = "list", 
+           eventTime = "character", 
            procedure = "character", 
            featureOfInterest = "SosFeatureOfInterestOrNULL", 
            result = "ANY", # OgcComparisonOpsOrXMLOrNULL

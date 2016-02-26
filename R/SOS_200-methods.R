@@ -700,8 +700,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     if(length(obj@eventTime) > 1)
       warning("Only first event time in the list is used for KVP!")
     
-    .timeString <- encodeKVP(obj = obj@eventTime[[1]],
-                             sos = sos, verbose = verbose)
+    .timeString <- obj@eventTime[[1]]
     
     # if the eventTime is a latest request, it returns NA, the GET binding
     # says for the latest observation eventTime is omitted
