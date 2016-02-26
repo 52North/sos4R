@@ -1,4 +1,4 @@
-.opts <- curlOptions(header = TRUE, userpwd = "tamis:vmV#GnX?U837.8,?", netrc = TRUE)
+.opts 
 
 testsos <- SOS(url = "http://fluggs.wupperverband.de/sos2-tamis/service", version = "2.0.0", binding = "KVP", curlOptions = .opts)
 offerings <- sosOfferingIds(testsos)
