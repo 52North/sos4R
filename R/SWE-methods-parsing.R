@@ -115,7 +115,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 									.currentField[[.sosParseFieldDefinition]],
 									"! Trying a default, but you can add one when creating a SOS using",
 									"SosDataFieldConvertingFunctions()."))
-					.method <- .converters[[.sosParseFieldUOM]]	
+					.method <- .converters[["fallBack"]]
 				}
 			}
 			else {
@@ -125,9 +125,9 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 		}
 		
 		if(is.null(.method)) {
-			warning(paste("No converter found! Skipping field",
+			warning(paste("No converter found! Using field as is:",
 							as.character(fields[[.currentFieldIdx]]), "\n"))
-			next;
+			# next;
 		}
 		
 		if(verbose) {
