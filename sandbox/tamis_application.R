@@ -25,6 +25,7 @@ as.STFDF.list.Om_OMObservation <- function (obs) {
   ids <- lapply(obs, function(x) x@featureOfInterest@feature@id)
   
   if(any(sapply(res, is.null))) {
+    warning("The following ids have been dropped as they did not contain any data:", paste(ids[dropIds], "\n"))
     dropIds <- which(sapply(res, is.null))
     res <- res[-dropIds]
     sp <- sp[-dropIds]
