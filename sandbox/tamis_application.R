@@ -145,7 +145,12 @@ wasserstand <- getObservation(TaMIS_SOS,
 
 lapply(wasserstand, function(x) x@result)
 wasserstand_STFDF <- as.STFDF.list.Om_OMObservation(wasserstand)
-stplot(wasserstand_STFDF)
+stplot(wasserstand_STFDF[1:4,], mode="ts")
+plot(wasserstand_STFDF[2,])
+plot(wasserstand_STFDF[3,])
+plot(wasserstand_STFDF[4,])
+
+sosFeatureIds(wasserstand)
 
 # responseformat=http://www.opengis.net/om/2.0
 # observedProperty=Schuettmenge
@@ -165,7 +170,7 @@ lapply(sickerwasser, function(x) x@result)
 str(sickerwasser[[1]])
 
 sickerwasser_STFDF <- as.STFDF.list.Om_OMObservation(sickerwasser)
-stplot(sickerwasser_STFDF[,1:9])
+stplot(sickerwasser_STFDF, mode="ts")
 plot(sickerwasser_STFDF[sample(6,1),])
 
 # http://www.fluggs.de/sos2/sos?service=SOS
@@ -202,9 +207,11 @@ lapply(niederschlag, function(x) x@result)
 # temporalFilter=om%3AphenomenonTime%2C2016-03-01T10:00:00.00Z%2F2016-03-10T13:00:00.000Z
 
 fuellstand <- getObservation(FLUGGS_SOS,
-                               offering = FLUGGS_offs[[2]],
-                              observedProperty = FLUGGS_prop[[FLUGGS_offs[[2]]]][6],
-                               eventTime = "om:phenomenonTime,2016-01-01T00:00/2016-01-10T23:59", 
-                               responseFormat = FLUGGS_caps@contents@observationOfferings$Zeitreihen_Einzelwert@responseFormat[[1]],
-                               verbose=TRUE)
+                             offering = FLUGGS_offs[[2]],
+                             featureOfInterest=SosFeatureOfInterest(list("Bever-Talsperre_Windenhaus")),
+                             observedProperty = FLUGGS_prop[[FLUGGS_offs[[2]]]][6],
+                             eventTime = "om:phenomenonTime,2016-01-01T00:00/2016-01-10T23:59", 
+                             responseFormat = FLUGGS_caps@contents@observationOfferings$Zeitreihen_Einzelwert@responseFormat[[1]],
+                             verbose=TRUE)
+
 lapply(fuellstand, function(x) x@result)
