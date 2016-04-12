@@ -145,17 +145,32 @@ setMethod(f = "getObservation",
 #
 #
 setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", featureOfInterest = "character"),
-          def = function(sos, featureOfInterest, verbose, inspect) {
-            return(.getFeatureOfInterest_2.0.0(sos = sos, featureOfInterest = featureOfInterest, verbose = verbose, inspect = inspect))
+          def = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
+            return(.getFeatureOfInterest_2.0.0(sos = sos, featureOfInterest = featureOfInterest, verbose = verbose, inspect = inspect, saveOriginal=saveOriginal))
           }
 )
 
 #
 #
 #
-.getFeatureOfInterest_2.0.0 <- function(sos, featureOfInterest, verbose, inspect, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)){
+.getFeatureOfInterest_2.0.0 <- function(sos, featureOfInterest, verbose, inspect,
+                                        saveOriginal,
+                                        xmlParseOptions = c(XML::NOERROR, XML::RECOVER)){
   
-  .filename <- NULL #TODO, not used currently
+  .filename <- NULL
+# 
+#   if(!is.null(saveOriginal)) {
+#     if(is.character(saveOriginal)) {
+#       .filename <- paste(saveOriginal, ".xml", sep = "")
+#       if(verbose) cat("Using saveOriginal parameter for file name:",
+#                       .filename, "\n")
+#     }
+#     else if(is.logical(saveOriginal)) {
+#       if(saveOriginal) .filename <- paste(.cleanupFileName(featureOfInterest),
+#                                           ".xml", sep = "")
+#       if(verbose) cat("Generating file name:", .filename, "\n")
+#     }
+#   }
   
   if(verbose)
     cat("[.getFeatureOfInterest_2.0.0] to ", sos@url, " with featureOfInterest ",

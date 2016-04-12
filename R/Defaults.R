@@ -161,7 +161,8 @@ names(.sosDefaultEncoders) <- list(
 #
 #
 .sosDefaultFieldConverters <- list(
-		sosConvertTime,
+    sosConvertDouble,
+    sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
@@ -235,6 +236,7 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertTime
 		)
 names(.sosDefaultFieldConverters) <- list(
+    "fallBack",
 		"urn:ogc:data:time:iso8601",
 		"urn:ogc:property:time:iso8601",
 		"urn:ogc:phenomenon:time:iso8601",

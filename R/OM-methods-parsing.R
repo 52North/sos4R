@@ -274,8 +274,10 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 		  }
 		}
 		
-		if(.type == om2ResultMeasureTypeName){
-		  return(xmlValue(obj))
+		if(!is.na(.type)) {
+  		if(.type == om2ResultMeasureTypeName){
+  		  return(xmlValue(obj))
+  		}
 		}
 		
 		return(NULL)
