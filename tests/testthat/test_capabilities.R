@@ -81,7 +81,7 @@ test_that("observed properties are parsed correctly from capabilities", {
     obs_prop_off1 <- obs_prop[[1]]
     
     expect_equal(length(obs_prop), 1)
-    expect_equal(obs_prop[[1]], "WaterQuality")
+    expect_equal(obs_prop[[1]][[1]], "WaterQuality")
     # or should the components be listed?
     #expect_equal(obs_prop[[1]], "urn:ogc:def:property:OGC-SWE:1:STN_ID")
 })

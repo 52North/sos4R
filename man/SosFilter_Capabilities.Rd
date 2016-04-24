@@ -23,7 +23,8 @@ Objects can be created by calls of the form \code{new("SosFilter_Capabilities", 
 }
 
 \usage{
-SosFilter_Capabilities(spatial = list(NA_character_), temporal = list(NA_character_), scalar = list(NA_character_), id = list(NA_character_))
+SosFilter_Capabilities(spatial = list(NA_character_), temporal = list(NA_character_), 
+                       scalar = list(NA_character_), id = list(NA_character_))
 }
 
 \arguments{

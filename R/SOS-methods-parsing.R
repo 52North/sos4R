@@ -198,7 +198,7 @@ parseSosObservedProperty <- function(obj = list(), verbose = FALSE) {
                         ", returning id '", .id, "'\n", sep = "")
                 return(.id)
             }
-            warn(paste("could not parse observed property:", toString(obj)))
+            warning(paste("could not parse observed property:", toString(obj))) ## warn ???
         }
     })
         
@@ -494,7 +494,7 @@ parseSwesObservableProperty <- function(obj, verbose = FALSE) {
       return(.name)
     }
     else  {
-      warn(paste("could not parse observable property:", toString(obj)))
+      warning(paste("could not parse observable property:", toString(obj))) # warn ???
     }
   })
   

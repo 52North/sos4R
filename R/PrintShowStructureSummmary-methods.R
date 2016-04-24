@@ -1323,7 +1323,7 @@ summary.SosObservationOffering_2.0.0 = function(object, ...) {
   obj[["bbox"]] = toString(sosBoundedBy(object))
   obj[["foiCount"]] = length(sosFeaturesOfInterest(object))
   obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
-  obj[["observablePropCount"]] = length(unlist(sosObserableProperties(object)))
+  obj[["observablePropCount"]] = length(unlist(sosObservableProperties(object)))
   class(obj) = "summary.SosObservationOffering_2.0.0"
   obj
 }
@@ -1425,7 +1425,9 @@ summary.OmObservationCollection = function(object, ...) {
 	class(obj) = "summary.OmObservationCollection"
 	obj
 }
+
 setMethod("summary", "OmObservationCollection", summary.OmObservationCollection)
+
 print.summary.OmObservationCollection = function(x, ...) {
 	cat(paste("Object of class ", x[["class"]], "\n", sep = ""))
 	cat("[[members:]]\t\t")

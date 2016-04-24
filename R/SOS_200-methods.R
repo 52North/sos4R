@@ -811,7 +811,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
   .kvpString <- paste(.service, .request, .version, .featureOfInterest, sep = "&")
   
   if(verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0]",
-                  "mandatory elements: ", .mandatory, "\n")
+                  "with request: ", .kvpString, "\n")
   
   return(.kvpString)
 }

@@ -154,6 +154,7 @@
 \alias{sosProcedureName}
 \alias{sosObservedPropertyName}
 \alias{sosFeatureOfInterestName}
+\alias{sosFeatureOfInterestTypeName}
 \alias{sosResultModelName}
 \alias{sosResponseFormatName}
 \alias{sosResponseModeName}
@@ -229,6 +230,11 @@
 \alias{sosKVPParamNameResultModel}
 \alias{sosKVPParamNameResponseMode}
 \alias{sosKVPParamNameBBOX}
+
+# SOS Version 200
+\alias{sos200ContentsName}
+\alias{sos200FilterCapabilitiesName}
+\alias{OmOM_Observation}
 
 \title{Constants in sos4R}
 

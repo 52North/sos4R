@@ -219,6 +219,7 @@
 \alias{sosCapabilitiesUrl-method}
 \alias{sosCapabilitiesUrl,SOS-method}
 
+\alias{SOS_Test}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -300,6 +301,13 @@ SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
 	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
 	additionalKVPs = list(), ...)
 
+SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version, 
+         parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
+         dataFieldConverters = SosDataFieldConvertingFunctions(),
+         timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, 
+         switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
+         additionalKVPs = list(), ...)
+
 # accessor methods ...
 }
 
@@ -366,7 +374,8 @@ sosCapabilitiesUrl(mysos)
 SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
 		useDCPs = FALSE)
 		
-# create a SOS using only the DCPs from the capabilities that match a specific pattern with the default binding
+# create a SOS using only the DCPs from the capabilities that match a specific 
+# pattern with the default binding
 SOS(url = "http://localhost:8080/52n-sos/sos/service",
 		dcpFilter = list("POX" = "/pox"))
 }
