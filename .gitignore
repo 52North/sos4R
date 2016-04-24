@@ -1,7 +1,31 @@
 # history files
 .Rhistory
+
 # Example code in package build process
 *-Ex.R
+
 .Rproj.user
 *.Rproj
+vignettes/Rplots.pdf
+vignettes/mySOS.RData
+vignettes/mySensor.xml
+vignettes/procs.descr.RData
+vignettes/sos4R-describeSensorPlot.pdf
+vignettes/sos4R-sosPlotFigure.pdf
+vignettes/sos4R.tex
+sos4R.tex
+sos4R-sosPlotFigure.pdf
+err.response.RData
+mySOS2.RData
+vignettes/mySOS2.disabled.RData
+vignettes/obs.oneWeek.xml
+vignettes/obs.wxt.xml
+vignettes/obs.oneWeek.filter.xml.xml
+vignettes/obs.oneWeek.fois.xml.xml
+vignettes/obs.oneWeek.xml.xml
+vignettes/obs.wxt.xml.xml
+vignettes/sos4R-concordance.tex
+vignettes/sos4R.log
+vignettes/sos4R.synctex.gz
+vignettes/sos4R.toc
 .RData

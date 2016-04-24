@@ -736,9 +736,9 @@ setMethod(f = "getObservationById",
 		saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
 	
 	.filename <- NULL
-	if(is.null(saveOriginal)) {
+	if(!is.null(saveOriginal)) {
 		if(is.character(saveOriginal)) {
-			.filename <- saveOriginal
+			.filename <- paste0(saveOriginal, ".xml")
 			if(verbose) cat("[.getObservation_1.0.0] Using saveOriginal parameter for file name:",
 						.filename, "\n")
 		} 
@@ -898,7 +898,9 @@ setMethod(f = "getObservationById",
 			.countInfo <- paste("NO DATA, turn on 'verbose' for more information.")
 		}
 		else {
-			.countInfo <- paste(sum(.resultLength), "result values [",
+		    .nonNulls <- Filter(Negate(function(x) is.null(unlist(x))), .resultLength)
+		    .sum <- sum(unlist(.nonNulls))
+			.countInfo <- paste(.sum, "result values [",
 					toString(.resultLength), "].")
 		}
 

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2013 by 52°North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -22,62 +22,31 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-06-18                                                          #
+# Created: 2013-03-06                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
 
-#
-#
-#
-library("tools")
-?codoc # Check Code/Documentation Consistency
+context("utils")
 
-################################################################################
-# tools::showNonASCII(readLines('sos4R.Rnw')) 
-checkNonASCII <- function(pkgPath) {
-	require("tools")
-	
-	# get all files in the workspace
-	p <- pkgPath
-	ps <- c("", "demo", "inst", "inst/doc", "man", "R", "sandbox", "tests")
-	dirs <- paste(p, ps, sep = "/")
-	
-	?showNonASCII
-	?readLines
-	?dir
-	
-	filenames <- lapply(dirs, dir)
-	
-	filepaths <- list()
-	for (i in seq(along = dirs)) {
-		.l <- paste(dirs[[i]], filenames[[i]], sep = "/")
-		filepaths <- c(filepaths, .l)
-	}
-	
-	# remove some folders
-	filepaths <- filepaths[!grepl(pattern = "//", x = filepaths)]
-	filepaths <- filepaths[!grepl("/R$", filepaths)]
-	filepaths <- filepaths[!grepl("/inst/doc$", filepaths)]
-	filepaths <- filepaths[!grepl(".RData$", filepaths)]
-	filepaths <- filepaths[!grepl(".pdf$", filepaths)]
-	filepaths
-	
-	# check characters
-	for (i in seq(along = filepaths)) {
-		cat(filepaths[[i]], "\n")
-		.file <- readLines(filepaths[[i]])
-		showNonASCII(.file)
-	}
-}
+test_that(".sosFilterDCPs works", {
+	dcps <- c("Post" = "http://url/with/endpoint/one",
+			"Post" = "url.to/endpoint/two",
+			"Get" = "some.thing.com/different/")
+			
+	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
+			is_equivalent_to("url.to/endpoint/two"))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
+	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
+			"http://url/with/endpoint/one")
+})
 
-checkNonASCII(".")
-
-################################################################################
-# tools::compactPDF
-#?tools::compactPDF
-
-# run this before every commit...
-result <- tools::compactPDF(paths = "./inst/doc")
-result
-# or even better: run R CMB build with option "--compact-vignettes"
+test_that("addional KVPs are concatenated correctly", {
+			expected <- "this=is&working=correctly"
+			actual <- list("this" = "is", "working" = "correctly")
+			
+			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
+			
+		})
