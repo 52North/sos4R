@@ -298,7 +298,7 @@ SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
 	curlOptions = list(), curlHandle = getCurlHandle(),
 	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
 	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
-	additionalKVPs = list, ...)
+	additionalKVPs = list(), ...)
 
 # accessor methods ...
 }

@@ -508,7 +508,7 @@ setMethod(f = "sosGetCRS",
 			
 			if(verbose) cat("[sosGetCRS] .initString:", .initString, "\n")
 			
-			.rgdal <- require("rgdal", quietly = TRUE)
+			.rgdal <- requireNamespace("rgdal", quietly = TRUE)
 			if(!.rgdal)
 				# if(!("rgdal" %in% .packages())) does only check loaded pkgs
 				warning("[sosGetCRS] rgdal not present: CRS values will not be validated.",

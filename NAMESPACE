@@ -1,3 +1,4 @@
+import("methods")
 import("XML")
 importFrom("RCurl", "getURL", "postForm")
 importFrom("graphics", "plot")
