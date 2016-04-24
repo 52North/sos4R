@@ -9,6 +9,11 @@
 \alias{checkRequest,SOS,OwsGetCapabilities_1.1.0,logical-method}
 \alias{checkRequest,SOS,OwsGetCapabilities_2.0.0,logical-method}
 
+% Version 2.0.0
+\alias{checkRequest,SOS_2.0.0,SosGetFEatureOfInterest_2.0.0,logical-method}
+\alias{checkRequest,SOS_2.0.0,SosGetObservation_2.0.0,logical-method}
+
+
 \title{Methods for Function checkRequest}
 
 \description{

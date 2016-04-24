@@ -220,6 +220,7 @@
 \alias{sosCapabilitiesUrl,SOS-method}
 
 \alias{SOS_Test}
+\alias{SOS_Test-class}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -327,6 +328,7 @@ SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version,
   \item{dcpFilter}{See the corresponding slot description.}
   \item{additionalKVPs}{See the corresponding slot description.}
   \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
+  \item{name}{Name of the test SOS class.}
 }
 
 \value{The construction functions returns an object of class \code{\link{SOS-class}}.}

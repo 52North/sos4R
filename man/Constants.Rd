@@ -231,10 +231,30 @@
 \alias{sosKVPParamNameResponseMode}
 \alias{sosKVPParamNameBBOX}
 
-# SOS Version 200
+% Version 2.0.0
+
 \alias{sos200ContentsName}
 \alias{sos200FilterCapabilitiesName}
 \alias{OmOM_Observation}
+
+\alias{om2ResultMeasureTypeName}
+\alias{om2ResultTypeAttributeName}
+\alias{omPhenomenonTimeName}
+\alias{samsShapeName}
+\alias{sosGetFeatureOfInterestResponseName}
+\alias{sosGetObservationResponseName}
+\alias{sosObservationTypeName}
+\alias{sosObservedAreaName}
+\alias{sosPhenomenonTimeName}
+\alias{sosResultTimeName}
+\alias{sweTextEncodingName} 
+\alias{swesIdentifierName} 
+\alias{swesNameName}
+\alias{swesObservablePropertyName} 
+\alias{swesOfferingName}
+\alias{swesProcedureDescriptionFormatName}
+\alias{wmlMonitoringPointName}
+
 
 \title{Constants in sos4R}
 

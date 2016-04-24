@@ -9,12 +9,17 @@
 \alias{show,SosGetObservation-method}
 \alias{toString,SosGetObservation-method}
 \alias{print,SosGetObservation-method}
+
 \alias{GetObservationById}
 \alias{SosGetObservationById}
 \alias{SosGetObservationById-class}
 \alias{show,SosGetObservationById-method}
 \alias{print,SosGetObservationById-method}
 \alias{toString,SosGetObservationById-method}
+
+% Version 2.0.0
+\alias{SosGetObservation_2.0.0}
+\alias{SosGetObservation_2.0.0-class}
 
 \title{GetObservation and GetObservationById Request Objects}
 

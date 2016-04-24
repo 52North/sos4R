@@ -8,11 +8,9 @@
 
 \title{Class \code{"MonitoringPoint"}}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the class is. ~~
-}
+MonitoringPoint class}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("MonitoringPoint", ...)}.
-%%  ~~ describe objects here ~~ 
 }
 \section{Slots}{
   \describe{

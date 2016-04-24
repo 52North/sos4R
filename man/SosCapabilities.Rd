@@ -6,7 +6,9 @@
 \alias{SosCapabilities_1.0.0-class}
 \alias{SosCapabilities}
 \alias{SosCapabilities-class}
-\alias{SosCapabilities_2.0-class}
+
+% Version 2.0.0
+\alias{SosCapabilities_2.0.0-class}
 
 \title{Class and Construction Function for "SosCapabilities"}
 
