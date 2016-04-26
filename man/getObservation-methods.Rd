@@ -14,7 +14,7 @@
 \alias{getObservationById,SOS_1.0.0,character-method}
 
 % Version 2.0.0
-\alias{getObservation,SOS_2.0,SosObservationOffering_2.0.0-method}
+\alias{getObservation,SOS_2.0.0,SosObservationOffering_2.0.0-method}
 \alias{getObservation,SOS_2.0.0,character-method}
 \alias{getObservationById,SOS_2.0.0,character-method}
 

@@ -16,6 +16,7 @@
 \alias{gmlNamespacePrefix}
 \alias{gmlPointName}
 \alias{gmlPosName}
+\alias{gmlIdentifierName}
 \alias{gmlRelatedTimeName}
 \alias{gmlTimeInstantName}
 \alias{gmlTimeIntervalName}
@@ -152,6 +153,7 @@
 \alias{sosIntendedApplicationName}
 \alias{sosTimeName}
 \alias{sosProcedureName}
+\alias{sosProcedureDescriptionFormat}
 \alias{sosObservedPropertyName}
 \alias{sosFeatureOfInterestName}
 \alias{sosFeatureOfInterestTypeName}
@@ -197,6 +199,7 @@
 \alias{ogcComparisonOperatorsName}
 \alias{ogcTempOpTMOverlappedBy}
 \alias{owsNamespacePrefix}
+\alias{owsNamespaceContext}
 \alias{sosDescribeFeatureTypeName}
 \alias{sosDescribeObservationTypeName}
 \alias{sosDescribeResultModelName}
@@ -235,24 +238,29 @@
 
 \alias{sos200ContentsName}
 \alias{sos200FilterCapabilitiesName}
-\alias{OmOM_Observation}
 
-\alias{om2ResultMeasureTypeName}
-\alias{om2ResultTypeAttributeName}
-\alias{omPhenomenonTimeName}
+\alias{om20ResultMeasureTypeName}
+\alias{om20ResultTypeAttributeName}
+\alias{om20OM_Observation}
+
+\alias{om20PhenomenonTimeName}
+
 \alias{samsShapeName}
+
 \alias{sosGetFeatureOfInterestResponseName}
 \alias{sosGetObservationResponseName}
 \alias{sosObservationTypeName}
 \alias{sosObservedAreaName}
 \alias{sosPhenomenonTimeName}
 \alias{sosResultTimeName}
+
 \alias{sweTextEncodingName} 
 \alias{swesIdentifierName} 
 \alias{swesNameName}
 \alias{swesObservablePropertyName} 
 \alias{swesOfferingName}
 \alias{swesProcedureDescriptionFormatName}
+
 \alias{wmlMonitoringPointName}
 
 

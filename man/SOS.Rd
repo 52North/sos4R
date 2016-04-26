@@ -187,7 +187,7 @@
 \alias{sosOperations,SOS-method}
 \alias{sosOperations,OwsCapabilities-method}
 \alias{sosOperations,SosCapabilities_1.0.0-method}
-\alias{sosOperations,SosCapabilities_2.0-method}
+\alias{sosOperations,SosCapabilities_2.0.0-method}
 
 \alias{sosGetDCP}
 \alias{sosGetDCP,SOS,character-method}
@@ -221,6 +221,12 @@
 
 \alias{SOS_Test}
 \alias{SOS_Test-class}
+
+% Version 2.0.0
+\alias{sosName,SosGetObservation_2.0.0-method}
+\alias{sosName,SosGetFeatureOfInterest_2.0.0-method}
+\alias{sosProcedures,SosObservationOffering_2.0.0-method}
+\alias{sosResponseFormats,SosObservationOffering_2.0.0-method}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 

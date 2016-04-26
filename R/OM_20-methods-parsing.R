@@ -47,8 +47,8 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 	.observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
 			sos = sos, verbose = verbose)
 	
-	if(!is.null(obj[[omPhenomenonTimeName]])) {
-		.phenomenonTime <- parseTime(obj = obj[[omPhenomenonTimeName]],
+	if(!is.null(obj[[om20PhenomenonTimeName]])) {
+		.phenomenonTime <- parseTime(obj = obj[[om20PhenomenonTimeName]],
 				format = sosTimeFormat(sos = sos), verbose = verbose)
 	} else {
 		warning("om:phenomenonTime is mandatory in om:Observation, but is missing!")

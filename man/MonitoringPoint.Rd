@@ -1,43 +1,47 @@
-\name{MonitoringPoint}
-\alias{MonitoringPoint}
+\name{MonitoringPoint-class}
 
-\title{Monitoring Point}
+\Rdversion{1.1}
+
+\docType{class}
+
+\alias{MonitoringPoint-class}
+\alias{MonitoringPoint}
+\alias{print,MonitoringPoint-method}
+\alias{show,MonitoringPoint-method}
+\alias{toString,MonitoringPoint-method}
+
+\title{Class \code{"MonitoringPoint"}}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+%%  ~~ A concise (1-5 lines) description of what the class is. ~~
 }
-\usage{
-MonitoringPoint(sampledFeatures, id, identifier, names, shape)
+\section{Objects from the Class}{
+Objects can be created by calls of the form \code{new("MonitoringPoint", ...)}.
+%%  ~~ describe objects here ~~ 
 }
-%- maybe also 'usage' for other objects documented here.
-\arguments{
-  \item{sampledFeatures}{
-%%     ~~Describe \code{sampledFeatures} here~~
+\section{Slots}{
+  \describe{
+    \item{\code{sampledFeatures}:}{Object of class \code{"list"} ~~ }
+    \item{\code{id}:}{Object of class \code{"character"} ~~ }
+    \item{\code{identifier}:}{Object of class \code{"list"} ~~ }
+    \item{\code{names}:}{Object of class \code{"list"} ~~ }
+    \item{\code{shape}:}{Object of class \code{"SamsShape"} ~~ }
+  }
 }
-  \item{id}{
-%%     ~~Describe \code{id} here~~
+\section{Extends}{
+Class \code{"\linkS4class{GmlFeature}"}, directly.
+Class \code{"\linkS4class{FoiOrNULL}"}, directly.
+Class \code{"\linkS4class{GmlFeatureOrNULL}"}, by class "GmlFeature", distance 2.
+Class \code{"\linkS4class{GmlFeatureOrGmlFeaturePropertyOrNULL}"}, by class "GmlFeature", distance 2.
 }
-  \item{identifier}{
-%%     ~~Describe \code{identifier} here~~
-}
-  \item{names}{
-%%     ~~Describe \code{names} here~~
-}
-  \item{shape}{
-%%     ~~Describe \code{shape} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+\section{Methods}{
+  \describe{
+    \item{print}{\code{signature(x = "MonitoringPoint")}: ... }
+    \item{show}{\code{signature(object = "MonitoringPoint")}: ... }
+    \item{toString}{\code{signature(x = "MonitoringPoint")}: ... }
+	 }
 }
 \references{
-%% ~put references to the literature/web site here ~
+%%  ~~put references to the literature/web site here~~
 }
 \author{
 %%  ~~who you are~~
@@ -49,21 +53,10 @@ MonitoringPoint(sampledFeatures, id, identifier, names, shape)
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+%%  ~~objects to See Also as \code{\link{~~fun~~}}, ~~~
+%%  ~~or \code{\linkS4class{CLASSNAME}} for links to other classes ~~~
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (sampledFeatures, id, identifier, names, shape) 
-{
-    new("MonitoringPoint", sampledFeatures = sampledFeatures, 
-        id = id, identifier = identifier, names = names, shape = shape)
-  }
+showClass("MonitoringPoint")
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{classes}

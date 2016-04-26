@@ -184,7 +184,6 @@ omFeatureOfInterestName <- "featureOfInterest"
 omProcedureName <- "procedure"
 omObservedPropertyName <- "observedProperty"
 omSamplingTimeName <- "samplingTime"
-omPhenomenonTimeName <- "phenomenonTime"
 omResultTimeName <- "resultTime"
 omResultName <- "result"
 omCategoryObservationName <- "CategoryObservation"
@@ -197,8 +196,9 @@ omComplexObservationName <- "ComplexObservation"
 ################################################################################
 # O&M 2.0
 om20OM_Observation <- "OM_Observation"
-om2ResultTypeAttributeName <- "type"
-om2ResultMeasureTypeName <- "MeasureType"
+om20ResultTypeAttributeName <- "type"
+om20ResultMeasureTypeName <- "MeasureType"
+om20PhenomenonTimeName <- "phenomenonTime"
 
 ################################################################################
 # SA

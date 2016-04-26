@@ -1,14 +1,17 @@
 \name{getFeatureOfInterest}
+
 \alias{getFeatureOfInterest}
+\alias{getFeatureOfInterest,SOS_2.0.0,character-method}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
+Function retrieveing feature of Interest
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-getFeatureOfInterest(sos, featureOfInterest, verbose = sos@verboseOutput, inspect = FALSE, saveOriginal = FALSE)
+getFeatureOfInterest(sos, featureOfInterest, verbose = sos@verboseOutput, 
+                     inspect = FALSE, saveOriginal = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -63,12 +66,15 @@ structure(function (sos, featureOfInterest, verbose = sos@verboseOutput,
     inspect = FALSE, saveOriginal = FALSE) 
 {
     standardGeneric("getFeatureOfInterest")
-  }, generic = structure("getFeatureOfInterest", package = "sos4R"), package = "sos4R", group = list(), valueClass = character(0), signature = c("sos", 
-"featureOfInterest", "verbose", "inspect", "saveOriginal"), default = `\001NULL\001`, skeleton = (function (sos, 
+  }, generic = structure("getFeatureOfInterest", package = "sos4R"), 
+  package = "sos4R", group = list(), valueClass = character(0), 
+  signature = c("sos", "featureOfInterest", "verbose", "inspect", "saveOriginal"),
+  default = NULL, skeleton = (function (sos, 
     featureOfInterest, verbose = sos@verboseOutput, inspect = FALSE, 
     saveOriginal = FALSE) 
 stop("invalid call in method dispatch to 'getFeatureOfInterest' (no default method)", 
-    domain = NA))(sos, featureOfInterest, verbose, inspect, saveOriginal), class = structure("nonstandardGenericFunction", package = "methods"))
+    domain = NA))(sos, featureOfInterest, verbose, inspect, saveOriginal), 
+    class = structure("nonstandardGenericFunction", package = "methods"))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

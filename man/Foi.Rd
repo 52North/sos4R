@@ -1,6 +1,7 @@
 \name{FoiOrNULL-class}
 \Rdversion{1.1}
 \docType{class}
+
 \alias{FoiOrNULL-class}
 
 \title{Class \code{"FoiOrNULL"}}
