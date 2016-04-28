@@ -61,20 +61,6 @@ getFeatureOfInterest(sos, featureOfInterest, verbose = sos@verboseOutput,
 ##-- ==>  Define data, use random,
 ##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-structure(function (sos, featureOfInterest, verbose = sos@verboseOutput, 
-    inspect = FALSE, saveOriginal = FALSE) 
-{
-    standardGeneric("getFeatureOfInterest")
-  }, generic = structure("getFeatureOfInterest", package = "sos4R"), 
-  package = "sos4R", group = list(), valueClass = character(0), 
-  signature = c("sos", "featureOfInterest", "verbose", "inspect", "saveOriginal"),
-  default = NULL, skeleton = (function (sos, 
-    featureOfInterest, verbose = sos@verboseOutput, inspect = FALSE, 
-    saveOriginal = FALSE) 
-stop("invalid call in method dispatch to 'getFeatureOfInterest' (no default method)", 
-    domain = NA))(sos, featureOfInterest, verbose, inspect, saveOriginal), 
-    class = structure("nonstandardGenericFunction", package = "methods"))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
