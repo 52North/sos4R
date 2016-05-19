@@ -12,7 +12,7 @@
 
 \title{Class \code{"MonitoringPoint"}}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the class is. ~~
+A monitoring point is the feature of interest defined for WaterML observations, i.e. a monitoring point represents the real world feature for which observations are taken. This may be, for example, the position of a stream flow sensor at a river.
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("MonitoringPoint", ...)}.

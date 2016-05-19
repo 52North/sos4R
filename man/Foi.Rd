@@ -6,7 +6,7 @@
 
 \title{Class \code{"FoiOrNULL"}}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the class is. ~~
+Classes and construction functions for features of interest from the OGC Observations and Measurements specification. A feature of interest is considered to be the real world feature that is observed. 
 }
 \section{Objects from the Class}{A virtual Class: No objects may be created from it.}
 \section{Methods}{

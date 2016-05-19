@@ -9,7 +9,7 @@
 
 \title{Class \code{"SweTextEncoding"}}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the class is. ~~
+Representation of a text encoding defined in the OGC SWE Common specification. It defines the token, block, and decimal seperators for a text-encoded array of values.
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("SweTextEncoding", ...)}.

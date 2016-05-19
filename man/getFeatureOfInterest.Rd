@@ -4,10 +4,10 @@
 \alias{getFeatureOfInterest,SOS_2.0.0,character-method}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Function retrieveing feature of Interest
+Function retrieving features of interest, i.e. the representations of the real world features that are observed and for which observations are provided.
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+This function retrieves , i.e. the representations of the real world features that are observed and for which observations are provided, from a Sensor Observation Service.
 }
 \usage{
 getFeatureOfInterest(sos, featureOfInterest, verbose = sos@verboseOutput, 
@@ -16,13 +16,12 @@ getFeatureOfInterest(sos, featureOfInterest, verbose = sos@verboseOutput,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{sos}{
-%%     ~~Describe \code{sos} here~~
+The Sensor Observation Service from which features of interest shoudl be retrieved.
 }
   \item{featureOfInterest}{
-%%     ~~Describe \code{featureOfInterest} here~~
+identifier(s) of features of interest
 }
   \item{verbose}{
-%%     ~~Describe \code{verbose} here~~
 }
   \item{inspect}{
 %%     ~~Describe \code{inspect} here~~

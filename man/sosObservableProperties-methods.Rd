@@ -14,7 +14,7 @@
 
 \title{Methods for Function \code{sosObservableProperties} in Package \pkg{sos4R}}
 
-\description{Methods for function \code{sosObservableProperties} in package \pkg{sos4R}}
+\description{Methods for function \code{sosObservableProperties} in package \pkg{sos4R}. The function allows to retrieve observable properties, e.g. air temperature, wind speed, etc., listed in the capabilities of a Sensor Observation Service.}
 \section{Methods}{
 \describe{
 

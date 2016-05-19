@@ -12,7 +12,7 @@
 
 \title{Class \code{"SamsShape"}}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the class is. ~~
+Representation of the geometry of a spatial sampling feature, that can be used as a feature of interest. Currently, only points are supported.
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("SamsShape", ...)} or \code{SamsShape}.}

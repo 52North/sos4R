@@ -12,7 +12,7 @@
 
 \title{Class \code{"SosGetFeatureOfInterest_2.0.0"}}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the class is. ~~
+Representation of a GetFeatureOfInterest operation request that needs to be sent to a Sensor Observation Service to retrieve the features of interest, i.e. the real world features that are observed and for which observations are taken.
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("SosGetFeatureOfInterest_2.0.0", ...)}.
