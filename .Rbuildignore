@@ -1,6 +1,10 @@
 [.]project
 [.]settings$
 [.].svn$
-
 ^.*\.Rproj$
 ^\.Rproj\.user$
+.travis.yml
+sandbox
+sos4R-Ex.R
+sos4R.Rproj
+README.md

@@ -38,7 +38,7 @@
 sosDefaultServiceVersion <- sos100_version
 
 #
-# A short list of some example services, no guarantee about compatibility with 
+# A short list of some example services, no guarantee about compatibility with
 # sos4R or quality of data, accessible using accessor/getter function.
 #
 .sosExampleServices <- list(
@@ -95,7 +95,7 @@ SosExampleServices <- function() {
 			parseKML,
 			parseKML,
 			parseOM)
-	
+
 	names(.defP) <- list(
 			sosGetCapabilitiesName,
 			sosDescribeSensorName,
@@ -129,15 +129,15 @@ SosExampleServices <- function() {
 			mimeTypeKML,
 			kmlName,
 			mimeTypeXML)
-	
+
 	return(.defP)
 }
 
 .sosDefaultParsers <- .createDefaultParsers()
 
 # Using a different approach for the encoders here, because there is more than
-# one way of encoding something (in contrast to parsing). So the different 
-# objects (and versions) override the respective encoding functions. 
+# one way of encoding something (in contrast to parsing). So the different
+# objects (and versions) override the respective encoding functions.
 .sosDefaultEncoders <- list(
 		encodeRequestKVP,
 		encodeRequestXML,
@@ -151,11 +151,12 @@ names(.sosDefaultEncoders) <- list(
 		.sosBindingPOX,
 		.sosBindingKVP
 		)
-		
+
 #
 #
 #
 .sosDefaultFieldConverters <- list(
+		sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
@@ -228,6 +229,7 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertDouble,
 		sosConvertTime,
 		sosConvertDouble,
+		sosConvertDouble,
 		# 52N SOS 4.x
 		sosConvertTime
 		)
@@ -236,6 +238,7 @@ names(.sosDefaultFieldConverters) <- list(
 		"urn:ogc:property:time:iso8601",
 		"urn:ogc:phenomenon:time:iso8601",
 		"http://www.opengis.net/def/property/OGC/0/SamplingTime",
+		"urn:ogc:def:parameter:x-istsos:1.0:time:iso8601",
 		sosTimeName,
 		"m", # meter
 		"m2", # square meter
@@ -281,13 +284,13 @@ names(.sosDefaultFieldConverters) <- list(
 		"l", # liter
 		"L", # liter
 		"ar", # are (area)
-		"t", # tonne (mass) 
-		"bar", # bar (pressure) 
+		"t", # tonne (mass)
+		"bar", # bar (pressure)
 		"u", # unified atomic mass unit (mass)
 		"eV", # electronvolt (energy)
 		"AU", # astronomic unit (length)
 		"pc", # parsec (length)
-		"degF", # degree Fahrenheit 
+		"degF", # degree Fahrenheit
 		"hPa", # hektopascal
 		"mm", # millimeter
 		"nm", # nanometer
@@ -304,6 +307,7 @@ names(.sosDefaultFieldConverters) <- list(
 		"ug/m3", # micrograms per cubic meter
 		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
 		"degC", # degree celsius
+		"°C", # degree Celsius
 		# 52N SOS 4.x
 		"http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
 		)
@@ -355,16 +359,16 @@ SosParsingFunctions <- function (..., include = character(0),
 	}
 	# no replacements given, base in-/exclusion on all defaults
 	else els <- defaults
-	
+
 	if (length(include)) {
 		els <- els[include]
 	}
 	else if (length(exclude)) {
 		.which <- match(exclude, names(els))
-		if (any(!is.na(.which))) 
+		if (any(!is.na(.which)))
 			els <- els[-(.which[!is.na(.which)])]
 	}
-	
+
 	return(els)
 }
 
@@ -374,10 +378,10 @@ SosParsingFunctions <- function (..., include = character(0),
 # a new SOS instance.
 #
 parseNoParsing <- function(obj) {
-	return(obj)	
+	return(obj)
 }
 .sosDisabledParsers <- list(
-		parseSosCapabilities, # if this is removed, no more SOS instances can be created! 
+		parseSosCapabilities, # if this is removed, no more SOS instances can be created!
 		parseNoParsing,
 		parseNoParsing,
 		parseNoParsing,
@@ -403,7 +407,7 @@ SosDisabledParsers <- function() {
 #
 SosResetParsingFunctions <- function(sos) {
 	sos@parsers <- .createDefaultParsers()
-	
+
 	return(sos)
 }
 
@@ -476,7 +480,7 @@ SosDefaults <- function() {
 			"sosDefaultColumnNameSRS",
 			"sosDefaultReferenceFrameSensorDescription",
 			"sosDefaultGetBindingParamLatest")
-	
+
 	return(.defaults)
 }
 
