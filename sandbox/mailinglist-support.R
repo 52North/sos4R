@@ -422,12 +422,15 @@ observation <- getObservation(sos = mySOS
 #> [sos4R] Received response (size: 1104 bytes), parsing ...
 #> Error in if (.subtypeIdx > 0) { : argument is of length zero
 
-# Fixed in
+# FIXED with https://github.com/52North/sos4R/pull/45
 
-myConverters <- SosDataFieldConvertingFunctions(
-  +
-    "S/m" = sosConvertDouble,
-  +
-    "http://mmisw.org/ont/cf/parameter/sea_water_salinity"
-  +
-    = sosConvertDouble)
+
+# [52N Geostatistics] sos4R : expectation failed error
+#
+# I am trying to use sos4R with a simple request and I encounter th following error "expectation failed".
+mySOS <- SOS(url = "http://sos.irceline.be/sos", binding = "KVP", curlOptions = list(verbose = TRUE))
+OBS <-getObservation(sos = mySOS, offering="81102 - PM10",
+                     eventTime = sosCreateTime(sos = mySOS, time = "2016-06-14::2016-06-15"), verbose=TRUE)
+summary(OBS)
+# WORKS with KVP
+
