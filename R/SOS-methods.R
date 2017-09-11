@@ -332,7 +332,7 @@ SosGetObservationById <- function(
 		}
 
 		if(verbose) cat("[.sosRequest_1.0.0] Do request using encoding ",
-		                sosDefaultCharacterEncoding, " and options ", sos@curlOptions, " ...\n")
+		                sosDefaultCharacterEncoding, " and options ", toString(sos@curlOptions), " ...\n")
 
 		.response = getURL(url = .url, .opts = sos@curlOptions,
 				curl = sos@curlHandle,
