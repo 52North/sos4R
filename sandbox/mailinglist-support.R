@@ -32,7 +32,7 @@ sosOfferings(ise)
 Offering_ise_chla <- sosOfferings(ise)[["total_chla_FP"]]
 Offering_ise_chla
 ise.chla.features <- sosFeaturesOfInterest(ise.offerings[["total_chla_FP"]])
-# spatial filtering: check out 
+# spatial filtering: check out
 ise.chla.features <- SosFeatureOfInterest(objectIDs =
 				ise.chla.features[1:11])
 ise.chla.features
@@ -113,7 +113,7 @@ watershapSOSConverters <-
 						sosConvertDouble,
 				"urn:ogc:object:feature:sensor:VE:waterlevel-sensor-22046US"=
 						sosConvertDouble,
-				"http://www.opengis.net/def/property/OGC/0/SamplingTime" = 
+				"http://www.opengis.net/def/property/OGC/0/SamplingTime" =
 						sosConvertTime,
 				"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" =
 						sosConvertString)
@@ -143,12 +143,12 @@ WaterLevelGaugesProj<-spTransform(WaterLevelGauges,Amersfoort.RD.New)
 
 #*Everything seems to be OK, but I am receiving an error message with the
 #following text*
-#		
+#
 #[sos4R] Received response (size: 418928 bytes), parsing ...
 #[sos4R] Finished getObservation to
-#http://137.224.18.29:8080/WS_VenE_SOSv3/sos 
+#http://137.224.18.29:8080/WS_VenE_SOSv3/sos
 #--> received 7 observation(s) having 9041 result values [ 1380, 1138, 1138,
-#		1300, 1301, 1392, 1392 ]. 
+#		1300, 1301, 1392, 1392 ].
 #Warning message:
 #		In if (.contentType == mimeTypeXML) { :
 #					the condition has length > 1 and only the first element will be used
@@ -199,9 +199,9 @@ obs = getObservation(eo2h, offering = eo2h_off[[14]]);
 #		premiers)
 #		>     # There's an error #
 
-#Description : 
+#Description :
 #		I have the same error when I try with my SOS DataBase
-#Actual Result : 
+#Actual Result :
 #		"[sos4R] Received response (size: 2746928 bytes), parsing ...
 #		Erreur dans sum(.resultLength) : 'type' (list) de l'argument incorrect"
 #with some warnings (put at the end).
@@ -238,7 +238,7 @@ obs14 = getObservation(eo2h, offering = eo2h_off[[14]]);
 
 # getObservation in sos4R with 52N SOS 4.x > "Internal Server Error"
 # http://geostatistics.forum.52north.org/getObservation-in-sos4R-tp4022949p4022951.html
-# 
+#
 library("sos4R"); sessionInfo()
 testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox")
 testsosoffering <- sosOfferings(testsos)[["ttp___www.52north.org_test_offering_6"]] # [["http://www.52north.org/test/offering/6"]]
@@ -247,17 +247,17 @@ testsosobsprop <- sosObservedProperties(testsosoffering)[1]
 
 getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop, verbose = TRUE)
 # for sos4R version 0.2-12:
-# Error in function (type, msg, asError = TRUE)  : <url> malformed 
-# [.sosRequest_1.0.0] Using DCP: http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox, http://sensorweb.demo.52north.org/52n-sos-webapp/service/soap 
+# Error in function (type, msg, asError = TRUE)  : <url> malformed
+# [.sosRequest_1.0.0] Using DCP: http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox, http://sensorweb.demo.52north.org/52n-sos-webapp/service/soap
 # [.sosRequest_1.0.0] Do request...
 # trying to use two DCPs at the same time
 ###
-# for sos4R version 0.2-11: 
+# for sos4R version 0.2-11:
 #[sos4R] Received response (size: 632 bytes), parsing ...
 #[1] ""
 #attr(,"Content-Type")
-#charset 
-#"application/xml"           "UTF-8" 
+#charset
+#"application/xml"           "UTF-8"
 #Warning message:
 #	In .getObservation_1.0.0(sos = sos, offeringId = .offeringId, observedProperty = observedProperty,  :
 #													 	File name is NULL, could not save document!
@@ -268,10 +268,10 @@ getObservation(sos = testsos, offering = testsosoffering, observedProperty = tes
 # [.sosRequest_1.0.0] response:
 #[1] ""
 #attr(,"Content-Type")
-#charset 
-#"application/xml"           "UTF-8" 
+#charset
+#"application/xml"           "UTF-8"
 #[sos4R] Received response (size: 632 bytes), parsing ...
-# response is actually EMPTY STRING! This is because of an error in the query... 
+# response is actually EMPTY STRING! This is because of an error in the query...
 # so this is a faliure to communicate this more than anything else.
 # FIXED when using offering and procedure '6'
 
@@ -296,16 +296,16 @@ describeSensorOp <- sosOperation(axiom, sosDescribeSensorName)
 #
 # helper function to encode manually build requests using sosOperation(...)
 #
-# setMethod("encodeRequestXML", "OwsOperation", 
+# setMethod("encodeRequestXML", "OwsOperation",
 #           function(obj, sos, verbose = FALSE, ...) {
 #               .name <- slot(object = obj, name = "name")
 #               if(verbose) {
 #                   cat("[encodeRequestXML]", class(obj), " with name", .name, "\n")
 #               }
-#               
+#
 #               str(...)
 #               .op <- NULL
-#               
+#
 #               if(.name == sosGetObservationName) {
 #                   stop(paste("Helper function for encoding of OwsOperation not implemented for operation ", .name))
 #               }
@@ -322,7 +322,7 @@ describeSensorOp <- sosOperation(axiom, sosDescribeSensorName)
 #               else {
 #                   stop("Operation name not supported!")
 #               }
-#               
+#
 #               .xml <- encodeRequestXML(.op)
 #               if(verbose) {
 #                   cat("[encodeRequestXML] encoded ", class(obj), " to\n", toString(.xml), "\n")
@@ -364,3 +364,70 @@ demo.pox <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox"
 
 pox.1 <- describeSensor(sos = demo.pox, procedure = sosProcedures(demo.pox)[[1]], verbose = TRUE)
 # crash!
+
+
+
+# https://gist.github.com/ninsbl/25fb87cb88c33e61716d60ce15f4b82e
+# ninsbl/sos4R_istsos.r istSOS issue
+
+library(sos4R)
+
+# http://istsos.org/istsos/demo?service=SOS&request=GetObservation&offering=temporary&procedure=P_LUGANO&eventTime=2014-05-01T00:00:00+01/2014-12-4T17:00:00+01,2013-01-30T17:30:00+01&observedProperty=rainfall&responseFormat=text/xml;subtype=%27sensorML/1.0.0%27&service=SOS&version=1.0.0
+
+### Connect to server
+mySOS <- SOS(url = "http://istsos.org/istsos/demo", binding = "KVP")
+
+## Get Server configuration
+getObsFormat <- sosResponseFormats(mySOS)$GetObservation[[1]]
+getObsFormat
+descSensFormat <- sosResponseFormats(mySOS)$DescribeSensor[[1]]
+descSensFormat
+# sosResponseFormats(mySOS)$DescribeSensor returns NULL
+
+## DN: correct, for DescribeSensor this is not "responseFormat" but "outputFormat"
+## DN: added new accessor method:
+sosOutputFormats(mySOS)$DescribeSensor
+
+## Find offering of interest
+offer <- summary(sosOfferings(mySOS)[[4]])
+offer
+
+## Get list of contained procedures / sensors
+proc <- sosProcedures(obj = mySOS)[[4]]
+proc
+
+# The following request fails, see: https://github.com/istSOS/istsos2/issues/23
+mySensor <- describeSensor(sos = mySOS,
+                           procedure = sosProcedures(obj = mySOS)[[2]],
+                           verbose = TRUE)
+
+
+# Create time period (last 30 days)
+tPeriod <- sosCreateEventTimeList(
+  time = sosCreateTimePeriod(
+    sos = mySOS,
+    begin = as.POSIXlt('2014-5-1 00:00:00'),
+    end = as.POSIXlt('2014-12-4 00:00:00')))
+
+# Get observations
+observation <- getObservation(sos = mySOS
+                              , observedProperty = sosObservedProperties(mySOS)[[4]]
+                              , offering = sosOfferings(mySOS)[[4]]
+                              , procedure = sosProcedures(mySOS)[[4]]
+                              #, srsName = '4326'
+                              , responseFormat = getObsFormat
+                              , eventTime = tPeriod
+                              , verbose = TRUE
+)
+#> [sos4R] Received response (size: 1104 bytes), parsing ...
+#> Error in if (.subtypeIdx > 0) { : argument is of length zero
+
+# Fixed in
+
+myConverters <- SosDataFieldConvertingFunctions(
+  +
+    "S/m" = sosConvertDouble,
+  +
+    "http://mmisw.org/ont/cf/parameter/sea_water_salinity"
+  +
+    = sosConvertDouble)

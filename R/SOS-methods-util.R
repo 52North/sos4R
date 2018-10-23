@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2010 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -50,7 +50,7 @@
 #
 # * Function returns data.frame, NOT OmObservation or OmMeasurement classes
 #
-# * if querying several procedures with different positions, put in them into 
+# * if querying several procedures with different positions, put in them into
 #	one data.frame, or a list?
 #
 read.sos <- function(sos,
@@ -161,12 +161,10 @@ setMethod(f = "sosCreateEventTimeList",
 
 #
 # test for instance: encodeXML(sosCreateTime(sos = sos, time = "2011-01-01", operator = "TM_Equals")[[1]], sos = sos)
-#
 setMethod(f = "sosCreateTime",
 		signature = signature(sos = "SOS", time = "character"),
 		def = function(sos, time, operator) {
 			.l <- NULL
-			
 			if(regexpr(pattern = "::", text = time) > -1) {
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "::")
@@ -186,8 +184,8 @@ setMethod(f = "sosCreateTime",
 			}
 			
 			if(is.null(.l)) warning("[sosCreateTime] could not create time.")
-			
-			return(.l)
+
+      return(.l)
 		}
 )
 
@@ -236,7 +234,6 @@ setMethod(f = "sosCreateTime",
 					operator = SosSupportedTemporalOperators()[[ogcTempOpTMBeforeName]])
 		}
 	}
-	
 	return(.l)
 }
 
@@ -250,8 +247,8 @@ setMethod(f = "sosCreateTime",
 #	* 2005-08-09/2005-08-30
 #	* 2005-08-09--30
 #	* 2005-08-09/30: "Vom 9. bis 30. August 2005."
-	
-	warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
+
+  warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
 }
 
 #
@@ -260,8 +257,8 @@ setMethod(f = "sosCreateTime",
 setMethod(f = "sosCreateEventTime",
 		signature = signature(time = "GmlTimeGeometricPrimitive"),
 		def = function(time, operator) {
-			
-			if(operator == ogcTempOpTMAfterName) {
+
+      if(operator == ogcTempOpTMAfterName) {
 				.tOps <- TM_After(time = time)
 			}
 			else if(operator == ogcTempOpTMBeforeName) {
@@ -278,8 +275,8 @@ setMethod(f = "sosCreateEventTime",
 								"choose one of",
 								toString(SosSupportedTemporalOperators())))
 			}
-			
-			.et <- SosEventTime(.tOps)
+
+        .et <- SosEventTime(.tOps)
 			return(.et)
 		}
 )
@@ -315,12 +312,11 @@ setMethod(f = "sosCreateFeatureOfInterest",
 			else {
 				stop("At least one of objectIDs or spatialOps has to be set!")
 			}
-			
+
 			return(.foi)
 		}
 )
-		
-#
+
 #
 #
 setMethod(f = "sosCreateBBOX",
@@ -337,8 +333,8 @@ setMethod(f = "sosCreateBBOX",
 						pos = paste(uppLat, uppLon, sep = " ")),
 				srsName = srsName, srsDimension = srsDimension,
 				axisLabels = axisLabels, uomLabels = uomLabels)
-		
-		.bbox <- OgcBBOX(propertyName = propertyName, envelope = .env)
+
+      .bbox <- OgcBBOX(propertyName = propertyName, envelope = .env)
 		return(.bbox)
 		}
 )
@@ -367,13 +363,15 @@ setMethod(f = "sosCreateBBoxMatrix",
 #
 setMethod(f = "sosCapabilitiesDocumentOriginal",
 		signature = signature(sos = "SOS"),
+
 		def = function(sos, verbose = FALSE) {
 			.verbose <- sos@verboseOutput || verbose
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
 			.responseString = sosRequest(sos = sos, request = .gc,
 					verbose = .verbose, inspect = FALSE)
-			.response <- xmlParseDoc(.responseString, asText = TRUE)
+
+      .response <- xmlParseDoc(.responseString, asText = TRUE)
 			return(.response)
 		}
 )
@@ -386,7 +384,6 @@ setMethod(f = "sosCapabilitiesUrl",
 		def = function(sos) {
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
-			
 			.request <- paste0(sosUrl(sos), "?", encodeRequestKVP(.gc, sos))
 			return(.request)
 		}
@@ -403,7 +400,6 @@ setMethod(f = "sosCapabilitiesUrl",
 }
 .handleExceptionReport <- function(sos, obj) {
 	if(sos@verboseOutput) warning("Received ExceptionReport!")
-	
 	.parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
 	.er <- .parsingFunction(obj)
 	if(class(.er) == "OwsExceptionReport")
@@ -442,8 +438,8 @@ setMethod(f = "encodeXML", signature = signature(obj = "XMLInternalElementNode",
 setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS"),
 		def = function(obj, sos, addNamespaces = FALSE, verbose = FALSE) {
 			if(verbose) cat("[encodeXML] from character string\n")
-			
-			if(isXMLString(obj)) {
+
+      if(isXMLString(obj)) {
 				#FIXME this just won't work, see testing.R, section "encode xml character string (again)"
 				if(addNamespaces) {
 					if(verbose) cat("[encodeXML] Namespace hack for character string, trying to replace 'result>'!\n")
@@ -457,8 +453,8 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
 				else {
 					.xml <- xmlParseString(obj)
 				}
-								
-				if(verbose) {
+
+        if(verbose) {
 					cat("[encodeXML] Created XML from string:\n", toString(.xml))
 				}
 				return(.xml)
@@ -493,8 +489,8 @@ setMethod(f = "sosGetCRS",
 		signature = c(obj = "character"),
 		def = function(obj, verbose = FALSE) {
 			if(verbose) cat("[sosGetCRS] from '", obj, "'\n", sep = "")
-			
-			# get the position of EPSG code
+
+      # get the position of EPSG code
 			.split <- strsplit(as.character(obj), split = ":")
 			.idx <- which(toupper(.split[[1]]) == "EPSG")
 			if(length(.idx) == 0) {
@@ -525,12 +521,13 @@ setMethod(f = "sosGetCRS",
 								"(returning NULL):", toString(err))
 					})
 			
-			if(verbose) {
+
+      if(verbose) {
 				cat("[sosGetCRS] found: ")
 				show(.crs)
 			}
-			
-			return(.crs)
+
+      return(.crs)
 		}
 )
 setMethod(f = "sosGetCRS",
@@ -538,8 +535,8 @@ setMethod(f = "sosGetCRS",
 		def = function(obj, verbose = FALSE) {
 			.l <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
 			.l <- unique(.l)
-			
-			if(length(.l) == 1)
+
+      if(length(.l) == 1)
 				return(.l[[1]])
 			else return(.l)
 		}
@@ -590,8 +587,8 @@ setMethod(f = "sosGetCRS",
 	.char <- as.vector(sosCoordinates(obj)[[sosDefaultColumnNameSRS]])
 	.l <- sapply(X = .char, FUN = sosGetCRS)
 	.l <- unique(.l)
-	
-	if(length(.l) == 1)
+
+  if(length(.l) == 1)
 		return(.l[[1]])
 	else return(.l)
 }
@@ -616,15 +613,15 @@ setMethod(f = "sosGetCRS",
 .cleanupColumnName <- function(name) {
 	# replace illegal characters
 	.name <- name
-	
-	for (.x in .illegalColumnNameCharacters) {
+
+  for (.x in .illegalColumnNameCharacters) {
 		# replace multiple escape characters with one
 		.name <- gsub(pattern = .x,
 				replacement = .illegalColumnNameEscapeCharacter,
 				x = .name)
 	}
-	
-	.name <- gsub(pattern = paste("(\\",
+
+  .name <- gsub(pattern = paste("(\\",
 					.illegalColumnNameEscapeCharacter, ")+", sep = ""),
 			replacement = .illegalColumnNameEscapeCharacter, x = .name)
 	return(.name)
@@ -640,8 +637,9 @@ sosChanges <- function() {
 			sep = "\\")
 	.con <- file(.path)
 	.lines <- readLines(.con)
-	close(.con)	
-	
+
+  close(.con)
+
 	cat(.lines, sep = "\n")
 }
 
@@ -653,9 +651,10 @@ sosNews <- function() {
 			sep = "\\")
 	.con <- file(.path)
 	.lines <- readLines(.con)
+
 	close(.con)	
-	
-	cat(.lines, sep = "\n")
+
+  cat(.lines, sep = "\n")
 }
 
 #
@@ -664,8 +663,8 @@ sosNews <- function() {
 sosCheatSheet <- function() {
 	.path <- paste(find.package("sos4R", lib.loc = NULL), "doc",
 			.sosCheatSheetDocumentName, sep = "\\")
-	
-	.z <- list(file = .sosCheatSheetDocumentName, pdf = .path)
+
+  .z <- list(file = .sosCheatSheetDocumentName, pdf = .path)
 	.z$topic <- "sos4R Cheat Sheet"
 	class(.z) <- "vignette"
 
@@ -676,6 +675,7 @@ sosCheatSheet <- function() {
 #
 #
 .sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
+
 	if(length(pattern) == 0) {
 		if(verbose)
 			cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
