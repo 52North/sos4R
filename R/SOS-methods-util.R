@@ -33,7 +33,7 @@
 # parameters:
 #		sos:
 #				the sos to query
-# 		time = c():
+# 		time = c():	
 #				either one time as POSIXt (or character which is tried to be
 #				parsed to POSIXt) and forms a time instant, or two times
 #				(character or POSIXt) that form an interval
@@ -61,7 +61,7 @@ read.sos <- function(sos,
 		mergeResult = FALSE,
 		addLocation = FALSE,
 		verbose = FALSE) {
-	warning("Method is not implemented yet!")
+	warning("Method is 'read.sos' not implemented yet!")
 }
 
 
@@ -74,7 +74,7 @@ read.sos <- function(sos,
 #}
 
 
-# TODO get all the matching ungiven parameters for that are available for a set of
+# TODO get all the matching ungiven parameters for that are available for a set of 
 # parameters that are given, e.g. all offerings that offer observed property
 # "A" for feature of interest "X", or all procedures measuring an observed
 # property "B".
@@ -160,27 +160,46 @@ setMethod(f = "sosCreateEventTimeList",
 )
 
 #
-#
-#
+# test for instance: encodeXML(sosCreateTime(sos = sos, time = "2011-01-01", operator = "TM_Equals")[[1]], sos = sos)
 setMethod(f = "sosCreateTime",
 		signature = signature(sos = "SOS", time = "character"),
 		def = function(sos, time, operator) {
+			.l <- NULL
 			if(regexpr(pattern = "::", text = time) > -1) {
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "::")
 			}
 			else if(regexpr(pattern = "P", text = time) > -1) {
-				.l <- .sosCreateEventTimeListFromISOPeriod(sos = sos,
+				.l <- .sosCreateEventTimeListFromISOPeriod(sos = sos, 
 						time = time, operator = operator)
 			}
 			else if(regexpr(pattern = "/", text = time) > -1) {
 				.l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
 						operator = operator, seperator = "/")
 			}
+			else {
+				# not a period
+				.l <- .sosCreateEventTimeListFromInstance(sos = sos, time = time,
+						operator = operator)
+			}
+			
+			if(is.null(.l)) warning("[sosCreateTime] could not create time.")
 
-			return(.l)
+      return(.l)
 		}
 )
+
+#
+# test: encodeXML(.sosCreateEventTimeListFromInstance(sos = sos, time = "2011-01-01", operator = SosSupportedTemporalOperators()[["TM_Equals"]])[[1]], sos = sos)
+#
+.sosCreateEventTimeListFromInstance <- function(sos, time,
+		operator = SosSupportedTemporalOperators()[["TM_Equals"]]) {
+	.ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(time))
+	.l <- sosCreateEventTimeList(time = .ti,
+					operator = SosSupportedTemporalOperators()[[operator]])
+	
+	return(.l)
+}
 
 .sosCreateEventTimeListFromPeriod <- function(sos, time, operator, seperator) {
 	.times <- strsplit(x = time, split = seperator)[[1]]
@@ -188,10 +207,10 @@ setMethod(f = "sosCreateTime",
 	if(length(.times) > 1)
 		.end <- .times[[2]]
 	else .end <- NULL
-
+	
 #	print(.start); print(.end);	print(nchar(.start)); print(nchar(.end));
 #	str(.start); print(.end);
-
+	
 	if(is.null(.start) && is.null(.end)) {
 		warning("Both start and endtime are null based on given time. Returning empty list!")
 		return(list())
@@ -215,7 +234,6 @@ setMethod(f = "sosCreateTime",
 					operator = SosSupportedTemporalOperators()[[ogcTempOpTMBeforeName]])
 		}
 	}
-
 	return(.l)
 }
 
@@ -230,7 +248,7 @@ setMethod(f = "sosCreateTime",
 #	* 2005-08-09--30
 #	* 2005-08-09/30: "Vom 9. bis 30. August 2005."
 
-	warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
+  warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
 }
 
 #
@@ -240,7 +258,7 @@ setMethod(f = "sosCreateEventTime",
 		signature = signature(time = "GmlTimeGeometricPrimitive"),
 		def = function(time, operator) {
 
-			if(operator == ogcTempOpTMAfterName) {
+      if(operator == ogcTempOpTMAfterName) {
 				.tOps <- TM_After(time = time)
 			}
 			else if(operator == ogcTempOpTMBeforeName) {
@@ -258,7 +276,7 @@ setMethod(f = "sosCreateEventTime",
 								toString(SosSupportedTemporalOperators())))
 			}
 
-			.et <- SosEventTime(.tOps)
+        .et <- SosEventTime(.tOps)
 			return(.et)
 		}
 )
@@ -301,7 +319,6 @@ setMethod(f = "sosCreateFeatureOfInterest",
 
 #
 #
-#
 setMethod(f = "sosCreateBBOX",
 		signature = signature(lowLat = "numeric", lowLon = "numeric",
 				uppLat = "numeric", uppLon = "numeric"),
@@ -317,7 +334,7 @@ setMethod(f = "sosCreateBBOX",
 				srsName = srsName, srsDimension = srsDimension,
 				axisLabels = axisLabels, uomLabels = uomLabels)
 
-		.bbox <- OgcBBOX(propertyName = propertyName, envelope = .env)
+      .bbox <- OgcBBOX(propertyName = propertyName, envelope = .env)
 		return(.bbox)
 		}
 )
@@ -346,12 +363,15 @@ setMethod(f = "sosCreateBBoxMatrix",
 #
 setMethod(f = "sosCapabilitiesDocumentOriginal",
 		signature = signature(sos = "SOS"),
-		def = function(sos) {
+
+		def = function(sos, verbose = FALSE) {
+			.verbose <- sos@verboseOutput || verbose
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
 			.responseString = sosRequest(sos = sos, request = .gc,
-					verbose = sos@verboseOutput, inspect = FALSE)
-			.response <- xmlParseDoc(.responseString, asText = TRUE)
+					verbose = .verbose, inspect = FALSE)
+
+      .response <- xmlParseDoc(.responseString, asText = TRUE)
 			return(.response)
 		}
 )
@@ -364,7 +384,6 @@ setMethod(f = "sosCapabilitiesUrl",
 		def = function(sos) {
 			.gc <- OwsGetCapabilities(service = sosService,
 					acceptVersions = c(sos@version))
-
 			.request <- paste0(sosUrl(sos), "?", encodeRequestKVP(.gc, sos))
 			return(.request)
 		}
@@ -381,7 +400,6 @@ setMethod(f = "sosCapabilitiesUrl",
 }
 .handleExceptionReport <- function(sos, obj) {
 	if(sos@verboseOutput) warning("Received ExceptionReport!")
-
 	.parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
 	.er <- .parsingFunction(obj)
 	if(class(.er) == "OwsExceptionReport")
@@ -421,7 +439,7 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
 		def = function(obj, sos, addNamespaces = FALSE, verbose = FALSE) {
 			if(verbose) cat("[encodeXML] from character string\n")
 
-			if(isXMLString(obj)) {
+      if(isXMLString(obj)) {
 				#FIXME this just won't work, see testing.R, section "encode xml character string (again)"
 				if(addNamespaces) {
 					if(verbose) cat("[encodeXML] Namespace hack for character string, trying to replace 'result>'!\n")
@@ -436,7 +454,7 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
 					.xml <- xmlParseString(obj)
 				}
 
-				if(verbose) {
+        if(verbose) {
 					cat("[encodeXML] Created XML from string:\n", toString(.xml))
 				}
 				return(.xml)
@@ -472,7 +490,7 @@ setMethod(f = "sosGetCRS",
 		def = function(obj, verbose = FALSE) {
 			if(verbose) cat("[sosGetCRS] from '", obj, "'\n", sep = "")
 
-			# get the position of EPSG code
+      # get the position of EPSG code
 			.split <- strsplit(as.character(obj), split = ":")
 			.idx <- which(toupper(.split[[1]]) == "EPSG")
 			if(length(.idx) == 0) {
@@ -481,26 +499,35 @@ setMethod(f = "sosGetCRS",
 				return(NULL)
 			}
 			.epsg <- .split[[1]][[length(.split[[1]])]]
-
+			
 			.initString <- paste("+init=epsg", .epsg, sep = ":")
-
+			
 			if(verbose) cat("[sosGetCRS] .initString:", .initString, "\n")
-
+			
+			.rgdal <- requireNamespace("rgdal", quietly = TRUE)
+			if(!.rgdal)
+				# if(!("rgdal" %in% .packages())) does only check loaded pkgs
+				warning("[sosGetCRS] rgdal not present: CRS values will not be validated.",
+						immediate. = TRUE)
+			else
+				if(verbose) cat("[sosGetCRS] rgdal loaded! \n")
+				
 			.crs <- NULL
 			tryCatch({
 						.crs <- CRS(.initString)
 					}, error = function(err) {
 						warning("[sosGetCRS] error was detected, probably the ",
-								"EPSG code ", .epsg, " is not recognized ",
+								"EPSG code ", .epsg, " is not recognized ", 
 								"(returning NULL):", toString(err))
 					})
+			
 
-			if(verbose) {
+      if(verbose) {
 				cat("[sosGetCRS] found: ")
 				show(.crs)
 			}
 
-			return(.crs)
+      return(.crs)
 		}
 )
 setMethod(f = "sosGetCRS",
@@ -509,7 +536,7 @@ setMethod(f = "sosGetCRS",
 			.l <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
 			.l <- unique(.l)
 
-			if(length(.l) == 1)
+      if(length(.l) == 1)
 				return(.l[[1]])
 			else return(.l)
 		}
@@ -561,7 +588,7 @@ setMethod(f = "sosGetCRS",
 	.l <- sapply(X = .char, FUN = sosGetCRS)
 	.l <- unique(.l)
 
-	if(length(.l) == 1)
+  if(length(.l) == 1)
 		return(.l[[1]])
 	else return(.l)
 }
@@ -587,14 +614,14 @@ setMethod(f = "sosGetCRS",
 	# replace illegal characters
 	.name <- name
 
-	for (.x in .illegalColumnNameCharacters) {
+  for (.x in .illegalColumnNameCharacters) {
 		# replace multiple escape characters with one
 		.name <- gsub(pattern = .x,
 				replacement = .illegalColumnNameEscapeCharacter,
 				x = .name)
 	}
 
-	.name <- gsub(pattern = paste("(\\",
+  .name <- gsub(pattern = paste("(\\",
 					.illegalColumnNameEscapeCharacter, ")+", sep = ""),
 			replacement = .illegalColumnNameEscapeCharacter, x = .name)
 	return(.name)
@@ -610,7 +637,8 @@ sosChanges <- function() {
 			sep = "\\")
 	.con <- file(.path)
 	.lines <- readLines(.con)
-	close(.con)
+
+  close(.con)
 
 	cat(.lines, sep = "\n")
 }
@@ -623,9 +651,10 @@ sosNews <- function() {
 			sep = "\\")
 	.con <- file(.path)
 	.lines <- readLines(.con)
-	close(.con)
 
-	cat(.lines, sep = "\n")
+	close(.con)	
+
+  cat(.lines, sep = "\n")
 }
 
 #
@@ -635,7 +664,7 @@ sosCheatSheet <- function() {
 	.path <- paste(find.package("sos4R", lib.loc = NULL), "doc",
 			.sosCheatSheetDocumentName, sep = "\\")
 
-	.z <- list(file = .sosCheatSheetDocumentName, pdf = .path)
+  .z <- list(file = .sosCheatSheetDocumentName, pdf = .path)
 	.z$topic <- "sos4R Cheat Sheet"
 	class(.z) <- "vignette"
 
@@ -646,29 +675,37 @@ sosCheatSheet <- function() {
 #
 #
 .sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
-  if (length(pattern) == 0) {
-    if (verbose)
-      cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
-    return(dcp)
-  }
 
-  if (verbose)
-    cat("[.sosFilterDCPs] Applying pattern",
-        toString(pattern),
-        "to",
-        toString(dcp),
-        "\n")
+	if(length(pattern) == 0) {
+		if(verbose)
+			cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
+		return(dcp)
+	}
+	
+	if(verbose)
+		cat("[.sosFilterDCPs] Applying pattern", toString(pattern), "to",
+				toString(dcp), "\n")
+	
+	.idx <- grep(pattern = pattern, x = dcp)
+	.filtered <- dcp[.idx]
+	if(verbose)
+		cat("[.sosFilterDCPs] Filtered from\n\t", toString(dcp), "\n\tto\n\t", 
+				toString(.filtered), "\n")
+	
+	return(.filtered)
+}
 
-  .idx <- grep(pattern = pattern, x = dcp)
-  .filtered <- dcp[.idx]
-  if (verbose)
-    cat(
-      "[.sosFilterDCPs] Filtered from\n\t",
-      toString(dcp),
-      "\n\tto\n\t",
-      toString(.filtered),
-      "\n"
-    )
-
-  return(.filtered)
+#
+#
+#
+.encodeAdditionalKVPs <- function(kvps) {
+	.kvpsString <- ""
+	for (i in seq(1:length(kvps))) {
+		.kvp <- paste(names(kvps)[[i]], kvps[[i]], sep = "=")
+		.kvpsString <- paste(.kvpsString, .kvp, sep = "&")
+	}
+	# remove starting &
+	.kvpsString <- substring(.kvpsString, 2, nchar(.kvpsString))
+	
+	return(.kvpsString)
 }

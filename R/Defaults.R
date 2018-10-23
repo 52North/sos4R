@@ -66,6 +66,8 @@ SosExampleServices <- function() {
 			parseSosCapabilities,
 			parseSensorML,
 			parseOM,
+			parseGetObservationResponse,
+			parseGetFeatureOfInterestResponse,
 			parseOM,
 			parseOwsExceptionReport,
 			#
@@ -100,7 +102,10 @@ SosExampleServices <- function() {
 			sosGetCapabilitiesName,
 			sosDescribeSensorName,
 			sosGetObservationName,
+			sosGetObservationResponseName,
+			sosGetFeatureOfInterestResponseName,
 			sosGetObservationByIdName,
+			#sosGetFeatureOfInterestResponseName,
 			owsExceptionReportName,
 			#
 			omMeasurementName,
@@ -156,6 +161,8 @@ names(.sosDefaultEncoders) <- list(
 #
 #
 .sosDefaultFieldConverters <- list(
+    sosConvertDouble,
+    sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
 		sosConvertTime,
@@ -234,10 +241,12 @@ names(.sosDefaultEncoders) <- list(
 		sosConvertTime
 		)
 names(.sosDefaultFieldConverters) <- list(
+    "fallBack",
 		"urn:ogc:data:time:iso8601",
 		"urn:ogc:property:time:iso8601",
 		"urn:ogc:phenomenon:time:iso8601",
 		"http://www.opengis.net/def/property/OGC/0/SamplingTime",
+		"http://www.opengis.net/def/property/OGC/0/PhenomenonTime",
 		"urn:ogc:def:parameter:x-istsos:1.0:time:iso8601",
 		sosTimeName,
 		"m", # meter

@@ -89,7 +89,8 @@ else {
 	attributes(sosResult(pegelObs)[,1])
 }
 
-# Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
+# Use custom converting function and connection method. This mechanism works the
+# same for encoders and decoders.
 myConverters <- SosDataFieldConvertingFunctions(
 	"myNumericUnit" = sosConvertDouble)
 mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)

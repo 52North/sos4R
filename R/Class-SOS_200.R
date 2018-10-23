@@ -69,12 +69,12 @@ setClass("SOS_2.0.0",
 #
 #
 #
-setIs("SOS_2.0.0", "SOS_versioned")
+setClassUnion(name = "SOS_versioned",	members = "SOS_2.0.0")
 
 #
 #
 #
-setClass("SosCapabilities_2.0",
+setClass("SosCapabilities_2.0.0",
 		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
 		contains = "OwsCapabilities_1.1.0",
 		validity = function(object) {
@@ -82,4 +82,120 @@ setClass("SosCapabilities_2.0",
 			# TODO implement validity function
 			return(TRUE)
 		}
+)
+
+#
+# See OGC 12-006, clause 8.1.2.2
+#
+# If possible, character vectors are used for slots if elements can be
+# represented by character strings.
+# TODO: FeatureRelationship
+setClass("SosObservationOffering_2.0.0",
+         representation(id = "character", name = "character",
+                        resultTime = "GmlTimeGeometricPrimitive", phenomenonTime = "GmlTimeGeometricPrimitive", 
+                        procedure = "character", observableProperty = "list", featureOfInterestType = "list",
+                        observationType = "list", 
+                        #observedArea="GmlEnvelope", 
+                        observedArea="list", 
+                        procedureDescriptionFormat = "list", responseFormat = "list"),
+         prototype = list(id = as.character(NA), name = as.character(NA),
+                          resultTime = NULL, phenomenonTime = NULL, 
+                          procedure = as.character(NA), observableProperty = list(NA), featureOfInterestType = list(NA),
+                          observationType = list(NA), observedArea=NULL, procedureDescriptionFormat = list(NA), responseFormat = list(NA)),
+         validity = function(object) {
+           #print("Entering validation: ObservationOffering")
+           # TODO implement validity function
+           
+           # time is required
+           # procedure, observedProperty, featureOfInterest, responseFormat are all "one or more"
+           
+           return(TRUE)
+         }
+)
+
+################################################################################
+# See SOS specification, OGC 06-009r6, section 8.4
+#
+setClass("SosGetObservation_2.0.0",
+         representation(
+           offering = "character",
+           observedProperty = "list",
+           responseFormat = "character",
+           srsName = "character",
+           eventTime = "character", 
+           procedure = "character", 
+           featureOfInterest = "SosFeatureOfInterestOrNULL", 
+           result = "ANY", # OgcComparisonOpsOrXMLOrNULL
+           resultModel = "character",
+           responseMode = "character",
+           BBOX = "character"),
+         prototype = list(
+           service = as.character(NA),
+           version = as.character(NA),
+           offering = as.character(NA),
+           observedProperty = list(NA),
+           responseFormat = as.character(NA)),
+         contains = "OwsServiceOperation",
+         validity = function(object) {
+           #print("Entering validation: SosGetObservation")
+           # TODO implement validity function
+           
+           # service, version, offering, observedProperty, and responseFormat are mandatory
+           if(is.na(object@service))
+             return("service parameter must be given")
+           if(is.na(object@version))
+             return("version must be given")
+           if(is.na(object@offering))
+             return("offering parameter must be given")
+           # responseFormat is optional for GET
+           #if(is.na(object@responseFormat))
+           #	return("responseFormat parameter must be given")
+           if(length(object@observedProperty) < 1)
+             return("at least one observedProperty is mandatory")
+           
+           # if version is there, it hast to be in a certain format, see ows common
+           # srsName, offering, procedure, observedProperty are anyURIs
+           # eventTime is a list of ogc:temporalOps
+           # featureOfInterest is null or a SosFeatureOfInterest element
+           
+           # result is null or an ogc:comparisonOps element
+           cls <- class(slot(object, "result"))
+           #			print(paste("class of result slot: ", cls))
+           if ( !any(cls %in% c("OgcComparisonOps", "XMLNode", "NULL",
+                                "XMLAbstractNode", "XMLInternalNode"))) {
+             return("'response' argument does not have allowed class!")
+           }
+           
+           # responseFormat must be MIME content type
+           # resultModel must be a QName
+           # responseMode must be one of inline, out-of-band, attached, or resultTemplate
+           return(TRUE)
+         }
+)
+
+################################################################################
+# See SOS specification, OGC 12-006, section 9.1
+#
+setClass("SosGetFeatureOfInterest_2.0.0",
+         representation(
+           featureOfInterest = "character"),
+         prototype = list(
+           service = as.character(NA),
+           version = as.character(NA),
+           featureOfInterest = as.character(NA)),
+           contains = "OwsServiceOperation",
+           validity = function(object) {
+           #print("Entering validation: SosGetObservation")
+           # TODO implement validity function
+           
+           # service, version, offering, observedProperty, and identifier are mandatory
+           if(is.na(object@service))
+             return("service parameter must be given")
+           if(is.na(object@version))
+             return("version must be given")
+           if(is.na(object@featureOfInterest))
+             return("featureOfInterest parameter must be given")
+           
+           return(TRUE)
+         }
 )

@@ -1,0 +1,74 @@
+################################################################################
+# Copyright (C) 2015 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.                                                    #
+#                                                                              #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.                                     #
+#                                                                              #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Benjamin Pross (b.pross@52north.org)                                 #
+# Created: 2013-03-06                                                          #
+# Project: sos4R - visit the project web page,                                 #
+#      http://52north.org/communities/sensorweb/clients/sos4R/                 #
+################################################################################
+
+parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
+  
+  if(sos@verboseOutput) {
+    cat("[parseGetObservationResponse] entering... \n")
+    print(obj)
+  }
+  
+  .offeringsXML <- .filterXmlChildren(
+    node = obj,
+    childrenName = "observationData")
+  .observations = sapply(.offeringsXML, parseObservation_2.0,
+                         sos = sos)
+  return(.observations)
+}
+
+parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
+  
+  if(sos@verboseOutput) {
+    cat("[parseGetFeatureOfInterestResponse] entering... \n")
+    print(obj)
+  }
+  
+  .offeringsXML <- .filterXmlChildren(
+    node = obj,
+    childrenName = "featureMember")
+  .foi = sapply(.offeringsXML, .parseFeatureMember,
+                         sos = sos)
+  return(.foi)
+}
+
+.parseFeatureMember <- function(obj, sos) {
+  .noneTexts <- .filterXmlOnlyNoneTexts(obj)
+  .member <- .noneTexts[[1]]
+  
+  .name <- xmlName(.member)
+  
+  if(.name == wmlMonitoringPointName) {
+    .sp <- parseMonitoringPoint(.member, sos = sos)
+    .member.parsed <- GmlFeatureProperty(feature = .sp)
+  }
+  else {
+    warning(paste("No handling for given sos:featureMember available: ", .name))
+  }
+  return(.member.parsed)
+}

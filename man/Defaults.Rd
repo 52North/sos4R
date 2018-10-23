@@ -1,6 +1,5 @@
 \name{Defaults}
 
-
 \alias{sosDefault}
 \alias{Defaults}
 \alias{sosDefaultCharacterEncoding}
@@ -131,7 +130,8 @@ myER <- function(xml) {
 }
 SosParsingFunctions("ExceptionReport" = myER)
 
-# use inclusion and exclusion, important: even the just added function needs to be included manually!
+# use inclusion and exclusion, important: even the just added function needs to
+# be included manually!
 SosParsingFunctions("ExceptionReport" = myER,
 	include = c("GetObservation", "DescribeSensor", "ExceptionReport"))
 SosParsingFunctions(exclude = c("GetObservation", "DescribeSensor"))
@@ -145,7 +145,8 @@ myEncoding <- function(object, v) {
 sos = SOS(url = "http://mysos.com/sos",
 		encoders = SosEncodingFunctions("POST" = myPostEncoding))
 
-# Use custom converting function and connection method. This mechanism works the same for encoders and decoders.
+# Use custom converting function and connection method. This mechanism works the
+# same for encoders and decoders.
 myConverters <- SosDataFieldConvertingFunctions(
 	"myNumericUnit" = sosConvertDouble,
 mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)

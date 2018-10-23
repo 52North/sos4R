@@ -42,6 +42,7 @@ sosNamespacePrefix <- "sos"
 sosGetCapabilitiesName <- "GetCapabilities"
 sosDescribeSensorName <- "DescribeSensor"
 sosGetObservationName <- "GetObservation"
+sosGetObservationResponseName <- "GetObservationResponse"
 # Transaction Operations Profile
 sosRegisterSensorName <- "RegisterSensor"
 sosInsertObservationName <- "InsertObservation"
@@ -53,6 +54,7 @@ sosGetFeatureOfInterestTimeName <- "GetFeatureOfInterestTime"
 sosDescribeFeatureTypeName <- "DescribeFeatureType"
 sosDescribeObservationTypeName <- "DescribeObservationType"
 sosDescribeResultModelName <- "DescribeResultModel"
+sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
 
 SosSupportedOperations <- function() {
 	.supported <- c(sosGetCapabilitiesName, sosDescribeSensorName, 
@@ -162,6 +164,15 @@ sosEventTimeName <- "eventTime"
 sosEventTimeLatestValue <- "latest"
 sosObjectIDName <- "ObjectID"
 sosResultName <- "result"
+sosResultTimeName <- "resultTime"
+sosPhenomenonTimeName <- "phenomenonTime"
+sosObservationTypeName <- "observationType"
+sosFeatureOfInterestTypeName <- "featureOfInterestType"
+sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
+sosObservedAreaName <- "observedArea"
+sos200ContentsName <- "contents"
+sos200FilterCapabilitiesName = "filterCapabilities"
+
 
 ################################################################################
 # O&M
@@ -183,12 +194,23 @@ omTemporalObservationName <- "TemporalObservation"
 omComplexObservationName <- "ComplexObservation"
 
 ################################################################################
+# O&M 2.0
+om20OM_Observation <- "OM_Observation"
+om20ResultTypeAttributeName <- "type"
+om20ResultMeasureTypeName <- "MeasureType"
+om20PhenomenonTimeName <- "phenomenonTime"
+
+################################################################################
 # SA
 saSamplingPointName <- "SamplingPoint"
 saSamplingSurface <- "SamplingSurface"
 saPositionName <- "position"
 saSampledFeatureName <- "sampledFeature"
 saSamplingTimeName <- "samplingTime"
+
+################################################################################
+# SAMS
+samsShapeName <- "shape"
 
 ################################################################################
 # GML
@@ -214,6 +236,7 @@ gmlTimeLengthName <- "timeLength"
 gmlDurationName <- "duration"
 gmlTimeIntervalName <- "timeInterval"
 gmlFeatureMemberName <- "featureMember"
+gmlIdentifierName = "identifier"
 
 ################################################################################
 # SWE
@@ -232,6 +255,7 @@ sweBooleanName <- "Boolean"
 sweCountName <- "Count"
 sweEncodingName <- "encoding"
 sweTextBlockName <- "TextBlock"
+sweTextEncodingName <- "TextEncoding"
 sweValuesName <- "values"
 sweValueName <- "value"
 sweCodeSpaceName <- "codeSpace"
@@ -241,6 +265,18 @@ sweVectorName <- "Vector"
 sweLocationName <- "location"
 sweCoordinateName <- "coordinate"
 swePositionName <- "Position"
+
+################################################################################
+# SWE Service Model
+swesOfferingName = "offering"
+swesIdentifierName = "identifier"
+swesNameName = "name"
+swesObservablePropertyName = "observableProperty"
+swesProcedureDescriptionFormatName = "procedureDescriptionFormat"
+
+################################################################################
+# WML 2.0
+wmlMonitoringPointName = "MonitoringPoint"
 
 ################################################################################
 # OGC

@@ -6,7 +6,9 @@
 \alias{SosCapabilities_1.0.0-class}
 \alias{SosCapabilities}
 \alias{SosCapabilities-class}
-\alias{SosCapabilities_2.0-class}
+
+% Version 2.0.0
+\alias{SosCapabilities_2.0.0-class}
 
 \title{Class and Construction Function for "SosCapabilities"}
 
@@ -41,7 +43,9 @@ No methods defined with class "SosCapabilities_1.0.0" in the signature.
 }
 
 \usage{
-SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", identification = NULL, provider = NULL, operations = NULL, filterCapabilities = NULL, contents = NULL)
+SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0", 
+                identification = NULL, provider = NULL, operations = NULL,
+                filterCapabilities = NULL, contents = NULL)
 }
 
 \arguments{

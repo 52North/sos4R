@@ -58,7 +58,6 @@
 \alias{parseFile,SOS_1.0.0,character-method}
 \alias{parseFile,SOS_versioned,character-method}
 
-
 \alias{parseCoordinate}
 \alias{parseCoordinate-method}
 \alias{parseVector}
@@ -68,6 +67,18 @@
 \alias{parseSwePosition}
 \alias{parseSwePosition-method}
 
+\alias{parseGetFeatureOfInterestResponse}
+\alias{parseGetObservationResponse}
+\alias{parseMonitoringPoint}
+\alias{parseObservation_2.0} 
+\alias{parseSamsShape}
+\alias{parseSosCapabilities100}
+\alias{parseSosCapabilities200}
+\alias{parseSosObservationOffering_200}
+\alias{parseSosObservedProperty}
+\alias{parseSwesObservableProperty}
+\alias{parseTextEncoding}
+\alias{parseTime}
 
 \title{Parsing Functions for XML Documents and Elements}
 

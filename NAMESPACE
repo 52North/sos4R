@@ -1,3 +1,4 @@
+import("methods")
 import("XML")
 importFrom("RCurl", "getURL", "postForm", "getCurlHandle")
 importFrom("graphics", "plot")
@@ -18,6 +19,7 @@ exportMethods(
     "getCapabilities",
     "getObservationById",
     "getObservation",
+    "getFeatureOfInterest",
 	"plot",
 	"print",
     "saveXML",
@@ -101,6 +103,8 @@ exportClasses(
      "OmMeasurement",
      "OmObservation",
      "OmObservationOrNULL",
+     "OmOM_Observation",
+     "OmOM_ObservationOrNULL",
      "OmObservationProperty",
      "OwsCapabilities",
      "OwsCapabilities_1.1.0",
@@ -132,6 +136,7 @@ exportClasses(
      "SosContentsOrNULL",
      "SosDescribeSensor",
      "SosGetObservation",
+     "SosGetObservation_2.0.0",
      "SosGetObservationById",
      "SosEventTime",
      "SosEventTimeLatest",
@@ -146,13 +151,15 @@ exportClasses(
      "SwePhenomenonProperty",
      "SwePhenomenonPropertyOrNULL",
      "SweTextBlock",
+     "SweTextEncoding",
      "TM_After",
      "TM_Before",
      "TM_During",
      "TM_Equals",
      "GmlDirectPositionOrNULL",
      "GmlFeatureOrGmlFeaturePropertyOrNULL",
-     "GmlPointOrNULL"
+     "GmlPointOrNULL",
+     "SamsShape"
 )
 
 S3method(as.data.frame, OmMeasurement)
@@ -171,11 +178,12 @@ S3method(print, summary.OmObservationCollection)
 S3method(print, summary.OwsRange)
 S3method(print, summary.SOS)
 S3method(print, summary.SosObservationOffering)
+S3method(print, summary.SosObservationOffering_2.0.0)
 S3method(summary, GmlTimePeriod)
 S3method(summary, OmObservation)
 S3method(summary, OmObservationCollection)
 S3method(summary, OwsRange)
-S3method(summary, SOS)
 S3method(summary, SOS_versioned)
 S3method(summary, SosObservationOffering)
+S3method(summary, SosObservationOffering_2.0.0)
 

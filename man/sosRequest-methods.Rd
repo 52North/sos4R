@@ -4,6 +4,7 @@
 \alias{sosRequest}
 \alias{sosRequest-methods}
 \alias{sosRequest,SOS_1.0.0,OwsServiceOperation,logical,logical-method}
+\alias{sosRequest,SOS_2.0.0,OwsServiceOperation,logical,logical-method}
 
 \title{Send Request to SOS}
 
