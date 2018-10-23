@@ -53,7 +53,7 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
     node = obj,
     childrenName = "featureMember")
   .foi = sapply(.offeringsXML, .parseFeatureMember,
-                         sos = sos)
+                sos = sos)
   return(.foi)
 }
 
