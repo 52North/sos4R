@@ -32,58 +32,58 @@
 # removed in this class, as is om:featureOfInterest where gml:_Feature is used.
 #
 setClass("OmOM_Observation",
-		representation(
-				phenomenonTime = "GmlTimeObjectOrNULL",	
-				procedure = "ANY",
-				observedProperty = "SwePhenomenonPropertyOrNULL",
-				featureOfInterest = "GmlFeatureOrGmlFeaturePropertyOrNULL",
-				result = "ANY",
-				# optional:
-				metadata = "ANY",
-				resultTime = "GmlTimeObjectOrNULL",
-				resultQuality = "ANY",
-				parameter = "ANY"),
-		    #type?!
-		prototype = list(phenomenonTime = NULL, procedure = as.character(NA),
-				observedProperty = NULL, featureOfInterest = NULL,
-				result = NULL),
-		validity = function(object) {
-			#print("Entering validation: OmObservation")
-			# TODO implement validity function
-			# result time should be GmlTimeObject
-			return(TRUE)
-		}
+         representation(
+           phenomenonTime = "GmlTimeObjectOrNULL",	
+           procedure = "ANY",
+           observedProperty = "SwePhenomenonPropertyOrNULL",
+           featureOfInterest = "GmlFeatureOrGmlFeaturePropertyOrNULL",
+           result = "ANY",
+           # optional:
+           metadata = "ANY",
+           resultTime = "GmlTimeObjectOrNULL",
+           resultQuality = "ANY",
+           parameter = "ANY"),
+         #type?!
+         prototype = list(phenomenonTime = NULL, procedure = as.character(NA),
+                          observedProperty = NULL, featureOfInterest = NULL,
+                          result = NULL),
+         validity = function(object) {
+           #print("Entering validation: OmObservation")
+           # TODO implement validity function
+           # result time should be GmlTimeObject
+           return(TRUE)
+         }
 )
 setClassUnion(name = "OmOM_ObservationOrNULL",
-		members = c("OmOM_Observation", "NULL"))
+              members = c("OmOM_Observation", "NULL"))
 
 #
 #
 #
 setClass("OmObservationProperty",
-		representation(href = "character",	
-				obs = "OmObservationOrNULL"),
-		#prototype = list(),
-		validity = function(object) {
-			#print("Entering validation: OmObservationProperty")
-			# TODO implement validity function
-			# one of parameters has to be set
-			return(TRUE)
-		}
+         representation(href = "character",	
+                        obs = "OmObservationOrNULL"),
+         #prototype = list(),
+         validity = function(object) {
+           #print("Entering validation: OmObservationProperty")
+           # TODO implement validity function
+           # one of parameters has to be set
+           return(TRUE)
+         }
 )
 
 #
 #
 #
 setClass("OmMeasurement",
-		representation(result = "GmlMeasure"),
-		contains = "OmObservation",
-		validity = function(object) {
-			#print("Entering validation: OmMeasurement")
-			print(object)
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(result = "GmlMeasure"),
+         contains = "OmObservation",
+         validity = function(object) {
+           #print("Entering validation: OmMeasurement")
+           print(object)
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 
 setClassUnion(name = "FoiOrNULL",

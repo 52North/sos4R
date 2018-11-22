@@ -36,64 +36,64 @@
 # HttpPostRequestDecoder.java, so time can be a GmlTimeGeometricPrimitive
 #
 setClass("OgcBinaryTemporalOp",
-		representation(propertyName = "character",
-				time = "GmlTimeGeometricPrimitive"),
-		prototype = list(propertyName = as.character(NA), time = NULL),
-		contains = c("VIRTUAL"),
-		validity = function(object) {
-			#print("Entering validation: OgcBinaryTemporalOp")
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(propertyName = "character",
+                        time = "GmlTimeGeometricPrimitive"),
+         prototype = list(propertyName = as.character(NA), time = NULL),
+         contains = c("VIRTUAL"),
+         validity = function(object) {
+           #print("Entering validation: OgcBinaryTemporalOp")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 setClassUnion(name = "OgcBinaryTemporalOpOrNULL",
-		members = c("OgcBinaryTemporalOp", "NULL"))
+              members = c("OgcBinaryTemporalOp", "NULL"))
 
 #
 # after and before are only allowed with time instant
 #
 setClass("TM_After",
-		representation(time = "GmlTimeInstant"),
-		contains = c("OgcBinaryTemporalOp"),
-		validity = function(object) {
-			#print("Entering validation: TM_After")
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(time = "GmlTimeInstant"),
+         contains = c("OgcBinaryTemporalOp"),
+         validity = function(object) {
+           #print("Entering validation: TM_After")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 setClass("TM_Before",
-		representation(time = "GmlTimeInstant"),
-		contains = c("OgcBinaryTemporalOp"),
-		validity = function(object) {
-			#print("Entering validation: TM_Before")
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(time = "GmlTimeInstant"),
+         contains = c("OgcBinaryTemporalOp"),
+         validity = function(object) {
+           #print("Entering validation: TM_Before")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 
 #
 # during makes only sense with time period
 #
 setClass("TM_During",
-		representation(time = "GmlTimePeriod"),
-		contains = c("OgcBinaryTemporalOp"),
-		validity = function(object) {
-			#print("Entering validation: TM_During")
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(time = "GmlTimePeriod"),
+         contains = c("OgcBinaryTemporalOp"),
+         validity = function(object) {
+           #print("Entering validation: TM_During")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 
 #
 # equals allows both time instant and period
 #
 setClass("TM_Equals",
-		contains = c("OgcBinaryTemporalOp"),
-		validity = function(object) {
-			#print("Entering validation: TM_Equals")
-			# TODO implement validity function
-			return(TRUE)
-		}
+         contains = c("OgcBinaryTemporalOp"),
+         validity = function(object) {
+           #print("Entering validation: TM_Equals")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 
 
@@ -104,62 +104,62 @@ setClass("TM_Equals",
 #
 #
 setClass("OgcSpatialOps",
-		contains = c("VIRTUAL"),
-		validity = function(object) {
-			#print("Entering validation: OgcSpatialOps")
-			return(TRUE)
-		}
+         contains = c("VIRTUAL"),
+         validity = function(object) {
+           #print("Entering validation: OgcSpatialOps")
+           return(TRUE)
+         }
 )
 setClassUnion(name = "OgcSpatialOpsOrNULL",
-		members = c("OgcSpatialOps", "NULL"))
+              members = c("OgcSpatialOps", "NULL"))
 
 setClass("OgcBBOX",
-		representation(propertyName = "character",
-				envelope = "GmlEnvelope"),
-		contains = c("OgcSpatialOps"),
-		validity = function(object) {
-			#print("Entering validation: OgcBBOX")
-			return(TRUE)
-		}
+         representation(propertyName = "character",
+                        envelope = "GmlEnvelope"),
+         contains = c("OgcSpatialOps"),
+         validity = function(object) {
+           #print("Entering validation: OgcBBOX")
+           return(TRUE)
+         }
 )
 
 #
 #
 #
 setClass("OgcBinarySpatialOp",
-		representation(propertyName = "character",
-				geometry = "GmlGeometry",
-				envelope = "GmlEnvelope"),
-		contains = c("VIRTUAL", "OgcSpatialOps"),
-		prototype = list(propertyName = as.character(NA), geometry = NULL,
-				envelope = NULL),
-		validity = function(object) {
-			print("Entering validation: OgcBinarySpatialOp")
-			# TODO implement validity function
-			# only one of geometry of envelope can be set
-			return(TRUE)
-		}
+         representation(propertyName = "character",
+                        geometry = "GmlGeometry",
+                        envelope = "GmlEnvelope"),
+         contains = c("VIRTUAL", "OgcSpatialOps"),
+         prototype = list(propertyName = as.character(NA), geometry = NULL,
+                          envelope = NULL),
+         validity = function(object) {
+           print("Entering validation: OgcBinarySpatialOp")
+           # TODO implement validity function
+           # only one of geometry of envelope can be set
+           return(TRUE)
+         }
 )
 setClass("OgcContains",
-		contains = c("OgcBinarySpatialOp"),
-		validity = function(object) {
-			print("Entering validation: OgcContains")
-			return(TRUE)
-		}
+         contains = c("OgcBinarySpatialOp"),
+         validity = function(object) {
+           print("Entering validation: OgcContains")
+           return(TRUE)
+         }
 )
 setClass("OgcIntersects",
-		contains = c("OgcBinarySpatialOp"),
-		validity = function(object) {
-			print("Entering validation: OgcIntersects")
-			return(TRUE)
-		}
+         contains = c("OgcBinarySpatialOp"),
+         validity = function(object) {
+           print("Entering validation: OgcIntersects")
+           return(TRUE)
+         }
 )
 setClass("OgcOverlaps",
-		contains = c("OgcBinarySpatialOp"),
-		validity = function(object) {
-			print("Entering validation: OgcOverlaps")
-			return(TRUE)
-		}
+         contains = c("OgcBinarySpatialOp"),
+         validity = function(object) {
+           print("Entering validation: OgcOverlaps")
+           return(TRUE)
+         }
 )
 
 
@@ -170,11 +170,11 @@ setClass("OgcOverlaps",
 #
 #
 setClass("OgcComparisonOps",
-		#contains = c("VIRTUAL"),
-		validity = function(object) {
-			#print("Entering validation: OgcSpatialOps")
-			return(TRUE)
-		}
+         #contains = c("VIRTUAL"),
+         validity = function(object) {
+           #print("Entering validation: OgcSpatialOps")
+           return(TRUE)
+         }
 )
 #setClassUnion(name = "OgcComparisonOpsOrXMLOrNULL",
 #		members = c("OgcComparisonOps", "XMLNode", "NULL", "XMLAbstractNode"))

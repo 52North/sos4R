@@ -34,7 +34,8 @@
 #
 
 setClass("MonitoringPoint",
-         representation(sampledFeatures = "list", id = "character", identifier = "list", names = "list",
+         representation(sampledFeatures = "list", id = "character", 
+                        identifier = "list", names = "list",
                         shape = "SamsShape"),
          prototype = list(sampledFeatures = list(NA), shape = NULL),
          contains = "GmlFeature",

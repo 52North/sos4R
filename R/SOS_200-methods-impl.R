@@ -208,46 +208,46 @@ setMethod(f = "sosRequest",
 )
 
 .getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
-		acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
-	if (verbose) {
-		cat("[.getCapabilities_2.0.0] of", sosUrl(sos), "\n")
-	}
-	
-	.gc <- OwsGetCapabilities(service = sosService,
-			acceptVersions = c(sosVersion(sos)), sections = sections,
-			acceptFormats = acceptFormats, updateSequence = updateSequence,
-			owsVersion = owsVersion, acceptLanguages = acceptLanguages)
-	if(verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
-	
-	.responseString = sosRequest(sos = sos, request = .gc,
-			verbose = verbose, inspect = inspect)
-	if(verbose){
-		cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
-	}
-	
-	tmpStoredXMLCaps = tempfile()
-	
-	fileConn<-file(tmpStoredXMLCaps)
-	writeLines(.responseString, fileConn)
-	close(fileConn)
-	
-	#dump(xmlCaps, file = tmpStoredXMLCaps)
-	
-	.response <- xmlParseDoc(file = tmpStoredXMLCaps)
-	if(verbose || inspect) {
-		cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
-		print(.response)
-	}
-	
-	if(.isExceptionReport(.response)) {
-		return(.handleExceptionReport(sos, .response))
-	}
-	else {
-		.parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
-		.caps <- .parsingFunction(obj = .response, sos = sos)
-		if (verbose) {
-			cat("[.getCapabilities_2.0.0] DONE WITH PARSING!\n")
-		} 
-		return(.caps)
-	}
+                                   acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
+  if (verbose) {
+    cat("[.getCapabilities_2.0.0] of", sosUrl(sos), "\n")
+  }
+  
+  .gc <- OwsGetCapabilities(service = sosService,
+                            acceptVersions = c(sosVersion(sos)), sections = sections,
+                            acceptFormats = acceptFormats, updateSequence = updateSequence,
+                            owsVersion = owsVersion, acceptLanguages = acceptLanguages)
+  if(verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
+  
+  .responseString = sosRequest(sos = sos, request = .gc,
+                               verbose = verbose, inspect = inspect)
+  if(verbose){
+    cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
+  }
+  
+  tmpStoredXMLCaps = tempfile()
+  
+  fileConn<-file(tmpStoredXMLCaps)
+  writeLines(.responseString, fileConn)
+  close(fileConn)
+  
+  #dump(xmlCaps, file = tmpStoredXMLCaps)
+  
+  .response <- xmlParseDoc(file = tmpStoredXMLCaps)
+  if(verbose || inspect) {
+    cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
+    print(.response)
+  }
+  
+  if(.isExceptionReport(.response)) {
+    return(.handleExceptionReport(sos, .response))
+  }
+  else {
+    .parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
+    .caps <- .parsingFunction(obj = .response, sos = sos)
+    if (verbose) {
+      cat("[.getCapabilities_2.0.0] DONE WITH PARSING!\n")
+    } 
+    return(.caps)
+  }
 }

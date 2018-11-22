@@ -31,21 +31,21 @@
 # construction methods
 #
 SaSamplingPoint <- function(sampledFeatures, position,
-		relatedObservation = list(NA), relatedSamplingFeature = list(NA),
-		surveyDetails = NA, id = NA_character_) {
-	new("SaSamplingPoint", sampledFeatures = sampledFeatures,
-			position = position, relatedObservation = relatedObservation,
-			surveyDetails = surveyDetails, id = id)
+                            relatedObservation = list(NA), relatedSamplingFeature = list(NA),
+                            surveyDetails = NA, id = NA_character_) {
+  new("SaSamplingPoint", sampledFeatures = sampledFeatures,
+      position = position, relatedObservation = relatedObservation,
+      surveyDetails = surveyDetails, id = id)
 }
 
 #
 #
 #
 SaSamplingSurface <- function(sampledFeatures, shape,
-		relatedObservation = list(NA), relatedSamplingFeature = list(NA),
-		surveyDetails = NA, position = NA) {
-	new("SaSamplingSurface", sampledFeatures = sampledFeatures,
-			shape = shape, relatedObservation = relatedObservation,
-			relatedSamplingFeature = relatedSamplingFeature, 
-			surveyDetails = surveyDetails, position = position)
+                              relatedObservation = list(NA), relatedSamplingFeature = list(NA),
+                              surveyDetails = NA, position = NA) {
+  new("SaSamplingSurface", sampledFeatures = sampledFeatures,
+      shape = shape, relatedObservation = relatedObservation,
+      relatedSamplingFeature = relatedSamplingFeature, 
+      surveyDetails = surveyDetails, position = position)
 }

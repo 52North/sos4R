@@ -31,5 +31,5 @@
 # construction methods
 #
 SamsShape <- function(point) {
-	new("SamsShape", point = point)
+  new("SamsShape", point = point)
 }

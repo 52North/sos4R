@@ -32,38 +32,38 @@
 #
 #
 setClass("SOS_2.0.0",
-		representation(url = "character", binding = "character",
-				curlHandle = "CURLHandle", curlOptions = "ANY"),
-		prototype = list(
-				url = as.character(NA),
-				binding = as.character(NA),
-				version = as.character(NA)),
-		contains = c("SOS"),
-		validity = function(object) {
-			#print("Entering validation: SOS")
-			
-			if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
-				return(paste("Binding has to be one of",
-								toString(SosSupportedBindings()),
-								"- given:", object@binding))
-			}
-			
-			if(object@version != sos200_version)
-				return(paste0("Version must be 2.0.0 but is", object@version))
-			
-			# url has to match an URL pattern
-			.urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
-			.result = regexpr(.urlPattern, object@url)
-			if (.result == -1)
-				return("url not matching URL-pattern (http://www.example.com)")
-			
-			# test for complete match removed, does not work yet
-			#.urlLength = nchar(object@url)
-			#if (.urlLength == attr(.result, "match.length"))
-			#	return("url not completely matching URL-pattern")
-			
-			return(TRUE)
-		}
+         representation(url = "character", binding = "character",
+                        curlHandle = "CURLHandle", curlOptions = "ANY"),
+         prototype = list(
+           url = as.character(NA),
+           binding = as.character(NA),
+           version = as.character(NA)),
+         contains = c("SOS"),
+         validity = function(object) {
+           #print("Entering validation: SOS")
+           
+           if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+             return(paste("Binding has to be one of",
+                          toString(SosSupportedBindings()),
+                          "- given:", object@binding))
+           }
+           
+           if(object@version != sos200_version)
+             return(paste0("Version must be 2.0.0 but is", object@version))
+           
+           # url has to match an URL pattern
+           .urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
+           .result = regexpr(.urlPattern, object@url)
+           if (.result == -1)
+             return("url not matching URL-pattern (http://www.example.com)")
+           
+           # test for complete match removed, does not work yet
+           #.urlLength = nchar(object@url)
+           #if (.urlLength == attr(.result, "match.length"))
+           #	return("url not completely matching URL-pattern")
+           
+           return(TRUE)
+         }
 )
 
 #
@@ -75,13 +75,13 @@ setClassUnion(name = "SOS_versioned",	members = "SOS_2.0.0")
 #
 #
 setClass("SosCapabilities_2.0.0",
-		representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
-		contains = "OwsCapabilities_1.1.0",
-		validity = function(object) {
-			#print("Entering validation: SosCapabilities_1.0.0")
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
+         contains = "OwsCapabilities_1.1.0",
+         validity = function(object) {
+           #print("Entering validation: SosCapabilities_1.0.0")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 
 #
@@ -183,8 +183,8 @@ setClass("SosGetFeatureOfInterest_2.0.0",
            service = as.character(NA),
            version = as.character(NA),
            featureOfInterest = as.character(NA)),
-           contains = "OwsServiceOperation",
-           validity = function(object) {
+         contains = "OwsServiceOperation",
+         validity = function(object) {
            #print("Entering validation: SosGetObservation")
            # TODO implement validity function
            

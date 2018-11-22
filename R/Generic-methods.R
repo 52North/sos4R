@@ -32,86 +32,86 @@
 #
 #
 if (!isGeneric("sosRequest"))
-	setGeneric(name = "sosRequest",
-			def = function(sos, request, verbose = sos@verboseOutput,
-					inspect = FALSE) {
-				standardGeneric("sosRequest")
-			})
+  setGeneric(name = "sosRequest",
+             def = function(sos, request, verbose = sos@verboseOutput,
+                            inspect = FALSE) {
+               standardGeneric("sosRequest")
+             })
 
 #
 #
 #
 if (!isGeneric("getCapabilities"))
-	setGeneric(name = "getCapabilities",
-			signature = signature("sos", "verbose", "inspect"),
-			def = function(sos, verbose = sos@verboseOutput, inspect = FALSE,
-					sections = sosDefaultGetCapSections,
-					acceptFormats = sosDefaultGetCapAcceptFormats,
-					updateSequence = c(as.character(NA)),
-					owsVersion = sosDefaultGetCapOwsVersion,
-					acceptLanguages = c(NA)) {
-				standardGeneric("getCapabilities")	
-			})
+  setGeneric(name = "getCapabilities",
+             signature = signature("sos", "verbose", "inspect"),
+             def = function(sos, verbose = sos@verboseOutput, inspect = FALSE,
+                            sections = sosDefaultGetCapSections,
+                            acceptFormats = sosDefaultGetCapAcceptFormats,
+                            updateSequence = c(as.character(NA)),
+                            owsVersion = sosDefaultGetCapOwsVersion,
+                            acceptLanguages = c(NA)) {
+               standardGeneric("getCapabilities")	
+             })
 
 #
 #
 #
 if (!isGeneric("describeSensor"))
-	setGeneric(name = "describeSensor",
-			signature = signature("sos", "procedure", "outputFormat", "verbose",
-					"inspect", "saveOriginal"),
-			def = function(sos, procedure,
-					outputFormat = sosDefaultDescribeSensorOutputFormat,
-					verbose = sos@verboseOutput, inspect = FALSE,
-					saveOriginal = NULL) {
-				standardGeneric("describeSensor")	
-			})
+  setGeneric(name = "describeSensor",
+             signature = signature("sos", "procedure", "outputFormat", "verbose",
+                                   "inspect", "saveOriginal"),
+             def = function(sos, procedure,
+                            outputFormat = sosDefaultDescribeSensorOutputFormat,
+                            verbose = sos@verboseOutput, inspect = FALSE,
+                            saveOriginal = NULL) {
+               standardGeneric("describeSensor")	
+             })
 
 #
 #
 #
 if (!isGeneric("getObservationById"))
-	setGeneric(name = "getObservationById",
-			signature = signature("sos", "observationId", "responseFormat",
-					"srsName", "resultModel", "responseMode", "verbose", 
-					"inspect", "saveOriginal"),
-			def = function(sos, observationId,
-					responseFormat = sosDefaultGetObsResponseFormat,
-					srsName = as.character(NA), resultModel = as.character(NA),
-					responseMode = as.character(NA),
-					verbose = sos@verboseOutput, inspect = FALSE,
-					saveOriginal = NULL) {
-				standardGeneric("getObservationById")
-			})
+  setGeneric(name = "getObservationById",
+             signature = signature("sos", "observationId", "responseFormat",
+                                   "srsName", "resultModel", "responseMode", "verbose", 
+                                   "inspect", "saveOriginal"),
+             def = function(sos, observationId,
+                            responseFormat = sosDefaultGetObsResponseFormat,
+                            srsName = as.character(NA), resultModel = as.character(NA),
+                            responseMode = as.character(NA),
+                            verbose = sos@verboseOutput, inspect = FALSE,
+                            saveOriginal = NULL) {
+               standardGeneric("getObservationById")
+             })
 
 #
 #
 #
 if (!isGeneric("getObservation"))
-	setGeneric(name = "getObservation",
-			signature = signature("sos", "offering", "observedProperty",
-					"responseFormat", "srsName", "eventTime", "procedure",
-					"featureOfInterest", "result", "resultModel",
-					"responseMode", "BBOX", "latest", "verbose", "inspect",
-					"saveOriginal"),
-			def = function(sos, offering,
-					observedProperty = sosObservedProperties(obj = offering),
-					responseFormat = sosDefaultGetObsResponseFormat,
-					# optional:
-					srsName = as.character(NA),
-					eventTime = list(NA), # sosCreateEventTimeList(time = sosTime(obj = offering))
-					procedure = as.character(NA), # sosProcedures(obj = offering),
-					featureOfInterest = NULL,
-					result = NULL,
-					resultModel = as.character(NA),
-					responseMode = as.character(NA),
-					BBOX = as.character(NA),
-					latest = FALSE,
-					verbose = sos@verboseOutput,
-					inspect = FALSE,
-					saveOriginal = NULL) {
-				standardGeneric("getObservation")
-			})
+  setGeneric(name = "getObservation",
+             signature = signature("sos", "offering", "observedProperty",
+                                   "responseFormat", "srsName", "eventTime", "procedure",
+                                   "featureOfInterest", "result", "resultModel",
+                                   "responseMode", "BBOX", "latest", "verbose", "inspect",
+                                   "saveOriginal"),
+             def = function(sos, offering,
+                            observedProperty = sosObservedProperties(obj = offering),
+                            responseFormat = sosDefaultGetObsResponseFormat,
+                            # optional:
+                            srsName = as.character(NA),
+                            eventTime = list(NA), # sosCreateEventTimeList(time = sosTime(obj = offering))
+                            procedure = as.character(NA), # sosProcedures(obj = offering),
+                            featureOfInterest = NULL,
+                            result = NULL,
+                            resultModel = as.character(NA),
+                            responseMode = as.character(NA),
+                            BBOX = as.character(NA),
+                            latest = FALSE,
+                            verbose = sos@verboseOutput,
+                            inspect = FALSE,
+                            saveOriginal = NULL) {
+               standardGeneric("getObservation")
+             })
 
 #
 #
@@ -128,189 +128,189 @@ if (!isGeneric("getFeatureOfInterest"))
 #
 #
 if (!isGeneric("checkRequest"))
-	setGeneric(name = "checkRequest",
-			def = function(service, operation, verbose) {
-				standardGeneric("checkRequest")
-			})
+  setGeneric(name = "checkRequest",
+             def = function(service, operation, verbose) {
+               standardGeneric("checkRequest")
+             })
 
 #
 #
 #
 if (!isGeneric("encodeRequestKVP"))
-	setGeneric(name = "encodeRequestKVP",
-			def = function(obj, sos, verbose = FALSE) {
-				standardGeneric("encodeRequestKVP")
-			})
+  setGeneric(name = "encodeRequestKVP",
+             def = function(obj, sos, verbose = FALSE) {
+               standardGeneric("encodeRequestKVP")
+             })
 
 #
 #
 #
 if (!isGeneric("encodeRequestXML"))
-	setGeneric(name = "encodeRequestXML",
-			def = function(obj, sos, verbose = FALSE) {
-				standardGeneric("encodeRequestXML")
-			})
+  setGeneric(name = "encodeRequestXML",
+             def = function(obj, sos, verbose = FALSE) {
+               standardGeneric("encodeRequestXML")
+             })
 
 #
 #
 #
 if (!isGeneric("encodeRequestSOAP"))
-	setGeneric(name = "encodeRequestSOAP",
-			def = function(obj, sos, verbose = FALSE) {
-				standardGeneric("encodeRequestSOAP")
-			})
+  setGeneric(name = "encodeRequestSOAP",
+             def = function(obj, sos, verbose = FALSE) {
+               standardGeneric("encodeRequestSOAP")
+             })
 
 #
 #
 #
 if (!isGeneric("sosExceptionCodeMeaning"))
-	setGeneric(name = "sosExceptionCodeMeaning", def = function(exceptionCode) {
-				standardGeneric("sosExceptionCodeMeaning")
-			})
+  setGeneric(name = "sosExceptionCodeMeaning", def = function(exceptionCode) {
+    standardGeneric("sosExceptionCodeMeaning")
+  })
 
 #
 #
 #
 if (!isGeneric("encodeXML"))
-	setGeneric(name = "encodeXML",
-			def = function(obj, sos, verbose = FALSE, ...) {
-				standardGeneric("encodeXML")
-			})
+  setGeneric(name = "encodeXML",
+             def = function(obj, sos, verbose = FALSE, ...) {
+               standardGeneric("encodeXML")
+             })
 
 #
 #
 #
 if (!isGeneric("encodeKVP"))
-	setGeneric(name = "encodeKVP",
-			def = function(obj, sos, verbose = FALSE, ...) {
-				standardGeneric("encodeKVP")
-			})
+  setGeneric(name = "encodeKVP",
+             def = function(obj, sos, verbose = FALSE, ...) {
+               standardGeneric("encodeKVP")
+             })
 
 #
 #
 #
 if (!isGeneric("sosGetCRS"))
-	setGeneric(name = "sosGetCRS",
-			def = function(obj, verbose = FALSE) {
-				standardGeneric("sosGetCRS")
-			})
+  setGeneric(name = "sosGetCRS",
+             def = function(obj, verbose = FALSE) {
+               standardGeneric("sosGetCRS")
+             })
 
 #
 #
 #
 if (!isGeneric("parseFile"))
-	setGeneric(name = "parseFile",
-			def = function(sos, file, verbose = FALSE, ...) {
-				standardGeneric("parseFile")
-			})
+  setGeneric(name = "parseFile",
+             def = function(sos, file, verbose = FALSE, ...) {
+               standardGeneric("parseFile")
+             })
 
 #
 #
 #
 if (!isGeneric("sosGetDCP"))
-	setGeneric(name = "sosGetDCP",
-			def = function(sos, operation, type = NA) {
-				standardGeneric("sosGetDCP")
-			})
+  setGeneric(name = "sosGetDCP",
+             def = function(sos, operation, type = NA) {
+               standardGeneric("sosGetDCP")
+             })
 
 #
 #
 #
 if (!isGeneric("sosCreateEventTime"))
-	setGeneric(name = "sosCreateEventTime",
-			def = function(time, operator = sosDefaultTemporalOperator) {
-				standardGeneric("sosCreateEventTime")
-			})
+  setGeneric(name = "sosCreateEventTime",
+             def = function(time, operator = sosDefaultTemporalOperator) {
+               standardGeneric("sosCreateEventTime")
+             })
 
 #
 #
 #
 if (!isGeneric("sosCreateTimeInstant"))
-	setGeneric(name = "sosCreateTimeInstant", def = function(sos, time,
-					frame = as.character(NA),
-					calendarEraName = as.character(NA),
-					indeterminatePosition = as.character(NA)) {
-				standardGeneric("sosCreateTimeInstant")
-			}
-	)
+  setGeneric(name = "sosCreateTimeInstant", def = function(sos, time,
+                                                           frame = as.character(NA),
+                                                           calendarEraName = as.character(NA),
+                                                           indeterminatePosition = as.character(NA)) {
+    standardGeneric("sosCreateTimeInstant")
+  }
+  )
 
 #
 #
 #
 if (!isGeneric("sosCreateTimePeriod"))
-	setGeneric(name = "sosCreateTimePeriod",
-			def = function(sos, begin, end, frame = as.character(NA),
-					calendarEraName = as.character(NA),
-					indeterminatePosition = as.character(NA),
-					duration = as.character(NA),
-					timeInterval = NULL) {
-				standardGeneric("sosCreateTimePeriod")
-			}
-	)
+  setGeneric(name = "sosCreateTimePeriod",
+             def = function(sos, begin, end, frame = as.character(NA),
+                            calendarEraName = as.character(NA),
+                            indeterminatePosition = as.character(NA),
+                            duration = as.character(NA),
+                            timeInterval = NULL) {
+               standardGeneric("sosCreateTimePeriod")
+             }
+  )
 
 #
 #
 #
 if (!isGeneric("sosCreateEventTimeList"))
-	setGeneric(name = "sosCreateEventTimeList",
-			def = function(time, operator = sosDefaultTemporalOperator) {
-				standardGeneric("sosCreateEventTimeList")
-			})
+  setGeneric(name = "sosCreateEventTimeList",
+             def = function(time, operator = sosDefaultTemporalOperator) {
+               standardGeneric("sosCreateEventTimeList")
+             })
 
 #
 #
 #
 if (!isGeneric("sosCreateTime"))
-	setGeneric(name = "sosCreateTime",
-			def = function(sos, time, operator = sosDefaultTemporalOperator) {
-				standardGeneric("sosCreateTime")
-			})
+  setGeneric(name = "sosCreateTime",
+             def = function(sos, time, operator = sosDefaultTemporalOperator) {
+               standardGeneric("sosCreateTime")
+             })
 
 #
 #
 #
 if (!isGeneric("sosCreateFeatureOfInterest"))
-	setGeneric(name = "sosCreateFeatureOfInterest",
-			def = function(objectIDs = list(NA), spatialOps = NULL, bbox = NULL,
-					srsName = NA_character_) {
-				standardGeneric("sosCreateFeatureOfInterest")
-			})
+  setGeneric(name = "sosCreateFeatureOfInterest",
+             def = function(objectIDs = list(NA), spatialOps = NULL, bbox = NULL,
+                            srsName = NA_character_) {
+               standardGeneric("sosCreateFeatureOfInterest")
+             })
 
 #
 #
 #
 if (!isGeneric("sosCreateBBOX"))
-	setGeneric(name = "sosCreateBBOX",
-			def = function(lowLat, lowLon, uppLat, uppLon, srsName,
-					srsDimension = NA_integer_, axisLabels = NA_character_,
-					uomLabels = NA_character_,
-					propertyName = sosDefaultSpatialOpPropertyName) {
-				standardGeneric("sosCreateBBOX")
-			})
+  setGeneric(name = "sosCreateBBOX",
+             def = function(lowLat, lowLon, uppLat, uppLon, srsName,
+                            srsDimension = NA_integer_, axisLabels = NA_character_,
+                            uomLabels = NA_character_,
+                            propertyName = sosDefaultSpatialOpPropertyName) {
+               standardGeneric("sosCreateBBOX")
+             })
 
 #
 #
 #
 if (!isGeneric("sosCreateBBoxMatrix"))
-	setGeneric(name = "sosCreateBBoxMatrix",
-			def = function(lowLat, lowLon, uppLat, uppLon) {
-				standardGeneric("sosCreateBBoxMatrix")
-			})
+  setGeneric(name = "sosCreateBBoxMatrix",
+             def = function(lowLat, lowLon, uppLat, uppLon) {
+               standardGeneric("sosCreateBBoxMatrix")
+             })
 
 #
 #
 #
 if (!isGeneric("sosCapabilitiesDocumentOriginal"))
-	setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos,
-					verbose = FALSE) {
-				standardGeneric("sosCapabilitiesDocumentOriginal")
-			})
+  setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos,
+                                                                      verbose = FALSE) {
+    standardGeneric("sosCapabilitiesDocumentOriginal")
+  })
 
 #
 #
 #
 if (!isGeneric("sosCapabilitiesUrl"))
-	setGeneric(name = "sosCapabilitiesUrl",
-			def = function(sos) {
-				standardGeneric("sosCapabilitiesUrl")
-			})
+  setGeneric(name = "sosCapabilitiesUrl",
+             def = function(sos) {
+               standardGeneric("sosCapabilitiesUrl")
+             })
