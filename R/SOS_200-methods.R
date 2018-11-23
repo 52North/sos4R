@@ -452,11 +452,11 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
     
     # calculate result length vector
     if(inherits(.obs, "OmObservationCollection")) {
-      if(verbose) cat("[.getObservationById_1.0.0] Got OmObservationCollection", 
+      if(verbose) cat("[.getObservation_2.0.0] Got OmObservationCollection",
                       "... calculating length with sosResult()")
       
       .result <- sosResult(.obs, bind = FALSE, coordinates = FALSE)
-      if(verbose) cat("[.getObservationById_1.0.0] result: ", toString(.result))
+      if(verbose) cat("[.getObservation_2.0.0] result: ", toString(.result))
       
       .resultLength <- sapply(.result, nrow)
       if(length(.resultLength) == 0) # nothing
@@ -489,7 +489,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
       .oldAttrs <- attributes(.obs)
       .newAttrs <- list(.filename)
       names(.newAttrs) <- list(sosAttributeFileName)
-      if(verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
+      if(verbose) cat("[.getObservation_2.0.0] Appending new attributes",
                       toString(.newAttrs), "(names",
                       toString(names(.newAttrs)), ")\n")
       
