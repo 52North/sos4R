@@ -1,5 +1,25 @@
 # sos4R developer documentation
 
+## Requirements
+
+* **System packages**
+    * r-base-dev
+    * libxml2-dev
+    * libgdal1-dev
+    * libproj-dev
+    * libgeos-dev
+* **R packages** (sync with `NAMESPACE`)
+    * devtools
+    * roxygen2
+    * testthat
+    * knitr
+    * rgdal
+    * XML
+    * RCurl
+    * sp
+    * CATools
+    * rmarkdown
+
 ## Package structure
 
 sos4R follows the regular R extension package structure. General documentation about R package development can be found at the following two websites.
@@ -39,7 +59,7 @@ In addition to the regular directories, the ``/sandbox`` folder contains a wild 
 
 ## Building the vignette locally
 
-To build the vignette locally, you can the following calls on the R command line:
+To build the vignette locally, you can execute the following calls on the R command line:
 
 ```r
 setwd("./vignettes")
