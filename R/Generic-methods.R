@@ -27,9 +27,8 @@
 #                                                                              #
 ################################################################################
 
-
 #
-#
+# sosRequest ----
 #
 if (!isGeneric("sosRequest"))
   setGeneric(name = "sosRequest",
@@ -39,7 +38,7 @@ if (!isGeneric("sosRequest"))
              })
 
 #
-#
+# getCapabilities ----
 #
 if (!isGeneric("getCapabilities"))
   setGeneric(name = "getCapabilities",
@@ -54,7 +53,7 @@ if (!isGeneric("getCapabilities"))
              })
 
 #
-#
+# describeSensor ----
 #
 if (!isGeneric("describeSensor"))
   setGeneric(name = "describeSensor",
@@ -68,7 +67,7 @@ if (!isGeneric("describeSensor"))
              })
 
 #
-#
+# getObservationById ----
 #
 if (!isGeneric("getObservationById"))
   setGeneric(name = "getObservationById",
@@ -85,7 +84,7 @@ if (!isGeneric("getObservationById"))
              })
 
 #
-#
+# getObservation ----
 #
 if (!isGeneric("getObservation"))
   setGeneric(name = "getObservation",
@@ -114,7 +113,7 @@ if (!isGeneric("getObservation"))
              })
 
 #
-#
+# getFeatureOfInterest ----
 #
 if (!isGeneric("getFeatureOfInterest"))
   setGeneric(name = "getFeatureOfInterest",
@@ -126,6 +125,7 @@ if (!isGeneric("getFeatureOfInterest"))
 
 #
 #
+# checkRequest ----
 #
 if (!isGeneric("checkRequest"))
   setGeneric(name = "checkRequest",
@@ -134,7 +134,7 @@ if (!isGeneric("checkRequest"))
              })
 
 #
-#
+# encodeRequestKVP ----
 #
 if (!isGeneric("encodeRequestKVP"))
   setGeneric(name = "encodeRequestKVP",
@@ -143,7 +143,7 @@ if (!isGeneric("encodeRequestKVP"))
              })
 
 #
-#
+# encodeRequestXML ----
 #
 if (!isGeneric("encodeRequestXML"))
   setGeneric(name = "encodeRequestXML",
@@ -152,7 +152,7 @@ if (!isGeneric("encodeRequestXML"))
              })
 
 #
-#
+# encodeRequestSOAP ----
 #
 if (!isGeneric("encodeRequestSOAP"))
   setGeneric(name = "encodeRequestSOAP",
@@ -161,7 +161,7 @@ if (!isGeneric("encodeRequestSOAP"))
              })
 
 #
-#
+# sosExceptionCodeMeaning ----
 #
 if (!isGeneric("sosExceptionCodeMeaning"))
   setGeneric(name = "sosExceptionCodeMeaning", def = function(exceptionCode) {
@@ -169,7 +169,7 @@ if (!isGeneric("sosExceptionCodeMeaning"))
   })
 
 #
-#
+# encodeXML ----
 #
 if (!isGeneric("encodeXML"))
   setGeneric(name = "encodeXML",
@@ -178,7 +178,7 @@ if (!isGeneric("encodeXML"))
              })
 
 #
-#
+# encodeKVP ----
 #
 if (!isGeneric("encodeKVP"))
   setGeneric(name = "encodeKVP",
@@ -187,7 +187,7 @@ if (!isGeneric("encodeKVP"))
              })
 
 #
-#
+# sosGetCRS ----
 #
 if (!isGeneric("sosGetCRS"))
   setGeneric(name = "sosGetCRS",
@@ -196,7 +196,7 @@ if (!isGeneric("sosGetCRS"))
              })
 
 #
-#
+# parseFile ----
 #
 if (!isGeneric("parseFile"))
   setGeneric(name = "parseFile",
@@ -205,7 +205,7 @@ if (!isGeneric("parseFile"))
              })
 
 #
-#
+# sosGetDCP ----
 #
 if (!isGeneric("sosGetDCP"))
   setGeneric(name = "sosGetDCP",
@@ -214,7 +214,7 @@ if (!isGeneric("sosGetDCP"))
              })
 
 #
-#
+# sosCreateEventTime ----
 #
 if (!isGeneric("sosCreateEventTime"))
   setGeneric(name = "sosCreateEventTime",
@@ -223,7 +223,7 @@ if (!isGeneric("sosCreateEventTime"))
              })
 
 #
-#
+# sosCreateTimeInstant ----
 #
 if (!isGeneric("sosCreateTimeInstant"))
   setGeneric(name = "sosCreateTimeInstant", def = function(sos, time,
@@ -235,7 +235,7 @@ if (!isGeneric("sosCreateTimeInstant"))
   )
 
 #
-#
+# sosCreateTimePeriod ----
 #
 if (!isGeneric("sosCreateTimePeriod"))
   setGeneric(name = "sosCreateTimePeriod",
@@ -249,7 +249,7 @@ if (!isGeneric("sosCreateTimePeriod"))
   )
 
 #
-#
+# sosCreateEventTimeList ----
 #
 if (!isGeneric("sosCreateEventTimeList"))
   setGeneric(name = "sosCreateEventTimeList",
@@ -258,7 +258,7 @@ if (!isGeneric("sosCreateEventTimeList"))
              })
 
 #
-#
+# sosCreateTime ----
 #
 if (!isGeneric("sosCreateTime"))
   setGeneric(name = "sosCreateTime",
@@ -267,7 +267,7 @@ if (!isGeneric("sosCreateTime"))
              })
 
 #
-#
+# sosCreateFeatureOfInterest ----
 #
 if (!isGeneric("sosCreateFeatureOfInterest"))
   setGeneric(name = "sosCreateFeatureOfInterest",
@@ -277,7 +277,7 @@ if (!isGeneric("sosCreateFeatureOfInterest"))
              })
 
 #
-#
+# sosCreateBBOX ----
 #
 if (!isGeneric("sosCreateBBOX"))
   setGeneric(name = "sosCreateBBOX",
@@ -289,7 +289,7 @@ if (!isGeneric("sosCreateBBOX"))
              })
 
 #
-#
+# sosCreateBBoxMatrix ----
 #
 if (!isGeneric("sosCreateBBoxMatrix"))
   setGeneric(name = "sosCreateBBoxMatrix",
@@ -298,7 +298,7 @@ if (!isGeneric("sosCreateBBoxMatrix"))
              })
 
 #
-#
+# sosCapabilitiesDocumentOriginal ----
 #
 if (!isGeneric("sosCapabilitiesDocumentOriginal"))
   setGeneric(name = "sosCapabilitiesDocumentOriginal", def = function(sos,
@@ -307,7 +307,7 @@ if (!isGeneric("sosCapabilitiesDocumentOriginal"))
   })
 
 #
-#
+# sosCapabilitiesUrl ----
 #
 if (!isGeneric("sosCapabilitiesUrl"))
   setGeneric(name = "sosCapabilitiesUrl",
