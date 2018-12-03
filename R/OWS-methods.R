@@ -214,16 +214,18 @@ setMethod(f = "checkRequest",
 #   (space)             %20
 #
 .kvpEscapeSpecialCharacters <- function(x) {
-  .escaped <- gsub(x = x, pattern = ":", replacement = "%3A")
+  # FIXME why not .escaped <- URLencode(x, reserved = TRUE)
+  .escaped <- URLencode(x, reserved = TRUE)
+  #.escaped <- gsub(x = x, pattern = ":", replacement = "%3A")
   #.escaped <- gsub(.escaped, pattern = "/", replacement = "%2F")
-  .escaped <- gsub(x = .escaped, pattern = "#", replacement = "%23")
-  .escaped <- gsub(x = .escaped, pattern = "\\?", replacement = "%3F")
-  .escaped <- gsub(x = .escaped, pattern = "=", replacement = "%3D")
-  .escaped <- gsub(x = .escaped, pattern = "&", replacement = "%26")
-  .escaped <- gsub(x = .escaped, pattern = ",", replacement = "%2C")
-  .escaped <- gsub(x = .escaped, pattern = "\\+", replacement = "%2B")
-  .escaped <- gsub(x = .escaped, pattern = "@", replacement = "%40")
-  .escaped <- gsub(x = .escaped, pattern = " ", replacement = "%20")
+  #.escaped <- gsub(x = .escaped, pattern = "#", replacement = "%23")
+  #.escaped <- gsub(x = .escaped, pattern = "\\?", replacement = "%3F")
+  #.escaped <- gsub(x = .escaped, pattern = "=", replacement = "%3D")
+  #.escaped <- gsub(x = .escaped, pattern = "&", replacement = "%26")
+  #.escaped <- gsub(x = .escaped, pattern = ",", replacement = "%2C")
+  #.escaped <- gsub(x = .escaped, pattern = "\\+", replacement = "%2B")
+  #.escaped <- gsub(x = .escaped, pattern = "@", replacement = "%40")
+  #.escaped <- gsub(x = .escaped, pattern = " ", replacement = "%20")
   #.escaped <- gsub(x = .escaped, pattern = "\"", replacement = "%22")
   return(.escaped)
 }
