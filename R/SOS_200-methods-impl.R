@@ -144,23 +144,18 @@
     
     .requestString <- toString(.encodedRequest)
     
-    # using 'POST' for application/x-www-form-urlencoded content
+    # using 'POST' for application/xml encoded requests
     if(verbose) cat("[.sosRequest_2.0.0] Do request...")
     
-    .response <- postForm(uri = .dcp,
-                          request = .requestString,
-                          style = "POST", .opts = sos@curlOptions,
-                          curl = sos@curlHandle,
-                          .encoding = sosDefaultCharacterEncoding)
+    .response <- POST(url = .dcp,
+                      content_type_xml(),
+                      accept_xml(),
+                      body = .requestString )
     
-    # 		# FIXME this is a hack to get the package working again
-    # 				.response <- postForm(uri = .dcp,
-    # 						request = .requestString,
-    # 						style = "POST",
-    # 						#.opts = sos@curlOptions,
-    # 						#curl = sos@curlHandle,
-    # 						.encoding = sosDefaultCharacterEncoding)
+    stop_for_status(.response, "sending POST request")
     
+    .response <- content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
+
     if(verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
   else if(sos@binding == .sosBindingSOAP) {

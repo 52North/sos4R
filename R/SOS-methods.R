@@ -326,7 +326,7 @@ SosGetObservationById <- function(
       if(verbose)
         cat("[.sosRequest_1.0.0] adding extra KVP parameters:\n\t",
             toString(.kvps))
-      
+
       .kvpsString <- .encodeAdditionalKVPs(.kvps)
       .url <- paste(.url, .kvpsString, sep = "&")
     }
@@ -376,22 +376,17 @@ SosGetObservationById <- function(
     
     .requestString <- toString(.encodedRequest)
     
-    # using 'POST' for application/x-www-form-urlencoded content
+    # using 'POST' for application/xml content
     if(verbose) cat("[.sosRequest_1.0.0] Do request...")
     
-    .response <- postForm(uri = .dcp,
-                          request = .requestString,
-                          style = "POST", .opts = sos@curlOptions,
-                          curl = sos@curlHandle,
-                          .encoding = sosDefaultCharacterEncoding)
+    .response <- POST(url = .dcp,
+                      content_type_xml(),
+                      accept_xml(),
+                      body = .requestString )
     
-    # 		# FIXME this is a hack to get the package working again
-    # 				.response <- postForm(uri = .dcp,
-    # 						request = .requestString,
-    # 						style = "POST",
-    # 						#.opts = sos@curlOptions,
-    # 						#curl = sos@curlHandle,
-    # 						.encoding = sosDefaultCharacterEncoding)
+    stop_for_status(.response, "sending POST request")
+
+    .response <- content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
     
     if(verbose) cat("[.sosRequest_1.0.0] ... done.")
   }

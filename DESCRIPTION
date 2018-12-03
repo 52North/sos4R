@@ -7,7 +7,7 @@ Authors@R: c(person(given = "Daniel", family = "Nuest", role = c("cre", "aut"),
 	person("Edzer", "Pebesma", role = "ctb"))
 Author: Daniel Nuest [cre, aut]
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 2.15.0), methods, XML (>= 3.95), RCurl (>= 1.95), sp, graphics
+Depends: R (>= 2.15.0), methods, XML (>= 3.95), RCurl (>= 1.95), sp, graphics, httr
 Suggests: spacetime (>= 1.0), gstat, maps, maptools, mapdata,
 		cshapes, xts, xtable, rgdal, testthat
 Description: A client for Sensor Observation Services (SOS) as
