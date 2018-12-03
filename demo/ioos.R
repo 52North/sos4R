@@ -15,7 +15,7 @@ library("sos4R")
 # NDBC Map: http://www.ndbc.noaa.gov/
 # Good for selecting subgroups/programmes of sensors
 #
-ioos <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
+ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
 		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
 ioos.off <- sosOfferings(ioos)
 names(ioos.off)
