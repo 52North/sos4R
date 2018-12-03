@@ -2,12 +2,24 @@
 
 ## Requirements
 
-* **System packages**
+* **System packages (e.g. ubuntu 18.04)**
     * r-base-dev
     * libxml2-dev
     * libgdal1-dev
     * libproj-dev
     * libgeos-dev
+    * texinfo
+    * texinfo-doc-nonfree
+    * texlive
+    * texlive-base
+    * texlive-fonts-recommended
+    * texlive-fonts-recommended-doc
+    * texlive-generic-recommended
+    * texlive-latex-base
+    * texlive-latex-base-doc
+    * texlive-latex-extra
+    * texlive-latex-recommended-doc
+    * texlive-pstricks
 * **R packages** (sync with `NAMESPACE`)
     * devtools
     * roxygen2
@@ -19,6 +31,16 @@
     * sp
     * CATools
     * rmarkdown
+    * maps
+    * mapdata
+    * maptools
+    * XML
+    * rgeos
+    * spacetime
+    * gstat
+    * cshapes
+    * exts
+
 
 ## Package structure
 
