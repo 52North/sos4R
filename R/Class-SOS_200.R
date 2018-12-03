@@ -29,7 +29,7 @@
 
 
 #
-#
+# SOS_2.0.0 ----
 #
 setClass("SOS_2.0.0",
          representation(url = "character", binding = "character",
@@ -72,7 +72,7 @@ setClass("SOS_2.0.0",
 setClassUnion(name = "SOS_versioned",	members = "SOS_2.0.0")
 
 #
-#
+# SosCapabilities_2.0.0 ----
 #
 setClass("SosCapabilities_2.0.0",
          representation(filterCapabilities = "SosFilter_CapabilitiesOrNULL"),
@@ -84,6 +84,8 @@ setClass("SosCapabilities_2.0.0",
          }
 )
 
+#
+# SosObservationOffering_2.0.0 ----
 #
 # See OGC 12-006, clause 8.1.2.2
 #
@@ -113,7 +115,9 @@ setClass("SosObservationOffering_2.0.0",
          }
 )
 
-################################################################################
+#
+# SosGetObservation_2.0.0 ----
+#
 # See SOS specification, OGC 06-009r6, section 8.4
 #
 setClass("SosGetObservation_2.0.0",
@@ -173,7 +177,9 @@ setClass("SosGetObservation_2.0.0",
          }
 )
 
-################################################################################
+#
+# SosGetFeatureOfInterest_2.0.0 ----
+#
 # See SOS specification, OGC 12-006, section 9.1
 #
 setClass("SosGetFeatureOfInterest_2.0.0",

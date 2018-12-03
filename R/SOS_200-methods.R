@@ -28,7 +28,7 @@
 ################################################################################
 
 #
-#
+# sosRequest ----
 #
 setMethod(f = "sosRequest",
           signature = signature(sos = "SOS_2.0.0", request = "OwsServiceOperation",
@@ -40,7 +40,7 @@ setMethod(f = "sosRequest",
 )
 
 #
-#
+# getCapabilities ----
 #
 setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0.0"),
           def = function(sos, verbose, inspect, sections, acceptFormats,
@@ -57,7 +57,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0.0"),
 )
 
 #
-#
+# describeSensor ----
 #
 setMethod(f = "describeSensor",
           signature = signature(sos = "SOS_2.0.0", procedure  = "character"), 
