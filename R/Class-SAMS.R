@@ -34,7 +34,7 @@
 #
 
 #
-# 
+# SamsShape ----
 #
 setClass("SamsShape",
          representation(point = "GmlPoint"),

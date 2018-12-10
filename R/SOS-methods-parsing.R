@@ -209,10 +209,10 @@ parseSosObservedProperty <- function(obj = list(), verbose = FALSE) {
 #
 parseSosCapabilities <- function(obj, sos) {
   if (sos@version == sos100_version){
-    .caps <- parseSosCapabilities100(obj,sos)
+    .caps <- parseSosCapabilities100(obj, sos)
   }
   else if (sos@version == sos200_version){
-    .caps <- parseSosCapabilities200(obj,sos)
+    .caps <- parseSosCapabilities200(obj, sos)
   }
 }
 

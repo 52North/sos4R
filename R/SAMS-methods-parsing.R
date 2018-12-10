@@ -28,14 +28,11 @@
 ################################################################################
 
 #
-#
+# parseSamsShape ----
 #
 parseSamsShape <- function(obj, sos) {
-  
   #TODO other shape types, check syntax [[1]]
   .point <- parsePoint(obj[[1]][gmlPointName][[1]], sos = sos)
-  
-  .sSh = SamsShape(point = .point)
-  
-  return(.sSh)
+
+  SamsShape(point = .point)
 }

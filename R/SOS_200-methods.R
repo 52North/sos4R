@@ -51,8 +51,6 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0.0"),
                                           updateSequence = updateSequence,
                                           owsVersion = owsVersion,
                                           acceptLanguages = acceptLanguages))
-            
-            #stop("getCapabilities for SOS_2.0.0 not implemented yet!")
           }
 )
 
@@ -69,7 +67,7 @@ setMethod(f = "describeSensor",
 
 
 #
-# 
+# getObservationById ----
 #
 setMethod(f = "getObservationById",
           signature = signature(sos = "SOS_2.0.0", observationId = "character"), 
@@ -80,7 +78,7 @@ setMethod(f = "getObservationById",
 )
 
 #
-#
+# getObservation: offering object ----
 #
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_2.0.0",
@@ -105,7 +103,7 @@ setMethod(f = "getObservation",
 )
 
 #
-#
+# getObservation: offering string ----
 #
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_2.0.0",
@@ -142,7 +140,7 @@ setMethod(f = "getObservation",
 )
 
 #
-#
+# getFeatureOfInterest ----
 #
 setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", featureOfInterest = "character"),
           def = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
@@ -298,10 +296,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 }
 
 .createFeatureOfInterest_2.0.0 <- function(sos, featureOfInterest){
-  
-  gfoi = SosGetFeatureOfInterest_2.0.0("SOS", "2.0.0", featureOfInterest)
-  
-  return(gfoi) 
+  SosGetFeatureOfInterest_2.0.0("SOS", "2.0.0", featureOfInterest)
 }
 
 #
@@ -596,7 +591,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
   
   return(.go)
 }
-
+#
+# checkRequest - GetObservation ----
+#
 setMethod(f = "checkRequest",
           signature = signature(service = "SOS_2.0.0", operation = "SosGetObservation_2.0.0",
                                 verbose = "logical"),
@@ -617,7 +614,9 @@ setMethod(f = "checkRequest",
             return(TRUE)
           }
 )
-
+#
+# checkRequest - GetFeatureOfInterest ----
+#
 setMethod(f = "checkRequest",
           signature = signature(service = "SOS_2.0.0", operation = "SosGetFeatureOfInterest_2.0.0",
                                 verbose = "logical"),
@@ -638,7 +637,9 @@ setMethod(f = "checkRequest",
             return(TRUE)
           }
 )
-
+#
+# encodeRequest - KVP - GetObservation ----
+#
 setMethod("encodeRequestKVP", "SosGetObservation_2.0.0", 
           function(obj, sos, verbose = FALSE) {
             if(obj@version == sos200_version) {
@@ -650,7 +651,9 @@ setMethod("encodeRequestKVP", "SosGetObservation_2.0.0",
             }
           }
 )
-
+#
+# encodeRequest - KVP - GetFeatureOfInterest ----
+#
 setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0", 
           function(obj, sos, verbose = FALSE) {
             if(obj@version == sos200_version) {

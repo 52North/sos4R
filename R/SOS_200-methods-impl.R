@@ -27,8 +27,8 @@
 #                                                                              #
 ################################################################################
 
-################################################################################
-# main request method
+#
+# main request method ----
 #
 .sosRequest_2.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
   # check the request for consistency with service description

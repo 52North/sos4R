@@ -322,7 +322,7 @@ names(.sosDefaultFieldConverters) <- list(
 )
 
 
-################################################################################
+#
 # access methods
 #
 SosDataFieldConvertingFunctions <- function (..., include = character(0),
@@ -420,9 +420,9 @@ SosResetParsingFunctions <- function(sos) {
   return(sos)
 }
 
-################################################################################
-# other defaults
-
+#
+# other defaults ----
+#
 sosDefaultCharacterEncoding <- "UTF-8"
 sosDefaultDescribeSensorOutputFormat <- SosSupportedResponseFormats()[2]
 sosDefaultGetCapSections <- c("All")

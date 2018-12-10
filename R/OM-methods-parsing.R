@@ -347,6 +347,8 @@ parseComplexObservation <- function(obj, sos, verbose = FALSE) {
 # not exchangeable parsing functions:
 
 #
+# parseFOI ----
+#
 # parse sos:featureOfInterest to according Element of GML or SA
 #
 parseFOI <- function(obj, sos, verbose = FALSE) {

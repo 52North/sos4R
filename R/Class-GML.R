@@ -175,7 +175,7 @@ setClass("GmlTimePeriod",
 )
 
 #
-#
+# GmlFeature ----
 #
 setClass("GmlFeature",
          representation(id = "character"),

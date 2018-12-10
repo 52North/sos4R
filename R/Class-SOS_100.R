@@ -174,7 +174,7 @@ setClass("SosEventTimeLatest",
 )
 
 #
-# 
+# SosFeatureOfInterest ----
 #
 setClass("SosFeatureOfInterest",
          representation(
