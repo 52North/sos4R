@@ -693,18 +693,6 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
   # optional:
   .optionals = ""
   # is optional for GET
-  if( !is.na(obj@responseFormat)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding response format ",
-                    obj@responseFormat, "\n")
-    .responseFormat <- paste(
-      sosKVPParamNameResponseFormat, 
-      .kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
-                                           pattern = "&quot;",
-                                           replacement = '"')),
-      sep = "=")
-    .optionals <- paste(.optionals, .responseFormat, sep = "&")
-  }
-  
   if(!is.na(obj@srsName)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding SRS name ",
                     obj@srsName, "\n")
@@ -754,29 +742,6 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(sosKVPParamNameFoi, .foiIDs),
                         sep = "&")
-    #		warning("'featureOfInterest' is not supported for 'GET' - parameter is discarded, use another method to include it!")
-  }
-  
-  if(!is.null(obj@result)) {
-    warning("'result' is not supported for 'GET' - parameter is discarded, use another method to include it!")
-  }
-  
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding result model ",
-                    obj@resultModel, "\n")
-    .optionals <- paste(.optionals, paste(sosKVPParamNameResultModel,
-                                          .kvpEscapeSpecialCharacters(x = obj@resultModel),
-                                          sep = "="),
-                        sep = "&")
-  if(!is.na(obj@resultModel)) {
-  }
-  
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding response mode ",
-                    obj@responseMode, "\n")
-    .optionals <- paste(.optionals, paste(sosKVPParamNameResponseMode,
-                                          .kvpEscapeSpecialCharacters(x = obj@responseMode),
-                                          sep = "="),
-                        sep = "&")
-  if(!is.na(obj@responseMode)) {
   }
   
   if(!is.na(obj@BBOX)) {
