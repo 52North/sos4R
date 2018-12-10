@@ -67,6 +67,10 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
     .sp <- parseMonitoringPoint(.member, sos = sos)
     .member.parsed <- GmlFeatureProperty(feature = .sp)
   }
+  else if (.name == samsSamplingFeatureName) {
+    .sf <- parseSams200SamplingFeature(obj = .member, sos = sos)
+    .member.parsed <- GmlFeatureProperty(feature = .sf)
+  }
   else {
     warning(paste("No handling for given sos:featureMember available: ", .name))
   }
