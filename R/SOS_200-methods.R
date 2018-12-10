@@ -454,8 +454,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
       if(verbose) cat("[.getObservation_2.0.0] result: ", toString(.result))
       
       .resultLength <- sapply(.result, nrow)
-      if(length(.resultLength) == 0) # nothing
-        .resultLength = 0
+      if(length(.resultLength) == 0){
+        # nothing
+        .resultLength <- 0
+      }
     }
     else .resultLength <- NA
     
@@ -703,7 +705,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     .optionals <- paste(.optionals, .responseFormat, sep = "&")
   }
   
-  if( !is.na(obj@srsName)) {
+  if(!is.na(obj@srsName)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding SRS name ",
                     obj@srsName, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameSrsName, 
@@ -712,7 +714,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                         sep = "&")
   }
   
-  if( !is.na(obj@eventTime)) {
+  if(!is.na(obj@eventTime)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding event time",
                     toString(obj@eventTime), "\n")
     if(length(obj@eventTime) > 1)
@@ -735,7 +737,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     }
   }
   
-  if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
+  if(!any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding procedures ",
                     obj@procedure, "\n")
     .optionals <- paste(.optionals,
@@ -743,7 +745,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                         sep = "&")
   }
   
-  if( !is.null(obj@featureOfInterest)) {
+  if(!is.null(obj@featureOfInterest)) {
     .foiIDs <- obj@featureOfInterest@objectIDs
     
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding features ",
@@ -755,29 +757,29 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     #		warning("'featureOfInterest' is not supported for 'GET' - parameter is discarded, use another method to include it!")
   }
   
-  if( !is.null(obj@result)) {
+  if(!is.null(obj@result)) {
     warning("'result' is not supported for 'GET' - parameter is discarded, use another method to include it!")
   }
   
-  if( !is.na(obj@resultModel)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding result model ",
                     obj@resultModel, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameResultModel,
                                           .kvpEscapeSpecialCharacters(x = obj@resultModel),
                                           sep = "="),
                         sep = "&")
+  if(!is.na(obj@resultModel)) {
   }
   
-  if( !is.na(obj@responseMode)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding response mode ",
                     obj@responseMode, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameResponseMode,
                                           .kvpEscapeSpecialCharacters(x = obj@responseMode),
                                           sep = "="),
                         sep = "&")
+  if(!is.na(obj@responseMode)) {
   }
   
-  if( !is.na(obj@BBOX)) {
+  if(!is.na(obj@BBOX)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding BBOX ",
                     obj@BBOX, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameBBOX, 

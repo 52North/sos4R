@@ -34,6 +34,8 @@
 #
 
 #
+# Virtual class: GmlTimeObject ----
+#
 # abstract super classes of the actually needed TimeInstant and TimePeriod
 #
 setClass("GmlTimeObject",
@@ -48,7 +50,9 @@ setClass("GmlTimeObject",
 )
 setClassUnion(name = "GmlTimeObjectOrNULL",
               members = c("GmlTimeObject", "NULL"))
-
+#
+# Virtual class: GmlTimePrimitive ----
+#
 setClass("GmlTimePrimitive",
          representation(# optional:
            relatedTimes = "list"),
@@ -62,6 +66,9 @@ setClass("GmlTimePrimitive",
          }
 )
 
+#
+# Virtual class: GmlTimeGeometricPrimitive ----
+#
 setClass("GmlTimeGeometricPrimitive",
          representation(# optional:
            frame = "character"),
@@ -74,7 +81,9 @@ setClass("GmlTimeGeometricPrimitive",
 )
 
 #
-# GmlTimePosition wraps a POSIXct
+# GmlTimePosition ----
+#
+# wraps a POSIXct
 #
 setClass("GmlTimePosition",
          representation(time = "POSIXt",
@@ -95,7 +104,7 @@ setClassUnion(name = "GmlTimePositionOrNULL",
               members = c("GmlTimePosition", "NULL"))
 
 #
-#
+# GmlTimeInstant ----
 #
 setClass("GmlTimeInstant",
          representation(timePosition = "GmlTimePosition"),
@@ -112,7 +121,7 @@ setClassUnion(name = "GmlTimeInstantOrNULL",
               members = c("GmlTimeInstant", "NULL"))
 
 #
-#
+# GmlTimeInstantProperty ----
 #
 setClass("GmlTimeInstantProperty",
          representation(href = "character", time = "GmlTimeInstantOrNULL"),
@@ -129,7 +138,7 @@ setClassUnion(name = "GmlTimeInstantPropertyOrNULL",
               members = c("GmlTimeInstantProperty", "NULL"))
 
 #
-#
+# GmlTimeInterval ----
 #
 setClass("GmlTimeInterval",
          representation(interval = "character",
@@ -150,7 +159,7 @@ setClassUnion(name = "GmlTimeIntervalOrNULL",
               members = c("GmlTimeInterval", "NULL"))
 
 #
-#
+# GmlTimePeriod ----
 #
 setClass("GmlTimePeriod",
          representation(begin = "GmlTimeInstantPropertyOrNULL",
@@ -189,7 +198,7 @@ setClass("GmlFeature",
 setClassUnion(name = "GmlFeatureOrNULL", members = c("GmlFeature", "NULL"))
 
 #
-#
+# GmlFeatureProperty ----
 #
 setClass("GmlFeatureProperty",
          representation(href = "character",	
@@ -207,7 +216,7 @@ setClassUnion(name = "GmlFeatureOrGmlFeaturePropertyOrNULL",
 
 
 #
-#
+# GmlFeatureCollection ----
 #
 setClass("GmlFeatureCollection",
          representation(featureMembers = "list"),
@@ -219,7 +228,7 @@ setClass("GmlFeatureCollection",
 )
 
 #
-#
+# GmlDirectPosition ----
 #
 setClass("GmlDirectPosition",
          representation(pos = "character",
@@ -240,7 +249,7 @@ setClassUnion(name = "GmlDirectPositionOrNULL",
               members = c("GmlDirectPosition", "NULL"))
 
 #
-#
+# GmlGeometry ----
 #
 setClass("GmlGeometry",
          representation(id = "character",
@@ -260,7 +269,7 @@ setClass("GmlGeometry",
 
 
 #
-# gml:coordinates and gml:coord are deprecated
+# GmlPoint ----
 #
 setClass("GmlPoint",
          representation(pos = "GmlDirectPosition"),
@@ -276,7 +285,7 @@ setClass("GmlPoint",
 setClassUnion(name = "GmlPointOrNULL", members = c("GmlPoint", "NULL"))
 
 #
-# NOT IMPLEMENTED
+# NOT IMPLEMENTED: GmlLineString ----
 #
 setClass("GmlLineString",
          representation(poss = "list", points = "list", posList = "ANY"),
@@ -291,7 +300,7 @@ setClass("GmlLineString",
 )
 
 #
-# NOT IMPLEMENTED
+# NOT IMPLEMENTED: GmlPolygon ----
 #
 setClass("GmlPolygon",
          representation(exterior = "ANY", interior = "ANY"),
@@ -307,7 +316,7 @@ setClass("GmlPolygon",
 
 
 #
-#
+# GmlPointProperty ----
 #
 setClass("GmlPointProperty",
          representation(href = "character",	
@@ -322,7 +331,7 @@ setClass("GmlPointProperty",
 )
 
 #
-#
+# GmlEnvelope ----
 #
 setClass("GmlEnvelope",
          representation(
@@ -341,10 +350,8 @@ setClass("GmlEnvelope",
          }
 )
 
-################################################################################
 #
-#
-#
+# GmlMeasure ----
 #
 setClass("GmlMeasure",
          representation(value = "numeric",

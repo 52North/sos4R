@@ -230,13 +230,14 @@ setMethod(f = "checkRequest",
   return(.escaped)
 }
 
-################################################################################
-# kvp encoding
+#
+# kvp encoding ----
 #
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
           def = function(obj, sos, verbose = FALSE) {
             .sosEncodeRequestKVPGetCapabilities(obj, verbose)
           })
+
 .sosEncodeRequestKVPGetCapabilities <- function(obj, verbose = FALSE) {
   .service <- paste(
     "service",

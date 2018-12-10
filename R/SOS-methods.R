@@ -1483,9 +1483,12 @@ setMethod("encodeRequestSOAP", "SosGetObservationById",
 )
 
 
-################################################################################
-# encoding functions
-
+#
+# encoding functions ----
+#
+#
+# encodeXML(SosEventTime) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "SosEventTime", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
@@ -1509,6 +1512,9 @@ setMethod(f = "encodeXML",
             }
           }
 )
+#
+# encodeXML(SosEventTimeLatest) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
@@ -1537,7 +1543,9 @@ setMethod(f = "encodeXML",
             return(.eventTime)
           }
 )
-
+#
+# encodeXML(SosFeatureOfInterest) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "SosFeatureOfInterest", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
@@ -1565,6 +1573,8 @@ setMethod(f = "encodeXML",
 )
 
 #
+# encodeXML(POSIXt, SOS) ----
+# 
 # to make just the time encoding interchangeable by users
 #
 setMethod(f = "encodeXML",
@@ -1583,7 +1593,7 @@ setMethod(f = "encodeXML",
 )
 
 #
-# 
+# encodeKVP(SosEventTime) ----
 #
 setMethod(f = "encodeKVP",
           signature = signature(obj = "SosEventTime", sos = "SOS"),
@@ -1592,14 +1602,15 @@ setMethod(f = "encodeKVP",
               cat("ENCODE KVP ", class(obj), "\n")
             }
             
-            .temporalOpsKVP <- encodeKVP(obj = obj@temporalOps, sos = sos,
+            .temporalOpsKVP <- encodeKVP(obj = obj@temporalOps,
+                                         sos = sos,
                                          verbose = verbose)
             return(.temporalOpsKVP)
           }
 )
 
 #
-# 
+# encodeKVP(SosEventTimeLatest) ----
 #
 setMethod(f = "encodeKVP",
           signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
@@ -1613,6 +1624,9 @@ setMethod(f = "encodeKVP",
           }
 )
 
+#
+# encodeKVP(POSIXt, SOS) ----
+#
 #
 # to make just the time encoding interchangeable by users
 #
@@ -1632,7 +1646,8 @@ setMethod(f = "encodeKVP",
 )
 
 
-################################################################################
+#
+# checkRequest(SosDescribeSensor) ----
 #
 setMethod(f = "checkRequest",
           signature = signature(service = "SOS", operation = "SosDescribeSensor",
@@ -1693,7 +1708,9 @@ setMethod(f = "checkRequest",
             
             return(.procContained && .oFSupported && .bindingSupported)
           })
-
+#
+# checkRequest(SosGetObservation) ----
+#
 setMethod(f = "checkRequest",
           signature = signature(service = "SOS", operation = "SosGetObservation",
                                 verbose = "logical"),

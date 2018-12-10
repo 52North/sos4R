@@ -148,7 +148,7 @@ setClass("SosContents",
 setClassUnion(name = "SosContentsOrNULL", members = c("SosContents", "NULL"))
 
 #
-#
+# SosEventTime ----
 #
 setClass("SosEventTime",
          representation(temporalOps = "OgcBinaryTemporalOp"),
@@ -160,6 +160,8 @@ setClass("SosEventTime",
          }
 )
 
+#
+# SosEventTimeLatest ----
 #
 # class needed for the non-standard request for latest value
 #
