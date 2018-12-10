@@ -36,7 +36,8 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 dataFieldConverters = SosDataFieldConvertingFunctions(),
                 curlOptions = list(),
                 curlHandle = getCurlHandle(),
-                timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, 
+                timeFormat = sosDefaultTimeFormat,
+                verboseOutput = FALSE,
                 switchCoordinates = FALSE,
                 useDCPs = TRUE,
                 dcpFilter = SosDefaultDCPs(),
@@ -1255,7 +1256,8 @@ setMethod("encodeRequestXML", "SosGetObservation",
             
             if(obj@version == sos100_version) {
               return(.sosEncodeRequestXMLGetObservation_1.0.0(obj = obj,
-                                                              sos = sos, verbose = verbose))		
+                                                              sos = sos,
+                                                              verbose = verbose))
             }
             else {
               stop("Version not supported!")

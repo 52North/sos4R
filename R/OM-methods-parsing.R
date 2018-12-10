@@ -96,8 +96,8 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
 parseMeasurement <- function(obj, sos, verbose = FALSE) {
   if(verbose) cat("[parseMeasurement]\n")
   
-  .samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
-                                     format = sosTimeFormat(sos), verbose = verbose)
+  .samplingTime <- parseTime(obj = obj[[omSamplingTimeName]],
+                                     format = sosTimeFormat(sos), verbose = verbose)[[1]]
   
   # 52N SOS only returns om:Measurements (!) with procedure ids and observed 
   # properties in xlink:href
@@ -141,8 +141,8 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
                                                sos = sos, verbose = verbose)
   
   if(!is.null(obj[[omSamplingTimeName]])) {
-    .samplingTime <- parseSamplingTime(obj = obj[[omSamplingTimeName]],
-                                       format = sosTimeFormat(sos = sos), verbose = verbose)
+    .samplingTime <- parseTime(obj = obj[[omSamplingTimeName]],
+                                       format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
   } else {
     warning("om:samplingTime is mandatory in om:Observation, but is missing!")
     .samplingTime <- NULL
@@ -162,8 +162,8 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
   
   # optional elements
   if(!is.null(obj[[omResultTimeName]])) {
-    .resultTime <- parseSamplingTime(obj = obj[[omResultTimeName]],
-                                     format = sosTimeFormat(sos = sos), verbose = verbose)
+    .resultTime <- parseTime(obj = obj[[omResultTimeName]],
+                                     format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
   }
   else {
     .resultTime <- NULL
@@ -398,31 +398,4 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
   }
   
   return(.foi)
-}
-
-#
-# create according GmlTimeObject from om:samplingTime
-#
-parseSamplingTime <- function(obj, format, verbose = FALSE) {
-  if(verbose) cat("[parseSamplingTime]\n")
-  
-  .tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
-  .tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
-  .timeObject <- NULL
-  if(!is.null(.tiXML)) {
-    if(verbose) cat("[parseSamplingTime] time instant.\n")
-    .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
-  }
-  else if(!is.null(.tpXML)) {
-    if(verbose) cat("[parseSamplingTime] time period.\n")
-    .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
-  }
-  else {
-    warning(paste("Could not create GmlTimeObject from given samplingTime,", 
-                  " require gml:TimeInstant or gml:TimePeriod as children."))
-    .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
-  }
-  
-  return(.timeObject)
 }
