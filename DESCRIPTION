@@ -44,7 +44,7 @@ Collate:
 	SOS-methods-util.R
 	SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
 	SML-methods-util.R SML-methods-coercion.R
-	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_Hydrology-Profile-methods.R
+	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_methods-gda.R
 	WML_200-methods-parsing.R WML_200-methods.R
 	SAMS-methods-parsing.R
 	Defaults.R

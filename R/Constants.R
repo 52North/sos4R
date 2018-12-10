@@ -62,6 +62,10 @@ sosDescribeFeatureTypeName <- "DescribeFeatureType"
 sosDescribeObservationTypeName <- "DescribeObservationType"
 sosDescribeResultModelName <- "DescribeResultModel"
 sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
+#
+# Hydrology Profile ----
+#
+SosGetDataAvailabilityName <- "GetDataAvailability"
 
 SosSupportedOperations <- function() {
   .supported <- c(sosGetCapabilitiesName, sosDescribeSensorName, 

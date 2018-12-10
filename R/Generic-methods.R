@@ -127,16 +127,27 @@ if (!isGeneric("getFeatureOfInterest"))
 #
 # getDataAvailability ----
 #
-if (!isGeneric("getDataAvailability"))
+if (!isGeneric("getDataAvailability")) {
   setGeneric(name = "getDataAvailability",
-             signature = signature("sos", "phenomena", "verbose", "inspect", "saveOriginal"),
+             signature = signature("sos",
+                                   "procedures",
+                                   "observedProperties",
+                                   "featuresOfInterest",
+                                   "offerings",
+                                   "verbose",
+                                   "inspect",
+                                   "saveOriginal"),
              def = function(sos,
-                            phenomena = list(NA),
+                            procedures = list(NA),
+                            observedProperties = list(NA),
+                            featuresOfInterest = list(NA),
+                            offerings = list(NA),
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
                             saveOriginal = NULL) {
                standardGeneric("getDataAvailability")
              })
+}
 
 #
 # checkRequest ----
