@@ -3,7 +3,9 @@
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
 library("sos4R");
-library("ggplot2"); library("latticeExtra"); library("quantreg")
+library("ggplot2");
+library("latticeExtra");
+library("quantreg")
 
 ##############################################################################
 # PegelOnlineSOS

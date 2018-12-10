@@ -157,7 +157,7 @@ setClass("SosGetObservation_2.0.0",
            if(length(object@observedProperty) < 1)
              return("at least one observedProperty is mandatory")
            
-           # if version is there, it hast to be in a certain format, see ows common
+           # if version is there, it has to be in a certain format, see ows common
            # srsName, offering, procedure, observedProperty are anyURIs
            # eventTime is a list of ogc:temporalOps
            # featureOfInterest is null or a SosFeatureOfInterest element

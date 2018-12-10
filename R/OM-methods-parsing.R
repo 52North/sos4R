@@ -246,10 +246,10 @@ parseResult <- function(obj, sos, verbose = FALSE) {
     #		print(obj)
   }
   .result <- NULL
-  
+
+  # FIXME why are textnodes filtered here?
   .noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
-                                  includeNamed = FALSE, verbose = verbose)
-  
+                                    includeNamed = FALSE, verbose = verbose)
   if(verbose) {
     cat("[parseResult]", length(.noneText), " non-text nodes, names:",
         names(.noneText), "\n")

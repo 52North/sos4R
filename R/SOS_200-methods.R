@@ -300,7 +300,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 }
 
 #
-#
+# TODO: Remove/handle obsolete parameters: resultModel, responseMode, eventTime -> temporalFilter
 #
 .getObservation_2.0.0 <- function(sos, offeringId, observedProperty,
                                   responseFormat, srsName, eventTime,	procedure, featureOfInterest,
