@@ -537,7 +537,7 @@ parseSosCapabilities100 <- function(obj, sos) {
     
     .operationsXML <- .filterXmlChildren(
       node = .caps.root[[owsOperationsMetadataName]],
-      childrenName = owsOperationName)
+      xmlTagName = owsOperationName)
     
     .operations <- lapply(.operationsXML, parseOwsOperation)
     # add names for indexing of list
@@ -555,7 +555,7 @@ parseSosCapabilities100 <- function(obj, sos) {
     
     .observationsXML <- .filterXmlChildren(
       node = .caps.root[[sosContentsName]][[sosObservationOfferingListName]],
-      childrenName = sosObservationOfferingName)
+      xmlTagName = sosObservationOfferingName)
     .observations = sapply(.observationsXML, parseSosObservationOffering,
                            sos = sos)
     # add names to list

@@ -273,11 +273,12 @@ parseOwsRange <- function(obj) {
 
 
 #
-# If includeNamed is TRUE, this function returns a list of all children with the
-# given name, of the given element. If includeNamed is FALSE, it contains all
-# children of the given node not matching the given name.
+# If includeNamed is TRUE:
+#     returns a list of all child nodes with xmlTagName of node.
+# If includeNamed is FALSE:
+#     return a list of all child nodes of node not having xmlTagName.
 #
-.filterXmlChildren <- function(node, childrenName, includeNamed = TRUE,
+.filterXmlChildren <- function(node, xmlTagName, includeNamed = TRUE,
                                verbose = FALSE) {
   .temp <- xmlChildren(node)
   
@@ -289,14 +290,14 @@ parseOwsRange <- function(obj) {
   .filtered <- c()
   .names <- c()
   for (.x in .temp) {
-    if(xmlName(.x) == childrenName && includeNamed) {
-      .filtered <- c(.filtered, .x)
+    if(includeNamed && xmlName(.x) == xmlTagName) {
       if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
+      .filtered <- c(.filtered, .x)
       .names <- c(.names, xmlName(.x))
     }
-    else if(!includeNamed && xmlName(.x) != childrenName) {
-      .filtered <- c(.filtered, .x)
+    else if(!includeNamed && xmlName(.x) != xmlTagName) {
       if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
+      .filtered <- c(.filtered, .x)
       .names <- c(.names, xmlName(.x))
     }
   }
@@ -309,5 +310,5 @@ parseOwsRange <- function(obj) {
 .filterXmlOnlyNoneTexts <- function(node) {
   .filterXmlChildren(
     node = node,
-    childrenName = xmlTextNodeName, includeNamed = FALSE)
+    xmlTagName = xmlTextNodeName, includeNamed = FALSE)
 }
