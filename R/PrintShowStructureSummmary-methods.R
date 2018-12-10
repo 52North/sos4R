@@ -325,17 +325,6 @@
   invisible(x)
 }
 
-.toString.SamsShape <- function(x, ...) {
-  .sSH <- paste("Object of class SamsShape; ",
-                "\n\tpoint: ", (toString(x@point)))
-  return(.sSH)
-}
-
-.print.SamsShape <- function(x, ...) {
-  cat(.toString.SamsShape(x, ...), "\n")
-  invisible(x)
-}
-
 .toString.SosContents <- function(x, ...) {
   .s <- paste("Object of class SosContents with observation offerings (names):\n\t",
               toString(paste(names(x@observationOfferings))))
@@ -1051,7 +1040,6 @@ setMethod("print", "SosFilter_Capabilities", function(x, ...) .print.SosFilter_C
 setMethod("print", "SosObservationOffering", function(x, ...) .print.SosObservationOffering(x, ...))
 setMethod("print", "SosObservationOffering_2.0.0", function(x, ...) .print.SosObservationOffering_2.0.0(x, ...))
 setMethod("print", "MonitoringPoint", function(x, ...) .print.MonitoringPoint(x, ...))
-setMethod("print", "SamsShape", function(x, ...) .print.SamsShape(x, ...))
 setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
 setMethod("print", "SosEventTime", function(x, ...) .print.SosEventTime(x, ...))
 setMethod("print", "SosFeatureOfInterest", function(x, ...) .print.SosFeatureOfInterest(x, ...))
@@ -1115,7 +1103,6 @@ setMethod("toString", "SosFilter_Capabilities", function(x, ...) .toString.SosFi
 setMethod("toString", "SosObservationOffering", function(x, ...) .toString.SosObservationOffering(x, ...))
 setMethod("toString", "SosObservationOffering_2.0.0", function(x, ...) .toString.SosObservationOffering_2.0.0(x, ...))
 setMethod("toString", "MonitoringPoint", function(x, ...) .toString.MonitoringPoint(x, ...))
-setMethod("toString", "SamsShape", function(x, ...) .toString.SamsShape(x, ...))
 setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, ...))
 setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
 setMethod("toString", "SosFeatureOfInterest", function(x, ...) .toString.SosFeatureOfInterest(x, ...))
@@ -1179,7 +1166,6 @@ setMethod("show", "SosFilter_Capabilities", function(object) .print.SosFilter_Ca
 setMethod("show", "SosObservationOffering", function(object) .print.SosObservationOffering(object))
 setMethod("show", "SosObservationOffering_2.0.0", function(object) .print.SosObservationOffering_2.0.0(object))
 setMethod("show", "MonitoringPoint", function(object) .print.MonitoringPoint(object))
-setMethod("show", "SamsShape", function(object) .print.SamsShape(object))
 setMethod("show", "SosContents", function(object) .print.SosContents(object))
 setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
 setMethod("show", "SosFeatureOfInterest", function(object) .print.SosFeatureOfInterest(object))

@@ -225,6 +225,7 @@ saSamplingTimeName <- "samplingTime"
 # SAMS ----
 #
 samsShapeName <- "shape"
+samsSamplingFeatureName <- "SF_SpatialSamplingFeature"
 #
 # GML ----
 #

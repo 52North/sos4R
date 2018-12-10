@@ -371,24 +371,30 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
     
     if(verbose) cat("[parseFOI] inline FOI:", .name, "\n")
     
-    if(.name == saSamplingPointName) {
-      .sp <- parseSamplingPoint(.feature, sos = sos)
-      .foi <- GmlFeatureProperty(feature = .sp)
-    }
-    else if (.name == saSamplingSurface) {
-      warning("[parseFOI] No parsing for sa:SamplingSurface implemented!")
-      .foi <- GmlFeatureProperty(href = .name)
-    }
-    else if (.name == gmlFeatureCollectionName) {
-      .foi <- parseFeatureCollection(.feature, sos = sos)
-    }
-    else if (.name == wmlMonitoringPointName) {
-      .foi <- parseMonitoringPoint(.feature, sos = sos)
-    }
-    else {
-      warning("[parseFOI] No parsing for given feature implemented!")
-      .foi <- GmlFeatureProperty(href = .name)
-    }
+
+    .foi <- switch(.name,
+                   saSamplingPointName = {
+                     .sp <- parseSamplingPoint(.feature, sos = sos)
+                     GmlFeatureProperty(feature = .sp)
+                   },
+                   saSamplingSurface = {
+                     warning("[parseFOI] No parsing for sa:SamplingSurface implemented!")
+                     GmlFeatureProperty(href = .name)
+                   },
+                   gmlFeatureCollectionName = {
+                     parseFeatureCollection(.feature, sos = sos)
+                   },
+                   wmlMonitoringPointName = {
+                     parseMonitoringPoint(.feature, sos = sos)
+                   },
+                   samsSamplingFeatureName = {
+                     parseSams200SamplingFeature(.feature, sos = sos)
+                   },
+                   {
+                     warning("[parseFOI] No parsing for given feature implemented!")
+                     GmlFeatureProperty(href = .name)
+                   }
+    )
   }
   
   return(.foi)
