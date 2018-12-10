@@ -1259,7 +1259,10 @@ setMethod("encodeRequestXML", "SosGetObservation",
                                                               sos = sos,
                                                               verbose = verbose))
             }
-            else {
+            else if (obj@version == sos200_version) {
+              stop(paste("XML request encoding for SOS 2.0 GetObservation",
+                         " not implemented. Use KVP binding if possible."))
+            } else {
               stop("Version not supported!")
             }
           }
