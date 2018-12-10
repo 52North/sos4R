@@ -160,6 +160,21 @@ setClass("SosEventTime",
          }
 )
 
+.print.SosEventTime <- function(x, ...) {
+  cat(.toString.SosEventTime(x, ...), "\n")
+  invisible(x)
+}
+
+.toString.SosEventTime <- function(x, ...) {
+  paste("Object of class SosEventTime:\n\t",
+        class(x@temporalOps),": ",
+        toString(x@temporalOps@time), sep = "")
+}
+
+setMethod("print", "SosEventTime", function(x, ...) .print.SosEventTime(x, ...))
+setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
+setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
+
 #
 # SosEventTimeLatest ----
 #
@@ -174,6 +189,17 @@ setClass("SosEventTimeLatest",
            return(TRUE)
          }
 )
+
+
+.toString.SosEventTimeLatest <- function(x, ...) {
+  paste("Object of class SosEventTimeLatest; temporalOps value:",
+        x@temporalOps)
+}
+
+.print.SosEventTimeLatest <- function(x, ...) {
+  cat(.toString.SosEventTimeLatest(x, ...), "\n")
+  invisible(x)
+}
 
 #
 # SosFeatureOfInterest ----
