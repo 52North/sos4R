@@ -184,9 +184,11 @@ setClass("SosFeatureOfInterest",
            objectIDs = list(NA),
            spatialOps = NULL),
          validity = function(object) {
-           #print("Entering validation: GetObservationById")
-           # TODO implement validity function
+           #print("Entering validation: SosFeatureOfInterest")
            # one of objectIDs or spatialOps has to be set
+           if(length(object@objectIDs) < 1 && is.null(object@spatialOps)) {
+             stop("At least one objectID or one spatialOps required")
+           }
            return(TRUE)
          }
 )
