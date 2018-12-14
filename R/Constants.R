@@ -26,19 +26,46 @@
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-
 #
-# Constants ----
+# SOS ----
 #
 sos100_version <- "1.0.0"
-sos200_version <- "2.0.0"
-
-#
-# SOS
-#
 sosService <- "SOS"
 sosNamespacePrefix <- "sos"
-
+sosIntendedApplicationName <- "intendedApplication"
+sosTimeName <- "time"
+sosProcedureName <- "procedure"
+sosObservedPropertyName <- "observedProperty"
+sosFeatureOfInterestName <- "featureOfInterest"
+sosResultModelName <- "resultModel"
+sosResponseFormatName <- "responseFormat"
+sosResponseModeName <- "responseMode"
+sosObservationOfferingName <- "ObservationOffering"
+sosObservationOfferingListName <- "ObservationOfferingList"
+sosContentsName <- "Contents"
+sosFilterCapabilitiesName <- "Filter_Capabilities"
+sosCapabilitiesName <- "Capabilities"
+sosEventTimeName <- "eventTime"
+sosEventTimeLatestValue <- "latest"
+sosObjectIDName <- "ObjectID"
+sosResultName <- "result"
+sosResultTimeName <- "resultTime"
+sosPhenomenonTimeName <- "phenomenonTime"
+sosObservationTypeName <- "observationType"
+sosFeatureOfInterestTypeName <- "featureOfInterestType"
+sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
+sosObservedAreaName <- "observedArea"
+#
+# SOS v2.0 ----
+#
+sos200_version <- "2.0.0"
+sos200ContentsName <- "contents"
+sos200FilterCapabilitiesName = "filterCapabilities"
+sos200_emptyGetObservationResponseString <-
+  paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+         "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",
+         "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
+         "xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetObservation.xsd\"/>")
 #
 # Core Operations Profile ----
 #
@@ -157,36 +184,6 @@ SosSupportedServiceVersions <- function() {
 
 .sos100_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
 .sos20_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd")
-
-#
-# SOS ----
-#
-sosIntendedApplicationName <- "intendedApplication"
-sosTimeName <- "time"
-sosProcedureName <- "procedure"
-sosObservedPropertyName <- "observedProperty"
-sosFeatureOfInterestName <- "featureOfInterest"
-sosResultModelName <- "resultModel"
-sosResponseFormatName <- "responseFormat"
-sosResponseModeName <- "responseMode"
-sosObservationOfferingName <- "ObservationOffering"
-sosObservationOfferingListName <- "ObservationOfferingList"
-sosContentsName <- "Contents"
-sosFilterCapabilitiesName <- "Filter_Capabilities"
-sosCapabilitiesName <- "Capabilities"
-sosEventTimeName <- "eventTime"
-sosEventTimeLatestValue <- "latest"
-sosObjectIDName <- "ObjectID"
-sosResultName <- "result"
-sosResultTimeName <- "resultTime"
-sosPhenomenonTimeName <- "phenomenonTime"
-sosObservationTypeName <- "observationType"
-sosFeatureOfInterestTypeName <- "featureOfInterestType"
-sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
-sosObservedAreaName <- "observedArea"
-sos200ContentsName <- "contents"
-sos200FilterCapabilitiesName = "filterCapabilities"
-
 
 #
 # O&M ----
