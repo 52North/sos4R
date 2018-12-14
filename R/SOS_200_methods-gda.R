@@ -44,8 +44,7 @@
     if(is.character(saveOriginal)) {
       .filename <- paste0(saveOriginal, ".xml")
       if(verbose){
-        cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name:",
-                      .filename, "\n")
+        cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
       }
     }
     else if(is.logical(saveOriginal)) {
@@ -53,8 +52,7 @@
         .filename <- tempfile(pattern=format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
       }
       if(verbose) {
-        cat("[.getDataAvailability_1.0.0] Generating file name:",
-                      .filename, "\n")
+        cat("[.getDataAvailability_1.0.0] Generating file name:", .filename, "\n")
       }
     }
   }

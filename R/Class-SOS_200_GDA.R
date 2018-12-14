@@ -77,7 +77,7 @@ SosGetDataAvailability_1.0.0 <- function(
   featuresOfInterest = list(NA),
   offerings = list(NA)) {
   new("SosGetDataAvailability_1.0.0",
-      request = SosGetDataAvailabilityName,
+      request = sosGetDataAvailabilityName,
       service = service,
       version = version,
       observedProperties = observedProperties,

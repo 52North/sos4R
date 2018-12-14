@@ -345,7 +345,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
   .responseString = sosRequest(sos = sos, request = .go,
                                verbose = verbose, inspect = inspect)
   
-  cat("[sos4R] Received response (size:", object.size(.responseString),
+  cat("[.getObservation_2.0.0] Received response (size:", object.size(.responseString),
       "bytes), parsing ...\n")
   
   # responseFormat starts with text/xml OR the response string is XML content,
@@ -619,7 +619,7 @@ setMethod(f = "checkRequest",
           signature = signature(service = "SOS_2.0.0", operation = "SosGetObservation_2.0.0",
                                 verbose = "logical"),
           def = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is DescribeSensor
+            # check if operation is for SOS and operation is GetObservation
             if(!(operation@service == sosService && 
                  operation@request == sosGetObservationName)) {
               stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetObservation' as operation.")
@@ -687,10 +687,8 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
           }
 )
 
-.sosEncodeRequestKVPGetObservation_2.0.0 <- function(obj, sos,
-                                                     verbose = FALSE) {
-  if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] encoding",
-                  toString(obj), "\n")
+.sosEncodeRequestKVPGetObservation_2.0.0 <- function(obj, sos, verbose = FALSE) {
+  if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] encoding", toString(obj), "\n")
   
   # required:
   .request <- paste(sosKVPParamNameRequest, sosGetObservationName, sep = "=")
