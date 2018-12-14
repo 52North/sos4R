@@ -315,15 +315,16 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
                                   saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
   
   .filename <- NULL
-  if(is.null(saveOriginal)) {
+  if(!is.null(saveOriginal)) {
     if(is.character(saveOriginal)) {
       .filename <- saveOriginal
       if(verbose) cat("[.getObservation_2.0.0] Using saveOriginal parameter for file name:",
                       .filename, "\n")
     } 
-    else if(is.logical(saveOriginal)) {
-      if(saveOriginal) .filename <- paste(.cleanupFileName(offeringId), 
-                                          format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
+    else if(is.logical(saveOriginal) && saveOriginal) {
+      .filename <- paste(.cleanupFileName(offeringId),
+                         format(Sys.time(), sosDefaultFilenameTimeFormat),
+                         sep = "_")
       if(verbose) cat("[.getObservation_2.0.0] Generating file name:",
                       .filename, "\n")
     }
@@ -730,10 +731,25 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     
     # if the eventTime is a latest request, it returns NA, the GET binding
     # says for the latest observation eventTime is omitted
-    if(!is.na(.timeString)) {
-      .optionals <- paste(.optionals, paste("temporalFilter", 
-                                            .kvpEscapeSpecialCharacters(x = .timeString), 
-                                            sep = "="), 
+    if(isS4(.timeString) || !is.na(.timeString)) {
+      #  Add namespace and filter reference for SOS v2.0 and O&M v2.0
+      .optionals <- paste(.optionals,
+                          paste0("temporalFilter=",
+                                 .kvpEscapeSpecialCharacters(
+                                   paste0(
+                                     # TODO make value reference configurable (use this as default value)
+                                     "om:phenomenonTime,",
+                                     encodeKVP(sos = sos, obj = .timeString, verbose = verbose)
+                                   )
+                                 )
+                          ),
+                          sep = "&")
+      .optionals <- paste(.optionals,
+                          paste0(
+                            "namespaces=",
+                            # TODO make namespace configurable (use this as default value)
+                            .kvpEscapeSpecialCharacters("xmlns(om,http://www.opengis.net/om/2.0)")
+                            ),
                           sep = "&")
     }
     else {
