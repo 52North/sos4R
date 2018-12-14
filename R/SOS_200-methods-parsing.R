@@ -301,11 +301,12 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
     print(obj)
   }
 
-  .observationsXML <- .filterXmlChildren(
-    node = obj,
-    xmlTagName = "observationData")
-  .observations = sapply(.observationsXML, parseObservation_2.0,
+  .observationsXML <- .filterXmlChildren(node = obj, xmlTagName = "observationData")
+  featureCache <<- list()
+  .observations <- sapply(.observationsXML,
+                         parseObservation_2.0,
                          sos = sos)
+  featureCache <<- list()
   return(.observations)
 }
 

@@ -67,11 +67,16 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
     if(!is.null(.featureOfInterest@href)){
       if(verbose) cat("[trying to get referenced featureOfInterest]\n")
       
-      foiList <- getFeatureOfInterest(sos = sos, featureOfInterest = .featureOfInterest@href)
-      # getFeatureOfInterest returns a list, but a request including a featureOfInterest id
-      #  should return only one featureOfInterest
-      if(length(foiList) > 0){
-        .featureOfInterest <- foiList[[1]]
+      .featureOfInterestIdentifier <- .featureOfInterest@href
+      .featureOfInterest <- featureCache[[.featureOfInterestIdentifier]]
+      if (is.null(.featureOfInterest)) {
+        foiList <- getFeatureOfInterest(sos = sos, featureOfInterest = .featureOfInterestIdentifier)
+        # getFeatureOfInterest returns a list, but a request including a featureOfInterest id
+        #  should return only one featureOfInterest
+        if(length(foiList) > 0){
+          .featureOfInterest <- foiList[[1]]
+          featureCache[[.featureOfInterestIdentifier]] <<- .featureOfInterest
+        }
       } 
     }
     
