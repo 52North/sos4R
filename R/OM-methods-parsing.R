@@ -247,17 +247,18 @@ parseResult <- function(obj, sos, verbose = FALSE) {
   }
   .result <- NULL
 
-  # FIXME why are textnodes filtered here?
-  .noneText <- .filterXmlChildren(node = obj, xmlTextNodeName,
+  .children <- .filterXmlChildren(node = obj, "WeWantAllXmlNodes", # xmlTextNodeName,
                                     includeNamed = FALSE, verbose = verbose)
+  .children <- obj
   if(verbose) {
-    cat("[parseResult]", length(.noneText), " non-text nodes, names:",
-        names(.noneText), "\n")
+    cat("[parseResult]", length(.children), " non-text nodes, names:",
+        names(.children), "\n")
   }
   
   # Check if remaining element is there
-  if(length(.noneText) == 0) {
+  if(length(.children) == 0) {
     .children <- xmlChildren(obj)
+    stop("Continue implementation here: OM-methods-parsing.R")
     cat("[parseResult] No non-text nodes in result, returning NULL.\n")
     
     #in O&M 2.0 there can be (literal) results of type MeasurementType
@@ -283,19 +284,24 @@ parseResult <- function(obj, sos, verbose = FALSE) {
     return(NULL)
   }
   
-  # 52N SOS currently only returns swe:DataArrayDocument, but still check
-  if(xmlName(.noneText[[1]]) != sweDataArrayName) {
-    warning(paste("[parseResult] Parsing of given result is NOT supported:",
-                  xmlName(.noneText[[1]]), "-- only", sweDataArrayName,
-                  "can be parsed."))
-  }
-  else {
+  if(xmlName(.children[[1]]) == sweDataArrayName) {
     if(verbose) cat("[parseResult] Parsing result with swe:DataArray.\n")
     
     # data array parser is exchangeable
     .dataArrayParsingFunction <- sosParsers(sos)[[sweDataArrayName]]
-    .dataArray <- .noneText[[1]]
+    .dataArray <- .children[[1]]
     .result <- .dataArrayParsingFunction(.dataArray, sos, verbose)
+  }
+  else if (xmlName(.children[[1]]) == xmlTextNodeName) {
+    .result <- as.numeric(xmlValue(.children))
+    if (is.na(.result)) {
+      .result <- xmlValue(.children, trim = TRUE)
+    }
+  }
+  else {
+    warning(paste("[parseResult] Parsing of given result is NOT supported:",
+                  xmlName(.children[[1]]), "-- only", sweDataArrayName,
+                  " or text nodes containing strings or numbers can be parsed."))
   }
   
   if(is.null(.result)) {
@@ -305,7 +311,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
   
   if(verbose) cat("[parseResult] ... done.\n")
   
-  else return(.result)
+  return(.result)
 }
 
 

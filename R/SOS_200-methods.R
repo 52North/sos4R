@@ -459,6 +459,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
         .resultLength <- 0
       }
     }
+    else if (is.list(.obs) && all(sapply(.obs, function(o) { class(o) == "OmOM_Observation"}))) {
+      .resultLength <- sum(sapply(.obs, function(o){ !is.null(o@result)}))
+    }
     else .resultLength <- NA
     
     if(verbose) {
@@ -472,7 +475,8 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
       .countInfo <- paste("NO DATA, turn on 'verbose' for more information.")
     }
     else {
-      .countInfo <- paste(sum(.resultLength), "result values [",
+      .countInfo <- paste(sum(.resultLength), "result values")
+      if (verbose) .countInfo <- paste0(.countInfo,  " [",
                           toString(.resultLength), "].")
     }
     
