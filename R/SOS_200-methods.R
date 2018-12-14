@@ -299,6 +299,13 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
   SosGetFeatureOfInterest_2.0.0("SOS", "2.0.0", featureOfInterest)
 }
 
+
+.isEmptyResponse <- function(response = "") {
+  gsub(pattern = "\t|\r|\n", x = response, replacement = "") == sos200_emptyGetObservationResponseString
+}
+
+#
+# getObservation function ----
 #
 # TODO: Remove/handle obsolete parameters: resultModel, responseMode, eventTime -> temporalFilter
 #
@@ -501,6 +508,11 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
     # RETURN ###
     return(.obs)
   }
+  else if (.isEmptyResponse(.responseString)) {
+    if(verbose)
+      cat("[.getObservation_2.0.0] Received empty observation response.", "\n")
+    return(list())
+  }
   else { # response is NOT an XML string:
     if(verbose)
       cat("[.getObservation_2.0.0] Did NOT get XML string as response, trying to parse with",
@@ -564,7 +576,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
     save(.responseString, file = .filename)
     cat("[sos4R] Saved original document:", .filename)
   }
-  else warning("File name is NULL, could not save document!")
+  else {
+    message("File name is NULL, could not save document!")
+  }
   
   # RETURN ##############
   return(.responseString)
