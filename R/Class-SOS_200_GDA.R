@@ -27,6 +27,8 @@
 #                                                                              #
 ################################################################################
 #
+# SosGetDataAvailability_1.0.0 ----
+#
 # See SOS 2.0 Hydrology profile specification, OGC 14-004r1, section 7.4
 #
 setClass("SosGetDataAvailability_1.0.0",
@@ -45,7 +47,7 @@ setClass("SosGetDataAvailability_1.0.0",
           ),
          contains = "OwsServiceOperation",
          validity = function(object) {
-           print("Entering validation: SosGetDataAvailability_1.0.0")
+           #print("Entering validation: SosGetDataAvailability_1.0.0")
 
            # service, version are mandatory
            if(is.na(object@service))
@@ -87,7 +89,7 @@ SosGetDataAvailability_1.0.0 <- function(
 }
 
 #
-#
+# helper function
 #
 .createGetDataAvailability_1.0.0 <- function(sos,
                                              procedures,

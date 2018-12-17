@@ -106,7 +106,6 @@ SosExampleServices <- function() {
     sosGetObservationResponseName,
     sosGetFeatureOfInterestResponseName,
     sosGetObservationByIdName,
-    #sosGetFeatureOfInterestResponseName,
     owsExceptionReportName,
     #
     omMeasurementName,

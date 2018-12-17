@@ -40,18 +40,18 @@
                                        saveOriginal,
                                        xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
   .filename <- NULL
-  if(!is.null(saveOriginal)) {
-    if(is.character(saveOriginal)) {
+  if (!is.null(saveOriginal)) {
+    if (is.character(saveOriginal)) {
       .filename <- paste0(saveOriginal, ".xml")
-      if(verbose){
+      if (verbose){
         cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
       }
     }
-    else if(is.logical(saveOriginal)) {
-      if(saveOriginal) {
+    else if (is.logical(saveOriginal)) {
+      if (saveOriginal) {
         .filename <- tempfile(pattern=format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
       }
-      if(verbose) {
+      if (verbose) {
         cat("[.getDataAvailability_1.0.0] Generating file name:", .filename, "\n")
       }
     }
@@ -66,7 +66,7 @@
                                            inspect = inspect,
                                            saveOriginal = saveOriginal)
 
-  if(verbose) {
+  if (verbose) {
     cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
   }
 
@@ -94,7 +94,7 @@ setMethod(f = "getDataAvailability",
                          verbose,
                          inspect = FALSE,
                          saveOriginal = NULL) {
-            if(verbose) {
+            if (verbose) {
               cat("[getDataAvailability] Requesting metadata via procedures: '",
                   paste0(procedures, collapse = ", "),
                   "'; observedProperties: '",
@@ -125,8 +125,8 @@ setMethod(f = "checkRequest",
                                 verbose = "logical"),
           def = function(service, operation, verbose) {
             # check if operation is for SOS and operation is GetDataAvailability
-            if(!(operation@service == sosService &&
-                 operation@request == sosGetDataAvailabilityName)) {
+            if (!(operation@service == sosService &&
+                  operation@request == sosGetDataAvailabilityName)) {
               stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetDataAvailability' as operation.")
               return(FALSE)
             }
@@ -146,7 +146,7 @@ setMethod(f = "checkRequest",
 #
 setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
           function(obj, sos, verbose = FALSE) {
-            if(obj@version == sos200_version) {
+            if (obj@version == sos200_version) {
               return(.sosEncodeRequestKVPGetDataAvailability_1.0.0(obj, sos, verbose))
             }
             else {
@@ -160,39 +160,37 @@ setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
 # Result must be a valid and url encoded query string without leading "?"
 #
 .sosEncodeRequestKVPGetDataAvailability_1.0.0 <- function(obj, sos, verbose = FALSE) {
-  if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] encoding", toString(obj), "\n")
-
+  if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] encoding", toString(obj), "\n")
   # mandatory
   .mandatory <- .kvpBuildRequestBase(sos, sosGetDataAvailabilityName)
-  if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] mandatory elements: ",
-                  .mandatory, "\n")
-
+  if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] mandatory elements: ",
+                   .mandatory, "\n")
   # optional
   .optionals <- ""
   if (.isListFieldAvailable(obj@procedures)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding procedures ",
-                    obj@procedures, "\n")
+    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding procedures ",
+                     obj@procedures, "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosProcedureName, obj@procedures),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@observedProperties)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties ",
-                    obj@observedProperties, "\n")
+    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties ",
+                     obj@observedProperties, "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosObservedPropertyName, obj@observedProperties),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@featuresOfInterest)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding features of interest ",
-                    obj@featuresOfInterest, "\n")
+    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding features of interest ",
+                     obj@featuresOfInterest, "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosFeatureOfInterestName, obj@featuresOfInterest),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@offerings)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding offerings ",
-                    obj@offerings, "\n")
+    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding offerings ",
+                     obj@offerings, "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosOfferingName, obj@offerings),
                         sep = "&")
