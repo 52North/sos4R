@@ -69,25 +69,31 @@
   if(verbose) {
     cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
   }
-  stop("FIXME continue implementation here")
+
+  .responseString = sosRequest(sos = sos, request = .gda,
+                               verbose = verbose, inspect = inspect)
+
+  cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.responseString), "bytes), parsing ...\n")
+  stop("FIXME continue implementation here: Parse Returned XML: add filename and line")
   return(TRUE)
 }
 
+
 #
-# getDataAvailability ----
+# getDataAvailability - Impl. ----
 #
 # Implementation of abstract method from Generic-Methods.R
 #
 setMethod(f = "getDataAvailability",
           signature = signature(sos = "SOS_2.0.0"),
           def = function(sos,
-                          procedures,
-                          observedProperties,
-                          featuresOfInterest,
-                          offerings,
-                          verbose,
-                          inspect = FALSE,
-                          saveOriginal = NULL) {
+                         procedures,
+                         observedProperties,
+                         featuresOfInterest,
+                         offerings,
+                         verbose,
+                         inspect = FALSE,
+                         saveOriginal = NULL) {
             if(verbose) {
               cat("[getDataAvailability] Requesting metadata via procedures: '",
                   paste0(procedures, collapse = ", "),
@@ -109,3 +115,96 @@ setMethod(f = "getDataAvailability",
                                               saveOriginal = saveOriginal))
           }
 )
+
+#
+# checkRequest - GetDataAvailability ----
+#
+setMethod(f = "checkRequest",
+          signature = signature(service = "SOS_2.0.0",
+                                operation = "SosGetDataAvailability_1.0.0",
+                                verbose = "logical"),
+          def = function(service, operation, verbose) {
+            # check if operation is for SOS and operation is GetDataAvailability
+            if(!(operation@service == sosService &&
+                 operation@request == sosGetDataAvailabilityName)) {
+              stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetDataAvailability' as operation.")
+              return(FALSE)
+            }
+
+            # TODO implement checkRequest for GetDataAvailability
+            # all elements are optional
+            # TODO check feature identifier
+            # TODO check observed properties
+            # TODO check offerings
+            # TODO check procedures
+
+            return(TRUE)
+          }
+)
+#
+# encodeRequest - KVP - GetDataAvailability ----
+#
+setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
+          function(obj, sos, verbose = FALSE) {
+            if(obj@version == sos200_version) {
+              return(.sosEncodeRequestKVPGetDataAvailability_1.0.0(obj, sos, verbose))
+            }
+            else {
+              stop("Version not supported!")
+            }
+          }
+)
+#
+# Encoding helper function for GDA 1.0
+#
+# Result must be a valid and url encoded query string without leading "?"
+#
+.sosEncodeRequestKVPGetDataAvailability_1.0.0 <- function(obj, sos, verbose = FALSE) {
+  if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] encoding", toString(obj), "\n")
+
+  # mandatory
+  .mandatory <- .kvpBuildRequestBase(sos, sosGetDataAvailabilityName)
+  if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] mandatory elements: ",
+                  .mandatory, "\n")
+
+  # optional
+  .optionals <- ""
+  if (.isListFieldAvailable(obj@procedures)) {
+    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding procedures ",
+                    obj@procedures, "\n")
+    .optionals <- paste(.optionals,
+                        .kvpKeyAndValues(key = sosProcedureName, obj@procedures),
+                        sep = "&")
+  }
+  if (.isListFieldAvailable(obj@observedProperties)) {
+    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties ",
+                    obj@observedProperties, "\n")
+    .optionals <- paste(.optionals,
+                        .kvpKeyAndValues(key = sosObservedPropertyName, obj@observedProperties),
+                        sep = "&")
+  }
+  if (.isListFieldAvailable(obj@featuresOfInterest)) {
+    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding features of interest ",
+                    obj@featuresOfInterest, "\n")
+    .optionals <- paste(.optionals,
+                        .kvpKeyAndValues(key = sosFeatureOfInterestName, obj@featuresOfInterest),
+                        sep = "&")
+  }
+  if (.isListFieldAvailable(obj@offerings)) {
+    if(verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding offerings ",
+                    obj@offerings, "\n")
+    .optionals <- paste(.optionals,
+                        .kvpKeyAndValues(key = sosOfferingName, obj@offerings),
+                        sep = "&")
+  }
+
+  # build final querystring
+  .kvpString <- paste(.mandatory, .optionals, sep = "")
+}
+#
+# sosName(SosGetDataAvailability_1.0.0)
+#
+setMethod(f = "sosName", signature = signature(obj = "SosGetDataAvailability_1.0.0"),
+          def = function(obj) {
+            return(sosGetDataAvailabilityName)
+          })
