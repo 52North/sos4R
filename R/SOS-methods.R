@@ -1068,16 +1068,20 @@ setMethod("encodeRequestKVP", "SosDescribeSensor",
             }
           }
 )
+
+.kvpBuildRequestBase <- function(sos, operation = sosGetCapabilitiesName) {
+  paste(
+    paste("service", .kvpEscapeSpecialCharacters(x = sosService), sep = "="),
+    paste("version", .kvpEscapeSpecialCharacters(x = sos@version), sep = "="),
+    paste("request", .kvpEscapeSpecialCharacters(x = operation), sep = "="),
+    sep = "&")
+}
+
 .sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, sos,
                                                      verbose = FALSE) {
   # mandatory:
-  .service <- paste("service",
-                    .kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-  .request <- paste("request" , sosDescribeSensorName, sep = "=")
-  .version <- paste("version", 
-                    .kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
-  .procedure <- paste("procedure",
-                      .kvpEscapeSpecialCharacters(x = obj@procedure), sep = "=")
+  .requestBase <- .kvpBuildRequestBase(sos, sosDescribeSensorName)
+  .procedure <- paste("procedure", .kvpEscapeSpecialCharacters(x = obj@procedure), sep = "=")
   .format <- paste(
     "outputFormat",
     .kvpEscapeSpecialCharacters(x = gsub(obj@outputFormat,
@@ -1085,7 +1089,7 @@ setMethod("encodeRequestKVP", "SosDescribeSensor",
                                          replacement = '"')),
     sep = "=")
   
-  .kvpString <- paste(.service, .request, .version, .procedure,
+  .kvpString <- paste(.requestBase, .procedure,
                       .format, sep = "&")
   
   if(verbose)
@@ -1114,17 +1118,13 @@ setMethod("encodeRequestKVP", "SosGetObservation",
                   toString(obj), "\n")
   
   # required:
-  .request <- paste(sosKVPParamNameRequest, sosGetObservationName, sep = "=")
-  .service <- paste(sosKVPParamNameService,
-                    .kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-  .version <- paste(sosKVPParamNameVersion,
-                    .kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
+  .requestBase <- .kvpBuildRequestBase(sos, sosGetObservationName)
   .offering <- paste(sosKVPParamNameOffering,
                      .kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
   .observedProperty <- .kvpKeyAndValues(sosKVPParamNameObsProp, 
                                         obj@observedProperty)
   
-  .mandatory <- paste(.service, .request, .version, .offering,
+  .mandatory <- paste(.requestBase, .offering,
                       .observedProperty, sep = "&")
   
   if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0]",

@@ -691,11 +691,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
   if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] encoding", toString(obj), "\n")
   
   # required:
-  .request <- paste(sosKVPParamNameRequest, sosGetObservationName, sep = "=")
-  .service <- paste(sosKVPParamNameService,
-                    .kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-  .version <- paste(sosKVPParamNameVersion,
-                    .kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
+  .requestBase <- .kvpBuildRequestBase(sos, sosGetObservationName)
   .offering <- paste(sosKVPParamNameOffering,
                      .kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
   .observedProperty <- .kvpKeyAndValues(sosKVPParamNameObsProp, 
