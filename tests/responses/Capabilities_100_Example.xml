@@ -1,0 +1,1366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:Capabilities version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+  <ows:ServiceIdentification>
+    <ows:Title>Wupperverband SOS</ows:Title>
+    <ows:Abstract>SOS at Wupperverband, Wuppertal, Germany</ows:Abstract>
+    <ows:Keywords>
+      <ows:Keyword>water level, gauge height, precipitation, water quality, air temperature, air pressure, runoff</ows:Keyword>
+    </ows:Keywords>
+    <ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+    <ows:Fees>NONE</ows:Fees>
+    <ows:AccessConstraints>http://fluggs.wupperverband.de/fluggs-cms-bilder-dokumente/Downloads/Nutzungsbedingungen_Dienste_Wupperverband.pdf</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>Wupperverband</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://www.wupperverband.de"/>
+    <ows:ServiceContact>
+      <ows:IndividualName>TBA</ows:IndividualName>
+      <ows:PositionName>TBA</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+49(0)202/583-0</ows:Voice>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Untere Lichtenplatzer Str. 100</ows:DeliveryPoint>
+          <ows:City>Wuppertal</ows:City>
+          <ows:AdministrativeArea>North Rhine-Westphalia</ows:AdministrativeArea>
+          <ows:PostalCode>42289</ows:PostalCode>
+          <ows:Country>Germany</ows:Country>
+          <ows:ElectronicMailAddress>info@wupperverband.de</ows:ElectronicMailAddress>
+        </ows:Address>
+      </ows:ContactInfo>
+      <ows:Role/>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos/sos?"/>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="updateSequence">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptVersions">
+        <ows:AllowedValues>
+          <ows:Value>1.0.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="Sections">
+        <ows:AllowedValues>
+          <ows:Value>ServiceIdentification</ows:Value>
+          <ows:Value>ServiceProvider</ows:Value>
+          <ows:Value>OperationsMetadata</ows:Value>
+          <ows:Value>Filter_Capabilities</ows:Value>
+          <ows:Value>Contents</ows:Value>
+          <ows:Value>All</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:AllowedValues>
+          <ows:Value>text/xml</ows:Value>
+          <ows:Value>application/zip</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetObservation">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos/sos?"/>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="srsName">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AllowedValues>
+          <ows:Value>Luft</ows:Value>
+          <ows:Value>Niederschlag</ows:Value>
+          <ows:Value>Gewaesserguete_Rohdaten</ows:Value>
+          <ows:Value>Talsperre</ows:Value>
+          <ows:Value>Gewaesser</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="eventTime">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>2005-12-03T00:00:00.000+01:00</ows:MinimumValue>
+            <ows:MaximumValue>2015-12-13T00:00:00.000+01:00</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:SkipEverySecond</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:SelectValue</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:Tolerance</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:ToleranceTime</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:douglas-peucker-1</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:douglas-peucker-standard-deviation</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:douglas-peucker-dynamic-tolerance</ows:Value>
+          <ows:Value>Abfluss_Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Abfluss_Haecksbilstein</ows:Value>
+          <ows:Value>Abfluss_Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Abfluss_Holzwipper</ows:Value>
+          <ows:Value>Abfluss_Hueckeswagen</ows:Value>
+          <ows:Value>Abfluss_Kabelbruecke</ows:Value>
+          <ows:Value>Abfluss_Kellershammer</ows:Value>
+          <ows:Value>Abfluss_Kluserbruecke</ows:Value>
+          <ows:Value>Abfluss_Krebsoege</ows:Value>
+          <ows:Value>Abfluss_Laaken</ows:Value>
+          <ows:Value>Abfluss_Leimbach</ows:Value>
+          <ows:Value>Abfluss_Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Abfluss_Manfort</ows:Value>
+          <ows:Value>Abfluss_Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Abfluss_Opladen</ows:Value>
+          <ows:Value>Abfluss_Papiermuehlenbach</ows:Value>
+          <ows:Value>Abfluss_Reinshagensbever</ows:Value>
+          <ows:Value>Abfluss_Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Abfluss_Rutenbeck</ows:Value>
+          <ows:Value>Abfluss_Schlebusch</ows:Value>
+          <ows:Value>Abfluss_Schmitzwipper</ows:Value>
+          <ows:Value>Abfluss_Stoecken</ows:Value>
+          <ows:Value>Abfluss_Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Abfluss_Unterburg-Wupper</ows:Value>
+          <ows:Value>Abfluss_Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Laaken</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Opladen</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Rutenbeck</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Laaken</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Opladen</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Rutenbeck</ows:Value>
+          <ows:Value>Luftfeuchte_Barmen_Wupperverband</ows:Value>
+          <ows:Value>Luftfeuchte_Bever-Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Burscheid</ows:Value>
+          <ows:Value>Luftfeuchte_Gklw_Radevormwald</ows:Value>
+          <ows:Value>Luftfeuchte_Halbach-Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Klw_Buchenhofen</ows:Value>
+          <ows:Value>Luftfeuchte_Krebsoege</ows:Value>
+          <ows:Value>Luftfeuchte_Lindscheid</ows:Value>
+          <ows:Value>Luftfeuchte_Lingese-Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Loosenau</ows:Value>
+          <ows:Value>Luftfeuchte_Muellensiepen</ows:Value>
+          <ows:Value>Luftfeuchte_Neumuehle</ows:Value>
+          <ows:Value>Luftfeuchte_RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>Luftfeuchte_RS-Linklaeuerstrasse</ows:Value>
+          <ows:Value>Luftfeuchte_Ronsdorf</ows:Value>
+          <ows:Value>Luftfeuchte_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Vorsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Luftfeuchte_Wipperfliess</ows:Value>
+          <ows:Value>Lufttemperatur_Barmen_Wupperverband</ows:Value>
+          <ows:Value>Lufttemperatur_Bever-Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Burscheid</ows:Value>
+          <ows:Value>Lufttemperatur_Gklw_Radevormwald</ows:Value>
+          <ows:Value>Lufttemperatur_Guettenhausen</ows:Value>
+          <ows:Value>Lufttemperatur_Halbach-Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Klw_Buchenhofen</ows:Value>
+          <ows:Value>Lufttemperatur_Krebsoege</ows:Value>
+          <ows:Value>Lufttemperatur_Lindscheid</ows:Value>
+          <ows:Value>Lufttemperatur_Lingese-Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Loosenau</ows:Value>
+          <ows:Value>Lufttemperatur_Muellensiepen</ows:Value>
+          <ows:Value>Lufttemperatur_Neumuehle</ows:Value>
+          <ows:Value>Lufttemperatur_RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>Lufttemperatur_RS-Linklaeuerstrasse</ows:Value>
+          <ows:Value>Lufttemperatur_Ronsdorf</ows:Value>
+          <ows:Value>Lufttemperatur_Ronsdorfer_Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Suelzueberleitung</ows:Value>
+          <ows:Value>Lufttemperatur_Vorsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Lufttemperatur_Wipperfliess</ows:Value>
+          <ows:Value>Niederschlagshoehe_Barmen_Wupperverband__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Bever-Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Bever-Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Bever-Talsperre__Viertelstundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Beyenburg__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Beyenburg__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Burscheid__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Dahlhausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Burg__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Hueckeswagen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Kohlfurth__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Leverkusen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Marienheide__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Radevormwald__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Guettenhausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Halbach-Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Hangbergermuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Buchenhofen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Dabringhausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Schwelm__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Wermelskirchen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Krebsoege__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Krebsoege__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lindscheid__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lindscheid__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lingese-Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lingese-Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Loosenau__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Muellensiepen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Muellensiepen__Viertelstundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Neumuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Falkenberg__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Falkenberg__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Herrmannsmuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Jacobsmuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Linklaeuerstrasse__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Ronsdorf__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Ronsdorfer_Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Ronsdorfer_Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Schevelinger_Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Schevelinger_Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Suelzueberleitung__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Unterpilghausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Vorsperre_Gr_Dhuenn__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Vorsperre_Gr_Dhuenn__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Wipperfliess__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Wipperfliess__Tagessumme</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Laaken</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Opladen</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Rutenbeck</ows:Value>
+          <ows:Value>Speicherfuellstand_Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Speicherfuellstand_Beyenburg_Stausee</ows:Value>
+          <ows:Value>Speicherfuellstand_Brucher-Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Eschbach-Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Hauptsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Speicherfuellstand_Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherfuellstand_Neye-Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherfuellstand_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Sengbachtalsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Vorsperre_Gr_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Speicherfuellstand_Wupper-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Speicherinhalt_Beyenburg_Stausee</ows:Value>
+          <ows:Value>Speicherinhalt_Brucher-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Dahlhausen_Stauweiher</ows:Value>
+          <ows:Value>Speicherinhalt_Eschbach-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Hauptsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Speicherinhalt_Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherinhalt_Neye-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherinhalt_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Vorsperre_Gr_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Speicherinhalt_Wupper-Talsperre</ows:Value>
+          <ows:Value>Truebung_Laaken</ows:Value>
+          <ows:Value>Truebung_Opladen</ows:Value>
+          <ows:Value>Truebung_Rutenbeck</ows:Value>
+          <ows:Value>Wasserstand_Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Wasserstand_Dahlhausen_Stauweiher</ows:Value>
+          <ows:Value>Wasserstand_HKW_Barmen</ows:Value>
+          <ows:Value>Wasserstand_Haecksbilstein</ows:Value>
+          <ows:Value>Wasserstand_Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Wasserstand_Holzwipper</ows:Value>
+          <ows:Value>Wasserstand_Hueckeswagen</ows:Value>
+          <ows:Value>Wasserstand_Kabelbruecke</ows:Value>
+          <ows:Value>Wasserstand_Kellershammer</ows:Value>
+          <ows:Value>Wasserstand_Kluserbruecke</ows:Value>
+          <ows:Value>Wasserstand_Krebsoege</ows:Value>
+          <ows:Value>Wasserstand_Laaken</ows:Value>
+          <ows:Value>Wasserstand_Leimbach</ows:Value>
+          <ows:Value>Wasserstand_Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Wasserstand_Manfort</ows:Value>
+          <ows:Value>Wasserstand_Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Wasserstand_Neye-Talsperre__Tagesmittelwert</ows:Value>
+          <ows:Value>Wasserstand_Opladen</ows:Value>
+          <ows:Value>Wasserstand_Opladen_LANUV</ows:Value>
+          <ows:Value>Wasserstand_Opladen__2-Minuten-Takt</ows:Value>
+          <ows:Value>Wasserstand_Opladen__Tagesmittelwert</ows:Value>
+          <ows:Value>Wasserstand_Opladen__Tagesmittelwert_um_17-00_Uhr</ows:Value>
+          <ows:Value>Wasserstand_Papiermuehlenbach</ows:Value>
+          <ows:Value>Wasserstand_Reinshagensbever</ows:Value>
+          <ows:Value>Wasserstand_Rutenbeck</ows:Value>
+          <ows:Value>Wasserstand_Schlebusch</ows:Value>
+          <ows:Value>Wasserstand_Schmitzwipper</ows:Value>
+          <ows:Value>Wasserstand_Stoecken</ows:Value>
+          <ows:Value>Wasserstand_Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Wasserstand_Unterburg-Eschbach</ows:Value>
+          <ows:Value>Wasserstand_Unterburg-Eschbach__2-Minuten-Takt</ows:Value>
+          <ows:Value>Wasserstand_Unterburg-Wupper</ows:Value>
+          <ows:Value>Wasserstand_Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Wassertemperatur_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Wassertemperatur_Bever-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Bever-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Brucher-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Brucher-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Eschbachtalsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Grosse_Dhuenn-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Grosse_Dhuenn-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Laaken</ows:Value>
+          <ows:Value>Wassertemperatur_Lingese-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Lingese-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Neyetalsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Opladen</ows:Value>
+          <ows:Value>Wassertemperatur_Panzer-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Panzer-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Ronsdorfer_Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Ronsdorfer_Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Rutenbeck</ows:Value>
+          <ows:Value>Wassertemperatur_Schevelinger-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Schevelinger-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Stausee_Beyenburg_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Stausee_Beyenburg_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Wupper-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Wupper-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>pH-Wert_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>pH-Wert_Laaken</ows:Value>
+          <ows:Value>pH-Wert_Opladen</ows:Value>
+          <ows:Value>pH-Wert_Rutenbeck</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>Lufttemperatur</ows:Value>
+          <ows:Value>Luftfeuchte</ows:Value>
+          <ows:Value>Niederschlagshoehe</ows:Value>
+          <ows:Value>pH-Wert</ows:Value>
+          <ows:Value>Wasserstand</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000</ows:Value>
+          <ows:Value>Sauerstoffgehalt</ows:Value>
+          <ows:Value>Wassertemperatur</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit</ows:Value>
+          <ows:Value>Truebung</ows:Value>
+          <ows:Value>Abfluss</ows:Value>
+          <ows:Value>Speicherinhalt</ows:Value>
+          <ows:Value>Speicherfuellstand</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Barmen_Wupperverband</ows:Value>
+          <ows:Value>Bever-Talsperre</ows:Value>
+          <ows:Value>Bever-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Beyenburg</ows:Value>
+          <ows:Value>Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Beyenburg_Stausee</ows:Value>
+          <ows:Value>Brucher-Talsperre</ows:Value>
+          <ows:Value>Brucher-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Burscheid</ows:Value>
+          <ows:Value>Dahlhausen</ows:Value>
+          <ows:Value>Dahlhausen_Stauweiher</ows:Value>
+          <ows:Value>Eschbach-Talsperre</ows:Value>
+          <ows:Value>Eschbachtalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Gklw_Burg</ows:Value>
+          <ows:Value>Gklw_Hueckeswagen</ows:Value>
+          <ows:Value>Gklw_Kohlfurth</ows:Value>
+          <ows:Value>Gklw_Leverkusen</ows:Value>
+          <ows:Value>Gklw_Marienheide</ows:Value>
+          <ows:Value>Gklw_Radevormwald</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Guettenhausen</ows:Value>
+          <ows:Value>Haecksbilstein</ows:Value>
+          <ows:Value>Halbach-Talsperre</ows:Value>
+          <ows:Value>Hangbergermuehle</ows:Value>
+          <ows:Value>Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Hauptsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>HKW_Barmen</ows:Value>
+          <ows:Value>Holzwipper</ows:Value>
+          <ows:Value>Hueckeswagen</ows:Value>
+          <ows:Value>Kabelbruecke</ows:Value>
+          <ows:Value>Kellershammer</ows:Value>
+          <ows:Value>Kluserbruecke</ows:Value>
+          <ows:Value>Klw_Buchenhofen</ows:Value>
+          <ows:Value>Klw_Dabringhausen</ows:Value>
+          <ows:Value>Klw_Schwelm</ows:Value>
+          <ows:Value>Klw_Wermelskirchen</ows:Value>
+          <ows:Value>Krebsoege</ows:Value>
+          <ows:Value>Laaken</ows:Value>
+          <ows:Value>Leimbach</ows:Value>
+          <ows:Value>Lindscheid</ows:Value>
+          <ows:Value>Lingese-Talsperre</ows:Value>
+          <ows:Value>Lingese-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Loosenau</ows:Value>
+          <ows:Value>Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Manfort</ows:Value>
+          <ows:Value>Muellensiepen</ows:Value>
+          <ows:Value>Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Neumuehle</ows:Value>
+          <ows:Value>Neye-Talsperre</ows:Value>
+          <ows:Value>Neyetalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Opladen</ows:Value>
+          <ows:Value>Panzer-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Papiermuehlenbach</ows:Value>
+          <ows:Value>Reinshagensbever</ows:Value>
+          <ows:Value>Ronsdorf</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>RS-Falkenberg</ows:Value>
+          <ows:Value>RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>RS-Jacobsmuehle</ows:Value>
+          <ows:Value>RS-Linklaeuerstrasse</ows:Value>
+          <ows:Value>Rutenbeck</ows:Value>
+          <ows:Value>Schevelinger-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Schlebusch</ows:Value>
+          <ows:Value>Schmitzwipper</ows:Value>
+          <ows:Value>Sengbachtalsperre</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Absperrbauwerk</ows:Value>
+          <ows:Value>Stoecken</ows:Value>
+          <ows:Value>Suelzueberleitung</ows:Value>
+          <ows:Value>Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Unterburg-Eschbach</ows:Value>
+          <ows:Value>Unterburg-Wupper</ows:Value>
+          <ows:Value>Unterpilghausen</ows:Value>
+          <ows:Value>Vorsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Vorsperre_Gr_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Wipperfliess</ows:Value>
+          <ows:Value>Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Wupper-Talsperre</ows:Value>
+          <ows:Value>Wupper-Talsperre_Absperrbauwerk</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="result">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="responseFormat">
+        <ows:AllowedValues>
+          <ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
+          <ows:Value>application/zip</ows:Value>
+          <ows:Value>image/jpeg</ows:Value>
+          <ows:Value>application/vnd.google-earth.kml+xml</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="resultModel">
+        <ows:AllowedValues>
+          <ows:Value>om:Observation</ows:Value>
+          <ows:Value>om:Measurement</ows:Value>
+          <ows:Value>om:CategoryObservation</ows:Value>
+          <ows:Value>om:SpatialObservation</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="responseMode">
+        <ows:AllowedValues>
+          <ows:Value>inline</ows:Value>
+          <ows:Value>resultTemplate</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeSensor">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos/sos?"/>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:SkipEverySecond</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:SelectValue</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:Tolerance</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:ToleranceTime</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:douglas-peucker-1</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:douglas-peucker-standard-deviation</ows:Value>
+          <ows:Value>urn:ogc:generalizationMethod:IFGI:douglas-peucker-dynamic-tolerance</ows:Value>
+          <ows:Value>Abfluss_Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Abfluss_Haecksbilstein</ows:Value>
+          <ows:Value>Abfluss_Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Abfluss_Holzwipper</ows:Value>
+          <ows:Value>Abfluss_Hueckeswagen</ows:Value>
+          <ows:Value>Abfluss_Kabelbruecke</ows:Value>
+          <ows:Value>Abfluss_Kellershammer</ows:Value>
+          <ows:Value>Abfluss_Kluserbruecke</ows:Value>
+          <ows:Value>Abfluss_Krebsoege</ows:Value>
+          <ows:Value>Abfluss_Laaken</ows:Value>
+          <ows:Value>Abfluss_Leimbach</ows:Value>
+          <ows:Value>Abfluss_Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Abfluss_Manfort</ows:Value>
+          <ows:Value>Abfluss_Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Abfluss_Opladen</ows:Value>
+          <ows:Value>Abfluss_Papiermuehlenbach</ows:Value>
+          <ows:Value>Abfluss_Reinshagensbever</ows:Value>
+          <ows:Value>Abfluss_Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Abfluss_Rutenbeck</ows:Value>
+          <ows:Value>Abfluss_Schlebusch</ows:Value>
+          <ows:Value>Abfluss_Schmitzwipper</ows:Value>
+          <ows:Value>Abfluss_Stoecken</ows:Value>
+          <ows:Value>Abfluss_Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Abfluss_Unterburg-Wupper</ows:Value>
+          <ows:Value>Abfluss_Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Laaken</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Opladen</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_1000_Rutenbeck</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Laaken</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Opladen</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit_Rutenbeck</ows:Value>
+          <ows:Value>Luftfeuchte_Barmen_Wupperverband</ows:Value>
+          <ows:Value>Luftfeuchte_Bever-Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Burscheid</ows:Value>
+          <ows:Value>Luftfeuchte_Gklw_Radevormwald</ows:Value>
+          <ows:Value>Luftfeuchte_Halbach-Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Klw_Buchenhofen</ows:Value>
+          <ows:Value>Luftfeuchte_Krebsoege</ows:Value>
+          <ows:Value>Luftfeuchte_Lindscheid</ows:Value>
+          <ows:Value>Luftfeuchte_Lingese-Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Loosenau</ows:Value>
+          <ows:Value>Luftfeuchte_Muellensiepen</ows:Value>
+          <ows:Value>Luftfeuchte_Neumuehle</ows:Value>
+          <ows:Value>Luftfeuchte_RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>Luftfeuchte_RS-Linklaeuerstrasse</ows:Value>
+          <ows:Value>Luftfeuchte_Ronsdorf</ows:Value>
+          <ows:Value>Luftfeuchte_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Luftfeuchte_Vorsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Luftfeuchte_Wipperfliess</ows:Value>
+          <ows:Value>Lufttemperatur_Barmen_Wupperverband</ows:Value>
+          <ows:Value>Lufttemperatur_Bever-Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Burscheid</ows:Value>
+          <ows:Value>Lufttemperatur_Gklw_Radevormwald</ows:Value>
+          <ows:Value>Lufttemperatur_Guettenhausen</ows:Value>
+          <ows:Value>Lufttemperatur_Halbach-Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Klw_Buchenhofen</ows:Value>
+          <ows:Value>Lufttemperatur_Krebsoege</ows:Value>
+          <ows:Value>Lufttemperatur_Lindscheid</ows:Value>
+          <ows:Value>Lufttemperatur_Lingese-Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Loosenau</ows:Value>
+          <ows:Value>Lufttemperatur_Muellensiepen</ows:Value>
+          <ows:Value>Lufttemperatur_Neumuehle</ows:Value>
+          <ows:Value>Lufttemperatur_RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>Lufttemperatur_RS-Linklaeuerstrasse</ows:Value>
+          <ows:Value>Lufttemperatur_Ronsdorf</ows:Value>
+          <ows:Value>Lufttemperatur_Ronsdorfer_Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Lufttemperatur_Suelzueberleitung</ows:Value>
+          <ows:Value>Lufttemperatur_Vorsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Lufttemperatur_Wipperfliess</ows:Value>
+          <ows:Value>Niederschlagshoehe_Barmen_Wupperverband__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Bever-Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Bever-Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Bever-Talsperre__Viertelstundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Beyenburg__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Beyenburg__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Burscheid__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Dahlhausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Burg__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Hueckeswagen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Kohlfurth__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Leverkusen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Marienheide__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Gklw_Radevormwald__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Guettenhausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Halbach-Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Hangbergermuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Buchenhofen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Dabringhausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Schwelm__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Klw_Wermelskirchen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Krebsoege__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Krebsoege__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lindscheid__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lindscheid__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lingese-Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Lingese-Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Loosenau__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Muellensiepen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Muellensiepen__Viertelstundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Neumuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Falkenberg__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Falkenberg__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Herrmannsmuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Jacobsmuehle__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_RS-Linklaeuerstrasse__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Ronsdorf__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Ronsdorfer_Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Ronsdorfer_Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Schevelinger_Talsperre__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Schevelinger_Talsperre__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Suelzueberleitung__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Unterpilghausen__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Vorsperre_Gr_Dhuenn__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Vorsperre_Gr_Dhuenn__Tagessumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Wipperfliess__Stundensumme</ows:Value>
+          <ows:Value>Niederschlagshoehe_Wipperfliess__Tagessumme</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Laaken</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Opladen</ows:Value>
+          <ows:Value>Sauerstoffgehalt_Rutenbeck</ows:Value>
+          <ows:Value>Speicherfuellstand_Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Speicherfuellstand_Beyenburg_Stausee</ows:Value>
+          <ows:Value>Speicherfuellstand_Brucher-Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Eschbach-Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Hauptsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Speicherfuellstand_Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherfuellstand_Neye-Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherfuellstand_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Sengbachtalsperre</ows:Value>
+          <ows:Value>Speicherfuellstand_Vorsperre_Gr_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Speicherfuellstand_Wupper-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Speicherinhalt_Beyenburg_Stausee</ows:Value>
+          <ows:Value>Speicherinhalt_Brucher-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Dahlhausen_Stauweiher</ows:Value>
+          <ows:Value>Speicherinhalt_Eschbach-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Hauptsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Speicherinhalt_Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherinhalt_Neye-Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Speicherinhalt_Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Speicherinhalt_Vorsperre_Gr_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Speicherinhalt_Wupper-Talsperre</ows:Value>
+          <ows:Value>Truebung_Laaken</ows:Value>
+          <ows:Value>Truebung_Opladen</ows:Value>
+          <ows:Value>Truebung_Rutenbeck</ows:Value>
+          <ows:Value>Wasserstand_Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Wasserstand_Dahlhausen_Stauweiher</ows:Value>
+          <ows:Value>Wasserstand_HKW_Barmen</ows:Value>
+          <ows:Value>Wasserstand_Haecksbilstein</ows:Value>
+          <ows:Value>Wasserstand_Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Wasserstand_Holzwipper</ows:Value>
+          <ows:Value>Wasserstand_Hueckeswagen</ows:Value>
+          <ows:Value>Wasserstand_Kabelbruecke</ows:Value>
+          <ows:Value>Wasserstand_Kellershammer</ows:Value>
+          <ows:Value>Wasserstand_Kluserbruecke</ows:Value>
+          <ows:Value>Wasserstand_Krebsoege</ows:Value>
+          <ows:Value>Wasserstand_Laaken</ows:Value>
+          <ows:Value>Wasserstand_Leimbach</ows:Value>
+          <ows:Value>Wasserstand_Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Wasserstand_Manfort</ows:Value>
+          <ows:Value>Wasserstand_Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Wasserstand_Neye-Talsperre__Tagesmittelwert</ows:Value>
+          <ows:Value>Wasserstand_Opladen</ows:Value>
+          <ows:Value>Wasserstand_Opladen_LANUV</ows:Value>
+          <ows:Value>Wasserstand_Opladen__2-Minuten-Takt</ows:Value>
+          <ows:Value>Wasserstand_Opladen__Tagesmittelwert</ows:Value>
+          <ows:Value>Wasserstand_Opladen__Tagesmittelwert_um_17-00_Uhr</ows:Value>
+          <ows:Value>Wasserstand_Papiermuehlenbach</ows:Value>
+          <ows:Value>Wasserstand_Reinshagensbever</ows:Value>
+          <ows:Value>Wasserstand_Rutenbeck</ows:Value>
+          <ows:Value>Wasserstand_Schlebusch</ows:Value>
+          <ows:Value>Wasserstand_Schmitzwipper</ows:Value>
+          <ows:Value>Wasserstand_Stoecken</ows:Value>
+          <ows:Value>Wasserstand_Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Wasserstand_Unterburg-Eschbach</ows:Value>
+          <ows:Value>Wasserstand_Unterburg-Eschbach__2-Minuten-Takt</ows:Value>
+          <ows:Value>Wasserstand_Unterburg-Wupper</ows:Value>
+          <ows:Value>Wasserstand_Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Wassertemperatur_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Wassertemperatur_Bever-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Bever-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Brucher-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Brucher-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Eschbachtalsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Grosse_Dhuenn-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Grosse_Dhuenn-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Laaken</ows:Value>
+          <ows:Value>Wassertemperatur_Lingese-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Lingese-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Neyetalsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Opladen</ows:Value>
+          <ows:Value>Wassertemperatur_Panzer-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Panzer-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Ronsdorfer_Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Ronsdorfer_Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Rutenbeck</ows:Value>
+          <ows:Value>Wassertemperatur_Schevelinger-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Schevelinger-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Stausee_Beyenburg_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Stausee_Beyenburg_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>Wassertemperatur_Wupper-Talsperre_Absperrbauwerk__2m_Tiefe</ows:Value>
+          <ows:Value>Wassertemperatur_Wupper-Talsperre_Absperrbauwerk__Oberflaeche</ows:Value>
+          <ows:Value>pH-Wert_Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>pH-Wert_Laaken</ows:Value>
+          <ows:Value>pH-Wert_Opladen</ows:Value>
+          <ows:Value>pH-Wert_Rutenbeck</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="outputFormat">
+        <ows:AllowedValues>
+          <ows:Value>text/xml;subtype="sensorML/1.0.1"</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeatureOfInterest">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos/sos?"/>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterestID">
+        <ows:AllowedValues>
+          <ows:Value>Ablauf_Wupper-Talsperre</ows:Value>
+          <ows:Value>Barmen_Wupperverband</ows:Value>
+          <ows:Value>Bever-Talsperre</ows:Value>
+          <ows:Value>Bever-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Beyenburg</ows:Value>
+          <ows:Value>Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Beyenburg_Stausee</ows:Value>
+          <ows:Value>Brucher-Talsperre</ows:Value>
+          <ows:Value>Brucher-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Burscheid</ows:Value>
+          <ows:Value>Dahlhausen</ows:Value>
+          <ows:Value>Dahlhausen_Stauweiher</ows:Value>
+          <ows:Value>Eschbach-Talsperre</ows:Value>
+          <ows:Value>Eschbachtalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Gklw_Burg</ows:Value>
+          <ows:Value>Gklw_Hueckeswagen</ows:Value>
+          <ows:Value>Gklw_Kohlfurth</ows:Value>
+          <ows:Value>Gklw_Leverkusen</ows:Value>
+          <ows:Value>Gklw_Marienheide</ows:Value>
+          <ows:Value>Gklw_Radevormwald</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Guettenhausen</ows:Value>
+          <ows:Value>Haecksbilstein</ows:Value>
+          <ows:Value>Halbach-Talsperre</ows:Value>
+          <ows:Value>Hangbergermuehle</ows:Value>
+          <ows:Value>Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Hauptsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>HKW_Barmen</ows:Value>
+          <ows:Value>Holzwipper</ows:Value>
+          <ows:Value>Hueckeswagen</ows:Value>
+          <ows:Value>Kabelbruecke</ows:Value>
+          <ows:Value>Kellershammer</ows:Value>
+          <ows:Value>Kluserbruecke</ows:Value>
+          <ows:Value>Klw_Buchenhofen</ows:Value>
+          <ows:Value>Klw_Dabringhausen</ows:Value>
+          <ows:Value>Klw_Schwelm</ows:Value>
+          <ows:Value>Klw_Wermelskirchen</ows:Value>
+          <ows:Value>Krebsoege</ows:Value>
+          <ows:Value>Laaken</ows:Value>
+          <ows:Value>Leimbach</ows:Value>
+          <ows:Value>Lindscheid</ows:Value>
+          <ows:Value>Lingese-Talsperre</ows:Value>
+          <ows:Value>Lingese-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Loosenau</ows:Value>
+          <ows:Value>Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Manfort</ows:Value>
+          <ows:Value>Muellensiepen</ows:Value>
+          <ows:Value>Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Neumuehle</ows:Value>
+          <ows:Value>Neye-Talsperre</ows:Value>
+          <ows:Value>Neyetalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Opladen</ows:Value>
+          <ows:Value>Panzer-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Papiermuehlenbach</ows:Value>
+          <ows:Value>Reinshagensbever</ows:Value>
+          <ows:Value>Ronsdorf</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>RS-Falkenberg</ows:Value>
+          <ows:Value>RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>RS-Jacobsmuehle</ows:Value>
+          <ows:Value>RS-Linklaeuerstrasse</ows:Value>
+          <ows:Value>Rutenbeck</ows:Value>
+          <ows:Value>Schevelinger-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Schevelinger_Talsperre</ows:Value>
+          <ows:Value>Schlebusch</ows:Value>
+          <ows:Value>Schmitzwipper</ows:Value>
+          <ows:Value>Sengbachtalsperre</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Absperrbauwerk</ows:Value>
+          <ows:Value>Stoecken</ows:Value>
+          <ows:Value>Suelzueberleitung</ows:Value>
+          <ows:Value>Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Unterburg-Eschbach</ows:Value>
+          <ows:Value>Unterburg-Wupper</ows:Value>
+          <ows:Value>Unterpilghausen</ows:Value>
+          <ows:Value>Vorsperre_Gr_Dhuenn</ows:Value>
+          <ows:Value>Vorsperre_Gr_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Wipperfliess</ows:Value>
+          <ows:Value>Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Wupper-Talsperre</ows:Value>
+          <ows:Value>Wupper-Talsperre_Absperrbauwerk</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="location">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Parameter name="service">
+      <ows:AllowedValues>
+        <ows:Value>SOS</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <ows:Parameter name="version">
+      <ows:AllowedValues>
+        <ows:Value>1.0.0</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+  </ows:OperationsMetadata>
+  <sos:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:GeometryOperands>
+        <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+      </ogc:GeometryOperands>
+      <ogc:SpatialOperators>
+        <ogc:SpatialOperator name="BBOX">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+        <ogc:SpatialOperator name="Contains">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+        <ogc:SpatialOperator name="Intersects">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+        <ogc:SpatialOperator name="Overlaps">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+      </ogc:SpatialOperators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Temporal_Capabilities>
+      <ogc:TemporalOperands>
+        <ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+        <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+      </ogc:TemporalOperands>
+      <ogc:TemporalOperators>
+        <ogc:TemporalOperator name="TM_During">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+        <ogc:TemporalOperator name="TM_Equals">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+        <ogc:TemporalOperator name="TM_After">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+        <ogc:TemporalOperator name="TM_Before">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+      </ogc:TemporalOperators>
+    </ogc:Temporal_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:ComparisonOperators>
+        <ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+      </ogc:ComparisonOperators>
+    </ogc:Scalar_Capabilities>
+    <ogc:Id_Capabilities>
+      <ogc:FID/>
+      <ogc:EID/>
+    </ogc:Id_Capabilities>
+  </sos:Filter_Capabilities>
+  <sos:Contents>
+    <sos:ObservationOfferingList>
+      <sos:ObservationOffering gml:id="Luft">
+        <gml:name>Luft</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG::31466">
+            <gml:lowerCorner>5659544.05 2574316.031</gml:lowerCorner>
+            <gml:upperCorner>5681937.709 2609172.838</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2005-12-03T00:00:00.000+01:00</gml:beginPosition>
+            <gml:endPosition>2013-09-17T04:40:00.000+02:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SkipEverySecond"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SelectValue"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:Tolerance"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:ToleranceTime"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-1"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-standard-deviation"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-dynamic-tolerance"/>
+        <sos:procedure xlink:href="Luftfeuchte_Barmen_Wupperverband"/>
+        <sos:procedure xlink:href="Luftfeuchte_Bever-Talsperre"/>
+        <sos:procedure xlink:href="Luftfeuchte_Burscheid"/>
+        <sos:procedure xlink:href="Luftfeuchte_Gklw_Radevormwald"/>
+        <sos:procedure xlink:href="Luftfeuchte_Halbach-Talsperre"/>
+        <sos:procedure xlink:href="Luftfeuchte_Klw_Buchenhofen"/>
+        <sos:procedure xlink:href="Luftfeuchte_Krebsoege"/>
+        <sos:procedure xlink:href="Luftfeuchte_Lindscheid"/>
+        <sos:procedure xlink:href="Luftfeuchte_Lingese-Talsperre"/>
+        <sos:procedure xlink:href="Luftfeuchte_Loosenau"/>
+        <sos:procedure xlink:href="Luftfeuchte_Muellensiepen"/>
+        <sos:procedure xlink:href="Luftfeuchte_Neumuehle"/>
+        <sos:procedure xlink:href="Luftfeuchte_Ronsdorf"/>
+        <sos:procedure xlink:href="Luftfeuchte_RS-Herrmannsmuehle"/>
+        <sos:procedure xlink:href="Luftfeuchte_RS-Linklaeuerstrasse"/>
+        <sos:procedure xlink:href="Luftfeuchte_Schevelinger_Talsperre"/>
+        <sos:procedure xlink:href="Luftfeuchte_Vorsperre_Gr_Dhuenn"/>
+        <sos:procedure xlink:href="Luftfeuchte_Wipperfliess"/>
+        <sos:procedure xlink:href="Lufttemperatur_Barmen_Wupperverband"/>
+        <sos:procedure xlink:href="Lufttemperatur_Bever-Talsperre"/>
+        <sos:procedure xlink:href="Lufttemperatur_Burscheid"/>
+        <sos:procedure xlink:href="Lufttemperatur_Gklw_Radevormwald"/>
+        <sos:procedure xlink:href="Lufttemperatur_Guettenhausen"/>
+        <sos:procedure xlink:href="Lufttemperatur_Halbach-Talsperre"/>
+        <sos:procedure xlink:href="Lufttemperatur_Klw_Buchenhofen"/>
+        <sos:procedure xlink:href="Lufttemperatur_Krebsoege"/>
+        <sos:procedure xlink:href="Lufttemperatur_Lindscheid"/>
+        <sos:procedure xlink:href="Lufttemperatur_Lingese-Talsperre"/>
+        <sos:procedure xlink:href="Lufttemperatur_Loosenau"/>
+        <sos:procedure xlink:href="Lufttemperatur_Muellensiepen"/>
+        <sos:procedure xlink:href="Lufttemperatur_Neumuehle"/>
+        <sos:procedure xlink:href="Lufttemperatur_Ronsdorf"/>
+        <sos:procedure xlink:href="Lufttemperatur_Ronsdorfer_Talsperre"/>
+        <sos:procedure xlink:href="Lufttemperatur_RS-Herrmannsmuehle"/>
+        <sos:procedure xlink:href="Lufttemperatur_RS-Linklaeuerstrasse"/>
+        <sos:procedure xlink:href="Lufttemperatur_Schevelinger_Talsperre"/>
+        <sos:procedure xlink:href="Lufttemperatur_Suelzueberleitung"/>
+        <sos:procedure xlink:href="Lufttemperatur_Vorsperre_Gr_Dhuenn"/>
+        <sos:procedure xlink:href="Lufttemperatur_Wipperfliess"/>
+        <sos:observedProperty xlink:href="Lufttemperatur"/>
+        <sos:observedProperty xlink:href="Luftfeuchte"/>
+        <sos:featureOfInterest xlink:href="Barmen_Wupperverband"/>
+        <sos:featureOfInterest xlink:href="Bever-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Burscheid"/>
+        <sos:featureOfInterest xlink:href="Gklw_Radevormwald"/>
+        <sos:featureOfInterest xlink:href="Guettenhausen"/>
+        <sos:featureOfInterest xlink:href="Halbach-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Klw_Buchenhofen"/>
+        <sos:featureOfInterest xlink:href="Krebsoege"/>
+        <sos:featureOfInterest xlink:href="Lindscheid"/>
+        <sos:featureOfInterest xlink:href="Lingese-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Loosenau"/>
+        <sos:featureOfInterest xlink:href="Muellensiepen"/>
+        <sos:featureOfInterest xlink:href="Neumuehle"/>
+        <sos:featureOfInterest xlink:href="Ronsdorf"/>
+        <sos:featureOfInterest xlink:href="Ronsdorfer_Talsperre"/>
+        <sos:featureOfInterest xlink:href="RS-Herrmannsmuehle"/>
+        <sos:featureOfInterest xlink:href="RS-Linklaeuerstrasse"/>
+        <sos:featureOfInterest xlink:href="Schevelinger_Talsperre"/>
+        <sos:featureOfInterest xlink:href="Suelzueberleitung"/>
+        <sos:featureOfInterest xlink:href="Vorsperre_Gr_Dhuenn"/>
+        <sos:featureOfInterest xlink:href="Wipperfliess"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:responseFormat>application/zip</sos:responseFormat>
+        <sos:responseFormat>image/jpeg</sos:responseFormat>
+        <sos:responseFormat>application/vnd.google-earth.kml+xml</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>
+      <sos:ObservationOffering gml:id="Niederschlag">
+        <gml:name>Niederschlag</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG::31466">
+            <gml:lowerCorner>5657361.1 2568200.43</gml:lowerCorner>
+            <gml:upperCorner>5684704.996 2609172.838</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2005-12-03T01:00:00.000+01:00</gml:beginPosition>
+            <gml:endPosition>2015-12-03T08:00:30.000+01:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SkipEverySecond"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SelectValue"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:Tolerance"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:ToleranceTime"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-1"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-standard-deviation"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-dynamic-tolerance"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Barmen_Wupperverband__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Bever-Talsperre__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Bever-Talsperre__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Bever-Talsperre__Viertelstundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Beyenburg__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Beyenburg__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Burscheid__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Dahlhausen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Gklw_Burg__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Gklw_Hueckeswagen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Gklw_Kohlfurth__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Gklw_Leverkusen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Gklw_Marienheide__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Gklw_Radevormwald__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Guettenhausen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Halbach-Talsperre__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Hangbergermuehle__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Klw_Buchenhofen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Klw_Dabringhausen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Klw_Schwelm__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Klw_Wermelskirchen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Krebsoege__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Krebsoege__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Lindscheid__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Lindscheid__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Lingese-Talsperre__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Lingese-Talsperre__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Loosenau__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Muellensiepen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Muellensiepen__Viertelstundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Neumuehle__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Ronsdorf__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Ronsdorfer_Talsperre__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Ronsdorfer_Talsperre__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_RS-Falkenberg__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_RS-Falkenberg__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_RS-Herrmannsmuehle__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_RS-Jacobsmuehle__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_RS-Linklaeuerstrasse__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Schevelinger_Talsperre__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Schevelinger_Talsperre__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Suelzueberleitung__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Unterpilghausen__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Vorsperre_Gr_Dhuenn__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Vorsperre_Gr_Dhuenn__Tagessumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Wipperfliess__Stundensumme"/>
+        <sos:procedure xlink:href="Niederschlagshoehe_Wipperfliess__Tagessumme"/>
+        <sos:observedProperty xlink:href="Niederschlagshoehe"/>
+        <sos:featureOfInterest xlink:href="Barmen_Wupperverband"/>
+        <sos:featureOfInterest xlink:href="Bever-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Beyenburg"/>
+        <sos:featureOfInterest xlink:href="Burscheid"/>
+        <sos:featureOfInterest xlink:href="Dahlhausen"/>
+        <sos:featureOfInterest xlink:href="Gklw_Burg"/>
+        <sos:featureOfInterest xlink:href="Gklw_Hueckeswagen"/>
+        <sos:featureOfInterest xlink:href="Gklw_Kohlfurth"/>
+        <sos:featureOfInterest xlink:href="Gklw_Leverkusen"/>
+        <sos:featureOfInterest xlink:href="Gklw_Marienheide"/>
+        <sos:featureOfInterest xlink:href="Gklw_Radevormwald"/>
+        <sos:featureOfInterest xlink:href="Guettenhausen"/>
+        <sos:featureOfInterest xlink:href="Halbach-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Hangbergermuehle"/>
+        <sos:featureOfInterest xlink:href="Klw_Buchenhofen"/>
+        <sos:featureOfInterest xlink:href="Klw_Dabringhausen"/>
+        <sos:featureOfInterest xlink:href="Klw_Schwelm"/>
+        <sos:featureOfInterest xlink:href="Klw_Wermelskirchen"/>
+        <sos:featureOfInterest xlink:href="Krebsoege"/>
+        <sos:featureOfInterest xlink:href="Lindscheid"/>
+        <sos:featureOfInterest xlink:href="Lingese-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Loosenau"/>
+        <sos:featureOfInterest xlink:href="Muellensiepen"/>
+        <sos:featureOfInterest xlink:href="Neumuehle"/>
+        <sos:featureOfInterest xlink:href="Ronsdorf"/>
+        <sos:featureOfInterest xlink:href="Ronsdorfer_Talsperre"/>
+        <sos:featureOfInterest xlink:href="RS-Falkenberg"/>
+        <sos:featureOfInterest xlink:href="RS-Herrmannsmuehle"/>
+        <sos:featureOfInterest xlink:href="RS-Jacobsmuehle"/>
+        <sos:featureOfInterest xlink:href="RS-Linklaeuerstrasse"/>
+        <sos:featureOfInterest xlink:href="Schevelinger_Talsperre"/>
+        <sos:featureOfInterest xlink:href="Suelzueberleitung"/>
+        <sos:featureOfInterest xlink:href="Unterpilghausen"/>
+        <sos:featureOfInterest xlink:href="Vorsperre_Gr_Dhuenn"/>
+        <sos:featureOfInterest xlink:href="Wipperfliess"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:responseFormat>application/zip</sos:responseFormat>
+        <sos:responseFormat>image/jpeg</sos:responseFormat>
+        <sos:responseFormat>application/vnd.google-earth.kml+xml</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>
+      <sos:ObservationOffering gml:id="Gewaesserguete_Rohdaten">
+        <gml:name>Gewaesserguete Rohdaten</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG::31466">
+            <gml:lowerCorner>5659928.636 2569725.188</gml:lowerCorner>
+            <gml:upperCorner>5680725.971 2590803.1899</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2010-07-26T00:05:00.000+02:00</gml:beginPosition>
+            <gml:endPosition>2015-12-03T09:00:00.000+01:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SkipEverySecond"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SelectValue"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:Tolerance"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:ToleranceTime"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-1"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-standard-deviation"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-dynamic-tolerance"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_1000_Ablauf_Wupper-Talsperre"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_1000_Laaken"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_1000_Opladen"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_1000_Rutenbeck"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_Ablauf_Wupper-Talsperre"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_Laaken"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_Opladen"/>
+        <sos:procedure xlink:href="Elektrische_Leitfaehigkeit_Rutenbeck"/>
+        <sos:procedure xlink:href="pH-Wert_Ablauf_Wupper-Talsperre"/>
+        <sos:procedure xlink:href="pH-Wert_Laaken"/>
+        <sos:procedure xlink:href="pH-Wert_Opladen"/>
+        <sos:procedure xlink:href="pH-Wert_Rutenbeck"/>
+        <sos:procedure xlink:href="Sauerstoffgehalt_Ablauf_Wupper-Talsperre"/>
+        <sos:procedure xlink:href="Sauerstoffgehalt_Laaken"/>
+        <sos:procedure xlink:href="Sauerstoffgehalt_Opladen"/>
+        <sos:procedure xlink:href="Sauerstoffgehalt_Rutenbeck"/>
+        <sos:procedure xlink:href="Truebung_Laaken"/>
+        <sos:procedure xlink:href="Truebung_Opladen"/>
+        <sos:procedure xlink:href="Truebung_Rutenbeck"/>
+        <sos:procedure xlink:href="Wasserstand_Opladen_LANUV"/>
+        <sos:procedure xlink:href="Wassertemperatur_Ablauf_Wupper-Talsperre"/>
+        <sos:procedure xlink:href="Wassertemperatur_Laaken"/>
+        <sos:procedure xlink:href="Wassertemperatur_Opladen"/>
+        <sos:procedure xlink:href="Wassertemperatur_Rutenbeck"/>
+        <sos:observedProperty xlink:href="pH-Wert"/>
+        <sos:observedProperty xlink:href="Wasserstand"/>
+        <sos:observedProperty xlink:href="Elektrische_Leitfaehigkeit_1000"/>
+        <sos:observedProperty xlink:href="Sauerstoffgehalt"/>
+        <sos:observedProperty xlink:href="Wassertemperatur"/>
+        <sos:observedProperty xlink:href="Elektrische_Leitfaehigkeit"/>
+        <sos:observedProperty xlink:href="Truebung"/>
+        <sos:featureOfInterest xlink:href="Ablauf_Wupper-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Laaken"/>
+        <sos:featureOfInterest xlink:href="Opladen"/>
+        <sos:featureOfInterest xlink:href="Rutenbeck"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:responseFormat>application/zip</sos:responseFormat>
+        <sos:responseFormat>image/jpeg</sos:responseFormat>
+        <sos:responseFormat>application/vnd.google-earth.kml+xml</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>
+      <sos:ObservationOffering gml:id="Talsperre">
+        <gml:name>Talsperre</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG::31466">
+            <gml:lowerCorner>5660025.148 2582734.07</gml:lowerCorner>
+            <gml:upperCorner>5680164.901 2609217.395</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2005-12-03T00:00:00.000+01:00</gml:beginPosition>
+            <gml:endPosition>2015-12-13T00:00:00.000+01:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SkipEverySecond"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SelectValue"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:Tolerance"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:ToleranceTime"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-1"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-standard-deviation"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-dynamic-tolerance"/>
+        <sos:procedure xlink:href="Wassertemperatur_Bever-Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Bever-Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Brucher-Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Brucher-Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Eschbachtalsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Grosse_Dhuenn-Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Grosse_Dhuenn-Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Lingese-Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Lingese-Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Neyetalsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Panzer-Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Panzer-Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Ronsdorfer_Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Ronsdorfer_Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Schevelinger-Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Schevelinger-Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Stausee_Beyenburg_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Stausee_Beyenburg_Absperrbauwerk__Oberflaeche"/>
+        <sos:procedure xlink:href="Wassertemperatur_Wupper-Talsperre_Absperrbauwerk__2m_Tiefe"/>
+        <sos:procedure xlink:href="Wassertemperatur_Wupper-Talsperre_Absperrbauwerk__Oberflaeche"/>
+        <sos:observedProperty xlink:href="Wassertemperatur"/>
+        <sos:featureOfInterest xlink:href="Bever-Talsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Brucher-Talsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Eschbachtalsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Grosse_Dhuenn-Talsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Lingese-Talsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Neyetalsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Panzer-Talsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Ronsdorfer_Talsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Schevelinger-Talsperre_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Stausee_Beyenburg_Absperrbauwerk"/>
+        <sos:featureOfInterest xlink:href="Wupper-Talsperre_Absperrbauwerk"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:responseFormat>application/zip</sos:responseFormat>
+        <sos:responseFormat>image/jpeg</sos:responseFormat>
+        <sos:responseFormat>application/vnd.google-earth.kml+xml</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>
+      <sos:ObservationOffering gml:id="Gewaesser">
+        <gml:name>Gewaesser</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG::31466">
+            <gml:lowerCorner>5655950.0 2569725.188</gml:lowerCorner>
+            <gml:upperCorner>5683593.0 2610202.779</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2005-12-03T00:00:00.000+01:00</gml:beginPosition>
+            <gml:endPosition>2015-12-03T11:00:00.000+01:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SkipEverySecond"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:SelectValue"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:Tolerance"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:ToleranceTime"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-1"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-standard-deviation"/>
+        <sos:procedure xlink:href="urn:ogc:generalizationMethod:IFGI:douglas-peucker-dynamic-tolerance"/>
+        <sos:procedure xlink:href="Abfluss_Beyenburg_Ablaufpegel"/>
+        <sos:procedure xlink:href="Abfluss_Haecksbilstein"/>
+        <sos:procedure xlink:href="Abfluss_Hangbergermuehle_Doerpe-Vorsperre"/>
+        <sos:procedure xlink:href="Abfluss_Holzwipper"/>
+        <sos:procedure xlink:href="Abfluss_Hueckeswagen"/>
+        <sos:procedure xlink:href="Abfluss_Kabelbruecke"/>
+        <sos:procedure xlink:href="Abfluss_Kellershammer"/>
+        <sos:procedure xlink:href="Abfluss_Kluserbruecke"/>
+        <sos:procedure xlink:href="Abfluss_Krebsoege"/>
+        <sos:procedure xlink:href="Abfluss_Laaken"/>
+        <sos:procedure xlink:href="Abfluss_Leimbach"/>
+        <sos:procedure xlink:href="Abfluss_Loosenau_Ablaufpegel"/>
+        <sos:procedure xlink:href="Abfluss_Manfort"/>
+        <sos:procedure xlink:href="Abfluss_Muellensiepen_Zulaufpegel"/>
+        <sos:procedure xlink:href="Abfluss_Opladen"/>
+        <sos:procedure xlink:href="Abfluss_Papiermuehlenbach"/>
+        <sos:procedure xlink:href="Abfluss_Reinshagensbever"/>
+        <sos:procedure xlink:href="Abfluss_Ronsdorfer_Talsperre_Staumauer"/>
+        <sos:procedure xlink:href="Abfluss_Rutenbeck"/>
+        <sos:procedure xlink:href="Abfluss_Schlebusch"/>
+        <sos:procedure xlink:href="Abfluss_Schmitzwipper"/>
+        <sos:procedure xlink:href="Abfluss_Stoecken"/>
+        <sos:procedure xlink:href="Abfluss_Ueberleitung_Neye-Bever"/>
+        <sos:procedure xlink:href="Abfluss_Unterburg-Wupper"/>
+        <sos:procedure xlink:href="Abfluss_Wipperfliess_Ablaufpegel"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Bever-Talsperre_Windenhaus"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Beyenburg_Stausee"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Brucher-Talsperre"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Eschbach-Talsperre"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Hauptsperre_Gr_Dhuenn"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Lingese-Talsperre_Staumauer"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Neye-Talsperre"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Ronsdorfer_Talsperre_Staumauer"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Schevelinger_Talsperre"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Sengbachtalsperre"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Vorsperre_Gr_Dhuenn_Entnahmeturm"/>
+        <sos:procedure xlink:href="Speicherfuellstand_Wupper-Talsperre"/>
+        <sos:procedure xlink:href="Speicherinhalt_Bever-Talsperre_Windenhaus"/>
+        <sos:procedure xlink:href="Speicherinhalt_Beyenburg_Stausee"/>
+        <sos:procedure xlink:href="Speicherinhalt_Brucher-Talsperre"/>
+        <sos:procedure xlink:href="Speicherinhalt_Dahlhausen_Stauweiher"/>
+        <sos:procedure xlink:href="Speicherinhalt_Eschbach-Talsperre"/>
+        <sos:procedure xlink:href="Speicherinhalt_Hauptsperre_Gr_Dhuenn"/>
+        <sos:procedure xlink:href="Speicherinhalt_Lingese-Talsperre_Staumauer"/>
+        <sos:procedure xlink:href="Speicherinhalt_Neye-Talsperre"/>
+        <sos:procedure xlink:href="Speicherinhalt_Ronsdorfer_Talsperre_Staumauer"/>
+        <sos:procedure xlink:href="Speicherinhalt_Schevelinger_Talsperre"/>
+        <sos:procedure xlink:href="Speicherinhalt_Vorsperre_Gr_Dhuenn_Entnahmeturm"/>
+        <sos:procedure xlink:href="Speicherinhalt_Wupper-Talsperre"/>
+        <sos:procedure xlink:href="Wasserstand_Beyenburg_Ablaufpegel"/>
+        <sos:procedure xlink:href="Wasserstand_Dahlhausen_Stauweiher"/>
+        <sos:procedure xlink:href="Wasserstand_Haecksbilstein"/>
+        <sos:procedure xlink:href="Wasserstand_Hangbergermuehle_Doerpe-Vorsperre"/>
+        <sos:procedure xlink:href="Wasserstand_HKW_Barmen"/>
+        <sos:procedure xlink:href="Wasserstand_Holzwipper"/>
+        <sos:procedure xlink:href="Wasserstand_Hueckeswagen"/>
+        <sos:procedure xlink:href="Wasserstand_Kabelbruecke"/>
+        <sos:procedure xlink:href="Wasserstand_Kellershammer"/>
+        <sos:procedure xlink:href="Wasserstand_Kluserbruecke"/>
+        <sos:procedure xlink:href="Wasserstand_Krebsoege"/>
+        <sos:procedure xlink:href="Wasserstand_Laaken"/>
+        <sos:procedure xlink:href="Wasserstand_Leimbach"/>
+        <sos:procedure xlink:href="Wasserstand_Loosenau_Ablaufpegel"/>
+        <sos:procedure xlink:href="Wasserstand_Manfort"/>
+        <sos:procedure xlink:href="Wasserstand_Muellensiepen_Zulaufpegel"/>
+        <sos:procedure xlink:href="Wasserstand_Neye-Talsperre__Tagesmittelwert"/>
+        <sos:procedure xlink:href="Wasserstand_Opladen"/>
+        <sos:procedure xlink:href="Wasserstand_Opladen__2-Minuten-Takt"/>
+        <sos:procedure xlink:href="Wasserstand_Opladen__Tagesmittelwert"/>
+        <sos:procedure xlink:href="Wasserstand_Opladen__Tagesmittelwert_um_17-00_Uhr"/>
+        <sos:procedure xlink:href="Wasserstand_Papiermuehlenbach"/>
+        <sos:procedure xlink:href="Wasserstand_Reinshagensbever"/>
+        <sos:procedure xlink:href="Wasserstand_Rutenbeck"/>
+        <sos:procedure xlink:href="Wasserstand_Schlebusch"/>
+        <sos:procedure xlink:href="Wasserstand_Schmitzwipper"/>
+        <sos:procedure xlink:href="Wasserstand_Stoecken"/>
+        <sos:procedure xlink:href="Wasserstand_Ueberleitung_Neye-Bever"/>
+        <sos:procedure xlink:href="Wasserstand_Unterburg-Eschbach"/>
+        <sos:procedure xlink:href="Wasserstand_Unterburg-Eschbach__2-Minuten-Takt"/>
+        <sos:procedure xlink:href="Wasserstand_Unterburg-Wupper"/>
+        <sos:procedure xlink:href="Wasserstand_Wipperfliess_Ablaufpegel"/>
+        <sos:observedProperty xlink:href="Wasserstand"/>
+        <sos:observedProperty xlink:href="Abfluss"/>
+        <sos:observedProperty xlink:href="Speicherinhalt"/>
+        <sos:observedProperty xlink:href="Speicherfuellstand"/>
+        <sos:featureOfInterest xlink:href="Bever-Talsperre_Windenhaus"/>
+        <sos:featureOfInterest xlink:href="Beyenburg_Ablaufpegel"/>
+        <sos:featureOfInterest xlink:href="Beyenburg_Stausee"/>
+        <sos:featureOfInterest xlink:href="Brucher-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Dahlhausen_Stauweiher"/>
+        <sos:featureOfInterest xlink:href="Eschbach-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Haecksbilstein"/>
+        <sos:featureOfInterest xlink:href="Hangbergermuehle_Doerpe-Vorsperre"/>
+        <sos:featureOfInterest xlink:href="Hauptsperre_Gr_Dhuenn"/>
+        <sos:featureOfInterest xlink:href="HKW_Barmen"/>
+        <sos:featureOfInterest xlink:href="Holzwipper"/>
+        <sos:featureOfInterest xlink:href="Hueckeswagen"/>
+        <sos:featureOfInterest xlink:href="Kabelbruecke"/>
+        <sos:featureOfInterest xlink:href="Kellershammer"/>
+        <sos:featureOfInterest xlink:href="Kluserbruecke"/>
+        <sos:featureOfInterest xlink:href="Krebsoege"/>
+        <sos:featureOfInterest xlink:href="Laaken"/>
+        <sos:featureOfInterest xlink:href="Leimbach"/>
+        <sos:featureOfInterest xlink:href="Lingese-Talsperre_Staumauer"/>
+        <sos:featureOfInterest xlink:href="Loosenau_Ablaufpegel"/>
+        <sos:featureOfInterest xlink:href="Manfort"/>
+        <sos:featureOfInterest xlink:href="Muellensiepen_Zulaufpegel"/>
+        <sos:featureOfInterest xlink:href="Neye-Talsperre"/>
+        <sos:featureOfInterest xlink:href="Opladen"/>
+        <sos:featureOfInterest xlink:href="Papiermuehlenbach"/>
+        <sos:featureOfInterest xlink:href="Reinshagensbever"/>
+        <sos:featureOfInterest xlink:href="Ronsdorfer_Talsperre_Staumauer"/>
+        <sos:featureOfInterest xlink:href="Rutenbeck"/>
+        <sos:featureOfInterest xlink:href="Schevelinger_Talsperre"/>
+        <sos:featureOfInterest xlink:href="Schlebusch"/>
+        <sos:featureOfInterest xlink:href="Schmitzwipper"/>
+        <sos:featureOfInterest xlink:href="Sengbachtalsperre"/>
+        <sos:featureOfInterest xlink:href="Stoecken"/>
+        <sos:featureOfInterest xlink:href="Ueberleitung_Neye-Bever"/>
+        <sos:featureOfInterest xlink:href="Unterburg-Eschbach"/>
+        <sos:featureOfInterest xlink:href="Unterburg-Wupper"/>
+        <sos:featureOfInterest xlink:href="Vorsperre_Gr_Dhuenn_Entnahmeturm"/>
+        <sos:featureOfInterest xlink:href="Wipperfliess_Ablaufpegel"/>
+        <sos:featureOfInterest xlink:href="Wupper-Talsperre"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:responseFormat>application/zip</sos:responseFormat>
+        <sos:responseFormat>image/jpeg</sos:responseFormat>
+        <sos:responseFormat>application/vnd.google-earth.kml+xml</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>
+    </sos:ObservationOfferingList>
+  </sos:Contents>
+</sos:Capabilities>

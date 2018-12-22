@@ -81,7 +81,7 @@ test_that("observed properties are parsed correctly from capabilities", {
     obs_prop_off1 <- obs_prop[[1]]
     
     expect_equal(length(obs_prop), 1)
-    expect_equal(obs_prop[[1]], "WaterQuality")
+    expect_equal(obs_prop[[1]][[1]], "WaterQuality")
     # or should the components be listed?
     #expect_equal(obs_prop[[1]], "urn:ogc:def:property:OGC-SWE:1:STN_ID")
 })
@@ -159,5 +159,17 @@ test_that("offering id is parsed correctly", {
 context("parsing: SOS Capabilities 2.0.0")
 
 testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
-axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
+sos200Caps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
 
+context("parsing: SOS Capabilities 2.0.0 swes:offering")
+
+testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+
+test_that("offering is parsed correctly", {
+  .obs <- parseSosObservationOffering_200(xmlRoot(xmlParseDoc("../xml-elements/swes-offering1.xml")), testsos)
+  expect_equal(.obs@id, "ws2500")
+  #TODO test other parameters
+})
+ 
+testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
+axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_100_Example.xml"), testsos)

@@ -187,7 +187,7 @@
 \alias{sosOperations,SOS-method}
 \alias{sosOperations,OwsCapabilities-method}
 \alias{sosOperations,SosCapabilities_1.0.0-method}
-\alias{sosOperations,SosCapabilities_2.0-method}
+\alias{sosOperations,SosCapabilities_2.0.0-method}
 
 \alias{sosGetDCP}
 \alias{sosGetDCP,SOS,character-method}
@@ -219,6 +219,14 @@
 \alias{sosCapabilitiesUrl-method}
 \alias{sosCapabilitiesUrl,SOS-method}
 
+\alias{SOS_Test}
+\alias{SOS_Test-class}
+
+% Version 2.0.0
+\alias{sosName,SosGetObservation_2.0.0-method}
+\alias{sosName,SosGetFeatureOfInterest_2.0.0-method}
+\alias{sosProcedures,SosObservationOffering_2.0.0-method}
+\alias{sosResponseFormats,SosObservationOffering_2.0.0-method}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -298,7 +306,14 @@ SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
 	curlOptions = list(), curlHandle = getCurlHandle(),
 	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
 	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
-	additionalKVPs = list, ...)
+	additionalKVPs = list(), ...)
+
+SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version, 
+         parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
+         dataFieldConverters = SosDataFieldConvertingFunctions(),
+         timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, 
+         switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
+         additionalKVPs = list(), ...)
 
 # accessor methods ...
 }
@@ -319,6 +334,7 @@ SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
   \item{dcpFilter}{See the corresponding slot description.}
   \item{additionalKVPs}{See the corresponding slot description.}
   \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
+  \item{name}{Name of the test SOS class.}
 }
 
 \value{The construction functions returns an object of class \code{\link{SOS-class}}.}
@@ -366,7 +382,8 @@ sosCapabilitiesUrl(mysos)
 SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
 		useDCPs = FALSE)
 		
-# create a SOS using only the DCPs from the capabilities that match a specific pattern with the default binding
+# create a SOS using only the DCPs from the capabilities that match a specific 
+# pattern with the default binding
 SOS(url = "http://localhost:8080/52n-sos/sos/service",
 		dcpFilter = list("POX" = "/pox"))
 }

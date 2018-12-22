@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swes:offering xmlns:sos="http://www.opengis.net/sos/2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+	xsi:schemaLocation="http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+	<sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+		<swes:identifier>ws2500</swes:identifier>
+		<swes:procedure>ws2500</swes:procedure>
+		<swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+		<swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+		<swes:observableProperty>AirTemperature</swes:observableProperty>
+		<swes:observableProperty>AthmosphericPressure</swes:observableProperty>
+		<swes:observableProperty>Dewpoint</swes:observableProperty>
+		<swes:observableProperty>Humidity</swes:observableProperty>
+		<swes:observableProperty>Luminance</swes:observableProperty>
+		<swes:observableProperty>RainfallAccumulated</swes:observableProperty>
+		<swes:observableProperty>Sunshine</swes:observableProperty>
+		<swes:observableProperty>WindDirection</swes:observableProperty>
+		<swes:observableProperty>WindSpeed</swes:observableProperty>
+		<swes:observableProperty>Windchill</swes:observableProperty>
+		<swes:relatedFeature>
+			<swes:FeatureRelationship>
+				<swes:target xlink:href="ELV-WS2500" />
+			</swes:FeatureRelationship>
+		</swes:relatedFeature>
+		<sos:observedArea>
+			<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+				<gml:lowerCorner>51.934814453125 7.652428150177</gml:lowerCorner>
+				<gml:upperCorner>51.934814453125 7.652428150177002</gml:upperCorner>
+			</gml:Envelope>
+		</sos:observedArea>
+		<sos:phenomenonTime>
+			<gml:TimePeriod gml:id="phenomenonTime_1">
+				<gml:beginPosition>2015-05-18T08:35:00.000Z</gml:beginPosition>
+				<gml:endPosition>2015-12-02T12:00:00.000Z</gml:endPosition>
+			</gml:TimePeriod>
+		</sos:phenomenonTime>
+		<sos:resultTime>
+			<gml:TimePeriod gml:id="resultTime_1">
+				<gml:beginPosition>2015-05-18T13:35:00.000Z</gml:beginPosition>
+				<gml:endPosition>2015-12-02T12:00:00.000Z</gml:endPosition>
+			</gml:TimePeriod>
+		</sos:resultTime>
+		<sos:responseFormat>application/json</sos:responseFormat>
+		<sos:responseFormat>http://dd.eionet.europa.eu/schemaset/id2011850eu-1.0
+		</sos:responseFormat>
+		<sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+		<sos:responseFormat>http://www.opengis.net/waterml-dr/2.0
+		</sos:responseFormat>
+		<sos:responseFormat>http://www.opengis.net/waterml/2.0
+		</sos:responseFormat>
+		<sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement
+		</sos:observationType>
+		<sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint
+		</sos:featureOfInterestType>
+		<sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPolygon
+		</sos:featureOfInterestType>
+	</sos:ObservationOffering>
+</swes:offering>

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2013 by 52°North                                               #
+# Copyright (C) 2016 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -21,15 +21,28 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
-# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2013-03-06                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
-#                                                                              #
+# Author: Benjamin Pross (b.pross@52north.org)                                 #
+# Created: 2016-01-27                                                          #
+# Project: sos4R - visit the project web page,                                 #
+#      http://52north.org/communities/sensorweb/clients/sos4R/                 #
 ################################################################################
 
-
-twozero <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox", version = "2.0.0",
-							 binding = "POX",
-							 dcpFilter = list("POX" = "/pox"))
-summary(twozero)
-sosCapabilitiesDocumentOriginal(twozero, verbose = TRUE)
+#
+# parse gml:pos from wml2:MonitoringPoint 
+#
+parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
+  
+  .sampledFeatures <- list(obj[saSampledFeatureName])
+  
+  .id <-xmlGetAttr(node = obj, name = "id", default = NA_character_)
+  
+  .names <- list(obj[gmlNameName])
+  
+  .identifier <- list(obj[gmlIdentifierName])
+  
+  .shape <- parseSamsShape(obj[samsShapeName], sos)
+  
+  .mp <- MonitoringPoint(.sampledFeatures, .id, .identifier, .names, .shape)
+  
+  return(.mp)
+}

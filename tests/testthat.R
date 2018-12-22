@@ -29,4 +29,4 @@
 
 # http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
 library("testthat")
-test_package("sos4R")
+test_check("sos4R")

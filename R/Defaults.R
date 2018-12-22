@@ -42,95 +42,100 @@ sosDefaultServiceVersion <- sos100_version
 # sos4R or quality of data, accessible using accessor/getter function.
 #
 .sosExampleServices <- list(
-		"http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-		"http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos",
-		"http://giv-uw.uni-muenster.de:8080/AQE/sos",
-		"http://mmisw.org/oostethys/sos",
-		"http://sdf.ndbc.noaa.gov/sos/server.php"
-		)
+  "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
+  "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos",
+  "http://giv-uw.uni-muenster.de:8080/AQE/sos",
+  "http://mmisw.org/oostethys/sos",
+  "http://sdf.ndbc.noaa.gov/sos/server.php"
+)
 names(.sosExampleServices) <- list(
-		"52 North SOS: Weather Data, station at IFGI, Muenster, Germany",
-		"52 North SOS: Water gauge data for Germany",
-		"52 North SOS: Air Quality Data for Europe",
-		"OOTethys SOS: Marine Metadata Interoperability Initiative (MMI)",
-		"NOAA SOS: "
-		)
+  "52 North SOS: Weather Data, station at IFGI, Muenster, Germany",
+  "52 North SOS: Water gauge data for Germany",
+  "52 North SOS: Air Quality Data for Europe",
+  "OOTethys SOS: Marine Metadata Interoperability Initiative (MMI)",
+  "NOAA SOS: "
+)
 SosExampleServices <- function() {
-	return(.sosExampleServices)
+  return(.sosExampleServices)
 }
 
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
 .createDefaultParsers <- function() {
-	.defP <- list(
-			parseSosCapabilities,
-			parseSensorML,
-			parseOM,
-			parseOM,
-			parseOwsExceptionReport,
-			#
-			parseMeasurement,
-			parseObservationProperty,
-			parseObservation,
-			parseObservationCollection,
-			parseResult,
-			parseDataArray,
-			parseElementType,
-			parseEncoding,
-			parseValues,
-			parseSwePosition,
-			parseLocation,
-			parseVector,
-			parseCoordinate,
-			#
-			parseGeometryObservation,
-			parseCategoryObservation,
-			parseCountObservation,
-			parseTruthObservation,
-			parseTemporalObservation,
-			parseComplexObservation,
-			#
-			parseCSV,
-			parseOM,
-			parseKML,
-			parseKML,
-			parseOM)
-
-	names(.defP) <- list(
-			sosGetCapabilitiesName,
-			sosDescribeSensorName,
-			sosGetObservationName,
-			sosGetObservationByIdName,
-			owsExceptionReportName,
-			#
-			omMeasurementName,
-			omMemberName,
-			omObservationName,
-			omObservationCollectionName,
-			omResultName,
-			sweDataArrayName,
-			sweElementTypeName,
-			sweEncodingName,
-			sweValuesName,
-			swePositionName,
-			sweLocationName,
-			sweVectorName,
-			sweCoordinateName,
-			#
-			omGeometryObservationName,
-			omCategoryObservationName,
-			omCountObservationName,
-			omTruthObservationName,
-			omTemporalObservationName,
-			omComplexObservationName,
-			#
-			mimeTypeCSV,
-			mimeTypeOM,
-			mimeTypeKML,
-			kmlName,
-			mimeTypeXML)
-
-	return(.defP)
+  .defP <- list(
+    parseSosCapabilities,
+    parseSensorML,
+    parseOM,
+    parseGetObservationResponse,
+    parseGetFeatureOfInterestResponse,
+    parseOM,
+    parseOwsExceptionReport,
+    #
+    parseMeasurement,
+    parseObservationProperty,
+    parseObservation,
+    parseObservationCollection,
+    parseResult,
+    parseDataArray,
+    parseElementType,
+    parseEncoding,
+    parseValues,
+    parseSwePosition,
+    parseLocation,
+    parseVector,
+    parseCoordinate,
+    #
+    parseGeometryObservation,
+    parseCategoryObservation,
+    parseCountObservation,
+    parseTruthObservation,
+    parseTemporalObservation,
+    parseComplexObservation,
+    #
+    parseCSV,
+    parseOM,
+    parseKML,
+    parseKML,
+    parseOM)
+  
+  names(.defP) <- list(
+    sosGetCapabilitiesName,
+    sosDescribeSensorName,
+    sosGetObservationName,
+    sosGetObservationResponseName,
+    sosGetFeatureOfInterestResponseName,
+    sosGetObservationByIdName,
+    #sosGetFeatureOfInterestResponseName,
+    owsExceptionReportName,
+    #
+    omMeasurementName,
+    omMemberName,
+    omObservationName,
+    omObservationCollectionName,
+    omResultName,
+    sweDataArrayName,
+    sweElementTypeName,
+    sweEncodingName,
+    sweValuesName,
+    swePositionName,
+    sweLocationName,
+    sweVectorName,
+    sweCoordinateName,
+    #
+    omGeometryObservationName,
+    omCategoryObservationName,
+    omCountObservationName,
+    omTruthObservationName,
+    omTemporalObservationName,
+    omComplexObservationName,
+    #
+    mimeTypeCSV,
+    mimeTypeOM,
+    mimeTypeKML,
+    kmlName,
+    mimeTypeXML)
+  
+  return(.defP)
 }
 
 .sosDefaultParsers <- .createDefaultParsers()
@@ -139,203 +144,207 @@ SosExampleServices <- function() {
 # one way of encoding something (in contrast to parsing). So the different
 # objects (and versions) override the respective encoding functions.
 .sosDefaultEncoders <- list(
-		encodeRequestKVP,
-		encodeRequestXML,
-		encodeRequestSOAP,
-		encodeRequestXML,
-		encodeRequestKVP)
+  encodeRequestKVP,
+  encodeRequestXML,
+  encodeRequestSOAP,
+  encodeRequestXML,
+  encodeRequestKVP)
 names(.sosDefaultEncoders) <- list(
-		.sosConnectionMethodGet_Deprecated,
-		.sosConnectionMethodPost_Deprecated,
-		.sosBindingSOAP,
-		.sosBindingPOX,
-		.sosBindingKVP
-		)
+  .sosConnectionMethodGet_Deprecated,
+  .sosConnectionMethodPost_Deprecated,
+  .sosBindingSOAP,
+  .sosBindingPOX,
+  .sosBindingKVP
+)
 
 #
 #
 #
 .sosDefaultFieldConverters <- list(
-		sosConvertTime,
-		sosConvertTime,
-		sosConvertTime,
-		sosConvertTime,
-		sosConvertTime,
-		sosConvertTime,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertDouble,
-		sosConvertString, # urn:ogc:data:feature
-		sosConvertString,
-		sosConvertDouble,
-		sosConvertTime,
-		sosConvertDouble,
-		sosConvertDouble,
-		# 52N SOS 4.x
-		sosConvertTime
-		)
+  sosConvertDouble,
+  sosConvertTime,
+  sosConvertTime,
+  sosConvertTime,
+  sosConvertTime,
+  sosConvertTime,
+  sosConvertTime,
+  sosConvertTime,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertDouble,
+  sosConvertString, # urn:ogc:data:feature
+  sosConvertString,
+  sosConvertDouble,
+  sosConvertTime,
+  sosConvertDouble,
+  sosConvertDouble,
+  # 52N SOS 4.x
+  sosConvertTime
+)
 names(.sosDefaultFieldConverters) <- list(
-		"urn:ogc:data:time:iso8601",
-		"urn:ogc:property:time:iso8601",
-		"urn:ogc:phenomenon:time:iso8601",
-		"http://www.opengis.net/def/property/OGC/0/SamplingTime",
-		"urn:ogc:def:parameter:x-istsos:1.0:time:iso8601",
-		sosTimeName,
-		"m", # meter
-		"m2", # square meter
-		"m3", # cubic meter
-		"s", # second
-		"ms", # millisecond
-		"us", # microsecond
-		"g", # gram
-		"rad", # radian
-		"K", # Kelvin
-		"C", # Coulomb
-		"cd", # candela
-		"%", # percent
-		"ppth", # parts per thousand
-		"ppm", # parts per million
-		"ppb", # parts per billion
-		"pptr", # parts per trillion
-		"mol", # mole
-		"sr", # steradian
-		"Hz", # Hertz
-		"N", # Newton
-		"Pa", # Pascal (pressure)
-		"J", # Joule (energy)
-		"W", # Watt (power)
-		"A", # Ampere (electric current)
-		"V", # Volt
-		"F", # Farad
-		"Ohm", # Ohm
-		"S", # Siemens
-		"Wb", # Weber
-		"Cel", # degree Celsius
-		"T", # Tesla (magnetic flux density)
-		"H", # Henry (inductance)
-		"lm", # lumen (luminous flux)
-		"lx", # lux (illuminance)
-		"Bq", # Becquerel (radioactivity)
-		"Gy", # Gray (energy dose)
-		"Sv", # Sievert (dose equivalent)
-		"gon", # gon, grade
-		"deg", # degree
-		"'", # minute
-		"''", # second
-		"l", # liter
-		"L", # liter
-		"ar", # are (area)
-		"t", # tonne (mass)
-		"bar", # bar (pressure)
-		"u", # unified atomic mass unit (mass)
-		"eV", # electronvolt (energy)
-		"AU", # astronomic unit (length)
-		"pc", # parsec (length)
-		"degF", # degree Fahrenheit
-		"hPa", # hektopascal
-		"mm", # millimeter
-		"nm", # nanometer
-		"cm", # centimeter
-		"km", # kilometer
-		"m/s", # meter per second
-		"m2/s", # square meter per second
-		"m3/s", # cubic meter per second
-		"kg", # kilogramm
-		"mg", # milligram
-		"uom", # fallback if actual unit is not given
-		"urn:ogc:data:feature",
-		"http://www.opengis.net/def/property/OGC/0/FeatureOfInterest",
-		"ug/m3", # micrograms per cubic meter
-		"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
-		"degC", # degree celsius
-		"°C", # degree Celsius
-		# 52N SOS 4.x
-		"http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
-		)
+  "fallBack",
+  "urn:ogc:data:time:iso8601",
+  "urn:ogc:property:time:iso8601",
+  "urn:ogc:phenomenon:time:iso8601",
+  "http://www.opengis.net/def/property/OGC/0/SamplingTime",
+  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime",
+  "urn:ogc:def:parameter:x-istsos:1.0:time:iso8601",
+  sosTimeName,
+  "m", # meter
+  "m2", # square meter
+  "m3", # cubic meter
+  "s", # second
+  "ms", # millisecond
+  "us", # microsecond
+  "g", # gram
+  "rad", # radian
+  "K", # Kelvin
+  "C", # Coulomb
+  "cd", # candela
+  "%", # percent
+  "ppth", # parts per thousand
+  "ppm", # parts per million
+  "ppb", # parts per billion
+  "pptr", # parts per trillion
+  "mol", # mole
+  "sr", # steradian
+  "Hz", # Hertz
+  "N", # Newton
+  "Pa", # Pascal (pressure)
+  "J", # Joule (energy)
+  "W", # Watt (power)
+  "A", # Ampere (electric current)
+  "V", # Volt
+  "F", # Farad
+  "Ohm", # Ohm
+  "S", # Siemens
+  "Wb", # Weber
+  "Cel", # degree Celsius
+  "T", # Tesla (magnetic flux density)
+  "H", # Henry (inductance)
+  "lm", # lumen (luminous flux)
+  "lx", # lux (illuminance)
+  "Bq", # Becquerel (radioactivity)
+  "Gy", # Gray (energy dose)
+  "Sv", # Sievert (dose equivalent)
+  "gon", # gon, grade
+  "deg", # degree
+  "'", # minute
+  "''", # second
+  "l", # liter
+  "L", # liter
+  "ar", # are (area)
+  "t", # tonne (mass)
+  "bar", # bar (pressure)
+  "u", # unified atomic mass unit (mass)
+  "eV", # electronvolt (energy)
+  "AU", # astronomic unit (length)
+  "pc", # parsec (length)
+  "degF", # degree Fahrenheit
+  "hPa", # hektopascal
+  "mm", # millimeter
+  "nm", # nanometer
+  "cm", # centimeter
+  "km", # kilometer
+  "m/s", # meter per second
+  "m2/s", # square meter per second
+  "m3/s", # cubic meter per second
+  "kg", # kilogramm
+  "mg", # milligram
+  "uom", # fallback if actual unit is not given
+  "urn:ogc:data:feature",
+  "http://www.opengis.net/def/property/OGC/0/FeatureOfInterest",
+  "ug/m3", # micrograms per cubic meter
+  "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
+  "degC", # degree celsius
+  "°C", # degree Celsius
+  # 52N SOS 4.x
+  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
+)
 
 
 ################################################################################
 # access methods
 #
 SosDataFieldConvertingFunctions <- function (..., include = character(0),
-		exclude = character(0)) {
-	.merge(els = list(...), defaults = .sosDefaultFieldConverters,
-			include = include, exclude = exclude)
+                                             exclude = character(0)) {
+  .merge(els = list(...), defaults = .sosDefaultFieldConverters,
+         include = include, exclude = exclude)
 }
 
 SosDefaultBinding <- function() {
-	return(.sosBindingPOX)
+  return(.sosBindingPOX)
 }
 
 SosEncodingFunctions <- function (..., include = character(0),
-		exclude = character(0)) {
-	.merge(els = list(...), defaults = .sosDefaultEncoders,
-			include = include, exclude = exclude)
+                                  exclude = character(0)) {
+  .merge(els = list(...), defaults = .sosDefaultEncoders,
+         include = include, exclude = exclude)
 }
 
 SosParsingFunctions <- function (..., include = character(0),
-		exclude = character(0)) {
-	.merge(els = list(...), defaults = .sosDefaultParsers,
-			include = include, exclude = exclude)
+                                 exclude = character(0)) {
+  .merge(els = list(...), defaults = .sosDefaultParsers,
+         include = include, exclude = exclude)
 }
 
 #
@@ -347,29 +356,29 @@ SosParsingFunctions <- function (..., include = character(0),
 #			THEN inclusion, THEN exclusion
 #
 .merge <- function (els, defaults, include = NULL, exclude = NULL) {
-	if (length(els) > 0) {
-		# which elements are given?
-		.which <- match(names(defaults), names(els))
-#		cat("given names: ", names(defaults))
-		# add defaults (including names) for all that are not given
-		.missing <- is.na(.which)
-		.missingNames <- names(defaults)[.missing]
-#		cat("missing names: ", .missingNames)
-		els[.missingNames] <- defaults[.missing]
-	}
-	# no replacements given, base in-/exclusion on all defaults
-	else els <- defaults
-
-	if (length(include)) {
-		els <- els[include]
-	}
-	else if (length(exclude)) {
-		.which <- match(exclude, names(els))
-		if (any(!is.na(.which)))
-			els <- els[-(.which[!is.na(.which)])]
-	}
-
-	return(els)
+  if (length(els) > 0) {
+    # which elements are given?
+    .which <- match(names(defaults), names(els))
+    #		cat("given names: ", names(defaults))
+    # add defaults (including names) for all that are not given
+    .missing <- is.na(.which)
+    .missingNames <- names(defaults)[.missing]
+    #		cat("missing names: ", .missingNames)
+    els[.missingNames] <- defaults[.missing]
+  }
+  # no replacements given, base in-/exclusion on all defaults
+  else els <- defaults
+  
+  if (length(include)) {
+    els <- els[include]
+  }
+  else if (length(exclude)) {
+    .which <- match(exclude, names(els))
+    if (any(!is.na(.which)))
+      els <- els[-(.which[!is.na(.which)])]
+  }
+  
+  return(els)
 }
 
 #
@@ -378,23 +387,23 @@ SosParsingFunctions <- function (..., include = character(0),
 # a new SOS instance.
 #
 parseNoParsing <- function(obj) {
-	return(obj)
+  return(obj)
 }
 .sosDisabledParsers <- list(
-		parseSosCapabilities, # if this is removed, no more SOS instances can be created!
-		parseNoParsing,
-		parseNoParsing,
-		parseNoParsing,
-		parseNoParsing)
+  parseSosCapabilities, # if this is removed, no more SOS instances can be created!
+  parseNoParsing,
+  parseNoParsing,
+  parseNoParsing,
+  parseNoParsing)
 names(.sosDisabledParsers) <- list(
-		sosGetCapabilitiesName,
-		sosDescribeSensorName,
-		sosGetObservationName,
-		sosGetObservationByIdName,
-		owsExceptionReportName)
+  sosGetCapabilitiesName,
+  sosDescribeSensorName,
+  sosGetObservationName,
+  sosGetObservationByIdName,
+  owsExceptionReportName)
 SosDisabledParsers <- function() {
-#	attributes(.sosDisabledParsers) <- list("isDisabledParsers" = TRUE)
-	return(.sosDisabledParsers)
+  #	attributes(.sosDisabledParsers) <- list("isDisabledParsers" = TRUE)
+  return(.sosDisabledParsers)
 }
 #.isDisabledParsers <- function(obj) {
 #	.b <- attributes(obj)[["isDisabledParsers"]]
@@ -406,9 +415,9 @@ SosDisabledParsers <- function() {
 #
 #
 SosResetParsingFunctions <- function(sos) {
-	sos@parsers <- .createDefaultParsers()
-
-	return(sos)
+  sos@parsers <- .createDefaultParsers()
+  
+  return(sos)
 }
 
 ################################################################################
@@ -434,8 +443,8 @@ sosDefaultColumnNameSRS <- "SRS"
 
 # Created by library(RColorBrewer); brewer.pal(12, "Paired")
 sosDefaultColorPalette <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
-		"#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A",
-		"#FFFF99", "#B15928")
+                            "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A",
+                            "#FFFF99", "#B15928")
 
 sosDefaultReferenceFrameSensorDescription <- "urn:ogc:def:crs:EPSG:4326"
 
@@ -446,58 +455,58 @@ sosDefaultGetBindingParamLatest <- NA_character_ # e.g. time=latest
 #
 #
 SosDefaults <- function() {
-	.defaults <- list(sosDefaultCharacterEncoding,
-			sosDefaultDescribeSensorOutputFormat,
-			sosDefaultGetCapSections,
-			sosDefaultGetCapAcceptFormats,
-			sosDefaultGetCapOwsVersion,
-			sosDefaultGetObsResponseFormat,
-			sosDefaultTimeFormat,
-			sosDefaultFilenameTimeFormat,
-			sosDefaultTempOpPropertyName,
-			sosDefaultTemporalOperator,
-			sosDefaultSpatialOpPropertyName,
-			sosDefaultColumnNameFeatureIdentifier,
-			sosDefaultColumnNameLat,
-			sosDefaultColumnNameLon,
-			sosDefaultColumnNameSRS,
-			sosDefaultReferenceFrameSensorDescription,
-			sosDefaultGetBindingParamLatest)
-	names(.defaults) <- list("sosDefaultCharacterEncoding",
-			"sosDefaultDescribeSensorOutputFormat",
-			"sosDefaultGetCapSections",
-			"sosDefaultGetCapAcceptFormats",
-			"sosDefaultGetCapOwsVersion",
-			"sosDefaultGetObsResponseFormat",
-			"sosDefaultTimeFormat",
-			"sosDefaultFilenameTimeFormat",
-			"sosDefaultTempOpPropertyName",
-			"sosDefaultTemporalOperator",
-			"sosDefaultSpatialOpPropertyName",
-			"sosDefaultColumnNameFeatureIdentifier",
-			"sosDefaultColumnNameLat",
-			"sosDefaultColumnNameLon",
-			"sosDefaultColumnNameSRS",
-			"sosDefaultReferenceFrameSensorDescription",
-			"sosDefaultGetBindingParamLatest")
-
-	return(.defaults)
+  .defaults <- list(sosDefaultCharacterEncoding,
+                    sosDefaultDescribeSensorOutputFormat,
+                    sosDefaultGetCapSections,
+                    sosDefaultGetCapAcceptFormats,
+                    sosDefaultGetCapOwsVersion,
+                    sosDefaultGetObsResponseFormat,
+                    sosDefaultTimeFormat,
+                    sosDefaultFilenameTimeFormat,
+                    sosDefaultTempOpPropertyName,
+                    sosDefaultTemporalOperator,
+                    sosDefaultSpatialOpPropertyName,
+                    sosDefaultColumnNameFeatureIdentifier,
+                    sosDefaultColumnNameLat,
+                    sosDefaultColumnNameLon,
+                    sosDefaultColumnNameSRS,
+                    sosDefaultReferenceFrameSensorDescription,
+                    sosDefaultGetBindingParamLatest)
+  names(.defaults) <- list("sosDefaultCharacterEncoding",
+                           "sosDefaultDescribeSensorOutputFormat",
+                           "sosDefaultGetCapSections",
+                           "sosDefaultGetCapAcceptFormats",
+                           "sosDefaultGetCapOwsVersion",
+                           "sosDefaultGetObsResponseFormat",
+                           "sosDefaultTimeFormat",
+                           "sosDefaultFilenameTimeFormat",
+                           "sosDefaultTempOpPropertyName",
+                           "sosDefaultTemporalOperator",
+                           "sosDefaultSpatialOpPropertyName",
+                           "sosDefaultColumnNameFeatureIdentifier",
+                           "sosDefaultColumnNameLat",
+                           "sosDefaultColumnNameLon",
+                           "sosDefaultColumnNameSRS",
+                           "sosDefaultReferenceFrameSensorDescription",
+                           "sosDefaultGetBindingParamLatest")
+  
+  return(.defaults)
 }
 
 SosDefaults2 <- function (...) {
-	.merge(els = list(...), defaults = SosDefaults())
+  .merge(els = list(...), defaults = SosDefaults())
 }
 
 #
 #
 #
 SosDefaultDCPs <- function() {
-	.defaults <- list()
-	.names <- list()
-	for (.x in SosSupportedBindings()) {
-		.names <- c(.names, .x)
-		.defaults <- c(.defaults, "*")
-	}
-	names(.defaults) <- .names
-	return(.defaults)
+  .defaults <- list()
+  .names <- list()
+  for (.x in SosSupportedBindings()) {
+    .names <- c(.names, .x)
+    .defaults <- c(.defaults, "*")
+  }
+  names(.defaults) <- .names
+  return(.defaults)
 }

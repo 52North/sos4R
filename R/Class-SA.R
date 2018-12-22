@@ -37,42 +37,42 @@
 # 
 #
 setClass("SaSamplingPoint",
-		representation(sampledFeatures = "list",
-				position = "GmlPointProperty",
-				# optional:
-				relatedObservation = "list",
-				relatedSamplingFeature = "list",
-				surveyDetails = "ANY"),
-		prototype = list(sampledFeatures = list(NA), position = NULL),
-		contains = "GmlFeature",
-		validity = function(object) {
-			#print("Entering validation: SaSamplingPoint")
-			# TODO implement validity function
-			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observations must be OmObservationProperty
-			return(TRUE)
-		}
+         representation(sampledFeatures = "list",
+                        position = "GmlPointProperty",
+                        # optional:
+                        relatedObservation = "list",
+                        relatedSamplingFeature = "list",
+                        surveyDetails = "ANY"),
+         prototype = list(sampledFeatures = list(NA), position = NULL),
+         contains = "GmlFeature",
+         validity = function(object) {
+           #print("Entering validation: SaSamplingPoint")
+           # TODO implement validity function
+           # sampledFeatures list must contain > 0 gml:_Feature instances
+           # related observations must be OmObservationProperty
+           return(TRUE)
+         }
 )
 
 #
 #
 #
 setClass("SaSamplingSurface",
-		representation(sampledFeatures = "list",
-				shape = "ANY",
-				# optional:
-				relatedObservation = "list",
-				relatedSamplingFeature = "list",
-				surveyDetails = "ANY",
-				area = "ANY"),
-		prototype = list(sampledFeatures = list(NA), shape = NULL),
-		contains = "GmlFeature",
-		validity = function(object) {
-			#print("Entering validation: SaSamplingSurface")
-			# TODO implement validity function
-			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observations must be of type OmObservationProperty
-			return(TRUE)
-		}
+         representation(sampledFeatures = "list",
+                        shape = "ANY",
+                        # optional:
+                        relatedObservation = "list",
+                        relatedSamplingFeature = "list",
+                        surveyDetails = "ANY",
+                        area = "ANY"),
+         prototype = list(sampledFeatures = list(NA), shape = NULL),
+         contains = "GmlFeature",
+         validity = function(object) {
+           #print("Entering validation: SaSamplingSurface")
+           # TODO implement validity function
+           # sampledFeatures list must contain > 0 gml:_Feature instances
+           # related observations must be of type OmObservationProperty
+           return(TRUE)
+         }
 )
 
