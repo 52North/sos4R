@@ -113,7 +113,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>temporalOps</th>
-      <td><p>An object of class OgcBinaryTemporalOp-class to be wrapped by the sos:eventTime element.</p></td>
+      <td><p>An object of class <a href='OGC.html'>OgcBinaryTemporalOp-class</a> to be wrapped by the sos:eventTime element.</p></td>
     </tr>
     </table>
     
@@ -136,7 +136,7 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Specifies the time period(s) for which observations are requested. This allows a client to request observations from a specific instant, multiple instances or periods of time in the past, present and future. The supported range is listed in the selected offering capabilities. The objects of these classes are used in the GetObservation (paramter in GetObservation).</p>
+    <p>Specifies the time period(s) for which observations are requested. This allows a client to request observations from a specific instant, multiple instances or periods of time in the past, present and future. The supported range is listed in the selected offering capabilities. The objects of these classes are used in the GetObservation (paramter in <a href='GetObservation.html'>GetObservation</a>).</p>
 <p>The request for the latest observation is <b>not</b> standard conform. The distinction between the classes happens eventually during encoding, where both classes have different encoding functions.</p>
 <p>A typical example in a POST request:
 <code>
@@ -150,7 +150,7 @@
 	&lt;/ogc:TM_During&gt;
 &lt;/eventTime&gt;
 </code></p>
-<p>In GET binding (<code>SosBindings</code>) the eventTime is simply omitted for getting the latest observation.</p>
+<p>In GET binding (<code><a href='SosBindings.html'>SosBindings</a></code>) the eventTime is simply omitted for getting the latest observation.</p>
 <p>It is recommended to use the creation functions as shown in the examples.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -159,7 +159,7 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>See also <code>SosGetObservation-class</code>, <code>sosCreateEventTimeList-methods</code>.</p></div>
+    <div class='dont-index'><p>See also <code><a href='GetObservation.html'>SosGetObservation-class</a></code>, <code><a href='sosCreate.html'>sosCreateEventTimeList-methods</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -176,16 +176,16 @@
 #&gt; Class:   character</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># create SosEventTime for all times after the given time stamp</span>
-<span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010-01-01 12:00"</span>))
-<span class='no'>tOps</span> <span class='kw'>&lt;-</span> <span class='fu'>TM_After</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>timePosition</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
+<span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='GML.html'>GmlTimePosition</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010-01-01 12:00"</span>))
+<span class='no'>tOps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TM_Operators.html'>TM_After</a></span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='GML.html'>GmlTimeInstant</a></span>(<span class='kw'>timePosition</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
 <span class='no'>time1</span> <span class='kw'>&lt;-</span> <span class='fu'>SosEventTime</span>(<span class='no'>tOps</span>)
 
 <span class='co'># encode it as XML and KVP</span>
-<span class='fu'>encodeXML</span>(<span class='no'>time1</span>)
-<span class='fu'>encodeKVP</span>(<span class='no'>time1</span>)
+<span class='fu'><a href='encodeXML-methods.html'>encodeXML</a></span>(<span class='no'>time1</span>)
+<span class='fu'><a href='encodeKVP-methods.html'>encodeKVP</a></span>(<span class='no'>time1</span>)
 
 <span class='no'>time2</span> <span class='kw'>&lt;-</span> <span class='fu'>SosEventTimeLatest</span>()
-<span class='fu'>encodeXML</span>(<span class='no'>time2</span>)
+<span class='fu'><a href='encodeXML-methods.html'>encodeXML</a></span>(<span class='no'>time2</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

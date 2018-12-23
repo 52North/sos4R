@@ -147,7 +147,7 @@
     </tr>
     <tr>
       <th>eventTime</th>
-      <td><p>A list of objects of class SosEventTime-class which are added as <code>eventTime</code> elements to the request. Allows a client to request observations from a specific instant, multiple instances or periods of time in the past, present and future. The supported range is listed in the selected offering capabilities.</p></td>
+      <td><p>A list of objects of class <a href='SosEventTime.html'>SosEventTime-class</a> which are added as <code>eventTime</code> elements to the request. Allows a client to request observations from a specific instant, multiple instances or periods of time in the past, present and future. The supported range is listed in the selected offering capabilities.</p></td>
     </tr>
     <tr>
       <th>procedure</th>
@@ -155,11 +155,11 @@
     </tr>
     <tr>
       <th>featureOfInterest</th>
-      <td><p>An object of class SosFeatureOfInterest added to the request as the <code>featureOfInterest</code> element, or <code>NULL</code>. Specifies target feature for which observations are requested.</p></td>
+      <td><p>An object of class <a href='SosFeatureOfInterest.html'>SosFeatureOfInterest</a> added to the request as the <code>featureOfInterest</code> element, or <code>NULL</code>. Specifies target feature for which observations are requested.</p></td>
     </tr>
     <tr>
       <th>result</th>
-      <td><p>An object of class OgcComparisonOps-class added to the request as <code>result</code> element, or <code>NULL</code>, or any element that can be encoded using <code>encodeXML(...)</code> and then be added to an XML document with <code>addChildren(...)</code>. Filtering: Only report observations where the result matches this expression.</p></td>
+      <td><p>An object of class <a href='OGC.html'>OgcComparisonOps-class</a> added to the request as <code>result</code> element, or <code>NULL</code>, or any element that can be encoded using <code><a href='encodeXML-methods.html'>encodeXML(...)</a></code> and then be added to an XML document with <code>addChildren(...)</code>. Filtering: Only report observations where the result matches this expression.</p></td>
     </tr>
     <tr>
       <th>resultModel</th>
@@ -171,7 +171,7 @@
     </tr>
     <tr>
       <th>BBOX</th>
-      <td><p>A bounding box to be used only with <code>KVP</code> encoding in request via <code>HTTP GET</code>, in the format <samp>minlon,minlat,maxlon,maxlat,srsURI?</samp>, with the spatial reference system being optional. This element is ignored for <code>POST</code> requests, use the parameter <code>featureOfInterest</code> instead, see <code>SosBindings</code>.</p></td>
+      <td><p>A bounding box to be used only with <code>KVP</code> encoding in request via <code>HTTP GET</code>, in the format <samp>minlon,minlat,maxlon,maxlat,srsURI?</samp>, with the spatial reference system being optional. This element is ignored for <code>POST</code> requests, use the parameter <code>featureOfInterest</code> instead, see <code><a href='SosBindings.html'>SosBindings</a></code>.</p></td>
     </tr>
     </table>
     
@@ -182,7 +182,7 @@
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     <p></p><dl class='dl-horizontal'>
-    <dt><code>BBOX</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies a bounding box for spatial filtering to be applied in GET requests (only), see SosBindings</p></dd>
+    <dt><code>BBOX</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies a bounding box for spatial filtering to be applied in GET requests (only), see <a href='SosBindings.html'>SosBindings</a></p></dd>
     <dt><code>eventTime</code>:</dt><dd><p>Object of class <code>"list"</code>, specifies the time period(s) for which observations are requested.</p></dd>
     <dt><code>featureOfInterest</code>:</dt><dd><p>Object of class <code>"SosFeatureOfInterestOrNULL"</code>, specifies the feature for which observations are requested. This can either be represented by a reference to a feature ID advertised in the capabilities document or can be a spatial constraint</p></dd>
     <dt><code>observationId</code>:</dt><dd><p>Object of class <code>"character"</code>, the Id of the requested observation.</p></dd>
@@ -202,16 +202,16 @@
     <h2 class="hasAnchor" id="extends"><a class="anchor" href="#extends"></a>Extends</h2>
 
     <p><b>SosGetObservation:</b>
-Class <code>"OwsServiceOperation"</code>, directly.</p>
+Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
 <p><b>SosGetObservationById:</b>
-Class <code>"OwsServiceOperation"</code>, directly.</p>
+Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     <p></p><dl class='dl-horizontal'>
     <dt>checkRequest</dt><dd><p><code>signature(service = "SOS", operation = "SosGetObservationById", verbose = "logical")</code> or <code>signature(service = "SOS", operation = "GetObservation", verbose = "logical")</code>: Check the request for validity and for compliance with the metadata available in from the given SOS.</p></dd>
-    <dt>encodeRequestKVP</dt><dd><p><code>signature(obj = "SosGetObservationById")</code> or <code>signature(obj = "GetObservation")</code>: Transform the information to key-value pair format, see <code>encodeKVP</code>.</p></dd>
-    <dt>encodeRequestXML</dt><dd><p><code>signature(obj = "SosGetObservationById")</code> or <code>signature(obj = "GetObservation")</code>: Transform the information to XML format, see <code>encodeXML</code>.</p></dd>
+    <dt>encodeRequestKVP</dt><dd><p><code>signature(obj = "SosGetObservationById")</code> or <code>signature(obj = "GetObservation")</code>: Transform the information to key-value pair format, see <code><a href='encodeKVP-methods.html'>encodeKVP</a></code>.</p></dd>
+    <dt>encodeRequestXML</dt><dd><p><code>signature(obj = "SosGetObservationById")</code> or <code>signature(obj = "GetObservation")</code>: Transform the information to XML format, see <code><a href='encodeXML-methods.html'>encodeXML</a></code>.</p></dd>
     <dt>encodeRequestSOAP</dt><dd><p><code>signature(obj = "SosGetObservation")</code>: Transform the information to XML format for SOAP requests.</p></dd>
 	 </dl>
     
@@ -292,8 +292,8 @@ Class <code>"OwsServiceOperation"</code>, directly.</p>
 #&gt; Obsvervation ID:  o_12345 
 #&gt; ResponseFormat(s):  text/xml;subtype=&amp;quot;om/1.0.0&amp;quot; , responseMode(s):  NA , srsName:  NA , resultModel(s):  NA </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
-<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'>SOS</span>(<span class='st'>"http://mysos.net/sos"</span>)
-<span class='fu'>encodeXML</span>(<span class='no'>obsByIdReq</span>, <span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>sos</span>)
+<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='st'>"http://mysos.net/sos"</span>)
+<span class='fu'><a href='encodeXML-methods.html'>encodeXML</a></span>(<span class='no'>obsByIdReq</span>, <span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>sos</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

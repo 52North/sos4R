@@ -105,19 +105,19 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>SOS</span>(<span class='no'>url</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'>SosDefaultBinding</span>(), <span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>sosDefaultServiceVersion</span>,
-        <span class='kw'>parsers</span> <span class='kw'>=</span> <span class='fu'>SosParsingFunctions</span>(), <span class='kw'>encoders</span> <span class='kw'>=</span> <span class='fu'>SosEncodingFunctions</span>(),
-        <span class='kw'>dataFieldConverters</span> <span class='kw'>=</span> <span class='fu'>SosDataFieldConvertingFunctions</span>(),
+    <pre class="usage"><span class='fu'>SOS</span>(<span class='no'>url</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultBinding</a></span>(), <span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>sosDefaultServiceVersion</span>,
+        <span class='kw'>parsers</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosParsingFunctions</a></span>(), <span class='kw'>encoders</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosEncodingFunctions</a></span>(),
+        <span class='kw'>dataFieldConverters</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDataFieldConvertingFunctions</a></span>(),
         <span class='kw'>curlOptions</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>curlHandle</span> <span class='kw'>=</span> <span class='fu'>getCurlHandle</span>(),
         <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='no'>sosDefaultTimeFormat</span>, <span class='kw'>verboseOutput</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-        <span class='kw'>switchCoordinates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'>SosDefaultDCPs</span>(),
+        <span class='kw'>switchCoordinates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultDCPs</a></span>(),
         <span class='kw'>additionalKVPs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>)
 
-<span class='fu'>SOS_Test</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"test"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'>SosDefaultBinding</span>(), <span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>sos100_version</span>,
-         <span class='kw'>parsers</span> <span class='kw'>=</span> <span class='fu'>SosParsingFunctions</span>(), <span class='kw'>encoders</span> <span class='kw'>=</span> <span class='fu'>SosEncodingFunctions</span>(),
-         <span class='kw'>dataFieldConverters</span> <span class='kw'>=</span> <span class='fu'>SosDataFieldConvertingFunctions</span>(),
+<span class='fu'>SOS_Test</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"test"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultBinding</a></span>(), <span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>sos100_version</span>,
+         <span class='kw'>parsers</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosParsingFunctions</a></span>(), <span class='kw'>encoders</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosEncodingFunctions</a></span>(),
+         <span class='kw'>dataFieldConverters</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDataFieldConvertingFunctions</a></span>(),
          <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='no'>sosDefaultTimeFormat</span>, <span class='kw'>verboseOutput</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-         <span class='kw'>switchCoordinates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'>SosDefaultDCPs</span>(),
+         <span class='kw'>switchCoordinates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultDCPs</a></span>(),
          <span class='kw'>additionalKVPs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>)
 
 <span class='co'># accessor methods ...</span></pre>
@@ -183,7 +183,7 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional parameters that are passed on to the <code>getObservation</code> call that is done within this function.</p></td>
+      <td><p>Additional parameters that are passed on to the <code><a href='getObservation-methods.html'>getObservation</a></code> call that is done within this function.</p></td>
     </tr>
     <tr>
       <th>name</th>
@@ -200,12 +200,12 @@
 
     <p></p><dl class='dl-horizontal'>
     <dt><code>url</code>:</dt><dd><p>Object of class <code>"character"</code>: The endpoint of the service, e.g. <code>http://myUrl.org/SOS1/sos</code>.</p></dd>
-    <dt><code>binding</code>:</dt><dd><p>Object of class <code>"character"</code>: The binding, or transport protocol, see <code>SosSupportedBindings</code> for available ones.</p></dd>
+    <dt><code>binding</code>:</dt><dd><p>Object of class <code>"character"</code>: The binding, or transport protocol, see <code><a href='Supported.html'>SosSupportedBindings</a></code> for available ones.</p></dd>
     <dt><code>version</code>:</dt><dd><p>Object of class <code>"character"</code>: The connected service's version, e.g. <code>"1.0.0"</code>.</p></dd>
     <dt><code>capabilities</code>:</dt><dd><p>Object of class <code>"OwsCapabilities"</code> ~~</p></dd>
     <dt><code>parsers</code>:</dt><dd><p>Object of class <code>"list"</code>: A list of named functions for parsing of SOS responses.</p></dd>
     <dt><code>encoders</code>:</dt><dd><p>Object of class <code>"list"</code>: A list of named functions for encoding of SOS requests.</p></dd>
-    <dt><code>dataFieldConverters</code>:</dt><dd><p>Object of class <code>"list"</code>: A list of named functions to be used by the parsing methods to convert data values to the correct <span style="R">R</span> type, see <code>SosDataFieldConvertingFunctions</code> for the default functions and how to add your own converters.</p></dd>
+    <dt><code>dataFieldConverters</code>:</dt><dd><p>Object of class <code>"list"</code>: A list of named functions to be used by the parsing methods to convert data values to the correct <span style="R">R</span> type, see <code><a href='Defaults.html'>SosDataFieldConvertingFunctions</a></code> for the default functions and how to add your own converters.</p></dd>
     <dt><code>curlHandle</code>:</dt><dd><p>Object of class <code>"CURLHandle"</code>: The curl options to be passed on to the methods <code>getURL</code> and <code>postForm</code> from the package <span class="pkg">RCurl</span>.</p></dd>
     <dt><code>curlOptions</code>:</dt><dd><p>Object of class <code>"ANY"</code>: The curl handle to be passed on to the methods <code>getURL</code> and <code>postForm</code> from the package <span class="pkg">RCurl</span>.</p></dd>
     <dt><code>timeFormat</code>:</dt><dd><p>Object of class <code>"character"</code>: The time format to be used or decoding and encoding time character strings to and from <code>POSIXt</code> classes.</p></dd>
@@ -243,7 +243,7 @@
     <dt>sosOperation</dt><dd><p><code>signature(sos = "SOS", operationName = "character")</code>: ...</p></dd>
     <dt>sosOperationsMetadata</dt><dd><p><code>signature(sos = "SOS")</code>: ...</p></dd>
     <dt>sosParsers</dt><dd><p><code>signature(sos = "SOS")</code>: ...</p></dd>
-    <dt>sosProcedures</dt><dd><p><code>signature(sos = "SOS")</code>: Accessor function for the procedures of a <code>SOS</code> (via list in capabilities of <code>GetObservation</code> operation) or a <code>SosObservationOffering</code>.</p></dd>
+    <dt>sosProcedures</dt><dd><p><code>signature(sos = "SOS")</code>: Accessor function for the procedures of a <code>SOS</code> (via list in capabilities of <code>GetObservation</code> operation) or a <code><a href='SosObservationOffering.html'>SosObservationOffering</a></code>.</p></dd>
     <dt>sosResponseFormats</dt><dd><p><code>signature(sos = "SOS")</code>: TBD: add missing signatures ...</p></dd>
     <dt>sosResponseMode</dt><dd><p><code>signature(sos = "SOS")</code>: ...</p></dd>
     <dt>sosResultModels</dt><dd><p><code>signature(sos = "SOS")</code>: ...</p></dd>

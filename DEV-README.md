@@ -10,6 +10,7 @@ The current development version should start with `.9000` _after_ the patch vers
 ### R function documentation
 
 Package documentation is based on `.Rd` files (regarding switch to `roxygen` see [https://github.com/52North/sos4R/issues/21](#21)).
+The file `NAMESPACE` is _not_ managed by `roxygen2` either.
 
 ### Update website
 

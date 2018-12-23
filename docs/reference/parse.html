@@ -160,7 +160,7 @@
     </tr>
     <tr>
       <th>sos</th>
-      <td><p>An object of class SOS-class, which may be utilized/required by some parsing functions to access other parsing functions or encoding information.</p></td>
+      <td><p>An object of class <a href='SOS.html'>SOS-class</a>, which may be utilized/required by some parsing functions to access other parsing functions or encoding information.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -211,7 +211,7 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>SosParsingFunctions</code>, <code>sosParsers-methods</code></p></div>
+    <div class='dont-index'><p><code><a href='Defaults.html'>SosParsingFunctions</a></code>, <code><a href='SOS.html'>sosParsers-methods</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -232,7 +232,7 @@
 #&gt;   .. .. .. ..@ locator      : chr "AcceptVersions"</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># save and re-parse an observation from file</span>
-<span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'>getObservationById</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"o_3508493"</span>,
+<span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getObservation-methods.html'>getObservationById</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"o_3508493"</span>,
                 <span class='kw'>saveOriginal</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>.files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list.files'>list.files</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>())
 <span class='no'>.startWithO_</span> <span class='kw'>&lt;-</span> <span class='no'>.files</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/grep'>grep</a></span>(<span class='st'>"o_"</span>, <span class='no'>.files</span>, <span class='kw'>value</span><span class='kw'>=</span><span class='fl'>TRUE</span>)

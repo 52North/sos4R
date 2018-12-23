@@ -101,6 +101,22 @@
 <a href="#versioning" class="anchor"></a>Versioning</h2>
 <p>The package uses <a href="https://semver.org/">semantic versioning</a>. The current development version should start with <code>.9000</code> <em>after</em> the patch version, see <a href="http://r-pkgs.had.co.nz/description.html#version">R packages versioning</a>.</p>
 </div>
+<div id="documenation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documenation" class="anchor"></a>Documenation</h2>
+<div id="r-function-documentation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#r-function-documentation" class="anchor"></a>R function documentation</h3>
+<p>Package documentation is based on <code>.Rd</code> files (regarding switch to <code>roxygen</code> see <a href="#21">https://github.com/52North/sos4R/issues/21</a>).</p>
+</div>
+<div id="update-website" class="section level3">
+<h3 class="hasAnchor">
+<a href="#update-website" class="anchor"></a>Update website</h3>
+<p>Knit <code>README.Rmd</code> to create <code>README.md</code>.</p>
+<p>Run <a href="https://pkgdown.r-lib.org/">pkgdown</a> from the package directory each time you release your package:</p>
+<p><code>{r, eval = FALSE} pkgdown::build_site()</code></p>
+</div>
+</div>
 <div id="package-structure" class="section level2">
 <h2 class="hasAnchor">
 <a href="#package-structure" class="anchor"></a>Package structure</h2>
@@ -189,6 +205,7 @@
 <div id="tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tests" class="anchor"></a>Tests</h2>
+<p>…</p>
 </div>
 <div id="add-features" class="section level2">
 <h2 class="hasAnchor">
@@ -200,9 +217,9 @@
 <li>by element name</li>
 <li>by mime type</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">SosParsingFunctions</span>()</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>()</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># add a local parser</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">SosParsingFunctions</span>(<span class="st">"TimeseriesKVP"</span> =<span class="st"> </span><span class="cf">function</span>() { ... })</a></code></pre></div>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"TimeseriesKVP"</span> =<span class="st"> </span><span class="cf">function</span>() { ... })</a></code></pre></div>
 </div>
 <div id="how-to-add-an-encoder" class="section level3">
 <h3 class="hasAnchor">

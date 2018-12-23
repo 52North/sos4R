@@ -171,7 +171,7 @@
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><code><a href='https://www.rdocumentation.org/packages/base/topics/Constants'>Constants</a></code></p>
+    <p><code><a href='Constants.html'>Constants</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -179,7 +179,7 @@
 <span class='fu'>show</span>(<span class='no'>sosDefaultCharacterEncoding</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultDescribeSensorOutputFormat</span>)</div><div class='output co'>#&gt; [1] "text/xml;subtype=\"sensorML/1.0.1\""</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapAcceptFormats</span>)</div><div class='output co'>#&gt; [1] "text/xml"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapOwsVersion</span>)</div><div class='output co'>#&gt; [1] "1.1.0"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapSections</span>)</div><div class='output co'>#&gt; [1] "All"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetObsResponseFormat</span>)</div><div class='output co'>#&gt; [1] "text/xml;subtype=\"om/1.0.0\""</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultSpatialOpPropertyName</span>)</div><div class='output co'>#&gt; [1] "urn:ogc:data:location"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTempOpPropertyName</span>)</div><div class='output co'>#&gt; [1] "om:samplingTime"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTemporalOperator</span>)</div><div class='output co'>#&gt; [1] "TM_During"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTimeFormat</span>)</div><div class='output co'>#&gt; [1] "%Y-%m-%dT%H:%M:%OS"</div><div class='input'><span class='fu'>SosDefaultBinding</span>()</div><div class='output co'>#&gt; [1] "POX"</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># usage of defaults in construction method for SOS class</span>
-<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'>SOS</span>(<span class='st'>"http://mysos.com/sos"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'>SosDefaultBinding</span>(),
+<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='st'>"http://mysos.com/sos"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'>SosDefaultBinding</span>(),
                 <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='no'>sosDefaultTimeFormat</span>)
 <span class='co'># }</span><div class='input'>
 <span class='co'># functions to disable all parsing</span>
@@ -232,7 +232,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xa4b7c98&gt;
+#&gt; &lt;environment: 0xa40bcd0&gt;
 #&gt; 
 #&gt; $GetCapabilities
 #&gt; function (obj, sos) 
@@ -1141,7 +1141,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xa4b7c98&gt;
+#&gt; &lt;environment: 0xa40bcd0&gt;
 #&gt; </div><div class='input'><span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))</div><div class='output co'>#&gt; $GetCapabilities
 #&gt; function (obj, sos) 
 #&gt; {
