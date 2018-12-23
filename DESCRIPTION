@@ -3,7 +3,7 @@ Type: Package
 Title: An R Client for the OGC Sensor Observation Service
 Version: 0.3.0.9000
 Authors@R: c(person(given = "Daniel", family = "Nuest", role = c("cre", "aut"),
-	email = "daniel.nuest@uni-muenster.de", comment = c(ORCID = "0000-0002-0024-5046")"),
+	email = "daniel.nuest@uni-muenster.de", comment = c(ORCID = "0000-0002-0024-5046")),
 	person("Edzer", "Pebesma", role = "ctb", comment = c(ORCID = "0000-0001-8049-7069")),
 	person("Ben", "Graeler", role = "ctb", comment = c(ORCID = "0000-0001-5443-4304")),
 	person("E.", "H.-J.", role = "ctb"))
