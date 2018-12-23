@@ -35,6 +35,8 @@ devtools::install_github("52North/sos4R", ref = "dev")
 
 * [@nuest](https://github.com/nuest)
 * [@edzer](https://github.com/edzer)
+* [@BenGraeler](https://github.com/BenGraeler)
+* [@EHJ-52n](https://github.com/EHJ-52n)
 
 ### Contact
 
