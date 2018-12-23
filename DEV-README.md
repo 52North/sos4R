@@ -1,5 +1,10 @@
 # sos4R developer documentation
 
+## Versioning
+
+The package uses [semantic versioning](https://semver.org/).
+The current development version should start with `.9000` _after_ the patch version, see [R packages versioning](http://r-pkgs.had.co.nz/description.html#version).
+
 ## Package structure
 
 sos4R follows the regular R extension package structure. General documentation about R package development can be found at the following two websites.
