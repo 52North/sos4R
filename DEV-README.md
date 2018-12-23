@@ -5,6 +5,22 @@
 The package uses [semantic versioning](https://semver.org/).
 The current development version should start with `.9000` _after_ the patch version, see [R packages versioning](http://r-pkgs.had.co.nz/description.html#version).
 
+## Documenation
+
+### R function documentation
+
+Package documentation is based on `.Rd` files (regarding switch to `roxygen` see [https://github.com/52North/sos4R/issues/21](#21)).
+
+### Update website
+
+Knit `README.Rmd` to create `README.md`.
+
+Run [pkgdown](https://pkgdown.r-lib.org/) from the package directory each time you release your package:
+
+```{r, eval = FALSE}
+pkgdown::build_site()
+```
+
 ## Package structure
 
 sos4R follows the regular R extension package structure. General documentation about R package development can be found at the following two websites.
@@ -81,7 +97,7 @@ Data models, i.e. requests and responses, are modelled as **S4 classes**. Docume
 
 ## Tests
 
-
+...
 
 ## Add features
 
