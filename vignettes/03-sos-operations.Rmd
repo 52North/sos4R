@@ -296,7 +296,7 @@ title(main = paste("Offerings by '", sosTitle(mySOS), "'", sep = ""),
 
 ### DescribeSensor
 
-The DescribeSensor operation is specified in clause 8.3 of the SOS specification and its response is modeled in [Sensor Model Language](http://www.opengeospatial.org/standards/sensorml) (SensorML) and [Transducer Markup Language](http://www.opengeospatial.org/standards/tml) (TML) specifications.
+The DescribeSensor operation is specified in clause 8.3 of the SOS specification and its response is modeled in [Sensor Model Language](https://www.opengeospatial.org/standards/sensorml) (SensorML) and [Transducer Markup Language](https://www.opengeospatial.org/standards/tml) (TML) specifications.
 
 > _The DescribeSensor operation is useful for obtaining detailed information of sensor characteristics encoded in either SensorML or TML. The sensor characteristics can include lists and definitions of observables supported by the sensor. [...]_
 

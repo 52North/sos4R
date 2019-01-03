@@ -346,7 +346,7 @@ From the introduction of the specification document: \dQuote{The goal of SOS is 
 \references{
 Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortium Inc., OGC 06-009r6, Version: 1.0
 
-The document is available for download at \url{http://www.opengeospatial.org/standards/sos}.
+The document is available for download at \url{https://www.opengeospatial.org/standards/sos}.
 }
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}

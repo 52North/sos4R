@@ -25,45 +25,31 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   concordance = TRUE
 )
-
-.goOnline <- TRUE # triggers whether data is downloaded and stored in /vignettes folder
-.verbose <- FALSE
-
-.getFilePath <- function(name) {
-	if (regexpr(pattern = ".RData", text = name) > 0)
-		.fileEnding <- ""
-	else .fileEnding <- ".xml"
-
-	.path <- paste0(name, .fileEnding)
-	if (.verbose) cat("Loading file", .path, "\n")
-
-	return(.path)
-}
 ```
 
 ## Introduction
 
-The `sos4R` package provides classes and methods for retrieving data from an Open Geospatial Consortium ([OGC](http://opengeospatial.org/)) Sensor Observation Service in version 1.0.0 (Na, 2007) and 2.0 (Bröoring, 2010).
+The `sos4R` package provides classes and methods for retrieving data from an Open Geospatial Consortium ([OGC](http://opengeospatial.org/)) Sensor Observation Service in version 1.0.0 (Na, 2007) and 2.0 (Bröring, 2010).
 The goal of this package is to provide easy access with a low entry threshold for everyone to information available via SOSs.
 The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possiblities for advanced users.
 The output is a standard `data.frame` with attributed columns for the rich metadata provided by the SOS API.
 This package uses S4 classes and methods style (Chambers, 1998).
 
-The package was born out of perceiving a missing link between the Sensor Web community (known as [Sensor Web Enablement (SWE) Initiative](http://www.opengeospatial.org/projects/groups/sensorweb) in the OGC realm) and the community of (geo-)statisticians (Nüst, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it.
+The package was born out of perceiving a missing link between the Sensor Web community (known as [Sensor Web Enablement (SWE) Initiative](https://www.opengeospatial.org/projects/groups/sensorweb) in the OGC realm) and the community of (geo-)statisticians (Nüst, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it.
 `sos4R` can help enabling this.
 
-The project is part of the [geostatistics community](https://52north.org/research/rd-communities/geostatistics/) of the [52°North Initiative for Geospatial Open Source Software](http://52north.org/).
-`sos4R` is available on [CRAN](http://cran.r-project.org/).
+The project is part of the [geostatistics community](https://52north.org/research/rd-communities/geostatistics/) of the [52°North Initiative for Geospatial Open Source Software](https://52north.org/).
+`sos4R` is available on [CRAN](https://cran.r-project.org/).
 
 On the package home page, [https://52north.github.io/sos4R](https://52north.github.io/sos4R), you can stay updated with the developments and find example code and services.
 
-This software is released under a [GPL 2 license](http://www.gnu.org/licenses/gpl-2.0.html) and contributions are very welcome---please see the file `DEV-README.md` in the [package code repository](https://github.com/52North/sos4R).
+This software is released under a [GPL 2 license](https://www.gnu.org/licenses/gpl-2.0.html) and contributions are very welcome---please see the file `DEV-README.md` in the [package code repository](https://github.com/52North/sos4R).
 
 
 ```{r}

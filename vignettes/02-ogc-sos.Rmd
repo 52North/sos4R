@@ -28,7 +28,7 @@ If you are familiar with the OGC SOS standard specification, know how to use con
 
 ## Related Specifications
 
-The Open Geospatial Consortium ([OGC](http://www.opengeospatial.org/)) is an organisation which provides standards for handling geospatial data on the internet, thereby ensuring interoperability.
+The Open Geospatial Consortium ([OGC](https://www.opengeospatial.org/)) is an organisation which provides standards for handling geospatial data on the internet, thereby ensuring interoperability.
 The Sensor Observation Service (SOS)} is such a standard and provides a well-defined interface for data warehousing of measurements and observations made by all kinds of sensors. 
 This vignette describes the classes, methods and functions provided by \pkg{sos4R} to request these observations from a SOS.
 
@@ -46,12 +46,12 @@ All bindings can return responses using different encodings, but most common are
 Other OGC Standards that are referenced and used, by the SOS standard are as follows.
 
 - **Observations and Measurements (O\&M)** O\&M (Cox, 2007) defines the markup of sensor measurements results.
-An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result. Different versions are used in the different [SOS specifications](http://www.opengeospatial.org/standards/om).
-- **Sensor Model Language ([SensorML](http://www.opengeospatial.org/standards/sensorml))** (Botts, 2007) is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer).
-- **Geography Markup Language ([GML](http://www.opengeospatial.org/standards/gml))** (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots).
+An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result. Different versions are used in the different [SOS specifications](https://www.opengeospatial.org/standards/om).
+- **Sensor Model Language ([SensorML](https://www.opengeospatial.org/standards/sensorml))** (Botts, 2007) is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer).
+- **Geography Markup Language ([GML](https://www.opengeospatial.org/standards/gml))** (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots).
 - **SWE Common** defines data markup. Version 1 is contained in the SensorML specification (see above), version 2.0 is an independent specification.
-- **Filter Encoding ([FE](http://www.opengeospatial.org/standards/filter))** (Vretanos, 2005) defines operators and operands for filtering values.
-- **[OWS Common](http://www.opengeospatial.org/standards/owscommon)** (OGC Web Services Common; Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.
+- **Filter Encoding ([FE](https://www.opengeospatial.org/standards/filter))** (Vretanos, 2005) defines operators and operands for filtering values.
+- **[OWS Common](https://www.opengeospatial.org/standards/owscommon)** (OGC Web Services Common; Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.
 - **SWES** (SWE Service Model Implementation Standard) defines data types for common use across SWE services, e.g. for contents or sensor description management.
 
 ## Terms and Definitions

@@ -24,7 +24,7 @@ The \strong{SOAP} binding is not official with regards to the spec, and also not
 The connection method can be changed on creation of a \code{SOS} object.
 }
 
-\references{Wikipedia page for HTTP request methods: \url{http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods}.}
+\references{Wikipedia page for HTTP request methods: \url{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods}.}
 
 \seealso{\code{\link{SosSupportedBindings}}}
 
