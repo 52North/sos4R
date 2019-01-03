@@ -112,7 +112,7 @@ The service connection created above is used for all examples throughout this do
 
 All parameters except the service endpoint are optional and use default settings:
 
-- `method`: The transport protocol. Currently available are `r toString(names(SosSupportedBindings())`, the default is `r SosDefaultBinding()`. `GET` is less powerful, especially regarding filtering operations.
+- `method`: The transport protocol. Currently available are `r toString(names(SosSupportedBindings()))`, the default is `r SosDefaultBinding()`. `GET` is less powerful, especially regarding filtering operations.
 - `version`: The service version. Currently available version(s) is/are `r SosSupportedServiceVersions()`.
 - `parsers`: The list of parsing functions. See vignette "Extending".
 - `encoders`: The list of encoding functions. See vignette "Extending".
@@ -134,7 +134,9 @@ sosTimeFormat(mySOS)
 sosBinding(mySOS)
 ```
 
-```{r connDetails2}
+You can also access the used encoding, decoding, and conversion functions (extensive output not included here).
+
+```{r connDetails2,eval=FALSE}
 sosEncoders(mySOS)
 sosParsers(mySOS)
 sosDataFieldConverters(mySOS)

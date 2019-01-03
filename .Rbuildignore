@@ -5,6 +5,10 @@
 ^\.Rproj\.user$
 .travis.yml
 sandbox
-sos4R-Ex.R
 sos4R.Rproj
 README.md
+README.Rmd
+DEV-README.md
+_pkgdown.yml
+docs
+revdep

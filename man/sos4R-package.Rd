@@ -6,6 +6,7 @@
 \alias{sos4R}
 
 \alias{sosCheatSheet}
+\alias{release_questions}
 
 \title{A client for the OGC Sensor Observation Service}
 

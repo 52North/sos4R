@@ -20,8 +20,8 @@ exportMethods(
     "getObservationById",
     "getObservation",
     "getFeatureOfInterest",
-	"plot",
-	"print",
+    "plot",
+	  "print",
     "saveXML",
     "show",
     "sosAbstract",
@@ -183,6 +183,7 @@ S3method(summary, GmlTimePeriod)
 S3method(summary, OmObservation)
 S3method(summary, OmObservationCollection)
 S3method(summary, OwsRange)
+S3method(summary, SOS)
 S3method(summary, SOS_versioned)
 S3method(summary, SosObservationOffering)
 S3method(summary, SosObservationOffering_2.0.0)

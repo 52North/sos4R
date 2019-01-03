@@ -98,6 +98,11 @@
 \alias{sosResponseFormats,OwsOperation-method}
 \alias{sosResponseFormats,SosObservationOffering-method}
 
+\alias{sosOutputFormats}
+\alias{sosOutputFormats-methods}
+\alias{sosOutputFormats,SOS-method}
+\alias{sosOutputFormats,OwsOperation-method}
+
 \alias{sosResponseMode}
 \alias{sosResponseMode-methods}
 \alias{sosResponseMode,SOS-method}
@@ -308,10 +313,10 @@ SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
 	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
 	additionalKVPs = list(), ...)
 
-SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version, 
+SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version,
          parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
          dataFieldConverters = SosDataFieldConvertingFunctions(),
-         timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, 
+         timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
          switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
          additionalKVPs = list(), ...)
 
@@ -381,8 +386,8 @@ sosCapabilitiesUrl(mysos)
 # create a SOS for a specific binding at a specific endpoint
 SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
 		useDCPs = FALSE)
-		
-# create a SOS using only the DCPs from the capabilities that match a specific 
+
+# create a SOS using only the DCPs from the capabilities that match a specific
 # pattern with the default binding
 SOS(url = "http://localhost:8080/52n-sos/sos/service",
 		dcpFilter = list("POX" = "/pox"))

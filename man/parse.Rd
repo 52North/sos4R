@@ -70,7 +70,7 @@
 \alias{parseGetFeatureOfInterestResponse}
 \alias{parseGetObservationResponse}
 \alias{parseMonitoringPoint}
-\alias{parseObservation_2.0} 
+\alias{parseObservation_2.0}
 \alias{parseSamsShape}
 \alias{parseSosCapabilities100}
 \alias{parseSosCapabilities200}
@@ -173,7 +173,12 @@ Some of the functions are placeholders for future implementations!
 
 \examples{
 # parsing a XML string to an exception report object
-er.doc <- xmlParseDoc("<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"><ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"><ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>")
+er.doc <- xmlParseDoc(paste0("<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\"",
+  " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\"",
+  " xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\">",
+  "<ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\">",
+  "<ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version",
+  " of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>"))
 er.parsed <- parseOwsExceptionReport(er.doc)
 print(er.parsed)
 str(er.parsed)
