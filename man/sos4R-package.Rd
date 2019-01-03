@@ -5,9 +5,7 @@
 \alias{sos4R-package}
 \alias{sos4R}
 
-\alias{sosChanges}
 \alias{sosCheatSheet}
-\alias{sosNews}
 
 \title{A client for the OGC Sensor Observation Service}
 
@@ -100,10 +98,7 @@ sosDataFieldConverters(mySos)
 sosCheatSheet()
 
 # view the NEWS file
-sosNews()
-# DEPRECATED: the changes document
-#sosChanges()
-
+news(package = "sos4R")
 }
 
 }
