@@ -19,10 +19,10 @@ Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/
 
   - **Website**: <https://52north.github.io/sos4R>
   - CRAN: <http://cran.r-project.org/web/packages/sos4R/>
-  - Support mailing list/forum:
-    <http://geostatistics.forum.52north.org/>
-  - Ohloh: <https://www.ohloh.net/p/sos4R>
   - Source code: <https://github.com/52North/sos4R>
+  - **Developer documentation:**
+    <https://52north.github.io/sos4R/DEV-README.html>
+  - Ohloh: <https://www.ohloh.net/p/sos4R>
 
 ## Development
 
@@ -54,15 +54,15 @@ devtools::install_github("52North/sos4R", ref = "dev")
 
 ### Contributors
 
-  - \[@nuest\](<https://github.com/nuest>)
-  - \[@edzer\](<https://github.com/edzer>)
-  - \[@BenGraeler\](<https://github.com/BenGraeler>)
-  - \[@EHJ-52n\](<https://github.com/EHJ-52n>)
+  - [@nuest](https://github.com/nuest)
+  - [@edzer](https://github.com/edzer)
+  - [@BenGraeler](https://github.com/BenGraeler)
+  - [@EHJ-52n](https://github.com/EHJ-52n)
 
 ### Contact
 
 Do you have a question that is not anwsered in the links above? Contact
-Daniel: [d.nuest@52north.org](d.nuest@52north.org)
+Daniel: [daniel.nuest@uni-muenster.de](daniel.nuest@uni-muenster.de)
 
 ## License
 
