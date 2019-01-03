@@ -38,9 +38,9 @@
     warning("Check returned FALSE! Turn on verbose option for possible details.",
             immediate. = TRUE)
   }
-  
+
   .response = ""
-  
+
   # get encoding function for the respective method
   .encodingFunction <- sos@encoders[[sos@binding]]
   if(verbose) {
@@ -49,25 +49,25 @@
         substring(text = .f, first = 0, last = 60), " ... [",
         max((length(.f) - 60), 0), " more chrs].\n")
   }
-  
+
   # encode!
   .encodedRequest = .encodingFunction(obj = request, sos = sos,
                                       verbose = verbose)
-  
+
   if(sos@binding == .sosBindingKVP) {
     .dcp <- sos@url
-    
+
     if(sos@useDCPs) {
       if(verbose)
         cat("[.sosRequest_2.0.0] Using DCP from operation description.\n")
-      
+
       .dcp <- sosGetDCP(sos, sosName(request), owsGetName)
-      
+
       if(is.null(.dcp) || is.na(.dcp)) {
         .dcp <- sos@url
         if(verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request.\n")
       }
-      
+
       .dcp <- .sosFilterDCPs(dcp = .dcp,
                              pattern = sos@dcpFilter[[.sosBindingKVP]],
                              verbose = verbose)
@@ -75,52 +75,52 @@
     else if(verbose)
       cat("[.sosRequest_2.0.0] Not using DCP from capabilities.\n",
           .dcp, "\n")
-    
+
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
       cat("Given url already contains a '?', appending arguments!")
       .url = paste0(.dcp, .encodedRequest)
     }
     else .url = paste(.dcp, .encodedRequest, sep = "?")
-    
+
     if(!is.na(sos@additionalKVPs) && length(sos@additionalKVPs) > 0) {
       .kvps <- sos@additionalKVPs
-      
+
       if(verbose)
         cat("[.sosRequest_2.0.0] adding extra KVP parameters:\n\t",
             toString(.kvps))
-      
+
       .kvpsString <- .encodeAdditionalKVPs(.kvps)
       .url <- paste(.url, .kvpsString, sep = "&")
     }
-    
+
     if(verbose || inspect) {
       cat("[.sosRequest_2.0.0] GET!\n[.sosRequest_2.0.0] REQUEST:\n\t",
           .url, "\n")
     }
-    
-    if(verbose) cat("[.sosRequest_2.0.0] Do request...")
-    
+
+    if(verbose) cat("[.sosRequest_2.0.0] Do request...\n")
+
     .response = getURL(url = .url, .opts = sos@curlOptions,
                        curl = sos@curlHandle,
                        .encoding = sosDefaultCharacterEncoding, httpauth = 1L)
-    
+
     pos = regexpr('<\\?xml', .response)
-    
+
     if(pos > 1){
       .response = substr(.response, pos, nchar(.response))
     }
-    
-    if(verbose) cat("[.sosRequest_2.0.0] ... done.")
+
+    if(verbose) cat("[.sosRequest_2.0.0] ... done.\n")
   }
   else if(sos@binding == .sosBindingPOX) {
     if(verbose || inspect) {
       cat("[.sosRequest_2.0.0] POST!\n[.sosRequest_2.0.0] REQUEST:\n")
       print(.encodedRequest)
     }
-    
+
     .dcp <- sos@url
-    
-    if(sos@useDCPs) {		
+
+    if(sos@useDCPs) {
       .dcp <- sosGetDCP(sos, sosName(request), owsPostName) #sos@url as fallback
       if(is.null(.dcp) || is.na(.dcp)) {
         .dcp <- sos@url
@@ -130,7 +130,7 @@
         if(verbose) cat("[.sosRequest_2.0.0] Got DCPs from capabilites:",
                         toString(.dcp), "\n")
       }
-      
+
       .dcp <- .sosFilterDCPs(dcp = .dcp,
                              pattern = sos@dcpFilter[[.sosBindingPOX]],
                              verbose = verbose)
@@ -138,21 +138,21 @@
       if(verbose)
         cat("[.sosRequest_2.0.0] Using DCP:", toString(.dcp), "\n")
     }
-    else if(verbose)
+    else if (verbose)
       cat("[.sosRequest_2.0.0] *NOT* using DCP from capabilities:",
           .dcp, "\n")
-    
+
     .requestString <- toString(.encodedRequest)
-    
+
     # using 'POST' for application/x-www-form-urlencoded content
     if(verbose) cat("[.sosRequest_2.0.0] Do request...")
-    
+
     .response <- postForm(uri = .dcp,
                           request = .requestString,
                           style = "POST", .opts = sos@curlOptions,
                           curl = sos@curlHandle,
                           .encoding = sosDefaultCharacterEncoding)
-    
+
     # 		# FIXME this is a hack to get the package working again
     # 				.response <- postForm(uri = .dcp,
     # 						request = .requestString,
@@ -160,7 +160,7 @@
     # 						#.opts = sos@curlOptions,
     # 						#curl = sos@curlHandle,
     # 						.encoding = sosDefaultCharacterEncoding)
-    
+
     if(verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
   else if(sos@binding == .sosBindingSOAP) {
@@ -168,7 +168,7 @@
       print("[.sosRequest_2.0.0] SOAP! REQUEST:\n")
       print(.encodedRequest)
     }
-    
+
     # TODO add SOAP request method
     stop("[sos4R] ERROR: SOAP is not implemented for SOS 2.0.0.\n")
   }
@@ -176,17 +176,17 @@
     stop(paste("Unsupported method, has to be one of",
                SosSupportedBindings(), "but is", sos@binding))
   }
-  
+
   if(verbose) {
     cat("[.sosRequest_2.0.0] RESPONSE:\n")
     print(.response)
     if(is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
   }
-  
-  if(length(.response) > 0 & 
+
+  if(length(.response) > 0 &
      regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
     if(verbose) cat("[.sosRequest_2.0.0] Got HTML, probably an error.\n")
-    
+
     # might still be KML with embedded HTML!
     if(regexpr("(http://www.opengis.net/kml/)", .response) > 0) {
       if(verbose) cat("[.sosRequest_2.0.0] Got KML! Can continue...\n")
@@ -194,7 +194,7 @@
     else stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response,
                     "\n\n"))
   }
-  
+
   return(.response)
 }
 
@@ -212,33 +212,33 @@ setMethod(f = "sosRequest",
   if (verbose) {
     cat("[.getCapabilities_2.0.0] of", sosUrl(sos), "\n")
   }
-  
+
   .gc <- OwsGetCapabilities(service = sosService,
                             acceptVersions = c(sosVersion(sos)), sections = sections,
                             acceptFormats = acceptFormats, updateSequence = updateSequence,
                             owsVersion = owsVersion, acceptLanguages = acceptLanguages)
   if(verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
-  
+
   .responseString = sosRequest(sos = sos, request = .gc,
                                verbose = verbose, inspect = inspect)
   if(verbose){
     cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
   }
-  
+
   tmpStoredXMLCaps = tempfile()
-  
+
   fileConn<-file(tmpStoredXMLCaps)
   writeLines(.responseString, fileConn)
   close(fileConn)
-  
+
   #dump(xmlCaps, file = tmpStoredXMLCaps)
-  
+
   .response <- xmlParseDoc(file = tmpStoredXMLCaps)
   if(verbose || inspect) {
     cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
     print(.response)
   }
-  
+
   if(.isExceptionReport(.response)) {
     return(.handleExceptionReport(sos, .response))
   }
@@ -247,7 +247,7 @@ setMethod(f = "sosRequest",
     .caps <- .parsingFunction(obj = .response, sos = sos)
     if (verbose) {
       cat("[.getCapabilities_2.0.0] DONE WITH PARSING!\n")
-    } 
+    }
     return(.caps)
   }
 }

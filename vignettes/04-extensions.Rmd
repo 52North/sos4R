@@ -231,7 +231,7 @@ print(xmlName(xmlRoot(unparsed)))
 
 ## Data Converters
 
-A list of named functions to be used by the parsing methods to convert data values to the correct R type, which are mostly based on the unit of [measurement](http://en.wikipedia.org/wiki/Units_of_measurement) code.
+A list of named functions to be used by the parsing methods to convert data values to the correct R type, which are mostly based on the unit of [measurement](https://en.wikipedia.org/wiki/Units_of_measurement) code.
 
 The conversion functions always take two parameters: `x` is the object to be converted, `sos` is the service where the request was received from.
 
@@ -381,37 +381,4 @@ The exception is also stored in the `response` object.
 
 ```{r exceptionWarning2d}
 response
-```
-
-## Inspect Requests and Verbose Printing
-
-The package offers two levels of inspection of the ongoing operations indicated by two boolean parameters, `inspect` and `verbose`.
-These are available in all service operation calls.
-
-- **`inspect`** prints the raw requests and responses to the console.
-- **`verbose`** prints not only the requests, but also debugging and processing statements (e.g. intermediate steps during parsing).
-
-The option `verboseOutput` when using the method `SOS()` turns on the verbose setting for all subsequent requests made to the created connection unless deactivated in an operation call.
-By using `verboseOutput` you can also debug the automatic GetCapabilities operations when creating a new SOS connections.
-
-The output with these parameters enabled is too extensive to show within this document for actual GetObservation request.
-
-```{r inspect, eval=FALSE}
-off.1 <- sosOfferings(mySOS)[[1]]
-getObservation(sos = mySOS, offering = off.1,
-	procedure = sosProcedures(off.1)[[1]],
-	inspect = TRUE)
-```
-
-```{r verbose}
-getObservation(sos = mySOS, offering = off.1,
-	procedure = sosProcedures(off.1)[[1]],
-	verbose = TRUE)
-```
-
-```{r verbose_global}
-verboseSOS <- SOS(sosUrl(mySOS),
-                  verboseOutput = TRUE,
-                  binding = sosBinding(mySOS),
-                  dcpFilter = mySOS@dcpFilter)
 ```
