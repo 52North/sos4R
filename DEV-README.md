@@ -71,6 +71,7 @@ devtools::release()
 
 The latest changes for every version are documented in the file `NEWS.md` in
 the package root directory.
+Open a preview with `pkgdown::build_news()`.
 
 ### R function documentation
 
