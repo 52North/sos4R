@@ -10,8 +10,19 @@ Authors@R: c(person(given = "Daniel", family = "Nuest", role = c("cre", "aut"),
 Author: Daniel Nuest [cre, aut]
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
 Depends: R (>= 2.15.0), methods, XML (>= 3.95), RCurl (>= 1.95), sp, graphics
-Suggests: spacetime (>= 1.0), gstat, maps, maptools, mapdata,
-		cshapes, xts, xtable, rgdal, testthat
+Suggests: 
+    spacetime (>= 1.0),
+    gstat,
+    maps,
+    maptools,
+    mapdata,
+    cshapes,
+    xts,
+    xtable,
+    rgdal,
+    testthat,
+    knitr,
+    rmarkdown
 Description: A client for Sensor Observation Services (SOS) as
         specified by the Open Geospatial Consortium (OGC). The package allows
         users to retrieve metadata from SOS web services and to
@@ -42,3 +53,4 @@ Collate:
 	Defaults.R
 	Development.R
 RoxygenNote: 6.1.0.9000
+VignetteBuilder: knitr

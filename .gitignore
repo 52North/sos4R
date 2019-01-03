@@ -1,9 +1,9 @@
+inst/doc
 # history files
 .Rhistory
 
 # Example code in package build process
 *-Ex.R
-
 .Rproj.user
 *.Rproj
 vignettes/Rplots.pdf
@@ -30,3 +30,5 @@ vignettes/sos4R.synctex.gz
 vignettes/sos4R.toc
 .RData
 /DESCRIPTION~
+
+revdep/
