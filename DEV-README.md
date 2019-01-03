@@ -183,7 +183,7 @@ Run them with
 devtools::test()
 ```
 
-or by clicking the "Check" button in RStudio.
+or by clicking the "Check" button in RStudio (which does more than just running the tests!).
 
 ## Add features
 
