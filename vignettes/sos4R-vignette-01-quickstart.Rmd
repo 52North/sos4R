@@ -41,7 +41,7 @@ The complexity of the service interface shall be shielded from the user as much 
 The output is a standard `data.frame` with attributed columns for the rich metadata provided by the SOS API.
 This package uses S4 classes and methods style (Chambers, 1998).
 
-The package was born out of perceiving a missing link between the Sensor Web community (known as [Sensor Web Enablement (SWE) Initiative](https://www.opengeospatial.org/projects/groups/sensorweb) in the OGC realm) and the community of (geo-)statisticians (Nüst, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it.
+The package was born out of perceiving a missing link between the Sensor Web community (known as [Sensor Web Enablement (SWE) Initiative](https://www.opengeospatial.org/projects/groups/sensorwebdwg) in the OGC realm) and the community of (geo-)statisticians (Nüst, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it.
 `sos4R` can help enabling this.
 
 The project is part of the [geostatistics community](https://52north.org/research/rd-communities/geostatistics/) of the [52°North Initiative for Geospatial Open Source Software](https://52north.org/).
@@ -52,7 +52,7 @@ On the package home page, [https://52north.github.io/sos4R](https://52north.gith
 This software is released under a [GPL 2 license](https://www.gnu.org/licenses/gpl-2.0.html) and contributions are very welcome---please see the file `DEV-README.md` in the [package code repository](https://github.com/52North/sos4R).
 
 
-```{r}
+```{r loadLibrary}
 library("sos4R")
 ```
 
@@ -63,7 +63,7 @@ library("sos4R")
 The package comes with a one page **quick reference card**, also known as a "cheat sheet", which shows everything that you need to know in an extremely concise manner.
 You can open the document by loading the package and calling
 
-```{r eval=FALSE}
+```{r cheatsheet, eval=FALSE}
 sosCheatSheet()
 ```
 
@@ -74,7 +74,7 @@ The most useful functions are highlighted in **bold font**.
 The **demos** are a good way to get started with the package.
 Please be aware that you need an internet connection for these demos, the used SOSs might be temporarily unavailable.
 
-```{r eval=FALSE}
+```{r demos, eval=FALSE}
 # list available demos:
 demo(package = "sos4R")
 # run a demo:
@@ -82,7 +82,7 @@ demo("airquality")
 ```
 
 - **ades**: SOS with French groundwater level data - **under construction**.
-- **airquality] The Air Quality SOS by ifgi provides [EEA AirBase**:(http://www.eea.europa.eu/themes/air/airbase) data for Germany (and other countries). It is used for this demo about **spatio-temporal interpolation with inverse distance weighting} of NO2 observation in Germany using the packages \pkg{gstat} and \pkg{spacetime**.
+- **airquality] The Air Quality SOS by ifgi provides [EEA AirBase**:(http://www.eea.europa.eu/themes/air/airbase) data for Germany (and other countries). It is used for this demo about **spatio-temporal interpolation with inverse distance weighting} of NO2 observation in Germany using the packages `gstat` and \pkg{spacetime**.
 - **austria**: SOSs by Research Studios Austria - **under construction**.
 - **ioos**: Example using SOS by the Integrated Ocean Observing System which provides data in different formats, of which **KML} and \textbf{CSV} are shown in the demo - \textbf{under construction**.
 - **marinemeta**: SOS by Marine Metadata Interoperability Initiative - **under construction**.
@@ -91,8 +91,7 @@ demo("airquality")
 - **southesk**: SOSs from South Esk Testbed by CSIRO, focuses on **data consolidation/fusion} and \textbf{plotting**. It also contains an example for partially changing the encoding by overriding a specific `encodeXML` function.
 - **weathersos**: Time series analysis demo with weather data by ifgi, includes examples for **DescribeSensor} and data extraction from and plotting of \textbf{SensorML sensor descriptions**.
 
-There also is an incomplete **list of services** that have been tested or are currently evaluated on the project homepage:
-https://52north.github.io/sos4R/data/
+There also is an incomplete **list of services** that have been tested or are currently evaluated on the project homepage.
 If you find or can provide new SOS with data useful to others, please do not hesitate to open an issue so that it can be included.
 
 Additionally, a set of SOS URLs are available via the function `SosExampleServices()`.
@@ -112,15 +111,15 @@ The service connection created above is used for all examples throughout this do
 
 All parameters except the service endpoint are optional and use default settings:
 
-- `method`: The transport protocol. Currently available are `r toString(names(SosSupportedBindings()))`, the default is `r SosDefaultBinding()`. `GET` is less powerful, especially regarding filtering operations.
+- `method`: The transport protocol. Currently available are `r toString(names(SosSupportedBindings()))`; the default is `r SosDefaultBinding()`. `GET` is less powerful, especially regarding filtering operations.
 - `version`: The service version. Currently available version(s) is/are `r SosSupportedServiceVersions()`.
 - `parsers`: The list of parsing functions. See vignette "Extending".
 - `encoders`: The list of encoding functions. See vignette "Extending".
 - `dataFieldConverters`:  The list of conversion functions. See vignette "Extending".
-- `curlHandle`, `curlOptions`: Settings of the package \pkg{RCurl}, which is used for HTTP connections. Please consult the packags specification before using this.
+- `curlHandle`, `curlOptions`: Settings of the package `RCurl`, which is used for HTTP connections. Please consult the packags specification before using this.
 - `timeFormat`: The time format to be used or decoding and encoding time character strings to and from `POSIXt` classes, the default is `r sosDefaultTimeFormat`.
 - `verboseOutput`: Trigger parameter for extensive debugging information on the console for all requests made to this SOS instance.
-- `switchCoordinates`: Switches all coordinates that are encountered during the **parsing phase**, such as in an element like `<gml:lowerCorner>117.3 -41.5</gml:lowerCorner>`.
+- `switchCoordinates`: Switches all coordinates that are encountered during the parsing phase, such as in an element like `<gml:lowerCorner>117.3 -41.5</gml:lowerCorner>`.
 
 There are accessor methods for the slots of the class.
 The encoders, parsers and converters are described extensively in the vignette "Extending".
@@ -175,7 +174,7 @@ getObservation(sos = mySOS, offering = off.1,
 	verbose = TRUE)
 ```
 
-```{r verbose_global}
+```{r verbose_global, eval=FALSE}
 verboseSOS <- SOS(sosUrl(mySOS),
                   verboseOutput = TRUE,
                   binding = sosBinding(mySOS),
@@ -203,4 +202,4 @@ In future releases a tighter integration is planned with the `sf` package regard
 - Bröring, A., C. Stasch, and J. Echterhoff. "OGC Interface Standard 10-037: SOS 2.0 Interface Standard." Open Geospatial Consortium (2010).
 - Chambers, J.M., 2008, Software for Data Analysis, Programming with R. Springer, New York.
 - Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, [http://portal.opengeospatial.org/files/?artifact_id=26667](http://portal.opengeospatial.org/files/?artifact_id=26667), Open Geospatial Consortium, Tech. Rep.
-- Nüst, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography, doi:[https://doi.org/10.1007/978-3-642-19789-5_12](https://doi.org/10.1007/978-3-642-19789-5_12).
+- Nüst, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography, doi:[10.1007/978-3-642-19789-5_12](https://doi.org/10.1007/978-3-642-19789-5_12).

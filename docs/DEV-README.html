@@ -83,16 +83,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -143,37 +143,7 @@
 <p>Bugfix releases can be used extensively (for several, or even just one bug) to show users that errors are resolved. Minor versions shall include several major bug fixes or a considerable addition of tested and working functionality. Code changes that possibly break existing code shall only be released with a major version change and should be discussed in the developer community beforehand.</p>
 <p>You can install the current development version or local branches using respective functions of <a href="https://devtools.r-lib.org/"><code>devtools</code></a>.</p>
 <p>We use the <a href="https://en.wikipedia.org/wiki/Fork_and_pull_model">“fork &amp; pull” development model</a>. The <strong><code>master</code> branch</strong> is up to date with the version on CRAN. Bugfixes should be based on this branch. If you want to develop further functions for the package always use the up-to-date version from the main repository’s <strong><code>dev</code> branch</strong> and preferably start a new branch in your fork.</p>
-</div>
-<div id="releases" class="section level2">
-<h2 class="hasAnchor">
-<a href="#releases" class="anchor"></a>Releases</h2>
-<p>A new release shall be uploaded to CRAN after testing and under the following procedure:</p>
-<ul>
-<li>Run <a href="#tests">tests</a>
-</li>
-<li>Update version and date in <code>man/sos4R-package.Rd</code>
-</li>
-<li>Update version in <code>DESCRIPTION</code>
-</li>
-<li>Create tag with version number</li>
-<li>Update NEWS file based on latest commits</li>
-<li>Read <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> again</li>
-<li>Apply <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a>
-</li>
-<li>When available on CRAN
-<ul>
-<li>Notice on 52N mailing list(s)</li>
-<li>Publication on blog</li>
-</ul>
-</li>
-</ul>
-<p>The following code snippets can make sure everything runs smoothly. On the command line:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">R</span> CMD check --as-cran</a></code></pre></div>
-<p>In R, use</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/devtools-deprecated">build_win</a></span>()</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">revdepcheck<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/revdepcheck/topics/revdep_check">revdep_check</a></span>()</a></code></pre></div>
-<p>You then should do the actual release with</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/release">release</a></span>()</a></code></pre></div>
+<hr>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
@@ -193,17 +163,8 @@
 <a href="#update-website" class="anchor"></a>Update website</h3>
 <p>Knit <code>README.Rmd</code> to create <code>README.md</code>.</p>
 <p>Run <a href="https://pkgdown.r-lib.org/">pkgdown</a> from the package directory each time you release your package:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">pkgdown<span class="op">::</span><span class="kw"><a href="https://pkgdown.r-lib.org/reference/build_site.html">build_site</a></span>()</a></code></pre></div>
-</div>
-<div id="the--goonline-option-in-vignettes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the--goonline-option-in-vignettes" class="anchor"></a>The <code>.goOnline</code> option in vignettes</h3>
-<p>To reduce download times while building the vignette it can store the responses of the required requests in local files and create the vignette based on these files. By the default, data is downloaded from the 52°North testbed SOS, and this must be done at least once after checking out the project. For this you must set your working directory to <code>sos4R/vignettes</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">setwd</a></span>(<span class="st">"./vignettes"</span>)</a></code></pre></div>
-<p>Afterwards, you can deactivate download and thereby activate using the local files at the beginning of the vignette:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># triggers whether data is downloaded and stored in /vignettes folder</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">.goOnline &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">.verbose &lt;-<span class="st"> </span><span class="ot">FALSE</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pkgdown<span class="op">::</span><span class="kw"><a href="https://pkgdown.r-lib.org/reference/build_site.html">build_site</a></span>()</a></code></pre></div>
+<hr>
 </div>
 </div>
 <div id="package-structure" class="section level2">
@@ -299,22 +260,23 @@
 <strong>Functions to access default values</strong>, especially lists and functions with merging feature: Shall start with <em>Sos</em>, e.g. <code><a href="reference/Defaults.html">SosEncodingFunctions()</a></code>.</li>
 </ul>
 </div>
-</div>
-<div id="classes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#classes" class="anchor"></a>Classes</h2>
+<div id="classes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#classes" class="anchor"></a>Classes</h3>
 <p>Data models, i.e. requests and responses, are modelled as <strong>S4 classes</strong>. Documentation can be found at the following sites (and others):</p>
 <ul>
 <li>The S4 object system: <a href="http://adv-r.had.co.nz/S4.html" class="uri">http://adv-r.had.co.nz/S4.html</a> (short, must read)</li>
 <li>A (Not So) Short Introduction to S4: <a href="https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf" class="uri">https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf</a> (not so short)</li>
-<li>Classes and Methods in the S Language: <a href="http://www.omegahat.org/RSMethods/Intro.pdf" class="uri">http://www.omegahat.org/RSMethods/Intro.pdf</a> (by Chambers!)</li>
+<li>Classes and Methods in the S Language by Chambers: <a href="http://www.omegahat.org/RSMethods/Intro.pdf" class="uri">http://www.omegahat.org/RSMethods/Intro.pdf</a>
+</li>
 </ul>
+</div>
 </div>
 <div id="troubleshooting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#troubleshooting" class="anchor"></a>Troubleshooting</h2>
 <ul>
-<li>“non-ASCII characters” &gt; find them with <code><a href="https://www.rdocumentation.org/packages/tools/topics/showNonASCII">tools::showNonASCIIfile()</a></code>
+<li>“non-ASCII characters” in a file &gt; find them with <code><a href="https://www.rdocumentation.org/packages/tools/topics/showNonASCII">tools::showNonASCIIfile()</a></code>
 </li>
 </ul>
 </div>
@@ -322,7 +284,7 @@
 <h2 class="hasAnchor">
 <a href="#tests" class="anchor"></a>Tests</h2>
 <p>Tests are implemented with <a href="http://testthat.r-lib.org/"><code>testthat</code></a>. Run them with</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a></code></pre></div>
 <p>or by clicking the “Check” button in RStudio (which does more than just running the tests!).</p>
 </div>
 <div id="add-features" class="section level2">
@@ -336,15 +298,58 @@
 <li>by element name</li>
 <li>by mime type</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>()</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># add a local parser</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"TimeseriesKVP"</span> =<span class="st"> </span><span class="cf">function</span>() { ... })</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>()</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># add a local parser</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"TimeseriesKVP"</span> =<span class="st"> </span><span class="cf">function</span>() { ... })</a></code></pre></div>
 </div>
 <div id="how-to-add-an-encoder" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-to-add-an-encoder" class="anchor"></a>How to add an encoder</h3>
 <p>…</p>
 </div>
+</div>
+<div id="releases" class="section level2">
+<h2 class="hasAnchor">
+<a href="#releases" class="anchor"></a>Releases</h2>
+<p>A new release shall be uploaded to CRAN after testing and under the following procedure:</p>
+<ul>
+<li>Run the <a href="#tests">tests</a>
+</li>
+<li>Check the CI status
+<ul>
+<li><a href="https://travis-ci.org/52North/sos4R" class="uri">https://travis-ci.org/52North/sos4R</a></li>
+<li><a href="https://ci.appveyor.com/project/nuest/sos4r" class="uri">https://ci.appveyor.com/project/nuest/sos4r</a></li>
+</ul>
+</li>
+<li>Update version and date in <code>man/sos4R-package.Rd</code>
+</li>
+<li>Update version in <code>DESCRIPTION</code>
+</li>
+<li>Create a git tag with the version number</li>
+<li>Update NEWS file based on latest commits</li>
+<li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again</li>
+<li>Run checks
+<ul>
+<li>In the parent directory of the project: <code>R CMD build sos4R; R CMD check --as-cran sos4R_0.&lt;version number&gt;.tar.gz</code> should have no errors, warnings, or notes</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/revdepcheck/topics/revdep_check">revdepcheck::revdep_check()</a></code> for checking reverse dependencies</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/devtools/topics/devtools-deprecated">devtools::build_win()</a></code> for testing Windows using CRAN infrastructure</li>
+<li>
+<code>rhub::check_for_cran(email = &lt;...&gt;)</code> for testing for CRAN submissions using RHub infrastructure</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/rhub/topics/check">rhub::check()</a></code> for running checks on different operating systems</li>
+</ul>
+</li>
+<li>When available on CRAN
+<ul>
+<li>Notice on 52N mailing list(s)</li>
+<li>Publication on blog</li>
+</ul>
+</li>
+</ul>
+<p>You can then do the actual release with</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/release">release</a></span>()</a></code></pre></div>
 </div>
 </div>
 

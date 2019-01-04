@@ -24,13 +24,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-If you are familiar with the OGC SOS standard specification, know how to use content assist in your favourite R editor, and you do not need to extend the functionality of \pkg{sos4R}, then take a look at the "Quickstart" vignette and get started straightaway.
+If you are familiar with the OGC SOS standard specification, know how to use content assist in your favourite R editor, and you do not need to extend the functionality of `sos4R`, then take a look at the "Quickstart" vignette and get started straightaway.
 
 ## Related Specifications
 
 The Open Geospatial Consortium ([OGC](https://www.opengeospatial.org/)) is an organisation which provides standards for handling geospatial data on the internet, thereby ensuring interoperability.
 The Sensor Observation Service (SOS)} is such a standard and provides a well-defined interface for data warehousing of measurements and observations made by all kinds of sensors. 
-This vignette describes the classes, methods and functions provided by \pkg{sos4R} to request these observations from a SOS.
+This vignette describes the classes, methods and functions provided by `sos4R` to request these observations from a SOS.
 
 Providing data via web services is more powerful than local file copies (with issues like being outdated, redundancy, \ldots).
 Flexible filtering of data on the service side reduces download size.
@@ -38,7 +38,7 @@ That is why SOS operations can comprise flexible subsetting in temporal, spatial
 For example `"Get measurements from sensor urn:mySensor:001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees"`.
 
 In general, the SOS supports different methods of requesting data, so called bindings:
-(i) Key-value-pair (KVP) binding using HTTP GET as defined in the [OOSTethys best practice document](http://www.oostethys.org/best-practices/best-practices-get) (this best-practice paper takes the place of a section in the specification that was left out by mistake; it is well established and (loosely) followed by several SOS implementations),
+(i) Key-value-pair (KVP) binding using HTTP GET as defined in the [OOSTethys best practice document](https://web.archive.org/web/20120616065001/http://www.oostethys.org/best-practices/best-practices-get) (this best-practice paper takes the place of a section in the specification that was left out by mistake; it is well established and (loosely) followed by several SOS implementations),
 (ii) XML, or plain old XML (POX) using HTTP POST as defined in the standard document with requests encoded in eXtensible Markup Language ([XML](http://www.w3.org/XML/)), and
 (iii) SOAP ([Simple Object Access Protocol](https://en.wikipedia.org/wiki/SOAP)).
 All bindings can return responses using different encodings, but most common are XML documents.
@@ -51,7 +51,7 @@ An observation consists of information about the observerd geographic feature, t
 - **Geography Markup Language ([GML](https://www.opengeospatial.org/standards/gml))** (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots).
 - **SWE Common** defines data markup. Version 1 is contained in the SensorML specification (see above), version 2.0 is an independent specification.
 - **Filter Encoding ([FE](https://www.opengeospatial.org/standards/filter))** (Vretanos, 2005) defines operators and operands for filtering values.
-- **[OWS Common](https://www.opengeospatial.org/standards/owscommon)** (OGC Web Services Common; Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.
+- **[OWS Common](https://www.opengeospatial.org/standards/common)** (OGC Web Services Common; Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.
 - **SWES** (SWE Service Model Implementation Standard) defines data types for common use across SWE services, e.g. for contents or sensor description management.
 
 ## Terms and Definitions
@@ -73,16 +73,16 @@ A very good and extensive **introduction into the whole field of SWE**, includin
 
 ## Supported Implementations
 
-\pkg{sos4R} supports the core profile of the SOS specification.
+`sos4R` supports the core profile of the SOS specification.
 But the possible markups for observations is extremely manifold due to the flexibility of the O\&M specification.
 Sadly, there is no common application profile for certain types of observations, like simple measurements.
 
 Therefore, the undocumented profile of the [52°North SOS implementation](http://52north.org/communities/sensorweb/sos/) was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.
 
-In the author's experience, [OOSThetys SOS implementations](http://www.oostethys.org/) utilise the same or at least very similar profile, so responses of these service instances are probably parsed without further work as well.
+In the author's experience, OOSThetys SOS implementations utilise the same or at least very similar profile, so responses of these service instances are probably parsed without further work as well.
 
 An incomplete list of **tested services} can be found in package documentation.
-Please share your experiences with other SOS implementations with the developers and users of \pkg{sos4R}.
+Please share your experiences with other SOS implementations with the developers and users of `sos4R`.
 
 ## References
 

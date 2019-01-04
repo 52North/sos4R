@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -248,7 +248,12 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># parsing a XML string to an exception report object</span>
-<span class='no'>er.doc</span> <span class='kw'>&lt;-</span> <span class='fu'>xmlParseDoc</span>(<span class='st'>"&lt;ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"&gt;&lt;ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"&gt;&lt;ows:ExceptionText&gt;The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'&lt;/ows:ExceptionText&gt;&lt;/ows:Exception&gt;&lt;/ows:ExceptionReport&gt;"</span>)
+<span class='no'>er.doc</span> <span class='kw'>&lt;-</span> <span class='fu'>xmlParseDoc</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"&lt;ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\""</span>,
+  <span class='st'>" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\""</span>,
+  <span class='st'>" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"&gt;"</span>,
+  <span class='st'>"&lt;ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"&gt;"</span>,
+  <span class='st'>"&lt;ows:ExceptionText&gt;The parameter 'AcceptVersions' does not contain the version"</span>,
+  <span class='st'>" of this SOS: '1.0.0'&lt;/ows:ExceptionText&gt;&lt;/ows:Exception&gt;&lt;/ows:ExceptionReport&gt;"</span>))
 <span class='no'>er.parsed</span> <span class='kw'>&lt;-</span> <span class='fu'>parseOwsExceptionReport</span>(<span class='no'>er.doc</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 #&gt;  1 exception(s) (code @ locator : text):

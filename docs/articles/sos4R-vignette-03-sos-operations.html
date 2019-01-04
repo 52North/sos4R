@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="date" content="2019-01-04" />
+
+<title>sos4R: SOS Operations</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+<style type="text/css">
+  p.abstract{
+    text-align: center;
+    font-weight: bold;
+  }
+  div.abstract{
+    margin: auto;
+    width: 90%;
+  }
+</style>
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">sos4R: SOS Operations</h1>
+<h4 class="author"><em>Daniel Nüst</em></h4>
+<address class="author_afil">
+Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"><a href="mailto:daniel.nuest@uni-muenster.de">daniel.nuest@uni-muenster.de</a></a>
+</address>
+<h4 class="date"><em>2019-01-04</em></h4>
+<div class="abstract">
+<p class="abstract">Abstract</p>
+<p>The sos4R package provides simple yet powerful access to OGC Sensor Observation Service instances. The package supports both encapsulation and abstraction from the service interface for novice users as well as powerful request building for specialists. sos4R is motivated by the idea to close the gap between the Sensor Web and tools for (geo-)statistical analyses. It implements the core profile of the SOS specification and supports temporal, spatial, and thematical filtering of observations.</p>
+<p>This document describes which of the possible features and implementations of the rather generic standards are supported. It gives a detailed overview of the SOS operations and how to use them with <code>sos4R</code>.</p>
+The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
+</div>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#supported-features">Supported Features</a></li>
+<li><a href="#default-options">Default Options</a></li>
+<li><a href="#creating-a-sos-connection">Creating a SOS connection</a></li>
+<li><a href="#sos-operations">SOS Operations</a><ul>
+<li><a href="#getcapabilities">GetCapabilities</a></li>
+<li><a href="#describesensor">DescribeSensor</a></li>
+<li><a href="#getobservation">GetObservation</a></li>
+<li><a href="#getobservationbyid">GetObservationById</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sos4R&quot;</span>)</a></code></pre></div>
+<div id="supported-features" class="section level2">
+<h2>Supported Features</h2>
+<p>The package provides accessor functions for the supported parameters. It is recommended to access options from the lists returned by these functions instead of hard-coding them into scripts.</p>
+<p>This section only lists the possibilities. Explanations follow in this document or can be found in the SOS specification.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">SosSupportedOperations</span>()</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [1] &quot;GetCapabilities&quot;    &quot;DescribeSensor&quot;     &quot;GetObservation&quot;    </span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; [4] &quot;GetObservationById&quot;</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">SosSupportedServiceVersions</span>()</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; [1] &quot;1.0.0&quot; &quot;2.0.0&quot;</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw">SosSupportedBindings</span>()</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;           </span><span class="al">DEPRECATED</span><span class="co">           </span><span class="al">DEPRECATED</span><span class="co"> Key-value-pair (GET) </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;                &quot;GET&quot;               &quot;POST&quot;                &quot;KVP&quot; </span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; Plain old XML (POST) </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;                &quot;POX&quot;</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw">SosSupportedResponseFormats</span>()</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [1] &quot;text/xml;subtype=\&quot;om/1.0.0\&quot;&quot;       </span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; [2] &quot;text/xml;subtype=\&quot;sensorML/1.0.1\&quot;&quot; </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; [3] &quot;text/csv&quot;                            </span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [4] &quot;application/vnd.google-earth.kml+xml&quot;</span></a></code></pre></div>
+<p>The response format <code>&quot;text/csv&quot;</code> is not standard conform, but used by services as a well established alternative to XML encodings.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">SosSupportedResponseModes</span>()</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [1] &quot;inline&quot;</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">SosSupportedResultModels</span>()</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [1] &quot;om:Measurement&quot; &quot;om:Observation&quot;</span></a></code></pre></div>
+<p>The output of the following calls are named lists (the name being the same as the value) which are simplified here for brevity using <code>toString()</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">SosSupportedSpatialOperators</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">toString</span>(<span class="kw">SosSupportedSpatialOperators</span>())</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] &quot;BBOX, Contains, Intersects, Overlaps&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">SosSupportedTemporalOperators</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">toString</span>(<span class="kw">SosSupportedTemporalOperators</span>())</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] &quot;TM_After, TM_Before, TM_During, TM_Equals&quot;</span></a></code></pre></div>
+</div>
+<div id="default-options" class="section level2">
+<h2>Default Options</h2>
+<p>Two kinds of default values can be found in (function calls in) <code>sos4R</code>: (i) default depending on other function parameters, and (ii) global defaults. Global defaults can be inspected (not changed!) using the following functions. If you want to use a different value please change the respective argument in function calls.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">SosDefaultBinding</span>()</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] &quot;POX&quot;</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">SosDefaults</span>()</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; $sosDefaultCharacterEncoding</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [1] &quot;UTF-8&quot;</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; $sosDefaultDescribeSensorOutputFormat</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; [1] &quot;text/xml;subtype=\&quot;sensorML/1.0.1\&quot;&quot;</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; $sosDefaultGetCapSections</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; [1] &quot;All&quot;</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; $sosDefaultGetCapAcceptFormats</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; [1] &quot;text/xml&quot;</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; $sosDefaultGetCapOwsVersion</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; [1] &quot;1.1.0&quot;</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; $sosDefaultGetObsResponseFormat</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; [1] &quot;text/xml;subtype=\&quot;om/1.0.0\&quot;&quot;</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; $sosDefaultTimeFormat</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; [1] &quot;%Y-%m-%dT%H:%M:%OS&quot;</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt; $sosDefaultFilenameTimeFormat</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [1] &quot;%Y-%m-%d_%H-%M-%OS&quot;</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; $sosDefaultTempOpPropertyName</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [1] &quot;om:samplingTime&quot;</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; $sosDefaultTemporalOperator</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [1] &quot;TM_During&quot;</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; $sosDefaultSpatialOpPropertyName</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; [1] &quot;urn:ogc:data:location&quot;</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt; $sosDefaultColumnNameFeatureIdentifier</span></a>
+<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; [1] &quot;feature&quot;</span></a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt; $sosDefaultColumnNameLat</span></a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt; [1] &quot;lat&quot;</span></a>
+<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt; $sosDefaultColumnNameLon</span></a>
+<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co">#&gt; [1] &quot;lon&quot;</span></a>
+<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt; $sosDefaultColumnNameSRS</span></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt; [1] &quot;SRS&quot;</span></a>
+<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt; $sosDefaultReferenceFrameSensorDescription</span></a>
+<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt; [1] &quot;urn:ogc:def:crs:EPSG:4326&quot;</span></a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt; $sosDefaultGetBindingParamLatest</span></a>
+<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt; [1] NA</span></a></code></pre></div>
+<p>The process of data download also comprises (i) building requests, (ii) decoding responses, and (iii) applying the correct R data type to the respective data values. This mechanism is explained in detail in the vignette “Extending”. The package comes with a set of predefined encoders, decoders and converters (output not shown here as it is very extensive).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">SosEncodingFunctions</span>()</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">SosParsingFunctions</span>()</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">SosDataFieldConvertingFunctions</span>()</a></code></pre></div>
+</div>
+<div id="creating-a-sos-connection" class="section level2">
+<h2>Creating a SOS connection</h2>
+<p>The method <code>SOS()</code> is a construction method for classes encapsulating a connection to a SOS. It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class <code>SOS</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">mySOS &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="dt">url =</span> <span class="st">&quot;http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp&quot;</span>, <span class="dt">binding =</span> <span class="st">&quot;KVP&quot;</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp</span></a></code></pre></div>
+<p>To create a SOS connection you only need the URL of the service (i.e. the URL endpoint which can be used for HTTP requests). The service connection created above is used for all examples throughout this document.</p>
+<p>All parameters except the service endpoint are optional and use default settings:</p>
+<ul>
+<li><code>method</code>: The transport protocol. Currently available are DEPRECATED, DEPRECATED, Key-value-pair (GET), Plain old XML (POST), the default is POX. <code>GET</code> is less powerful, especially regarding filtering operations.</li>
+<li><code>version</code>: The service version. Currently available version(s) is/are 1.0.0, 2.0.0.</li>
+<li><code>parsers</code>: The list of parsing functions. See vignette “Extending”.</li>
+<li><code>encoders</code>: The list of encoding functions. See vignette “Extending”.</li>
+<li><code>dataFieldConverters</code>: The list of conversion functions. See vignette “Extending”.</li>
+<li><code>curlHandle</code>, <code>curlOptions</code>: Settings of the package <code>RCurl</code>, which is used for HTTP connections. Please consult the packags specification before using this.</li>
+<li><code>timeFormat</code>: The time format to be used or decoding and encoding time character strings to and from <code>POSIXt</code> classes, the default is %Y-%m-%dT%H:%M:%OS.</li>
+<li><code>verboseOutput</code>: Trigger parameter for extensive debugging information on the console.
+<code>switchCoordinates</code>: Switches all coordinates that are encountered during the <strong>parsing phase</strong>, such as in an element like <code>&lt;gml:lowerCorner&gt;117.3 -41.5&lt;/gml:lowerCorner&gt;</code>.</li>
+</ul>
+<p>There are accessor methods for the slots, the “properties”, of the class.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">sosUrl</span>(mySOS)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">sosTitle</span>(mySOS)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">sosAbstract</span>(mySOS)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw">sosVersion</span>(mySOS)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw">sosTimeFormat</span>(mySOS)</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw">sosBinding</span>(mySOS)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">sosEncoders</span>(mySOS)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">sosParsers</span>(mySOS)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">sosDataFieldConverters</span>(mySOS)</a></code></pre></div>
+<p>Print and summary methods are available for important classes, like <code>SOS</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">mySOS</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; Object of class SOS_1.0.0 [KVP, http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp, 52N SOS]</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">summary</span>(mySOS)</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; $class</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; [1] &quot;SOS_1.0.0&quot;</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; attr(,&quot;package&quot;)</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; [1] &quot;sos4R&quot;</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; $version</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; [1] &quot;1.0.0&quot;</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; $url</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; [1] &quot;http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp&quot;</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt; $binding</span></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt; [1] &quot;KVP&quot;</span></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="co">#&gt; $title</span></a>
+<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co">#&gt; [1] &quot;52N SOS&quot;</span></a>
+<a class="sourceLine" id="cb13-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-21" data-line-number="21"><span class="co">#&gt; $abstract</span></a>
+<a class="sourceLine" id="cb13-22" data-line-number="22"><span class="co">#&gt; [1] &quot;52North Sensor Observation Service - Data Access for the Sensor Web&quot;</span></a>
+<a class="sourceLine" id="cb13-23" data-line-number="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-24" data-line-number="24"><span class="co">#&gt; $time</span></a>
+<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="co">#&gt; [1] &quot;1998-07-21T20:29:59.971Z --&gt; 2023-11-19T17:45:17.000Z&quot;</span></a>
+<a class="sourceLine" id="cb13-26" data-line-number="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-27" data-line-number="27"><span class="co">#&gt; $offeringCount</span></a>
+<a class="sourceLine" id="cb13-28" data-line-number="28"><span class="co">#&gt; [1] 15</span></a>
+<a class="sourceLine" id="cb13-29" data-line-number="29"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-30" data-line-number="30"><span class="co">#&gt; $procedureCount</span></a>
+<a class="sourceLine" id="cb13-31" data-line-number="31"><span class="co">#&gt; [1] 16</span></a>
+<a class="sourceLine" id="cb13-32" data-line-number="32"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-33" data-line-number="33"><span class="co">#&gt; $observedPropCount</span></a>
+<a class="sourceLine" id="cb13-34" data-line-number="34"><span class="co">#&gt; [1] 28</span></a>
+<a class="sourceLine" id="cb13-35" data-line-number="35"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb13-36" data-line-number="36"><span class="co">#&gt; attr(,&quot;class&quot;)</span></a>
+<a class="sourceLine" id="cb13-37" data-line-number="37"><span class="co">#&gt; [1] &quot;summary.SOS_versioned&quot;</span></a></code></pre></div>
+</div>
+<div id="sos-operations" class="section level2">
+<h2>SOS Operations</h2>
+<p><code>sos4R</code> implements the SOS core profile of version 1.0.0 comprising the operations GetCapabilities, DescribeSensor and GetObservation. This document focusses on the practical usage of the operations, so the reader is refered to the specification document for details.</p>
+<p>The methods mirroring the SOS operations all contain debugging parameters <code>inspect</code> and <code>verbose</code> as described in the “Quickstart” vignette.</p>
+<div id="getcapabilities" class="section level3">
+<h3>GetCapabilities</h3>
+<p>The GetCapabilities operations is automatically conducted during the connecting to a SOS instance. The response is the <strong>capabilities document</strong>, which contains a detailed description of the services capabilities. It’s sections describe: service identification, service provider, operations metadata (parameter names, …), filter capabilities, and contents (a list of offering descriptions). Please see section 8.2.3 of the SOS specification for details. If you want to inspect the original capabilities document it can be re-requested using</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">sosCapabilitiesDocumentOriginal</span>(<span class="dt">sos =</span> mySOS)</a></code></pre></div>
+<p>The actual operation can be started with the following function. It returns an object of class <code>SosCapabilities</code> which can be accessed later on by the function <code>sosCaps()</code> from an object of class <code>SOS</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">getCapabilities</span>(<span class="dt">sos =</span> mySOS)</a></code></pre></div>
+<p>The parameters of the operation are:</p>
+<ul>
+<li><code>sos</code>: The SOS connection to request the capabilities document from.</li>
+<li><code>inspect</code> and <code>verbose</code>: control the logging output, see “Quickstart” vignette.</li>
+</ul>
+<div id="exploring-the-capabilities-document" class="section level4">
+<h4>Exploring the Capabilities Document</h4>
+<p>The respective <strong>parts of the capabilities document</strong> are modelled as R classes and can be accessed with these functions:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">sosServiceIdentification</span>(mySOS)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">sosServiceProvider</span>(mySOS)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">sosFilter_Capabilities</span>(mySOS)</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="kw">sosContents</span>(mySOS)</a></code></pre></div>
+<p>The first four functions extract clearly structured, self-explanatory parts of the document, so no further discussion is made here. The contents part however is described in detail in section <a href="#metadata-extraction-for-request-building">Metadata Extraction</a>, as it can (and should) be used to extract query parameters.</p>
+<p>The function <code>sosTime()</code> returns the time period for which observations are available within the service. To be precise, it accesses the <code>ows:Range</code> element of the parameter eventTime in the description of the GetObservation operation.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">sosTime</span>(mySOS)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co">#&gt; Object of class OwsRange; spacing: NA, rangeClosure: NA</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; FROM 1998-07-21T20:29:59.971Z TO 2023-11-19T17:45:17.000Z</span></a></code></pre></div>
+<p>The operations supported by the SOS are listed in the ows:OperationsMetadata element, which is modelled as an R class, <code>OwsOperationsMetadata</code>, which contains a list of objects of class <code>OwsOperation</code> which in turn describe the allowed parameter values for calls to the operation. The operations metadata and individual operations can be inspected with the following functions.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">sosOperationsMetadata</span>(mySOS)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">sosOperation</span>(mySOS, <span class="st">&quot;GetCapabilities&quot;</span>)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw">sosOperation</span>(mySOS, sosGetCapabilitiesName)</a></code></pre></div>
+<p>The allowed response formats (the file format/encoding of the response), the response modes (for example inline or as attachment) and the result models (a qualified XML name of the root element of the response) differ for every operation of the service. The following accessor methods return either (i) a list (named by the operation names) of vectors (with the actual allowed parameter values), or (ii) with the <code>unique</code> parameter set to <code>TRUE</code>, a unique list of all allowed values. Please be aware that these are not allowed for all operations, not are all options supported by <code>sos4R</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">sosResponseFormats</span>(mySOS)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">sosResponseMode</span>(mySOS)</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw">sosResultModels</span>(mySOS)</a></code></pre></div>
+<p>Some exemplary outputs of the operations are as follows (unnamed lists are simplified with <code>toString()</code>). Note the missing values for some operations (where options are not required they might not be available).</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">sosResponseMode</span>(mySOS, <span class="dt">unique =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; [1] &quot;inline&quot;</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt; [[2]]</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt; [1] &quot;resultTemplate&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">sosResultModels</span>(mySOS)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co">#&gt; $DescribeSensor</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; $GetCapabilities</span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; $GetFeatureOfInterest</span></a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">sosResponseMode</span>(mySOS)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="co">#&gt; $DescribeSensor</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co">#&gt; $GetCapabilities</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="co">#&gt; $GetFeatureOfInterest</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb22-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co">#&gt; $GetObservation</span></a>
+<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; $GetObservation[[1]]</span></a>
+<a class="sourceLine" id="cb22-13" data-line-number="13"><span class="co">#&gt; [1] &quot;inline&quot;</span></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="co">#&gt; $GetObservation[[2]]</span></a>
+<a class="sourceLine" id="cb22-16" data-line-number="16"><span class="co">#&gt; [1] &quot;resultTemplate&quot;</span></a>
+<a class="sourceLine" id="cb22-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb22-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb22-19" data-line-number="19"><span class="co">#&gt; $GetObservationById</span></a>
+<a class="sourceLine" id="cb22-20" data-line-number="20"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">toString</span>(<span class="kw">sosResultModels</span>(mySOS)[[sosGetObservationName]])</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="co">#&gt; [1] &quot;om:CategoryObservation, om:GeometryObservation, om:Measurement, om:Observation&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">unlist</span>(<span class="kw">sosResponseFormats</span>(mySOS)[[sosGetObservationName]])</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="co">#&gt; [1] &quot;application/json&quot;                                    </span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co">#&gt; [2] &quot;http://dd.eionet.europa.eu/schemaset/id2011850eu-1.0&quot;</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co">#&gt; [3] &quot;text/xml; subtype=\&quot;om/1.0.0\&quot;&quot;</span></a></code></pre></div>
+</div>
+<div id="spatial-reference-systems" class="section level4">
+<h4>Spatial Reference Systems</h4>
+<p>For future analyses, but also for correct plotting, one must know the coordinate reference system (CRS) or spatial reference system (<a href="https://en.wikipedia.org/wiki/Spatial_referencing_system">SRS</a>) or the returned data. You can get this information using the method <code>sosGetCRS()</code> from variuos objects.</p>
+<p>The function utilizes the <a href="http://www.epsg-registry.org/">EPSG code</a> in GML attributes like <code>srsName=&quot;urn:ogc:def:crs:EPSG:4326&quot;</code> to initialize an object of class <code>CRS</code> from the package <code>sp</code>. For <code>SOS</code> and code{SosObservationOffering} objects these are taken from the bounding box given in the <code>gml:boundedBy</code> element.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">sosGetCRS</span>(<span class="st">&quot;urn:ogc:def:crs:EPSG:4326&quot;</span>)</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="co">#&gt; CRS arguments:</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="co">#&gt; +towgs84=0,0,0</span></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="co"># returns the CRS of offering(s) based on the CRS</span></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="co"># used in the element gml:boundedBy:</span></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="kw">sosGetCRS</span>(mySOS)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="co">#&gt; $adxl345</span></a>
+<a class="sourceLine" id="cb25-10" data-line-number="10"><span class="co">#&gt; CRS arguments:</span></a>
+<a class="sourceLine" id="cb25-11" data-line-number="11"><span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span></a>
+<a class="sourceLine" id="cb25-12" data-line-number="12"><span class="co">#&gt; +towgs84=0,0,0 </span></a>
+<a class="sourceLine" id="cb25-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb25-14" data-line-number="14"><span class="co">#&gt; $http___www.52north.org_test_offering_1</span></a>
+<a class="sourceLine" id="cb25-15" data-line-number="15"><span class="co">#&gt; CRS arguments:</span></a>
+<a class="sourceLine" id="cb25-16" data-line-number="16"><span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span></a>
+<a class="sourceLine" id="cb25-17" data-line-number="17"><span class="co">#&gt; +towgs84=0,0,0</span></a>
+<a class="sourceLine" id="cb25-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb25-19" data-line-number="19"><span class="kw">sosGetCRS</span>(<span class="kw">sosOfferings</span>(mySOS)[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb25-20" data-line-number="20"><span class="co">#&gt; CRS arguments:</span></a>
+<a class="sourceLine" id="cb25-21" data-line-number="21"><span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span></a>
+<a class="sourceLine" id="cb25-22" data-line-number="22"><span class="co">#&gt; +towgs84=0,0,0</span></a></code></pre></div>
+<p>Mre examples for <code>sosGetSRS()</code> can be found in section <a href="#spatial-reference-systems">Spatial Reference Systems</a>.</p>
+</div>
+<div id="plotting-sos-and-offerings" class="section level4">
+<h4>Plotting SOS and Offerings</h4>
+<p>The content of the capabilities document allows the plotting of a service’s offerings. The following example uses the packages <code>maps},</code>mapdata<code>and \pkg{maptools</code> to create a background map. Plotting functions exist for objects of class <code>SOS</code> and <code>SosObservationOffering</code>, so offerings can also be plotted separately.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co"># background map:</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">library</span>(maps); <span class="kw">library</span>(mapdata); <span class="kw">library</span>(maptools)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="kw">data</span>(worldHiresMapEnv)</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">crs &lt;-<span class="st"> </span><span class="kw">sosGetCRS</span>(mySOS)[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">worldHigh &lt;-<span class="st"> </span><span class="kw">pruneMap</span>(</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">        <span class="kw">map</span>(<span class="dt">database =</span> <span class="st">&quot;worldHires&quot;</span>,</a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">            <span class="dt">region =</span> <span class="kw">c</span>(<span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Austria&quot;</span>, <span class="st">&quot;Netherlands&quot;</span>),</a>
+<a class="sourceLine" id="cb26-8" data-line-number="8">            <span class="dt">plot =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb26-9" data-line-number="9">worldHigh.lines &lt;-<span class="st"> </span><span class="kw">map2SpatialLines</span>(worldHigh, <span class="dt">proj4string =</span> crs)</a>
+<a class="sourceLine" id="cb26-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb26-11" data-line-number="11"><span class="co"># the plot:</span></a>
+<a class="sourceLine" id="cb26-12" data-line-number="12"><span class="kw">plot</span>(worldHigh.lines, <span class="dt">col =</span> <span class="st">&quot;grey50&quot;</span>)</a>
+<a class="sourceLine" id="cb26-13" data-line-number="13"><span class="kw">plot</span>(mySOS, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb26-14" data-line-number="14"><span class="kw">title</span>(<span class="dt">main =</span> <span class="kw">paste</span>(<span class="st">&quot;Offerings by '&quot;</span>, <span class="kw">sosTitle</span>(mySOS), <span class="st">&quot;'&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>),</a>
+<a class="sourceLine" id="cb26-15" data-line-number="15">        <span class="dt">sub =</span> <span class="kw">toString</span>(<span class="kw">names</span>(<span class="kw">sosOfferings</span>(mySOS))))</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+</div>
+<div id="describesensor" class="section level3">
+<h3>DescribeSensor</h3>
+<p>The DescribeSensor operation is specified in clause 8.3 of the SOS specification and its response is modeled in <a href="https://www.opengeospatial.org/standards/sensorml">Sensor Model Language</a> (SensorML) and <a href="https://www.opengeospatial.org/standards/tml">Transducer Markup Language</a> (TML) specifications.</p>
+<blockquote>
+<p><em>The DescribeSensor operation is useful for obtaining detailed information of sensor characteristics encoded in either SensorML or TML. The sensor characteristics can include lists and definitions of observables supported by the sensor. […]</em></p>
+</blockquote>
+<p>The parameters of the operation are as follows. Please see other sections of this document on how to get supported respectively allowed values of request parameters from SOS metadata.</p>
+<ul>
+<li><code>sos</code>: The SOS connection to request a sensor description from.</li>
+<li><code>procedure</code>: The identifier of the sensor, so one of the character strings returned by <code>sosProcedures()</code>.</li>
+<li><code>outputFormat</code>: The format in which the sensor description is to be returned. The default is text/xml;subtype=“sensorML/1.0.1”.</li>
+<li><code>inspect</code> and <code>verbose</code>: See “Quickstart” vignette.</li>
+<li><code>saveOriginal</code>: Saves a copy of the response document in the current working directory. Accepts boolean values (<code>TRUE</code> will automatically create file name with time stamp) or character string to be used as file name.</li>
+</ul>
+<p>A simple example is as follows.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">testsos &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="dt">url =</span> <span class="st">&quot;http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox&quot;</span>,</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">             <span class="dt">binding =</span> <span class="st">&quot;POX&quot;</span>, <span class="dt">dcpFilter =</span> <span class="kw">list</span>(<span class="st">&quot;POX&quot;</span> =<span class="st"> &quot;/pox&quot;</span>))</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">mySensor &lt;-<span class="st"> </span><span class="kw">describeSensor</span>(<span class="dt">sos =</span> testsos,</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">        <span class="dt">procedure =</span> <span class="kw">sosProcedures</span>(<span class="dt">obj =</span> testsos)[[<span class="dv">1</span>]][[<span class="dv">1</span>]],</a>
+<a class="sourceLine" id="cb27-6" data-line-number="6">        <span class="dt">outputFormat =</span> <span class="st">'text/xml; subtype=&quot;sensorML/1.0.1&quot;'</span>, <span class="co"># space is needed!</span></a>
+<a class="sourceLine" id="cb27-7" data-line-number="7">        <span class="co">#verbose = TRUE</span></a>
+<a class="sourceLine" id="cb27-8" data-line-number="8">        )</a>
+<a class="sourceLine" id="cb27-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb27-10" data-line-number="10">mySensor</a></code></pre></div>
+<p>All additional information presented in the following depends on compliance of the sensor description with the <a href="%7Bhttp://portal.opengeospatial.org/files/?artifact_id=37944">SensorML Profile for Discovery</a>.</p>
+<p>The coordinates data frame of a sensor description can be accessed with the common method <code>sosCoordinates()</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">sosCoordinates</span>(mySensor)</a></code></pre></div>
+<p>Other possibly useful parts of the sensor description can be accessed as well:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">sosId</span>(mySensor)</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw">sosName</span>(mySensor)</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw">sosAbstract</span>(mySensor)</a></code></pre></div>
+<p>This includes the coordinates with unit and reference system information in the attributes of the returned object. The observed bounding box is also available.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">mySensor.coords &lt;-<span class="st"> </span><span class="kw">sosCoordinates</span>(mySensor)</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">attributes</span>(mySensor.coords)</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw">sosBoundedBy</span>(mySensor)</a></code></pre></div>
+<p>The coordinates also allow the plotting of the sensor positions (see Figure below). Here it is assumed that the spatial reference system of the SOS is the same for data from the first offering and the sensor positions!</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;maps&quot;</span>); <span class="kw">library</span>(<span class="st">&quot;mapdata&quot;</span>); <span class="kw">library</span>(<span class="st">&quot;maptools&quot;</span>)</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">data</span>(worldHiresMapEnv)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="co"># get sensor descriptions</span></a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">procs &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">unlist</span>(<span class="kw">sosProcedures</span>(mySOS)))</a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">procs.descr &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dt">X =</span> procs, <span class="dt">FUN =</span> describeSensor, <span class="dt">sos =</span> mySOS)</a>
+<a class="sourceLine" id="cb31-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb31-8" data-line-number="8">sensors.crs &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">sosGetCRS</span>(procs.descr))[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb31-9" data-line-number="9">worldHigh &lt;-<span class="st"> </span><span class="kw">pruneMap</span>(<span class="kw">map</span>(<span class="dt">database =</span> <span class="st">&quot;worldHires&quot;</span>,</a>
+<a class="sourceLine" id="cb31-10" data-line-number="10">                <span class="dt">region =</span> <span class="kw">c</span>(<span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Austria&quot;</span>, <span class="st">&quot;Netherlands&quot;</span>,</a>
+<a class="sourceLine" id="cb31-11" data-line-number="11">                        <span class="st">&quot;Italy&quot;</span>),</a>
+<a class="sourceLine" id="cb31-12" data-line-number="12">                <span class="dt">plot =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb31-13" data-line-number="13">worldHigh.lines &lt;-<span class="st"> </span><span class="kw">map2SpatialLines</span>(worldHigh, <span class="dt">proj4string =</span> sensors.crs)</a>
+<a class="sourceLine" id="cb31-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb31-15" data-line-number="15"><span class="kw">plot</span>(worldHigh.lines, <span class="dt">col =</span> <span class="st">&quot;grey50&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">44.0</span>, <span class="fl">54.8</span>))</a>
+<a class="sourceLine" id="cb31-16" data-line-number="16"><span class="cf">for</span>(x <span class="cf">in</span> procs.descr)</a>
+<a class="sourceLine" id="cb31-17" data-line-number="17">    <span class="kw">plot</span>(x, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</a>
+<a class="sourceLine" id="cb31-18" data-line-number="18"><span class="kw">text</span>(<span class="kw">sosCoordinates</span>(procs.descr)[<span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)],</a>
+<a class="sourceLine" id="cb31-19" data-line-number="19">        <span class="dt">labels =</span> <span class="kw">sosId</span>(procs.descr), <span class="dt">pos =</span> <span class="dv">4</span>, <span class="dt">cex =</span> <span class="fl">0.8</span>)</a>
+<a class="sourceLine" id="cb31-20" data-line-number="20"><span class="kw">title</span>(<span class="dt">main =</span> <span class="kw">paste</span>(<span class="st">&quot;Sensors of&quot;</span>, <span class="kw">sosTitle</span>(mySOS)))</a></code></pre></div>
+</div>
+<div id="getobservation" class="section level3">
+<h3>GetObservation</h3>
+<p>The GetObservation operation is specified in clause 8.4 of the SOS specification. In this section, all matters around requesting data are explained - from extracting query parameters from metadata, and sending the request, till finally extracting data values and coordinates from the response.</p>
+<p>A few utility functions exist to minize a user’s amount of work to create usual requests. They accept normal R types as input and return the respective class from <code>sos4R</code> with useful default settings. These function’s names follow the pattern with <code>sosCreate[name of object]()</code> and exist for spatial and temporal filters.</p>
+<div id="metadata-extraction-for-request-building" class="section level4">
+<h4>Metadata Extraction for Request Building</h4>
+<p>It is recommended to extract the identifiers of procedures et cetera that are to be used for queries from the metadata description provided by the service, the capabilities document. This often ensures forward compatiblity and minimizes typing errors. The offerings are the “index” of the service and therefore we concentrate on the contents section of the capabilities here.</p>
+<p>The class <code>SosContents</code> simply contains a list of objects of the class <code>SosObservationOffering</code> which one can get directly from the connection object:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">sosOfferings</span>(mySOS)</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="kw">sosOfferings</span>(mySOS, <span class="dt">name =</span> <span class="st">&quot;wxt520&quot;</span>)</a></code></pre></div>
+<p>The output when printing this list is quite extensive, so we concentrate on just on element of it in the following examples. Printing and summary methods are available of objects of the class <code>SosObservationOffering</code>.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">sosOfferings</span>(mySOS)[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co">#&gt; Object of class SosObservationOffering</span></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="co">#&gt; [[id:]]      [1] &quot;adxl345&quot;</span></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="co">#&gt; [[name:]]    [1] &quot;adxl345&quot;</span></a>
+<a class="sourceLine" id="cb33-5" data-line-number="5"><span class="co">#&gt; [[time:]]    [1] &quot;2018-05-22 11:03:06 --&gt; 2018-05-22 11:51:47&quot;</span></a>
+<a class="sourceLine" id="cb33-6" data-line-number="6"><span class="co">#&gt; [[bbox:]]    [1] &quot;urn:ogc:def:crs:EPSG::4326, 7.5 52.0, 7.5 52.0&quot;</span></a>
+<a class="sourceLine" id="cb33-7" data-line-number="7"><span class="co">#&gt; [[fois:]]    [1] 1</span></a>
+<a class="sourceLine" id="cb33-8" data-line-number="8"><span class="co">#&gt; [[procs:]]   [1] 1</span></a>
+<a class="sourceLine" id="cb33-9" data-line-number="9"><span class="co">#&gt; [[obsProps:]]    [1] 1</span></a></code></pre></div>
+<p>The offerings list is named with the offering identifier, so the following statements return the same list.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">sosOfferingIds</span>(mySOS)</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">names</span>(<span class="kw">sosOfferings</span>(mySOS))</a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">sosName</span>(<span class="kw">sosOfferings</span>(mySOS))</a></code></pre></div>
+<p>The offering identifier is is used in the example below to extract the offering description of temperature measurements. The offerings list is a standard R list, so all subsetting operations are possible.</p>
+<p><strong>Note:</strong> The order of the offering list (as all other lists, e.g. procedures or observed properties) is not guaranteed to be the same upon every connection to a service. So indexing by name (though counteracting the mentioned forward compatibility, as names might change) is recommended at at least one point in the analysis so that changes in the contents of a service result in an error.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">myOffering &lt;-<span class="st"> </span><span class="kw">sosOfferings</span>(mySOS)[[<span class="st">&quot;adxl345&quot;</span>]]</a></code></pre></div>
+<p>Metadata about the whole <strong>offering</strong> are identifier, name, and spatial and temporal extends.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">sosId</span>(myOffering)</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="co">#&gt; [1] &quot;adxl345&quot;</span></a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw">sosName</span>(myOffering)</a>
+<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="co">#&gt; [1] &quot;adxl345&quot;</span></a></code></pre></div>
+<p>The offerings also contains metadata about the format and model that are supported.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">sosResultModels</span>(myOffering)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="co">#&gt; [1] NA</span></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">sosResponseMode</span>(myOffering)</a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="co">#&gt;     responseMode     responseMode </span></a>
+<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="co">#&gt;         &quot;inline&quot; &quot;resultTemplate&quot;</span></a>
+<a class="sourceLine" id="cb37-6" data-line-number="6"><span class="kw">sosResponseFormats</span>(myOffering)</a>
+<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="co">#&gt;                                         responseFormat </span></a>
+<a class="sourceLine" id="cb37-8" data-line-number="8"><span class="co">#&gt;                                     &quot;application/json&quot; </span></a>
+<a class="sourceLine" id="cb37-9" data-line-number="9"><span class="co">#&gt;                                         responseFormat </span></a>
+<a class="sourceLine" id="cb37-10" data-line-number="10"><span class="co">#&gt; &quot;http://dd.eionet.europa.eu/schemaset/id2011850eu-1.0&quot; </span></a>
+<a class="sourceLine" id="cb37-11" data-line-number="11"><span class="co">#&gt;                                         responseFormat </span></a>
+<a class="sourceLine" id="cb37-12" data-line-number="12"><span class="co">#&gt;                       &quot;text/xml; subtype=\&quot;om/1.0.0\&quot;&quot;</span></a></code></pre></div>
+<p>The <strong>spatial extend</strong> is given as a rectangular bounding box with two coordinates. The structure of the bounding box is kept flexible, as it simply returns a named list of lower and upper corner.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">sosBoundedBy</span>(myOffering)</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="co">#&gt; $srsName</span></a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="co">#&gt; [1] &quot;urn:ogc:def:crs:EPSG::4326&quot;</span></a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb38-5" data-line-number="5"><span class="co">#&gt; $lowerCorner</span></a>
+<a class="sourceLine" id="cb38-6" data-line-number="6"><span class="co">#&gt; [1] &quot;7.5 52.0&quot;</span></a>
+<a class="sourceLine" id="cb38-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb38-8" data-line-number="8"><span class="co">#&gt; $upperCorner</span></a>
+<a class="sourceLine" id="cb38-9" data-line-number="9"><span class="co">#&gt; [1] &quot;7.5 52.0&quot;</span></a></code></pre></div>
+<p>The optional attribute <code>bbox</code> can be used to obtain a bounding box matrix as used by package <code>sp</code>.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">sosBoundedBy</span>(myOffering, <span class="dt">bbox =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="co">#&gt;             min  max</span></a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="co">#&gt; coords.lon 52.0 52.0</span></a>
+<a class="sourceLine" id="cb39-4" data-line-number="4"><span class="co">#&gt; coords.lat  7.5  7.5</span></a></code></pre></div>
+<p>The <strong>temporal extend</strong> is modeled as an object of the respective class of the element in the offering description, which normally is a gml:TimePeriod, but does not have to be. The last two statements in the following snipped show how one can access the actual data and what their class is.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">myOffering.time &lt;-<span class="st"> </span><span class="kw">sosTime</span>(myOffering)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">str</span>(myOffering.time)</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="co">#&gt; Formal class 'GmlTimePeriod' [package &quot;sos4R&quot;] with 9 slots</span></a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="co">#&gt;   ..@ begin        : NULL</span></a>
+<a class="sourceLine" id="cb40-5" data-line-number="5"><span class="co">#&gt;   ..@ beginPosition:Formal class 'GmlTimePosition' [package &quot;sos4R&quot;] with 4 slots</span></a>
+<a class="sourceLine" id="cb40-6" data-line-number="6"><span class="co">#&gt;   .. .. ..@ time                 : POSIXlt[1:1], format: &quot;2018-05-22 11:03:06&quot;</span></a>
+<a class="sourceLine" id="cb40-7" data-line-number="7"><span class="co">#&gt;   .. .. ..@ frame                : chr NA</span></a>
+<a class="sourceLine" id="cb40-8" data-line-number="8"><span class="co">#&gt;   .. .. ..@ calendarEraName      : chr NA</span></a>
+<a class="sourceLine" id="cb40-9" data-line-number="9"><span class="co">#&gt;   .. .. ..@ indeterminatePosition: chr NA</span></a>
+<a class="sourceLine" id="cb40-10" data-line-number="10"><span class="co">#&gt;   ..@ end          : NULL</span></a>
+<a class="sourceLine" id="cb40-11" data-line-number="11"><span class="co">#&gt;   ..@ endPosition  :Formal class 'GmlTimePosition' [package &quot;sos4R&quot;] with 4 slots</span></a>
+<a class="sourceLine" id="cb40-12" data-line-number="12"><span class="co">#&gt;   .. .. ..@ time                 : POSIXlt[1:1], format: &quot;2018-05-22 11:51:47&quot;</span></a>
+<a class="sourceLine" id="cb40-13" data-line-number="13"><span class="co">#&gt;   .. .. ..@ frame                : chr NA</span></a>
+<a class="sourceLine" id="cb40-14" data-line-number="14"><span class="co">#&gt;   .. .. ..@ calendarEraName      : chr NA</span></a>
+<a class="sourceLine" id="cb40-15" data-line-number="15"><span class="co">#&gt;   .. .. ..@ indeterminatePosition: chr NA</span></a>
+<a class="sourceLine" id="cb40-16" data-line-number="16"><span class="co">#&gt;   ..@ duration     : chr NA</span></a>
+<a class="sourceLine" id="cb40-17" data-line-number="17"><span class="co">#&gt;   ..@ timeInterval : NULL</span></a>
+<a class="sourceLine" id="cb40-18" data-line-number="18"><span class="co">#&gt;   ..@ frame        : chr NA</span></a>
+<a class="sourceLine" id="cb40-19" data-line-number="19"><span class="co">#&gt;   ..@ relatedTimes : list()</span></a>
+<a class="sourceLine" id="cb40-20" data-line-number="20"><span class="co">#&gt;   ..@ id           : chr NA</span></a>
+<a class="sourceLine" id="cb40-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb40-22" data-line-number="22">myOffering.time<span class="op">@</span>beginPosition<span class="op">@</span>time</a>
+<a class="sourceLine" id="cb40-23" data-line-number="23"><span class="co">#&gt; [1] &quot;2018-05-22 11:03:06 CEST&quot;</span></a>
+<a class="sourceLine" id="cb40-24" data-line-number="24">myOffering.time<span class="op">@</span>endPosition<span class="op">@</span>time</a>
+<a class="sourceLine" id="cb40-25" data-line-number="25"><span class="co">#&gt; [1] &quot;2018-05-22 11:51:47 CEST&quot;</span></a>
+<a class="sourceLine" id="cb40-26" data-line-number="26"><span class="kw">class</span>(myOffering.time<span class="op">@</span>endPosition<span class="op">@</span>time)</a>
+<a class="sourceLine" id="cb40-27" data-line-number="27"><span class="co">#&gt; [1] &quot;POSIXlt&quot; &quot;POSIXt&quot;</span></a></code></pre></div>
+<p>The structure of these elements is very flexible (with some of optional elements) and not self-explanatory. Therefore the parameter <code>convert</code> can be used to try to create R objects and return these instead. Please be aware that this might not work for temporal elements returned by all service.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">myOffering.time.converted &lt;-<span class="st"> </span><span class="kw">sosTime</span>(myOffering, <span class="dt">convert =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">str</span>(myOffering.time.converted)</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3"><span class="co">#&gt; List of 2</span></a>
+<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="co">#&gt;  $ begin: POSIXlt[1:1], format: &quot;2018-05-22 11:03:06&quot;</span></a>
+<a class="sourceLine" id="cb41-5" data-line-number="5"><span class="co">#&gt;  $ end  : POSIXlt[1:1], format: &quot;2018-05-22 11:51:47&quot;</span></a></code></pre></div>
+<p>Furthermore the offering comprises <strong>lists of procedures}, , and \textbf{features of interest</strong>. In our example the feature and procedure identifiers are the same - this does not have to be the case.</p>
+<p><strong>Important Note:</strong> The order of these lists is not guaranteed to be the same upon every connection to a service.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">sosProcedures</span>(myOffering)</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="co">#&gt; [1] &quot;adxl345&quot;</span></a>
+<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="kw">sosObservedProperties</span>(myOffering)</a>
+<a class="sourceLine" id="cb42-4" data-line-number="4"><span class="co">#&gt; $observedProperty</span></a>
+<a class="sourceLine" id="cb42-5" data-line-number="5"><span class="co">#&gt; [1] &quot;Tilt&quot;</span></a>
+<a class="sourceLine" id="cb42-6" data-line-number="6"><span class="kw">sosFeaturesOfInterest</span>(myOffering)</a>
+<a class="sourceLine" id="cb42-7" data-line-number="7"><span class="co">#&gt; $featureOfInterest</span></a>
+<a class="sourceLine" id="cb42-8" data-line-number="8"><span class="co">#&gt; [1] &quot;adxl345&quot;</span></a></code></pre></div>
+<p>All of the above can not only be requested for single offerings but also for complete SOS connections or for lists of offerings. The following examples only print out a part of the returned lists.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">sosProcedures</span>(mySOS)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="co">#&gt; $adxl345</span></a>
+<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="co">#&gt; [1] &quot;adxl345&quot;</span></a>
+<a class="sourceLine" id="cb43-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-5" data-line-number="5"><span class="co">#&gt; $http___www.52north.org_test_offering_1</span></a>
+<a class="sourceLine" id="cb43-6" data-line-number="6"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/procedure/1&quot;</span></a>
+<a class="sourceLine" id="cb43-7" data-line-number="7"><span class="co">#&gt; [2] &quot;http://www.52north.org/test/procedure/9&quot;</span></a>
+<a class="sourceLine" id="cb43-8" data-line-number="8"><span class="kw">sosObservedProperties</span>(mySOS)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb43-9" data-line-number="9"><span class="co">#&gt; $adxl345</span></a>
+<a class="sourceLine" id="cb43-10" data-line-number="10"><span class="co">#&gt; $adxl345$observedProperty</span></a>
+<a class="sourceLine" id="cb43-11" data-line-number="11"><span class="co">#&gt; [1] &quot;Tilt&quot;</span></a>
+<a class="sourceLine" id="cb43-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-14" data-line-number="14"><span class="co">#&gt; $http___www.52north.org_test_offering_1</span></a>
+<a class="sourceLine" id="cb43-15" data-line-number="15"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb43-16" data-line-number="16"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/1&quot;</span></a>
+<a class="sourceLine" id="cb43-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-18" data-line-number="18"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb43-19" data-line-number="19"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_1&quot;</span></a>
+<a class="sourceLine" id="cb43-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-21" data-line-number="21"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb43-22" data-line-number="22"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_2&quot;</span></a>
+<a class="sourceLine" id="cb43-23" data-line-number="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-24" data-line-number="24"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb43-25" data-line-number="25"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_3&quot;</span></a>
+<a class="sourceLine" id="cb43-26" data-line-number="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-27" data-line-number="27"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb43-28" data-line-number="28"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_4&quot;</span></a>
+<a class="sourceLine" id="cb43-29" data-line-number="29"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-30" data-line-number="30"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb43-31" data-line-number="31"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_5&quot;</span></a>
+<a class="sourceLine" id="cb43-32" data-line-number="32"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-33" data-line-number="33"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb43-34" data-line-number="34"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_6&quot;</span></a>
+<a class="sourceLine" id="cb43-35" data-line-number="35"><span class="kw">sosFeaturesOfInterest</span>(mySOS)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb43-36" data-line-number="36"><span class="co">#&gt; $adxl345</span></a>
+<a class="sourceLine" id="cb43-37" data-line-number="37"><span class="co">#&gt; $adxl345$featureOfInterest</span></a>
+<a class="sourceLine" id="cb43-38" data-line-number="38"><span class="co">#&gt; [1] &quot;adxl345&quot;</span></a>
+<a class="sourceLine" id="cb43-39" data-line-number="39"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-40" data-line-number="40"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb43-41" data-line-number="41"><span class="co">#&gt; $http___www.52north.org_test_offering_1</span></a>
+<a class="sourceLine" id="cb43-42" data-line-number="42"><span class="co">#&gt; $http___www.52north.org_test_offering_1$featureOfInterest</span></a>
+<a class="sourceLine" id="cb43-43" data-line-number="43"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/featureOfInterest/1&quot;</span></a></code></pre></div>
+<p>Also (parts of) a list of offerings are possible with these functions:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">sosProcedures</span>(<span class="kw">sosOfferings</span>(mySOS)[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="co">#&gt; $http___www.52north.org_test_offering_1</span></a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/procedure/1&quot;</span></a>
+<a class="sourceLine" id="cb44-4" data-line-number="4"><span class="co">#&gt; [2] &quot;http://www.52north.org/test/procedure/9&quot;</span></a>
+<a class="sourceLine" id="cb44-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-6" data-line-number="6"><span class="co">#&gt; $http___www.52north.org_test_offering_2</span></a>
+<a class="sourceLine" id="cb44-7" data-line-number="7"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/procedure/2&quot;</span></a>
+<a class="sourceLine" id="cb44-8" data-line-number="8"><span class="kw">sosObservedProperties</span>(<span class="kw">sosOfferings</span>(mySOS)[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb44-9" data-line-number="9"><span class="co">#&gt; $http___www.52north.org_test_offering_1</span></a>
+<a class="sourceLine" id="cb44-10" data-line-number="10"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb44-11" data-line-number="11"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/1&quot;</span></a>
+<a class="sourceLine" id="cb44-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-13" data-line-number="13"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb44-14" data-line-number="14"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_1&quot;</span></a>
+<a class="sourceLine" id="cb44-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-16" data-line-number="16"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb44-17" data-line-number="17"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_2&quot;</span></a>
+<a class="sourceLine" id="cb44-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-19" data-line-number="19"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb44-20" data-line-number="20"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_3&quot;</span></a>
+<a class="sourceLine" id="cb44-21" data-line-number="21"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-22" data-line-number="22"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb44-23" data-line-number="23"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_4&quot;</span></a>
+<a class="sourceLine" id="cb44-24" data-line-number="24"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-25" data-line-number="25"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb44-26" data-line-number="26"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_5&quot;</span></a>
+<a class="sourceLine" id="cb44-27" data-line-number="27"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-28" data-line-number="28"><span class="co">#&gt; $http___www.52north.org_test_offering_1$observedProperty</span></a>
+<a class="sourceLine" id="cb44-29" data-line-number="29"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/9_6&quot;</span></a>
+<a class="sourceLine" id="cb44-30" data-line-number="30"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-31" data-line-number="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-32" data-line-number="32"><span class="co">#&gt; $http___www.52north.org_test_offering_2</span></a>
+<a class="sourceLine" id="cb44-33" data-line-number="33"><span class="co">#&gt; $http___www.52north.org_test_offering_2$observedProperty</span></a>
+<a class="sourceLine" id="cb44-34" data-line-number="34"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/observableProperty/2&quot;</span></a>
+<a class="sourceLine" id="cb44-35" data-line-number="35"><span class="kw">sosFeaturesOfInterest</span>(<span class="kw">sosOfferings</span>(mySOS)[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</a>
+<a class="sourceLine" id="cb44-36" data-line-number="36"><span class="co">#&gt; $adxl345.featureOfInterest</span></a>
+<a class="sourceLine" id="cb44-37" data-line-number="37"><span class="co">#&gt; [1] &quot;adxl345&quot;</span></a>
+<a class="sourceLine" id="cb44-38" data-line-number="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-39" data-line-number="39"><span class="co">#&gt; $http___www.52north.org_test_offering_1.featureOfInterest</span></a>
+<a class="sourceLine" id="cb44-40" data-line-number="40"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/featureOfInterest/1&quot;</span></a>
+<a class="sourceLine" id="cb44-41" data-line-number="41"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-42" data-line-number="42"><span class="co">#&gt; $http___www.52north.org_test_offering_2.featureOfInterest</span></a>
+<a class="sourceLine" id="cb44-43" data-line-number="43"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/featureOfInterest/2&quot;</span></a>
+<a class="sourceLine" id="cb44-44" data-line-number="44"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb44-45" data-line-number="45"><span class="co">#&gt; $http___www.52north.org_test_offering_3.featureOfInterest</span></a>
+<a class="sourceLine" id="cb44-46" data-line-number="46"><span class="co">#&gt; [1] &quot;http://www.52north.org/test/featureOfInterest/3&quot;</span></a></code></pre></div>
+<p>Please carefully inspect the structure in each case, as these functions will return named lists of lists and not combine procedures from different offerings. Consequently, some procedures could appear several times, but the association to the offering is still intact which is preferred at this stage.</p>
+</div>
+<div id="basic-request" class="section level4">
+<h4>Basic Request</h4>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS, <span class="dt">offering =</span> myOffering, ...)</a></code></pre></div>
+<p>The mandatory attributes are <code>sos</code>, <code>offering</code>, <code>observedProperty</code> and <code>responseFormat</code>. The other parameters are set to <code>NA</code> and not used when building the request.</p>
+<p>Please see section 8.4.2 of the SOS specification for details and other sections of this document for supported values respectively allowed values of request parameters. Note that different implementations might respond differently to missing parameters.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">defaultResponseFormatGetObs &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="dt">pattern =</span> <span class="st">&quot;&amp;quot;&quot;</span>, <span class="dt">replacement =</span> <span class="st">&quot;'&quot;</span>, <span class="dt">x =</span> sosDefaultGetObsResponseFormat)</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">defaultResponseFormatGetObs</a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="co">#&gt; [1] &quot;text/xml;subtype=\&quot;om/1.0.0\&quot;&quot;</span></a></code></pre></div>
+<ul>
+<li><code>sos</code>: The service connection to be used, an object of class <code>SOS</code>.</li>
+<li><code>offering</code>: The offering to be used, either the identifier as a character string or an object of class <code>SosObservationOffering</code>.</li>
+<li><code>observedProperty</code>: The observed property of the desired observations. The default is all observed property of the offering, <code>sosObservedProperties(obj = offering)</code>.</li>
+<li><code>responseFormat</code>: The format of the response document. The default is .</li>
+<li><code>srsName</code>: The name of the spatial reference system that should be used for the geometries in the response.</li>
+<li><code>eventTime</code>: A list of objects of class <code>SosEventTime</code> which specify the time period(s) for which observations are requested. See section <a href="#temporal-filtering">Temporal Fitering</a> for more information.</li>
+<li><code>procedure</code>: A list of procedure identifiers for which observations are requested. See section <a href="#spatial-filtering">Spatial Filtering</a> for more information.</li>
+<li><code>featureOfInterest</code>: An object of class <code>SosFeatureOfInterest</code> which specifies the feature for which observations are requested. See sections <a href="#spatial-filtering">Spatial Filtering</a> and <a href="#feature-filtering">Feature Filtering</a> for more information.</li>
+<li><code>result</code>: An object of class <code>OgcComparisonOps</code> for result filtering with filter expressions from Filter Encoding. See section <a href="#value-filtering">Value Filtering</a> for more information.</li>
+<li><code>resultModel</code>: The qualified XML name of the root element of the response, e.g. <code>om:Measurement</code>. The available models of a service can be found in the service metadata using <code>sosResultModel()</code>.</li>
+<li><code>responseMode</code>: The response mode defines the form of the response, e.g. inline, out-of-band, or attached. The available models of a service can be found in the service metadata using <code>sosResponseMode()</code>.</li>
+<li><code>BBOX</code>: A bounding box to be used only in HTTP GET connections (parameter is discarded for POST connections). The format must one character string with <code>minlon,minlat,maxlon,maxlat,srsURI?</code>, the spatial reference system is optional.</li>
+<li><code>latest</code>: A boolean parameter to request the latest observation only (see example below) — this is not standard conform but only supported by SOS.</li>
+<li><code>saveOriginal</code>: Saves a copy of the response document in the current working directory. Accepts boolean values (<code>TRUE</code> will automatically create file name with time stamp) or character string to be used as file name.</li>
+</ul>
+<p>The returned data of all GetObservation operations is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely <code>OmObservation</code>, <code>OmMeasurement</code>, or <code>OmObservationCollection</code>.</p>
+<p>The most straightforward (and most simple to use) methods to query certain observations are to request one (or several) specific <strong>observed property</strong> (phenomenon) or <strong>procedure</strong> (sensor). Note that the procedures and observed properties have to match the given offering.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">myObservationData.procedure<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">    <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">    <span class="dt">procedure =</span> <span class="kw">sosProcedures</span>(myOffering)[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">myObservationData.offering<span class="fl">.34</span> &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6">    <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb47-7" data-line-number="7">    <span class="dt">procedure =</span> <span class="kw">sosProcedures</span>(myOffering),</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8">    <span class="dt">observedProperty =</span></a>
+<a class="sourceLine" id="cb47-9" data-line-number="9">        <span class="kw">sosObservedProperties</span>(mySOS)[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>])</a></code></pre></div>
+<p>These request would potentially retrieve a lot of data, since there is no temporal (or thematical/spatial) limitation. The following example requests data for about one day of temperature data and stores it in the object <code>myObservationData</code>. This feature is described extensively in section <a href="#temporal-filtering">Temporal Filtering</a>.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">myObservationData &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">        <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb48-3" data-line-number="3">        <span class="dt">eventTime =</span> <span class="kw">sosCreateTime</span>(<span class="dt">sos =</span> mySOS, <span class="dt">time =</span> <span class="st">&quot;2015-11-01::2015-11-02&quot;</span>))</a></code></pre></div>
+<p>The logging output above starting with <code>[sos4R]</code> informs the user when the download of data is complete and when the parsing has finished. It even contains some information about the data, if possible. In following requests, this ouput is <strong>not</strong> included for brevity.</p>
+<p>The response <code>myObservationData</code> of this request is the base for the next sections.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">class</span>(myObservationData)</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">str</span>(myObservationData, <span class="dt">max.level =</span> <span class="dv">2</span>)</a></code></pre></div>
+</div>
+<div id="response-subsetting" class="section level4">
+<h4>Response Subsetting</h4>
+<p>Subsetting of elements in an <code>OmObservationCollection</code> can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators <code>[</code> and <code>[[</code>. Summary functions are available for single observations or an observation collection.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">length</span>(myObservationData)</a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">myObservationData[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="kw">summary</span>(myObservationData)</a>
+<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="kw">summary</span>(myObservationData[[<span class="dv">1</span>]])</a></code></pre></div>
+<p>The collection can also be subset in parts:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">myObservationData[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+<p><strong>Observation collection indexing</strong> is possible with identifiers of procedure(s), observed property(ies), and feature(s) of interest.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">index.foiId &lt;-<span class="st"> </span><span class="kw">sosFeaturesOfInterest</span>(myOffering)[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">index.foiId</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">myObservationData[index.foiId]</a>
+<a class="sourceLine" id="cb52-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb52-5" data-line-number="5">index.obsProp &lt;-<span class="st"> </span><span class="kw">sosObservedProperties</span>(myOffering)[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb52-6" data-line-number="6">myObservationData[index.obsProp]</a>
+<a class="sourceLine" id="cb52-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb52-8" data-line-number="8">index.obsProp.several &lt;-<span class="st"> </span><span class="kw">sosObservedProperties</span>(myOffering)[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</a>
+<a class="sourceLine" id="cb52-9" data-line-number="9">myObservationData[index.obsProp.several]</a>
+<a class="sourceLine" id="cb52-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb52-11" data-line-number="11">index.proc &lt;-<span class="st"> </span><span class="kw">sosProcedures</span>(myOffering)</a>
+<a class="sourceLine" id="cb52-12" data-line-number="12">index.proc.alternative1 &lt;-<span class="st"> </span><span class="kw">sosProcedures</span>(myOffering)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb52-13" data-line-number="13">index.proc.alternative2 &lt;-<span class="st"> </span><span class="kw">sosProcedures</span>(mySOS)</a>
+<a class="sourceLine" id="cb52-14" data-line-number="14">myObservationData[index.proc]</a></code></pre></div>
+</div>
+<div id="result-extraction" class="section level4">
+<h4>Result Extraction</h4>
+<p><strong>Data Values</strong> can be extracted from observations, measurements and observation collections with the function <code>sosResult()</code>. The function returns an object of class <code>data.frame</code>. In the case of collections, it automatically binds the data frames (you can turn this off by adding <code>bind = FALSE</code> as a parameter).</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">names</span>(myObservationData)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">myObservationData.result<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">sosResult</span>(myObservationData[[<span class="dv">2</span>]])</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="co"># </span><span class="al">FIXME</span><span class="co">:</span></a>
+<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="co"># myObservationData.result &lt;- sosResult(myObservationData[1:2])</span></a></code></pre></div>
+<p>Additional metadata, like units of measurement or definitions, is accessible via <code>attributes()</code> for every column of the data frame.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">attrs &lt;-<span class="st"> </span><span class="kw">attributes</span>(myObservationData.result<span class="fl">.2</span>) <span class="co"># [[&quot;AirTemperature&quot;]]</span></a>
+<a class="sourceLine" id="cb54-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb54-3" data-line-number="3"><span class="kw">attributes</span>(myObservationData.result<span class="fl">.2</span>[[<span class="st">&quot;phenomenonTime&quot;</span>]])</a>
+<a class="sourceLine" id="cb54-4" data-line-number="4"><span class="kw">attributes</span>(myObservationData.result<span class="fl">.2</span>[[<span class="st">&quot;AthmosphericPressure&quot;</span>]])</a></code></pre></div>
+<p><strong>Spatial Information</strong> can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result <code>data.frame</code>, (ii) within a feature collection in the observation. In the latter case the utility functions <code>sosCoordinates()</code> and <code>sosFeatureIds()</code> can be used to extract the coordinates respectively the identifiers from <code>OmObservationCollection</code> or <code>OmObservation</code> classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by <code>sosCoordinates()</code>.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">myObservationData.foiIDs &lt;-<span class="st"> </span><span class="kw">sosFeatureIds</span>(myObservationData)</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">myObservationData.coords &lt;-<span class="st"> </span><span class="kw">sosCoordinates</span>(myObservationData)</a>
+<a class="sourceLine" id="cb55-3" data-line-number="3">myObservationData.coords<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">sosCoordinates</span>(myObservationData[[<span class="dv">1</span>]])</a></code></pre></div>
+<p>An observation collection also contains a bounding box of the contained observations, which can be extracted with the function <code>sosBoundedBy()</code>. The optional attribute <code>bbox</code> can be used to obtain a bounding box matrix as used by package <code>sp</code>.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">sosBoundedBy</span>(myObservationData)</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="kw">sosBoundedBy</span>(myObservationData, <span class="dt">bbox =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>The combination of data values and coordinates strongly depends on the use case and existing spatial information. In the case of coordinates encoded in the features, a matching of the two data frames can easily be accomplished manually with the function <code>merge()</code>.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="co"># </span><span class="al">FIXME</span><span class="co">:</span></a>
+<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="co">#result.names &lt;- names(myObservationData.result)</span></a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">coords.names &lt;-<span class="st"> </span><span class="kw">names</span>(myObservationData.coords)</a>
+<a class="sourceLine" id="cb57-4" data-line-number="4"><span class="co"># print(toString(result.names))</span></a>
+<a class="sourceLine" id="cb57-5" data-line-number="5"><span class="kw">print</span>(<span class="kw">toString</span>(coords.names))</a>
+<a class="sourceLine" id="cb57-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb57-7" data-line-number="7"><span class="co"># </span><span class="al">FIXME</span></a>
+<a class="sourceLine" id="cb57-8" data-line-number="8"><span class="co"># myObservationData.data &lt;- merge(</span></a>
+<a class="sourceLine" id="cb57-9" data-line-number="9"><span class="co">#   x = myObservationData.result,</span></a>
+<a class="sourceLine" id="cb57-10" data-line-number="10"><span class="co">#   y = myObservationData.coords,</span></a>
+<a class="sourceLine" id="cb57-11" data-line-number="11"><span class="co">#   by.x = result.names[[2]],</span></a>
+<a class="sourceLine" id="cb57-12" data-line-number="12"><span class="co">#   by.y = coords.names[[4]])</span></a></code></pre></div>
+<p>The default column name for the feature identifiers is <code>\Sexpr{sosDefaultColumnNameFeatureIdentifier</code>}. If the name of the feature identifier attribute in the data table matches (which is the case for SOS), <code>merge</code> does not need additional information. In that case, the merging reduces to the following code:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">myObservationData.data &lt;-<span class="st"> </span><span class="kw">merge</span>(<span class="dt">x =</span> myObservationData.result<span class="fl">.2</span>, <span class="dt">y =</span> myObservationData.coords)</a>
+<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="kw">str</span>(myObservationData.data, <span class="dt">max.level =</span> <span class="dv">2</span>)</a></code></pre></div>
+<p>And in that case, you can even save that step by specifying the attribute <code>coordinates</code> of the function <code>sosResult</code> which includes the merge of data values and coordinates as shown above.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">head</span>(<span class="kw">sosResult</span>(myObservationData[<span class="dv">1</span>], <span class="dt">coordinates =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+</div>
+<div id="temporal-filtering" class="section level4">
+<h4>Temporal Filtering</h4>
+<p>The possibly most typical temporal filter is a period of time for which measurements are of interest.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="co"># temporal interval creation based on POSIXt classes:</span></a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">lastWeek.period &lt;-<span class="st"> </span><span class="kw">sosCreateTimePeriod</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb60-3" data-line-number="3">    <span class="dt">begin =</span> (<span class="kw">Sys.time</span>() <span class="op">-</span><span class="st"> </span><span class="dv">3600</span> <span class="op">*</span><span class="st"> </span><span class="dv">24</span> <span class="op">*</span><span class="st"> </span><span class="dv">7</span>),</a>
+<a class="sourceLine" id="cb60-4" data-line-number="4">    <span class="dt">end =</span> <span class="kw">Sys.time</span>())</a>
+<a class="sourceLine" id="cb60-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb60-6" data-line-number="6">oneWeek.period &lt;-<span class="st"> </span><span class="kw">sosCreateTimePeriod</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb60-7" data-line-number="7">        <span class="dt">begin =</span> <span class="kw">as.POSIXct</span>(<span class="st">&quot;2015/11/01&quot;</span>),</a>
+<a class="sourceLine" id="cb60-8" data-line-number="8">        <span class="dt">end =</span> <span class="kw">as.POSIXct</span>(<span class="st">&quot;2015/11/07&quot;</span>))</a>
+<a class="sourceLine" id="cb60-9" data-line-number="9">oneWeek.eventTime &lt;-<span class="st"> </span><span class="kw">sosCreateEventTimeList</span>(oneWeek.period)</a>
+<a class="sourceLine" id="cb60-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb60-11" data-line-number="11">oneWeek.eventTime</a>
+<a class="sourceLine" id="cb60-12" data-line-number="12"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb60-13" data-line-number="13"><span class="co">#&gt; Object of class SosEventTime:</span></a>
+<a class="sourceLine" id="cb60-14" data-line-number="14"><span class="co">#&gt;  TM_During: GmlTimePeriod: [ GmlTimePosition [ time: 2015-11-01 ]</span></a>
+<a class="sourceLine" id="cb60-15" data-line-number="15"><span class="co">#&gt;  --&gt; GmlTimePosition [ time: 2015-11-07 ] ]</span></a></code></pre></div>
+<p>Please note that the create function <code>sosCreateEventTimeList()</code> wraps the created objects in a list as required by the method <code>getObservation()</code>.</p>
+<p>The most comfortable creation function for event times is <code>sosCreateTime()</code>. It supports time intervals with starttime and endtime as character strings seperated by <code>::</code> or <code>/</code> as defined by <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>, section Time intervals}. The respective time stamps have to be parsable by <code>as.POSIXct()</code>. If either one of the time stamps is missing, a <code>GmlTimePosition</code> wrapped in the appropriate relative temporal operator, e.g. <code>&quot;before&quot;</code>.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">sosCreateTime</span>(<span class="dt">sos =</span> mySOS, <span class="dt">time =</span> <span class="st">&quot;2007-07-07 07:00::2008-08-08 08:00&quot;</span>)</a>
+<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3"><span class="co">#&gt; Object of class SosEventTime:</span></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="co">#&gt;  TM_During: GmlTimePeriod: [ GmlTimePosition [ time: 2007-07-07 07:00:00 ]</span></a>
+<a class="sourceLine" id="cb61-5" data-line-number="5"><span class="co">#&gt;  --&gt; GmlTimePosition [ time: 2008-08-08 08:00:00 ] ]</span></a>
+<a class="sourceLine" id="cb61-6" data-line-number="6"><span class="kw">sosCreateTime</span>(<span class="dt">sos =</span> mySOS, <span class="dt">time =</span> <span class="st">&quot;2007-07-07 07:00/2010-10-10 10:00&quot;</span>)</a>
+<a class="sourceLine" id="cb61-7" data-line-number="7"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb61-8" data-line-number="8"><span class="co">#&gt; Object of class SosEventTime:</span></a>
+<a class="sourceLine" id="cb61-9" data-line-number="9"><span class="co">#&gt;  TM_During: GmlTimePeriod: [ GmlTimePosition [ time: 2007-07-07 07:00:00 ]</span></a>
+<a class="sourceLine" id="cb61-10" data-line-number="10"><span class="co">#&gt;  --&gt; GmlTimePosition [ time: 2010-10-10 10:00:00 ] ]</span></a>
+<a class="sourceLine" id="cb61-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb61-12" data-line-number="12"><span class="kw">sosCreateTime</span>(<span class="dt">sos =</span> mySOS, <span class="dt">time =</span> <span class="st">&quot;::2007-08-05&quot;</span>)</a>
+<a class="sourceLine" id="cb61-13" data-line-number="13"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb61-14" data-line-number="14"><span class="co">#&gt; Object of class SosEventTime:</span></a>
+<a class="sourceLine" id="cb61-15" data-line-number="15"><span class="co">#&gt;  TM_Before: GmlTimePosition [ time: 2007-08-05 ]</span></a>
+<a class="sourceLine" id="cb61-16" data-line-number="16"><span class="kw">sosCreateTime</span>(<span class="dt">sos =</span> mySOS, <span class="dt">time =</span> <span class="st">&quot;2007-08-05/&quot;</span>)</a>
+<a class="sourceLine" id="cb61-17" data-line-number="17"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb61-18" data-line-number="18"><span class="co">#&gt; Object of class SosEventTime:</span></a>
+<a class="sourceLine" id="cb61-19" data-line-number="19"><span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2007-08-05 ]</span></a></code></pre></div>
+<p><strong>Example:</strong> What was the minimum, average and maximum temperature during one week?</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">obs.oneWeek &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">    <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">    <span class="dt">eventTime =</span> oneWeek.eventTime)</a>
+<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="co">#&gt; Warning in .sosRequest_1.0.0(sos = sos, request = request, verbose =</span></a>
+<a class="sourceLine" id="cb62-5" data-line-number="5"><span class="co">#&gt; verbose, : Given url already contains a '?', appending arguments!</span></a>
+<a class="sourceLine" id="cb62-6" data-line-number="6"><span class="co">#&gt; [sos4R] Received response (size: 112 bytes), parsing ...</span></a>
+<a class="sourceLine" id="cb62-7" data-line-number="7"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb62-8" data-line-number="8"><span class="co">#&gt; observedProperty = observedProperty, : Response string has length 0 .</span></a>
+<a class="sourceLine" id="cb62-9" data-line-number="9"><span class="co">#&gt; Please re-check query parameters.</span></a>
+<a class="sourceLine" id="cb62-10" data-line-number="10"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb62-11" data-line-number="11"><span class="co">#&gt; observedProperty = observedProperty, : File name is NULL, could not save</span></a>
+<a class="sourceLine" id="cb62-12" data-line-number="12"><span class="co">#&gt; document!</span></a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">obs.oneWeek.result &lt;-<span class="st"> </span><span class="kw">sosResult</span>(obs.oneWeek[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="co">#&gt; Warning in .local(obj, coordinates, ...): No processable result given:</span></a>
+<a class="sourceLine" id="cb63-3" data-line-number="3"><span class="kw">head</span>(obs.oneWeek.result)</a>
+<a class="sourceLine" id="cb63-4" data-line-number="4"><span class="co">#&gt; [1] &quot;&quot;</span></a>
+<a class="sourceLine" id="cb63-5" data-line-number="5"><span class="co"># </span><span class="al">FIXME</span></a>
+<a class="sourceLine" id="cb63-6" data-line-number="6"><span class="co"># summary(obs.oneWeek.result[,&quot;urn:ogc:def:property:OGC::Temperature&quot;])</span></a></code></pre></div>
+<p>The default temporal operator is <code>&quot;during&quot;</code>, but others are supported as well. The next example shows how to create a temporal filter for all observations taken <strong>after</strong> a certain point in time. Here the creation function creates just one object of class <code>SosEventTime</code> which must be added to a list manually before passing it to <code>getObservation()</code>.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">lastDay.instant &lt;-<span class="st"> </span><span class="kw">sosCreateTimeInstant</span>(</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">    <span class="dt">time =</span> <span class="kw">as.POSIXct</span>(<span class="kw">Sys.time</span>() <span class="op">-</span><span class="st"> </span><span class="dv">3600</span> <span class="op">*</span><span class="st"> </span><span class="dv">24</span>), <span class="dt">sos =</span> mySOS)</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3">lastDay.eventTime &lt;-<span class="st"> </span><span class="kw">sosCreateEventTime</span>(<span class="dt">time =</span> lastDay.instant,</a>
+<a class="sourceLine" id="cb64-4" data-line-number="4">    <span class="dt">operator =</span> <span class="kw">SosSupportedTemporalOperators</span>()[[<span class="st">&quot;TM_After&quot;</span>]])</a>
+<a class="sourceLine" id="cb64-5" data-line-number="5"><span class="kw">print</span>(lastDay.eventTime)</a>
+<a class="sourceLine" id="cb64-6" data-line-number="6"><span class="co">#&gt; Object of class SosEventTime:</span></a>
+<a class="sourceLine" id="cb64-7" data-line-number="7"><span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2019-01-03 11:11:49 ]</span></a></code></pre></div>
+</div>
+<div id="spatial-filtering" class="section level4">
+<h4>Spatial Filtering</h4>
+<p>The possibly most typical spatial filter is a <a href="https://en.wikipedia.org/wiki/Bounding_box">bounding box</a> within which measurements of interest must have been made. Here the creation function returns an object of class <code>OgcBBOX</code>, which can be wrapped in an object of class <code>SosFeatureOfInterest</code>, which is passed into the get-observation call.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">sept15.period &lt;-<span class="st"> </span><span class="kw">sosCreateTimePeriod</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2">    <span class="dt">begin =</span> <span class="kw">as.POSIXct</span>(<span class="st">&quot;2015-09-01 00:00&quot;</span>), <span class="dt">end =</span> <span class="kw">as.POSIXct</span>(<span class="st">&quot;2015-09-30 00:00&quot;</span>))</a>
+<a class="sourceLine" id="cb65-3" data-line-number="3">sept15.eventTimeList &lt;-<span class="st"> </span><span class="kw">sosCreateEventTimeList</span>(sept15.period)</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">obs.sept15 &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">    <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3">    <span class="dt">eventTime =</span> sept15.eventTimeList)</a>
+<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="co">#&gt; Warning in .sosRequest_1.0.0(sos = sos, request = request, verbose =</span></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="co">#&gt; verbose, : Given url already contains a '?', appending arguments!</span></a>
+<a class="sourceLine" id="cb66-6" data-line-number="6"><span class="co">#&gt; [sos4R] Received response (size: 112 bytes), parsing ...</span></a>
+<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb66-8" data-line-number="8"><span class="co">#&gt; observedProperty = observedProperty, : Response string has length 0 .</span></a>
+<a class="sourceLine" id="cb66-9" data-line-number="9"><span class="co">#&gt; Please re-check query parameters.</span></a>
+<a class="sourceLine" id="cb66-10" data-line-number="10"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb66-11" data-line-number="11"><span class="co">#&gt; observedProperty = observedProperty, : File name is NULL, could not save</span></a>
+<a class="sourceLine" id="cb66-12" data-line-number="12"><span class="co">#&gt; document!</span></a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="co"># </span><span class="al">FIXME</span><span class="co"> find a spatial filter that has a result</span></a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="co"># request.bbox &lt;- sosCreateBBOX(lowLat = 50.0, lowLon = 5.0,</span></a>
+<a class="sourceLine" id="cb67-3" data-line-number="3"><span class="co">#   uppLat = 55.0, uppLon = 10.0,</span></a>
+<a class="sourceLine" id="cb67-4" data-line-number="4"><span class="co">#   srsName = &quot;urn:ogc:def:crs:EPSG:4326&quot;)</span></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="co"># request.bbox.foi &lt;- sosCreateFeatureOfInterest(</span></a>
+<a class="sourceLine" id="cb67-6" data-line-number="6"><span class="co">#   spatialOps = request.bbox)</span></a>
+<a class="sourceLine" id="cb67-7" data-line-number="7"><span class="co"># obs.sept09.bbox &lt;- getObservation(sos = mySOS,</span></a>
+<a class="sourceLine" id="cb67-8" data-line-number="8"><span class="co">#   offering = myOffering,</span></a>
+<a class="sourceLine" id="cb67-9" data-line-number="9"><span class="co">#   featureOfInterest = request.bbox.foi,</span></a>
+<a class="sourceLine" id="cb67-10" data-line-number="10"><span class="co">#   eventTime = sept09.eventTimeList)</span></a></code></pre></div>
+<p>Unfiltered versus spatially filtered coordinates of the responses:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="co"># </span><span class="al">FIXME</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="co"># print(sosCoordinates(obs.sept09)[,1:2])</span></a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="co"># print(sosCoordinates(obs.sept09.bbox)[,1:2])</span></a></code></pre></div>
+<p>More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented. This could be implemented by implementing subclasses for <code>GmlGeometry</code> (including encoders) which must be wrapped in <code>OgcBinarySpatialOp</code> which extends <code>OgcSpatialOps</code> and can therefore be added to an object of class <code>SosFeatureOfInterest</code> as the spatial parameter.</p>
+</div>
+<div id="feature-filtering" class="section level4">
+<h4>Feature Filtering</h4>
+<p>The feature can not only be used for spatial filtering, but also to query specific FOIs. The following example extracts the identifiers from an offering and then creates an object of class <code>SosFeatureOfInterest</code>, which is passed into the get-observation call. Here the encoding function is called to show how the content of the result element will look like.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">myOffering.fois &lt;-<span class="st"> </span><span class="kw">sosFeaturesOfInterest</span>(myOffering)</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">request.fois &lt;-<span class="st"> </span><span class="kw">sosCreateFeatureOfInterest</span>(</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">    <span class="dt">objectIDs =</span> <span class="kw">list</span>(myOffering.fois[[<span class="dv">1</span>]]))</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4"><span class="kw">encodeXML</span>(<span class="dt">obj =</span> request.fois, <span class="dt">sos =</span> mySOS)</a>
+<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="co">#&gt; &lt;sos:featureOfInterest&gt;</span></a>
+<a class="sourceLine" id="cb69-6" data-line-number="6"><span class="co">#&gt;  &lt;sos:ObjectID&gt;adxl345&lt;/sos:ObjectID&gt;</span></a>
+<a class="sourceLine" id="cb69-7" data-line-number="7"><span class="co">#&gt; &lt;/sos:featureOfInterest&gt;</span></a></code></pre></div>
+<p>An exemplary GetObservation operation is as follows.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">obs.oneWeek.fois &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb70-2" data-line-number="2">    <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb70-3" data-line-number="3">    <span class="dt">featureOfInterest =</span> request.fois,</a>
+<a class="sourceLine" id="cb70-4" data-line-number="4">    <span class="dt">eventTime =</span> oneWeek.eventTime)</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw">print</span>(<span class="kw">sosFeaturesOfInterest</span>(obs.oneWeek.fois))</a></code></pre></div>
+</div>
+<div id="value-filtering" class="section level4">
+<h4>Value Filtering</h4>
+<p>Value Filtering is realized via the slot <code>result</code> in a GetObservation request. The filtering in the request is based on comparison operators and operands specified by OGC Filter Encoding (Vretanos, 2005).</p>
+<p>The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the package <code>XML</code>.</p>
+<p>The following code example uses a literal comparison of a property. The elements names are taken from constants within <code>sos4R</code> (with the naming scheme <code>&quot;&lt;namespace&gt;&lt;ElementName&gt;Name&quot;</code>), but can equally as well be put in directly.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="co"># result filtering</span></a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">filter.value &lt;-<span class="st"> </span><span class="fl">-2.3</span></a>
+<a class="sourceLine" id="cb72-3" data-line-number="3">filter.propertyname &lt;-<span class="st"> </span><span class="kw">xmlNode</span>(<span class="dt">name =</span> ogcPropertyNameName,</a>
+<a class="sourceLine" id="cb72-4" data-line-number="4">    <span class="dt">namespace =</span> ogcNamespacePrefix)</a>
+<a class="sourceLine" id="cb72-5" data-line-number="5"><span class="kw">xmlValue</span>(filter.propertyname) &lt;-</a>
+<a class="sourceLine" id="cb72-6" data-line-number="6"><span class="st">        &quot;urn:ogc:def:property:OGC::Temperature&quot;</span></a>
+<a class="sourceLine" id="cb72-7" data-line-number="7">filter.literal &lt;-<span class="st"> </span><span class="kw">xmlNode</span>(<span class="dt">name =</span> ogcLiteralName,</a>
+<a class="sourceLine" id="cb72-8" data-line-number="8">    <span class="dt">namespace =</span> ogcNamespacePrefix)</a>
+<a class="sourceLine" id="cb72-9" data-line-number="9"><span class="kw">xmlValue</span>(filter.literal) &lt;-<span class="st"> </span><span class="kw">as.character</span>(filter.value)</a>
+<a class="sourceLine" id="cb72-10" data-line-number="10">filter.comparisonop &lt;-<span class="st"> </span><span class="kw">xmlNode</span>(</a>
+<a class="sourceLine" id="cb72-11" data-line-number="11">    <span class="dt">name =</span> ogcComparisonOpGreaterThanName,</a>
+<a class="sourceLine" id="cb72-12" data-line-number="12">    <span class="dt">namespace =</span> ogcNamespacePrefix,</a>
+<a class="sourceLine" id="cb72-13" data-line-number="13">    <span class="dt">.children =</span> <span class="kw">list</span>(filter.propertyname,</a>
+<a class="sourceLine" id="cb72-14" data-line-number="14">    filter.literal))</a>
+<a class="sourceLine" id="cb72-15" data-line-number="15">filter.result &lt;-<span class="st"> </span><span class="kw">xmlNode</span>(<span class="dt">name =</span> sosResultName,</a>
+<a class="sourceLine" id="cb72-16" data-line-number="16">    <span class="dt">namespace =</span> sosNamespacePrefix,</a>
+<a class="sourceLine" id="cb72-17" data-line-number="17">    <span class="dt">.children =</span> <span class="kw">list</span>(filter.comparisonop))</a></code></pre></div>
+<p>Please consult to the extensive documentation of the <code>XML</code> package for details. The commands above result in the following output which is inserted into the request without further processing.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">filter.result</a></code></pre></div>
+<p>Any object of class <code>OgcComparisonOpsOrXMLOrNULL</code>, which includes the class of the object returned by <code>xmlNode()</code>, i.e. <code>XMLNode</code>. These object can be used in the GetObservation request as the <code>result</code> parameter.</p>
+<p>First, we request the unfiltered values for comparison, then again with the filter applied. The length of the returned results is compared in the end.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">obs.oneWeek.filter &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">        <span class="dt">eventTime =</span> oneWeek.eventTime,</a>
+<a class="sourceLine" id="cb74-3" data-line-number="3">        <span class="dt">offering =</span> <span class="kw">sosOfferings</span>(mySOS)[[<span class="st">&quot;wxt520&quot;</span>]],</a>
+<a class="sourceLine" id="cb74-4" data-line-number="4">        <span class="dt">result =</span> filter.result,</a>
+<a class="sourceLine" id="cb74-5" data-line-number="5">        <span class="dt">saveOriginal =</span> .obsFile)</a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="co"># request  values for the week with a value higher than 0 degrees:</span></a>
+<a class="sourceLine" id="cb75-2" data-line-number="2">obs.oneWeek.filter &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb75-3" data-line-number="3">    <span class="dt">eventTime =</span> oneWeek.eventTime,</a>
+<a class="sourceLine" id="cb75-4" data-line-number="4">    <span class="dt">offering =</span> <span class="kw">sosOfferings</span>(mySOS)[[<span class="st">&quot;ATMOSPHERIC_TEMPERATURE&quot;</span>]],</a>
+<a class="sourceLine" id="cb75-5" data-line-number="5">    <span class="dt">result =</span> filter.result)</a></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="co"># </span><span class="al">FIXME</span></a>
+<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="co"># print(paste(&quot;Filtered:&quot;, dim(sosResult(obs.oneWeek.filter))[[1]],</span></a>
+<a class="sourceLine" id="cb76-3" data-line-number="3"><span class="co">#   &quot;-vs.- Unfiltered:&quot;, dim(sosResult(obs.oneWeek))[[1]]))</span></a></code></pre></div>
+</div>
+<div id="result-exporting" class="section level4">
+<h4>Result Exporting</h4>
+<p>A tighter integration with data structures of packages <code>sp} or \pkg{spacetime</code> (both available on CRAN) is planned for the future. Please consult the developers for the current status.</p>
+<p>As an example the following code creates a <code>SpatialPointsDataFrame</code> (can only contain one data value per position!) based on the features of a result.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sp&quot;</span>)</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2">obs.oneWeek &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb77-3" data-line-number="3">    <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb77-4" data-line-number="4">    <span class="dt">procedure =</span> <span class="kw">sosProcedures</span>(myOffering),</a>
+<a class="sourceLine" id="cb77-5" data-line-number="5">    <span class="dt">eventTime =</span> oneWeek.eventTime)</a>
+<a class="sourceLine" id="cb77-6" data-line-number="6"><span class="co">#&gt; Warning in .sosRequest_1.0.0(sos = sos, request = request, verbose =</span></a>
+<a class="sourceLine" id="cb77-7" data-line-number="7"><span class="co">#&gt; verbose, : Given url already contains a '?', appending arguments!</span></a>
+<a class="sourceLine" id="cb77-8" data-line-number="8"><span class="co">#&gt; [sos4R] Received response (size: 112 bytes), parsing ...</span></a>
+<a class="sourceLine" id="cb77-9" data-line-number="9"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb77-10" data-line-number="10"><span class="co">#&gt; observedProperty = observedProperty, : Response string has length 0 .</span></a>
+<a class="sourceLine" id="cb77-11" data-line-number="11"><span class="co">#&gt; Please re-check query parameters.</span></a>
+<a class="sourceLine" id="cb77-12" data-line-number="12"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb77-13" data-line-number="13"><span class="co">#&gt; observedProperty = observedProperty, : File name is NULL, could not save</span></a>
+<a class="sourceLine" id="cb77-14" data-line-number="14"><span class="co">#&gt; document!</span></a></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="co"># Create SpatialPointsDataFrame from result features</span></a>
+<a class="sourceLine" id="cb78-2" data-line-number="2">coords &lt;-<span class="st"> </span><span class="kw">sosCoordinates</span>(obs.oneWeek[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb78-3" data-line-number="3">crs &lt;-<span class="st"> </span><span class="kw">sosGetCRS</span>(obs.oneWeek[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb78-4" data-line-number="4">spdf &lt;-<span class="st"> </span><span class="kw">SpatialPointsDataFrame</span>(<span class="dt">coords =</span> coords[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb78-5" data-line-number="5">    <span class="dt">data =</span> <span class="kw">data.frame</span>(coords[,<span class="dv">4</span>]), <span class="dt">proj4string =</span> crs)</a>
+<a class="sourceLine" id="cb78-6" data-line-number="6"><span class="kw">str</span>(spdf)</a></code></pre></div>
+</div>
+<div id="spatial-reference-systems-1" class="section level4">
+<h4>Spatial Reference Systems</h4>
+<p>For following analyses and plotting, the **spatial reference system} can be extracted as follows.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">sosGetCRS</span>(myObservationData)</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw">sosGetCRS</span>(obs.oneWeek)</a></code></pre></div>
+</div>
+</div>
+<div id="getobservationbyid" class="section level3">
+<h3>GetObservationById</h3>
+<p>The operation GetObservationById is defined in clause 10.1 of the SOS specification and not part of the core profile. But it is implemented as it is quite simple. The response is the same as described in the previous section. Optional parameters, and their defaults and supported values are the same as in GetObservation requests.</p>
+<p>In this case the returned observation collection contains an om:Measurement element, which contains just one measured value and is parsed to an object of class <code>OmMeasurement</code>.</p>
+<p>The result extraction works the same as with objects of class <code>OmObservation</code>.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="co"># Not supported by SOS anymore</span></a>
+<a class="sourceLine" id="cb80-2" data-line-number="2"><span class="co"># obsId &lt;- getObservationById(sos = mySOS, observationId = &quot;o_3508493&quot;)</span></a>
+<a class="sourceLine" id="cb80-3" data-line-number="3"><span class="co"># sosResult(obsId, coordinates = TRUE)</span></a></code></pre></div>
+<p>Just as for <code>getObservation()</code> you can <strong>save the orginal</strong> response document with an automatically generated name or a selected one. It is saved into the current working directory and the name starts with the observation identifier. You can also read it back using the function <code>sosParse()</code>.</p>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

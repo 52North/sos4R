@@ -30,7 +30,7 @@ mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox
 
 ## Changing Handling Functions
 
-The flexibility of the specifications that model the markup requests and responses, especially the observation encoding, is too high to handle all possible cases within \pkg{sos4R}. Thus an equally flexible mechanism for users to adopt the steps of encoding and decoding documents to their needs is needed.
+The flexibility of the specifications that model the markup requests and responses, especially the observation encoding, is too high to handle all possible cases within `sos4R`. Thus an equally flexible mechanism for users to adopt the steps of encoding and decoding documents to their needs is needed.
 
 The process of data download comprises
 

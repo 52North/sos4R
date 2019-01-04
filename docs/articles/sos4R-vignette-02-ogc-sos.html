@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="date" content="2019-01-04" />
+
+<title>sos4R: OGC SWE and SOS</title>
+
+
+
+
+<style type="text/css">
+  p.abstract{
+    text-align: center;
+    font-weight: bold;
+  }
+  div.abstract{
+    margin: auto;
+    width: 90%;
+  }
+</style>
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">sos4R: OGC SWE and SOS</h1>
+<h4 class="author"><em>Daniel Nüst</em></h4>
+<address class="author_afil">
+Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"><a href="mailto:daniel.nuest@uni-muenster.de">daniel.nuest@uni-muenster.de</a></a>
+</address>
+<h4 class="date"><em>2019-01-04</em></h4>
+<div class="abstract">
+<p class="abstract">Abstract</p>
+<p>The sos4R package provides simple yet powerful access to OGC Sensor Observation Service instances. The package supports both encapsulation and abstraction from the service interface for novice users as well as powerful request building for specialists. sos4R is motivated by the idea to close the gap between the Sensor Web and tools for (geo-)statistical analyses. It implements the core profile of the SOS specification and supports temporal, spatial, and thematical filtering of observations.</p>
+<p>This document introduces core concepts of OGC, SWE, and SOS standards.</p>
+The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
+</div>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#related-specifications">Related Specifications</a></li>
+<li><a href="#terms-and-definitions">Terms and Definitions</a></li>
+<li><a href="#supported-implementations">Supported Implementations</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<p>If you are familiar with the OGC SOS standard specification, know how to use content assist in your favourite R editor, and you do not need to extend the functionality of <code>sos4R</code>, then take a look at the “Quickstart” vignette and get started straightaway.</p>
+<div id="related-specifications" class="section level2">
+<h2>Related Specifications</h2>
+<p>The Open Geospatial Consortium (<a href="https://www.opengeospatial.org/">OGC</a>) is an organisation which provides standards for handling geospatial data on the internet, thereby ensuring interoperability. The Sensor Observation Service (SOS)} is such a standard and provides a well-defined interface for data warehousing of measurements and observations made by all kinds of sensors. This vignette describes the classes, methods and functions provided by <code>sos4R</code> to request these observations from a SOS.</p>
+<p>Providing data via web services is more powerful than local file copies (with issues like being outdated, redundancy, ). Flexible filtering of data on the service side reduces download size. That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain. For example <code>&quot;Get measurements from sensor urn:mySensor:001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees&quot;</code>.</p>
+<p>In general, the SOS supports different methods of requesting data, so called bindings: (i) Key-value-pair (KVP) binding using HTTP GET as defined in the <a href="http://www.oostethys.org/best-practices/best-practices-get">OOSTethys best practice document</a> (this best-practice paper takes the place of a section in the specification that was left out by mistake; it is well established and (loosely) followed by several SOS implementations), (ii) XML, or plain old XML (POX) using HTTP POST as defined in the standard document with requests encoded in eXtensible Markup Language (<a href="http://www.w3.org/XML/">XML</a>), and (iii) SOAP (<a href="https://en.wikipedia.org/wiki/SOAP">Simple Object Access Protocol</a>). All bindings can return responses using different encodings, but most common are XML documents.</p>
+<p>Other OGC Standards that are referenced and used, by the SOS standard are as follows.</p>
+<ul>
+<li><strong>Observations and Measurements (O&amp;M)</strong> O&amp;M (Cox, 2007) defines the markup of sensor measurements results. An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation’s actual result. Different versions are used in the different <a href="https://www.opengeospatial.org/standards/om">SOS specifications</a>.</li>
+<li><strong>Sensor Model Language (<a href="https://www.opengeospatial.org/standards/sensorml">SensorML</a>)</strong> (Botts, 2007) is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer).</li>
+<li><strong>Geography Markup Language (<a href="https://www.opengeospatial.org/standards/gml">GML</a>)</strong> (Portele, 2003) defines markup for geographical features (points, lines, polygons, ).</li>
+<li><strong>SWE Common</strong> defines data markup. Version 1 is contained in the SensorML specification (see above), version 2.0 is an independent specification.</li>
+<li><strong>Filter Encoding (<a href="https://www.opengeospatial.org/standards/filter">FE</a>)</strong> (Vretanos, 2005) defines operators and operands for filtering values.</li>
+<li><strong><a href="https://www.opengeospatial.org/standards/owscommon">OWS Common</a></strong> (OGC Web Services Common; Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.</li>
+<li><strong>SWES</strong> (SWE Service Model Implementation Standard) defines data types for common use across SWE services, e.g. for contents or sensor description management.</li>
+</ul>
+</div>
+<div id="terms-and-definitions" class="section level2">
+<h2>Terms and Definitions</h2>
+<p>The OGC has a particular set of well-defined terms that might differ from usage of words in specific domains. The most important are as follows and are based on <a href="https://en.wikipedia.org/wiki/Sensor_Observation_Service" class="uri">https://en.wikipedia.org/wiki/Sensor_Observation_Service</a>.</p>
+<ul>
+<li><strong>Feature of Interest (FOI)</strong>: The FOI represents the geo-object, for which measurements are made by sensors. It is ordinarily used for the spatial referencing of measuring points, i.e. the geoobject has coordinates like latitude, longitude and height. The feature is project specific and can be anything from a point (e.g. the position of a measuring station) or a real-world object (e.g. the region that is observed).</li>
+<li><strong>Observation</strong>: The observation delivers a measurement (result) for a property (phenomenon) of an observed object (FOI). The actual value is created by a sensor or procedure. The phenomenon was measured at a specific time (sampling time) and the value was generated at a specific point in time (result time). These often coincide so in practice the sampling time is often used as the point in time of an obsrevation.</li>
+<li><strong>Offering</strong>: The offering is a logical collection of related observations (similar to a layer in mapping applications) which a service offers together.</li>
+<li><strong>Phenomenon</strong>: A phenomenon is a property (physical value) of a geographical object, e.g. air temperature, wind speed, concentration of a pollutant in the atmosphere, reflected radiation in a specific frequency band (colours).</li>
+<li><strong>Procedure</strong>: A procedure creates the measurement value of an observation. The source can be a reading from a sensor, simulation or a numerical process.</li>
+</ul>
+<p>A more extensive discussion is available in the the O&amp;M specification (Cox, 2007). The Annex B of that document contains the examples of applying some terms to specific domains, aerosol analysis and earth observations.</p>
+<p>A very good and extensive <strong>introduction into the whole field of SWE</strong>, including its history, and an analysis of the current state of the art and future developments is provided in Bröring (2011).</p>
+</div>
+<div id="supported-implementations" class="section level2">
+<h2>Supported Implementations</h2>
+<p><code>sos4R</code> supports the core profile of the SOS specification. But the possible markups for observations is extremely manifold due to the flexibility of the O&amp;M specification. Sadly, there is no common application profile for certain types of observations, like simple measurements.</p>
+<p>Therefore, the undocumented profile of the <a href="http://52north.org/communities/sensorweb/sos/">52°North SOS implementation</a> was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.</p>
+<p>In the author’s experience, <a href="http://www.oostethys.org/">OOSThetys SOS implementations</a> utilise the same or at least very similar profile, so responses of these service instances are probably parsed without further work as well.</p>
+<p>An incomplete list of **tested services} can be found in package documentation. Please share your experiences with other SOS implementations with the developers and users of <code>sos4R</code>.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li>Botts, M., 2007, OGC Implementation Specification 07-000: OpenGIS Sensor Model Language (SensorML)- Open Geospatial Consortium, Tech. Rep.</li>
+<li>Bröring A., Echterhoff J., Jirka S., Simonis I., Everding T., Stasch C., Liang S., Lemmens R. New Generation Sensor Web Enablement. Sensors. 2011; 11(3):2652-2699.</li>
+<li>Bröring, A., C. Stasch, and J. Echterhoff. “OGC Interface Standard 10-037: SOS 2.0 Interface Standard.” Open Geospatial Consortium (2010).</li>
+<li>Chambers, J.M., 2008, Software for Data Analysis, Programming with R. Springer, New York.</li>
+<li>Cox, S., 2007, OGC Implementation Specification 07-022r1: Observations and Measurements - Part 1 - Observation schema. Open Geospatial Consortium. Tech. Rep.</li>
+<li>Cox, S., 2007, OGC Implementation Specification 07-022r3: Observations and Measurements - Part 2 - Sampling Features. Open Geospatial Consortium. Tech. Rep.</li>
+<li>Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, <a href="http://portal.opengeospatial.org/files/?artifact_id=26667" class="uri">http://portal.opengeospatial.org/files/?artifact_id=26667</a>, Open Geospatial Consortium, Tech. Rep.</li>
+<li>Nüst, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography.</li>
+<li>Pebesma, E., 2012, spacetime: Spatio-Temporal Data in R. Journal of Statistical Software, 51(7), 1-30. <a href="http://www.jstatsoft.org/v51/i07/" class="uri">http://www.jstatsoft.org/v51/i07/</a>.</li>
+<li>Portele, C., 2003, OGC Implementation Specification 07-036: OpenGIS Geography Markup Language (GML) Encoding Standard, version: 3.00. Open Geospatial Consortium, Tech. Rep.</li>
+<li>Vretanos, P.A., 2005, OGC Implementation Specification 04-095: OpenGIS Filter Encoding Implementation Specification. Open Geospatial Consortium, Tech. Rep.</li>
+<li>Whiteside, A., Greenwood, J., 2008, OGC Implementation Specification 06-121r9: OGC Web Services Common Specification. Open Geospatial Consortium, Tech. Rep.</li>
+</ul>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

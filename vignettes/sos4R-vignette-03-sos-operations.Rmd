@@ -79,7 +79,7 @@ toString(SosSupportedTemporalOperators())
 
 ## Default Options
 
-Two kinds of default values can be found in (function calls in) \pkg{sos4R}:
+Two kinds of default values can be found in (function calls in) `sos4R`:
 (i) default depending on other function parameters, and
 (ii) global defaults.
 Global defaults can be inspected (not changed!) using the following functions.
@@ -125,7 +125,7 @@ All parameters except the service endpoint are optional and use default settings
 - `parsers`: The list of parsing functions. See vignette "Extending".
 - `encoders`: The list of encoding functions. See vignette "Extending".
 - `dataFieldConverters`:  The list of conversion functions. See vignette "Extending".
-- `curlHandle`, `curlOptions`: Settings of the package \pkg{RCurl}, which is used for HTTP connections. Please consult the packags specification before using this.
+- `curlHandle`, `curlOptions`: Settings of the package `RCurl`, which is used for HTTP connections. Please consult the packags specification before using this.
 - `timeFormat`: The time format to be used or decoding and encoding time character strings to and from `POSIXt` classes, the default is `r sosDefaultTimeFormat`.
 - `verboseOutput`: Trigger parameter for extensive debugging information on the console.
 	\item `switchCoordinates`: Switches all coordinates that are encountered during the **parsing phase**, such as in an element like `<gml:lowerCorner>117.3 -41.5</gml:lowerCorner>`.
@@ -156,7 +156,7 @@ summary(mySOS)
 
 ## SOS Operations
 
-\pkg{sos4R} implements the SOS core profile of version 1.0.0 comprising the operations GetCapabilities, DescribeSensor and GetObservation.
+`sos4R` implements the SOS core profile of version 1.0.0 comprising the operations GetCapabilities, DescribeSensor and GetObservation.
 This document focusses on the practical usage of the operations, so the reader is refered to the specification document for details.
 
 The methods mirroring the SOS operations all contain debugging parameters `inspect` and `verbose` as described in the "Quickstart" vignette.
@@ -197,7 +197,7 @@ sosContents(mySOS)
 ```
 
 The first four functions extract clearly structured, self-explanatory parts of the document, so no further discussion is made here.
-The contents part however is described in detail in section [Metadata Extraction](#metadata-extraction-for-request-building)}, as it can (and should) be used to extract query parameters.
+The contents part however is described in detail in section [Metadata Extraction](#metadata-extraction-for-request-building), as it can (and should) be used to extract query parameters.
 
 The function `sosTime()` returns the time period for which observations are available within the service.
 To be precise, it accesses the `ows:Range` element of the parameter eventTime in the description of the GetObservation operation.
@@ -219,7 +219,7 @@ The allowed response formats (the file format/encoding of the response), the res
 The following accessor methods return either
 (i) a list (named by the operation names) of vectors (with the actual allowed parameter values), or
 (ii) with the `unique` parameter set to `TRUE`, a unique list of all allowed values.
-Please be aware that these are not allowed for all operations, not are all options supported by \pkg{sos4R}.
+Please be aware that these are not allowed for all operations, not are all options supported by `sos4R`.
 
 ```{r getCap5, eval=FALSE}
 sosResponseFormats(mySOS)
@@ -255,7 +255,7 @@ unlist(sosResponseFormats(mySOS)[[sosGetObservationName]])
 For future analyses, but also for correct plotting, one must know the coordinate reference system (CRS) or spatial reference system ([SRS](https://en.wikipedia.org/wiki/Spatial_referencing_system)) or the returned data.
 You can get this information using the method `sosGetCRS()` from variuos objects.
 
-The function utilizes the [EPSG code](http://www.epsg-registry.org/) in GML attributes like `srsName="urn:ogc:def:crs:EPSG:4326"` to initialize an object of class `CRS` from the package \pkg{sp}.
+The function utilizes the [EPSG code](http://www.epsg-registry.org/) in GML attributes like `srsName="urn:ogc:def:crs:EPSG:4326"` to initialize an object of class `CRS` from the package `sp`.
 For `SOS` and code{SosObservationOffering} objects these are taken from the bounding box given in the `gml:boundedBy` element.
 
 ```{r getCRS}
@@ -273,7 +273,7 @@ Mre examples for `sosGetSRS()` can be found in section [Spatial Reference System
 #### Plotting SOS and Offerings
 
 The content of the capabilities document allows the plotting of a service's offerings.
-The following example uses the packages \pkg{maps}, \pkg{mapdata} and \pkg{maptools} to create a background map.
+The following example uses the packages `maps}, `mapdata` and \pkg{maptools` to create a background map.
 Plotting functions exist for objects of class `SOS` and `SosObservationOffering`, so offerings can also be plotted separately.
 
 ```{r sosPlot}
@@ -324,7 +324,7 @@ mySensor <- describeSensor(sos = testsos,
 mySensor
 ```
 
-All additional information presented in the following depends on compliance of the sensor description with the [SensorML Profile for Discovery]({http://portal.opengeospatial.org/files/?artifact_id=37944).
+All additional information presented in the following depends on compliance of the sensor description with the [SensorML Profile for Discovery](https://portal.opengeospatial.org/files/?artifact_id=37944).
 
 The coordinates data frame of a sensor description can be accessed with the common method `sosCoordinates()`.
 
@@ -381,7 +381,7 @@ The GetObservation operation is specified in clause 8.4 of the SOS specification
 In this section, all matters around requesting data are explained - from extracting query parameters from metadata, and sending the request, till finally extracting data values and coordinates from the response.
 
 A few utility functions exist to minize a user's amount of work to create usual requests.
-They accept normal R types as input and return the respective class from \pkg{sos4R} with useful default settings.
+They accept normal R types as input and return the respective class from `sos4R` with useful default settings.
 These function's names follow the pattern with `sosCreate[name of object]()` and exist for spatial and temporal filters.
 
 #### Metadata Extraction for Request Building
@@ -445,7 +445,7 @@ The structure of the bounding box is kept flexible, as it simply returns a named
 sosBoundedBy(myOffering)
 ```
 
-The optional attribute `bbox` can be used to obtain a bounding box matrix as used by package \pkg{sp}.
+The optional attribute `bbox` can be used to obtain a bounding box matrix as used by package `sp`.
 
 ```{r metadataExtraction6}
 sosBoundedBy(myOffering, bbox = TRUE)
@@ -643,7 +643,7 @@ myObservationData.coords.1 <- sosCoordinates(myObservationData[[1]])
 ```
 
 An observation collection also contains a bounding box of the contained observations, which can be extracted with the function `sosBoundedBy()`.
-The optional attribute `bbox` can be used to obtain a bounding box matrix as used by package \pkg{sp}.
+The optional attribute `bbox` can be used to obtain a bounding box matrix as used by package `sp`.
 
 ```{r getObsSpatial1b, eval=FALSE}
 sosBoundedBy(myObservationData)
@@ -815,10 +815,10 @@ print(sosFeaturesOfInterest(obs.oneWeek.fois))
 Value Filtering is realized via the slot `result` in a GetObservation request.
 The filtering in the request is based on comparison operators and operands specified by OGC Filter Encoding (Vretanos, 2005).
 
-The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the package \pkg{XML}.
+The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the package `XML`.
 
 The following code example uses a literal comparison of a property.
-The elements names are taken from constants within \pkg{sos4R} (with the naming scheme `"<namespace><ElementName>Name"`), but can equally as well be put in directly.
+The elements names are taken from constants within `sos4R` (with the naming scheme `"<namespace><ElementName>Name"`), but can equally as well be put in directly.
 
 ```{r valueFiltering1, eval=FALSE}
 # result filtering
@@ -840,7 +840,7 @@ filter.result <- xmlNode(name = sosResultName,
 	.children = list(filter.comparisonop))
 ```
 
-Please consult to the extensive documentation of the \pkg{XML} package for details.
+Please consult to the extensive documentation of the `XML` package for details.
 The commands above result in the following output which is inserted into the request without further processing.
 
 ```{r valueFiltering2, eval=FALSE}
@@ -876,7 +876,7 @@ obs.oneWeek.filter <- getObservation(sos = mySOS,
 
 #### Result Exporting
 
-A tighter integration with data structures of packages \pkg{sp} or \pkg{spacetime} (both available on CRAN) is planned for the future.
+A tighter integration with data structures of packages `sp} or \pkg{spacetime` (both available on CRAN) is planned for the future.
 Please consult the developers for the current status.
 
 As an example the following code creates a `SpatialPointsDataFrame` (can only contain one data value per position!) based on the features of a result.
