@@ -14,6 +14,8 @@ of the R environment for the Sensor Web.
 checks](https://cranchecks.info/badges/summary/sos4R)](https://cran.r-project.org/web/checks/check_results_sos4R.html)
 [![Build
 Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/sos4R)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/nuest/sos4R)
 
 ## Documentation & Links
 
@@ -29,7 +31,7 @@ Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/
 [![Build
 Status](https://travis-ci.org/52North/sos4R.png?branch=dev)](https://travis-ci.org/52North/sos4R)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/nuest/sos4R)
+status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=dev&svg=true)](https://ci.appveyor.com/project/nuest/sos4R)
 
 sos4R is developed on GitHub using the [fork & pull development
 model](https://help.github.com/articles/using-pull-requests/#fork--pull).

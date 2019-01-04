@@ -12,7 +12,7 @@ Author: Daniel Nuest [cre, aut] (<https://orcid.org/0000-0002-0024-5046>),
   Ben Graeler [ctb] (<https://orcid.org/0000-0001-5443-4304>),
   E. H.-J. [ctb]
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 3.5.0), methods, XML (>= 3.95), RCurl (>= 1.95), sp, graphics
+Depends: R (>= 3.5.0), methods, XML (>= 3.98), RCurl (>= 1.95), sp, graphics
 Suggests: 
     spacetime (>= 1.0),
     gstat,
