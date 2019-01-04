@@ -272,55 +272,61 @@ sosDataFieldConverters(mySOS)
 
 The following connection shows a typical workflow of connecting to a new SOS for the first time, what the errors for missing converters look like, and how to add them to the SOS connection.
 
-_This SOS is not available anymore._
-
-In Addition, this service shows errorenous behaviour regarding the reponse format (even if it is correctly set), so that the parameter `responseFormat` is set to `NA\_character` to be excluded in the request encoding.
-This results in additional warnings.
-
-```{r loadOrDownload_Converters3, eval=FALSE}
-# FIXME SOS unavailable
-MBARI <- SOS("http://mmisw.org/oostethys/sos",
-	binding = SosSupportedBindings()[["KVP"]])
-myOff <- sosOfferings(MBARI)[[1]]
-myProc <- sosProcedures(MBARI)[[1]]
-mbariObs1 <- try(
-	getObservation(sos = MBARI, offering = myOff,
-		procedure = myProc, responseFormat = NA_character_)
+```{r converters3a}
+testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox", binding = "POX", dcpFilter = list("POX" = "/pox"))
+testsosoffering <- sosOfferings(testsos)[["http___www.52north.org_test_offering_1"]]
+getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop)
 ```
 
 An excerpt from the warnings list with regard to the conversion reads as follows.
 
-```{r converter_warnings, eval=FALSE}
+```{r converters3b}
 warnings()
 ```
 
+Looking at the raw response data gives us a hint at a suitable type.
+
+```{r converters3c}
+getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop,
+               inspect = TRUE)
 ```
-# ran manually:
-#converterWarnings <- warnings()[25:29]
-#.convWarnFile <- "converterWarnings.Rdata"
-#save(converterWarnings, file = .convWarnFile)
-#load(.convWarnFile)
-#print(converterWarnings)
-cat("...")
-cat("25: In FUN(X[[7L]], ...) :
-		swe:Quantity given without unit of measurement: Salinity
-26: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+
+Converters may be matched by XML properties `swe:Quatity[@definition]` or `swe:uom[@code]`.
+
+```{r converters3d}
+testconverters <- SosDataFieldConvertingFunctions(
+  # one of the following would suffice
+  "test_unit_1" = sosConvertDouble,
+	"http://www.52north.org/test/observableProperty/1" = sosConvertDouble
+  )
+
+testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox", binding = "POX", dcpFilter = list("POX" = "/pox"),
+               dataFieldConverters = testconverters)
+testsosoffering <- sosOfferings(testsos)[["http___www.52north.org_test_offering_1"]]
+data <- getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop)
+```
+
+Then retrieve the data with the correct type.
+
+```{r converters3e}
+head(sosResult(data))
+```
+
+The metadata of the observed property is also accessible.
+
+```{r converters3f}
+attributes(sosResult(data)[["http://www.52north.org/test/observableProperty/1"]])
+```
+
+Warnings may also include messages if no converter is available for a unit of measurement, for example:
+
+```
+In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
 				No converter for the unit of measurement  S/m  with the definition  http://mmisw.org/ont/cf/parameter/conductivity ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().
-27: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
 				No converter found! Skipping field Conductivity
 No converter found! Skipping field http://mmisw.org/ont/cf/parameter/conductivity
 No converter found! Skipping field S/m
-
-28: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-				No converter found for the given field Salinity, http://mmisw.org/ont/cf/parameter/sea_water_salinity, NA
-29: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-				No converter found! Skipping field Salinity
-No converter found! Skipping field http://mmisw.org/ont/cf/parameter/sea_water_salinity
-No converter found! Skipping field NA
-
-30: In FUN(X[[7L]], ...) :
-		swe:Quantity given without unit of measurement: Salinity")
-cat("...")
 ```
 
 This shows warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field).
@@ -331,22 +337,6 @@ myConverters <- SosDataFieldConvertingFunctions(
 	"S/m" = sosConvertDouble,
 	"http://mmisw.org/ont/cf/parameter/sea_water_salinity"
 			= sosConvertDouble)
-```
-
-```{r loadOrDownload_Converters4, eval=FALSE}
-# FIXME: use other SOS
-MBARI2 <- SOS("http://mmisw.org/oostethys/sos",
-	binding = SosSupportedBindings()[["KVP"]],
-	dataFieldConverters = myConverters)
-mbariObs2 <- getObservation(sos = MBARI2, offering = myOff,
-	procedure = myProc, responseFormat = NA_character_)
-```
-
-Subsequently, the second request results in more fields in the result.
-
-```{r converters5, eval=FALSE}
-toString(names(sosResult(mbariObs1)))
-toString(names(sosResult(mbariObs2)))
 ```
 
 ## Exception Handling

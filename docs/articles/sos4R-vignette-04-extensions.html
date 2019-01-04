@@ -18,7 +18,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
@@ -80,7 +80,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 <style type="text/css">
   p.abstract{
@@ -395,8 +417,6 @@ The package is published under GPL 2 license within the geostatistics community 
 ## obj=&quot;SosEventTimeLatest&quot;, sos=&quot;SOS&quot;
 ## obj=&quot;SosEventTime&quot;, sos=&quot;SOS&quot;
 ## obj=&quot;SosFeatureOfInterest&quot;, sos=&quot;SOS&quot;
-## obj=&quot;SosFeatureOfInterest&quot;, sos=&quot;SOS_1.0.0&quot;
-##     (inherited from: obj=&quot;SosFeatureOfInterest&quot;, sos=&quot;SOS&quot;)
 ## obj=&quot;TM_After&quot;, sos=&quot;SOS&quot;
 ## obj=&quot;TM_Before&quot;, sos=&quot;SOS&quot;
 ## obj=&quot;TM_During&quot;, sos=&quot;SOS&quot;
@@ -406,15 +426,9 @@ The package is published under GPL 2 license within the geostatistics community 
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">showMethods</span>(<span class="st">&quot;encodeKVP&quot;</span>)</a></code></pre></div>
 <pre><code>## Function: encodeKVP (package sos4R)
 ## obj=&quot;OgcBinaryTemporalOp&quot;, sos=&quot;SOS&quot;
-## obj=&quot;POSIXct&quot;, sos=&quot;SOS_1.0.0&quot;
-##     (inherited from: obj=&quot;POSIXt&quot;, sos=&quot;SOS&quot;)
 ## obj=&quot;POSIXt&quot;, sos=&quot;SOS&quot;
 ## obj=&quot;SosEventTimeLatest&quot;, sos=&quot;SOS&quot;
-## obj=&quot;SosEventTime&quot;, sos=&quot;SOS&quot;
-## obj=&quot;SosEventTime&quot;, sos=&quot;SOS_1.0.0&quot;
-##     (inherited from: obj=&quot;SosEventTime&quot;, sos=&quot;SOS&quot;)
-## obj=&quot;TM_During&quot;, sos=&quot;SOS_1.0.0&quot;
-##     (inherited from: obj=&quot;OgcBinaryTemporalOp&quot;, sos=&quot;SOS&quot;)</code></pre>
+## obj=&quot;SosEventTime&quot;, sos=&quot;SOS&quot;</code></pre>
 <p>A useful example can be overriding the encoding method for time classes (<code>POSIXt</code>) as presented below – see the demo <code>southesk</code> for the application of this code.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">setMethod</span>(<span class="dt">f =</span> <span class="st">&quot;encodeXML&quot;</span>,</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">  <span class="dt">signature =</span> <span class="kw">signature</span>(<span class="dt">obj =</span> <span class="st">&quot;POSIXt&quot;</span>, <span class="dt">sos =</span> <span class="st">&quot;SOS&quot;</span>),</a>
@@ -624,7 +638,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9c2e198&gt;
+## &lt;bytecode: 0x98fa0a0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`urn:ogc:data:time:iso8601`
@@ -633,7 +647,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9c2c358&gt;
+## &lt;bytecode: 0x990a858&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`urn:ogc:property:time:iso8601`
@@ -642,7 +656,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9c28908&gt;
+## &lt;bytecode: 0x990e350&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`urn:ogc:phenomenon:time:iso8601`
@@ -651,7 +665,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9c24e80&gt;
+## &lt;bytecode: 0x9911e48&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`http://www.opengis.net/def/property/OGC/0/SamplingTime`
@@ -660,7 +674,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9c213c0&gt;
+## &lt;bytecode: 0x99158d0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`http://www.opengis.net/def/property/OGC/0/PhenomenonTime`
@@ -669,7 +683,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9c14f38&gt;
+## &lt;bytecode: 0x99193c8&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`urn:ogc:def:parameter:x-istsos:1.0:time:iso8601`
@@ -678,7 +692,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9c07da8&gt;
+## &lt;bytecode: 0x991cec0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $time
@@ -687,7 +701,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9c02678&gt;
+## &lt;bytecode: 0x99209b8&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $m
@@ -695,7 +709,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bfec28&gt;
+## &lt;bytecode: 0x99263d0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $m2
@@ -703,7 +717,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bfcde8&gt;
+## &lt;bytecode: 0x9928210&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $m3
@@ -711,7 +725,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bfafa8&gt;
+## &lt;bytecode: 0x992a050&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $s
@@ -719,7 +733,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bf91a0&gt;
+## &lt;bytecode: 0x992be90&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $ms
@@ -727,7 +741,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bf7360&gt;
+## &lt;bytecode: 0x992dcd0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $us
@@ -735,7 +749,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bf5520&gt;
+## &lt;bytecode: 0x992fb10&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $g
@@ -743,7 +757,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bf3718&gt;
+## &lt;bytecode: 0x9931950&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $rad
@@ -751,7 +765,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bf1910&gt;
+## &lt;bytecode: 0x9933790&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $K
@@ -759,7 +773,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9befad0&gt;
+## &lt;bytecode: 0x9939400&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $C
@@ -767,7 +781,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bedc90&gt;
+## &lt;bytecode: 0x993b240&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $cd
@@ -775,7 +789,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9be9fd8&gt;
+## &lt;bytecode: 0x993d080&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`%`
@@ -783,7 +797,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9be8208&gt;
+## &lt;bytecode: 0x993eec0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $ppth
@@ -791,7 +805,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9be63c8&gt;
+## &lt;bytecode: 0x9940d00&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $ppm
@@ -799,7 +813,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9be4668&gt;
+## &lt;bytecode: 0x9942b40&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $ppb
@@ -807,7 +821,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9be2940&gt;
+## &lt;bytecode: 0x9944980&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $pptr
@@ -815,7 +829,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9be0b00&gt;
+## &lt;bytecode: 0x99467c0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $mol
@@ -823,7 +837,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bdae90&gt;
+## &lt;bytecode: 0x9948590&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $sr
@@ -831,7 +845,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bd90c0&gt;
+## &lt;bytecode: 0x994a3d0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Hz
@@ -839,7 +853,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bd72b8&gt;
+## &lt;bytecode: 0x994c210&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $N
@@ -847,7 +861,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bd5478&gt;
+## &lt;bytecode: 0x994e050&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Pa
@@ -855,7 +869,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bd3638&gt;
+## &lt;bytecode: 0x994fe90&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $J
@@ -863,7 +877,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bd17f8&gt;
+## &lt;bytecode: 0x9951cd0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $W
@@ -871,7 +885,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bcf9f0&gt;
+## &lt;bytecode: 0x9953b10&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $A
@@ -879,7 +893,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bcdbb0&gt;
+## &lt;bytecode: 0x9955950&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $V
@@ -887,7 +901,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bc9ec0&gt;
+## &lt;bytecode: 0x9957790&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $F
@@ -895,7 +909,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bc80f0&gt;
+## &lt;bytecode: 0x99595d0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Ohm
@@ -903,7 +917,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bc6358&gt;
+## &lt;bytecode: 0x995b410&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $S
@@ -911,7 +925,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bc4588&gt;
+## &lt;bytecode: 0x995d250&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Wb
@@ -919,7 +933,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bc27b8&gt;
+## &lt;bytecode: 0x995f090&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Cel
@@ -927,7 +941,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bc0a20&gt;
+## &lt;bytecode: 0x9960ed0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $T
@@ -935,7 +949,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bbec18&gt;
+## &lt;bytecode: 0x9964c30&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $H
@@ -943,7 +957,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bbcdd8&gt;
+## &lt;bytecode: 0x9966a00&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $lm
@@ -951,7 +965,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bbb008&gt;
+## &lt;bytecode: 0x9968840&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $lx
@@ -959,7 +973,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bb5140&gt;
+## &lt;bytecode: 0x996a680&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Bq
@@ -967,7 +981,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bb3108&gt;
+## &lt;bytecode: 0x996c4c0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Gy
@@ -975,7 +989,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bb12c8&gt;
+## &lt;bytecode: 0x996e300&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $Sv
@@ -983,7 +997,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9baf4f8&gt;
+## &lt;bytecode: 0x9970140&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $gon
@@ -991,7 +1005,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9bab808&gt;
+## &lt;bytecode: 0x9971f80&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $deg
@@ -999,7 +1013,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9ba9a38&gt;
+## &lt;bytecode: 0x9973dc0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`'`
@@ -1007,7 +1021,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9ba7c68&gt;
+## &lt;bytecode: 0x9975c00&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`''`
@@ -1015,7 +1029,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9ba5e98&gt;
+## &lt;bytecode: 0x9977a40&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $l
@@ -1023,7 +1037,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9ba40c8&gt;
+## &lt;bytecode: 0x9979880&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $L
@@ -1031,7 +1045,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9ba2368&gt;
+## &lt;bytecode: 0x997b6c0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $ar
@@ -1039,7 +1053,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9ba03d8&gt;
+## &lt;bytecode: 0x9981330&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $t
@@ -1047,7 +1061,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b9e608&gt;
+## &lt;bytecode: 0x9983170&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $bar
@@ -1055,7 +1069,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b9c9f8&gt;
+## &lt;bytecode: 0x9984fb0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $u
@@ -1063,7 +1077,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b9ad40&gt;
+## &lt;bytecode: 0x9986df0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $eV
@@ -1071,7 +1085,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b98f70&gt;
+## &lt;bytecode: 0x9988bf8&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $AU
@@ -1079,7 +1093,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b971a0&gt;
+## &lt;bytecode: 0x998aa00&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $pc
@@ -1087,7 +1101,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b953d0&gt;
+## &lt;bytecode: 0x998c840&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $degF
@@ -1095,7 +1109,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b91750&gt;
+## &lt;bytecode: 0x998e680&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $hPa
@@ -1103,7 +1117,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b8f800&gt;
+## &lt;bytecode: 0x99904c0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $mm
@@ -1111,7 +1125,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b8d9f8&gt;
+## &lt;bytecode: 0x9992300&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $nm
@@ -1119,7 +1133,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b8bbf0&gt;
+## &lt;bytecode: 0x9994140&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $cm
@@ -1127,7 +1141,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b86060&gt;
+## &lt;bytecode: 0x9995f80&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $km
@@ -1135,7 +1149,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b842c8&gt;
+## &lt;bytecode: 0x9997dc0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`m/s`
@@ -1143,7 +1157,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b824f8&gt;
+## &lt;bytecode: 0x9999c00&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`m2/s`
@@ -1151,7 +1165,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b80760&gt;
+## &lt;bytecode: 0x999ba40&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`m3/s`
@@ -1159,7 +1173,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b7e8b0&gt;
+## &lt;bytecode: 0x999d880&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $kg
@@ -1167,7 +1181,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b7cb18&gt;
+## &lt;bytecode: 0x999f6c0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $mg
@@ -1175,7 +1189,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b7ad80&gt;
+## &lt;bytecode: 0x99a1500&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $uom
@@ -1183,7 +1197,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b79020&gt;
+## &lt;bytecode: 0x99a3340&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`urn:ogc:data:feature`
@@ -1191,7 +1205,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.character(x = x))
 ## }
-## &lt;bytecode: 0x9b752f8&gt;
+## &lt;bytecode: 0x99a5180&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`http://www.opengis.net/def/property/OGC/0/FeatureOfInterest`
@@ -1199,7 +1213,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.character(x = x))
 ## }
-## &lt;bytecode: 0x9b73528&gt;
+## &lt;bytecode: 0x99a8ee0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`ug/m3`
@@ -1207,7 +1221,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b71790&gt;
+## &lt;bytecode: 0x99aad20&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`http://www.opengis.net/def/uom/ISO-8601/0/Gregorian`
@@ -1216,7 +1230,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9b6f9f8&gt;
+## &lt;bytecode: 0x99ac968&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $degC
@@ -1224,7 +1238,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b6bfa8&gt;
+## &lt;bytecode: 0x99b0460&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`°C`
@@ -1232,7 +1246,7 @@ The package is published under GPL 2 license within the geostatistics community 
 ## {
 ##     return(as.double(x = x))
 ## }
-## &lt;bytecode: 0x9b6a1d8&gt;
+## &lt;bytecode: 0x99b22a0&gt;
 ## &lt;environment: namespace:sos4R&gt;
 ## 
 ## $`http://www.opengis.net/def/property/OGC/0/PhenomenonTime`
@@ -1241,61 +1255,166 @@ The package is published under GPL 2 license within the geostatistics community 
 ##     .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
 ##     return(.t)
 ## }
-## &lt;bytecode: 0x9b68440&gt;
+## &lt;bytecode: 0x99b40e0&gt;
 ## &lt;environment: namespace:sos4R&gt;</code></pre>
 <p>The following connection shows a typical workflow of connecting to a new SOS for the first time, what the errors for missing converters look like, and how to add them to the SOS connection.</p>
-<p><em>This SOS is not available anymore.</em></p>
-<p>In Addition, this service shows errorenous behaviour regarding the reponse format (even if it is correctly set), so that the parameter <code>responseFormat</code> is set to <code>NA\_character</code> to be excluded in the request encoding. This results in additional warnings.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co"># </span><span class="al">FIXME</span><span class="co"> SOS unavailable</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">MBARI &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="st">&quot;http://mmisw.org/oostethys/sos&quot;</span>,</a>
-<a class="sourceLine" id="cb50-3" data-line-number="3">    <span class="dt">binding =</span> <span class="kw">SosSupportedBindings</span>()[[<span class="st">&quot;KVP&quot;</span>]])</a>
-<a class="sourceLine" id="cb50-4" data-line-number="4">myOff &lt;-<span class="st"> </span><span class="kw">sosOfferings</span>(MBARI)[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb50-5" data-line-number="5">myProc &lt;-<span class="st"> </span><span class="kw">sosProcedures</span>(MBARI)[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb50-6" data-line-number="6">mbariObs1 &lt;-<span class="st"> </span><span class="kw">try</span>(</a>
-<a class="sourceLine" id="cb50-7" data-line-number="7">    <span class="kw">getObservation</span>(<span class="dt">sos =</span> MBARI, <span class="dt">offering =</span> myOff,</a>
-<a class="sourceLine" id="cb50-8" data-line-number="8">        <span class="dt">procedure =</span> myProc, <span class="dt">responseFormat =</span> <span class="ot">NA_character_</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">testsos &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="st">&quot;http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox&quot;</span>, <span class="dt">binding =</span> <span class="st">&quot;POX&quot;</span>, <span class="dt">dcpFilter =</span> <span class="kw">list</span>(<span class="st">&quot;POX&quot;</span> =<span class="st"> &quot;/pox&quot;</span>))</a></code></pre></div>
+<pre><code>## [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">testsosoffering &lt;-<span class="st"> </span><span class="kw">sosOfferings</span>(testsos)[[<span class="st">&quot;http___www.52north.org_test_offering_1&quot;</span>]]</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="kw">getObservation</span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop)</a></code></pre></div>
+<pre><code>## [sos4R] Received response (size: 4664 bytes), parsing ...</code></pre>
+<pre><code>## Warning in .valParser(values = obj[[sweValuesName]], fields = .fields,
+## encoding = .encoding, : No converter for the unit of measurement
+## test_unit_1 with the definition http://www.52north.org/test/
+## observableProperty/1 ! Trying a default, but you can add one when creating
+## a SOS using SosDataFieldConvertingFunctions().</code></pre>
+<pre><code>## [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox 
+##  --&gt; received 1 observation(s) having 12 result values [ 12 ].</code></pre>
+<pre><code>## Object of class OmObservationCollection with 1 members.</code></pre>
 <p>An excerpt from the warnings list with regard to the conversion reads as follows.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">warnings</span>()</a></code></pre></div>
-<pre><code># ran manually:
-#converterWarnings &lt;- warnings()[25:29]
-#.convWarnFile &lt;- &quot;converterWarnings.Rdata&quot;
-#save(converterWarnings, file = .convWarnFile)
-#load(.convWarnFile)
-#print(converterWarnings)
-cat(&quot;...&quot;)
-cat(&quot;25: In FUN(X[[7L]], ...) :
-        swe:Quantity given without unit of measurement: Salinity
-26: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">warnings</span>()</a></code></pre></div>
+<pre><code>## Warning message:
+## In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+##   No converter for the unit of measurement  test_unit_1  with the definition  http://www.52north.org/test/observableProperty/1 ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</code></pre>
+<p>Looking at the raw response data gives us a hint at a suitable type.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">getObservation</span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop,</a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">               <span class="dt">inspect =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## [.sosRequest_1.0.0] POST!
+## [.sosRequest_1.0.0] REQUEST:
+## &lt;sos:GetObservation xsi:schemaLocation=&quot;http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd&quot; service=&quot;SOS&quot; version=&quot;1.0.0&quot; xmlns:sos=&quot;http://www.opengis.net/sos/1.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/1.1&quot; xmlns:om=&quot;http://www.opengis.net/om/1.0&quot; xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;
+##  &lt;sos:offering&gt;http___www.52north.org_test_offering_1&lt;/sos:offering&gt;
+##  &lt;sos:observedProperty&gt;http://www.52north.org/test/observableProperty/1&lt;/sos:observedProperty&gt;
+##  &lt;sos:responseFormat&gt;text/xml;subtype=&amp;quot;om/1.0.0&amp;quot;&lt;/sos:responseFormat&gt;
+## &lt;/sos:GetObservation&gt;
+## [sos4R] Received response (size: 4664 bytes), parsing ...
+## [.getObservation_1.0.0] RESPONSE DOC:
+## &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+## &lt;om:ObservationCollection xmlns:om=&quot;http://www.opengis.net/om/1.0&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:sa=&quot;http://www.opengis.net/sampling/1.0&quot; xmlns:swe=&quot;http://www.opengis.net/swe/1.0.1&quot; gml:id=&quot;oc_1546604769427&quot; xsi:schemaLocation=&quot;http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd&quot;&gt;
+##   &lt;gml:boundedBy&gt;
+##     &lt;gml:Envelope srsName=&quot;urn:ogc:def:crs:EPSG::4326&quot;&gt;
+##       &lt;gml:lowerCorner&gt;51.883906 7.727958&lt;/gml:lowerCorner&gt;
+##       &lt;gml:upperCorner&gt;51.883906 7.727958&lt;/gml:upperCorner&gt;
+##     &lt;/gml:Envelope&gt;
+##   &lt;/gml:boundedBy&gt;
+##   &lt;om:member&gt;
+##     &lt;om:Observation gml:id=&quot;o_1546604769427&quot;&gt;
+##       &lt;om:samplingTime&gt;
+##         &lt;gml:TimePeriod gml:id=&quot;phenomenonTime_121&quot;&gt;
+##           &lt;gml:beginPosition&gt;2012-11-19T13:00:00.000Z&lt;/gml:beginPosition&gt;
+##           &lt;gml:endPosition&gt;2018-11-29T17:45:15.000Z&lt;/gml:endPosition&gt;
+##         &lt;/gml:TimePeriod&gt;
+##       &lt;/om:samplingTime&gt;
+##       &lt;om:resultTime&gt;
+##         &lt;gml:TimeInstant gml:id=&quot;resultTime_121&quot;&gt;
+##           &lt;gml:timePosition&gt;2012-11-19T13:00:00.000Z&lt;/gml:timePosition&gt;
+##         &lt;/gml:TimeInstant&gt;
+##       &lt;/om:resultTime&gt;
+##       &lt;om:procedure xlink:href=&quot;http://www.52north.org/test/procedure/1&quot;/&gt;
+##       &lt;om:observedProperty xlink:href=&quot;http://www.52north.org/test/observableProperty/1&quot;/&gt;
+##       &lt;om:featureOfInterest&gt;
+##         &lt;sa:SamplingPoint gml:id=&quot;sf_5A42952C58709500151DE90C98D50DF596770C37&quot;&gt;
+##           &lt;gml:name codeSpace=&quot;uniquID&quot;&gt;http://www.52north.org/test/featureOfInterest/1&lt;/gml:name&gt;
+##           &lt;gml:name codeSpace=&quot;http://www.opengis.net/def/nil/OGC/0/unknown&quot;&gt;con terra&lt;/gml:name&gt;
+##           &lt;sa:sampledFeature xlink:href=&quot;urn:ogc:def:nil:OGC:unknown&quot;/&gt;
+##           &lt;sa:position&gt;
+##             &lt;gml:Point gml:id=&quot;point_sf_5A42952C58709500151DE90C98D50DF596770C37&quot;&gt;
+##               &lt;gml:pos srsName=&quot;urn:ogc:def:crs:EPSG::4326&quot;&gt;51.883906 7.727958&lt;/gml:pos&gt;
+##             &lt;/gml:Point&gt;
+##           &lt;/sa:position&gt;
+##         &lt;/sa:SamplingPoint&gt;
+##       &lt;/om:featureOfInterest&gt;
+##       &lt;om:result&gt;
+##         &lt;swe:DataArray&gt;
+##           &lt;swe:elementCount&gt;
+##             &lt;swe:Count&gt;
+##               &lt;swe:value&gt;12&lt;/swe:value&gt;
+##             &lt;/swe:Count&gt;
+##           &lt;/swe:elementCount&gt;
+##           &lt;swe:elementType name=&quot;Components&quot;&gt;
+##             &lt;swe:DataRecord xmlns:ns=&quot;http://www.opengis.net/swe/1.0.1&quot;&gt;
+##               &lt;ns:field name=&quot;phenomenonTime&quot;&gt;
+##                 &lt;ns:Time definition=&quot;http://www.opengis.net/def/property/OGC/0/PhenomenonTime&quot;&gt;
+##                   &lt;ns:uom xlink:href=&quot;http://www.opengis.net/def/uom/ISO-8601/0/Gregorian&quot;/&gt;
+##                 &lt;/ns:Time&gt;
+##               &lt;/ns:field&gt;
+##               &lt;ns:field name=&quot;http://www.52north.org/test/observableProperty/1&quot;&gt;
+##                 &lt;ns:Quantity definition=&quot;http://www.52north.org/test/observableProperty/1&quot;&gt;
+##                   &lt;ns:uom code=&quot;test_unit_1&quot;/&gt;
+##                 &lt;/ns:Quantity&gt;
+##               &lt;/ns:field&gt;
+##             &lt;/swe:DataRecord&gt;
+##           &lt;/swe:elementType&gt;
+##           &lt;swe:encoding&gt;
+##             &lt;swe:TextBlock blockSeparator=&quot;@@&quot; decimalSeparator=&quot;.&quot; tokenSeparator=&quot;,&quot;/&gt;
+##           &lt;/swe:encoding&gt;
+##           &lt;swe:values&gt;2012-11-19T13:00:00.000Z,1.0@@2012-11-19T13:01:00.000Z,1.1@@2012-11-19T13:02:00.000Z,1.2@@2012-11-19T13:03:00.000Z,1.3@@2012-11-19T13:04:00.000Z,1.4@@2012-11-19T13:05:00.000Z,1.5@@2012-11-19T13:06:00.000Z,1.6@@2012-11-19T13:07:00.000Z,1.7@@2012-11-19T13:08:00.000Z,1.8@@2012-11-19T13:09:00.000Z,1.9@@2018-08-28T17:45:15.000Z,120.28@@2018-11-29T17:45:15.000Z,-15.0&lt;/swe:values&gt;
+##         &lt;/swe:DataArray&gt;
+##       &lt;/om:result&gt;
+##     &lt;/om:Observation&gt;
+##   &lt;/om:member&gt;
+## &lt;/om:ObservationCollection&gt;
+## </code></pre>
+<pre><code>## Warning in .valParser(values = obj[[sweValuesName]], fields = .fields,
+## encoding = .encoding, : No converter for the unit of measurement
+## test_unit_1 with the definition http://www.52north.org/test/
+## observableProperty/1 ! Trying a default, but you can add one when creating
+## a SOS using SosDataFieldConvertingFunctions().</code></pre>
+<pre><code>## [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox 
+##  --&gt; received 1 observation(s) having 12 result values [ 12 ].</code></pre>
+<pre><code>## Object of class OmObservationCollection with 1 members.</code></pre>
+<p>Converters may be matched by XML properties <code>swe:Quatity[@definition]</code> or <code>swe:uom[@code]</code>.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">testconverters &lt;-<span class="st"> </span><span class="kw">SosDataFieldConvertingFunctions</span>(</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">  <span class="co"># one of the following would suffice</span></a>
+<a class="sourceLine" id="cb64-3" data-line-number="3">  <span class="st">&quot;test_unit_1&quot;</span> =<span class="st"> </span>sosConvertDouble,</a>
+<a class="sourceLine" id="cb64-4" data-line-number="4">    <span class="st">&quot;http://www.52north.org/test/observableProperty/1&quot;</span> =<span class="st"> </span>sosConvertDouble</a>
+<a class="sourceLine" id="cb64-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb64-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb64-7" data-line-number="7">testsos &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="st">&quot;http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox&quot;</span>, <span class="dt">binding =</span> <span class="st">&quot;POX&quot;</span>, <span class="dt">dcpFilter =</span> <span class="kw">list</span>(<span class="st">&quot;POX&quot;</span> =<span class="st"> &quot;/pox&quot;</span>),</a>
+<a class="sourceLine" id="cb64-8" data-line-number="8">               <span class="dt">dataFieldConverters =</span> testconverters)</a></code></pre></div>
+<pre><code>## [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">testsosoffering &lt;-<span class="st"> </span><span class="kw">sosOfferings</span>(testsos)[[<span class="st">&quot;http___www.52north.org_test_offering_1&quot;</span>]]</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">data &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop)</a></code></pre></div>
+<pre><code>## [sos4R] Received response (size: 4664 bytes), parsing ...
+## [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox 
+##  --&gt; received 1 observation(s) having 12 result values [ 12 ].</code></pre>
+<p>Then retrieve the data with the correct type.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">head</span>(<span class="kw">sosResult</span>(data))</a></code></pre></div>
+<pre><code>##                      phenomenonTime
+## OmObservation.1 2012-11-19 13:00:00
+## OmObservation.2 2012-11-19 13:01:00
+## OmObservation.3 2012-11-19 13:02:00
+## OmObservation.4 2012-11-19 13:03:00
+## OmObservation.5 2012-11-19 13:04:00
+## OmObservation.6 2012-11-19 13:05:00
+##                 http://www.52north.org/test/observableProperty/1
+## OmObservation.1                                              1.0
+## OmObservation.2                                              1.1
+## OmObservation.3                                              1.2
+## OmObservation.4                                              1.3
+## OmObservation.5                                              1.4
+## OmObservation.6                                              1.5</code></pre>
+<p>The metadata of the observed property is also accessible.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">attributes</span>(<span class="kw">sosResult</span>(data)[[<span class="st">&quot;http://www.52north.org/test/observableProperty/1&quot;</span>]])</a></code></pre></div>
+<pre><code>## $name
+## [1] &quot;http://www.52north.org/test/observableProperty/1&quot;
+## 
+## $definition
+## [1] &quot;http://www.52north.org/test/observableProperty/1&quot;
+## 
+## $`unit of measurement`
+## [1] &quot;test_unit_1&quot;</code></pre>
+<p>Warnings may also include messages if no converter is available for a unit of measurement, for example:</p>
+<pre><code>In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
                 No converter for the unit of measurement  S/m  with the definition  http://mmisw.org/ont/cf/parameter/conductivity ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().
-27: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
                 No converter found! Skipping field Conductivity
 No converter found! Skipping field http://mmisw.org/ont/cf/parameter/conductivity
-No converter found! Skipping field S/m
-
-28: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-                No converter found for the given field Salinity, http://mmisw.org/ont/cf/parameter/sea_water_salinity, NA
-29: In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
-                No converter found! Skipping field Salinity
-No converter found! Skipping field http://mmisw.org/ont/cf/parameter/sea_water_salinity
-No converter found! Skipping field NA
-
-30: In FUN(X[[7L]], ...) :
-        swe:Quantity given without unit of measurement: Salinity&quot;)
-cat(&quot;...&quot;)</code></pre>
+No converter found! Skipping field S/m</code></pre>
 <p>This shows warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field). The next example creates conversion functions for these fields and repeats the operation.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">myConverters &lt;-<span class="st"> </span><span class="kw">SosDataFieldConvertingFunctions</span>(</a>
-<a class="sourceLine" id="cb53-2" data-line-number="2">    <span class="st">&quot;S/m&quot;</span> =<span class="st"> </span>sosConvertDouble,</a>
-<a class="sourceLine" id="cb53-3" data-line-number="3">    <span class="st">&quot;http://mmisw.org/ont/cf/parameter/sea_water_salinity&quot;</span></a>
-<a class="sourceLine" id="cb53-4" data-line-number="4">            =<span class="st"> </span>sosConvertDouble)</a></code></pre></div>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="co"># </span><span class="al">FIXME</span><span class="co">: use other SOS</span></a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">MBARI2 &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="st">&quot;http://mmisw.org/oostethys/sos&quot;</span>,</a>
-<a class="sourceLine" id="cb54-3" data-line-number="3">    <span class="dt">binding =</span> <span class="kw">SosSupportedBindings</span>()[[<span class="st">&quot;KVP&quot;</span>]],</a>
-<a class="sourceLine" id="cb54-4" data-line-number="4">    <span class="dt">dataFieldConverters =</span> myConverters)</a>
-<a class="sourceLine" id="cb54-5" data-line-number="5">mbariObs2 &lt;-<span class="st"> </span><span class="kw">getObservation</span>(<span class="dt">sos =</span> MBARI2, <span class="dt">offering =</span> myOff,</a>
-<a class="sourceLine" id="cb54-6" data-line-number="6">    <span class="dt">procedure =</span> myProc, <span class="dt">responseFormat =</span> <span class="ot">NA_character_</span>)</a></code></pre></div>
-<p>Subsequently, the second request results in more fields in the result.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">toString</span>(<span class="kw">names</span>(<span class="kw">sosResult</span>(mbariObs1)))</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="kw">toString</span>(<span class="kw">names</span>(<span class="kw">sosResult</span>(mbariObs2)))</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">myConverters &lt;-<span class="st"> </span><span class="kw">SosDataFieldConvertingFunctions</span>(</a>
+<a class="sourceLine" id="cb73-2" data-line-number="2">    <span class="st">&quot;S/m&quot;</span> =<span class="st"> </span>sosConvertDouble,</a>
+<a class="sourceLine" id="cb73-3" data-line-number="3">    <span class="st">&quot;http://mmisw.org/ont/cf/parameter/sea_water_salinity&quot;</span></a>
+<a class="sourceLine" id="cb73-4" data-line-number="4">            =<span class="st"> </span>sosConvertDouble)</a></code></pre></div>
 </div>
 <div id="exception-handling" class="section level2">
 <h2>Exception Handling</h2>
@@ -1310,8 +1429,8 @@ cat(&quot;...&quot;)</code></pre>
 <li><strong>locator</strong> Indicator of location in the client’s operation request where this exception was encountered</li>
 </ul>
 <p>The standard exception codes and meanings are accessible by calling the following function.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;knitr&quot;</span>)</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">OwsExceptionsData</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;knitr&quot;</span>)</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">OwsExceptionsData</span>())</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1374,14 +1493,14 @@ cat(&quot;...&quot;)</code></pre>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">getObservationById</span>(<span class="dt">sos =</span> mySOS,</a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">                                   <span class="dt">observationId =</span> <span class="st">&quot;&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">getObservationById</span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb75-2" data-line-number="2">                                   <span class="dt">observationId =</span> <span class="st">&quot;&quot;</span>))</a></code></pre></div>
 <pre><code>## Warning in .handleExceptionReport(sos, .response): Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 ##  1 exception(s) (code @ locator : text):
 ##   MissingParameterValue @ ObservationId :
 ##  The value for the parameter 'ObservationId' is missing in the request!</code></pre>
 <p>The exception is also stored in the <code>response</code> object.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">response</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">response</a></code></pre></div>
 <pre><code>## Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 ##  1 exception(s) (code @ locator : text):
 ##   MissingParameterValue @ ObservationId :
