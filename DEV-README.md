@@ -30,40 +30,7 @@ The **`master` branch** is up to date with the version on CRAN.
 Bugfixes should be based on this branch.
 If you want to develop further functions for the package always use the up-to-date version from the main repository's **`dev` branch** and preferably start a new branch in your fork.
 
-## Releases
-
-A new release shall be uploaded to CRAN after testing and under the following procedure:
-
-- Run [tests](#tests)
-- Update version and date in `man/sos4R-package.Rd`
-- Update version in `DESCRIPTION`
-- Create tag with version number
-- Update NEWS file based on latest commits
-- Read http://cran.r-project.org/web/packages/policies.html again
-- Apply http://r-pkgs.had.co.nz/release.html#release-check
-- When available on CRAN
-  - Notice on 52N mailing list(s)
-  - Publication on blog
-  
-The following code snippets can make sure everything runs smoothly.
-On the command line:
-
-```bash
-R CMD check --as-cran
-```
-
-In R, use
-
-```r
-devtools::build_win()
-revdepcheck::revdep_check()
-```
-
-You then should do the actual release with
-
-```r
-devtools::release()
-```
+------
 
 ## Documentation
 
@@ -88,21 +55,7 @@ Run [pkgdown](https://pkgdown.r-lib.org/) from the package directory each time y
 pkgdown::build_site()
 ```
 
-### The ``.goOnline`` option in vignettes
-
-To reduce download times while building the vignette it can store the responses of the required requests in local files and create the vignette based on these files. By the default, data is downloaded from the 52°North testbed SOS, and this must be done at least once after checking out the project. For this you must set your working directory to ``sos4R/vignettes``:
-
-```r
-setwd("./vignettes")
-```
-
-Afterwards, you can deactivate download and thereby activate using the local files at the beginning of the vignette:
-
-```r
-# triggers whether data is downloaded and stored in /vignettes folder
-.goOnline <- TRUE
-.verbose <- FALSE
-```
+------
 
 ## Package structure
 
@@ -163,17 +116,17 @@ Please also browse through the code files before starting to develop new functio
 - **Accessor functions:** Shall start with _sos_, e.g. `sosOfferings(sos:SOS)`.
 - **Functions to access default values**, especially lists and functions with merging feature: Shall start with _Sos_, e.g. `SosEncodingFunctions()`.
 
-## Classes
+### Classes
 
 Data models, i.e. requests and responses, are modelled as **S4 classes**. Documentation can be found at the following sites (and others):
 
 * The S4 object system: http://adv-r.had.co.nz/S4.html (short, must read)
 * A (Not So) Short Introduction to S4: https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf (not so short)
-* Classes and Methods in the S Language: http://www.omegahat.org/RSMethods/Intro.pdf (by Chambers!)
+* Classes and Methods in the S Language by Chambers: http://www.omegahat.org/RSMethods/Intro.pdf
 
 ## Troubleshooting
 
-- "non-ASCII characters" > find them with `tools::showNonASCIIfile()`
+- "non-ASCII characters" in a file > find them with `tools::showNonASCIIfile()`
 
 ## Tests
 
@@ -206,3 +159,34 @@ SosParsingFunctions("TimeseriesKVP" = function() { ... })
 ### How to add an encoder
 
 ...
+
+
+## Releases
+
+A new release shall be uploaded to CRAN after testing and under the following procedure:
+
+- Run the [tests](#tests)
+- Check the CI status
+  - https://travis-ci.org/52North/sos4R
+  - https://ci.appveyor.com/project/nuest/sos4r
+- Run checks
+  - `R CMD check --as-cran` should have no errors, warnings, or notes
+  - `revdepcheck::revdep_check()` for checking reverse dependencies
+  - `devtools::build_win()` for testing Windows using CRAN infrastructure
+  - `rhub::check_for_cran(email = <...>)` for testing for CRAN submissions using RHub infrastructure
+  - `rhub::check()` for running checks on different operating systems
+- Update version and date in `man/sos4R-package.Rd`
+- Update version in `DESCRIPTION`
+- Create a git tag with the version number
+- Update NEWS file based on latest commits
+- Read http://cran.r-project.org/web/packages/policies.html again
+- Apply http://r-pkgs.had.co.nz/release.html#release-check
+- When available on CRAN
+  - Notice on 52N mailing list(s)
+  - Publication on blog
+  
+You can then do the actual release with
+
+```r
+devtools::release()
+```

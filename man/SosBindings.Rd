@@ -17,7 +17,7 @@ The SOS comes with three possible methods of transfering data, HTTP GET, HTTP PO
 \details{
 The \strong{POST} binding is described in the official SOS specification and should be the default method.
 
-The \strong{GET} binding is described by OOTethys in a Best Practice document: \url{http://www.oostethys.org/best-practices/best-practices-get}. It contains some special encoding for bounding boxes, as the only spatial filter, and time periods, as the only temporal filter. 
+The \strong{GET} binding is described by OOTethys in a Best Practice document: \url{https://web.archive.org/web/20120616065001/http://www.oostethys.org/best-practices/best-practices-get}. It contains some special encoding for bounding boxes, as the only spatial filter, and time periods, as the only temporal filter.
 
 The \strong{SOAP} binding is not official with regards to the spec, and also not implemented yet.
 

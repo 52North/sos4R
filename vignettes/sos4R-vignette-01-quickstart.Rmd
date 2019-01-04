@@ -185,16 +185,8 @@ verboseSOS <- SOS(sosUrl(mySOS),
 
 ## Support
 
-If you want to ask **questions** about using the software, please go first
-to the \fivetwon **forum** for the geostatistics community at
-http://geostatistics.forum.52north.org/ and check if a solution is
-described there. If you are a frequent user please consider subscribing to the
-geostatistics **mailing list**
-(http://list.52north.org/mailman/listinfo/geostatistics). The forum and
-mailing list are synchronized, so you only have to join respectively post at
-either one.
-
-If you are sure you **found a bug**, please submit it to the project issue tracker: [https://github.com/52North/sos4R/issues](https://github.com/52North/sos4R/issues) where you can also find existing bug reports and planned features.
+Feel free to ask **questions** about using the software or **report a bug** at the project issue tracker: [https://github.com/52North/sos4R/issues](https://github.com/52North/sos4R/issues).
+There you can also find existing bug reports and planned features.
 
 ## Acknowledgements
 

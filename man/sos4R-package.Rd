@@ -42,7 +42,7 @@ The development of this software was gratefully supported by the 52North Student
 
 To stay updated on all matters around \pkg{sos4R} go to the development blog at \url{http://www.nordholmen.net/sos4r/}.
 
-If you want to ask questions about using the software, please go to the 52North forum for the geostatistics community (\url{http://geostatistics.forum.52north.org/}), or consider subscribing to the mailing list (\url{http://list.52north.org/mailman/listinfo}).
+If you want to ask questions about using the software, please go to the to the issue tracker at \url{https://github.com/52North/sos4R/issues}.
 
 The most extensive documenation is contained in the \strong{package vignette}.
 }

@@ -15,7 +15,7 @@ citEntry(entry="inproceedings",
   series = "Proceedings of AGILE",
   pages = "227 - 246",
   publisher = "Springer Lecture Notes in Geoinformation and Cartography",
-  doi = "https://doi.org/10.1007/978-3-642-19789-5_12",
+  doi = "10.1007/978-3-642-19789-5_12",
   abstract = "Interoperable data exchange and reproducibility are increasingly
   	important for modern scientific research. This paper shows how three open
   	source projects work together to realize this: (i) the R project, providing
