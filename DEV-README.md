@@ -169,18 +169,18 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 - Check the CI status
   - https://travis-ci.org/52North/sos4R
   - https://ci.appveyor.com/project/nuest/sos4r
-- Run checks
-  - `R CMD check --as-cran` should have no errors, warnings, or notes
-  - `revdepcheck::revdep_check()` for checking reverse dependencies
-  - `devtools::build_win()` for testing Windows using CRAN infrastructure
-  - `rhub::check_for_cran(email = <...>)` for testing for CRAN submissions using RHub infrastructure
-  - `rhub::check()` for running checks on different operating systems
 - Update version and date in `man/sos4R-package.Rd`
 - Update version in `DESCRIPTION`
 - Create a git tag with the version number
 - Update NEWS file based on latest commits
-- Read http://cran.r-project.org/web/packages/policies.html again
-- Apply http://r-pkgs.had.co.nz/release.html#release-check
+- Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again
+- Run checks
+  - In the parent directory of the project: `R CMD build sos4R; R CMD check --as-cran sos4R_0.<version number>.tar.gz` should have no errors, warnings, or notes
+  - `revdepcheck::revdep_check()` for checking reverse dependencies
+  - `devtools::build_win()` for testing Windows using CRAN infrastructure
+  - `rhub::check_for_cran(email = <...>)` for testing for CRAN submissions using RHub infrastructure
+  - `rhub::check()` for running checks on different operating systems
+
 - When available on CRAN
   - Notice on 52N mailing list(s)
   - Publication on blog
