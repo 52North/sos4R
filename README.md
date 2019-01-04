@@ -18,7 +18,7 @@ Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/
 ## Documentation & Links
 
   - **Website**: <https://52north.github.io/sos4R>
-  - CRAN: <http://cran.r-project.org/web/packages/sos4R/>
+  - CRAN: <https://CRAN.R-project.org/package=sos4R>
   - Source code: <https://github.com/52North/sos4R>
   - **Developer documentation:**
     <https://52north.github.io/sos4R/DEV-README.html>
@@ -28,6 +28,8 @@ Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/
 
 [![Build
 Status](https://travis-ci.org/52North/sos4R.png?branch=dev)](https://travis-ci.org/52North/sos4R)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/nuest/sos4R)
 
 sos4R is developed on GitHub using the [fork & pull development
 model](https://help.github.com/articles/using-pull-requests/#fork--pull).
@@ -36,7 +38,7 @@ tracker](https://github.com/52North/sos4R/issues) is used to coordinate
 development.
 
 The `master` branch represents the current version that is [published on
-CRAN](http://cran.r-project.org/package=sos4R), the `dev` branch is the
+CRAN](https://CRAN.R-project.org/package=sos4R), the `dev` branch is the
 current development version.
 
 See file `DEV-README.md` for developer documentation.
