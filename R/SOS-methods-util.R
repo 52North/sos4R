@@ -633,9 +633,10 @@ setMethod(f = "sosGetCRS",
 #
 #
 sosCheatSheet <- function() {
-  .path <- paste(find.package("sos4R", lib.loc = NULL), "doc",
-                 .sosCheatSheetDocumentName, sep = "\\")
+  .path <- file.path(find.package("sos4R", lib.loc = NULL),
+                 .sosCheatSheetDocumentName)
 
+  # see code of 'vignette' function
   .z <- list(file = .sosCheatSheetDocumentName, pdf = .path)
   .z$topic <- "sos4R Cheat Sheet"
   class(.z) <- "vignette"
