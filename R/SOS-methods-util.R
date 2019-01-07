@@ -637,7 +637,7 @@ sosCheatSheet <- function() {
                  .sosCheatSheetDocumentName)
 
   # see code of 'vignette' function
-  .z <- list(file = .sosCheatSheetDocumentName, pdf = .path)
+  .z <- list(file = .sosCheatSheetDocumentName, PDF = .path)
   .z$topic <- "sos4R Cheat Sheet"
   class(.z) <- "vignette"
 
