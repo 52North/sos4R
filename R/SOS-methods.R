@@ -218,13 +218,15 @@ SosGetObservation <- function(
   observedProperty,
   responseFormat,
   srsName = as.character(NA),
-  eventTime = list(NA),
+  eventTime = list(),
   procedure = as.character(NA),
   featureOfInterest = NULL,
   result = NULL,
   resultModel = as.character(NA),
   responseMode = as.character(NA),
-  BBOX = as.character(NA)) {
+  BBOX = as.character(NA),
+  valueReferenceTemporalFilter = as.character(NA)
+  ) {
   new("SosGetObservation",
       request = sosGetObservationName,
       service = service,
@@ -239,7 +241,8 @@ SosGetObservation <- function(
       result = result,
       resultModel = resultModel,
       responseMode = responseMode,
-      BBOX = BBOX)
+      BBOX = BBOX,
+      valueReferenceTemporalFilter = valueReferenceTemporalFilter)
 }
 
 #
@@ -1100,10 +1103,10 @@ setMethod("encodeRequestKVP", "SosDescribeSensor",
 
 setMethod("encodeRequestKVP", "SosGetObservation",
           function(obj, sos, verbose = FALSE) {
-            if(obj@version == sos100_version) {
+            if(sos@version == sos100_version) {
               return(.sosEncodeRequestKVPGetObservation_1.0.0(obj, sos,
                                                               verbose))
-            }else if(obj@version == sos200_version) {
+            }else if(sos@version == sos200_version) {
               return(.sosEncodeRequestKVPGetObservation_2.0.0(obj, sos,
                                                               verbose))
             }
@@ -1162,7 +1165,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
                         sep = "&")
   }
 
-  if( !is.na(obj@eventTime)) {
+  if( !length(obj@eventTime) == 0) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding event time",
                     toString(obj@eventTime), "\n")
     if(length(obj@eventTime) > 1)
@@ -1285,7 +1288,7 @@ setMethod("encodeRequestXML", "SosGetObservation",
                        obj@offering)
   .xmlDoc <- addChildren(node = .xmlDoc, .offering)
 
-  if(!any(is.na(obj@eventTime))) {
+  if(!length(obj@eventTime) == 0) {
     .eventTimeList <- lapply(obj@eventTime, encodeXML, sos = sos,
                              verbose = verbose)
     .xmlDoc <- addChildren(node = .xmlDoc, kids = .eventTimeList,

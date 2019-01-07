@@ -309,7 +309,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 #
 .getObservation_2.0.0 <- function(sos, offeringId, observedProperty,
                                   responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                  result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+                                  result, resultModel, responseMode, BBOX, latest,
+                                  valueReferenceTemporalFilter = sosDefaultTemporalValueReference,
+                                  verbose, inspect,
                                   saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
 
   .filename <- NULL
@@ -333,7 +335,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 
   .go <- .createGetObservation_2.0.0(sos, offeringId, observedProperty,
                                      responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                     result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+                                     result, resultModel, responseMode, BBOX, latest,
+                                     valueReferenceTemporalFilter,
+                                     verbose, inspect,
                                      saveOriginal)
 
   if(verbose)
@@ -574,7 +578,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 #
 .createGetObservation_2.0.0 <- function(sos, offeringId, observedProperty,
                                         responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                        result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+                                        result, resultModel, responseMode, BBOX, latest,
+                                        valueReferenceTemporalFilter,
+                                        verbose, inspect,
                                         saveOriginal) {
 
   if(latest) .eventTime <- list(.createLatestEventTime(verbose))
@@ -583,13 +589,14 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
   if(latest && !is.na(eventTime))
     warning("'Latest' is set to TRUE > given eventTime is ignored!")
 
-  .go <- SosGetObservation_2.0.0(service = sosService, version = sos@version,
+  .go <- SosGetObservation(service = sosService, version = sos@version,
                                  offering = offeringId, observedProperty = observedProperty,
                                  responseFormat =  responseFormat, srsName = srsName,
                                  eventTime = .eventTime, procedure = procedure,
                                  featureOfInterest = featureOfInterest, result = result,
                                  resultModel = resultModel, responseMode = responseMode,
-                                 BBOX = BBOX)
+                                 BBOX = BBOX,
+                                 valueReferenceTemporalFilter = valueReferenceTemporalFilter)
 
   if(verbose)
     cat("[.createGetObservation_2.0.0] Done:\n", toString(.go), "\n")
@@ -598,7 +605,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 }
 
 setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0", operation = "SosGetObservation_2.0.0",
+          signature = signature(service = "SOS_2.0.0", operation = "SosGetObservation",
                                 verbose = "logical"),
           def = function(service, operation, verbose) {
             # check if operation is for SOS and operation is DescribeSensor
@@ -639,21 +646,9 @@ setMethod(f = "checkRequest",
           }
 )
 
-setMethod("encodeRequestKVP", "SosGetObservation_2.0.0",
-          function(obj, sos, verbose = FALSE) {
-            if(obj@version == sos200_version) {
-              return(.sosEncodeRequestKVPGetObservation_2.0.0(obj, sos,
-                                                              verbose))
-            }
-            else {
-              stop("Version not supported!")
-            }
-          }
-)
-
 setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
           function(obj, sos, verbose = FALSE) {
-            if(obj@version == sos200_version) {
+            if(sos@version == sos200_version) {
               return(.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0(obj, sos,
                                                                     verbose))
             }
@@ -713,9 +708,9 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                         sep = "&")
   }
 
-  if( !is.na(obj@eventTime)) {
+  if( !length(obj@eventTime) == 0) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding event time",
-                    toString(obj@eventTime), "\n")
+                    toString(obj@eventTime), " with valueReference ", toString(obj@valueReferenceTemporalFilter), "\n")
     if(length(obj@eventTime) > 1)
       warning("Only first event time in the list is used for KVP!")
 
@@ -725,6 +720,10 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
     # if the eventTime is a latest request, it returns NA, the GET binding
     # says for the latest observation eventTime is omitted
     if(!is.na(.timeString)) {
+      # http://www.opengis.net/spec/SOS/2.0/req/kvp-core/go-temporalFilter-encoding
+      if (!is.na(obj@valueReferenceTemporalFilter))
+        .timeString <- paste0(obj@valueReferenceTemporalFilter, ",", .timeString)
+
       .optionals <- paste(.optionals, paste("temporalFilter",
                                             .kvpEscapeSpecialCharacters(x = .timeString),
                                             sep = "="),
@@ -819,41 +818,6 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                   "with request: ", .kvpString, "\n")
 
   return(.kvpString)
-}
-
-
-#
-#
-#
-SosGetObservation_2.0.0 <- function(
-  service,
-  version,
-  offering,
-  observedProperty,
-  responseFormat,
-  srsName = as.character(NA),
-  eventTime = list(NA),
-  procedure = as.character(NA),
-  featureOfInterest = NULL,
-  result = NULL,
-  resultModel = as.character(NA),
-  responseMode = as.character(NA),
-  BBOX = as.character(NA)) {
-  new("SosGetObservation_2.0.0",
-      request = sosGetObservationName,
-      service = service,
-      version = version,
-      offering = offering,
-      observedProperty = observedProperty,
-      responseFormat = responseFormat,
-      srsName = srsName,
-      eventTime = eventTime,
-      procedure = procedure,
-      featureOfInterest = featureOfInterest,
-      result = result,
-      resultModel = resultModel,
-      responseMode = responseMode,
-      BBOX = BBOX)
 }
 
 

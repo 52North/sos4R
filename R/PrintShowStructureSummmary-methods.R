@@ -47,18 +47,18 @@
               x@service, ", request: ", x@request,
               ", owsVersion: ", x@owsVersion,
               ", acceptVersions: ", toString(x@acceptVersions), sep = " ")
-  
+
   if (is(x, "OwsGetCapabilities_1.1.0")) {
     .s <- paste(.s, "\n\t sections: ", toString(x@sections),
                 ", acceptFormats: ", toString(x@acceptFormats),
                 ", updateSequence: ", x@updateSequence, sep = " ")
-    
+
     if (is(x, "OwsGetCapabilities_2.0.0")) {
-      .s <- paste(.s, "\n\tacceptLanguages: ", 
+      .s <- paste(.s, "\n\tacceptLanguages: ",
                   x@acceptLanguages, sep = " ")
     }
   }
-  
+
   return(.s)
 }
 
@@ -146,7 +146,7 @@
 
 .toString.OwsCapabilities <- function(x, ...) {
   .s <- paste("Object of class ", class(x), " -- version: ", x@version,
-              ", owsVersion: ", x@owsVersion, ", updateSequence: ", 
+              ", owsVersion: ", x@owsVersion, ", updateSequence: ",
               x@updateSequence)
   return(.s)
 }
@@ -426,7 +426,9 @@
               "\nsrsName: ",
               x@srsName,
               "\nresultModel(s): ",
-              x@resultModel)
+              x@resultModel,
+              "\ntemporal value reference: ",
+              x@valueReferenceTemporalFilter)
   return(.s)
 }
 
@@ -516,7 +518,7 @@
   if(is.null(sosObservedProperties(x)))
     .obsProp <- NULL
   else .obsProp <- toString(sosObservedProperties(x))
-  
+
   .s <- paste("Object of class OmObservation;\n\tprocedure: ",
               toString(x@procedure),
               "\n\tobservedProperty: ", .obsProp,
@@ -641,7 +643,7 @@
 .toString.GmlTimePosition <- function(x, ...) {
   .s <- paste("GmlTimePosition [",
               " time: ", x@time, sep = "")
-  
+
   if(!is.na(x@frame)) {
     .s <- paste(.s, "; frame: ", x@frame, sep = "")
   }
@@ -655,7 +657,7 @@
     .s <- paste(.s, "; indeterminatePosition: ", x@indeterminatePosition,
                 sep = "")
   }
-  
+
   .s <- paste(.s, "]")
   return(.s)
 }
@@ -714,7 +716,7 @@
 
 .toString.GmlTimePeriod <- function(x, ...) {
   .s <- ""
-  
+
   if(!is.na(x@duration)) {
     .s <- paste(.s, "; duration: ", x@duration)
   }
@@ -722,7 +724,7 @@
     .s <- paste(.s, ", timeInterval: ", toString(x@timeInterval), ";",
                 sep = "")
   }
-  
+
   if(!is.null(x@begin) && !is.null(x@end)) {
     .s <- paste(toString(x@begin), "\n\t--> ", toString(x@end), sep = "")
   }
@@ -730,7 +732,7 @@
     .s <- paste(toString(x@beginPosition), "\n\t--> ",
                 toString(x@endPosition), sep = "")
   }
-  
+
   .s <- paste("GmlTimePeriod: [", .s, "]")
   return(.s)
 }
@@ -1223,29 +1225,29 @@ setMethod("show", "OgcOverlaps", function(object) .print.OgcOverlaps(object))
 summary.SOS_versioned = function(object, ...) {
   obj = list()
   obj[["class"]] = class(object)
-  
+
   sosVersion = sosVersion(object)
-  
+
   obj[["version"]] = sosVersion
   obj[["url"]] = sosUrl(object)
   obj[["binding"]] = sosBinding(object)
   obj[["title"]] = sosTitle(object)
   obj[["abstract"]] = sosAbstract(object)
-  
+
   if(!is.null(sosTime(object)))
     obj[["time"]] = summary(sosTime(object))
   else obj[["time"]] = NA_character_
-  
+
   obj[["offeringCount"]] = length(sosOfferingIds(object))
   obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
-  
+
   if(sosVersion == sos100_version){
     obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
   }
   else if(sosVersion == sos200_version){
     obj[["observablePropCount"]] = length(unlist(sosObservableProperties(object)))
   }
-  
+
   class(obj) = "summary.SOS_versioned"
   obj
 }
@@ -1374,7 +1376,7 @@ summary.GmlTimePeriod = function(object, ...) {
     .s <- paste(toString(object@beginPosition@time), "-->",
                 toString(object@endPosition@time))
   }
-  
+
   obj = list()
   obj[["class"]] = class(object)
   obj[["duration"]] = object@duration
@@ -1397,7 +1399,7 @@ summary.OmObservation = function(object, ...) {
   obj[["obsPropCount"]] = length(object@observedProperty)
   obj[["featureCount"]] = length(object@featureOfInterest)
   obj[["result"]] = summary(object@result)
-  
+
   class(obj) = "summary.OmObservation"
   obj
 }
@@ -1426,7 +1428,7 @@ summary.OmObservationCollection = function(object, ...) {
   obj[["obsPropCount"]] = length(unique(unlist(
     sosObservedProperties(object))))
   obj[["featureCount"]] = length(unique(unlist(sosFeatureIds(object))))
-  
+
   class(obj) = "summary.OmObservationCollection"
   obj
 }

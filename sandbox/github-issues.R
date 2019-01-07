@@ -26,12 +26,17 @@ CEH <- SOS("http://192.171.139.63/observations/service",
 
 myOff <- sosOfferings(CEH)[['/ECN/T04/RAIN/2/raw/']]
 myTemporalFilter <- sosCreateEventTimeList(sosCreateTimePeriod(sos = CEH,
-                                                               begin = as.POSIXct(Sys.time() - 3600 * 24), #* 180),
-                                                               end = as.POSIXct(Sys.time())))
-last24hObs <- getObservation(sos = CEH,
-                             #responseFormat = "application/json",
+                                                               begin = as.POSIXct("1992-01-01"), #* 180),
+                                                               end = as.POSIXct("1992-01-03")))
+jan1992 <- getObservation(sos = CEH,
+                             responseFormat = "http://www.opengis.net/om/2.0",
                              offering = myOff,
-                             verbose = TRUE,
+                             #verbose = TRUE,
                              observedProperty = list("http://vocabs.lter-europe.net/EnvThes/USLterCV_443"),
                              eventTime = myTemporalFilter
                              )
+
+do.call(rbind, lapply(jan1992, function(obj) {
+  return(data.frame(time = obj@phenomenonTime@timePosition@time, result = as.numeric(obj@result)))
+})
+)

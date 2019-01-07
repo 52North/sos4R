@@ -113,68 +113,6 @@ setClass("SosObservationOffering_2.0.0",
          }
 )
 
-################################################################################
-# See SOS specification, OGC 06-009r6, section 8.4
-#
-setClass("SosGetObservation_2.0.0",
-         representation(
-           offering = "character",
-           observedProperty = "list",
-           responseFormat = "character",
-           srsName = "character",
-           eventTime = "list",
-           procedure = "character",
-           featureOfInterest = "SosFeatureOfInterestOrNULL",
-           result = "ANY", # OgcComparisonOpsOrXMLOrNULL
-           resultModel = "character",
-           responseMode = "character",
-           BBOX = "character"),
-         prototype = list(
-           service = as.character(NA),
-           version = as.character(NA),
-           offering = as.character(NA),
-           observedProperty = list(NA),
-           responseFormat = as.character(NA)),
-         contains = "OwsServiceOperation",
-         validity = function(object) {
-           #print("Entering validation: SosGetObservation")
-           # TODO implement validity function
-
-           # service, version, offering, observedProperty, and responseFormat are mandatory
-           if(is.na(object@service))
-             return("service parameter must be given")
-           if(is.na(object@version))
-             return("version must be given")
-           if(is.na(object@offering))
-             return("offering parameter must be given")
-           # responseFormat is optional for GET
-           #if(is.na(object@responseFormat))
-           #	return("responseFormat parameter must be given")
-           if(length(object@observedProperty) < 1)
-             return("at least one observedProperty is mandatory")
-
-           # if version is there, it hast to be in a certain format, see ows common
-           # srsName, offering, procedure, observedProperty are anyURIs
-           # eventTime is a list of ogc:temporalOps
-           if ( !all(sapply(object@eventTime, inherits, what = "SosEventTime")))
-             return("all elements of the eventTime list must extend SosEventTime")
-
-           # featureOfInterest is null or a SosFeatureOfInterest element
-
-           # result is null or an ogc:comparisonOps element
-           cls <- class(slot(object, "result"))
-           #			print(paste("class of result slot: ", cls))
-           if ( !any(cls %in% c("OgcComparisonOps", "XMLNode", "NULL",
-                                "XMLAbstractNode", "XMLInternalNode"))) {
-             return("'response' argument does not have allowed class!")
-           }
-
-           # responseFormat must be MIME content type
-           # resultModel must be a QName
-           # responseMode must be one of inline, out-of-band, attached, or resultTemplate
-           return(TRUE)
-         }
-)
 
 ################################################################################
 # See SOS specification, OGC 12-006, section 9.1

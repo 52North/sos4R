@@ -1015,10 +1015,6 @@ setMethod(f = "sosName", signature = signature(obj = "SosGetObservation"),
           def = function(obj) {
             return(sosDescribeSensorName)
           })
-setMethod(f = "sosName", signature = signature(obj = "SosGetObservation_2.0.0"),
-          def = function(obj) {
-            return(sosDescribeSensorName)
-          })
 setMethod(f = "sosName", signature = signature(obj = "SosGetObservationById"),
           def = function(obj) {
             return(sosGetObservationByIdName)

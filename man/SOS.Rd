@@ -227,8 +227,7 @@
 \alias{SOS_Test}
 \alias{SOS_Test-class}
 
-% Version 2.0.0
-\alias{sosName,SosGetObservation_2.0.0-method}
+% Version 2.0.0 - specific
 \alias{sosName,SosGetFeatureOfInterest_2.0.0-method}
 \alias{sosProcedures,SosObservationOffering_2.0.0-method}
 \alias{sosResponseFormats,SosObservationOffering_2.0.0-method}

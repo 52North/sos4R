@@ -17,21 +17,17 @@
 \alias{print,SosGetObservationById-method}
 \alias{toString,SosGetObservationById-method}
 
-% Version 2.0.0
-\alias{SosGetObservation_2.0.0}
-\alias{SosGetObservation_2.0.0-class}
-
 \title{GetObservation and GetObservationById Request Objects}
 
 \description{Classes (and their construction functions) to request observations from a Sensor Observation Service.}
 
 \usage{
 SosGetObservation(service, version, offering, observedProperty, responseFormat,
-                  srsName = as.character(NA), eventTime = list(NA), 
-                  procedure = as.character(NA), featureOfInterest = NULL, 
-                  result = NULL, resultModel = as.character(NA), 
+                  srsName = as.character(NA), eventTime = list(NA),
+                  procedure = as.character(NA), featureOfInterest = NULL,
+                  result = NULL, resultModel = as.character(NA),
                   responseMode = as.character(NA), BBOX = as.character(NA))
-SosGetObservationById(service, version, observationId, responseFormat, 
+SosGetObservationById(service, version, observationId, responseFormat,
                       srsName = as.character(NA), resultModel = as.character(NA),
                       responseMode = as.character(NA))
 }
@@ -116,14 +112,14 @@ showClass("SosGetObservationById")
 
 responseFormat <- "text/xml;subtype=&quot;om/1.0.0&quot;"
 
-obsReq <- SosGetObservation(service = "SOS", version = "1.0.0", 
-                            offering = "temperatures", 
+obsReq <- SosGetObservation(service = "SOS", version = "1.0.0",
+                            offering = "temperatures",
                             observedProperty = list("urn:property:AirTemperature"),
                             responseFormat = responseFormat)
 print(obsReq)
 
 obsByIdReq <- SosGetObservationById(service = "SOS", version = "1.0.0",
-                                    observationId = "o_12345", 
+                                    observationId = "o_12345",
                                     responseFormat = responseFormat)
 print(obsByIdReq)
 

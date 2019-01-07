@@ -13,7 +13,6 @@
 
 % Version 2.0.0
 \alias{encodeRequestKVP,SosGetFeatureOfInterest_2.0.0-method}
-\alias{encodeRequestKVP,SosGetObservation_2.0.0-method}
 
 
 

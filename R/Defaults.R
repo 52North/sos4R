@@ -427,6 +427,7 @@ sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H-%M-%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
+sosDefaultTemporalValueReference <- "om:phenomenonTime"
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"
 
 # use for the names created data.frames
