@@ -1140,11 +1140,15 @@ setMethod("encodeRequestKVP", "SosGetObservation",
   if( !is.na(obj@responseFormat)) {
     if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0] Adding response format ",
                     obj@responseFormat, "\n")
+    .noHTMLquotes <- gsub(obj@responseFormat,
+                          pattern = "&quot;",
+                          replacement = '"')
+    .singleQuotes <- gsub(.noHTMLquotes,
+                          pattern = "\"",
+                          replacement = "'")
     .responseFormat <- paste(
       sosKVPParamNameResponseFormat,
-      .kvpEscapeSpecialCharacters(x = gsub(obj@responseFormat,
-                                           pattern = "&quot;",
-                                           replacement = '"')),
+      .kvpEscapeSpecialCharacters(x = .singleQuotes),
       sep = "=")
     .optionals <- paste(.optionals, .responseFormat, sep = "&")
   }

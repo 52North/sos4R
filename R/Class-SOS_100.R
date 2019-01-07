@@ -40,27 +40,27 @@ setClass("SOS_1.0.0",
          contains = c("SOS"),
          validity = function(object) {
            #print("Entering validation: SOS")
-           
+
            if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
              return(paste("Binding has to be one of",
                           toString(SosSupportedBindings()),
                           "- given:", object@binding))
            }
-           
+
            if(object@version != sos100_version)
              return(paste0("Version must be 1.0.0 but is", object@version))
-           
+
            # url has to match an URL pattern
            .urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
            .result = regexpr(.urlPattern, object@url)
            if (.result == -1)
              return("url not matching URL-pattern (http://www.example.com)")
-           
+
            # test for complete match removed, does not work yet
            #.urlLength = nchar(object@url)
            #if (.urlLength == attr(.result, "match.length"))
            #	return("url not completely matching URL-pattern")
-           
+
            return(TRUE)
          }
 )
@@ -124,10 +124,10 @@ setClass("SosObservationOffering",
          validity = function(object) {
            #print("Entering validation: ObservationOffering")
            # TODO implement validity function
-           
+
            # time is required
            # procedure, observedProperty, featureOfInterest, responseFormat are all "one or more"
-           
+
            return(TRUE)
          }
 )
@@ -164,8 +164,9 @@ setClass("SosEventTime",
 # class needed for the non-standard request for latest value
 #
 setClass("SosEventTimeLatest",
-         representation(temporalOps = "character"),
-         prototype = list(temporalOps = as.character(NA)),
+         representation(temporalOps = "OgcBinaryTemporalOp"),
+         contains = "SosEventTime",
+         prototype = list(temporalOps = NA),
          validity = function(object) {
            #print("Entering validation: SosEventTimeLatest")
            # TODO implement validity function
@@ -174,7 +175,7 @@ setClass("SosEventTimeLatest",
 )
 
 #
-# 
+#
 #
 setClass("SosFeatureOfInterest",
          representation(
@@ -208,7 +209,7 @@ setClass("SosDescribeSensor",
            # check format of version, sensorid and outputformat?!
            if(length(object@procedure) > 1)
              return("can only request one procedure at a time!")
-           
+
            return(TRUE)
          }
 )
@@ -223,9 +224,9 @@ setClass("SosGetObservation",
            observedProperty = "list",
            responseFormat = "character",
            srsName = "character",
-           eventTime = "list", 
-           procedure = "character", 
-           featureOfInterest = "SosFeatureOfInterestOrNULL", 
+           eventTime = "list",
+           procedure = "character",
+           featureOfInterest = "SosFeatureOfInterestOrNULL",
            result = "ANY", # OgcComparisonOpsOrXMLOrNULL
            resultModel = "character",
            responseMode = "character",
@@ -240,7 +241,7 @@ setClass("SosGetObservation",
          validity = function(object) {
            #print("Entering validation: SosGetObservation")
            # TODO implement validity function
-           
+
            # service, version, offering, observedProperty, and responseFormat are mandatory
            if(is.na(object@service))
              return("service parameter must be given")
@@ -253,12 +254,15 @@ setClass("SosGetObservation",
            #	return("responseFormat parameter must be given")
            if(length(object@observedProperty) < 1)
              return("at least one observedProperty is mandatory")
-           
+
            # if version is there, it hast to be in a certain format, see ows common
            # srsName, offering, procedure, observedProperty are anyURIs
-           # eventTime is a list of ogc:temporalOps
+
+           if(! all(sapply(object@eventTime, inherits, what = "SosEventTime")))
+             return("all elements of the eventTime list must extend SosEventTime")
+
            # featureOfInterest is null or a SosFeatureOfInterest element
-           
+
            # result is null or an ogc:comparisonOps element
            cls <- class(slot(object, "result"))
            #			print(paste("class of result slot: ", cls))
@@ -266,7 +270,7 @@ setClass("SosGetObservation",
                                 "XMLAbstractNode", "XMLInternalNode"))) {
              return("'response' argument does not have allowed class!")
            }
-           
+
            # responseFormat must be MIME content type
            # resultModel must be a QName
            # responseMode must be one of inline, out-of-band, attached, or resultTemplate
@@ -292,7 +296,7 @@ setClass("SosGetObservationById",
          validity = function(object) {
            #print("Entering validation: SosGetObservationById")
            # TODO implement validity function
-           
+
            # service, version, observationId, and responseFormat are mandatory
            if(is.na(object@service))
              return("service parameter must be given")
@@ -302,7 +306,7 @@ setClass("SosGetObservationById",
              return("observationId parameter must be given")
            if(is.na(object@responseFormat))
              return("responseFormat parameter must be given")
-           
+
            # if version is there, it hast to be in a certain format, see ows common
            # responseFormat must be MIME content type
            # resultModel must be a QName

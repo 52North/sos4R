@@ -73,8 +73,7 @@
                              verbose = verbose)
     }
     else if(verbose)
-      cat("[.sosRequest_2.0.0] Not using DCP from capabilities.\n",
-          .dcp, "\n")
+      cat("[.sosRequest_2.0.0] Not using DCP from capabilities, but use ", .dcp, "\n")
 
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
       cat("Given url already contains a '?', appending arguments!")
@@ -98,11 +97,13 @@
           .url, "\n")
     }
 
-    if(verbose) cat("[.sosRequest_2.0.0] Do request...\n")
+    if(verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
 
-    .response = getURL(url = .url, .opts = sos@curlOptions,
+    .response = getURL(url = .url,
+                       .opts = sos@curlOptions,
                        curl = sos@curlHandle,
-                       .encoding = sosDefaultCharacterEncoding, httpauth = 1L)
+                       .encoding = sosDefaultCharacterEncoding,
+                       httpauth = 1L)
 
     pos = regexpr('<\\?xml', .response)
 
@@ -149,17 +150,10 @@
 
     .response <- postForm(uri = .dcp,
                           request = .requestString,
-                          style = "POST", .opts = sos@curlOptions,
+                          style = "POST",
+                          .opts = sos@curlOptions,
                           curl = sos@curlHandle,
                           .encoding = sosDefaultCharacterEncoding)
-
-    # 		# FIXME this is a hack to get the package working again
-    # 				.response <- postForm(uri = .dcp,
-    # 						request = .requestString,
-    # 						style = "POST",
-    # 						#.opts = sos@curlOptions,
-    # 						#curl = sos@curlHandle,
-    # 						.encoding = sosDefaultCharacterEncoding)
 
     if(verbose) cat("[.sosRequest_2.0.0] ... done.")
   }

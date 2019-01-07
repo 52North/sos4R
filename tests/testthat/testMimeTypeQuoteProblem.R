@@ -2,8 +2,8 @@ library(sos4R)
 context("Quoting characters inside MimeTypes")
 
 test_that("No '&quot;' string inside Mimetypes mimeTypeOM and mimeTypeSML", {
-	expect_equal(grepl(mimeTypeOM, "quot"), FALSE)
-	expect_equal(grepl(mimeTypeSML, "quot"), FALSE)
+	expect_equal(grepl(pattern = "quot", x = mimeTypeOM), FALSE)
+	expect_equal(grepl(pattern = "quot", x = mimeTypeSML), FALSE)
 })
 
 mySOS <- SOS(url = "http://sos.irceline.be/sos")
