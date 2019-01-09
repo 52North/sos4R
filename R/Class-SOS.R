@@ -173,9 +173,10 @@ setClass("SosGetObservation",
 
            # if version is there, it hast to be in a certain format, see ows common
            # srsName, offering, procedure, observedProperty are anyURIs
-
-           if(! all(sapply(object@eventTime, inherits, what = "SosEventTime")))
-             return("all elements of the eventTime list must extend SosEventTime")
+           cat(toString(object@eventTime), "\n")
+           if (length(object@eventTime) > 0)
+             if (!all(sapply(object@eventTime, inherits, what = "SosEventTime")))
+               return("all elements of the eventTime list must extend SosEventTime")
 
            # featureOfInterest is null or a SosFeatureOfInterest element
 

@@ -275,6 +275,7 @@ The following connection shows a typical workflow of connecting to a new SOS for
 ```{r converters3a}
 testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox", binding = "POX", dcpFilter = list("POX" = "/pox"))
 testsosoffering <- sosOfferings(testsos)[["http___www.52north.org_test_offering_1"]]
+testsosobsprop <- sosObservedProperties(testsosoffering)[1]
 getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop)
 ```
 

@@ -341,7 +341,8 @@ SosGetObservationById <- function(
 
     if(verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
-    .response = getURL(url = .url, .opts = sos@curlOptions,
+    .response = getURL(url = .url,
+                       .opts = sos@curlOptions,
                        curl = sos@curlHandle,
                        .encoding = sosDefaultCharacterEncoding)
 
@@ -1146,12 +1147,12 @@ setMethod("encodeRequestKVP", "SosGetObservation",
     .noHTMLquotes <- gsub(obj@responseFormat,
                           pattern = "&quot;",
                           replacement = '"')
-    .singleQuotes <- gsub(.noHTMLquotes,
-                          pattern = "\"",
-                          replacement = "'")
+    #.singleQuotes <- gsub(.noHTMLquotes,
+    #                      pattern = "\"",
+    #                      replacement = "'")
     .responseFormat <- paste(
       sosKVPParamNameResponseFormat,
-      .kvpEscapeSpecialCharacters(x = .singleQuotes),
+      .kvpEscapeSpecialCharacters(x = .noHTMLquotes),
       sep = "=")
     .optionals <- paste(.optionals, .responseFormat, sep = "&")
   }

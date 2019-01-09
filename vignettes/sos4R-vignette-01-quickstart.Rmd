@@ -89,7 +89,7 @@ demo("airquality")
 - **oceanwatch**: SOS by NOAA/SWFSC/ERD - **under construction**.
 - **pegel**: Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.
 - **southesk**: SOSs from South Esk Testbed by CSIRO, focuses on **data consolidation/fusion} and \textbf{plotting**. It also contains an example for partially changing the encoding by overriding a specific `encodeXML` function.
-- **weathersos**: Time series analysis demo with weather data by ifgi, includes examples for **DescribeSensor} and data extraction from and plotting of \textbf{SensorML sensor descriptions**.
+- **weathersos**: Time series analysis demo with weather data by ifgi, includes examples for **DescribeSensor** and data extraction from and plotting of **SensorML sensor descriptions**.
 
 There also is an incomplete **list of services** that have been tested or are currently evaluated on the project homepage.
 If you find or can provide new SOS with data useful to others, please do not hesitate to open an issue so that it can be included.

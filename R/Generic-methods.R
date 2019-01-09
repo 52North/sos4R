@@ -50,7 +50,7 @@ if (!isGeneric("getCapabilities"))
                             updateSequence = c(as.character(NA)),
                             owsVersion = sosDefaultGetCapOwsVersion,
                             acceptLanguages = c(NA)) {
-               standardGeneric("getCapabilities")	
+               standardGeneric("getCapabilities")
              })
 
 #
@@ -64,7 +64,7 @@ if (!isGeneric("describeSensor"))
                             outputFormat = sosDefaultDescribeSensorOutputFormat,
                             verbose = sos@verboseOutput, inspect = FALSE,
                             saveOriginal = NULL) {
-               standardGeneric("describeSensor")	
+               standardGeneric("describeSensor")
              })
 
 #
@@ -73,7 +73,7 @@ if (!isGeneric("describeSensor"))
 if (!isGeneric("getObservationById"))
   setGeneric(name = "getObservationById",
              signature = signature("sos", "observationId", "responseFormat",
-                                   "srsName", "resultModel", "responseMode", "verbose", 
+                                   "srsName", "resultModel", "responseMode", "verbose",
                                    "inspect", "saveOriginal"),
              def = function(sos, observationId,
                             responseFormat = sosDefaultGetObsResponseFormat,
@@ -99,7 +99,7 @@ if (!isGeneric("getObservation"))
                             responseFormat = sosDefaultGetObsResponseFormat,
                             # optional:
                             srsName = as.character(NA),
-                            eventTime = list(NA), # sosCreateEventTimeList(time = sosTime(obj = offering))
+                            eventTime = list(), # sosCreateEventTimeList(time = sosTime(obj = offering))
                             procedure = as.character(NA), # sosProcedures(obj = offering),
                             featureOfInterest = NULL,
                             result = NULL,

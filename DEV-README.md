@@ -12,6 +12,8 @@ of the geostatistics community and read the [Get Involved page](https://52north.
 
 Feature ideas (as issues tagged "enhancement"), roadmap (as milestones) and tasks (issues in the current milestone) as as well as bugs (tagges as "bugs") are managed on GitHub: https://github.com/52North/sos4R/issues.
 
+------
+
 ## Versions and branches
 
 The package uses [semantic versioning](https://semver.org/).
@@ -53,6 +55,21 @@ Run [pkgdown](https://pkgdown.r-lib.org/) from the package directory each time y
 
 ```r
 pkgdown::build_site()
+```
+
+### Build vignettes
+
+The vignettes should build as part of the docs website or package check process.
+To build single vingettes manually you can use
+
+```r
+rmarkdown::render("vignettes/sos4R-vignette-01-quickstart.Rmd")
+```
+
+You can also then move the rendered file to the docs folder:
+
+```bash
+mv vignettes/*.html docs/
 ```
 
 ------

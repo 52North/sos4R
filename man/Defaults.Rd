@@ -13,6 +13,7 @@
 \alias{sosDefaultSpatialOpPropertyName}
 \alias{sosDefaultTempOpPropertyName}
 \alias{sosDefaultTemporalOperator}
+\alias{sosDefaultTemporalValueReference}
 \alias{sosDefaultTimeFormat}
 \alias{sosDefaultFilenameTimeFormat}
 \alias{sosDefaultColumnNameFeatureIdentifier}
@@ -86,7 +87,7 @@ The function \code{SosResetParsingFunctions} can be used to replace the included
 	\item{sosDefaultGetCapOwsVersion}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetCapOwsVersion}}} % "1.1.0"
 	\item{sosDefaultGetObsResponseFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetObsResponseFormat}}} % SosSupportedResponseFormats()[1]
 	\item{sosDefaultTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTimeFormat}}} % "%Y-%m-%dT%H:%M:%OS"
-	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} % 
+	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} %
 	\item{sosDefaultTempOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTempOpPropertyName}}} % "om:samplingTime"
 	\item{sosDefaultTemporalOperator}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTemporalOperator}}} % SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 	\item{sosDefaultSpatialOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultSpatialOpPropertyName}}} % "urn:ogc:data:location"
