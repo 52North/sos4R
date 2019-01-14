@@ -106,3 +106,76 @@ SosGetDataAvailability_1.0.0 <- function(
                                featuresOfInterest = featuresOfInterest,
                                offerings = offerings)
 }
+#
+# class DataAvailabilityMember ----
+#
+# See SOS 2.0 Hydrology profile specification, OGC 14-004r1, section 7.4, requirement 12
+#
+setClass("DataAvailabilityMember",
+         representation(
+           procedure = "character",
+           observedProperty = "character",
+           featureOfInterest = "character",
+           phenomenonTime = "GmlTimePeriod"),
+         prototype = list(
+           procedure = as.character(NA),
+           observedProperty = as.character(NA),
+           featureOfInterest = as.character(NA),
+           phenomenonTime = NULL
+         ),
+         validity = function(object) {
+           #print("Entering validation: DataAvailabilityMember")
+
+           if(is.na(object@procedure))
+             return("procedure parameter must be given")
+           if(is.na(object@observedProperty))
+             return("observed property must be given")
+           if (is.na(object@featureOfInterest))
+             return("feature of interest must be given")
+           if(is.null(object@phenomenonTime))
+             return("phenomenon time must be given")
+
+           return(TRUE)
+         }
+)
+
+.toString.DataAvailabilityMember <- function(x, ...) {
+paste("Object of class DataAvailabilityMember:",
+      "\n  Procedure            : ", paste0(x@procedure),
+      "\n  Observed Property    : ", paste0(x@observedProperty),
+      "\n  Features Of Interest : ", paste0(x@featureOfInterest),
+      "\n  Phenomenon Time      : ", toString(x@phenomenonTime))
+}
+setMethod("toString", "DataAvailabilityMember", function(x, ...) .toString.DataAvailabilityMember(x, ...))
+setMethod("show", "DataAvailabilityMember", function(x) .print.DataAvailabilityMember(x))
+setMethod("print", "DataAvailabilityMember", function(x, ...) {
+  cat(.toString.DataAvailabilityMember(x, ...), "\n")
+  invisible(x)})
+#
+# convience constructor
+#
+DataAvailabilityMember <- function(procedure = NA,
+                                   observedProperty = NA,
+                                   featureOfInterest = NA,
+                                   phenomenonTime = NULL) {
+  new("DataAvailabilityMember",
+      procedure = procedure,
+      observedProperty = observedProperty,
+      featureOfInterest = featureOfInterest,
+      phenomenonTime = phenomenonTime)
+}
+#
+# helper function
+#
+.createDataAvailabilityMember <- function(procedure,
+                                          observedProperty,
+                                          featureOfInterest,
+                                          phenomenonTime,
+                                          verbose,
+                                          inspect,
+                                          saveOriginal) {
+  DataAvailabilityMember(procedure = procedure,
+                         observedProperty = observedProperty,
+                         featureOfInterest = featureOfInterest,
+                         phenomenonTime = phenomenonTime)
+}

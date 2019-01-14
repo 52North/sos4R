@@ -56,7 +56,6 @@
       }
     }
   }
-  # FIXME encoding is not working
   .gda <- .createGetDataAvailability_1.0.0(sos = sos,
                                            procedures = procedures,
                                            observedProperties = observedProperties,
@@ -66,16 +65,51 @@
                                            inspect = inspect,
                                            saveOriginal = saveOriginal)
 
-  if (verbose) {
-    cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
-  }
+  if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
   .responseString = sosRequest(sos = sos, request = .gda,
                                verbose = verbose, inspect = inspect)
 
-  cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.responseString), "bytes), parsing ...\n")
-  stop("FIXME continue implementation here: Parse Returned XML: add filename and line")
-  return(TRUE)
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.responseString),
+                   "bytes), parsing ...\n")
+
+  if (verbose) cat("[.getDataAvailability_1.0.0] Response string: \n'", .responseString, "'\n")
+
+  if (isXMLString(.responseString)) {
+
+    .response <- xmlParseDoc(.responseString, asText = TRUE, options = xmlParseOptions)
+
+    if (verbose || inspect) {
+      cat("[.getDataAvailability_1.0.0] Response XML document:\n")
+      print(.response)
+    }
+
+    if (!is.null(.filename)) {
+      .filename <- paste0(.filename, ".xml")
+      saveXML(.response, file = .filename)
+
+      if (verbose) {
+        cat("[.getDataAvailability_1.0.0] Saved original document:",
+            .filename, "\n")
+      }
+    }
+
+    if (.isExceptionReport(.response)) {
+      return(.handleExceptionReport(sos, .response))
+    }
+
+    .parsingFunction <- sosParsers(sos)[[mimeTypeXML]]
+
+    if (verbose) {
+      cat("[.getDataAvailability_1.0.0] Parsing with function ")
+      print(.parsingFunction)
+    }
+
+    .dams <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
+    if (verbose) cat("[.getDataAvailability_1.0.0] Received and parsed", length(.dams),
+                     "data availability members.\n")
+    return (.dams)
+  }
 }
 
 
@@ -161,10 +195,12 @@ setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
 #
 .sosEncodeRequestKVPGetDataAvailability_1.0.0 <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] encoding", toString(obj), "\n")
+
   # mandatory
   .mandatory <- .kvpBuildRequestBase(sos, sosGetDataAvailabilityName)
   if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] mandatory elements: ",
                    .mandatory, "\n")
+
   # optional
   .optionals <- ""
   if (.isListFieldAvailable(obj@procedures)) {
@@ -206,3 +242,90 @@ setMethod(f = "sosName", signature = signature(obj = "SosGetDataAvailability_1.0
           def = function(obj) {
             return(sosGetDataAvailabilityName)
           })
+
+
+parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
+  if (verbose) cat("[parseGetDataAvailabilityResponse]")
+
+  if (sos@version != sos200_version) {
+    stop(paste0("[parseGetDataAvailabilityResponse] SOS version 2.0 required! Received '",
+                sos@version, "'"))
+  }
+
+  .gdaMembers <- .filterXmlChildren(obj, sosGDAMemberName, includeNamed = TRUE)
+
+  if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), "element(s).\n")
+  .phenTimeCache <<- list()
+  .parsedGDAMembers <- lapply(.gdaMembers, .parseGDAMember, sos, verbose)
+  .phenTimeCache <<- list()
+  if (verbose) cat("[parseGetDataAvailabilityResponse] Done. Processed", length(.parsedGDAMembers),
+                   "elements")
+  return(.parsedGDAMembers)
+}
+
+.parseGDAMember <- function(gdaMember, sos, verbose = FALSE) {
+  if (verbose) cat("[parseGDAMember]")
+  #
+  # procedure
+  .procedure <- .parseGDAReferencedElement(gdaMember, sos, sosProcedureName, verbose)
+  #
+  # observed property
+  .observedProperty <- .parseGDAReferencedElement(gdaMember, sos, sosObservedPropertyName, verbose)
+  #
+  # feature of interest
+  .featureOfInterest <- .parseGDAReferencedElement(gdaMember, sos, sosFeatureOfInterestName, verbose)
+  #
+  # phenomenon time
+  .phenTime <- NULL
+  .ptNode <- .filterXmlChildren(gdaMember, xmlTagName = sosPhenomenonTimeName)
+  # Case A: Encoded
+  if (!.nodeFound(.ptNode)) {
+    stop(paste0("[parseGDAMember] ", sosPhenomenonTimeName, " not found!"))
+  }
+  .ptNode <- .ptNode[[1]]
+  # href is an in-document reference starting with "#" and than the GML:id of the referenced element
+  if (.isHrefAttributeAvailable(.ptNode)) {
+    .ptNodeHref <- xmlAttrs(.ptNode)[["href"]]
+    if(verbose) cat(paste0("[parseGDAMember] trying to get referenced phenomenon time via '", .ptNodeHref, "'."))
+    .phenTime <- .phenTimeCache[[str_sub(.ptNodeHref, start = 2)]]
+    if (is.null(.phenTime)) {
+      stop(paste0("[parseGDAMember] XML document invalid. Time reference '", .ptNodeHref ,"' not in document."))
+    }
+  }
+  # Case B: in-document reference -> cache
+  else {
+    .phenTime <- parseTimePeriod(.filterXmlChildren(.ptNode, gmlTimePeriodName, includeNamed = TRUE)[[1]],
+                                 format = sosDefaultTimeFormat)
+    .phenTimeCache[[.phenTime@id]] <<- .phenTime
+  }
+  if (is.null(.phenTime)) {
+    stop("[parseGDAMember] could NOT parse phenomenon time.")
+  }
+  DataAvailabilityMember(.procedure, .observedProperty, .featureOfInterest, .phenTime)
+}
+
+.nodeFound <- function(.node = NULL) {
+  return(!is.null(.node) && !is.na(.node) && is.list(.node) && length(.node) == 1)
+}
+
+.isHrefAttributeAvailable <- function(.node = NULL) {
+  if (is.null(.node)) return(FALSE)
+  .nodeAttributes <- xmlAttrs(.node)
+
+  if (is.null(.nodeAttributes)) return(FALSE)
+  .href <- .nodeAttributes[["href"]]
+  return(!is.null(.href) && is.character(.href) && length(.href) > 0)
+}
+
+.parseGDAReferencedElement <- function(gdaMember, sos, elementName, verbose = FALSE) {
+  .nodes <- .filterXmlChildren(gdaMember, xmlTagName = elementName, includeNamed = TRUE, verbose)
+  if (is.null(.nodes) || !is.list(.nodes) || length(.nodes) != 1) {
+    stop(paste0("[parseGDAMember] no element found for '", elementName, "'."))
+  }
+  .element <- xmlAttrs(.nodes[[1]])[["href"]]
+  if (is.null(.element) || str_length(.element) < 1) {
+    stop(paste0("[parseGDAMember] element found for '", elementName, "' misses href attribute. Found '",
+                .element, "'."))
+  }
+  return(.element)
+}

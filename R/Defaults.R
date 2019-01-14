@@ -71,6 +71,7 @@ SosExampleServices <- function() {
     parseGetFeatureOfInterestResponse,
     parseOM,
     parseOwsExceptionReport,
+    parseGetDataAvailabilityResponse,
     #
     parseMeasurement,
     parseObservationProperty,
@@ -107,6 +108,7 @@ SosExampleServices <- function() {
     sosGetFeatureOfInterestResponseName,
     sosGetObservationByIdName,
     owsExceptionReportName,
+    sosGetDataAvailabilityResponse,
     #
     omMeasurementName,
     omMemberName,
