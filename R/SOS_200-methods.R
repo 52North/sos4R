@@ -698,7 +698,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
   .observedProperty <- .kvpKeyAndValues(sosKVPParamNameObsProp,
                                         obj@observedProperty)
 
-  .mandatory <- paste(.service, .request, .version, .offering,
+  .mandatory <- paste(.requestBase, .offering,
                       .observedProperty, sep = "&")
 
   if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
