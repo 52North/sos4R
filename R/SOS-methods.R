@@ -316,7 +316,7 @@ SosGetObservationById <- function(
           .dcp, "\n")
     
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
-      warning("Given url already contains a '?', appending arguments!")
+      if (verbose) cat("Given url already contains a '?', appending arguments!\n")
       .url = paste0(.dcp, .encodedRequest)
     }
     else .url = paste(.dcp, .encodedRequest, sep = "?")

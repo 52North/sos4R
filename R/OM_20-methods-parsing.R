@@ -31,22 +31,22 @@
 # Function extracts om:OM_Observation elements from sos:observationData elements.
 #
 parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
-  
+
   obj <- obj[[om20OM_Observation]]
-  
+
   .id <- xmlGetAttr(node = obj, name = "id",
                     default = NA_character_)
   if(verbose) cat("[parseObservation]", .id, "\n")
-  
+
   #TODO adjust the following OM 1.0 parsing functionality
-  
+
   # 52N SOS only returns om:Observation with procedure ids xlink:href
   .procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href",
                            default = NA_character_)
-  
+
   .observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
                                                sos = sos, verbose = verbose)
-  
+
   timeObjectMap <- list()
 
   if(!is.null(obj[[om20PhenomenonTimeName]])) {
@@ -60,13 +60,13 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
     warning("om:phenomenonTime is mandatory in om:Observation, but is missing!")
     .phenomenonTime <- NULL
   }
-  
+
   if(!is.null(obj[[omFeatureOfInterestName]])) {
     .featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]],
                                    sos = sos, verbose = verbose)
     if(!is.null(.featureOfInterest@href)){
       if(verbose) cat("[trying to get referenced featureOfInterest]\n")
-      
+
       .featureOfInterestIdentifier <- .featureOfInterest@href
       .featureOfInterest <- featureCache[[.featureOfInterestIdentifier]]
       if (is.null(.featureOfInterest)) {
@@ -77,18 +77,18 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
           .featureOfInterest <- foiList[[1]]
           featureCache[[.featureOfInterestIdentifier]] <<- .featureOfInterest
         }
-      } 
+      }
     }
-    
+
   } else {
     warning("om:featureOfInterest is mandatory in om:Observation, but is missing!")
     .featureOfInterest <- NULL
   }
-  
+
   # result parser is exchangeable
   .resultParsingFunction <- sosParsers(sos)[[omResultName]]
   .result <- .resultParsingFunction(obj[[omResultName]], sos, verbose)
-  
+
   # optional elements
   if(!is.null(obj[[omResultTimeName]])) {
     .pt <- parseTime(obj = obj[[omResultTimeName]],
@@ -101,20 +101,20 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
   else {
     .resultTime <- NULL
   }
-  
+
   # TODO optionals elements for OmObservation
   #.metadata
   #.resultQuality
   #.parameter
   #.metadata
-  
+
   .obs <- OmOM_Observation(phenomenonTime = .phenomenonTime,
                            resultTime = .resultTime,
                            procedure = .procedure,
                            observedProperty = .observedProperty,
                            featureOfInterest = .featureOfInterest,
                            result = .result)
-  
+
   return(.obs)
 }
 
@@ -123,7 +123,7 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 #
 parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
   if(verbose) cat("[parseTime]\n")
-  
+
   .tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
   .tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
   .timeReference <- xmlAttrs(node = obj)[["href"]]
@@ -152,6 +152,6 @@ parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
     .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
       time = as.POSIXct(x = NA)))
   }
-  
+
   return(list(.timeObject, timeObjectMap))
 }
