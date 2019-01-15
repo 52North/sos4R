@@ -84,15 +84,15 @@ parseSosCapabilities200 <- function(obj, sos) {
     .offeringsXML <- .filterXmlChildren(
       node = .caps.root[[sos200ContentsName]][[sosContentsName]],
       xmlTagName = swesOfferingName)
-    .observations = sapply(.offeringsXML, parseSosObservationOffering_200,
+    .offerings <- sapply(.offeringsXML, parseSosObservationOffering_200,
                            sos = sos)
     # add names to list
-    names(.observations) <- lapply(.observations,
+    names(.offerings) <- lapply(.offerings,
                                    function(obj) {
                                      return(obj@id)
                                    })
 
-    .caps.contents <- SosContents(observationOfferings = .observations)
+    .caps.contents <- SosContents(observationOfferings = .offerings)
   }
   else .caps.contents <- NULL
 
@@ -317,10 +317,10 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
     print(obj)
   }
 
-  .offeringsXML <- .filterXmlChildren(
+  .featureXML <- .filterXmlChildren(
     node = obj,
     xmlTagName = "featureMember")
-  .foi = sapply(.offeringsXML, .parseFeatureMember,
+  .foi = sapply(.featureXML, .parseFeatureMember,
                 sos = sos)
   return(.foi)
 }
