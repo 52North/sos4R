@@ -10,27 +10,27 @@ Documentation for usres can be found in the package's vignette (see `browseVigne
 Please get in touch with the [community contact](https://52north.org/research/rd-communities/geostatistics/)
 of the geostatistics community and read the [Get Involved page](https://52north.org/software/get-involved/) if you want to *become a contributor* -- contributions are welcome!
 
-Feature ideas (as issues tagged "enhancement"), roadmap (as milestones) and tasks (issues in the current milestone) as as well as bugs (tagges as "bugs") are managed on GitHub: https://github.com/52North/sos4R/issues.
-
 ------
 
-## Versions and branches
-
-The package uses [semantic versioning](https://semver.org/).
-The current development version should start with `.9000` _after_ the patch version, see [R packages versioning](http://r-pkgs.had.co.nz/description.html#version).
-The development version can be increased _extensively_, e.g. with each non-trivial commit.
-The version must be changed in the files `DESCRIPTION` and `man/sos4R-package.Rd` (which is important for releases).
-
-Bugfix releases can be used extensively (for several, or even just one bug) to show users that errors are resolved.
-Minor versions shall include several major bug fixes or a considerable addition of tested and working functionality.
-Code changes that possibly break existing code shall only be released with a major version change and should be discussed in the developer community beforehand.
-
-You can install the current development version or local branches using respective functions of [`devtools`](https://devtools.r-lib.org/).
+## Development, versions, and branches
 
 We use the ["fork & pull" development model](https://en.wikipedia.org/wiki/Fork_and_pull_model).
-The **`master` branch** is up to date with the version on CRAN.
-Bugfixes should be based on this branch.
-If you want to develop further functions for the package always use the up-to-date version from the main repository's **`dev` branch** and preferably start a new branch in your fork.
+The development is managed with the following guidelines:
+
+- Roadmap and release planning is done in [projects](https://github.com/52North/sos4R/projects).
+- The **`master` branch** is up to date with the version on CRAN. Bugfixes should be based on this branch.
+- Tasks are developed in [task or feature branches](https://trunkbaseddevelopment.com/short-lived-feature-branches/) based on the **`dev` branch**.
+- Feature ideas as issues tagged ["enhancement"](https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement).
+- Bugs are issues tagged as ["bugs"](https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Abug).
+- The package uses [**semantic versioning**](https://semver.org/).
+  - The current development version should start with `.9000` _after_ the patch version, see [R packages versioning](http://r-pkgs.had.co.nz/description.html#version).
+  - The development version can be increased _extensively_, e.g. with each non-trivial commit.
+  - The version must be changed in the files `DESCRIPTION` and `man/sos4R-package.Rd` (which is important for releases).
+  - Bugfix versions can be used extensively (for several, or even just one bug) to show users that errors are resolved.
+  - Minor versions shall include several major bug fixes or a considerable addition of tested and working functionality.
+  - Code changes that possibly break existing code shall only be released with a major version change and should be discussed in the developer community beforehand.
+
+Users may install the current development version or local branches using respective functions of [`devtools`](https://devtools.r-lib.org/).
 
 ------
 
