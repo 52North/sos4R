@@ -22,6 +22,8 @@ status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=ma
   - **Website**: <https://52north.github.io/sos4R>
   - CRAN: <https://CRAN.R-project.org/package=sos4R>
   - Source code: <https://github.com/52North/sos4R>
+  - **Support**: [![Join the chat at
+    https://gitter.im/52North/sos4R](https://badges.gitter.im/52North/sos4R.svg)](https://gitter.im/52North/sos4R)
   - **Developer documentation:**
     <https://52north.github.io/sos4R/DEV-README.html>
   - Ohloh: <https://www.ohloh.net/p/sos4R>

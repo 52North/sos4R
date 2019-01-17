@@ -10,6 +10,8 @@ Documentation for usres can be found in the package's vignette (see `browseVigne
 Please get in touch with the [community contact](https://52north.org/research/rd-communities/geostatistics/)
 of the geostatistics community and read the [Get Involved page](https://52north.org/software/get-involved/) if you want to *become a contributor* -- contributions are welcome!
 
+You can also dive right in and joint the chat room: [![Join the chat at https://gitter.im/52North/sos4R](https://badges.gitter.im/52North/sos4R.svg)](https://gitter.im/52North/sos4R)
+
 ------
 
 ## Development, versions, and branches
