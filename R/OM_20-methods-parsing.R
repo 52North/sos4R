@@ -68,6 +68,7 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
       if(verbose) cat("[trying to get referenced featureOfInterest]\n")
 
       .featureOfInterestIdentifier <- .featureOfInterest@href
+      # TODO what about in-document references
       .featureOfInterest <- featureCache[[.featureOfInterestIdentifier]]
       if (is.null(.featureOfInterest)) {
         foiList <- getFeatureOfInterest(sos = sos, featureOfInterest = .featureOfInterestIdentifier)
