@@ -193,15 +193,6 @@
   return(.response)
 }
 
-setMethod(f = "sosRequest",
-          signature = signature(sos = "SOS_2.0.0", request = "OwsServiceOperation",
-                                verbose = "logical", inspect = "logical"),
-          def = function(sos, request, verbose, inspect) {
-            .sosRequest_2.0.0(sos = sos, request = request, verbose = verbose,
-                              inspect = inspect)
-          }
-)
-
 .getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
                                    acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
   if (verbose) {
