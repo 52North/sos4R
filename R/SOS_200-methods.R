@@ -144,7 +144,19 @@ setMethod(f = "getObservation",
 #
 setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", featureOfInterest = "character"),
           def = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
-            return(.getFeatureOfInterest_2.0.0(sos = sos, featureOfInterest = featureOfInterest, verbose = verbose, inspect = inspect, saveOriginal=saveOriginal))
+            return(.getFeatureOfInterest_2.0.0(sos = sos, featureOfInterest = featureOfInterest,
+                                               verbose = verbose, inspect = inspect, saveOriginal=saveOriginal))
+          }
+)
+
+#
+# getFeatureOfInterest - without filter ----
+#
+setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
+          def = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
+            return(.getFeatureOfInterest_2.0.0(sos = sos,
+                                               featureOfInterest = as.character(NA), # TODO better way possible?
+                                               verbose = verbose, inspect = inspect, saveOriginal=saveOriginal))
           }
 )
 
@@ -182,8 +194,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
   .responseString = sosRequest(sos = sos, request = .gfoi,
                                verbose = verbose, inspect = inspect)
 
-  cat("[sos4R] Received response (size:", object.size(.responseString),
+  if(verbose) {
+    cat("[sos4R] Received response (size:", object.size(.responseString),
       "bytes), parsing ...\n")
+  }
 
   # responseFormat starts with text/xml OR the response string is XML content,
   # for example an exeption (which is xml even if request wants something else)
@@ -798,17 +812,21 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                   toString(obj), "\n")
 
   # required:
-  .request <- paste(sosKVPParamNameRequest, sosGetFeatureOfInterestName, sep = "=")
-  .service <- paste(sosKVPParamNameService,
-                    .kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-  .version <- paste(sosKVPParamNameVersion,
-                    .kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
-  .featureOfInterest <- paste(sosKVPParamNameFoi,
-                              .kvpEscapeSpecialCharacters(x = obj@featureOfInterest), sep = "=")
+  .requestBase <- .kvpBuildRequestBase(sos, sosGetFeatureOfInterestName)
 
-  #TODO featureOfInterest is not really mandatory, could also be procedure or a spatial filter
-  .kvpString <- paste(.service, .request, .version, .featureOfInterest, sep = "&")
+  # optionals
+  .optionals <- ""
+  if (!is.na(obj@featureOfInterest)) {
+    .optionals <- paste(sosKVPParamNameFoi,
+                                .kvpEscapeSpecialCharacters(x = obj@featureOfInterest), sep = "=")
+  }
 
+  #TODO Implement procedure or a spatial filter
+  if (is.character(.optionals)  && str_length(.optionals) > 0) {
+    .kvpString <- paste(.requestBase, .optionals, sep = "&")
+  } else {
+    .kvpString <- .requestBase
+  }
   if(verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0]",
                   "with request: ", .kvpString, "\n")
 
