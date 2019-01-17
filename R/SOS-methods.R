@@ -760,9 +760,10 @@ setMethod(f = "getObservationById",
   
   .responseString = sosRequest(sos = sos, request = .go,
                                verbose = verbose, inspect = inspect)
-  
-  cat("[sos4R] Received response (size:", object.size(.responseString),
+  if(verbose) {
+    cat("[sos4R] Received response (size:", object.size(.responseString),
       "bytes), parsing ...\n")
+  }
   
   # responseFormat starts with text/xml OR the response string is XML content,
   # for example an exeption (which is xml even if request wants something else

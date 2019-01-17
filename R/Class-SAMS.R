@@ -74,12 +74,13 @@ setMethod("show", "SamsShape", function(object) .print.SamsShape(object))
 #     </ns:Point>
 #   </sams:shape>
 # </sams:SF_SpatialSamplingFeature>
+# TODO change type of identifier, name to something that preservers codespace and value
 setClass("SamsSamplingFeature",
          slots = c(
-           identifier = "list",
-           name = "list",
-           type = "list",
-           sampledFeature = "list",
+           identifier = "character",
+           name = "character",
+           type = "character",
+           sampledFeature = "character",
            shape = "SamsShape"
          ),
          contains = "GmlFeature"
@@ -97,12 +98,12 @@ SamsSamplingFeature <- function(id, identifier, name, type, sampledFeature, shap
 
 .toString.SamsSamplingFeature <- function(x, ...) {
   paste0("Object of class SamsSamplingFeature;",
-        "\n             id: ", x@id,
-        "\n     identifier: ", x@identifier[[1]],
-        "\n           name: ", x@name[[1]],
-        "\n           type: ", x@type[[1]],
-        "\n sampledFeature: ", x@sampledFeature[[1]],
-        "\n          shape: ", x@shape)
+        "\n             id: ", toString(x@id),
+        "\n     identifier: ", toString(x@identifier),
+        "\n           name: ", toString(x@name),
+        "\n           type: ", toString(x@type),
+        "\n sampledFeature: ", toString(x@sampledFeature),
+        "\n          shape: ", toString(x@shape))
 }
 setMethod("toString", "SamsSamplingFeature", function(x, ...) .toString.SamsSamplingFeature(x, ...))
 
