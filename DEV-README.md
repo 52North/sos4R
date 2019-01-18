@@ -190,7 +190,7 @@ A new release shall be uploaded to CRAN after testing and under the following pr
   - https://ci.appveyor.com/project/nuest/sos4r
 - Update version and date in `man/sos4R-package.Rd`
 - Update version in `DESCRIPTION`
-- Create a git tag with the version number
+- Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`
 - Update NEWS file based on latest commits
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again
 - Run checks
