@@ -1,7 +1,7 @@
 # sos4R developer documentation
 
 This file contains information for developers of the [R](http://r-project.org/) package `sos4R`.
-Documentation for usres can be found in the package's vignette (see `browseVignettes("sos4R")`).
+Documentation for users can be found in the package's vignette (see `browseVignettes("sos4R")`).
 
 <!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R -->
 
