@@ -10,7 +10,7 @@ Documentation for users can be found in the package's vignette (see `browseVigne
 Please get in touch with the [community contact](https://52north.org/research/rd-communities/geostatistics/)
 of the geostatistics community and read the [Get Involved page](https://52north.org/software/get-involved/) if you want to *become a contributor* -- contributions are welcome!
 
-You can also dive right in and joint the chat room: [![Join the chat at https://gitter.im/52North/sos4R](https://badges.gitter.im/52North/sos4R.svg)](https://gitter.im/52North/sos4R)
+You can also dive right in and join the chat room: [![Join the chat at https://gitter.im/52North/sos4R](https://badges.gitter.im/52North/sos4R.svg)](https://gitter.im/52North/sos4R)
 
 ------
 
@@ -194,7 +194,7 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 - Update NEWS file based on latest commits
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again
 - Run checks
-  - In the parent directory of the project: `R CMD build sos4R; R CMD check --as-cran sos4R_0.<version number>.tar.gz` should have no errors, warnings, or notes
+  - In the parent directory of the project: `R CMD build sos4R; R CMD check --as-cran sos4R_<version number>.tar.gz` should have no errors, warnings, or notes
   - `revdepcheck::revdep_check()` for checking reverse dependencies
   - `devtools::build_win()` for testing Windows using CRAN infrastructure
   - `rhub::check_for_cran(email = <...>)` for testing for CRAN submissions using RHub infrastructure
