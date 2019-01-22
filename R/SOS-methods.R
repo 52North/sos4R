@@ -773,7 +773,7 @@ setMethod(f = "getObservationById",
       "bytes), parsing ...\n")
 
   # responseFormat starts with text/xml OR the response string is XML content,
-  # for example an exeption (which is xml even if request wants something else
+  # for example an exception (which is xml even if request wants something else
   .contentType <- NA_character_
   .contentType <- attributes(.responseString)[["Content-Type"]]
 

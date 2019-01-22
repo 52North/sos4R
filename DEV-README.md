@@ -99,7 +99,7 @@ The actual source files in the ``/R`` directory follow a naming schema:
   * [WML](https://en.wikipedia.org/wiki/WaterML)
 * `constants.R` contains ... constants! No XML element name or parameters string shall be specified outside of this class; constants shall not be changed by the user. Please reconsider every time you write a character string in the code if it should not be a constant. Names of XML types and elements shall always be constants, attribute names can be constants. This file also contains the lists of supported features, like result models and connection methods. Use accessor functions where needed.
 * `defaults.R` contains default settings and values, including parsers, encoders, etc., as well as accessor functions to the defaults
-* `Generic-methods.R` contains _all_ generic method definitions
+* `Generic-methods.R` contains _all_ generic method definitions _except_ the ones for accessor functions
 * `[NamespacePrefix]-methods.R` contains methods and used (helper or delegate) functions grouped by OGC specification namespace for...
   * creation methods (constructor functions)
   * encoding methods
@@ -110,7 +110,7 @@ The actual source files in the ``/R`` directory follow a naming schema:
 * `SOS-methods-accessor.R` contains accessor functions.
 * `SOS-methods-util.R` contains a lot of convenience and accessor functions, and should be used to keep the file `SOS-methods.R` lucid.
 * `SOS-methods-plotting.R` contains plotting functions.
-* ``PrintShowStructureSummary-methods.R`` contains just that
+* ``PrintShowStructureSummary-methods.R`` contains functions to override `print`, `str`, `summary` functions and the like; these may go in this file or also into the file where the respective class is defined.
 
 ### /sandbox
 

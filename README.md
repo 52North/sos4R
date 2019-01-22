@@ -15,7 +15,7 @@ checks](https://cranchecks.info/badges/summary/sos4R)](https://cran.r-project.or
 [![Build
 Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/sos4R)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/nuest/sos4R)
+status](https://ci.appveyor.com/api/projects/status/github/52North/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/52North/sos4R)
 
 ## Documentation & Links
 
@@ -33,7 +33,7 @@ status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=ma
 [![Build
 Status](https://travis-ci.org/52North/sos4R.png?branch=dev)](https://travis-ci.org/52North/sos4R)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/nuest/sos4R?branch=dev&svg=true)](https://ci.appveyor.com/project/nuest/sos4R)
+status](https://ci.appveyor.com/api/projects/status/github/52North/sos4R?branch=dev&svg=true)](https://ci.appveyor.com/project/52North/sos4R)
 
 sos4R is developed on GitHub using the [fork & pull development
 model](https://help.github.com/articles/using-pull-requests/#fork--pull).

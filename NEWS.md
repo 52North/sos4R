@@ -1,9 +1,11 @@
 # sos4R 0.3.0.90xx
 
 - Added a `NEWS.md` in Markdown format to track changes to the package (moved content from `inst/NEWS` and `inst/CHANGES`)
-- Overhauled vignettes
-- Added support for SOS 2.0
-- Added convenience wrapper functions (supported by NIWA)
+- Overhauled vignettes, now Markdown format
+- Development version of SOS 2.0 support
+- Extended developer documentation in `DEV-README.md`
+- Add AppVeyor CI configuration
+- Use R Markdown based README (`README.Rmd`)
 
 # sos4R 0.2-12
 
