@@ -221,7 +221,7 @@ setMethod(f = "checkRequest",
   if (isS4(x)) {
     x <- toKVPString(x)
   }
-  URLencode(x, reserved = TRUE)
+  utils::URLencode(x, reserved = TRUE)
 }
 
 #
