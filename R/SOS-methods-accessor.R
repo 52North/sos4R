@@ -979,7 +979,6 @@ setMethod(f = "sosId", signature = signature(obj = "list"),
             return(sapply(obj, sosId))
           })
 
-# TODO Why not specified in "Generic-Methods.R"?
 if (!isGeneric("sosName"))
   setGeneric(name = "sosName", def = function(obj) {
     standardGeneric("sosName")

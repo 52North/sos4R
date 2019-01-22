@@ -61,7 +61,6 @@ SosExampleServices <- function() {
 
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
-# TODO replace by named list!
 .createDefaultParsers <- function() {
   .defP <- list(
     parseSosCapabilities,

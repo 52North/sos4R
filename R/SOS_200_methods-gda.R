@@ -65,7 +65,6 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  # TODO implement more than KVP encoding
   .responseString = sosRequest(sos = sos, request = .gda,
                                verbose = verbose, inspect = inspect)
 

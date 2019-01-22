@@ -23,7 +23,6 @@
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2018-11-23                                                          #
-# Project: sos4R - visit project web page https://52north.org/geostatistics    #
 #                                                                              #
 ################################################################################
 #
