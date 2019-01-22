@@ -291,13 +291,13 @@ parseOwsRange <- function(obj) {
   .names <- c()
   for (.x in .temp) {
     if(includeNamed && xmlName(.x) == xmlTagName) {
-      if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
       .filtered <- c(.filtered, .x)
+      if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
       .names <- c(.names, xmlName(.x))
     }
     else if(!includeNamed && xmlName(.x) != xmlTagName) {
-      if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
       .filtered <- c(.filtered, .x)
+      if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
       .names <- c(.names, xmlName(.x))
     }
   }
