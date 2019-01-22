@@ -56,14 +56,12 @@
       }
     }
   }
-  .gda <- .createGetDataAvailability_1.0.0(sos = sos,
-                                           procedures = procedures,
-                                           observedProperties = observedProperties,
-                                           featuresOfInterest = featuresOfInterest,
-                                           offerings = offerings,
-                                           verbose = verbose,
-                                           inspect = inspect,
-                                           saveOriginal = saveOriginal)
+  .gda <- SosGetDataAvailability_1.0.0(service = sosService,
+                                       version = sos@version,
+                                       observedProperties = observedProperties,
+                                       procedures = procedures,
+                                       featuresOfInterest = featuresOfInterest,
+                                       offerings = offerings)
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 

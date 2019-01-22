@@ -89,24 +89,6 @@ SosGetDataAvailability_1.0.0 <- function(
 }
 
 #
-# helper function
-#
-.createGetDataAvailability_1.0.0 <- function(sos,
-                                             procedures,
-                                             observedProperties,
-                                             featuresOfInterest,
-                                             offerings,
-                                             verbose,
-                                             inspect,
-                                             saveOriginal) {
-  SosGetDataAvailability_1.0.0(service = sosService,
-                               version = sos@version,
-                               observedProperties = observedProperties,
-                               procedures = procedures,
-                               featuresOfInterest = featuresOfInterest,
-                               offerings = offerings)
-}
-#
 # class DataAvailabilityMember ----
 #
 # See SOS 2.0 Hydrology profile specification, OGC 14-004r1, section 7.4, requirement 12
@@ -163,19 +145,4 @@ DataAvailabilityMember <- function(procedure = NA,
       observedProperty = observedProperty,
       featureOfInterest = featureOfInterest,
       phenomenonTime = phenomenonTime)
-}
-#
-# helper function
-#
-.createDataAvailabilityMember <- function(procedure,
-                                          observedProperty,
-                                          featureOfInterest,
-                                          phenomenonTime,
-                                          verbose,
-                                          inspect,
-                                          saveOriginal) {
-  DataAvailabilityMember(procedure = procedure,
-                         observedProperty = observedProperty,
-                         featureOfInterest = featureOfInterest,
-                         phenomenonTime = phenomenonTime)
 }

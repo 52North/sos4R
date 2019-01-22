@@ -186,7 +186,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     cat("[.getFeatureOfInterest_2.0.0] to ", sos@url, " with featureOfInterest ",
         featureOfInterest, "\n")
 
-  .gfoi <- .createFeatureOfInterest_2.0.0(sos, featureOfInterest)
+  .gfoi <- SosGetFeatureOfInterest_2.0.0(sosService, sos@version, featureOfInterest)
 
   if(verbose)
     cat("[.getFeatureOfInterest_2.0.0] REQUEST:\n\n", toString(.gfoi), "\n")
@@ -308,11 +308,6 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     return(.obs)
   }
 }
-
-.createFeatureOfInterest_2.0.0 <- function(sos, featureOfInterest){
-  SosGetFeatureOfInterest_2.0.0("SOS", "2.0.0", featureOfInterest)
-}
-
 
 .isEmptyResponse <- function(response = "") {
   gsub(pattern = "\t|\r|\n", x = response, replacement = "") == sos200_emptyGetObservationResponseString
