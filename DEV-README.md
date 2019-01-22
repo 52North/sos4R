@@ -20,26 +20,7 @@
     * texlive-latex-extra
     * texlive-latex-recommended-doc
     * texlive-pstricks
-* **R packages** (sync with `NAMESPACE`)
-    * devtools
-    * roxygen2
-    * testthat
-    * knitr
-    * rgdal
-    * XML
-    * RCurl
-    * sp
-    * CATools
-    * rmarkdown
-    * maps
-    * mapdata
-    * maptools
-    * XML
-    * rgeos
-    * spacetime
-    * gstat
-    * cshapes
-    * exts
+* **R packages** (see fields Depends and Suggests in `DESCRIPTION`)
 
 
 ## Package structure
