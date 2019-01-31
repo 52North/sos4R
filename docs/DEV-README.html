@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
       </span>
     </div>
 
@@ -128,21 +128,71 @@
 
 <div id="sos4r-developer-documentation" class="section level1">
 
-<p>This file contains information for developers of the <a href="http://r-project.org/">R</a> package <code>sos4R</code>. Documentation for usres can be found in the package’s vignette (see <code><a href="https://www.rdocumentation.org/packages/utils/topics/browseVignettes">browseVignettes("sos4R")</a></code>).</p>
+<p>This file contains information for developers of the <a href="http://r-project.org/">R</a> package <code>sos4R</code>. Documentation for users can be found in the package’s vignette (see <code><a href="https://www.rdocumentation.org/packages/utils/topics/browseVignettes">browseVignettes("sos4R")</a></code>).</p>
+<div id="requirements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#requirements" class="anchor"></a>Requirements</h2>
+<ul>
+<li>
+<strong>System packages (e.g. on Ubuntu 18.04)</strong>
+<ul>
+<li>r-base-dev</li>
+<li>libxml2-dev</li>
+<li>libgdal1-dev</li>
+<li>libproj-dev</li>
+<li>libgeos-dev</li>
+<li>texinfo</li>
+<li>texinfo-doc-nonfree</li>
+<li>texlive</li>
+<li>texlive-base</li>
+<li>texlive-fonts-recommended</li>
+<li>texlive-fonts-recommended-doc</li>
+<li>texlive-generic-recommended</li>
+<li>texlive-latex-base</li>
+<li>texlive-latex-base-doc</li>
+<li>texlive-latex-extra</li>
+<li>texlive-latex-recommended-doc</li>
+<li>texlive-pstricks</li>
+</ul>
+</li>
+<li>
+<strong>R packages</strong> (see fields Depends and Suggests in <code>DESCRIPTION</code>)</li>
+</ul>
+</div>
+<div id="package-structure" class="section level2">
+<h2 class="hasAnchor">
+<a href="#package-structure" class="anchor"></a>Package structure</h2>
 <!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R -->
+</div>
 <div id="contribute" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contribute" class="anchor"></a>Contribute</h2>
 <p>Please get in touch with the <a href="https://52north.org/research/rd-communities/geostatistics/">community contact</a> of the geostatistics community and read the <a href="https://52north.org/software/get-involved/">Get Involved page</a> if you want to <em>become a contributor</em> – contributions are welcome!</p>
-<p>Feature ideas (as issues tagged “enhancement”), roadmap (as milestones) and tasks (issues in the current milestone) as as well as bugs (tagges as “bugs”) are managed on GitHub: <a href="https://github.com/52North/sos4R/issues" class="uri">https://github.com/52North/sos4R/issues</a>.</p>
+<p>You can also dive right in and join the chat room: <a href="https://gitter.im/52North/sos4R"><img src="https://badges.gitter.im/52North/sos4R.svg" alt="Join the chat at https://gitter.im/52North/sos4R"></a></p>
+<hr>
 </div>
-<div id="versions-and-branches" class="section level2">
+<div id="development-versions-and-branches" class="section level2">
 <h2 class="hasAnchor">
-<a href="#versions-and-branches" class="anchor"></a>Versions and branches</h2>
-<p>The package uses <a href="https://semver.org/">semantic versioning</a>. The current development version should start with <code>.9000</code> <em>after</em> the patch version, see <a href="http://r-pkgs.had.co.nz/description.html#version">R packages versioning</a>. The development version can be increased <em>extensively</em>, e.g. with each non-trivial commit. The version must be changed in the files <code>DESCRIPTION</code> and <code>man/sos4R-package.Rd</code> (which is important for releases).</p>
-<p>Bugfix releases can be used extensively (for several, or even just one bug) to show users that errors are resolved. Minor versions shall include several major bug fixes or a considerable addition of tested and working functionality. Code changes that possibly break existing code shall only be released with a major version change and should be discussed in the developer community beforehand.</p>
-<p>You can install the current development version or local branches using respective functions of <a href="https://devtools.r-lib.org/"><code>devtools</code></a>.</p>
-<p>We use the <a href="https://en.wikipedia.org/wiki/Fork_and_pull_model">“fork &amp; pull” development model</a>. The <strong><code>master</code> branch</strong> is up to date with the version on CRAN. Bugfixes should be based on this branch. If you want to develop further functions for the package always use the up-to-date version from the main repository’s <strong><code>dev</code> branch</strong> and preferably start a new branch in your fork.</p>
+<a href="#development-versions-and-branches" class="anchor"></a>Development, versions, and branches</h2>
+<p>We use the <a href="https://en.wikipedia.org/wiki/Fork_and_pull_model">“fork &amp; pull” development model</a>. The development is managed with the following guidelines:</p>
+<ul>
+<li>Roadmap and release planning is done in <a href="https://github.com/52North/sos4R/projects">projects</a>.</li>
+<li>The <strong><code>master</code> branch</strong> is up to date with the version on CRAN. Bugfixes should be based on this branch.</li>
+<li>Tasks are developed in <a href="https://trunkbaseddevelopment.com/short-lived-feature-branches/">task or feature branches</a> based on the <strong><code>dev</code> branch</strong>.</li>
+<li>Feature ideas as issues tagged <a href="https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">“enhancement”</a>.</li>
+<li>Bugs are issues tagged as <a href="https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Abug">“bugs”</a>.</li>
+<li>The package uses <a href="https://semver.org/"><strong>semantic versioning</strong></a>.
+<ul>
+<li>The current development version should start with <code>.9000</code> <em>after</em> the patch version, see <a href="http://r-pkgs.had.co.nz/description.html#version">R packages versioning</a>.</li>
+<li>The development version can be increased <em>extensively</em>, e.g. with each non-trivial commit.</li>
+<li>The version must be changed in the files <code>DESCRIPTION</code> and <code>man/sos4R-package.Rd</code> (which is important for releases).</li>
+<li>Bugfix versions can be used extensively (for several, or even just one bug) to show users that errors are resolved.</li>
+<li>Minor versions shall include several major bug fixes or a considerable addition of tested and working functionality.</li>
+<li>Code changes that possibly break existing code shall only be released with a major version change and should be discussed in the developer community beforehand.</li>
+</ul>
+</li>
+</ul>
+<p>Users may install the current development version or local branches using respective functions of <a href="https://devtools.r-lib.org/"><code>devtools</code></a>.</p>
 <hr>
 </div>
 <div id="documentation" class="section level2">
@@ -164,12 +214,20 @@
 <p>Knit <code>README.Rmd</code> to create <code>README.md</code>.</p>
 <p>Run <a href="https://pkgdown.r-lib.org/">pkgdown</a> from the package directory each time you release your package:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pkgdown<span class="op">::</span><span class="kw"><a href="https://pkgdown.r-lib.org/reference/build_site.html">build_site</a></span>()</a></code></pre></div>
+</div>
+<div id="build-vignettes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#build-vignettes" class="anchor"></a>Build vignettes</h3>
+<p>The vignettes should build as part of the docs website or package check process. To build single vingettes manually you can use</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">rmarkdown<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/render">render</a></span>(<span class="st">"vignettes/sos4R-vignette-01-quickstart.Rmd"</span>)</a></code></pre></div>
+<p>You can also then move the rendered file to the docs folder:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">mv</span> vignettes/*.html docs/</a></code></pre></div>
 <hr>
 </div>
 </div>
-<div id="package-structure" class="section level2">
+<div id="package-structure-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#package-structure" class="anchor"></a>Package structure</h2>
+<a href="#package-structure-1" class="anchor"></a>Package structure</h2>
 <p>sos4R follows the regular R extension package structure. General documentation about R package development can be found at the following two websites.</p>
 <ul>
 <li>R extension packages by Hadley: <a href="http://r-pkgs.had.co.nz/" class="uri">http://r-pkgs.had.co.nz/</a> (well written with tight coupling to devtools and RStudio)</li>
@@ -200,7 +258,7 @@
 <li>
 <code>defaults.R</code> contains default settings and values, including parsers, encoders, etc., as well as accessor functions to the defaults</li>
 <li>
-<code>Generic-methods.R</code> contains <em>all</em> generic method definitions</li>
+<code>Generic-methods.R</code> contains <em>all</em> generic method definitions <em>except</em> the ones for accessor functions</li>
 <li>
 <code>[NamespacePrefix]-methods.R</code> contains methods and used (helper or delegate) functions grouped by OGC specification namespace for…
 <ul>
@@ -223,7 +281,7 @@
 <li>
 <code>SOS-methods-plotting.R</code> contains plotting functions.</li>
 <li>
-<code>PrintShowStructureSummary-methods.R</code> contains just that</li>
+<code>PrintShowStructureSummary-methods.R</code> contains functions to override <code>print</code>, <code>str</code>, <code>summary</code> functions and the like; these may go in this file or also into the file where the respective class is defined.</li>
 </ul>
 </div>
 <div id="sandbox" class="section level3">
@@ -284,7 +342,7 @@
 <h2 class="hasAnchor">
 <a href="#tests" class="anchor"></a>Tests</h2>
 <p>Tests are implemented with <a href="http://testthat.r-lib.org/"><code>testthat</code></a>. Run them with</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a></code></pre></div>
 <p>or by clicking the “Check” button in RStudio (which does more than just running the tests!).</p>
 </div>
 <div id="add-features" class="section level2">
@@ -298,9 +356,9 @@
 <li>by element name</li>
 <li>by mime type</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>()</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># add a local parser</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"TimeseriesKVP"</span> =<span class="st"> </span><span class="cf">function</span>() { ... })</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>()</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># add a local parser</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"TimeseriesKVP"</span> =<span class="st"> </span><span class="cf">function</span>() { ... })</a></code></pre></div>
 </div>
 <div id="how-to-add-an-encoder" class="section level3">
 <h3 class="hasAnchor">
@@ -325,12 +383,13 @@
 </li>
 <li>Update version in <code>DESCRIPTION</code>
 </li>
-<li>Create a git tag with the version number</li>
+<li>Create a git tag with the version number using the letter <code>v</code> followed by the version number (see above, must match <code>DESCRIPTION</code>), e.g. <code>v1.2.3</code>
+</li>
 <li>Update NEWS file based on latest commits</li>
 <li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again</li>
 <li>Run checks
 <ul>
-<li>In the parent directory of the project: <code>R CMD build sos4R; R CMD check --as-cran sos4R_0.&lt;version number&gt;.tar.gz</code> should have no errors, warnings, or notes</li>
+<li>In the parent directory of the project: <code>R CMD build sos4R; R CMD check --as-cran sos4R_&lt;version number&gt;.tar.gz</code> should have no errors, warnings, or notes</li>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/revdepcheck/topics/revdep_check">revdepcheck::revdep_check()</a></code> for checking reverse dependencies</li>
 <li>
@@ -349,7 +408,7 @@
 </li>
 </ul>
 <p>You can then do the actual release with</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/release">release</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/release">release</a></span>()</a></code></pre></div>
 </div>
 </div>
 

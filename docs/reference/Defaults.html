@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -189,7 +189,7 @@
 	<dt>sosDefaultGetCapOwsVersion</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultGetCapOwsVersion}</code></p></dd> % "1.1.0"
 	<dt>sosDefaultGetObsResponseFormat</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultGetObsResponseFormat}</code></p></dd> % SosSupportedResponseFormats()[1]
 	<dt>sosDefaultTimeFormat</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultTimeFormat}</code></p></dd> % "%Y-%m-%dT%H:%M:%OS"
-	<dt>sosDefaultFilenameTimeFormat</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}</code></p></dd> % 
+	<dt>sosDefaultFilenameTimeFormat</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}</code></p></dd> %
 	<dt>sosDefaultTempOpPropertyName</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultTempOpPropertyName}</code></p></dd> % "om:samplingTime"
 	<dt>sosDefaultTemporalOperator</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultTemporalOperator}</code></p></dd> % SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 	<dt>sosDefaultSpatialOpPropertyName</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultSpatialOpPropertyName}</code></p></dd> % "urn:ogc:data:location"
@@ -264,7 +264,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0x9846bd8&gt;
+#&gt; &lt;environment: 0xeab2538&gt;
 #&gt; 
 #&gt; $GetCapabilities
 #&gt; function (obj, sos) 
@@ -399,9 +399,11 @@
 #&gt;         cat("[parseGetObservationResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .offeringsXML &lt;- .filterXmlChildren(node = obj, childrenName = "observationData")
-#&gt;     .observations = sapply(.offeringsXML, parseObservation_2.0, 
+#&gt;     .observationsXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "observationData")
+#&gt;     featureCache &lt;&lt;- list()
+#&gt;     .observations &lt;- sapply(.observationsXML, parseObservation_2.0, 
 #&gt;         sos = sos)
+#&gt;     featureCache &lt;&lt;- list()
 #&gt;     return(.observations)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -413,8 +415,8 @@
 #&gt;         cat("[parseGetFeatureOfInterestResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .offeringsXML &lt;- .filterXmlChildren(node = obj, childrenName = "featureMember")
-#&gt;     .foi = sapply(.offeringsXML, .parseFeatureMember, sos = sos)
+#&gt;     .featureXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "featureMember")
+#&gt;     .foi = sapply(.featureXML, .parseFeatureMember, sos = sos)
 #&gt;     return(.foi)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -444,13 +446,38 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
+#&gt; $GetDataAvailabilityResponse
+#&gt; function (obj, sos, verbose = FALSE) 
+#&gt; {
+#&gt;     if (verbose) 
+#&gt;         cat("[parseGetDataAvailabilityResponse]")
+#&gt;     if (sos@version != sos200_version) {
+#&gt;         stop(paste0("[parseGetDataAvailabilityResponse] SOS version 2.0 required! Received '", 
+#&gt;             sos@version, "'"))
+#&gt;     }
+#&gt;     .gdaMembers &lt;- .filterXmlChildren(obj, sosGDAMemberName, 
+#&gt;         includeNamed = TRUE)
+#&gt;     if (verbose) 
+#&gt;         cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), 
+#&gt;             "element(s).\n")
+#&gt;     .phenTimeCache &lt;&lt;- list()
+#&gt;     .parsedGDAMembers &lt;- lapply(.gdaMembers, .parseGDAMember, 
+#&gt;         sos, verbose)
+#&gt;     .phenTimeCache &lt;&lt;- list()
+#&gt;     if (verbose) 
+#&gt;         cat("[parseGetDataAvailabilityResponse] Done. Processed", 
+#&gt;             length(.parsedGDAMembers), "elements")
+#&gt;     return(.parsedGDAMembers)
+#&gt; }
+#&gt; &lt;environment: namespace:sos4R&gt;
+#&gt; 
 #&gt; $Measurement
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
 #&gt;         cat("[parseMeasurement]\n")
-#&gt;     .samplingTime &lt;- parseSamplingTime(obj = obj[[omSamplingTimeName]], 
-#&gt;         format = sosTimeFormat(sos), verbose = verbose)
+#&gt;     .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
+#&gt;         format = sosTimeFormat(sos), verbose = verbose)[[1]]
 #&gt;     .procedure &lt;- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
 #&gt;     .observedProperty &lt;- SwePhenomenonProperty(href = xmlGetAttr(node = obj[[omObservedPropertyName]], 
 #&gt;         name = "href"))
@@ -506,8 +533,8 @@
 #&gt;     .observedProperty &lt;- parsePhenomenonProperty(obj[[omObservedPropertyName]], 
 #&gt;         sos = sos, verbose = verbose)
 #&gt;     if (!is.null(obj[[omSamplingTimeName]])) {
-#&gt;         .samplingTime &lt;- parseSamplingTime(obj = obj[[omSamplingTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
+#&gt;         .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
 #&gt;     }
 #&gt;     else {
 #&gt;         warning("om:samplingTime is mandatory in om:Observation, but is missing!")
@@ -525,8 +552,8 @@
 #&gt;     .result &lt;- .resultParsingFunction(obj[[omResultName]], sos, 
 #&gt;         verbose)
 #&gt;     if (!is.null(obj[[omResultTimeName]])) {
-#&gt;         .resultTime &lt;- parseSamplingTime(obj = obj[[omResultTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
+#&gt;         .resultTime &lt;- parseTime(obj = obj[[omResultTimeName]], 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
 #&gt;     }
 #&gt;     else {
 #&gt;         .resultTime &lt;- NULL
@@ -594,14 +621,16 @@
 #&gt;         cat("[parseResult] Starting ...\n")
 #&gt;     }
 #&gt;     .result &lt;- NULL
-#&gt;     .noneText &lt;- .filterXmlChildren(node = obj, xmlTextNodeName, 
+#&gt;     .children &lt;- .filterXmlChildren(node = obj, "WeWantAllXmlNodes", 
 #&gt;         includeNamed = FALSE, verbose = verbose)
+#&gt;     .children &lt;- obj
 #&gt;     if (verbose) {
-#&gt;         cat("[parseResult]", length(.noneText), " non-text nodes, names:", 
-#&gt;             names(.noneText), "\n")
+#&gt;         cat("[parseResult]", length(.children), " non-text nodes, names:", 
+#&gt;             names(.children), "\n")
 #&gt;     }
-#&gt;     if (length(.noneText) == 0) {
+#&gt;     if (length(.children) == 0) {
 #&gt;         .children &lt;- xmlChildren(obj)
+#&gt;         stop("Continue implementation here: OM-methods-parsing.R")
 #&gt;         cat("[parseResult] No non-text nodes in result, returning NULL.\n")
 #&gt;         .typeAttributValue &lt;- xmlGetAttr(node = obj, name = om20ResultTypeAttributeName, 
 #&gt;             default = NA_character_)
@@ -620,18 +649,24 @@
 #&gt;         }
 #&gt;         return(NULL)
 #&gt;     }
-#&gt;     if (xmlName(.noneText[[1]]) != sweDataArrayName) {
-#&gt;         warning(paste("[parseResult] Parsing of given result is NOT supported:", 
-#&gt;             xmlName(.noneText[[1]]), "-- only", sweDataArrayName, 
-#&gt;             "can be parsed."))
-#&gt;     }
-#&gt;     else {
+#&gt;     if (xmlName(.children[[1]]) == sweDataArrayName) {
 #&gt;         if (verbose) 
 #&gt;             cat("[parseResult] Parsing result with swe:DataArray.\n")
 #&gt;         .dataArrayParsingFunction &lt;- sosParsers(sos)[[sweDataArrayName]]
-#&gt;         .dataArray &lt;- .noneText[[1]]
+#&gt;         .dataArray &lt;- .children[[1]]
 #&gt;         .result &lt;- .dataArrayParsingFunction(.dataArray, sos, 
 #&gt;             verbose)
+#&gt;     }
+#&gt;     else if (xmlName(.children[[1]]) == xmlTextNodeName) {
+#&gt;         .result &lt;- as.numeric(xmlValue(.children))
+#&gt;         if (is.na(.result)) {
+#&gt;             .result &lt;- xmlValue(.children, trim = TRUE)
+#&gt;         }
+#&gt;     }
+#&gt;     else {
+#&gt;         warning(paste("[parseResult] Parsing of given result is NOT supported:", 
+#&gt;             xmlName(.children[[1]]), "-- only", sweDataArrayName, 
+#&gt;             " or text nodes containing strings or numbers can be parsed."))
 #&gt;     }
 #&gt;     if (is.null(.result)) {
 #&gt;         stop("[parseResult] result is null! Given result:\n")
@@ -639,7 +674,7 @@
 #&gt;     }
 #&gt;     if (verbose) 
 #&gt;         cat("[parseResult] ... done.\n")
-#&gt;     else return(.result)
+#&gt;     return(.result)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
@@ -676,7 +711,7 @@
 #&gt;         if (!is.null(.simpleDataRecord)) 
 #&gt;             .dr &lt;- .simpleDataRecord
 #&gt;         else .dr &lt;- .dataRecord
-#&gt;         .fields &lt;- .filterXmlChildren(node = .dr, childrenName = sweFieldName, 
+#&gt;         .fields &lt;- .filterXmlChildren(node = .dr, xmlTagName = sweFieldName, 
 #&gt;             includeNamed = TRUE)
 #&gt;         if (verbose) 
 #&gt;             cat("[parseElementType] Got data record with", length(.fields), 
@@ -853,7 +888,7 @@
 #&gt; $Vector
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .children &lt;- .filterXmlChildren(node = obj, childrenName = sweCoordinateName)
+#&gt;     .children &lt;- .filterXmlChildren(node = obj, xmlTagName = sweCoordinateName)
 #&gt;     .coords &lt;- list()
 #&gt;     .names &lt;- list()
 #&gt;     for (i in seq(1, length(.children))) {
@@ -1178,7 +1213,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0x9846bd8&gt;
+#&gt; &lt;environment: 0xeab2538&gt;
 #&gt; </div><div class='input'><span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))</div><div class='output co'>#&gt; $GetCapabilities
 #&gt; function (obj, sos) 
 #&gt; {
@@ -1198,9 +1233,11 @@
 #&gt;         cat("[parseGetObservationResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .offeringsXML &lt;- .filterXmlChildren(node = obj, childrenName = "observationData")
-#&gt;     .observations = sapply(.offeringsXML, parseObservation_2.0, 
+#&gt;     .observationsXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "observationData")
+#&gt;     featureCache &lt;&lt;- list()
+#&gt;     .observations &lt;- sapply(.observationsXML, parseObservation_2.0, 
 #&gt;         sos = sos)
+#&gt;     featureCache &lt;&lt;- list()
 #&gt;     return(.observations)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -1212,8 +1249,8 @@
 #&gt;         cat("[parseGetFeatureOfInterestResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .offeringsXML &lt;- .filterXmlChildren(node = obj, childrenName = "featureMember")
-#&gt;     .foi = sapply(.offeringsXML, .parseFeatureMember, sos = sos)
+#&gt;     .featureXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "featureMember")
+#&gt;     .foi = sapply(.featureXML, .parseFeatureMember, sos = sos)
 #&gt;     return(.foi)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -1267,13 +1304,38 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
+#&gt; $GetDataAvailabilityResponse
+#&gt; function (obj, sos, verbose = FALSE) 
+#&gt; {
+#&gt;     if (verbose) 
+#&gt;         cat("[parseGetDataAvailabilityResponse]")
+#&gt;     if (sos@version != sos200_version) {
+#&gt;         stop(paste0("[parseGetDataAvailabilityResponse] SOS version 2.0 required! Received '", 
+#&gt;             sos@version, "'"))
+#&gt;     }
+#&gt;     .gdaMembers &lt;- .filterXmlChildren(obj, sosGDAMemberName, 
+#&gt;         includeNamed = TRUE)
+#&gt;     if (verbose) 
+#&gt;         cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), 
+#&gt;             "element(s).\n")
+#&gt;     .phenTimeCache &lt;&lt;- list()
+#&gt;     .parsedGDAMembers &lt;- lapply(.gdaMembers, .parseGDAMember, 
+#&gt;         sos, verbose)
+#&gt;     .phenTimeCache &lt;&lt;- list()
+#&gt;     if (verbose) 
+#&gt;         cat("[parseGetDataAvailabilityResponse] Done. Processed", 
+#&gt;             length(.parsedGDAMembers), "elements")
+#&gt;     return(.parsedGDAMembers)
+#&gt; }
+#&gt; &lt;environment: namespace:sos4R&gt;
+#&gt; 
 #&gt; $Measurement
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
 #&gt;         cat("[parseMeasurement]\n")
-#&gt;     .samplingTime &lt;- parseSamplingTime(obj = obj[[omSamplingTimeName]], 
-#&gt;         format = sosTimeFormat(sos), verbose = verbose)
+#&gt;     .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
+#&gt;         format = sosTimeFormat(sos), verbose = verbose)[[1]]
 #&gt;     .procedure &lt;- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
 #&gt;     .observedProperty &lt;- SwePhenomenonProperty(href = xmlGetAttr(node = obj[[omObservedPropertyName]], 
 #&gt;         name = "href"))
@@ -1329,8 +1391,8 @@
 #&gt;     .observedProperty &lt;- parsePhenomenonProperty(obj[[omObservedPropertyName]], 
 #&gt;         sos = sos, verbose = verbose)
 #&gt;     if (!is.null(obj[[omSamplingTimeName]])) {
-#&gt;         .samplingTime &lt;- parseSamplingTime(obj = obj[[omSamplingTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
+#&gt;         .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
 #&gt;     }
 #&gt;     else {
 #&gt;         warning("om:samplingTime is mandatory in om:Observation, but is missing!")
@@ -1348,8 +1410,8 @@
 #&gt;     .result &lt;- .resultParsingFunction(obj[[omResultName]], sos, 
 #&gt;         verbose)
 #&gt;     if (!is.null(obj[[omResultTimeName]])) {
-#&gt;         .resultTime &lt;- parseSamplingTime(obj = obj[[omResultTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
+#&gt;         .resultTime &lt;- parseTime(obj = obj[[omResultTimeName]], 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
 #&gt;     }
 #&gt;     else {
 #&gt;         .resultTime &lt;- NULL
@@ -1417,14 +1479,16 @@
 #&gt;         cat("[parseResult] Starting ...\n")
 #&gt;     }
 #&gt;     .result &lt;- NULL
-#&gt;     .noneText &lt;- .filterXmlChildren(node = obj, xmlTextNodeName, 
+#&gt;     .children &lt;- .filterXmlChildren(node = obj, "WeWantAllXmlNodes", 
 #&gt;         includeNamed = FALSE, verbose = verbose)
+#&gt;     .children &lt;- obj
 #&gt;     if (verbose) {
-#&gt;         cat("[parseResult]", length(.noneText), " non-text nodes, names:", 
-#&gt;             names(.noneText), "\n")
+#&gt;         cat("[parseResult]", length(.children), " non-text nodes, names:", 
+#&gt;             names(.children), "\n")
 #&gt;     }
-#&gt;     if (length(.noneText) == 0) {
+#&gt;     if (length(.children) == 0) {
 #&gt;         .children &lt;- xmlChildren(obj)
+#&gt;         stop("Continue implementation here: OM-methods-parsing.R")
 #&gt;         cat("[parseResult] No non-text nodes in result, returning NULL.\n")
 #&gt;         .typeAttributValue &lt;- xmlGetAttr(node = obj, name = om20ResultTypeAttributeName, 
 #&gt;             default = NA_character_)
@@ -1443,18 +1507,24 @@
 #&gt;         }
 #&gt;         return(NULL)
 #&gt;     }
-#&gt;     if (xmlName(.noneText[[1]]) != sweDataArrayName) {
-#&gt;         warning(paste("[parseResult] Parsing of given result is NOT supported:", 
-#&gt;             xmlName(.noneText[[1]]), "-- only", sweDataArrayName, 
-#&gt;             "can be parsed."))
-#&gt;     }
-#&gt;     else {
+#&gt;     if (xmlName(.children[[1]]) == sweDataArrayName) {
 #&gt;         if (verbose) 
 #&gt;             cat("[parseResult] Parsing result with swe:DataArray.\n")
 #&gt;         .dataArrayParsingFunction &lt;- sosParsers(sos)[[sweDataArrayName]]
-#&gt;         .dataArray &lt;- .noneText[[1]]
+#&gt;         .dataArray &lt;- .children[[1]]
 #&gt;         .result &lt;- .dataArrayParsingFunction(.dataArray, sos, 
 #&gt;             verbose)
+#&gt;     }
+#&gt;     else if (xmlName(.children[[1]]) == xmlTextNodeName) {
+#&gt;         .result &lt;- as.numeric(xmlValue(.children))
+#&gt;         if (is.na(.result)) {
+#&gt;             .result &lt;- xmlValue(.children, trim = TRUE)
+#&gt;         }
+#&gt;     }
+#&gt;     else {
+#&gt;         warning(paste("[parseResult] Parsing of given result is NOT supported:", 
+#&gt;             xmlName(.children[[1]]), "-- only", sweDataArrayName, 
+#&gt;             " or text nodes containing strings or numbers can be parsed."))
 #&gt;     }
 #&gt;     if (is.null(.result)) {
 #&gt;         stop("[parseResult] result is null! Given result:\n")
@@ -1462,7 +1532,7 @@
 #&gt;     }
 #&gt;     if (verbose) 
 #&gt;         cat("[parseResult] ... done.\n")
-#&gt;     else return(.result)
+#&gt;     return(.result)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
@@ -1499,7 +1569,7 @@
 #&gt;         if (!is.null(.simpleDataRecord)) 
 #&gt;             .dr &lt;- .simpleDataRecord
 #&gt;         else .dr &lt;- .dataRecord
-#&gt;         .fields &lt;- .filterXmlChildren(node = .dr, childrenName = sweFieldName, 
+#&gt;         .fields &lt;- .filterXmlChildren(node = .dr, xmlTagName = sweFieldName, 
 #&gt;             includeNamed = TRUE)
 #&gt;         if (verbose) 
 #&gt;             cat("[parseElementType] Got data record with", length(.fields), 
@@ -1676,7 +1746,7 @@
 #&gt; $Vector
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .children &lt;- .filterXmlChildren(node = obj, childrenName = sweCoordinateName)
+#&gt;     .children &lt;- .filterXmlChildren(node = obj, xmlTagName = sweCoordinateName)
 #&gt;     .coords &lt;- list()
 #&gt;     .names &lt;- list()
 #&gt;     for (i in seq(1, length(.children))) {

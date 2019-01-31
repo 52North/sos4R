@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2019-01-04" />
+<meta name="date" content="2019-01-09" />
 
 <title>sos4R: Accessing Sensor Observation Services from R – Quickstart</title>
 
@@ -312,7 +312,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <address class="author_afil">
 Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"><a href="mailto:daniel.nuest@uni-muenster.de">daniel.nuest@uni-muenster.de</a></a>
 </address>
-<h4 class="date"><em>2019-01-04</em></h4>
+<h4 class="date"><em>2019-01-09</em></h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>The sos4R package provides simple yet powerful access to OGC Sensor Observation Service instances. The package supports both encapsulation and abstraction from the service interface for novice users as well as powerful request building for specialists. sos4R is motivated by the idea to close the gap between the Sensor Web and tools for (geo-)statistical analyses. It implements the core profile of the SOS specification and supports temporal, spatial, and thematical filtering of observations.</p>
@@ -344,11 +344,7 @@ The package is published under GPL 2 license within the geostatistics community 
 <p>The project is part of the <a href="https://52north.org/research/rd-communities/geostatistics/">geostatistics community</a> of the <a href="https://52north.org/">52°North Initiative for Geospatial Open Source Software</a>. <code>sos4R</code> is available on <a href="https://cran.r-project.org/">CRAN</a>.</p>
 <p>On the package home page, <a href="https://52north.github.io/sos4R" class="uri">https://52north.github.io/sos4R</a>, you can stay updated with the developments and find example code and services.</p>
 <p>This software is released under a <a href="https://www.gnu.org/licenses/gpl-2.0.html">GPL 2 license</a> and contributions are very welcome—please see the file <code>DEV-README.md</code> in the <a href="https://github.com/52North/sos4R">package code repository</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sos4R&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Loading required package: XML</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading required package: RCurl</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Loading required package: bitops</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Loading required package: sp</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sos4R&quot;</span>)</a></code></pre></div>
 </div>
 <div id="getting-started" class="section level2">
 <h2>Getting started</h2>
@@ -374,7 +370,7 @@ The package is published under GPL 2 license within the geostatistics community 
 <li><strong>oceanwatch</strong>: SOS by NOAA/SWFSC/ERD - <strong>under construction</strong>.</li>
 <li><strong>pegel</strong>: Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.</li>
 <li><strong>southesk</strong>: SOSs from South Esk Testbed by CSIRO, focuses on <strong>data consolidation/fusion} and \textbf{plotting</strong>. It also contains an example for partially changing the encoding by overriding a specific <code>encodeXML</code> function.</li>
-<li><strong>weathersos</strong>: Time series analysis demo with weather data by ifgi, includes examples for <strong>DescribeSensor} and data extraction from and plotting of \textbf{SensorML sensor descriptions</strong>.</li>
+<li><strong>weathersos</strong>: Time series analysis demo with weather data by ifgi, includes examples for <strong>DescribeSensor</strong> and data extraction from and plotting of <strong>SensorML sensor descriptions</strong>.</li>
 </ul>
 <p>There also is an incomplete <strong>list of services</strong> that have been tested or are currently evaluated on the project homepage. If you find or can provide new SOS with data useful to others, please do not hesitate to open an issue so that it can be included.</p>
 <p>Additionally, a set of SOS URLs are available via the function <code>SosExampleServices()</code>. Please note that the author of this document does not control these services and does not guarantee for any factors like correctness of data or availability.</p>
@@ -466,317 +462,348 @@ The package is published under GPL 2 license within the geostatistics community 
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">off<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">sosOfferings</span>(mySOS)[[<span class="dv">1</span>]]</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS, <span class="dt">offering =</span> off<span class="fl">.1</span>,</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">    <span class="dt">procedure =</span> <span class="kw">sosProcedures</span>(off<span class="fl">.1</span>)[[<span class="dv">1</span>]],</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">    <span class="dt">inspect =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; Warning in .sosRequest_1.0.0(sos = sos, request = request, verbose =</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; verbose, : Given url already contains a '?', appending arguments!</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; [.sosRequest_1.0.0] GET!</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; [.sosRequest_1.0.0] REQUEST:</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill&amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 </span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; [sos4R] Received response (size: 112 bytes), parsing ...</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; observedProperty = observedProperty, : Response string has length 0 .</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; Please re-check query parameters.</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; [.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response string: </span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; ' '</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; [.getObservation_1.0.0] Content-Type:</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; observedProperty = observedProperty, : Unknown response format!</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; observedProperty = observedProperty, : File name is NULL, could not save</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; document!</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; [1] &quot;&quot;</span></a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS, <span class="dt">offering =</span> off<span class="fl">.1</span>,</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">    <span class="dt">procedure =</span> <span class="kw">sosProcedures</span>(off<span class="fl">.1</span>)[[<span class="dv">1</span>]],</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">    <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; [getObservation] Requesting offering ws2500 by SosObservationOffering.</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; [.getObservation_1.0.0] to  http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp  with offering  ws2500 </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; [.createGetObservation_1.0.0] Done:</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; observered property:  AirTemperature </span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; observered property:  AthmosphericPressure </span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; observered property:  Dewpoint </span></a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-28" data-line-number="28"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-30" data-line-number="30"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-31" data-line-number="31"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-32" data-line-number="32"><span class="co">#&gt; observered property:  Humidity </span></a>
-<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-34" data-line-number="34"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-35" data-line-number="35"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-38" data-line-number="38"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-39" data-line-number="39"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-40" data-line-number="40"><span class="co">#&gt; observered property:  Luminance </span></a>
-<a class="sourceLine" id="cb9-41" data-line-number="41"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-42" data-line-number="42"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-43" data-line-number="43"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-44" data-line-number="44"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-45" data-line-number="45"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-46" data-line-number="46"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-47" data-line-number="47"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-48" data-line-number="48"><span class="co">#&gt; observered property:  RainfallAccumulated </span></a>
-<a class="sourceLine" id="cb9-49" data-line-number="49"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-50" data-line-number="50"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-51" data-line-number="51"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-52" data-line-number="52"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-53" data-line-number="53"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-54" data-line-number="54"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-55" data-line-number="55"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-56" data-line-number="56"><span class="co">#&gt; observered property:  Sunshine </span></a>
-<a class="sourceLine" id="cb9-57" data-line-number="57"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-58" data-line-number="58"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-59" data-line-number="59"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-60" data-line-number="60"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-61" data-line-number="61"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-62" data-line-number="62"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-63" data-line-number="63"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-64" data-line-number="64"><span class="co">#&gt; observered property:  WindDirection </span></a>
-<a class="sourceLine" id="cb9-65" data-line-number="65"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-66" data-line-number="66"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-67" data-line-number="67"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-68" data-line-number="68"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-69" data-line-number="69"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-70" data-line-number="70"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-71" data-line-number="71"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-72" data-line-number="72"><span class="co">#&gt; observered property:  WindSpeed </span></a>
-<a class="sourceLine" id="cb9-73" data-line-number="73"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-74" data-line-number="74"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-75" data-line-number="75"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-76" data-line-number="76"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-77" data-line-number="77"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-78" data-line-number="78"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-79" data-line-number="79"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-80" data-line-number="80"><span class="co">#&gt; observered property:  Windchill </span></a>
-<a class="sourceLine" id="cb9-81" data-line-number="81"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-82" data-line-number="82"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-83" data-line-number="83"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-84" data-line-number="84"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-85" data-line-number="85"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-86" data-line-number="86"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-87" data-line-number="87"><span class="co">#&gt; resultModel(s):  NA </span></a>
-<a class="sourceLine" id="cb9-88" data-line-number="88"><span class="co">#&gt; [.getObservation_1.0.0] REQUEST:</span></a>
-<a class="sourceLine" id="cb9-89" data-line-number="89"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-90" data-line-number="90"><span class="co">#&gt;  Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-91" data-line-number="91"><span class="co">#&gt; observered property:  AirTemperature </span></a>
-<a class="sourceLine" id="cb9-92" data-line-number="92"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-93" data-line-number="93"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-94" data-line-number="94"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-95" data-line-number="95"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-96" data-line-number="96"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-97" data-line-number="97"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-98" data-line-number="98"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-99" data-line-number="99"><span class="co">#&gt; observered property:  AthmosphericPressure </span></a>
-<a class="sourceLine" id="cb9-100" data-line-number="100"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-101" data-line-number="101"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-102" data-line-number="102"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-103" data-line-number="103"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-104" data-line-number="104"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-105" data-line-number="105"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-106" data-line-number="106"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-107" data-line-number="107"><span class="co">#&gt; observered property:  Dewpoint </span></a>
-<a class="sourceLine" id="cb9-108" data-line-number="108"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-109" data-line-number="109"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-110" data-line-number="110"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-111" data-line-number="111"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-112" data-line-number="112"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-113" data-line-number="113"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-114" data-line-number="114"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-115" data-line-number="115"><span class="co">#&gt; observered property:  Humidity </span></a>
-<a class="sourceLine" id="cb9-116" data-line-number="116"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-117" data-line-number="117"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-118" data-line-number="118"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-119" data-line-number="119"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-120" data-line-number="120"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-121" data-line-number="121"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-122" data-line-number="122"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-123" data-line-number="123"><span class="co">#&gt; observered property:  Luminance </span></a>
-<a class="sourceLine" id="cb9-124" data-line-number="124"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-125" data-line-number="125"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-126" data-line-number="126"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-127" data-line-number="127"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-128" data-line-number="128"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-129" data-line-number="129"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-130" data-line-number="130"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-131" data-line-number="131"><span class="co">#&gt; observered property:  RainfallAccumulated </span></a>
-<a class="sourceLine" id="cb9-132" data-line-number="132"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-133" data-line-number="133"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-134" data-line-number="134"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-135" data-line-number="135"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-136" data-line-number="136"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-137" data-line-number="137"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-138" data-line-number="138"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-139" data-line-number="139"><span class="co">#&gt; observered property:  Sunshine </span></a>
-<a class="sourceLine" id="cb9-140" data-line-number="140"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-141" data-line-number="141"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-142" data-line-number="142"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-143" data-line-number="143"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-144" data-line-number="144"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-145" data-line-number="145"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-146" data-line-number="146"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-147" data-line-number="147"><span class="co">#&gt; observered property:  WindDirection </span></a>
-<a class="sourceLine" id="cb9-148" data-line-number="148"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-149" data-line-number="149"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-150" data-line-number="150"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-151" data-line-number="151"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-152" data-line-number="152"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-153" data-line-number="153"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-154" data-line-number="154"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-155" data-line-number="155"><span class="co">#&gt; observered property:  WindSpeed </span></a>
-<a class="sourceLine" id="cb9-156" data-line-number="156"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-157" data-line-number="157"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-158" data-line-number="158"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-159" data-line-number="159"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-160" data-line-number="160"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-161" data-line-number="161"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-162" data-line-number="162"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-163" data-line-number="163"><span class="co">#&gt; observered property:  Windchill </span></a>
-<a class="sourceLine" id="cb9-164" data-line-number="164"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-165" data-line-number="165"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-166" data-line-number="166"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-167" data-line-number="167"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-168" data-line-number="168"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-169" data-line-number="169"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-170" data-line-number="170"><span class="co">#&gt; resultModel(s):  NA </span></a>
-<a class="sourceLine" id="cb9-171" data-line-number="171"><span class="co">#&gt; [.sosRequest_1.0.0] Encoding Function (beginning of function body):  { standardGeneric(&quot;encodeRequestKVP&quot;)  ... [ 0  more chrs].</span></a>
-<a class="sourceLine" id="cb9-172" data-line-number="172"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] encoding Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-173" data-line-number="173"><span class="co">#&gt; observered property:  AirTemperature </span></a>
-<a class="sourceLine" id="cb9-174" data-line-number="174"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-175" data-line-number="175"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-176" data-line-number="176"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-177" data-line-number="177"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-178" data-line-number="178"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-179" data-line-number="179"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-180" data-line-number="180"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-181" data-line-number="181"><span class="co">#&gt; observered property:  AthmosphericPressure </span></a>
-<a class="sourceLine" id="cb9-182" data-line-number="182"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-183" data-line-number="183"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-184" data-line-number="184"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-185" data-line-number="185"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-186" data-line-number="186"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-187" data-line-number="187"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-188" data-line-number="188"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-189" data-line-number="189"><span class="co">#&gt; observered property:  Dewpoint </span></a>
-<a class="sourceLine" id="cb9-190" data-line-number="190"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-191" data-line-number="191"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-192" data-line-number="192"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-193" data-line-number="193"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-194" data-line-number="194"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-195" data-line-number="195"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-196" data-line-number="196"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-197" data-line-number="197"><span class="co">#&gt; observered property:  Humidity </span></a>
-<a class="sourceLine" id="cb9-198" data-line-number="198"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-199" data-line-number="199"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-200" data-line-number="200"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-201" data-line-number="201"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-202" data-line-number="202"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-203" data-line-number="203"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-204" data-line-number="204"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-205" data-line-number="205"><span class="co">#&gt; observered property:  Luminance </span></a>
-<a class="sourceLine" id="cb9-206" data-line-number="206"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-207" data-line-number="207"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-208" data-line-number="208"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-209" data-line-number="209"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-210" data-line-number="210"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-211" data-line-number="211"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-212" data-line-number="212"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-213" data-line-number="213"><span class="co">#&gt; observered property:  RainfallAccumulated </span></a>
-<a class="sourceLine" id="cb9-214" data-line-number="214"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-215" data-line-number="215"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-216" data-line-number="216"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-217" data-line-number="217"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-218" data-line-number="218"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-219" data-line-number="219"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-220" data-line-number="220"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-221" data-line-number="221"><span class="co">#&gt; observered property:  Sunshine </span></a>
-<a class="sourceLine" id="cb9-222" data-line-number="222"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-223" data-line-number="223"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-224" data-line-number="224"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-225" data-line-number="225"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-226" data-line-number="226"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-227" data-line-number="227"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-228" data-line-number="228"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-229" data-line-number="229"><span class="co">#&gt; observered property:  WindDirection </span></a>
-<a class="sourceLine" id="cb9-230" data-line-number="230"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-231" data-line-number="231"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-232" data-line-number="232"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-233" data-line-number="233"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-234" data-line-number="234"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-235" data-line-number="235"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-236" data-line-number="236"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-237" data-line-number="237"><span class="co">#&gt; observered property:  WindSpeed </span></a>
-<a class="sourceLine" id="cb9-238" data-line-number="238"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-239" data-line-number="239"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-240" data-line-number="240"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-241" data-line-number="241"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-242" data-line-number="242"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-243" data-line-number="243"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-244" data-line-number="244"><span class="co">#&gt; resultModel(s):  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
-<a class="sourceLine" id="cb9-245" data-line-number="245"><span class="co">#&gt; observered property:  Windchill </span></a>
-<a class="sourceLine" id="cb9-246" data-line-number="246"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
-<a class="sourceLine" id="cb9-247" data-line-number="247"><span class="co">#&gt; procedure(s) ws2500 </span></a>
-<a class="sourceLine" id="cb9-248" data-line-number="248"><span class="co">#&gt;  feature(s) of interest  </span></a>
-<a class="sourceLine" id="cb9-249" data-line-number="249"><span class="co">#&gt;  event time:  NA </span></a>
-<a class="sourceLine" id="cb9-250" data-line-number="250"><span class="co">#&gt;  result:  NULL </span></a>
-<a class="sourceLine" id="cb9-251" data-line-number="251"><span class="co">#&gt; srsName:  NA </span></a>
-<a class="sourceLine" id="cb9-252" data-line-number="252"><span class="co">#&gt; resultModel(s):  NA </span></a>
-<a class="sourceLine" id="cb9-253" data-line-number="253"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] mandatory elements:  service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill </span></a>
-<a class="sourceLine" id="cb9-254" data-line-number="254"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] Adding response format  text/xml;subtype=&quot;om/1.0.0&quot; </span></a>
-<a class="sourceLine" id="cb9-255" data-line-number="255"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] Adding procedures  ws2500 </span></a>
-<a class="sourceLine" id="cb9-256" data-line-number="256"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] optional elements:  &amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 </span></a>
-<a class="sourceLine" id="cb9-257" data-line-number="257"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] Finished KVP string creation:</span></a>
-<a class="sourceLine" id="cb9-258" data-line-number="258"><span class="co">#&gt;  service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill&amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 </span></a>
-<a class="sourceLine" id="cb9-259" data-line-number="259"><span class="co">#&gt; [.sosRequest_1.0.0] Using DCP from operation description.</span></a>
-<a class="sourceLine" id="cb9-260" data-line-number="260"><span class="co">#&gt; [.sosFilterDCPs] Applying pattern * to http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp? </span></a>
-<a class="sourceLine" id="cb9-261" data-line-number="261"><span class="co">#&gt; [.sosFilterDCPs] Filtered from</span></a>
-<a class="sourceLine" id="cb9-262" data-line-number="262"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp? </span></a>
-<a class="sourceLine" id="cb9-263" data-line-number="263"><span class="co">#&gt;  to</span></a>
-<a class="sourceLine" id="cb9-264" data-line-number="264"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?</span></a>
-<a class="sourceLine" id="cb9-265" data-line-number="265"><span class="co">#&gt; Warning in .sosRequest_1.0.0(sos = sos, request = request, verbose =</span></a>
-<a class="sourceLine" id="cb9-266" data-line-number="266"><span class="co">#&gt; verbose, : Given url already contains a '?', appending arguments!</span></a>
-<a class="sourceLine" id="cb9-267" data-line-number="267"><span class="co">#&gt; [.sosRequest_1.0.0] GET!</span></a>
-<a class="sourceLine" id="cb9-268" data-line-number="268"><span class="co">#&gt; [.sosRequest_1.0.0] REQUEST:</span></a>
-<a class="sourceLine" id="cb9-269" data-line-number="269"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill&amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 </span></a>
-<a class="sourceLine" id="cb9-270" data-line-number="270"><span class="co">#&gt; [.sosRequest_1.0.0] Do request...</span></a>
-<a class="sourceLine" id="cb9-271" data-line-number="271"><span class="co">#&gt; [.sosRequest_1.0.0] ... done.</span></a>
-<a class="sourceLine" id="cb9-272" data-line-number="272"><span class="co">#&gt; [.sosRequest_1.0.0] RESPONSE:</span></a>
-<a class="sourceLine" id="cb9-273" data-line-number="273"><span class="co">#&gt; [1] &quot;&quot;</span></a>
-<a class="sourceLine" id="cb9-274" data-line-number="274"><span class="co">#&gt; [sos4R] Received response (size: 112 bytes), parsing ...</span></a>
-<a class="sourceLine" id="cb9-275" data-line-number="275"><span class="co">#&gt; [.getObservation_1.0.0] Content-Type:</span></a>
-<a class="sourceLine" id="cb9-276" data-line-number="276"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
-<a class="sourceLine" id="cb9-277" data-line-number="277"><span class="co">#&gt; observedProperty = observedProperty, : Response string has length 0 .</span></a>
-<a class="sourceLine" id="cb9-278" data-line-number="278"><span class="co">#&gt; Please re-check query parameters.</span></a>
-<a class="sourceLine" id="cb9-279" data-line-number="279"><span class="co">#&gt; [.getObservation_1.0.0] Did NOT get XML string as response, trying to parse with text/xml;subtype=&quot;om/1.0.0&quot; </span></a>
-<a class="sourceLine" id="cb9-280" data-line-number="280"><span class="co">#&gt; [.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response string: </span></a>
-<a class="sourceLine" id="cb9-281" data-line-number="281"><span class="co">#&gt; ' '</span></a>
-<a class="sourceLine" id="cb9-282" data-line-number="282"><span class="co">#&gt; [.getObservation_1.0.0] Content-Type:</span></a>
-<a class="sourceLine" id="cb9-283" data-line-number="283"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
-<a class="sourceLine" id="cb9-284" data-line-number="284"><span class="co">#&gt; observedProperty = observedProperty, : Unknown response format!</span></a>
-<a class="sourceLine" id="cb9-285" data-line-number="285"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
-<a class="sourceLine" id="cb9-286" data-line-number="286"><span class="co">#&gt; observedProperty = observedProperty, : File name is NULL, could not save</span></a>
-<a class="sourceLine" id="cb9-287" data-line-number="287"><span class="co">#&gt; document!</span></a>
-<a class="sourceLine" id="cb9-288" data-line-number="288"><span class="co">#&gt; [1] &quot;&quot;</span></a></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">verboseSOS &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="kw">sosUrl</span>(mySOS),</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">                  <span class="dt">verboseOutput =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">                  <span class="dt">binding =</span> <span class="kw">sosBinding</span>(mySOS),</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">                  <span class="dt">dcpFilter =</span> mySOS<span class="op">@</span>dcpFilter)</a></code></pre></div>
+<a class="sourceLine" id="cb8-4" data-line-number="4">    <span class="dt">inspect =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>#&gt; Warning in .sosRequest_1.0.0(sos = sos, request = request, verbose =
+#&gt; verbose, : Given url already contains a '?', appending arguments!
+#&gt; [.sosRequest_1.0.0] GET!
+#&gt; [.sosRequest_1.0.0] REQUEST:
+#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill&amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 
+#&gt; [sos4R] Received response (size: 112 bytes), parsing ...
+#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,
+#&gt; observedProperty = observedProperty, : Response string has length 0 .
+#&gt; Please re-check query parameters.
+#&gt; [.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response string: 
+#&gt; ' '
+#&gt; [.getObservation_1.0.0] Content-Type:
+#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,
+#&gt; observedProperty = observedProperty, : Unknown response format!
+#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,
+#&gt; observedProperty = observedProperty, : File name is NULL, could not save
+#&gt; document!
+#&gt; [1] &quot;&quot;</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">getObservation</span>(<span class="dt">sos =</span> mySOS, <span class="dt">offering =</span> off<span class="fl">.1</span>,</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    <span class="dt">procedure =</span> <span class="kw">sosProcedures</span>(off<span class="fl">.1</span>)[[<span class="dv">1</span>]],</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; [getObservation] Requesting offering ws2500 by SosObservationOffering.</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; [.getObservation_1.0.0] to  http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp  with offering  ws2500 </span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; [.createGetObservation_1.0.0] Done:</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; observered property:  AirTemperature </span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; observered property:  AthmosphericPressure </span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-27" data-line-number="27"><span class="co">#&gt; observered property:  Dewpoint </span></a>
+<a class="sourceLine" id="cb10-28" data-line-number="28"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-30" data-line-number="30"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-31" data-line-number="31"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-32" data-line-number="32"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-33" data-line-number="33"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-35" data-line-number="35"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-36" data-line-number="36"><span class="co">#&gt; observered property:  Humidity </span></a>
+<a class="sourceLine" id="cb10-37" data-line-number="37"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-38" data-line-number="38"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-39" data-line-number="39"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-40" data-line-number="40"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-41" data-line-number="41"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-42" data-line-number="42"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-43" data-line-number="43"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-44" data-line-number="44"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-45" data-line-number="45"><span class="co">#&gt; observered property:  Luminance </span></a>
+<a class="sourceLine" id="cb10-46" data-line-number="46"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-47" data-line-number="47"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-48" data-line-number="48"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-49" data-line-number="49"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-50" data-line-number="50"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-51" data-line-number="51"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-52" data-line-number="52"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-53" data-line-number="53"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-54" data-line-number="54"><span class="co">#&gt; observered property:  RainfallAccumulated </span></a>
+<a class="sourceLine" id="cb10-55" data-line-number="55"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-56" data-line-number="56"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-57" data-line-number="57"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-58" data-line-number="58"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-59" data-line-number="59"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-60" data-line-number="60"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-61" data-line-number="61"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-62" data-line-number="62"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-63" data-line-number="63"><span class="co">#&gt; observered property:  Sunshine </span></a>
+<a class="sourceLine" id="cb10-64" data-line-number="64"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-65" data-line-number="65"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-66" data-line-number="66"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-67" data-line-number="67"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-68" data-line-number="68"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-69" data-line-number="69"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-70" data-line-number="70"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-71" data-line-number="71"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-72" data-line-number="72"><span class="co">#&gt; observered property:  WindDirection </span></a>
+<a class="sourceLine" id="cb10-73" data-line-number="73"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-74" data-line-number="74"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-75" data-line-number="75"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-76" data-line-number="76"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-77" data-line-number="77"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-78" data-line-number="78"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-79" data-line-number="79"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-80" data-line-number="80"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-81" data-line-number="81"><span class="co">#&gt; observered property:  WindSpeed </span></a>
+<a class="sourceLine" id="cb10-82" data-line-number="82"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-83" data-line-number="83"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-84" data-line-number="84"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-85" data-line-number="85"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-86" data-line-number="86"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-87" data-line-number="87"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-88" data-line-number="88"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-89" data-line-number="89"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-90" data-line-number="90"><span class="co">#&gt; observered property:  Windchill </span></a>
+<a class="sourceLine" id="cb10-91" data-line-number="91"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-92" data-line-number="92"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-93" data-line-number="93"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-94" data-line-number="94"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-95" data-line-number="95"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-96" data-line-number="96"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-97" data-line-number="97"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-98" data-line-number="98"><span class="co">#&gt; temporal value reference:  NA </span></a>
+<a class="sourceLine" id="cb10-99" data-line-number="99"><span class="co">#&gt; [.getObservation_1.0.0] REQUEST:</span></a>
+<a class="sourceLine" id="cb10-100" data-line-number="100"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-101" data-line-number="101"><span class="co">#&gt;  Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-102" data-line-number="102"><span class="co">#&gt; observered property:  AirTemperature </span></a>
+<a class="sourceLine" id="cb10-103" data-line-number="103"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-104" data-line-number="104"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-105" data-line-number="105"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-106" data-line-number="106"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-107" data-line-number="107"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-108" data-line-number="108"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-109" data-line-number="109"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-110" data-line-number="110"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-111" data-line-number="111"><span class="co">#&gt; observered property:  AthmosphericPressure </span></a>
+<a class="sourceLine" id="cb10-112" data-line-number="112"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-113" data-line-number="113"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-114" data-line-number="114"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-115" data-line-number="115"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-116" data-line-number="116"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-117" data-line-number="117"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-118" data-line-number="118"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-119" data-line-number="119"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-120" data-line-number="120"><span class="co">#&gt; observered property:  Dewpoint </span></a>
+<a class="sourceLine" id="cb10-121" data-line-number="121"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-122" data-line-number="122"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-123" data-line-number="123"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-124" data-line-number="124"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-125" data-line-number="125"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-126" data-line-number="126"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-127" data-line-number="127"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-128" data-line-number="128"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-129" data-line-number="129"><span class="co">#&gt; observered property:  Humidity </span></a>
+<a class="sourceLine" id="cb10-130" data-line-number="130"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-131" data-line-number="131"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-132" data-line-number="132"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-133" data-line-number="133"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-134" data-line-number="134"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-135" data-line-number="135"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-136" data-line-number="136"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-137" data-line-number="137"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-138" data-line-number="138"><span class="co">#&gt; observered property:  Luminance </span></a>
+<a class="sourceLine" id="cb10-139" data-line-number="139"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-140" data-line-number="140"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-141" data-line-number="141"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-142" data-line-number="142"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-143" data-line-number="143"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-144" data-line-number="144"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-145" data-line-number="145"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-146" data-line-number="146"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-147" data-line-number="147"><span class="co">#&gt; observered property:  RainfallAccumulated </span></a>
+<a class="sourceLine" id="cb10-148" data-line-number="148"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-149" data-line-number="149"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-150" data-line-number="150"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-151" data-line-number="151"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-152" data-line-number="152"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-153" data-line-number="153"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-154" data-line-number="154"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-155" data-line-number="155"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-156" data-line-number="156"><span class="co">#&gt; observered property:  Sunshine </span></a>
+<a class="sourceLine" id="cb10-157" data-line-number="157"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-158" data-line-number="158"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-159" data-line-number="159"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-160" data-line-number="160"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-161" data-line-number="161"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-162" data-line-number="162"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-163" data-line-number="163"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-164" data-line-number="164"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-165" data-line-number="165"><span class="co">#&gt; observered property:  WindDirection </span></a>
+<a class="sourceLine" id="cb10-166" data-line-number="166"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-167" data-line-number="167"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-168" data-line-number="168"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-169" data-line-number="169"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-170" data-line-number="170"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-171" data-line-number="171"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-172" data-line-number="172"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-173" data-line-number="173"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-174" data-line-number="174"><span class="co">#&gt; observered property:  WindSpeed </span></a>
+<a class="sourceLine" id="cb10-175" data-line-number="175"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-176" data-line-number="176"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-177" data-line-number="177"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-178" data-line-number="178"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-179" data-line-number="179"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-180" data-line-number="180"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-181" data-line-number="181"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-182" data-line-number="182"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-183" data-line-number="183"><span class="co">#&gt; observered property:  Windchill </span></a>
+<a class="sourceLine" id="cb10-184" data-line-number="184"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-185" data-line-number="185"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-186" data-line-number="186"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-187" data-line-number="187"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-188" data-line-number="188"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-189" data-line-number="189"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-190" data-line-number="190"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-191" data-line-number="191"><span class="co">#&gt; temporal value reference:  NA </span></a>
+<a class="sourceLine" id="cb10-192" data-line-number="192"><span class="co">#&gt; [.sosRequest_1.0.0] Encoding Function (beginning of function body):  { standardGeneric(&quot;encodeRequestKVP&quot;)  ... [ 0  more chrs].</span></a>
+<a class="sourceLine" id="cb10-193" data-line-number="193"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] encoding Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-194" data-line-number="194"><span class="co">#&gt; observered property:  AirTemperature </span></a>
+<a class="sourceLine" id="cb10-195" data-line-number="195"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-196" data-line-number="196"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-197" data-line-number="197"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-198" data-line-number="198"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-199" data-line-number="199"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-200" data-line-number="200"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-201" data-line-number="201"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-202" data-line-number="202"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-203" data-line-number="203"><span class="co">#&gt; observered property:  AthmosphericPressure </span></a>
+<a class="sourceLine" id="cb10-204" data-line-number="204"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-205" data-line-number="205"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-206" data-line-number="206"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-207" data-line-number="207"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-208" data-line-number="208"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-209" data-line-number="209"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-210" data-line-number="210"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-211" data-line-number="211"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-212" data-line-number="212"><span class="co">#&gt; observered property:  Dewpoint </span></a>
+<a class="sourceLine" id="cb10-213" data-line-number="213"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-214" data-line-number="214"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-215" data-line-number="215"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-216" data-line-number="216"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-217" data-line-number="217"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-218" data-line-number="218"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-219" data-line-number="219"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-220" data-line-number="220"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-221" data-line-number="221"><span class="co">#&gt; observered property:  Humidity </span></a>
+<a class="sourceLine" id="cb10-222" data-line-number="222"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-223" data-line-number="223"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-224" data-line-number="224"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-225" data-line-number="225"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-226" data-line-number="226"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-227" data-line-number="227"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-228" data-line-number="228"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-229" data-line-number="229"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-230" data-line-number="230"><span class="co">#&gt; observered property:  Luminance </span></a>
+<a class="sourceLine" id="cb10-231" data-line-number="231"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-232" data-line-number="232"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-233" data-line-number="233"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-234" data-line-number="234"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-235" data-line-number="235"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-236" data-line-number="236"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-237" data-line-number="237"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-238" data-line-number="238"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-239" data-line-number="239"><span class="co">#&gt; observered property:  RainfallAccumulated </span></a>
+<a class="sourceLine" id="cb10-240" data-line-number="240"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-241" data-line-number="241"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-242" data-line-number="242"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-243" data-line-number="243"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-244" data-line-number="244"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-245" data-line-number="245"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-246" data-line-number="246"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-247" data-line-number="247"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-248" data-line-number="248"><span class="co">#&gt; observered property:  Sunshine </span></a>
+<a class="sourceLine" id="cb10-249" data-line-number="249"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-250" data-line-number="250"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-251" data-line-number="251"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-252" data-line-number="252"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-253" data-line-number="253"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-254" data-line-number="254"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-255" data-line-number="255"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-256" data-line-number="256"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-257" data-line-number="257"><span class="co">#&gt; observered property:  WindDirection </span></a>
+<a class="sourceLine" id="cb10-258" data-line-number="258"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-259" data-line-number="259"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-260" data-line-number="260"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-261" data-line-number="261"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-262" data-line-number="262"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-263" data-line-number="263"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-264" data-line-number="264"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-265" data-line-number="265"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-266" data-line-number="266"><span class="co">#&gt; observered property:  WindSpeed </span></a>
+<a class="sourceLine" id="cb10-267" data-line-number="267"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-268" data-line-number="268"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-269" data-line-number="269"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-270" data-line-number="270"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-271" data-line-number="271"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-272" data-line-number="272"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-273" data-line-number="273"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-274" data-line-number="274"><span class="co">#&gt; temporal value reference:  NA Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  ws2500 </span></a>
+<a class="sourceLine" id="cb10-275" data-line-number="275"><span class="co">#&gt; observered property:  Windchill </span></a>
+<a class="sourceLine" id="cb10-276" data-line-number="276"><span class="co">#&gt; responseFormat(s):  text/xml;subtype=&quot;om/1.0.0&quot; , responseMode(s):  NA </span></a>
+<a class="sourceLine" id="cb10-277" data-line-number="277"><span class="co">#&gt; procedure(s) ws2500 </span></a>
+<a class="sourceLine" id="cb10-278" data-line-number="278"><span class="co">#&gt;  feature(s) of interest  </span></a>
+<a class="sourceLine" id="cb10-279" data-line-number="279"><span class="co">#&gt;  event time:   </span></a>
+<a class="sourceLine" id="cb10-280" data-line-number="280"><span class="co">#&gt;  result:  NULL </span></a>
+<a class="sourceLine" id="cb10-281" data-line-number="281"><span class="co">#&gt; srsName:  NA </span></a>
+<a class="sourceLine" id="cb10-282" data-line-number="282"><span class="co">#&gt; resultModel(s):  NA </span></a>
+<a class="sourceLine" id="cb10-283" data-line-number="283"><span class="co">#&gt; temporal value reference:  NA </span></a>
+<a class="sourceLine" id="cb10-284" data-line-number="284"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] mandatory elements:  service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill </span></a>
+<a class="sourceLine" id="cb10-285" data-line-number="285"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] Adding response format  text/xml;subtype=&quot;om/1.0.0&quot; </span></a>
+<a class="sourceLine" id="cb10-286" data-line-number="286"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] Adding procedures  ws2500 </span></a>
+<a class="sourceLine" id="cb10-287" data-line-number="287"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] optional elements:  &amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 </span></a>
+<a class="sourceLine" id="cb10-288" data-line-number="288"><span class="co">#&gt; [.sosEncodeRequestKVPGetObservation_1.0.0] Finished KVP string creation:</span></a>
+<a class="sourceLine" id="cb10-289" data-line-number="289"><span class="co">#&gt;  service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill&amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 </span></a>
+<a class="sourceLine" id="cb10-290" data-line-number="290"><span class="co">#&gt; [.sosRequest_1.0.0] Using DCP from operation description.</span></a>
+<a class="sourceLine" id="cb10-291" data-line-number="291"><span class="co">#&gt; [.sosFilterDCPs] Applying pattern * to http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp? </span></a>
+<a class="sourceLine" id="cb10-292" data-line-number="292"><span class="co">#&gt; [.sosFilterDCPs] Filtered from</span></a>
+<a class="sourceLine" id="cb10-293" data-line-number="293"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp? </span></a>
+<a class="sourceLine" id="cb10-294" data-line-number="294"><span class="co">#&gt;  to</span></a>
+<a class="sourceLine" id="cb10-295" data-line-number="295"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?</span></a>
+<a class="sourceLine" id="cb10-296" data-line-number="296"><span class="co">#&gt; Warning in .sosRequest_1.0.0(sos = sos, request = request, verbose =</span></a>
+<a class="sourceLine" id="cb10-297" data-line-number="297"><span class="co">#&gt; verbose, : Given url already contains a '?', appending arguments!</span></a>
+<a class="sourceLine" id="cb10-298" data-line-number="298"><span class="co">#&gt; [.sosRequest_1.0.0] GET!</span></a>
+<a class="sourceLine" id="cb10-299" data-line-number="299"><span class="co">#&gt; [.sosRequest_1.0.0] REQUEST:</span></a>
+<a class="sourceLine" id="cb10-300" data-line-number="300"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&amp;request=GetObservation&amp;version=1.0.0&amp;offering=ws2500&amp;observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,Humidity,Luminance,RainfallAccumulated,Sunshine,WindDirection,WindSpeed,Windchill&amp;responseFormat=text/xml;subtype%3D&quot;om/1.0.0&quot;&amp;procedure=ws2500 </span></a>
+<a class="sourceLine" id="cb10-301" data-line-number="301"><span class="co">#&gt; [.sosRequest_1.0.0] Do request...</span></a>
+<a class="sourceLine" id="cb10-302" data-line-number="302"><span class="co">#&gt; [.sosRequest_1.0.0] ... done.</span></a>
+<a class="sourceLine" id="cb10-303" data-line-number="303"><span class="co">#&gt; [.sosRequest_1.0.0] RESPONSE:</span></a>
+<a class="sourceLine" id="cb10-304" data-line-number="304"><span class="co">#&gt; [1] &quot;&quot;</span></a>
+<a class="sourceLine" id="cb10-305" data-line-number="305"><span class="co">#&gt; [sos4R] Received response (size: 112 bytes), parsing ...</span></a>
+<a class="sourceLine" id="cb10-306" data-line-number="306"><span class="co">#&gt; [.getObservation_1.0.0] Content-Type:</span></a>
+<a class="sourceLine" id="cb10-307" data-line-number="307"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb10-308" data-line-number="308"><span class="co">#&gt; observedProperty = observedProperty, : Response string has length 0 .</span></a>
+<a class="sourceLine" id="cb10-309" data-line-number="309"><span class="co">#&gt; Please re-check query parameters.</span></a>
+<a class="sourceLine" id="cb10-310" data-line-number="310"><span class="co">#&gt; [.getObservation_1.0.0] Did NOT get XML string as response, trying to parse with text/xml;subtype=&quot;om/1.0.0&quot; </span></a>
+<a class="sourceLine" id="cb10-311" data-line-number="311"><span class="co">#&gt; [.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response string: </span></a>
+<a class="sourceLine" id="cb10-312" data-line-number="312"><span class="co">#&gt; ' '</span></a>
+<a class="sourceLine" id="cb10-313" data-line-number="313"><span class="co">#&gt; [.getObservation_1.0.0] Content-Type:</span></a>
+<a class="sourceLine" id="cb10-314" data-line-number="314"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb10-315" data-line-number="315"><span class="co">#&gt; observedProperty = observedProperty, : Unknown response format!</span></a>
+<a class="sourceLine" id="cb10-316" data-line-number="316"><span class="co">#&gt; Warning in .getObservation_1.0.0(sos = sos, offeringId = .offeringId,</span></a>
+<a class="sourceLine" id="cb10-317" data-line-number="317"><span class="co">#&gt; observedProperty = observedProperty, : File name is NULL, could not save</span></a>
+<a class="sourceLine" id="cb10-318" data-line-number="318"><span class="co">#&gt; document!</span></a>
+<a class="sourceLine" id="cb10-319" data-line-number="319"><span class="co">#&gt; [1] &quot;&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">verboseSOS &lt;-<span class="st"> </span><span class="kw">SOS</span>(<span class="kw">sosUrl</span>(mySOS),</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">                  <span class="dt">verboseOutput =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">                  <span class="dt">binding =</span> <span class="kw">sosBinding</span>(mySOS),</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">                  <span class="dt">dcpFilter =</span> mySOS<span class="op">@</span>dcpFilter)</a></code></pre></div>
 </div>
 <div id="support" class="section level2">
 <h2>Support</h2>
