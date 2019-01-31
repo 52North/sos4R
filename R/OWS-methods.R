@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
 #                                                                              #
 ################################################################################
 
@@ -66,7 +66,7 @@ OwsGetCapabilities <- function(
 }
 
 OwsCapabilities <- function(
-  version, 
+  version,
   updateSequence = NA,
   owsVersion = sosDefaultGetCapOwsVersion,
   identification = NULL,
@@ -94,7 +94,7 @@ OwsCapabilities <- function(
     new("OwsCapabilities",
         version = version, updateSequence = updateSequence,
         owsVersion = owsVersion)
-  }	
+  }
 }
 
 OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
@@ -139,7 +139,7 @@ OwsExceptionReport <- function(version, lang = as.character(NA),
 OwsException <- function(exceptionCode, exceptionText = c(),
                          locator = as.character(NA)) {
   new("OwsException", exceptionCode = exceptionCode,
-      exceptionText = exceptionText, 
+      exceptionText = exceptionText,
       locator = locator)
 }
 
@@ -160,9 +160,9 @@ setMethod(f = "checkRequest",
                                 operation = "OwsGetCapabilities_1.1.0",
                                 verbose = "logical"),
           def = function(service, operation, verbose) {
-            
+
             # TODO implement checkRequest for OwsGetCapabilities
-            
+
             return(TRUE)
           })
 setMethod(f = "checkRequest",
@@ -170,9 +170,9 @@ setMethod(f = "checkRequest",
                                 operation = "OwsGetCapabilities_2.0.0",
                                 verbose = "logical"),
           def = function(service, operation, verbose) {
-            
+
             # TODO implement checkRequest for OwsGetCapabilities
-            
+
             return(TRUE)
           })
 
@@ -181,7 +181,7 @@ setMethod(f = "checkRequest",
 # helper methods
 #
 
-# 
+#
 # to add (possible) multiple values in kvp
 #
 .kvpKeyAndValues <- function(key, values) {
@@ -199,7 +199,7 @@ setMethod(f = "checkRequest",
 # Method to excape characters within values (!) of a parameter. This function
 # cannot be called on the whole request string!
 #
-# See http://www.ietf.org/rfc/rfc2396.txt and 
+# See http://www.ietf.org/rfc/rfc2396.txt and
 # http://www.oostethys.org/best-practices/best-practices-get and
 # http://www.opengeospatial.org/standards/common (Section 11.3)
 # and maybe also http://www.blooberry.com/indexdot/html/topics/urlencoding.htm
@@ -240,9 +240,9 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
     "request",
     .kvpEscapeSpecialCharacters(x = obj@request),
     sep = "=")
-  
+
   .kvpString <- paste(.service, .request, sep = "&")
-  
+
   return(.kvpString)
 }
 
@@ -252,33 +252,33 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_1.1.0",
           })
 .sosEncodeRequestKVPGetCapabilities_1.1.0 <- function(obj, verbose = FALSE) {
   .mandatory <- .sosEncodeRequestKVPGetCapabilities(obj, verbose)
-  
+
   .optionals = ""
   if( !is.na(obj@acceptVersions)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("acceptVersions",
                                                      obj@acceptVersions), sep = "&")
   }
-  
+
   if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("sections",
                                                      obj@sections), sep = "&")
   }
-  
+
   if( !is.na(obj@updateSequence)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("updateSequence",
                                                      obj@updateSequence), sep = "&")
   }
-  
+
   if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("acceptFormats",
                                                      obj@acceptFormats), sep = "&")
   }
-  
+
   .kvpString <- paste(.mandatory, .optionals, sep = "")
-  
+
   if(verbose) cat("[.sosEncodeRequestKVPGetCapabilities_1.1.0] done: ",
                   .kvpString, "\n")
-  
+
   return(.kvpString)
 }
 
@@ -288,27 +288,27 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
           })
 .sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
   .kvpString <- .sosEncodeRequestKVPGetCapabilities_1.1.0(obj)
-  
+
   if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
     .kvpString <- paste(.kvpString, .kvpKeyAndValues("acceptLanguages",
                                                      obj@acceptLanguages), sep = "&")
   }
-  
+
   if(verbose) cat("[.sosEncodeRequestKVPGetCapabilities_2.0.0] done: ",
                   .kvpString, "\n")
-  
+
   return(.kvpString)
 }
 
 ################################################################################
 # XML encoding
 #
-setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0", 
+setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
           function(obj, sos, verbose = FALSE) {
             if(verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
             }
-            
+
             return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
           }
 )
@@ -319,7 +319,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
                                               .sos100_NamespaceDefinitionsGetCap),
                      attrs=c(.sos100_xsiSchemaLocationAttribute,
                              service=obj@service))
-  
+
   # optional:
   if( !is.na(obj@acceptVersions)) {
     .acceptVersions <- xmlNode(name = "AcceptVersions",
@@ -328,18 +328,18 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
       obj@acceptVersions, "xmlNode", name="ows:Version")
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
   }
-  
+
   if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
     .sections <- xmlNode("ows:Sections")
     .sections$children <- lapply(obj@sections, "xmlNode", name="Section",
                                  namespace = owsNamespacePrefix)
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
   }
-  
+
   if( !is.na(obj@updateSequence)) {
     .xmlDoc <- addAttributes(.xmlDoc, updateSequence = obj@updateSequence)
   }
-  
+
   if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
     .acceptFormats <- xmlNode(name = "AcceptFormats",
                               namespace = owsNamespacePrefix)
@@ -347,19 +347,19 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
       obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
   }
-  
+
   return(.xmlDoc)
 }
 
 #
 #
 #
-setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0", 
+setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
           function(obj, sos, verbose = FALSE) {
             if(verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
             }
-            
+
             return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
           }
 )
@@ -370,7 +370,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
                                               .sos100_NamespaceDefinitionsGetCap),
                      attrs=c(.sos100_xsiSchemaLocationAttribute,
                              service=obj@service))
-  
+
   # optional:
   if( !is.na(obj@acceptVersions)) {
     .acceptVersions <- xmlNode(name = "AcceptVersions",
@@ -379,18 +379,18 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
       obj@acceptVersions, "xmlNode", name = "ows:Version")
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
   }
-  
+
   if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
     .sections <- xmlNode("ows:Sections")
     .sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
                                  namespace = owsNamespacePrefix)
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
   }
-  
+
   if( !is.na(obj@updateSequence)) {
     .xmlDoc <- addAttributes(.xmlDoc, updateSequence = obj@updateSequence)
   }
-  
+
   if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
     .acceptFormats <- xmlNode(name = "AcceptFormats",
                               namespace = owsNamespacePrefix)
@@ -398,7 +398,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
       obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
   }
-  
+
   if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
     .acceptLanguages <- xmlNode(name = "AcceptLanguages",
                                 namespace = owsNamespacePrefix)
@@ -406,19 +406,19 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
       obj@acceptLanguages, "xmlNode", name="ows:Language")
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptLanguages))
   }
-  
+
   return(.xmlDoc)
 }
 
 
 ################################################################################
 # SOAP encoding
-setMethod("encodeRequestSOAP", "OwsGetCapabilities", 
+setMethod("encodeRequestSOAP", "OwsGetCapabilities",
           function(obj, sos, verbose = FALSE) {
             if(verbose) {
               cat("ENCODE SOAP ", class(obj), "\n")
             }
-            
+
             stop("[encodeRequestSOAP] SOAP functionality not implemented yet...")
           }
 )
