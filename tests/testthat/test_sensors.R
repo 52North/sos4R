@@ -24,22 +24,22 @@ test_that("output format is encoded correctly for KVP", {
     ds <- SosDescribeSensor(service = sosService, version = testsos@version, procedure = sosProcedures(testsos)[[1]],
                             outputFormat = of)
     url <- encodeRequestKVP(ds, testsos) # fowards to .sosEncodeRequestKVPDescribeSensor_1.0.0
-    expect_that(toString(url), matches("text/xml;%20subtype%3D\"sensorML/1.0.1/profiles/ioos_sos/1.0\""))
+    expect_that(toString(url), matches("text%2Fxml%3B%20subtype%3D%22sensorML%2F1.0.1%2Fprofiles%2Fioos_sos%2F1.0%22"))
     
     # test different quotation variants and spaces
     ds <- SosDescribeSensor(service = sosService, version = testsos@version, procedure = sosProcedures(testsos)[[1]],
                             outputFormat = 'text/xml;subtype="sensorML/1.0.1"')
     url <- encodeRequestKVP(ds, testsos)
-    expect_that(toString(url), matches("text/xml;subtype%3D\"sensorML/1.0.1\""))
+    expect_that(toString(url), matches("text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22"))
 
     ds <- SosDescribeSensor(service = sosService, version = testsos@version, procedure = sosProcedures(testsos)[[1]],
                         outputFormat = "text/xml;subtype=\"sensorML/1.0.1\"")
     url <- encodeRequestKVP(ds, testsos)
-    expect_that(toString(url), matches("text/xml;subtype%3D\"sensorML/1.0.1\""))
+    expect_that(toString(url), matches("text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22"))
 
     ds <- SosDescribeSensor(service = sosService, version = testsos@version, procedure = sosProcedures(testsos)[[1]],
                         outputFormat = "text/xml; subtype=\"sensorML/1.0.1\"")
     url <- encodeRequestKVP(ds, testsos)
-    expect_that(toString(url), matches("text/xml;%20subtype%3D\"sensorML/1.0.1\""))
+    expect_that(toString(url), matches("text%2Fxml%3B%20subtype%3D%22sensorML%2F1.0.1%22"))
 
 })

@@ -7,7 +7,7 @@ Authors@R: c(person(given = "Daniel", family = "Nuest", role = c("cre", "aut"),
 	person("Edzer", "Pebesma", role = "ctb"))
 Author: Daniel Nuest [cre, aut]
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 2.15.0), methods, XML (>= 3.95), RCurl (>= 1.95), sp, graphics
+Depends: R (>= 2.15.0), methods, XML (>= 3.95), RCurl (>= 1.95), sp, graphics, httr, stringr
 Suggests: spacetime (>= 1.0), gstat, maps, maptools, mapdata,
 		cshapes, xts, xtable, rgdal, testthat
 Description: A client for Sensor Observation Services (SOS) as
@@ -18,24 +18,35 @@ Description: A client for Sensor Observation Services (SOS) as
         using thematic, temporal, and spatial filtering.
 License: GPL-2
 URL: http://www.nordholmen.net/sos4r,
-		http://www.52north.org/geostatistics
+		https://52north.org/geostatistics
 Encoding: UTF-8
 LazyLoad: TRUE
 ByteCompile: TRUE
 BugReports: https://github.com/52North/sos4R/issues
 Collate:
 	Constants.R
+	R-Helper.R
 	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
-	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SML.R
-	Generic-methods.R OWS-methods.R
-	OWS-methods-parsing.R SOS-methods-parsing.R OM-methods.R
-	OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R SA-methods.R
-	GML-methods.R SWE-methods.R SML-methods.R GML-methods-parsing.R
-	SA-methods-parsing.R SWE-methods-parsing.R OGC-methods.R 
-	SOS-methods-accessor.R PrintShowStructureSummmary-methods.R
-	SOS-methods-util.R SOS-methods.R SOS-methods-plotting.R
-	SOS-methods-coercion.R SML-methods-util.R SML-methods-coercion.R
-	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R
-	WML_200-methods-parsing.R WML_200-methods.R SAMS-methods.R SAMS-methods-parsing.R
+	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
+	Generic-methods.R
+	OWS-methods.R OWS-methods-parsing.R
+	SOS-methods-parsing.R
+	OM-methods.R OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R
+	SA-methods.R
+	GML-methods.R
+	SWE-methods.R
+	SML-methods.R
+	GML-methods-parsing.R
+	SA-methods-parsing.R
+	SWE-methods-parsing.R
+	OGC-methods.R
+	SOS-methods-accessor.R
+	PrintShowStructureSummmary-methods.R
+	SOS-methods-util.R
+	SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
+	SML-methods-util.R SML-methods-coercion.R
+	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_methods-gda.R
+	WML_200-methods-parsing.R WML_200-methods.R
+	SAMS-methods-parsing.R
 	Defaults.R
 

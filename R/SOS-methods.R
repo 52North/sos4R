@@ -36,7 +36,8 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 dataFieldConverters = SosDataFieldConvertingFunctions(),
                 curlOptions = list(),
                 curlHandle = getCurlHandle(),
-                timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, 
+                timeFormat = sosDefaultTimeFormat,
+                verboseOutput = FALSE,
                 switchCoordinates = FALSE,
                 useDCPs = TRUE,
                 dcpFilter = SosDefaultDCPs(),
@@ -315,7 +316,7 @@ SosGetObservationById <- function(
           .dcp, "\n")
     
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
-      warning("Given url already contains a '?', appending arguments!")
+      if (verbose) cat("Given url already contains a '?', appending arguments!\n")
       .url = paste0(.dcp, .encodedRequest)
     }
     else .url = paste(.dcp, .encodedRequest, sep = "?")
@@ -326,7 +327,7 @@ SosGetObservationById <- function(
       if(verbose)
         cat("[.sosRequest_1.0.0] adding extra KVP parameters:\n\t",
             toString(.kvps))
-      
+
       .kvpsString <- .encodeAdditionalKVPs(.kvps)
       .url <- paste(.url, .kvpsString, sep = "&")
     }
@@ -376,22 +377,17 @@ SosGetObservationById <- function(
     
     .requestString <- toString(.encodedRequest)
     
-    # using 'POST' for application/x-www-form-urlencoded content
+    # using 'POST' for application/xml content
     if(verbose) cat("[.sosRequest_1.0.0] Do request...")
     
-    .response <- postForm(uri = .dcp,
-                          request = .requestString,
-                          style = "POST", .opts = sos@curlOptions,
-                          curl = sos@curlHandle,
-                          .encoding = sosDefaultCharacterEncoding)
+    .response <- POST(url = .dcp,
+                      content_type_xml(),
+                      accept_xml(),
+                      body = .requestString )
     
-    # 		# FIXME this is a hack to get the package working again
-    # 				.response <- postForm(uri = .dcp,
-    # 						request = .requestString,
-    # 						style = "POST",
-    # 						#.opts = sos@curlOptions,
-    # 						#curl = sos@curlHandle,
-    # 						.encoding = sosDefaultCharacterEncoding)
+    stop_for_status(.response, "sending POST request")
+
+    .response <- content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
     
     if(verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
@@ -764,9 +760,10 @@ setMethod(f = "getObservationById",
   
   .responseString = sosRequest(sos = sos, request = .go,
                                verbose = verbose, inspect = inspect)
-  
-  cat("[sos4R] Received response (size:", object.size(.responseString),
+  if(verbose) {
+    cat("[sos4R] Received response (size:", object.size(.responseString),
       "bytes), parsing ...\n")
+  }
   
   # responseFormat starts with text/xml OR the response string is XML content,
   # for example an exeption (which is xml even if request wants something else
@@ -1072,16 +1069,20 @@ setMethod("encodeRequestKVP", "SosDescribeSensor",
             }
           }
 )
+
+.kvpBuildRequestBase <- function(sos, operation = sosGetCapabilitiesName) {
+  paste(
+    paste("service", .kvpEscapeSpecialCharacters(x = sosService), sep = "="),
+    paste("version", .kvpEscapeSpecialCharacters(x = sos@version), sep = "="),
+    paste("request", .kvpEscapeSpecialCharacters(x = operation), sep = "="),
+    sep = "&")
+}
+
 .sosEncodeRequestKVPDescribeSensor_1.0.0 <- function(obj, sos,
                                                      verbose = FALSE) {
   # mandatory:
-  .service <- paste("service",
-                    .kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-  .request <- paste("request" , sosDescribeSensorName, sep = "=")
-  .version <- paste("version", 
-                    .kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
-  .procedure <- paste("procedure",
-                      .kvpEscapeSpecialCharacters(x = obj@procedure), sep = "=")
+  .requestBase <- .kvpBuildRequestBase(sos, sosDescribeSensorName)
+  .procedure <- paste("procedure", .kvpEscapeSpecialCharacters(x = obj@procedure), sep = "=")
   .format <- paste(
     "outputFormat",
     .kvpEscapeSpecialCharacters(x = gsub(obj@outputFormat,
@@ -1089,7 +1090,7 @@ setMethod("encodeRequestKVP", "SosDescribeSensor",
                                          replacement = '"')),
     sep = "=")
   
-  .kvpString <- paste(.service, .request, .version, .procedure,
+  .kvpString <- paste(.requestBase, .procedure,
                       .format, sep = "&")
   
   if(verbose)
@@ -1118,17 +1119,13 @@ setMethod("encodeRequestKVP", "SosGetObservation",
                   toString(obj), "\n")
   
   # required:
-  .request <- paste(sosKVPParamNameRequest, sosGetObservationName, sep = "=")
-  .service <- paste(sosKVPParamNameService,
-                    .kvpEscapeSpecialCharacters(x = obj@service), sep = "=")
-  .version <- paste(sosKVPParamNameVersion,
-                    .kvpEscapeSpecialCharacters(x = obj@version), sep = "=")
+  .requestBase <- .kvpBuildRequestBase(sos, sosGetObservationName)
   .offering <- paste(sosKVPParamNameOffering,
                      .kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
   .observedProperty <- .kvpKeyAndValues(sosKVPParamNameObsProp, 
                                         obj@observedProperty)
   
-  .mandatory <- paste(.service, .request, .version, .offering,
+  .mandatory <- paste(.requestBase, .offering,
                       .observedProperty, sep = "&")
   
   if(verbose) cat("[.sosEncodeRequestKVPGetObservation_1.0.0]",
@@ -1260,9 +1257,13 @@ setMethod("encodeRequestXML", "SosGetObservation",
             
             if(obj@version == sos100_version) {
               return(.sosEncodeRequestXMLGetObservation_1.0.0(obj = obj,
-                                                              sos = sos, verbose = verbose))		
+                                                              sos = sos,
+                                                              verbose = verbose))
             }
-            else {
+            else if (obj@version == sos200_version) {
+              stop(paste("XML request encoding for SOS 2.0 GetObservation",
+                         " not implemented. Use KVP binding if possible."))
+            } else {
               stop("Version not supported!")
             }
           }
@@ -1483,9 +1484,12 @@ setMethod("encodeRequestSOAP", "SosGetObservationById",
 )
 
 
-################################################################################
-# encoding functions
-
+#
+# encoding functions ----
+#
+#
+# encodeXML(SosEventTime) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "SosEventTime", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
@@ -1509,6 +1513,9 @@ setMethod(f = "encodeXML",
             }
           }
 )
+#
+# encodeXML(SosEventTimeLatest) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
@@ -1537,7 +1544,9 @@ setMethod(f = "encodeXML",
             return(.eventTime)
           }
 )
-
+#
+# encodeXML(SosFeatureOfInterest) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "SosFeatureOfInterest", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
@@ -1565,6 +1574,8 @@ setMethod(f = "encodeXML",
 )
 
 #
+# encodeXML(POSIXt, SOS) ----
+# 
 # to make just the time encoding interchangeable by users
 #
 setMethod(f = "encodeXML",
@@ -1583,7 +1594,7 @@ setMethod(f = "encodeXML",
 )
 
 #
-# 
+# encodeKVP(SosEventTime) ----
 #
 setMethod(f = "encodeKVP",
           signature = signature(obj = "SosEventTime", sos = "SOS"),
@@ -1592,14 +1603,15 @@ setMethod(f = "encodeKVP",
               cat("ENCODE KVP ", class(obj), "\n")
             }
             
-            .temporalOpsKVP <- encodeKVP(obj = obj@temporalOps, sos = sos,
+            .temporalOpsKVP <- encodeKVP(obj = obj@temporalOps,
+                                         sos = sos,
                                          verbose = verbose)
             return(.temporalOpsKVP)
           }
 )
 
 #
-# 
+# encodeKVP(SosEventTimeLatest) ----
 #
 setMethod(f = "encodeKVP",
           signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
@@ -1613,6 +1625,9 @@ setMethod(f = "encodeKVP",
           }
 )
 
+#
+# encodeKVP(POSIXt, SOS) ----
+#
 #
 # to make just the time encoding interchangeable by users
 #
@@ -1632,7 +1647,8 @@ setMethod(f = "encodeKVP",
 )
 
 
-################################################################################
+#
+# checkRequest(SosDescribeSensor) ----
 #
 setMethod(f = "checkRequest",
           signature = signature(service = "SOS", operation = "SosDescribeSensor",
@@ -1693,7 +1709,9 @@ setMethod(f = "checkRequest",
             
             return(.procContained && .oFSupported && .bindingSupported)
           })
-
+#
+# checkRequest(SosGetObservation) ----
+#
 setMethod(f = "checkRequest",
           signature = signature(service = "SOS", operation = "SosGetObservation",
                                 verbose = "logical"),

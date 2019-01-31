@@ -1,5 +1,28 @@
 # sos4R developer documentation
 
+## Requirements
+
+* **System packages (e.g. ubuntu 18.04)**
+    * r-base-dev
+    * libxml2-dev
+    * libgdal1-dev
+    * libproj-dev
+    * libgeos-dev
+    * texinfo
+    * texinfo-doc-nonfree
+    * texlive
+    * texlive-base
+    * texlive-fonts-recommended
+    * texlive-fonts-recommended-doc
+    * texlive-generic-recommended
+    * texlive-latex-base
+    * texlive-latex-base-doc
+    * texlive-latex-extra
+    * texlive-latex-recommended-doc
+    * texlive-pstricks
+* **R packages** (see fields Depends and Suggests in `DESCRIPTION`)
+
+
 ## Package structure
 
 sos4R follows the regular R extension package structure. General documentation about R package development can be found at the following two websites.
@@ -39,7 +62,7 @@ In addition to the regular directories, the ``/sandbox`` folder contains a wild 
 
 ## Building the vignette locally
 
-To build the vignette locally, you can the following calls on the R command line:
+To build the vignette locally, you can execute the following calls on the R command line:
 
 ```r
 setwd("./vignettes")

@@ -148,7 +148,7 @@ setClass("SosContents",
 setClassUnion(name = "SosContentsOrNULL", members = c("SosContents", "NULL"))
 
 #
-#
+# SosEventTime ----
 #
 setClass("SosEventTime",
          representation(temporalOps = "OgcBinaryTemporalOp"),
@@ -160,6 +160,23 @@ setClass("SosEventTime",
          }
 )
 
+.print.SosEventTime <- function(x, ...) {
+  cat(.toString.SosEventTime(x, ...), "\n")
+  invisible(x)
+}
+
+.toString.SosEventTime <- function(x, ...) {
+  paste("Object of class SosEventTime:\n\t",
+        class(x@temporalOps),": ",
+        toString(x@temporalOps@time), sep = "")
+}
+
+setMethod("print", "SosEventTime", function(x, ...) .print.SosEventTime(x, ...))
+setMethod("show", "SosEventTime", function(x) .print.SosEventTime(x))
+setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
+
+#
+# SosEventTimeLatest ----
 #
 # class needed for the non-standard request for latest value
 #
@@ -173,8 +190,19 @@ setClass("SosEventTimeLatest",
          }
 )
 
+
+.toString.SosEventTimeLatest <- function(x, ...) {
+  paste("Object of class SosEventTimeLatest; temporalOps value:",
+        x@temporalOps)
+}
+
+.print.SosEventTimeLatest <- function(x, ...) {
+  cat(.toString.SosEventTimeLatest(x, ...), "\n")
+  invisible(x)
+}
+
 #
-# 
+# SosFeatureOfInterest ----
 #
 setClass("SosFeatureOfInterest",
          representation(
@@ -184,9 +212,11 @@ setClass("SosFeatureOfInterest",
            objectIDs = list(NA),
            spatialOps = NULL),
          validity = function(object) {
-           #print("Entering validation: GetObservationById")
-           # TODO implement validity function
+           #print("Entering validation: SosFeatureOfInterest")
            # one of objectIDs or spatialOps has to be set
+           if(length(object@objectIDs) < 1 && is.null(object@spatialOps)) {
+             stop("At least one objectID or one spatialOps required")
+           }
            return(TRUE)
          }
 )

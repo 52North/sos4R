@@ -87,7 +87,7 @@ parsePoint <- function(obj, sos) {
 #
 parseTimeInstant <- function(obj, format) {
   .timePosXML <- .filterXmlChildren(node = obj, 
-                                    childrenName = gmlTimePositionName, includeNamed = TRUE)[[1]]
+                                    xmlTagName = gmlTimePositionName, includeNamed = TRUE)[[1]]
   
   .timePos <- parseTimePosition(obj = .timePosXML,
                                 format = format)
@@ -225,7 +225,7 @@ parseTimeGeometricPrimitiveFromParent <- function(obj, format) {
 #
 parseFeatureCollection <- function(obj, sos) {
   .members <- .filterXmlChildren(node = obj,
-                                 childrenName = gmlFeatureMemberName)
+                                 xmlTagName = gmlFeatureMemberName)
   
   .id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
   

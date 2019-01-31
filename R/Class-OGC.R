@@ -97,11 +97,11 @@ setClass("TM_Equals",
 )
 
 
-################################################################################
+#
 # SPATIAL
-
 #
 #
+# OgcSpatialOps ----
 #
 setClass("OgcSpatialOps",
          contains = c("VIRTUAL"),
