@@ -195,10 +195,8 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   .responseString = sosRequest(sos = sos, request = .gfoi,
                                verbose = verbose, inspect = inspect)
 
-  if(verbose) {
-    cat("[sos4R] Received response (size:", object.size(.responseString),
+  if(verbose) cat("[sos4R] Received response (size:", object.size(.responseString),
       "bytes), parsing ...\n")
-  }
 
   # responseFormat starts with text/xml OR the response string is XML content,
   # for example an exeption (which is xml even if request wants something else)
@@ -361,8 +359,8 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   .responseString = sosRequest(sos = sos, request = .go,
                                verbose = verbose, inspect = inspect)
 
-  cat("[.getObservation_2.0.0] Received response (size:", object.size(.responseString),
-      "bytes), parsing ...\n")
+  if (verbose) cat("[.getObservation_2.0.0] Received response (size:",
+                   object.size(.responseString), "bytes), parsing ...\n")
 
   # responseFormat starts with text/xml OR the response string is XML content,
   # for example an exception (which is xml even if request wants something else

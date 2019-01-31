@@ -214,12 +214,11 @@ setMethod(f = "checkRequest",
 #   (space)             %20
 #
 .kvpEscapeSpecialCharacters <- function(x) {
-  # handle S4 objects
   if (is.list(x) && length(x) == 1 && isS4(x[[1]])) {
     x <- x[[1]]
   }
   if (isS4(x)) {
-    x <- toKVPString(x)
+   stop("KVP escape not supported for S4 objects")
   }
   utils::URLencode(x, reserved = TRUE)
 }
