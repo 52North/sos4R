@@ -380,19 +380,19 @@ SosGetObservationById <- function(
           .dcp, "\n")
 
     .requestString <- toString(.encodedRequest)
-    
+
     # using 'POST' for application/xml content
     if(verbose) cat("[.sosRequest_1.0.0] Do request...")
-    
+
     .response <- POST(url = .dcp,
                       content_type_xml(),
                       accept_xml(),
                       body = .requestString )
-    
+
     stop_for_status(.response, "sending POST request")
 
     .response <- content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
-    
+
     if(verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
   else if(sos@binding == .sosBindingSOAP) {
@@ -1000,7 +1000,7 @@ setMethod(f = "getObservationById",
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_1.0.0",
                                 offering = "SosObservationOffering"),
-          def = function(sos, offering, observedProperty, responseFormat, srsName,
+          definition = function(sos, offering, observedProperty, responseFormat, srsName,
                          eventTime,	procedure, featureOfInterest, result, resultModel,
                          responseMode, BBOX, latest, verbose, inspect, saveOriginal) {
             .offeringId <- offering@id
@@ -1010,13 +1010,18 @@ setMethod(f = "getObservation",
             return(.getObservation_1.0.0(sos = sos, offeringId = .offeringId,
                                          observedProperty = observedProperty,
                                          responseFormat = responseFormat,
-                                         srsName = srsName, eventTime = eventTime,
+                                         srsName = srsName,
+                                         eventTime = eventTime,
                                          procedure = procedure,
                                          featureOfInterest = featureOfInterest,
-                                         result = result, resultModel = resultModel,
-                                         responseMode = responseMode, BBOX = BBOX,
-                                         latest = latest, verbose = verbose,
-                                         inspect = inspect, saveOriginal = saveOriginal))
+                                         result = result,
+                                         resultModel = resultModel,
+                                         responseMode = responseMode,
+                                         BBOX = BBOX,
+                                         latest = latest,
+                                         verbose = verbose,
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal))
           }
 )
 
@@ -1026,7 +1031,7 @@ setMethod(f = "getObservation",
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_1.0.0",
                                 offering = "character"),
-          def = function(sos, offering, observedProperty = list(), responseFormat,
+          definition = function(sos, offering, observedProperty = list(), responseFormat,
                          srsName, eventTime,	procedure, featureOfInterest, result,
                          resultModel, responseMode, BBOX, latest, verbose, inspect,
                          saveOriginal) {
@@ -1063,7 +1068,7 @@ setMethod(f = "getObservation",
 setMethod("encodeRequestKVP", "SosDescribeSensor",
           function(obj, sos, verbose = FALSE) {
 
-            if(obj@version == sos100_version) {
+            if(sos@version == sos100_version) {
               return(.sosEncodeRequestKVPDescribeSensor_1.0.0(obj = obj,
                                                               sos = sos, verbose = verbose))
             }
@@ -1092,7 +1097,7 @@ setMethod("encodeRequestKVP", "SosDescribeSensor",
                                          pattern = "&quot;",
                                          replacement = '"')),
     sep = "=")
-  
+
   .kvpString <- paste(.requestBase, .procedure,
                       .format, sep = "&")
 
@@ -1127,7 +1132,7 @@ setMethod("encodeRequestKVP", "SosGetObservation",
                      .kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
   .observedProperty <- .kvpKeyAndValues(sosKVPParamNameObsProp,
                                         obj@observedProperty)
-  
+
   .mandatory <- paste(.requestBase, .offering,
                       .observedProperty, sep = "&")
 
@@ -1258,16 +1263,16 @@ setMethod("encodeRequestKVP", "SosGetObservationById",
 #
 setMethod("encodeRequestXML", "SosGetObservation",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
-            if(obj@version == sos100_version) {
+            if (sos@version == sos100_version) {
               return(.sosEncodeRequestXMLGetObservation_1.0.0(obj = obj,
                                                               sos = sos,
                                                               verbose = verbose))
             }
-            else if (obj@version == sos200_version) {
+            else if (sos@version == sos200_version) {
               stop(paste("XML request encoding for SOS 2.0 GetObservation",
                          " not implemented. Use KVP binding if possible."))
             } else {
@@ -1281,8 +1286,8 @@ setMethod("encodeRequestXML", "SosGetObservation",
                      namespace = sosNamespacePrefix,
                      namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
                                               .sos100_NamespaceDefinitionsGetObs),
-                     attrs=c(.sos100_xsiSchemaLocationAttribute, service = obj@service,
-                             version = obj@version))
+                     attrs = c(.sos100_xsiSchemaLocationAttribute, service = sos@service,
+                             version = sos@version))
 
   # required and optional are mixed - schema requires a particular order:
   .offering <- xmlNode(name = "offering", namespace = sosNamespacePrefix,
@@ -1290,7 +1295,9 @@ setMethod("encodeRequestXML", "SosGetObservation",
   .xmlDoc <- addChildren(node = .xmlDoc, .offering)
 
   if(!length(obj@eventTime) == 0) {
-    .eventTimeList <- lapply(obj@eventTime, encodeXML, sos = sos,
+    .eventTimeList <- lapply(X = obj@eventTime,
+                             FUN = sos4R::encodeXML,
+                             sos = sos,
                              verbose = verbose)
     .xmlDoc <- addChildren(node = .xmlDoc, kids = .eventTimeList,
                            append = TRUE)
@@ -1365,11 +1372,11 @@ setMethod("encodeRequestXML", "SosGetObservation",
 
 setMethod("encodeRequestXML", "SosGetObservationById",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
-            if(obj@version == sos100_version) {
+            if (sos@version == sos100_version) {
               return(.sosEncodeRequestXMLGetObservationById_1.0.0(obj = obj,
                                                                   sos = sos))
             }
@@ -1384,7 +1391,7 @@ setMethod("encodeRequestXML", "SosGetObservationById",
                      namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
                                               .sos100_NamespaceDefinitionsGetObs),
                      attrs=c(.sos100_xsiSchemaLocationAttribute,
-                             service = obj@service, version = obj@version))
+                             service = obj@service, version = sos@version))
 
   .obsId <- xmlNode(name = "ObservationId", namespace = sosNamespacePrefix,
                     obj@observationId)
@@ -1429,7 +1436,7 @@ setMethod("encodeRequestXML", "SosDescribeSensor",
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
-            if(obj@version == sos100_version) {
+            if(sos@version == sos100_version) {
               if(verbose) {
                 cat("[encodeRequestXML] encoding vor SOS 1.0.0\n")
               }
@@ -1447,7 +1454,7 @@ setMethod("encodeRequestXML", "SosDescribeSensor",
                     attrs=c(.sos100_xsiSchemaLocationAttribute,
                             service = obj@service,
                             outputFormat = obj@outputFormat,
-                            version = obj@version))
+                            version = sos@version))
 
   procedure <- xmlNode(name = "procedure", namespace = sosNamespacePrefix,
                        obj@procedure)
@@ -1461,11 +1468,11 @@ setMethod("encodeRequestXML", "SosDescribeSensor",
 #
 setMethod("encodeRequestSOAP", "SosDescribeSensor",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("ENCODE SOAP ", class(obj), "\n")
             }
 
-            if(obj@version == sos100_version) {
+            if (sos@version == sos100_version) {
               return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
             }
             else {
@@ -1475,7 +1482,7 @@ setMethod("encodeRequestSOAP", "SosDescribeSensor",
 )
 setMethod("encodeRequestSOAP", "SosGetObservation",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("ENCODE SOAP ", class(obj), "\n")
             }
             stop("Method not implemented yet!")
@@ -1483,7 +1490,7 @@ setMethod("encodeRequestSOAP", "SosGetObservation",
 )
 setMethod("encodeRequestSOAP", "SosGetObservationById",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("ENCODE SOAP ", class(obj), "\n")
             }
             stop("Method not implemented yet!")
@@ -1582,7 +1589,7 @@ setMethod(f = "encodeXML",
 
 #
 # encodeXML(POSIXt, SOS) ----
-# 
+#
 # to make just the time encoding interchangeable by users
 #
 setMethod(f = "encodeXML",
@@ -1610,7 +1617,7 @@ setMethod(f = "encodeKVP",
             if(verbose) {
               cat("ENCODE KVP ", class(obj), "\n")
             }
-            
+
             .temporalOpsKVP <- encodeKVP(obj = obj@temporalOps,
                                          sos = sos,
                                          verbose = verbose)

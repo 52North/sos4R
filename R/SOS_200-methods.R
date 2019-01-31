@@ -323,8 +323,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                                   responseFormat, srsName, eventTime,	procedure, featureOfInterest,
                                   result, resultModel, responseMode, BBOX, latest,
                                   valueReferenceTemporalFilter = sosDefaultTemporalValueReference,
-                                  verbose, inspect,
-                                  saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
+                                  verbose,
+                                  inspect,
+                                  saveOriginal,
+                                  xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
 
   .filename <- NULL
   if(!is.null(saveOriginal)) {
@@ -613,12 +615,18 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   if(latest && !is.na(eventTime))
     warning("'Latest' is set to TRUE > given eventTime is ignored!")
 
-  .go <- SosGetObservation_2.0.0(service = sosService, version = sos@version,
-                                 offering = offeringId, observedProperty = observedProperty,
-                                 responseFormat =  responseFormat, srsName = srsName,
-                                 eventTime = .eventTime, procedure = procedure,
-                                 featureOfInterest = featureOfInterest, result = result,
-                                 resultModel = resultModel, responseMode = responseMode,
+  .go <- SosGetObservation_2.0.0(service = sosService,
+                                 version = sos@version,
+                                 offering = offeringId,
+                                 observedProperty = observedProperty,
+                                 responseFormat =  responseFormat,
+                                 srsName = srsName,
+                                 eventTime = .eventTime,
+                                 procedure = procedure,
+                                 featureOfInterest = featureOfInterest,
+                                 result = result,
+                                 resultModel = resultModel,
+                                 responseMode = responseMode,
                                  BBOX = BBOX,
                                  valueReferenceTemporalFilter = valueReferenceTemporalFilter)
   if(verbose)
@@ -630,9 +638,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 # checkRequest - GetObservation ----
 #
 setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0", operation = "SosGetObservation",
+          signature = signature(service = "SOS_2.0.0",
+                                operation = "SosGetObservation",
                                 verbose = "logical"),
-          def = function(service, operation, verbose) {
+          definition = function(service, operation, verbose) {
             # check if operation is for SOS and operation is GetObservation
             if(!(operation@service == sosService &&
                  operation@request == sosGetObservationName)) {
@@ -653,9 +662,10 @@ setMethod(f = "checkRequest",
 # checkRequest - GetFeatureOfInterest ----
 #
 setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0", operation = "SosGetFeatureOfInterest_2.0.0",
+          signature = signature(service = "SOS_2.0.0",
+                                operation = "SosGetFeatureOfInterest_2.0.0",
                                 verbose = "logical"),
-          def = function(service, operation, verbose) {
+          definition = function(service, operation, verbose) {
             # check if operation is for SOS and operation is DescribeSensor
             if(!(operation@service == sosService &&
                  operation@request == sosGetFeatureOfInterestName)) {
@@ -868,7 +878,8 @@ SosGetObservation_2.0.0 <- function(
   result = NULL,
   resultModel = as.character(NA),
   responseMode = as.character(NA),
-  BBOX = as.character(NA)) {
+  BBOX = as.character(NA),
+  valueReferenceTemporalFilter = NA) {
   new("SosGetObservation_2.0.0",
       request = sosGetObservationName,
       service = service,
@@ -883,7 +894,8 @@ SosGetObservation_2.0.0 <- function(
       result = result,
       resultModel = resultModel,
       responseMode = responseMode,
-      BBOX = BBOX)
+      BBOX = BBOX,
+      valueReferenceTemporalFilter = valueReferenceTemporalFilter)
 }
 
 
