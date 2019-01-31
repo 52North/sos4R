@@ -12,7 +12,7 @@ Author: Daniel Nuest [cre, aut] (<https://orcid.org/0000-0002-0024-5046>),
   Ben Graeler [ctb] (<https://orcid.org/0000-0001-5443-4304>),
   E. H.-J. [ctb]
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 3.5.0), methods, XML (>= 3.98), RCurl (>= 1.95), sp, graphics
+Depends: R (>= 3.4.0), methods, XML (>= 3.95), RCurl (>= 1.95), sp, graphics, httr, stringr
 Suggests: 
     spacetime (>= 1.0),
     gstat,
@@ -20,10 +20,10 @@ Suggests:
     maptools,
     mapdata,
     cshapes,
-    xts,
     xtable,
-    rgdal,
+    xts,
     testthat,
+    rgdal,
     knitr,
     rmarkdown
 Description: A client for Sensor Observation Services (SOS) as
@@ -40,18 +40,29 @@ ByteCompile: TRUE
 BugReports: https://github.com/52North/sos4R/issues
 Collate:
 	Constants.R
+	R-Helper.R
 	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
-	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SML.R
-	Generic-methods.R OWS-methods.R
-	OWS-methods-parsing.R SOS-methods-parsing.R OM-methods.R
-	OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R SA-methods.R
-	GML-methods.R SWE-methods.R SML-methods.R GML-methods-parsing.R
-	SA-methods-parsing.R SWE-methods-parsing.R OGC-methods.R 
-	SOS-methods-accessor.R PrintShowStructureSummmary-methods.R
-	SOS-methods-util.R SOS-methods.R SOS-methods-plotting.R
-	SOS-methods-coercion.R SML-methods-util.R SML-methods-coercion.R
-	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R
-	WML_200-methods-parsing.R WML_200-methods.R SAMS-methods.R SAMS-methods-parsing.R
+	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
+	Generic-methods.R
+	OWS-methods.R OWS-methods-parsing.R
+	SOS-methods-parsing.R
+	OM-methods.R OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R
+	SA-methods.R
+	GML-methods.R
+	SWE-methods.R
+	SML-methods.R
+	GML-methods-parsing.R
+	SA-methods-parsing.R
+	SWE-methods-parsing.R
+	OGC-methods.R
+	SOS-methods-accessor.R
+	PrintShowStructureSummmary-methods.R
+	SOS-methods-util.R
+	SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
+	SML-methods-util.R SML-methods-coercion.R
+	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_methods-gda.R
+	WML_200-methods-parsing.R WML_200-methods.R
+	SAMS-methods-parsing.R
 	Defaults.R
 	Development.R
 RoxygenNote: 6.1.0.9000

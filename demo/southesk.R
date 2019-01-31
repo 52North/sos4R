@@ -16,7 +16,7 @@ cat("Go to the following website for details of the South Esk Hydrological Senso
 # http://external.opengis.org/twiki_public/bin/view/ClimateChallenge2009/ServiceOfferingCSIRO
 # www.csiro.au/sensorweb2/catalog/setup/ --> a catalog with the SOS urls!
 
-csiro <- SOS("http://www.csiro.au/sensorweb/CSIRO_SOS/sos")
+csiro <- SOS("http://www.csiro.au/sensorweb/CSIRO_SOS/sos", version = sos200_version)
 
 ################################################################################
 # TIME FORMAT ISSUES
@@ -38,7 +38,7 @@ strptime("1995-05-25T15:30:00+11:00", format = "%Y-%m-%dT%H:%M:%OS%z")$isdst
 #Sys.getlocale(category = "LC_TIME")
 #Sys.setlocale("LC_ALL", "English")
 #Sys.getlocale()
-#Sys.setenv(TZ="GMT") 
+#Sys.setenv(TZ="GMT")
 # All this does NOT remove the "Mitteleurop_ische Zeit" from the strftime output!!
 
 ################################################################################
@@ -51,11 +51,11 @@ csiroTimeConverter = function(x, sos) {
 }
 # works:
 #> csiroTimeConverter("2011-10-06T14:35:00+11", csiro)
-#Using adapted time parser for  2011-10-06T14:35:00+11 
+#Using adapted time parser for  2011-10-06T14:35:00+11
 #[1] "2011-10-06 05:35:00 CEST"
 
 # Ignore time zone when parsing, but use when creating output:
-strftime(strptime("1995-05-25T15:30:00+11:00", format = sosDefaultTimeFormat), 
+strftime(strptime("1995-05-25T15:30:00+11:00", format = sosDefaultTimeFormat),
 		format = paste(sosDefaultTimeFormat, "%z", sep  =""))
 # Problem: Output is "1995-05-25T15:30:00Mitteleurop_ische Sommerzeit", not numerical!
 
@@ -74,15 +74,15 @@ setMethod(f = "encodeXML",
 		signature = signature(obj = "POSIXt", sos = "SOS"),
 		def = function(obj, sos, verbose) {
 			if(verbose) cat("CSIRO encoding... ")
-			
+
 			# time zone hack!
 			.time <- obj + 11 * 60 * 60							# add 11 hours
 			.formatted <- strftime(x = .time, format = sosTimeFormat(sos))
 			.formatted <- paste(.formatted, "+11:00", sep = "")	# append 11:00
-			
+
 			if(verbose)
 				cat("Formatted ", toString(obj), " to ", .formatted, "\n")
-			
+
 			return(.formatted)
 		}
 )
@@ -150,7 +150,7 @@ title(main = paste(sosTitle(csiro), "and", sosTitle(bom)),
 		sub = paste(sosAbstract(csiro), "\n", sosAbstract(bom)))
 
 ################################################################################
-# plot one offering with high resolution background map and cities, including 
+# plot one offering with high resolution background map and cities, including
 # map axes and scale
 off <- sosOfferings(csiro)[[2]]
 library(mapdata)
@@ -192,7 +192,7 @@ rainfall.off.bom <- sosOfferings(bom)[["BOM Offering"]]
 phenomenon.bom <- as.list(unlist(sosObservedProperties(bom)))
 phenomenon.bom <- phenomenon.bom[grep(pattern = "rain", phenomenon.bom)]
 
-rainfall.obs.bom <- getObservation(sos = bom, offering = rainfall.off.bom, 
+rainfall.obs.bom <- getObservation(sos = bom, offering = rainfall.off.bom,
 		observedProperty = phenomenon.bom, verbose = TRUE,
 		eventTime = sosCreateEventTimeList(lastDay))
 rainfall.result.bom <- sosResult(rainfall.obs.bom, coordinate = TRUE)
@@ -212,7 +212,7 @@ print(paste("FOIs: ", toString(sosFeaturesOfInterest(rainfall.off.csiro))))
 
 rainfall.obs.csiro <- getObservation(sos = csiro, # verbose = TRUE,
 		offering = rainfall.off.csiro,
-		procedure = procedures.csiro, 
+		procedure = procedures.csiro,
 		observedProperty = phenomenon.csiro,
 		eventTime = sosCreateEventTimeList(lastDay))
 # at this point realized problem with parsing time (just NAs), need to fix it
@@ -221,14 +221,14 @@ rainfall.obs.csiro <- getObservation(sos = csiro, # verbose = TRUE,
 phenomenon.ht <- sosObservedProperties(rainfall.off.ht)
 phenomenon.ht <- phenomenon.ht[grep(pattern = "rain", phenomenon.ht)]
 rainfall.obs.ht <- getObservation(sos = csiro, # verbose = TRUE
-		offering = rainfall.off.ht, 
+		offering = rainfall.off.ht,
 		observedProperty = phenomenon.ht,
 		eventTime = sosCreateEventTimeList(lastDay))
 
 phenomenon.dc <- sosObservedProperties(rainfall.off.datacell)
 phenomenon.dc <- phenomenon.dc[grep(pattern = "rainfalltoday", phenomenon.dc)]
 rainfall.obs.dc <- getObservation(sos = csiro, # verbose = TRUE
-		offering = rainfall.off.datacell, 
+		offering = rainfall.off.datacell,
 		observedProperty = phenomenon.dc,
 		eventTime = sosCreateEventTimeList(lastDay))
 
@@ -286,7 +286,7 @@ rainfall.data.dc <- cbind(rainfall.data.dc, offering = c("dc"))
 #
 # Bind data frames together
 #
-rainfall.data <- rbind(rainfall.data.bom, 
+rainfall.data <- rbind(rainfall.data.bom,
 		rainfall.data.csiro,
 #		rainfall.data.ht,
 		rainfall.data.dc)
@@ -379,7 +379,7 @@ plot(kriging_result)
 # Kriging
 library("gstat")
 rainfall.grid.utm = SpatialPixels(
-		SpatialPoints(makegrid(rainfall.spdf.utm, n = 300), 
+		SpatialPoints(makegrid(rainfall.spdf.utm, n = 300),
 				proj4string = utm55))
 m <- vgm(.59, "Sph", 874, .04)
 # ordinary kriging:
@@ -392,7 +392,7 @@ spplot(x["var1.var"],  main = "ordinary kriging variance")
 
 ################################################################################
 # spacetime
-# TODO continue analysis with spacetime package or make a forecast 
+# TODO continue analysis with spacetime package or make a forecast
 # See http://robjhyndman.com/researchtips/forecast3/
 
 ###################################

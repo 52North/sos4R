@@ -28,7 +28,7 @@
 ################################################################################
 
 #
-# construction methods
+# construction methods ----
 #
 OmObservationCollection <- function(members, boundedBy) {
   new("OmObservationCollection", members = members, boundedBy = boundedBy)
@@ -61,7 +61,7 @@ OmMeasurement <- function(samplingTime, procedure, observedProperty,
 }
 
 
-################################################################################
+#
 #
 # Some problem with this function: Could not find function "getGeneric" ...
 #setMethod(f = "length", signature = signature(x = "OmObservationCollection"),
@@ -173,7 +173,8 @@ setMethod(f = "[", signature = signature(x= "OmObservationCollection",
           }
 )
 
-################################################################################
+#
+#
 #
 names.OmObservation <- function(x) {
   .name <- paste(sosProcedures(x), sosObservedProperties(x), sosFeatureIds(x),

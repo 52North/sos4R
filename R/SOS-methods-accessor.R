@@ -1157,4 +1157,3 @@ setMethod(f = "sosGetDCP",
             else return(.dcps)
           }
 )
-

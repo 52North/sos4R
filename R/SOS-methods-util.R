@@ -160,7 +160,10 @@ setMethod(f = "sosCreateEventTimeList",
 )
 
 #
+# sosCreateTime ----
+#
 # test for instance: encodeXML(sosCreateTime(sos = sos, time = "2011-01-01", operator = "TM_Equals")[[1]], sos = sos)
+#
 setMethod(f = "sosCreateTime",
           signature = signature(sos = "SOS", time = "character"),
           def = function(sos, time, operator) {

@@ -27,8 +27,8 @@
 #                                                                              #
 ################################################################################
 
-################################################################################
-# main request method
+#
+# main request method ----
 #
 .sosRequest_2.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
   # check the request for consistency with service description
@@ -76,7 +76,7 @@
       cat("[.sosRequest_2.0.0] Not using DCP from capabilities, but use ", .dcp, "\n")
 
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
-      cat("Given url already contains a '?', appending arguments!")
+      if (verbose) cat("Given url already contains a '?', appending arguments!\n")
       .url = paste0(.dcp, .encodedRequest)
     }
     else .url = paste(.dcp, .encodedRequest, sep = "?")
@@ -144,16 +144,18 @@
           .dcp, "\n")
 
     .requestString <- toString(.encodedRequest)
-
-    # using 'POST' for application/x-www-form-urlencoded content
+    
+    # using 'POST' for application/xml encoded requests
     if(verbose) cat("[.sosRequest_2.0.0] Do request...")
-
-    .response <- postForm(uri = .dcp,
-                          request = .requestString,
-                          style = "POST",
-                          .opts = sos@curlOptions,
-                          curl = sos@curlHandle,
-                          .encoding = sosDefaultCharacterEncoding)
+    
+    .response <- POST(url = .dcp,
+                      content_type_xml(),
+                      accept_xml(),
+                      body = .requestString )
+    
+    stop_for_status(.response, "sending POST request")
+    
+    .response <- content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
 
     if(verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -191,15 +193,6 @@
 
   return(.response)
 }
-
-setMethod(f = "sosRequest",
-          signature = signature(sos = "SOS_2.0.0", request = "OwsServiceOperation",
-                                verbose = "logical", inspect = "logical"),
-          def = function(sos, request, verbose, inspect) {
-            .sosRequest_2.0.0(sos = sos, request = request, verbose = verbose,
-                              inspect = inspect)
-          }
-)
 
 .getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
                                    acceptFormats, updateSequence, owsVersion,	acceptLanguages) {

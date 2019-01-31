@@ -205,8 +205,8 @@ parseElementType <- function(obj, sos, verbose = FALSE) {
   if(!is.null(.simpleDataRecord) || !is.null(.dataRecord)) {
     if(!is.null(.simpleDataRecord)) .dr <- .simpleDataRecord
     else .dr <- .dataRecord
-
-    .fields <- .filterXmlChildren(node = .dr, childrenName = sweFieldName,
+    
+    .fields <- .filterXmlChildren(node = .dr, xmlTagName = sweFieldName,
                                   includeNamed = TRUE)
 
     if(verbose) cat("[parseElementType] Got data record with",
@@ -286,8 +286,8 @@ parseField <- function(obj, sos, verbose = FALSE) {
   .field <- NULL
   .name <- xmlGetAttr(node = obj, name = "name")
   if(verbose) cat("[parseField] Parsing field description of ", .name, "\n")
-
-  .noneText <- .filterXmlChildren(node = obj, childrenName = xmlTextNodeName,
+  
+  .noneText <- .filterXmlChildren(node = obj, xmlTagName = xmlTextNodeName,
                                   includeNamed = FALSE)
   .innerField <- .noneText[[1]]
   .innerFieldName <- xmlName(.innerField)
@@ -491,8 +491,8 @@ parseLocation <- function(obj, sos, verbose = FALSE) {
 #
 #
 parseVector <- function(obj, sos, verbose = FALSE) {
-  .children <- .filterXmlChildren(node = obj, childrenName = sweCoordinateName)
-
+  .children <- .filterXmlChildren(node = obj, xmlTagName = sweCoordinateName)
+  
   .coords <- list()
   .names <- list()
   for (i in seq(1, length(.children))) {

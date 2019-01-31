@@ -64,6 +64,7 @@ SosExampleServices <- function() {
     parseGetFeatureOfInterestResponse,
     parseOM,
     parseOwsExceptionReport,
+    parseGetDataAvailabilityResponse,
     #
     parseMeasurement,
     parseObservationProperty,
@@ -99,8 +100,8 @@ SosExampleServices <- function() {
     sosGetObservationResponseName,
     sosGetFeatureOfInterestResponseName,
     sosGetObservationByIdName,
-    #sosGetFeatureOfInterestResponseName,
     owsExceptionReportName,
+    sosGetDataAvailabilityResponse,
     #
     omMeasurementName,
     omMemberName,
@@ -316,7 +317,7 @@ names(.sosDefaultFieldConverters) <- list(
 )
 
 
-################################################################################
+#
 # access methods
 #
 SosDataFieldConvertingFunctions <- function (..., include = character(0),
@@ -414,9 +415,9 @@ SosResetParsingFunctions <- function(sos) {
   return(sos)
 }
 
-################################################################################
-# other defaults
-
+#
+# other defaults ----
+#
 sosDefaultCharacterEncoding <- "UTF-8"
 sosDefaultDescribeSensorOutputFormat <- SosSupportedResponseFormats()[2]
 sosDefaultGetCapSections <- c("All")

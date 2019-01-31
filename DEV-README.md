@@ -3,6 +3,30 @@
 This file contains information for developers of the [R](http://r-project.org/) package `sos4R`.
 Documentation for users can be found in the package's vignette (see `browseVignettes("sos4R")`).
 
+## Requirements
+
+* **System packages (e.g. on Ubuntu 18.04)**
+    * r-base-dev
+    * libxml2-dev
+    * libgdal1-dev
+    * libproj-dev
+    * libgeos-dev
+    * texinfo
+    * texinfo-doc-nonfree
+    * texlive
+    * texlive-base
+    * texlive-fonts-recommended
+    * texlive-fonts-recommended-doc
+    * texlive-generic-recommended
+    * texlive-latex-base
+    * texlive-latex-base-doc
+    * texlive-latex-extra
+    * texlive-latex-recommended-doc
+    * texlive-pstricks
+* **R packages** (see fields Depends and Suggests in `DESCRIPTION`)
+
+## Package structure
+
 <!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R -->
 
 ## Contribute

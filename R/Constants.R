@@ -26,27 +26,61 @@
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-
 #
-# Constants for version 1.0.0 of SOS
+# SOS ----
 #
 sos100_version <- "1.0.0"
-sos200_version <- "2.0.0"
-
-################################################################################
-# SOS
 sosService <- "SOS"
 sosNamespacePrefix <- "sos"
-
-# Core Operations Profile:
+sosIntendedApplicationName <- "intendedApplication"
+sosTimeName <- "time"
+sosProcedureName <- "procedure"
+sosObservedPropertyName <- "observedProperty"
+sosFeatureOfInterestName <- "featureOfInterest"
+sosResultModelName <- "resultModel"
+sosResponseFormatName <- "responseFormat"
+sosResponseModeName <- "responseMode"
+sosObservationOfferingName <- "ObservationOffering"
+sosObservationOfferingListName <- "ObservationOfferingList"
+sosContentsName <- "Contents"
+sosFilterCapabilitiesName <- "Filter_Capabilities"
+sosCapabilitiesName <- "Capabilities"
+sosEventTimeName <- "eventTime"
+sosEventTimeLatestValue <- "latest"
+sosObjectIDName <- "ObjectID"
+sosResultName <- "result"
+sosResultTimeName <- "resultTime"
+sosPhenomenonTimeName <- "phenomenonTime"
+sosObservationTypeName <- "observationType"
+sosFeatureOfInterestTypeName <- "featureOfInterestType"
+sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
+sosObservedAreaName <- "observedArea"
+#
+# SOS v2.0 ----
+#
+sos200_version <- "2.0.0"
+sos200ContentsName <- "contents"
+sos200FilterCapabilitiesName = "filterCapabilities"
+sos200_emptyGetObservationResponseString <-
+  paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+         "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",
+         "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
+         "xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetObservation.xsd\"/>")
+#
+# Core Operations Profile ----
+#
 sosGetCapabilitiesName <- "GetCapabilities"
 sosDescribeSensorName <- "DescribeSensor"
 sosGetObservationName <- "GetObservation"
 sosGetObservationResponseName <- "GetObservationResponse"
-# Transaction Operations Profile
+#
+# Transaction Operations Profile ----
+#
 sosRegisterSensorName <- "RegisterSensor"
 sosInsertObservationName <- "InsertObservation"
-# Enhanced Operations Profile:
+#
+# Enhanced Operations Profile ----
+#
 sosGetObservationByIdName <- "GetObservationById"
 sosGetResultName <- "GetResult"
 sosGetFeatureOfInterestName <- "GetFeatureOfInterest"
@@ -55,6 +89,12 @@ sosDescribeFeatureTypeName <- "DescribeFeatureType"
 sosDescribeObservationTypeName <- "DescribeObservationType"
 sosDescribeResultModelName <- "DescribeResultModel"
 sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
+#
+# Hydrology Profile ----
+#
+sosGetDataAvailabilityName <- "GetDataAvailability"
+sosGetDataAvailabilityResponse <- "GetDataAvailabilityResponse"
+sosGDAMemberName <- "dataAvailabilityMember"
 
 SosSupportedOperations <- function() {
   .supported <- c(sosGetCapabilitiesName, sosDescribeSensorName, 
@@ -62,8 +102,9 @@ SosSupportedOperations <- function() {
   return(.supported)
 }
 
-###############################################################################
-# KVP parameter names
+#
+# KVP parameter names ----
+#
 sosKVPParamNameRequest <- "request"
 sosKVPParamNameService <- "service"
 sosKVPParamNameVersion <- "version"
@@ -78,8 +119,9 @@ sosKVPParamNameResultModel <- "resultModel"
 sosKVPParamNameResponseMode <- "responseMode"
 sosKVPParamNameBBOX <- "BBOX"
 
-################################################################################
-# not exported SOS
+#
+# not exported SOS ----
+#
 .sosConnectionMethodGet_Deprecated <- "GET"
 .sosBindingKVP <- "KVP"
 .sosConnectionMethodPost_Deprecated <- "POST"
@@ -145,37 +187,9 @@ SosSupportedServiceVersions <- function() {
 .sos100_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
 .sos20_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd")
 
-################################################################################
-# SOS
-sosIntendedApplicationName <- "intendedApplication"
-sosTimeName <- "time"
-sosProcedureName <- "procedure"
-sosObservedPropertyName <- "observedProperty"
-sosFeatureOfInterestName <- "featureOfInterest"
-sosResultModelName <- "resultModel"
-sosResponseFormatName <- "responseFormat"
-sosResponseModeName <- "responseMode"
-sosObservationOfferingName <- "ObservationOffering"
-sosObservationOfferingListName <- "ObservationOfferingList"
-sosContentsName <- "Contents"
-sosFilterCapabilitiesName <- "Filter_Capabilities"
-sosCapabilitiesName <- "Capabilities"
-sosEventTimeName <- "eventTime"
-sosEventTimeLatestValue <- "latest"
-sosObjectIDName <- "ObjectID"
-sosResultName <- "result"
-sosResultTimeName <- "resultTime"
-sosPhenomenonTimeName <- "phenomenonTime"
-sosObservationTypeName <- "observationType"
-sosFeatureOfInterestTypeName <- "featureOfInterestType"
-sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
-sosObservedAreaName <- "observedArea"
-sos200ContentsName <- "contents"
-sos200FilterCapabilitiesName = "filterCapabilities"
-
-
-################################################################################
-# O&M
+#
+# O&M ----
+#
 omMeasurementName <- "Measurement"
 omMemberName <- "member"
 omObservationName <- "Observation"
@@ -193,27 +207,31 @@ omGeometryObservationName <- "GeometryObservation"
 omTemporalObservationName <- "TemporalObservation"
 omComplexObservationName <- "ComplexObservation"
 
-################################################################################
-# O&M 2.0
+#
+# O&M 2.0 ----
+#
 om20OM_Observation <- "OM_Observation"
 om20ResultTypeAttributeName <- "type"
 om20ResultMeasureTypeName <- "MeasureType"
 om20PhenomenonTimeName <- "phenomenonTime"
 
-################################################################################
-# SA
+#
+# SA ----
+#
 saSamplingPointName <- "SamplingPoint"
 saSamplingSurface <- "SamplingSurface"
 saPositionName <- "position"
 saSampledFeatureName <- "sampledFeature"
 saSamplingTimeName <- "samplingTime"
 
-################################################################################
-# SAMS
+#
+# SAMS ----
+#
 samsShapeName <- "shape"
-
-################################################################################
-# GML
+samsSamplingFeatureName <- "SF_SpatialSamplingFeature"
+#
+# GML ----
+#
 gmlPosName <- "pos"
 gmlPointName <- "Point"
 gmlTimeInstantName <- "TimeInstant"
@@ -238,8 +256,9 @@ gmlTimeIntervalName <- "timeInterval"
 gmlFeatureMemberName <- "featureMember"
 gmlIdentifierName = "identifier"
 
-################################################################################
-# SWE
+#
+# SWE ----
+#
 sweCompositePhenomenonName <- "CompositePhenomenon"
 sweBaseName <- "base"
 sweComponentName <- "component"
@@ -266,20 +285,23 @@ sweLocationName <- "location"
 sweCoordinateName <- "coordinate"
 swePositionName <- "Position"
 
-################################################################################
-# SWE Service Model
+#
+# SWE Service Model ----
+#
 swesOfferingName = "offering"
 swesIdentifierName = "identifier"
 swesNameName = "name"
 swesObservablePropertyName = "observableProperty"
 swesProcedureDescriptionFormatName = "procedureDescriptionFormat"
 
-################################################################################
-# WML 2.0
+#
+# WML 2.0 ----
+#
 wmlMonitoringPointName = "MonitoringPoint"
 
-################################################################################
-# OGC
+#
+# OGC ----
+#
 ogcTempOpTMAfterName <- "TM_After"
 ogcTempOpTMBeforeName <- "TM_Before"
 ogcTempOpTMBeginsName <- "TM_Begins"
@@ -384,8 +406,9 @@ ogcLiteralName <- "Literal"
 
 smlSensorMLName <- "SensorML"
 
-################################################################################
-# OWS
+#
+# OWS ----
+#
 owsServiceIdentificationName <- "ServiceIdentification"
 owsTitleName <- "Title"
 owsAbstractName <- "Abstract"
@@ -422,7 +445,9 @@ owsServiceContactName <- "ServiceContact"
 
 kmlName <- "kml"
 
-################################################################################
+#
+#
+#
 owsNamespacePrefix <- "ows"
 owsNamespaceContext <- c(ows = "http://www.opengis.net/ows/1.1")
 .owsCodes = c(
@@ -464,8 +489,9 @@ OwsExceptionsData <- function() {
   return(.owsStandardExceptions)
 }
 
-################################################################################
-# others
+#
+# others ----
+#
 xmlInternalDocumentName <- "XMLInternalDocument"
 xmlTextNodeName <- "text"
 

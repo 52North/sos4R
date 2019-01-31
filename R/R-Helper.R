@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2016 by 52 North                                               #
+# Copyright (C) 2018 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -19,17 +19,21 @@
 # You should have received a copy of the GNU General Public License along with #
 # this program (see gpl-2.0.txt). If not, write to the Free Software           #
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
-# visit the Free Software Foundation web page, http://www.fsf.org.             #
+# visit the Free Software Foundation web page, http://www.fsf.org              #
 #                                                                              #
-# Author: Benjamin Pross (b.pross@52north.org)                                 #
-# Created: 2016-01-27                                                          #
-# Project: sos4R - visit the project web page,                                 #
-#      http://52north.org/communities/sensorweb/clients/sos4R/                 #
+# Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
+# Created: 2018-11-23                                                          #
+#                                                                              #
 ################################################################################
-
 #
-# construction methods
+# Helper function to check if the given list field is available.
 #
-SamsShape <- function(point) {
-  new("SamsShape", point = point)
+# Returns TRUE in the case of not NULL and a list with min 1 element
+#
+.isListFieldAvailable <- function(listField) {
+  !is.null(listField) &&
+    is.list(listField) &&
+    length(listField) > 0 &&
+    !length(listField) == 1 &&
+    !is.na(listField[[1]])
 }
