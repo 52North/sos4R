@@ -316,7 +316,7 @@ head(sosResult(data))
 The metadata of the observed property is also accessible.
 
 ```{r converters3f}
-attributes(sosResult(data)[["http://www.52north.org/test/observableProperty/1"]])
+attributes(sosResult(data)[[1]])
 ```
 
 Warnings may also include messages if no converter is available for a unit of measurement, for example:

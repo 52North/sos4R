@@ -1286,7 +1286,7 @@ setMethod("encodeRequestXML", "SosGetObservation",
                      namespace = sosNamespacePrefix,
                      namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
                                               .sos100_NamespaceDefinitionsGetObs),
-                     attrs = c(.sos100_xsiSchemaLocationAttribute, service = sos@service,
+                     attrs = c(.sos100_xsiSchemaLocationAttribute, service = obj@service,
                              version = sos@version))
 
   # required and optional are mixed - schema requires a particular order:

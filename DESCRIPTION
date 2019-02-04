@@ -66,5 +66,5 @@ Collate:
 	SAMS-methods-parsing.R
 	Defaults.R
 	Development.R
-RoxygenNote: 6.1.0.9000
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr

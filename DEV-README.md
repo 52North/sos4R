@@ -92,10 +92,10 @@ To build single vingettes manually you can use
 rmarkdown::render("vignettes/sos4R-vignette-01-quickstart.Rmd")
 ```
 
-You can also then move the rendered file to the docs folder:
+You can also then copy the rendered file to the docs folder:
 
 ```bash
-mv vignettes/*.html docs/
+cp vignettes/*.html docs/
 ```
 
 ------
@@ -136,7 +136,7 @@ The actual source files in the ``/R`` directory follow a naming schema:
 * `SOS-methods-plotting.R` contains plotting functions.
 * ``PrintShowStructureSummary-methods.R`` contains functions to override `print`, `str`, `summary` functions and the like; these may go in this file or also into the file where the respective class is defined.
 
-### /sandbox
+### `/sandbox`
 
 In addition to the regular directories, the ``/sandbox`` folder contains a wild list of R scripts with tests and demos etc.
 Code in this directory is not exported from the package but is used during development to test during the implementation of (new) functionality.

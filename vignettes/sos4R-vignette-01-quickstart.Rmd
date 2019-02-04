@@ -163,14 +163,18 @@ The output with these parameters enabled is too extensive to show within this do
 
 ```{r inspect}
 off.1 <- sosOfferings(mySOS)[[1]]
-getObservation(sos = mySOS, offering = off.1,
+obs.1 <- getObservation(sos = mySOS, offering = off.1,
 	procedure = sosProcedures(off.1)[[1]],
+	observedProperty = sosObservedProperties(off.1)[1],
+	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-19::2017-12-20"),
 	inspect = TRUE)
 ```
 
 ```{r verbose}
 getObservation(sos = mySOS, offering = off.1,
 	procedure = sosProcedures(off.1)[[1]],
+	observedProperty = sosObservedProperties(off.1)[2],
+	eventTime = sosCreateTime(sos = mySOS, time = "2018-01-01::2018-01-03"),
 	verbose = TRUE)
 ```
 

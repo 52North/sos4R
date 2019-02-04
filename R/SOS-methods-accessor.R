@@ -814,8 +814,7 @@ setMethod(f = "sosResult", signature = signature(obj = "OmObservationProperty"),
               return(sosResult(obj = obj@obs, coordinates = coordinates))
             else return(NA)
           })
-setMethod(f = "sosResult",
-          signature = signature(obj = "OmObservationCollection"),
+setMethod(f = "sosResult", signature = signature(obj = "OmObservationCollection"),
           def = function(obj, coordinates = FALSE, bind = TRUE) {
             .l <- lapply(obj@members, sosResult, coordinates = coordinates)
             if(bind)
