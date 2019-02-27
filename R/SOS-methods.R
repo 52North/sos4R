@@ -342,7 +342,7 @@ SosGetObservationById <- function(
 
     if(verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
-    .response = getURL(url = .url,
+    .response = RCurl::getURL(url = .url,
                        .opts = sos@curlOptions,
                        curl = sos@curlHandle,
                        .encoding = sosDefaultCharacterEncoding)
@@ -384,7 +384,7 @@ SosGetObservationById <- function(
     # using 'POST' for application/xml content
     if(verbose) cat("[.sosRequest_1.0.0] Do request...")
 
-    .response <- POST(url = .dcp,
+    .response <- httr::POST(url = .dcp,
                       content_type_xml(),
                       accept_xml(),
                       body = .requestString )
