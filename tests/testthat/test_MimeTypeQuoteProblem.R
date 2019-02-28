@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -22,18 +22,21 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-09-24                                                          #
+# Created: 2015-02-12                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-#
-# http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
-# or
-# http://r-pkgs.had.co.nz/tests.html
-#
-# Do not execute this script manually! Use devtools::test()!
-#
-library(testthat)
-library(sos4R)
+context("Quoting characters inside MimeTypes")
 
-test_check("sos4R")
+test_that("No '&quot;' string inside Mimetypes mimeTypeOM and mimeTypeSML", {
+	expect_equal(grepl(mimeTypeOM, "quot"), FALSE)
+	expect_equal(grepl(mimeTypeSML, "quot"), FALSE)
+})
+
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service")
+procs <- unique(unlist(sosProcedures(mySOS)))
+S = describeSensor(mySOS, procs[[1]]) #,verbose = T)
+
+test_that("We can run describeSensor()", {
+	expect_equal(as.character(class(S)), "SensorML")
+})

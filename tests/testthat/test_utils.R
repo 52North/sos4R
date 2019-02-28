@@ -26,14 +26,13 @@
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-
 context("utils")
 
 test_that(".sosFilterDCPs works", {
 	dcps <- c("Post" = "http://url/with/endpoint/one",
 			"Post" = "url.to/endpoint/two",
 			"Get" = "some.thing.com/different/")
-			
+
 	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
 	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
 			is_equivalent_to("url.to/endpoint/two"))
@@ -46,7 +45,7 @@ test_that(".sosFilterDCPs works", {
 test_that("addional KVPs are concatenated correctly", {
 			expected <- "this=is&working=correctly"
 			actual <- list("this" = "is", "working" = "correctly")
-			
+
 			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
-			
+
 		})

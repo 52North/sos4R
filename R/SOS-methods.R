@@ -501,8 +501,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
   
   # check if multiple sensors
   if(length(procedure) > 1) {
-    if(verbose) cat("[.describeSensor_1.0.0] multiple sensors: ", procedure,
-                    "\n")
+    if(verbose) cat("[.describeSensor_1.0.0] multiple sensors: ", procedure, "\n")
     
     .descriptions <- list()
     for (p in procedure) {
