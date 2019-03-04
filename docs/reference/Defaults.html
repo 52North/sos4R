@@ -574,7 +574,7 @@
 #&gt;             "element(s).\n")
 #&gt;     .env &lt;- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
 #&gt;     if (!is.null(.env)) {
-#&gt;         .boundedBy &lt;- list(srsName = xmlGetAttr(.env, "srsName"), 
+#&gt;         .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
 #&gt;             lowerCorner = xmlValue(.env[[gmlLowerCornerName]]), 
 #&gt;             upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
 #&gt;         if (verbose) 
@@ -588,7 +588,7 @@
 #&gt;             .origUC &lt;- strsplit(x = .boundedBy[["upperCorner"]], 
 #&gt;                 split = " ")
 #&gt;             .uC &lt;- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-#&gt;             .boundedBy &lt;- list(srsName = xmlGetAttr(.env, "srsName"), 
+#&gt;             .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
 #&gt;                 lowerCorner = .lC, upperCorner = .uC)
 #&gt;         }
 #&gt;     }
@@ -912,7 +912,7 @@
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCoordinate] with name", .name, "\n")
 #&gt;     .quantity &lt;- obj[[sweQuantityName]]
-#&gt;     .axisID &lt;- xmlGetAttr(.quantity, name = "axisID", default = NA_character_)
+#&gt;     .axisID &lt;- xmlGetAttr(node = .quantity, name = "axisID", default = NA_character_)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCoordinate] axisID: ", .axisID, "\n")
 #&gt;     .uomCode &lt;- NA_character_
@@ -1432,7 +1432,7 @@
 #&gt;             "element(s).\n")
 #&gt;     .env &lt;- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
 #&gt;     if (!is.null(.env)) {
-#&gt;         .boundedBy &lt;- list(srsName = xmlGetAttr(.env, "srsName"), 
+#&gt;         .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
 #&gt;             lowerCorner = xmlValue(.env[[gmlLowerCornerName]]), 
 #&gt;             upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
 #&gt;         if (verbose) 
@@ -1446,7 +1446,7 @@
 #&gt;             .origUC &lt;- strsplit(x = .boundedBy[["upperCorner"]], 
 #&gt;                 split = " ")
 #&gt;             .uC &lt;- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-#&gt;             .boundedBy &lt;- list(srsName = xmlGetAttr(.env, "srsName"), 
+#&gt;             .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
 #&gt;                 lowerCorner = .lC, upperCorner = .uC)
 #&gt;         }
 #&gt;     }
@@ -1770,7 +1770,7 @@
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCoordinate] with name", .name, "\n")
 #&gt;     .quantity &lt;- obj[[sweQuantityName]]
-#&gt;     .axisID &lt;- xmlGetAttr(.quantity, name = "axisID", default = NA_character_)
+#&gt;     .axisID &lt;- xmlGetAttr(node = .quantity, name = "axisID", default = NA_character_)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCoordinate] axisID: ", .axisID, "\n")
 #&gt;     .uomCode &lt;- NA_character_

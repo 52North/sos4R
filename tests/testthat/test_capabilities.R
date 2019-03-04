@@ -1,6 +1,6 @@
 parseXmlSnippet <- function(obj) {
-    .doc <- xmlParseDoc(obj, asText = TRUE, options = NOERROR)
-    .docRoot <- xmlRoot(.doc)
+    .doc <- XML::xmlParseDoc(file = obj, asText = TRUE, options = NOERROR)
+    .docRoot <- XML::xmlRoot(x = .doc)
     return(.docRoot)
 }
 
@@ -72,7 +72,7 @@ test_that("composite phenomenon are parsed correctly from observedProperty snipp
 
 # starting at package root: setwd(file.path(getwd(), "tests", "testthat"))
 mapserver <- SOS_Test(name = "testcaps")
-xmlCaps <- xmlParseDoc("../responses/Capabilities_Mapserver.xml")
+xmlCaps <- XML::xmlParseDoc(file = "../responses/Capabilities_Mapserver.xml")
 parsedCaps <- parseSosCapabilities(obj = xmlCaps, sos = mapserver)
 mapserver@capabilities <- parsedCaps
 
@@ -159,17 +159,17 @@ test_that("offering id is parsed correctly", {
 context("parsing: SOS Capabilities 2.0.0")
 
 testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
-sos200Caps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
+sos200Caps <- parseSosCapabilities(XML::xmlParseDoc(file = "../responses/Capabilities_200_Example.xml"), testsos)
 
 context("parsing: SOS Capabilities 2.0.0 swes:offering")
 
 testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
 
 test_that("offering is parsed correctly", {
-  .obs <- parseSosObservationOffering_200(xmlRoot(xmlParseDoc("../xml-elements/swes-offering1.xml")), testsos)
+  .obs <- parseSosObservationOffering_200(XML::xmlRoot(x = XML::xmlParseDoc(file = "../xml-elements/swes-offering1.xml")), testsos)
   expect_equal(.obs@id, "ws2500")
   #TODO test other parameters
 })
  
 testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
-axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_100_Example.xml"), testsos)
+axiomCaps <- parseSosCapabilities(XML::xmlParseDoc(file = "../responses/Capabilities_100_Example.xml"), testsos)

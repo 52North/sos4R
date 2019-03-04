@@ -36,7 +36,7 @@
 # here it is just looked for a child element swe:value.
 #
 parseDataArray <- function(obj, sos, verbose = FALSE) {
-  .elementCount <-  xmlValue(obj[["elementCount"]][["Count"]][["value"]])
+  .elementCount <-  XML::xmlValue(x = obj[["elementCount"]][["Count"]][["value"]])
   if(verbose) cat("[parseDataArray] Parsing DataArray with", .elementCount,
                   "elements.\n")
 
@@ -73,7 +73,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 
   .converters <- sosDataFieldConverters(sos)
 
-  .blockLines <- strsplit(x = xmlValue(values),
+  .blockLines <- strsplit(x = XML::xmlValue(x = values),
                           split = encoding@blockSeparator)
   .tokenLines <- sapply(.blockLines, strsplit,
                         split = encoding@tokenSeparator)
@@ -284,31 +284,31 @@ names(.sosParseFieldReadable) <- list(
 #
 parseField <- function(obj, sos, verbose = FALSE) {
   .field <- NULL
-  .name <- xmlGetAttr(node = obj, name = "name")
+  .name <- XML::xmlGetAttr(node = obj, name = "name")
   if(verbose) cat("[parseField] Parsing field description of ", .name, "\n")
   
   .noneText <- .filterXmlChildren(node = obj, xmlTagName = xmlTextNodeName,
                                   includeNamed = FALSE)
   .innerField <- .noneText[[1]]
-  .innerFieldName <- xmlName(.innerField)
+  .innerFieldName <- XML::xmlName(node =.innerField)
 
   # Available options: Time, Text, Quantity, Category, Boolean
   # The parsed elements and fields are closely bound to 52N SOS (OMEncoder.java)
   if(.innerFieldName == sweTimeName) {
-    .def <- xmlGetAttr(node = .innerField, name = "definition")
+    .def <- XML::xmlGetAttr(node = .innerField, name = "definition")
 
     .field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def)
   }
   else if (.innerFieldName == sweTextName) {
-    .def <- xmlGetAttr(node = .innerField, name = "definition")
+    .def <- XML::xmlGetAttr(node = .innerField, name = "definition")
     
     .field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def)
   }
   else if (.innerFieldName == sweQuantityName) {
-    .def <- xmlGetAttr(node = .innerField, name = "definition")
+    .def <- XML::xmlGetAttr(node = .innerField, name = "definition")
 
     if(!is.null(.innerField[[sweUomName]])) {
-      .uom <- xmlGetAttr(node = .innerField[[sweUomName]], name = "code")
+      .uom <- XML::xmlGetAttr(node = .innerField[[sweUomName]], name = "code")
     }
     else {
       warning(paste("swe:Quantity given without unit of measurement:",
@@ -319,9 +319,9 @@ parseField <- function(obj, sos, verbose = FALSE) {
                 .sosParseFieldUOM = .uom)
   }
   else if (.innerFieldName == sweCategoryName) {
-    .catName <- xmlGetAttr(node = .innerField, name = "name")
-    .value <- xmlValue(.innerField[[sweValueName]])
-    .codeSpace <- xmlGetAttr(node = .innerField[[sweCodeSpaceName]],
+    .catName <- XML::xmlGetAttr(node = .innerField, name = "name")
+    .value <- XML::xmlValue(x = .innerField[[sweValueName]])
+    .codeSpace <- XML::xmlGetAttr(node = .innerField[[sweCodeSpaceName]],
                              name = "type")
 
     .field <- c(.sosParseFieldName = .name,
@@ -348,10 +348,10 @@ parseField <- function(obj, sos, verbose = FALSE) {
 #
 #
 parseTextBlock <- function(obj) {
-  .id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
-  .tS <- xmlGetAttr(node = obj, name = "tokenSeparator")
-  .bS <- xmlGetAttr(node = obj, name = "blockSeparator")
-  .dS <- xmlGetAttr(node = obj, name = "decimalSeparator")
+  .id <- XML::xmlGetAttr(node = obj, name = "id", default = NA_character_)
+  .tS <- XML::xmlGetAttr(node = obj, name = "tokenSeparator")
+  .bS <- XML::xmlGetAttr(node = obj, name = "blockSeparator")
+  .dS <- XML::xmlGetAttr(node = obj, name = "decimalSeparator")
 
   .tb <- SweTextBlock(tokenSeparator = .tS, blockSeparator = .bS,
                       decimalSeparator = .dS, id = .id)
@@ -362,10 +362,10 @@ parseTextBlock <- function(obj) {
 #
 #
 parseTextEncoding <- function(obj) {
-  .id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
-  .tS <- xmlGetAttr(node = obj, name = "tokenSeparator")
-  .bS <- xmlGetAttr(node = obj, name = "blockSeparator")
-  .dS <- xmlGetAttr(node = obj, name = "decimalSeparator", default = NA_character_)
+  .id <- XML::xmlGetAttr(node = obj, name = "id", default = NA_character_)
+  .tS <- XML::xmlGetAttr(node = obj, name = "tokenSeparator")
+  .bS <- XML::xmlGetAttr(node = obj, name = "blockSeparator")
+  .dS <- XML::xmlGetAttr(node = obj, name = "decimalSeparator", default = NA_character_)
 
   .tb <- SweTextEncoding(tokenSeparator = .tS, blockSeparator = .bS,
                          decimalSeparator = .dS, id = .id)
@@ -379,7 +379,7 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
   .obsProp <- NULL
 
   # check if reference or inline phenomenon
-  .href <- xmlGetAttr(node = obj, name = "href")
+  .href <- XML::xmlGetAttr(node = obj, name = "href")
   if(!is.null(.href)) {
     if(verbose) cat("[parsePhenomenonProperty] with reference", .href,
                     "\n")
@@ -391,7 +391,7 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
                                     includeNamed = FALSE)
     .compPhen <- .noneText[[1]]
     # 52N SOS only returns swe:CompositePhenomenon
-    .name <- xmlName(.compPhen)
+    .name <- XML::xmlName(node =.compPhen)
     if(verbose) cat("[parsePhenomenonProperty] inline with name", .name,
                     "\n")
 
@@ -413,12 +413,12 @@ parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
 #
 #
 parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {
-  .id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+  .id <- XML::xmlGetAttr(node = obj, name = "id", default = NA_character_)
   if(verbose) cat("[parseCompositePhenomenon] with id", .id, "\n")
 
   .dimension <- as.integer(
-    xmlGetAttr(node = obj, name = "dimension", default = NA_character_))
-  .name <- xmlValue(obj[[gmlNameName]])
+    XML::xmlGetAttr(node = obj, name = "dimension", default = NA_character_))
+  .name <- XML::xmlValue(x = obj[[gmlNameName]])
   if(verbose) cat("[parseCompositePhenomenon] parsed name '", .id,
                   "' and dimension '", .dimension, "'\n", sep = "")
 
@@ -459,7 +459,7 @@ parseComponent <- function(obj, sos, verbose = FALSE) {
 #
 #
 parseSwePosition <- function(obj, sos, verbose = FALSE) {
-  .rF <- xmlGetAttr(node = obj, name = "referenceFrame")
+  .rF <- XML::xmlGetAttr(node = obj, name = "referenceFrame")
   if(verbose) cat("[parseSwePosition] with referenceFrame", .rF, "\n")
 
   .location <- obj[[sweLocationName]]
@@ -478,7 +478,7 @@ parseSwePosition <- function(obj, sos, verbose = FALSE) {
 #
 parseLocation <- function(obj, sos, verbose = FALSE) {
   .vector <- obj[[sweVectorName]]
-  .id <- xmlGetAttr(node = obj, name = "id")
+  .id <- XML::xmlGetAttr(node = obj, name = "id")
   if(verbose) cat("[parseLocation] with id", .id, "\n")
 
   .parser <- sosParsers(sos)[[sweVectorName]]
@@ -515,22 +515,22 @@ parseVector <- function(obj, sos, verbose = FALSE) {
 #
 #
 parseCoordinate <- function(obj, sos, verbose = FALSE) {
-  .name <- xmlGetAttr(node = obj, name = "name", default = NA_character_)
+  .name <- XML::xmlGetAttr(node = obj, name = "name", default = NA_character_)
   if(verbose) cat("[parseCoordinate] with name", .name, "\n")
 
   .quantity <- obj[[sweQuantityName]]
-  .axisID <- xmlGetAttr(.quantity, name = "axisID", default = NA_character_)
+  .axisID <- XML::xmlGetAttr(node = .quantity, name = "axisID", default = NA_character_)
   if(verbose) cat("[parseCoordinate] axisID: ", .axisID, "\n")
 
   .uomCode <- NA_character_
   if(!is.null(.quantity[[sweUomName]]))
-    .uomCode <- xmlGetAttr(node = .quantity[[sweUomName]], name = "code",
+    .uomCode <- XML::xmlGetAttr(node = .quantity[[sweUomName]], name = "code",
                            default = NA_character_)
   if(verbose) cat("[parseCoordinate] uomCode: ", .uomCode, "\n")
 
   .value <- NA_character_
   if(!is.null(.quantity[[sweValueName]]))
-    .value <- as.double(xmlValue(.quantity[[sweValueName]]))
+    .value <- as.double(XML::xmlValue(x = .quantity[[sweValueName]]))
   if(verbose) cat("[parseCoordinate] value: ", .value, "\n")
 
   return(list(name = .name, axisID = .axisID, uomCode = .uomCode,

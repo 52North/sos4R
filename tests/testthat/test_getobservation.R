@@ -3,7 +3,7 @@ context("GetObservation")
 
 test_that("creation of request fails if eventTime contains objects of wrong class", {
   testsos <- SOS_Test(name = "testcaps")
-  axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_52N-SOS_Axiom.xml"), testsos)
+  axiomCaps <- parseSosCapabilities(XML::xmlParseDoc(file = "../responses/Capabilities_52N-SOS_Axiom.xml"), testsos)
   testsos@capabilities <- axiomCaps
 
   eventTimeList <- sosCreateEventTimeList(sosCreateTimePeriod(sos = testsos,

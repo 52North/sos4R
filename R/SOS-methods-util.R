@@ -374,7 +374,7 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
             .responseString = sosRequest(sos = sos, request = .gc,
                                          verbose = .verbose, inspect = FALSE)
 
-            .response <- xmlParseDoc(.responseString, asText = TRUE)
+            .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE)
             return(.response)
           }
 )
@@ -396,7 +396,7 @@ setMethod(f = "sosCapabilitiesUrl",
 # helper methods for exception response handling
 #
 .isExceptionReport <- function(document) {
-  if(owsExceptionReportName == xmlName(xmlRoot(document)))
+  if(owsExceptionReportName == XML::xmlName(node =XML::xmlRoot(x = document)))
     return(TRUE)
   else
     return(FALSE)
@@ -442,7 +442,7 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
           def = function(obj, sos, addNamespaces = FALSE, verbose = FALSE) {
             if(verbose) cat("[encodeXML] from character string\n")
 
-            if(isXMLString(obj)) {
+            if(XML::isXMLString(str = obj)) {
               #FIXME this just won't work, see testing.R, section "encode xml character string (again)"
               if(addNamespaces) {
                 if(verbose) cat("[encodeXML] Namespace hack for character string, trying to replace 'result>'!\n")
@@ -450,11 +450,11 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
                 .hackedString <- sub(pattern = "result>",
                                      replacement = .hack,
                                      x = obj)
-                .xml <- xmlTreeParse(.hackedString, asText = TRUE,
+                .xml <- XML::xmlTreeParse(file = .hackedString, asText = TRUE,
                                      useInternalNodes = FALSE)
               }
               else {
-                .xml <- xmlParseString(obj)
+                .xml <- XML::xmlParseString(content = obj)
               }
 
               if(verbose) {

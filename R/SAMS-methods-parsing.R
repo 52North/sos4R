@@ -59,11 +59,11 @@ parseSams200SamplingFeature <- function(obj, sos) {
   .gmlid <- xmlAttrs(node = obj)[["id"]]
   # TODO should we add checks here, e.g. if the element is really available, is only one element in the list?
   # TODO Implement tuple with codespace and value for identifier and name, if required
-  .identifier <- xmlValue(xmlElementsByTagName(el = obj, name = "identifier")[[1]])
-  .name <- xmlValue(xmlElementsByTagName(el = obj, name = "name")[[1]])
-  .type <- xmlAttrs(node = xmlElementsByTagName(el = obj, name = "type")[[1]])[["href"]]
-  .sampledFeature <- xmlAttrs(node = xmlElementsByTagName(el = obj, name = "sampledFeature")[[1]])[["href"]]
-  .shape <- parseSamsShape(obj = xmlElementsByTagName(el = obj, name = "shape"), sos = sos)
+  .identifier <- XML::xmlValue(x = XML::xmlElementsByTagName(el = obj, name = "identifier")[[1]])
+  .name <- XML::xmlValue(x = XML::xmlElementsByTagName(el = obj, name = "name")[[1]])
+  .type <- xmlAttrs(node = XML::xmlElementsByTagName(el = obj, name = "type")[[1]])[["href"]]
+  .sampledFeature <- xmlAttrs(node = XML::xmlElementsByTagName(el = obj, name = "sampledFeature")[[1]])[["href"]]
+  .shape <- parseSamsShape(obj = XML::xmlElementsByTagName(el = obj, name = "shape"), sos = sos)
   SamsSamplingFeature(id = .gmlid,
                       identifier = .identifier,
                       name = .name,

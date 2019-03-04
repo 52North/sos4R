@@ -37,8 +37,8 @@ parseSosObservationOffering <- function(obj, sos) {
   }
   
   # not optional, but have a default just in case...
-  .id <- xmlGetAttr(node = obj, name = "id", default = NA_character_)
-  .name <- xmlValue(obj[[gmlNameName]])
+  .id <- XML::xmlGetAttr(node = obj, name = "id", default = NA_character_)
+  .name <- XML::xmlValue(x = obj[[gmlNameName]])
   if(sos@verboseOutput)
     cat("[parseSosObservationOffering] id:", .id, "name:", .name, "\n")
   
@@ -115,9 +115,9 @@ parseSosObservationOffering <- function(obj, sos) {
   .env <- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
   if(!is.null(.env)) {
     .boundedBy <- list(
-      srsName = xmlGetAttr(.env, "srsName"),
-      lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
-      upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+      srsName = XML::xmlGetAttr(node = .env, "srsName"),
+      lowerCorner = XML::xmlValue(x = .env[[gmlLowerCornerName]]),
+      upperCorner = XML::xmlValue(x = .env[[gmlUpperCornerName]]))
     
     if(sosSwitchCoordinates(sos)) {
       warning("Switching coordinates in envelope of ObservationOffering!")
@@ -125,7 +125,7 @@ parseSosObservationOffering <- function(obj, sos) {
       .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
       .origUC <- strsplit(x = .boundedBy[["upperCorner"]], split = " ")
       .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .boundedBy <- list(srsName = xmlGetAttr(.env, "srsName"),
+      .boundedBy <- list(srsName = XML::xmlGetAttr(node = .env, "srsName"),
                          lowerCorner = .lC, upperCorner = .uC)
     }
     
@@ -174,11 +174,11 @@ parseSosObservedProperty <- function(obj = list(), verbose = FALSE) {
     cat("[parseSosObservedProperty] entered,", length(obj), "input elements ... \n")
   
   .obsProps <- lapply(X = obj, FUN = function(obj) {
-    .name <- xmlName(obj)
+    .name <- XML::xmlName(node =obj)
     if(verbose)
       cat("[parseSosObservedProperty] found ", .name, "\n")
     
-    .href <- xmlGetAttr(node = obj, name = "href")
+    .href <- XML::xmlGetAttr(node = obj, name = "href")
     if(!is.null(.href)) {
       if(verbose)
         cat("[parseSosObservedProperty] found href:", .href, "\n")
@@ -187,7 +187,7 @@ parseSosObservedProperty <- function(obj = list(), verbose = FALSE) {
     else  {
       .comp <- obj[[sweCompositePhenomenonName]]
       str(.comp)
-      cat(xmlName(.comp), "\n")
+      cat(XML::xmlName(node =.comp), "\n")
       
       if(!is.null(.comp)) {
         .parsed <- parseCompositePhenomenon(.comp)
@@ -222,7 +222,7 @@ parseSwesObservableProperty <- function(obj, verbose = FALSE) {
     cat("[parseSwesObservableProperty] entered,", length(obj), "input elements ... \n")
   
   .obsProps <- lapply(X = obj, FUN = function(obj) {
-    .name <- xmlValue(obj)
+    .name <- XML::xmlValue(x = obj)
     if(!is.null(.name)) {
       if(verbose)
         cat("[parseSwesObservableProperty] found ", .name, "\n")
@@ -244,12 +244,12 @@ parseSosCapabilities100 <- function(obj, sos) {
   if(sos@verboseOutput)
     cat("[parseSosCapabilities] entered... \n")
   
-  .caps.root <- xmlRoot(obj)
+  .caps.root <- XML::xmlRoot(x = obj)
   
   # attributes:
-  .caps.version <- xmlGetAttr(node = .caps.root, name = "version",
+  .caps.version <- XML::xmlGetAttr(node = .caps.root, name = "version",
                               default = NA_character_)
-  .caps.updateSequence <- xmlGetAttr(node = .caps.root,
+  .caps.updateSequence <- XML::xmlGetAttr(node = .caps.root,
                                      name = "updateSequence", default = NA_character_)
   if(sos@verboseOutput)
     cat("[parseSosCapabilities] version, update sequence:", .caps.version,
@@ -411,7 +411,7 @@ parseSosFilter_Capabilities <- function(obj, sos) {
       .scalar <- c(.scalar, .scalar.comp)
     }
     if(!is.null(.scalarXML[[ogcArithmeticOperatorsName]])) {
-      .scalar.arithm <- xmlToList(
+      .scalar.arithm <- XML::xmlToList(node = 
         .scalarXML[[ogcArithmeticOperatorsName]])
       .scalar <- c(.scalar, .scalar.arithm)
     }
@@ -458,8 +458,8 @@ setMethod(f = "parseFile",
 )
 
 .parseFile <- function(sos, file, verbose, ...) {
-  .parsed <- xmlParse(file, ...)
-  .name <- xmlName(xmlRoot(.parsed))
+  .parsed <- XML::xmlParse(file = file, ...)
+  .name <- XML::xmlName(node =XML::xmlRoot(x = .parsed))
   
   if(verbose) cat("[parseFile] root", .name, "\n")
   

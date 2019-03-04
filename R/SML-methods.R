@@ -55,7 +55,7 @@ SensorML <- function(xml, coords = data.frame(), id = NA_character_,
 # parseSensorML(mySensor@xml, sos = mySOS, verbose = TRUE)
 #
 parseSensorML <- function(obj, sos, verbose = FALSE) {
-  .root <- xmlRoot(obj)
+  .root <- XML::xmlRoot(x = obj)
   if(verbose) cat("[parseSensorML] Starting... \n")
   
   .id <- .smlIdentifier(.root, "uniqueID", verbose = verbose)
@@ -65,7 +65,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
   if(is.null(.descrNodeSet))
     .description <- NA_character_
   else
-    .description <- xmlValue(.descrNodeSet[[1]])
+    .description <- XML::xmlValue(x = .descrNodeSet[[1]])
   if(verbose) cat("[parseSensorML] Got ID", .id, "and shortName", .shortName,
                   "and description", .description, "\n")
   
@@ -164,7 +164,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
   .result <- getNodeSet(doc = doc, path = .xpath,
                         namespaces = .sos100_NamespaceDefinitionsSML)
   
-  return(xmlValue(.result[[1]]))
+  return(XML::xmlValue(x = .result[[1]]))
 }
 
 

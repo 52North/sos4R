@@ -108,13 +108,13 @@ OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
 }
 
 OwsServiceProvider <- function(providerName, providerSite = as.character(NA),
-                               serviceContact = xmlNode(NA)) {
+                               serviceContact = XML::xmlNode(name = NA)) {
   new("OwsServiceProvider", providerName = providerName,
       providerSite = providerSite, serviceContact = serviceContact)
 }
 
 OwsOperationsMetadata <- function(operations, parameters = list(NA),
-                                  constraints = list(NA), extendedCapabilities = xmlNode(NA)) {
+                                  constraints = list(NA), extendedCapabilities = XML::xmlNode(name = NA)) {
   new("OwsOperationsMetadata", operations = operations,
       parameters = parameters, constraints = constraints,
       extendedCapabilities = extendedCapabilities)
@@ -330,14 +330,14 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
   }
 
   if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-    .sections <- xmlNode("ows:Sections")
+    .sections <- XML::xmlNode(name = "ows:Sections")
     .sections$children <- lapply(obj@sections, "xmlNode", name="Section",
                                  namespace = owsNamespacePrefix)
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
   }
 
   if( !is.na(obj@updateSequence)) {
-    .xmlDoc <- addAttributes(.xmlDoc, updateSequence = obj@updateSequence)
+    .xmlDoc <- XML::addAttributes(node = .xmlDoc, updateSequence = obj@updateSequence)
   }
 
   if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
@@ -381,14 +381,14 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
   }
 
   if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-    .sections <- xmlNode("ows:Sections")
+    .sections <- XML::xmlNode(name = "ows:Sections")
     .sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
                                  namespace = owsNamespacePrefix)
     .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
   }
 
   if( !is.na(obj@updateSequence)) {
-    .xmlDoc <- addAttributes(.xmlDoc, updateSequence = obj@updateSequence)
+    .xmlDoc <- XML::addAttributes(node = .xmlDoc, updateSequence = obj@updateSequence)
   }
 
   if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {

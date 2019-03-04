@@ -531,7 +531,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
     cat("[.describeSensor_1.0.0] RESPONSE:\n", .responseString , "\n")
   }
 
-  .response <- xmlParseDoc(.responseString, asText = TRUE,
+  .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
                            options = xmlParseOptions)
   if(verbose || inspect) {
     cat("[.describeSensor_1.0.0] RESPONSE DOC:\n")
@@ -557,7 +557,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
     }
 
     # TODO alternatively one could use tempfile() instead of implicit getwd()
-    saveXML(.response, file = .filename)
+    XML::saveXML(doc = .response, file = .filename)
 
     cat("[sos4R] Original document saved:", .filename, "\n")
   }
@@ -647,7 +647,7 @@ setMethod(f = "getObservationById",
     cat("[.getObservationById_1.0.0] RESPONSE:\n", .responseString , "\n")
   }
 
-  .response <- xmlParseDoc(.responseString, asText = TRUE,
+  .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
                            options = xmlParseOptions)
   if(verbose || inspect) {
     cat("[.getObservationById_1.0.0] RESPONSE DOC:\n")
@@ -656,7 +656,7 @@ setMethod(f = "getObservationById",
 
   if(!is.null(.filename)) {
     .filename <- paste(.filename, ".xml", sep = "")
-    saveXML(.response, file = .filename)
+    XML::saveXML(doc = .response, file = .filename)
     cat("[sos4R] Original document saved:", .filename, "\n")
   }
 
@@ -780,10 +780,10 @@ setMethod(f = "getObservationById",
                   ". Please re-check query parameters."))
   }
 
-  if(isXMLString(.responseString)) {
+  if(XML::isXMLString(str = .responseString)) {
     if(verbose) {
       cat("[.getObservation_1.0.0] Got XML string as response",
-          "(based on isXMLString()).\n")
+          "(based on XML::isXMLString(str = )).\n")
       cat("[.getObservation_1.0.0] Content type: '", toString(.contentType), "'.\n")
     }
 
@@ -812,7 +812,7 @@ setMethod(f = "getObservationById",
       .contentType <- .contentType[[1]]
     }
 
-    .response <- xmlParseDoc(.responseString, asText = TRUE,
+    .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
                              options = xmlParseOptions)
     if(verbose || inspect) {
       cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
@@ -846,7 +846,7 @@ setMethod(f = "getObservationById",
 
     if(!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
-      saveXML(.response, file = .filename)
+      XML::saveXML(doc = .response, file = .filename)
 
       if(verbose) {
         cat("[.getObservation_1.0.0] Saved original document:",
@@ -1360,7 +1360,7 @@ setMethod("encodeRequestXML", "SosGetObservation",
   }
 
   if( !is.na(obj@srsName)) {
-    .xmlDoc <- addAttributes(.xmlDoc, srsName = obj@srsName, append = TRUE)
+    .xmlDoc <- XML::addAttributes(node = .xmlDoc, srsName = obj@srsName, append = TRUE)
   }
 
   if( !is.na(obj@BBOX)) {
@@ -1420,7 +1420,7 @@ setMethod("encodeRequestXML", "SosGetObservationById",
   }
 
   if( !is.na(obj@srsName)) {
-    .xmlDoc <- addAttributes(.xmlDoc, srsName = obj@srsName, append = TRUE)
+    .xmlDoc <- XML::addAttributes(node = .xmlDoc, srsName = obj@srsName, append = TRUE)
   }
 
   return(.xmlDoc)
@@ -1440,14 +1440,14 @@ setMethod("encodeRequestXML", "SosDescribeSensor",
               if(verbose) {
                 cat("[encodeRequestXML] encoding vor SOS 1.0.0\n")
               }
-              return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj))
+              return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj, sos = sos))
             }
             else {
               stop("[encodeRequestXML] Version not supported for operation DescribeSensor!")
             }
           }
 )
-.sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj) {
+.sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj, sos) {
   xmlDoc <- xmlNode(name = sosDescribeSensorName,
                     namespace = sosNamespacePrefix,
                     namespaceDefinitions = .sos100_NamespaceDefinitionsForAll,
@@ -1473,7 +1473,7 @@ setMethod("encodeRequestSOAP", "SosDescribeSensor",
             }
 
             if (sos@version == sos100_version) {
-              return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj))
+              return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj, sos = sos))
             }
             else {
               stop("Version not supported!")
@@ -1543,12 +1543,12 @@ setMethod(f = "encodeXML",
                                  namespace = ogcNamespacePrefix)
             .propertyName <- xmlNode(name = ogcPropertyNameName,
                                      namespace = ogcNamespacePrefix)
-            xmlValue(.propertyName) <- sosDefaultTempOpPropertyName
+            XML::xmlValue(x = .propertyName) <- sosDefaultTempOpPropertyName
             .latestTime <- xmlNode(name = gmlTimeInstantName,
                                    namespace = gmlNamespacePrefix)
             .tpos <- xmlNode(name = gmlTimePositionName,
                              namespace = gmlNamespacePrefix)
-            xmlValue(.tpos) <- sosEventTimeLatestValue
+            XML::xmlValue(x = .tpos) <- sosEventTimeLatestValue
 
             .latestTime$children[[1]] <- .tpos
             .tmEquals$children[[1]] <- .propertyName

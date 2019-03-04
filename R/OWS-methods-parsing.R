@@ -31,7 +31,7 @@
 #
 #
 parseOwsOperation <- function(obj) {
-  .name <- xmlGetAttr(obj, "name")
+  .name <- XML::xmlGetAttr(node = obj, "name")
 
   .dcpsXML <- .filterXmlChildren(obj, owsDCPName)
   .dcps <- list()
@@ -42,8 +42,8 @@ parseOwsOperation <- function(obj) {
       .filterXmlChildren(.http, owsPostName))
 
     for(.ep in .endpoints) {
-      .newEndpoint <- list(xmlGetAttr(.ep, "href"))
-      names(.newEndpoint) <- xmlName(.ep)
+      .newEndpoint <- list(XML::xmlGetAttr(node = .ep, "href"))
+      names(.newEndpoint) <- XML::xmlName(node =.ep)
       .dcps <- c(.dcps, .newEndpoint)
     }
   }
@@ -75,8 +75,7 @@ parseOwsOperation <- function(obj) {
                               owsAllowedValuesName, "/", owsNamespacePrefix, ":",
                               owsRangeName, sep = "")
         .ranges <-  sapply(
-          getNodeSet(
-            .p,
+          getNodeSet(doc = .p,
             .xpathRanges,
             owsNamespaceContext
           ),
@@ -85,10 +84,10 @@ parseOwsOperation <- function(obj) {
       }
 
       #			cat("[", .name, "] Adding to parameters list for",
-      #					xmlGetAttr(.p, "name"), ":",
+      #					XML::xmlGetAttr(node = .p, "name"), ":",
       #					toString(.allowedValuesAndRanges), "\n")
 
-      .names <- c(.names, xmlGetAttr(.p, "name"))
+      .names <- c(.names, XML::xmlGetAttr(node = .p, "name"))
       .parameters[[length(.parameters) + 1]] <- .allowedValuesAndRanges
       # the following does NOT work as it recursively concatenates the
       # lists: .parameters <- c(.parameters, .allowedValuesAndRanges)
@@ -116,20 +115,20 @@ parseOwsOperation <- function(obj) {
 #
 parseOwsExceptionReport <- function(obj, verbose = FALSE) {
   if(verbose) cat("[parseOwsExceptionReport] Starting ...")
-  .docRoot <- xmlRoot(obj)
+  .docRoot <- XML::xmlRoot(x = obj)
   ## print(.docRoot)
 
-  .version <- xmlGetAttr(node = .docRoot, name = "version")
-  .lang <- xmlGetAttr(node = .docRoot, name = "lang", default = NA_character_)
+  .version <- XML::xmlGetAttr(node = .docRoot, name = "version")
+  .lang <- XML::xmlGetAttr(node = .docRoot, name = "lang", default = NA_character_)
 
   # remove all elements from docRoot that are not 'Exception'
   # could probably be done nicer with subsetting, but indexing with wildcards or similar (... xmlChildren()[[]] ...) did not work.
-  .children <- xmlChildren(.docRoot)
+  .children <- XML::xmlChildren(x = .docRoot)
   .exceptionsXML <- list()
   for (x in .children) {
-    if(xmlName(x) == owsExceptionName)
+    if(XML::xmlName(node =x) == owsExceptionName)
       .exceptionsXML = c(.exceptionsXML, x)
-    # else print(xmlName(x))
+    # else print(XML::xmlName(node =x))
   }
 
   .exceptions = sapply(.exceptionsXML, parseOwsException)
@@ -146,12 +145,12 @@ parseOwsExceptionReport <- function(obj, verbose = FALSE) {
 #
 parseOwsException <- function(obj) {
   #	print("parsing e!")
-  .code <- xmlGetAttr(node = obj, name = "exceptionCode")
-  .locator <- xmlGetAttr(node = obj, name = "locator",
+  .code <- XML::xmlGetAttr(node = obj, name = "exceptionCode")
+  .locator <- XML::xmlGetAttr(node = obj, name = "locator",
                          default = NA_character_)
 
-  if(!is.na(xmlChildren(obj)[owsExceptionTextName]))
-    .text <- xmlValue(xmlChildren(obj)[[owsExceptionTextName]])
+  if(!is.na(XML::xmlChildren(x = obj)[owsExceptionTextName]))
+    .text <- XML::xmlValue(x = XML::xmlChildren(x = obj)[[owsExceptionTextName]])
   else .text <- as.character(NA)
 
   .exception <- OwsException(exceptionCode = .code,
@@ -167,7 +166,7 @@ parseOwsException <- function(obj) {
 parseOwsServiceIdentification <- function(obj) {
   #	print("parsing ows service identification!")
 
-  .children <- xmlChildren(obj)
+  .children <- XML::xmlChildren(x = obj)
   .serviceType <- sapply(.filterXmlChildren(obj, owsServiceTypeName),
                          xmlValue)
   .serviceTypeVersion <- sapply(.filterXmlChildren(obj,
@@ -177,15 +176,15 @@ parseOwsServiceIdentification <- function(obj) {
                    xmlValue)
 
   # optional:
-  if(!is.na(xmlChildren(obj)[owsProfileName]))
+  if(!is.na(XML::xmlChildren(x = obj)[owsProfileName]))
     .profile <- lapply(.filterXmlChildren(obj, owsProfileName), xmlValue)
   else .profile <- c(NA)
 
-  if(!is.na(xmlChildren(obj)[owsAbstractName]))
+  if(!is.na(XML::xmlChildren(x = obj)[owsAbstractName]))
     .abstract <- lapply(.filterXmlChildren(obj, owsAbstractName), xmlValue)
   else .abstract <- c(NA)
 
-  if(!is.na(xmlChildren(obj)[owsKeywordsName])) {
+  if(!is.na(XML::xmlChildren(x = obj)[owsKeywordsName])) {
     .keywordLists <- .filterXmlChildren(obj, owsKeywordsName)
     .keywords <- c(lapply(.keywordLists, FUN = xmlToList), recursive = TRUE)
     .keywords <- lapply(.keywords, gsub, pattern = "^[[:space:]]+|[[:space:]]+$",
@@ -193,11 +192,11 @@ parseOwsServiceIdentification <- function(obj) {
   }
   else .keywords <- c(NA)
 
-  if(!is.na(xmlChildren(obj)[owsFeesName]))
+  if(!is.na(XML::xmlChildren(x = obj)[owsFeesName]))
     .fees <- paste(sapply(.filterXmlChildren(obj, owsFeesName), xmlValue))
   else .fees <- as.character(NA)
 
-  if(!is.na(xmlChildren(obj)[owsAccessConstraintsName]))
+  if(!is.na(XML::xmlChildren(x = obj)[owsAccessConstraintsName]))
     .accessConstraints <- lapply(.filterXmlChildren(obj,
                                                     owsAccessConstraintsName),
                                  xmlValue)
@@ -214,15 +213,15 @@ parseOwsServiceIdentification <- function(obj) {
 #
 parseOwsServiceProvider <- function(obj) {
   #print("parsing ows service provider!")
-  .name <- xmlValue(obj[[owsProviderNameName]])
+  .name <- XML::xmlValue(x = obj[[owsProviderNameName]])
 
   # optional:
-  if(!is.null(xmlChildren(obj)[[owsProviderSiteName]]))
-    .site <- xmlGetAttr(node = obj[[owsProviderSiteName]],
+  if(!is.null(XML::xmlChildren(x = obj)[[owsProviderSiteName]]))
+    .site <- XML::xmlGetAttr(node = obj[[owsProviderSiteName]],
                         name = "href", default = as.character(NA))
   else .site <- as.character(NA)
 
-  if(!is.null(xmlChildren(obj)[[owsServiceContactName]])) {
+  if(!is.null(XML::xmlChildren(x = obj)[[owsServiceContactName]])) {
     .contact <- obj[[owsServiceContactName]]
     .sp <- OwsServiceProvider(providerName = .name, providerSite = .site,
                               serviceContact = .contact)
@@ -236,13 +235,13 @@ parseOwsServiceProvider <- function(obj) {
 # all elements are optional
 #
 parseOwsRange <- function(obj) {
-  .children <- xmlChildren(obj)
+  .children <- XML::xmlChildren(x = obj)
 
   .minimumXml <- .children[[owsMinimumValueName]]
   if(is.null(.minimumXml)) {
     .minimum <- as.character(NA)
   } else {
-    .minimum <- xmlValue(.minimumXml)
+    .minimum <- XML::xmlValue(x = .minimumXml)
   }
 
 
@@ -250,10 +249,10 @@ parseOwsRange <- function(obj) {
   if(is.null(.maximumXml)) {
     .maximum <- as.character(NA)
   } else {
-    .maximum <- xmlValue(.maximumXml)
+    .maximum <- XML::xmlValue(x = .maximumXml)
   }
 
-  .closure <- xmlGetAttr(node = obj, name = "rangeClosure")
+  .closure <- XML::xmlGetAttr(node = obj, name = "rangeClosure")
   if(is.null(.closure)) {
     .closure <- as.character(NA)
   }
@@ -262,7 +261,7 @@ parseOwsRange <- function(obj) {
   if(is.null(.spacingXml)) {
     .spacing <- as.character(NA)
   } else {
-    .spacing <- xmlValue(.spacingXml)
+    .spacing <- XML::xmlValue(x = .spacingXml)
   }
 
   .range <- OwsRange(minimumValue = .minimum, maximumValue = .maximum,
@@ -280,7 +279,7 @@ parseOwsRange <- function(obj) {
 #
 .filterXmlChildren <- function(node, xmlTagName, includeNamed = TRUE,
                                verbose = FALSE) {
-  .temp <- xmlChildren(node)
+  .temp <- XML::xmlChildren(x = node)
 
   if(verbose) {
     cat("[.filterXmlChildren] Children:\n")
@@ -290,15 +289,15 @@ parseOwsRange <- function(obj) {
   .filtered <- c()
   .names <- c()
   for (.x in .temp) {
-    if(includeNamed && xmlName(.x) == xmlTagName) {
+    if(includeNamed && XML::xmlName(node =.x) == xmlTagName) {
       .filtered <- c(.filtered, .x)
-      if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
-      .names <- c(.names, xmlName(.x))
+      if(verbose) cat("[.filterXmlChildren] Added", XML::xmlName(node =.x), "\n")
+      .names <- c(.names, XML::xmlName(node =.x))
     }
-    else if(!includeNamed && xmlName(.x) != xmlTagName) {
+    else if(!includeNamed && XML::xmlName(node =.x) != xmlTagName) {
       .filtered <- c(.filtered, .x)
-      if(verbose) cat("[.filterXmlChildren] Added", xmlName(.x), "\n")
-      .names <- c(.names, xmlName(.x))
+      if(verbose) cat("[.filterXmlChildren] Added", XML::xmlName(node =.x), "\n")
+      .names <- c(.names, XML::xmlName(node =.x))
     }
   }
   names(.filtered) <- .names

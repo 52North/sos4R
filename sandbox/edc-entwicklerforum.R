@@ -373,7 +373,7 @@ summary(aug2007.data[["Concentration.NO2."]])
 # Loesung 2: XML parsing
 # Nur um zu zeigen dass Erweitern mit Paket XML nicht so schlimm ist:
 definition <- getURL("http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration.NO2.")
-definition.xml <- xmlParse(definition)
+definition.xml <- XML::xmlParse(file = definition)
 getNodeSet(doc = definition.xml, path = "//gml:description/text()")[[1]]
 
 ##### Thematische Ausschnitte ##################################################

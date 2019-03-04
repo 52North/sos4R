@@ -558,7 +558,7 @@ stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 		print(obj)
 	}
 	
-	.val <- xmlValue(obj)
+	.val <- XML::xmlValue(x = obj)
 	return(.val)
 }
 print(omResultName)
@@ -783,7 +783,7 @@ xmlstring <- '<sos:ObservationOffering gml:id="temporary">
 		<gml:null>inapplicable</gml:null>
 		</gml:boundedBy>
 		</sos:ObservationOffering>'
-offering <- xmlParseString(xmlstring)
+offering <- XML::xmlParseString(content = xmlstring)
 
 weathersos <- SOS(SosExampleServices()[[1]])
 weathersos@verboseOutput <- TRUE

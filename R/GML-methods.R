@@ -153,22 +153,22 @@ setMethod(f = "encodeXML",
                              namespace = gmlNamespacePrefix)
             
             if( !is.na(obj@frame)) {
-              .tpos <- addAttributes(node = .tpos,
+              .tpos <- XML::addAttributes(node = .tpos,
                                      .attrs = c("frame" = obj@frame), append = TRUE)
             }
             if( !is.na(obj@calendarEraName)) {
-              .tpos <- addAttributes(node = .tpos,
+              .tpos <- XML::addAttributes(node = .tpos,
                                      .attrs = c("calendarEraName" = obj@calendarEraName),
                                      append = TRUE)
             }
             if( !is.na(obj@indeterminatePosition)) {
-              .tpos <- addAttributes(node = .tpos,
+              .tpos <- XML::addAttributes(node = .tpos,
                                      .attrs = c("indeterminatePosition" =
                                                   obj@indeterminatePosition),
                                      append = TRUE)
             }
             
-            xmlValue(.tpos) <- encodeXML(obj = obj@time, sos = sos,
+            XML::xmlValue(x = .tpos) <- encodeXML(obj = obj@time, sos = sos,
                                          verbose = verbose)
             
             return(.tpos)
@@ -200,10 +200,10 @@ setMethod(f = "encodeXML",
             else if(!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
               .beginPosition <- encodeXML(obj = obj@beginPosition, sos = sos,
                                           verbose = verbose)
-              xmlName(.beginPosition) <- gmlBeginPositionName
+              XML::xmlName(node =.beginPosition) <- gmlBeginPositionName
               .endPosition <- encodeXML(obj = obj@endPosition, sos = sos,
                                         verbose = verbose)
-              xmlName(.endPosition) <- gmlEndPositionName
+              XML::xmlName(node =.endPosition) <- gmlEndPositionName
               .tp <- addChildren(node = .tp,
                                  kids = list(.beginPosition, .endPosition))
             }
@@ -216,7 +216,7 @@ setMethod(f = "encodeXML",
                                      namespace = gmlNamespacePrefix)
               .duration <-  xmlNode(name = gmlDurationName, 
                                     namespace = gmlNamespacePrefix)
-              xmlValue(.duration) <- obj@duration
+              XML::xmlValue(x = .duration) <- obj@duration
               .timeLength$children[[1]] <- .duration
               .tp <- addChildren(node = .tp, kids = list(.timeLength))
             }
@@ -226,17 +226,17 @@ setMethod(f = "encodeXML",
               .timeInterval <-  xmlNode(name = gmlTimeIntervalName, 
                                         namespace = gmlNamespacePrefix)
               
-              xmlValue(.timeInterval) <- obj@timeInterval@interval
-              .timeInterval <- addAttributes(node = .timeInterval,
+              XML::xmlValue(x = .timeInterval) <- obj@timeInterval@interval
+              .timeInterval <- XML::addAttributes(node = .timeInterval,
                                              .attrs = list("unit" = obj@timeInterval@unit))
               
               if(!is.na(obj@timeInterval@radix)) {
-                .timeInterval <- addAttributes(node = .timeInterval,
+                .timeInterval <- XML::addAttributes(node = .timeInterval,
                                                .attrs = list("radix" = obj@timeInterval@radix),
                                                append = TRUE)
               }
               if(!is.na(obj@timeInterval@factor)) {
-                .timeInterval <- addAttributes(node = .timeInterval,
+                .timeInterval <- XML::addAttributes(node = .timeInterval,
                                                .attrs = list("factor" = obj@timeInterval@factor),
                                                append = TRUE)
               }
@@ -258,29 +258,29 @@ setMethod(f = "encodeXML",
                             namespace = gmlNamespacePrefix)
             
             if( !is.na(obj@srsName)) {
-              .env <- addAttributes(node = .env,
+              .env <- XML::addAttributes(node = .env,
                                     .attrs = c("srsName" = obj@srsName), append = TRUE)
             }
             if( !is.na(obj@srsDimension)) {
-              .env <- addAttributes(node = .env,
+              .env <- XML::addAttributes(node = .env,
                                     .attrs = c("srsDimension" = obj@srsDimension),
                                     append = TRUE)
             }
             if( !is.na(obj@axisLabels)) {
-              .env <- addAttributes(node = .env,
+              .env <- XML::addAttributes(node = .env,
                                     .attrs = c("axisLabels" = obj@axisLabels),
                                     append = TRUE)
             }
             if( !is.na(obj@uomLabels)) {
-              .env <- addAttributes(node = .env,
+              .env <- XML::addAttributes(node = .env,
                                     .attrs = c("uomLabels" = obj@uomLabels),
                                     append = TRUE)
             }
             
             .lC <- encodeXML(obj = obj@lowerCorner, sos = sos)
-            xmlName(.lC) <- gmlLowerCornerName
+            XML::xmlName(node =.lC) <- gmlLowerCornerName
             .uC <- encodeXML(obj = obj@upperCorner, sos = sos)
-            xmlName(.uC) <- gmlUpperCornerName
+            XML::xmlName(node =.uC) <- gmlUpperCornerName
             
             .env$children[[1]] <- .lC
             .env$children[[2]] <- .uC
@@ -297,24 +297,24 @@ setMethod(f = "encodeXML",
             
             .pos <- xmlNode(name = gmlPosName,
                             namespace = gmlNamespacePrefix)
-            xmlValue(.pos) <- obj@pos
+            XML::xmlValue(x = .pos) <- obj@pos
             
             if( !is.na(obj@srsName)) {
-              .pos <- addAttributes(node = .pos,
+              .pos <- XML::addAttributes(node = .pos,
                                     .attrs = c("srsName" = obj@srsName), append = TRUE)
             }
             if( !is.na(obj@srsDimension)) {
-              .pos <- addAttributes(node = .pos,
+              .pos <- XML::addAttributes(node = .pos,
                                     .attrs = c("srsDimension" = obj@srsDimension),
                                     append = TRUE)
             }
             if( !is.na(obj@axisLabels)) {
-              .pos <- addAttributes(node = .pos,
+              .pos <- XML::addAttributes(node = .pos,
                                     .attrs = c("axisLabels" = obj@axisLabels),
                                     append = TRUE)
             }
             if( !is.na(obj@uomLabels)) {
-              .pos <- addAttributes(node = .pos,
+              .pos <- XML::addAttributes(node = .pos,
                                     .attrs = c("uomLabels" = obj@uomLabels), append = TRUE)
             }
             

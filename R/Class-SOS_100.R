@@ -137,7 +137,7 @@ setClass("SosObservationOffering",
 #
 setClass("SosContents",
          representation(observationOfferings = "list"),
-         prototype = list(observationOfferings = list(NA), xml = xmlNode(NA)),
+         prototype = list(observationOfferings = list(NA), xml = XML::xmlNode(name = NA)),
          contains = c("OwsContents"),
          validity = function(object) {
            #print("Entering validation: SosContents")

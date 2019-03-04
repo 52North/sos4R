@@ -292,7 +292,7 @@ setClass("OwsCapabilities_1.1.0",
 setClass("OwsCapabilities_2.0.0",
          representation(languages = "XMLAbstractNode"),
          prototype = list("GetCapabilities",
-                          languages = xmlNode(NA),
+                          languages = XML::xmlNode(name = NA),
                           owsVersion = "2.0.0"),
          contains = "OwsCapabilities_1.1.0",
          validity = function(object) {

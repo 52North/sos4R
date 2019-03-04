@@ -35,11 +35,11 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 
   # check if this is the outermost call and a document is given, not a node
   if(inherits(obj, xmlInternalDocumentName))
-    .root <- xmlRoot(obj)
+    .root <- XML::xmlRoot(x = obj)
   else .root <- obj
 
   # switch submethods based on name
-  .rootName <- xmlName(.root)
+  .rootName <- XML::xmlName(node =.root)
 
   .parsingFunction <- sosParsers(sos)[[.rootName]]
   if(!is.null(.parsingFunction)) {
@@ -61,13 +61,13 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 #
 parseObservationProperty <- function(obj, sos, verbose = FALSE) {
   # a member can only have one child element, so omit text node artefacts
-  if(xmlSize(obj) >= 1) {
+  if(XML::xmlSize(obj = obj) >= 1) {
     .noneTexts <- .filterXmlChildren(obj, xmlTextNodeName, includeNamed = FALSE)
     .child <- .noneTexts[[1]]
-    #.child <- xmlChildren(obj)[[1]]
+    #.child <- XML::xmlChildren(x = obj)[[1]]
     if(verbose) {
       cat("[parseObservationProperty] Parsing child of member:",
-          xmlName(.child), "\n")
+          XML::xmlName(node =.child), "\n")
     }
     .mResult <- parseOM(.child, sos, verbose)
   }
@@ -75,7 +75,7 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
     # no child, try href attribute
     if(verbose) cat("[parseObservationProperty] Member has no direct child!\n")
 
-    .href <- xmlGetAttr(node = obj, name = "href", default = NA_character_)
+    .href <- XML::xmlGetAttr(node = obj, name = "href", default = NA_character_)
     if(!is.na(.href)) {
       warning(paste("[parseObservationProperty] Only reference to Observation was returned:",
                     .href))
@@ -101,9 +101,9 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 
   # 52N SOS only returns om:Measurements (!) with procedure ids and observed
   # properties in xlink:href
-  .procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
+  .procedure <- XML::xmlGetAttr(node = obj[[omProcedureName]], name = "href")
   .observedProperty <- SwePhenomenonProperty(
-    href = xmlGetAttr(node = obj[[omObservedPropertyName]],
+    href = XML::xmlGetAttr(node = obj[[omObservedPropertyName]],
                       name = "href"))
 
   .featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]], sos = sos,
@@ -129,12 +129,12 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 # om:Observation
 #
 parseObservation <- function(obj, sos, verbose = FALSE) {
-  .id <- xmlGetAttr(node = obj, name = "id",
+  .id <- XML::xmlGetAttr(node = obj, name = "id",
                     default = NA_character_)
   if(verbose) cat("[parseObservation]", .id, "\n")
 
   # 52N SOS only returns om:Observation with procedure ids xlink:href
-  .procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href",
+  .procedure <- XML::xmlGetAttr(node = obj[[omProcedureName]], name = "href",
                            default = NA_character_)
 
   .observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
@@ -195,9 +195,9 @@ parseObservationCollection <- function(obj, sos, verbose) {
   .env <- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
   if(!is.null(.env)) {
     .boundedBy <- list(
-      srsName = xmlGetAttr(.env, "srsName"),
-      lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
-      upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+      srsName = XML::xmlGetAttr(node = .env, "srsName"),
+      lowerCorner = XML::xmlValue(x = .env[[gmlLowerCornerName]]),
+      upperCorner = XML::xmlValue(x = .env[[gmlUpperCornerName]]))
 
     if(verbose) cat("[parseObservationCollection] Parsed envelope:",
                     toString(.boundedBy), "\n")
@@ -208,7 +208,7 @@ parseObservationCollection <- function(obj, sos, verbose) {
       .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
       .origUC <- strsplit(x = .boundedBy[["upperCorner"]], split = " ")
       .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .boundedBy <- list(srsName = xmlGetAttr(.env, "srsName"),
+      .boundedBy <- list(srsName = XML::xmlGetAttr(node = .env, "srsName"),
                          lowerCorner = .lC, upperCorner = .uC)
     }
   }
@@ -257,12 +257,12 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 
   # Check if remaining element is there
   if(length(.children) == 0) {
-    .children <- xmlChildren(obj)
+    .children <- XML::xmlChildren(x = obj)
     stop("Continue implementation here: OM-methods-parsing.R")
     cat("[parseResult] No non-text nodes in result, returning NULL.\n")
 
     #in O&M 2.0 there can be (literal) results of type MeasurementType
-    .typeAttributValue <- xmlGetAttr(node = obj, name = om20ResultTypeAttributeName, default = NA_character_)
+    .typeAttributValue <- XML::xmlGetAttr(node = obj, name = om20ResultTypeAttributeName, default = NA_character_)
 
     .typeWithQualifiedname <- strsplit(.typeAttributValue, ":")
 
@@ -277,14 +277,14 @@ parseResult <- function(obj, sos, verbose = FALSE) {
 
     if(!is.na(.type)) {
       if(.type == om20ResultMeasureTypeName){
-        return(xmlValue(obj))
+        return(XML::xmlValue(x = obj))
       }
     }
 
     return(NULL)
   }
 
-  if(xmlName(.children[[1]]) == sweDataArrayName) {
+  if(XML::xmlName(node =.children[[1]]) == sweDataArrayName) {
     if(verbose) cat("[parseResult] Parsing result with swe:DataArray.\n")
 
     # data array parser is exchangeable
@@ -292,15 +292,15 @@ parseResult <- function(obj, sos, verbose = FALSE) {
     .dataArray <- .children[[1]]
     .result <- .dataArrayParsingFunction(.dataArray, sos, verbose)
   }
-  else if (xmlName(.children[[1]]) == xmlTextNodeName) {
-    .result <- as.numeric(xmlValue(.children))
+  else if (XML::xmlName(node =.children[[1]]) == xmlTextNodeName) {
+    .result <- as.numeric(XML::xmlValue(x = .children))
     if (is.na(.result)) {
-      .result <- xmlValue(.children, trim = TRUE)
+      .result <- XML::xmlValue(x = .children, trim = TRUE)
     }
   }
   else {
     warning(paste("[parseResult] Parsing of given result is NOT supported:",
-                  xmlName(.children[[1]]), "-- only", sweDataArrayName,
+                  XML::xmlName(node =.children[[1]]), "-- only", sweDataArrayName,
                   " or text nodes containing strings or numbers can be parsed."))
   }
 
@@ -362,7 +362,7 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
   .foi <- NULL
 
   # has href attribute? if yes, use it!
-  .href <- xmlGetAttr(node = obj, name = "href")
+  .href <- XML::xmlGetAttr(node = obj, name = "href")
   if(!is.null(.href)) {
     if(verbose) cat("[parseFOI] referenced FOI:", .href, "\n")
     # feature is referenced
@@ -373,7 +373,7 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
     .noneTexts <- .filterXmlChildren(obj, xmlTextNodeName,
                                      includeNamed = FALSE)
     .feature <- .noneTexts[[1]]
-    .name <- xmlName(.feature)
+    .name <- XML::xmlName(node =.feature)
 
     if(verbose) cat("[parseFOI] inline FOI:", .name, "\n")
 

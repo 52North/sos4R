@@ -34,14 +34,14 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 
   obj <- obj[[om20OM_Observation]]
 
-  .id <- xmlGetAttr(node = obj, name = "id",
+  .id <- XML::xmlGetAttr(node = obj, name = "id",
                     default = NA_character_)
   if(verbose) cat("[parseObservation]", .id, "\n")
 
   #TODO adjust the following OM 1.0 parsing functionality
 
   # 52N SOS only returns om:Observation with procedure ids xlink:href
-  .procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href",
+  .procedure <- XML::xmlGetAttr(node = obj[[omProcedureName]], name = "href",
                            default = NA_character_)
 
   .observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
@@ -125,8 +125,8 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
   if(verbose) cat("[parseTime]\n")
 
-  .tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
-  .tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
+  .tiXML <- XML::xmlChildren(x = obj)[[gmlTimeInstantName]]
+  .tpXML <- XML::xmlChildren(x = obj)[[gmlTimePeriodName]]
   .timeReference <- xmlAttrs(node = obj)[["href"]]
   .timeObject <- NULL
 

@@ -34,12 +34,12 @@ parseSosCapabilities200 <- function(obj, sos) {
   if(sos@verboseOutput)
     cat("[parseSosCapabilities] entered... \n")
 
-  .caps.root <- xmlRoot(obj)
+  .caps.root <- XML::xmlRoot(x = obj)
 
   # attributes:
-  .caps.version <- xmlGetAttr(node = .caps.root, name = "version",
+  .caps.version <- XML::xmlGetAttr(node = .caps.root, name = "version",
                               default = NA_character_)
-  .caps.updateSequence <- xmlGetAttr(node = .caps.root,
+  .caps.updateSequence <- XML::xmlGetAttr(node = .caps.root,
                                      name = "updateSequence", default = NA_character_)
   if(sos@verboseOutput)
     cat("[parseSosCapabilities] version, update sequence:", .caps.version,
@@ -122,7 +122,7 @@ parseSosCapabilities200 <- function(obj, sos) {
 }
 
 parseSosObservationOffering_200 <- function(obj, sos) {
-  .sosOffering = xmlChildren(obj)[[sosObservationOfferingName]]
+  .sosOffering = XML::xmlChildren(x = obj)[[sosObservationOfferingName]]
   #if(!is.na(.sosOffering)){
   #  parseSosObservationOffering(.sosOffering, sos)
   #}
@@ -133,8 +133,8 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   }
 
   # not optional, but have a default just in case...
-  .id <- xmlValue(.sosOffering[[swesIdentifierName]])
-  .name <- xmlValue(.sosOffering[[swesNameName]])
+  .id <- XML::xmlValue(x = .sosOffering[[swesIdentifierName]])
+  .name <- XML::xmlValue(x = .sosOffering[[swesNameName]])
   if(sos@verboseOutput)
     cat("[parseSosObservationOffering_200] id:", .id, "name:", .name, "\n")
 
@@ -161,7 +161,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
 
   # can be transformed to character vectors
   # this works, but its really swes:procedure element NOT 1...* sos:procedure elements for SOS v 2.0.0
-  .procedure <- xmlValue(.sosOffering[[sosProcedureName]])
+  .procedure <- XML::xmlValue(x = .sosOffering[[sosProcedureName]])
 
   # handle missing procedures
   if(.procedure == "") {
@@ -235,9 +235,9 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   .env <- .sosOffering[[sosObservedAreaName]][[gmlEnvelopeName]]
   if(!is.null(.env)) {
     .observedArea <- list(
-      srsName = xmlGetAttr(.env, "srsName"),
-      lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
-      upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+      srsName = XML::xmlGetAttr(node = .env, "srsName"),
+      lowerCorner = XML::xmlValue(x = .env[[gmlLowerCornerName]]),
+      upperCorner = XML::xmlValue(x = .env[[gmlUpperCornerName]]))
 
     if(sosSwitchCoordinates(sos)) {
       warning("Switching coordinates in envelope of ObservationOffering!")
@@ -245,7 +245,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
       .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
       .origUC <- strsplit(x = .observedArea[["upperCorner"]], split = " ")
       .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .observedArea <- list(srsName = xmlGetAttr(.env, "srsName"),
+      .observedArea <- list(srsName = XML::xmlGetAttr(node = .env, "srsName"),
                             lowerCorner = .lC, upperCorner = .uC)
     }
 
@@ -329,7 +329,7 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
   .noneTexts <- .filterXmlOnlyNoneTexts(obj)
   .member <- .noneTexts[[1]]
 
-  .name <- xmlName(.member)
+  .name <- XML::xmlName(node =.member)
 
   if(.name == wmlMonitoringPointName) {
     .sp <- parseMonitoringPoint(.member, sos = sos)

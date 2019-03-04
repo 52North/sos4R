@@ -212,7 +212,7 @@ denw095_descr
 #denw095.descr@xml
 
 # Get the identifier of the station:
-denw095_id <- xmlValue(getNodeSet(doc = denw095_descr@xml,
+denw095_id <- XML::xmlValue(x = getNodeSet(doc = denw095_descr@xml,
 		path = "//sml:Term[@definition='urn:ogc:def:identifier:OGC:1.0:longName']/sml:value/text()",
 		namespaces = sos4R:::.sos100_NamespaceDefinitionsSML)[[1]])
 

@@ -73,9 +73,9 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] Response string: \n'", .responseString, "'\n")
 
-  if (isXMLString(.responseString)) {
+  if (XML::isXMLString(str = .responseString)) {
 
-    .response <- xmlParseDoc(.responseString, asText = TRUE, options = xmlParseOptions)
+    .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE, options = xmlParseOptions)
 
     if (verbose || inspect) {
       cat("[.getDataAvailability_1.0.0] Response XML document:\n")
@@ -84,7 +84,7 @@
 
     if (!is.null(.filename)) {
       .filename <- paste0(.filename, ".xml")
-      saveXML(.response, file = .filename)
+      XML::saveXML(doc = .response, file = .filename)
 
       if (verbose) {
         cat("[.getDataAvailability_1.0.0] Saved original document:",
@@ -283,7 +283,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   .ptNode <- .ptNode[[1]]
   # href is an in-document reference starting with "#" and than the GML:id of the referenced element
   if (.isHrefAttributeAvailable(.ptNode)) {
-    .ptNodeHref <- xmlAttrs(.ptNode)[["href"]]
+    .ptNodeHref <- XML::xmlAttrs(node = .ptNode)[["href"]]
     if(verbose) cat(paste0("[parseGDAMember] trying to get referenced phenomenon time via '", .ptNodeHref, "'."))
     .phenTime <- .phenTimeCache[[str_sub(.ptNodeHref, start = 2)]]
     if (is.null(.phenTime)) {
@@ -308,7 +308,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
 
 .isHrefAttributeAvailable <- function(.node = NULL) {
   if (is.null(.node)) return(FALSE)
-  .nodeAttributes <- xmlAttrs(.node)
+  .nodeAttributes <- XML::xmlAttrs(node = .node)
 
   if (is.null(.nodeAttributes)) return(FALSE)
   .href <- .nodeAttributes[["href"]]
@@ -320,7 +320,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (is.null(.nodes) || !is.list(.nodes) || length(.nodes) != 1) {
     stop(paste0("[parseGDAMember] no element found for '", elementName, "'."))
   }
-  .element <- xmlAttrs(.nodes[[1]])[["href"]]
+  .element <- XML::xmlAttrs(node = .nodes[[1]])[["href"]]
   if (is.null(.element) || str_length(.element) < 1) {
     stop(paste0("[parseGDAMember] element found for '", elementName, "' misses href attribute. Found '",
                 .element, "'."))

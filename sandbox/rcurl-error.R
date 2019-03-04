@@ -46,13 +46,13 @@ response <- postForm(uri = "http://141.30.100.135:8080/eo2heavenSOS/sos",
 .gc <- "http://141.30.100.135:8080/eo2heavenSOS/sos?request=GetCapabilities&service=SOS"
 .responseString = getURL(url = .gc)
 .responseString
-.response <- xmlParseDoc(.responseString, asText = TRUE)
+.response <- XML::xmlParseDoc(file = .responseString, asText = TRUE)
 # WORKS
 
 .responseString = getURL(url = .gc,
 		.opts = mySOS2@curlOptions,
 		curl = mySOS2@curlHandle,
 		.encoding = sosDefaultCharacterEncoding)
-.response <- xmlParseDoc(.responseString, asText = TRUE)
+.response <- XML::xmlParseDoc(file = .responseString, asText = TRUE)
 .response
 # works.

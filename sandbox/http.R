@@ -137,8 +137,8 @@ myParseSchemaDoc <- function (url, removeComments = TRUE,
 						removeNodes(node)
 						return(NULL)
 					}
-					schema = getNodeSet(xdoc, "//xs:schema", namespaces)
-					sapply(schema, function(s) replaceNodes(node, xmlRoot(s)))
+					schema = XML::getNodeSet(doc = xdoc, "//xs:schema", namespaces)
+					sapply(schema, function(s) replaceNodes(node, XML::xmlRoot(x = s)))
 				})
 	}
 	if (followIncludes) {
@@ -147,9 +147,9 @@ myParseSchemaDoc <- function (url, removeComments = TRUE,
 		if (length(includes)) {
 			sapply(includes, function(node) {
 						xdoc = myImportSchema(node, baseURL)
-						schema = getNodeSet(xdoc, "//xs:schema", c(xs = "http://www.w3.org/2001/XMLSchema"))
+						schema = XML::getNodeSet(doc = xdoc, "//xs:schema", c(xs = "http://www.w3.org/2001/XMLSchema"))
 						p = xmlParent(node)
-						sapply(schema, function(s) addChildren(p, kids = xmlChildren(s)))
+						sapply(schema, function(s) addChildren(p, kids = XML::xmlChildren(x = s)))
 					})
 			removeNodes(includes, TRUE)
 		}
@@ -185,17 +185,17 @@ myProcessWSDL <- function (fileName, handlers = WSDLParseHandlers(fileName),
 					followIncludes = FALSE)
 			print("Not following imports and includes!")
 		}
-		else wsdl = xmlTreeParse(fileName, handlers = handlers, 
+		else wsdl = XML::xmlTreeParse(file = fileName, handlers = handlers, 
 					asTree = TRUE, fullNamespaceInfo = TRUE)
 	}
-	root = xmlRoot(wsdl)
+	root = XML::xmlRoot(x = wsdl)
 	port = root[["service"]][["port"]]
 	
 	if (sum(xmlSApply(root[["service"]], xmlName) == "port") > 
 			1) 
 		warning("Ignoring additional <service><port> ... elements")
 	
-	loc = xmlGetAttr(port[["address"]], "location")
+	loc = XML::xmlGetAttr(node = port[["address"]], "location")
 	server = SOAPServer(loc)
 	
 	print("Server:")
@@ -214,7 +214,7 @@ myProcessWSDL <- function (fileName, handlers = WSDLParseHandlers(fileName),
 			nameSpaces = names(.SOAPDefaultNameSpaces)[i[!is.na(i)]]
 	}
 	
-	SOAPServerDescription(name = xmlGetAttr(port, "name"), server = server, 
+	SOAPServerDescription(name = XML::xmlGetAttr(node = port, "name"), server = server, 
 			operations = ops, types = types, nameSpaces = as.character(nameSpaces))
 }
 

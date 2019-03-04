@@ -210,10 +210,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                   ". Please re-check query parameters."))
   }
 
-  if(isXMLString(.responseString)) {
+  if(XML::isXMLString(str = .responseString)) {
     if(verbose) {
       cat("[.getFeatureOfInterest_2.0.0] Got XML string as response",
-          "(based on isXMLString()).\n")
+          "(based on XML::isXMLString(str = )).\n")
       cat("[.getFeatureOfInterest_2.0.0] Content type: '", toString(.contentType), "'.\n")
     }
 
@@ -242,7 +242,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .contentType <- .contentType[[1]]
     }
 
-    .response <- xmlParseDoc(.responseString, asText = TRUE,
+    .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
                              options = xmlParseOptions)
     if(verbose || inspect) {
       cat("[.getFeatureOfInterest_2.0.0] RESPONSE DOC:\n")
@@ -264,7 +264,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     if(!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
-      saveXML(.response, file = .filename)
+      XML::saveXML(doc = .response, file = .filename)
 
       if(verbose) {
         cat("[.getFeatureOfInterest_2.0.0] Saved original document:",
@@ -374,10 +374,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                   ". Please re-check query parameters."))
   }
 
-  if(isXMLString(.responseString)) {
+  if(XML::isXMLString(str = .responseString)) {
     if(verbose) {
       cat("[.getObservation_2.0.0] Got XML string as response",
-          "(based on isXMLString()).\n")
+          "(based on XML::isXMLString(str = )).\n")
       cat("[.getObservation_2.0.0] Content type: '", toString(.contentType), "'.\n")
     }
 
@@ -406,7 +406,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .contentType <- .contentType[[1]]
     }
 
-    .response <- xmlParseDoc(.responseString, asText = TRUE,
+    .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
                              options = xmlParseOptions)
     if(verbose || inspect) {
       cat("[.getObservation_2.0.0] RESPONSE DOC:\n")
@@ -440,7 +440,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     if(!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
-      saveXML(.response, file = .filename)
+      XML::saveXML(doc = .response, file = .filename)
 
       if(verbose) {
         cat("[.getObservation_2.0.0] Saved original document:",
