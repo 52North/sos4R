@@ -28,7 +28,7 @@
 ################################################################################
 
 #
-# parse WaterML 2.0 MonitoringPoint 
+# parse WaterML 2.0 MonitoringPoint
 #
 MonitoringPoint <- function(sampledFeatures, id, identifier, names, shape) {
   new("MonitoringPoint", sampledFeatures = sampledFeatures, id = id, identifier= identifier, names = names, shape = shape)

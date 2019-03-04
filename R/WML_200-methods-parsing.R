@@ -28,21 +28,21 @@
 ################################################################################
 
 #
-# parse gml:pos from wml2:MonitoringPoint 
+# parse gml:pos from wml2:MonitoringPoint
 #
 parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
-  
+
   .sampledFeatures <- list(obj[saSampledFeatureName])
-  
+
   .id <-xmlGetAttr(node = obj, name = "id", default = NA_character_)
-  
+
   .names <- list(obj[gmlNameName])
-  
+
   .identifier <- list(obj[gmlIdentifierName])
-  
+
   .shape <- parseSamsShape(obj[samsShapeName], sos)
-  
+
   .mp <- MonitoringPoint(.sampledFeatures, .id, .identifier, .names, .shape)
-  
+
   return(.mp)
 }
