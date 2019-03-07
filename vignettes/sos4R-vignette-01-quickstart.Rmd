@@ -116,7 +116,6 @@ All parameters except the service endpoint are optional and use default settings
 - `parsers`: The list of parsing functions. See vignette "Extending".
 - `encoders`: The list of encoding functions. See vignette "Extending".
 - `dataFieldConverters`:  The list of conversion functions. See vignette "Extending".
-- `curlHandle`, `curlOptions`: Settings of the package `RCurl`, which is used for HTTP connections. Please consult the packags specification before using this.
 - `timeFormat`: The time format to be used or decoding and encoding time character strings to and from `POSIXt` classes, the default is `r sosDefaultTimeFormat`.
 - `verboseOutput`: Trigger parameter for extensive debugging information on the console for all requests made to this SOS instance.
 - `switchCoordinates`: Switches all coordinates that are encountered during the parsing phase, such as in an element like `<gml:lowerCorner>117.3 -41.5</gml:lowerCorner>`.

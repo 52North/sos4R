@@ -243,8 +243,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     }
 
     .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
-                             options = xmlParseOptions)
-    if(verbose || inspect) {
+    if (inspect) {
       cat("[.getFeatureOfInterest_2.0.0] RESPONSE DOC:\n")
       print(.response)
     }
@@ -262,14 +261,12 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .parserName <- sosGetFeatureOfInterestName
     }
 
-    if(!is.null(.filename)) {
+    if (!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
       XML::saveXML(doc = .response, file = .filename)
 
-      if(verbose) {
-        cat("[.getFeatureOfInterest_2.0.0] Saved original document:",
-            .filename, "\n")
-      }
+      if (verbose) cat("[.getFeatureOfInterest_2.0.0] Saved original document:",
+                       .filename, "\n")
     }
 
     if(.isExceptionReport(.response)) {
@@ -407,11 +404,11 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     }
 
     .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
-                             options = xmlParseOptions)
-    if(verbose || inspect) {
+    if (inspect) {
       cat("[.getObservation_2.0.0] RESPONSE DOC:\n")
       print(.response)
     }
+
     # select the parser and file ending based on the mime type FIRST
     .fileEnding <- ".xml"
     if(.contentType == mimeTypeXML) {
@@ -540,8 +537,8 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       return(.responseString)
     }
 
-    if(mimeTypeCSV == responseFormat) {
-      if(verbose || inspect) {
+    if (mimeTypeCSV == responseFormat) {
+      if (inspect) {
         cat("[.getObservation_2.0.0] CSV RESPONSE:\n")
         print(.responseString)
       }
@@ -549,7 +546,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
       .csv <- .parsingFunction(obj = .responseString, verbose = verbose)
 
-      if(!is.null(.filename)) {
+      if (!is.null(.filename)) {
         .filename <- paste(file = .filename, ".csv", sep = "")
         write.csv(.csv, .filename)
       }
@@ -557,7 +554,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .msg <- paste("[sos4R] Finished getObservation to", sos@url, "\n\t",
                     "--> received observations with dimensions",
                     toString(dim(.csv)), "\n")
-      if(!is.null(.filename)) {
+      if (!is.null(.filename)) {
         .msg <- paste(.msg,
                       "[sos4R] Original document saved:", .filename, "\n")
 
@@ -580,14 +577,14 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   } # else
 
   # not xml nor csv nore otherwise handled
-  if(verbose || inspect) {
+  if (inspect) {
     cat("[.getObservation_2.0.0] UNKNOWN RESPONSE FORMAT; Response string: \n'")
     cat(.responseString, "'\n")
     cat("[.getObservation_2.0.0] Content-Type: ", .contentType)
     warning("Unknown response format!")
   }
 
-  if(!is.null(.filename)) {
+  if (!is.null(.filename)) {
     save(.responseString, file = .filename)
     cat("[sos4R] Saved original document:", .filename)
   }

@@ -92,29 +92,16 @@
       .url <- paste(.url, .kvpsString, sep = "&")
     }
 
-    if(verbose || inspect) {
-      cat("[.sosRequest_2.0.0] GET!\n[.sosRequest_2.0.0] REQUEST:\n\t",
-          .url, "\n")
-    }
+    if (inspect) cat("[.sosRequest_2.0.0] GET!\n[.sosRequest_2.0.0] REQUEST:\n\t", .url, "\n")
 
-    if(verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
+    if (verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
 
-    .response = getURL(url = .url,
-                       .opts = sos@curlOptions,
-                       curl = sos@curlHandle,
-                       .encoding = sosDefaultCharacterEncoding,
-                       httpauth = 1L)
+    .response = httr::GET(url = .url)
 
-    pos = regexpr('<\\?xml', .response)
-
-    if(pos > 1){
-      .response = substr(.response, pos, nchar(.response))
-    }
-
-    if(verbose) cat("[.sosRequest_2.0.0] ... done.\n")
+    if (verbose) cat("[.sosRequest_2.0.0] ... done.\n")
   }
-  else if(sos@binding == .sosBindingPOX) {
-    if(verbose || inspect) {
+  else if (sos@binding == .sosBindingPOX) {
+    if (inspect) {
       cat("[.sosRequest_2.0.0] POST!\n[.sosRequest_2.0.0] REQUEST:\n")
       print(.encodedRequest)
     }
@@ -144,23 +131,23 @@
           .dcp, "\n")
 
     .requestString <- toString(.encodedRequest)
-    
+
     # using 'POST' for application/xml encoded requests
     if(verbose) cat("[.sosRequest_2.0.0] Do request...")
-    
+
     .response <- POST(url = .dcp,
                       content_type_xml(),
                       accept_xml(),
                       body = .requestString )
-    
+
     stop_for_status(.response, "sending POST request")
-    
+
     .response <- content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
 
-    if(verbose) cat("[.sosRequest_2.0.0] ... done.")
+    if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
-  else if(sos@binding == .sosBindingSOAP) {
-    if(verbose || inspect) {
+  else if (sos@binding == .sosBindingSOAP) {
+    if (inspect) {
       print("[.sosRequest_2.0.0] SOAP! REQUEST:\n")
       print(.encodedRequest)
     }
@@ -173,7 +160,7 @@
                SosSupportedBindings(), "but is", sos@binding))
   }
 
-  if(verbose) {
+  if (verbose) {
     cat("[.sosRequest_2.0.0] RESPONSE:\n")
     print(.response)
     if(is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
@@ -212,21 +199,19 @@
     cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
   }
 
-  tmpStoredXMLCaps = tempfile()
+  tmpStoredXMLCaps = base::tempfile()
 
-  fileConn<-file(tmpStoredXMLCaps)
-  writeLines(.responseString, fileConn)
-  close(fileConn)
+  fileConn <- base::file(tmpStoredXMLCaps)
+  base::writeLines(.responseString, fileConn)
+  base::close(fileConn)
 
-  #dump(xmlCaps, file = tmpStoredXMLCaps)
-
-  .response <- xmlParseDoc(file = tmpStoredXMLCaps)
-  if(verbose || inspect) {
+  .response <- xml2::read_xml(x = tmpStoredXMLCaps)
+  if (inspect) {
     cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
     print(.response)
   }
 
-  if(.isExceptionReport(.response)) {
+  if (.isExceptionReport(.response)) {
     return(.handleExceptionReport(sos, .response))
   }
   else {

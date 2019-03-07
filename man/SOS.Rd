@@ -251,8 +251,6 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{parsers}:}{Object of class \code{"list"}: A list of named functions for parsing of SOS responses.}
     \item{\code{encoders}:}{Object of class \code{"list"}: A list of named functions for encoding of SOS requests.}
     \item{\code{dataFieldConverters}:}{Object of class \code{"list"}: A list of named functions to be used by the parsing methods to convert data values to the correct \R type, see \code{\link{SosDataFieldConvertingFunctions}} for the default functions and how to add your own converters.}
-    \item{\code{curlHandle}:}{Object of class \code{"CURLHandle"}: The curl options to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
-    \item{\code{curlOptions}:}{Object of class \code{"ANY"}: The curl handle to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
     \item{\code{timeFormat}:}{Object of class \code{"character"}: The time format to be used or decoding and encoding time character strings to and from \code{POSIXt} classes.}
     \item{\code{verboseOutput}:}{Object of class \code{"logical"}: Trigger parameter for extensive debugging information on the console.}
     \item{\code{switchCoordinates}:}{Object of class \code{"logical"}: Trigger enabling switching of lat/long during parsing stage.}
@@ -307,7 +305,6 @@ Object from the class can be used in calls to function for metadata retrieval of
 SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
 	parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
 	dataFieldConverters = SosDataFieldConvertingFunctions(),
-	curlOptions = list(), curlHandle = getCurlHandle(),
 	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
 	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
 	additionalKVPs = list(), ...)
@@ -329,8 +326,6 @@ SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version,
   \item{parsers}{See the corresponding slot description.}
   \item{encoders}{See the corresponding slot description.}
   \item{dataFieldConverters}{See the corresponding slot description.}
-  \item{curlOptions}{See the corresponding slot description.}
-  \item{curlHandle}{See the corresponding slot description.}
   \item{timeFormat}{See the corresponding slot description.}
   \item{verboseOutput}{See the corresponding slot description.}
   \item{switchCoordinates}{See the corresponding slot description.}

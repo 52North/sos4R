@@ -6,6 +6,7 @@
 - Extended developer documentation in `DEV-README.md`
 - Add AppVeyor CI configuration
 - Use R Markdown based README (`README.Rmd`)
+- Combination of `verbose` and `inspect`: full requests and responses are only printed with `inspect = TRUE`
 
 # sos4R 0.2-12
 

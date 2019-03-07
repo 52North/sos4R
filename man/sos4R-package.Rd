@@ -23,7 +23,7 @@
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr
-	Depends: \tab XML, RCurl, sp\cr
+	Imports: \tab xml2, httr, sp\cr
 	}
 }
 

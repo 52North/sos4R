@@ -34,8 +34,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 parsers = SosParsingFunctions(),
                 encoders = SosEncodingFunctions(),
                 dataFieldConverters = SosDataFieldConvertingFunctions(),
-                curlOptions = list(),
-                curlHandle = getCurlHandle(),
                 timeFormat = sosDefaultTimeFormat,
                 verboseOutput = FALSE,
                 switchCoordinates = FALSE,
@@ -43,10 +41,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 dcpFilter = SosDefaultDCPs(),
                 additionalKVPs = list(),
                 ...) {
-
-  if(binding == .sosConnectionMethodPost_Deprecated)
-    .curlOpts <- curlOptions(url = url)
-  else .curlOpts <- curlOptions
 
   if(binding == .sosConnectionMethodPost_Deprecated) {
     warning("You use a deprecated method parameter, please use 'POX' from now on.")
@@ -69,8 +63,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 parsers = parsers,
                 encoders = encoders,
                 dataFieldConverters = dataFieldConverters,
-                curlOptions = .curlOpts,
-                curlHandle = curlHandle,
                 timeFormat = timeFormat,
                 verboseOutput = verboseOutput,
                 switchCoordinates = switchCoordinates,
@@ -103,8 +95,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 parsers = parsers,
                 encoders = encoders,
                 dataFieldConverters = dataFieldConverters,
-                curlOptions = .curlOpts,
-                curlHandle = curlHandle,
                 timeFormat = timeFormat,
                 verboseOutput = verboseOutput,
                 switchCoordinates = switchCoordinates,
@@ -335,22 +325,16 @@ SosGetObservationById <- function(
       .url <- paste(.url, .kvpsString, sep = "&")
     }
 
-    if(verbose || inspect) {
-      cat("[.sosRequest_1.0.0] GET!\n[.sosRequest_1.0.0] REQUEST:\n\t",
-          .url, "\n")
-    }
+    if (inspect) cat("[.sosRequest_1.0.0] GET!\n[.sosRequest_1.0.0] REQUEST:\n\t", .url, "\n")
 
-    if(verbose) cat("[.sosRequest_1.0.0] Do request...\n")
+    if (verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
-    .response = RCurl::getURL(url = .url,
-                       .opts = sos@curlOptions,
-                       curl = sos@curlHandle,
-                       .encoding = sosDefaultCharacterEncoding)
+    .response = httr::GET(url = .url)
 
-    if(verbose) cat("[.sosRequest_1.0.0] ... done.\n")
+    if (verbose) cat("[.sosRequest_1.0.0] ... done.\n")
   }
-  else if(sos@binding == .sosBindingPOX) {
-    if(verbose || inspect) {
+  else if (sos@binding == .sosBindingPOX) {
+    if (inspect) {
       cat("[.sosRequest_1.0.0] POST!\n[.sosRequest_1.0.0] REQUEST:\n")
       print(.encodedRequest)
     }
@@ -395,8 +379,8 @@ SosGetObservationById <- function(
 
     if(verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
-  else if(sos@binding == .sosBindingSOAP) {
-    if(verbose || inspect) {
+  else if (sos@binding == .sosBindingSOAP) {
+    if (inspect) {
       print("[.sosRequest_1.0.0] SOAP! REQUEST:\n")
       print(.encodedRequest)
     }
@@ -427,7 +411,9 @@ SosGetObservationById <- function(
                     "\n\n"))
   }
 
-  return(.response)
+  .content = httr::content(x = .response, encoding = sosDefaultCharacterEncoding)
+
+  return(.content)
 }
 
 setMethod(f = "sosRequest",
@@ -467,12 +453,12 @@ setMethod(f = "sosRequest",
 
   .response <- xmlParseDoc(file = .responseString, options = xmlParseOptions,
                            asText = TRUE)
-  if(verbose || inspect) {
+  if (inspect) {
     cat("[.getCapabilities_1.0.0] RESPONSE DOC:\n")
     print(.response)
   }
 
-  if(.isExceptionReport(.response)) {
+  if (.isExceptionReport(.response)) {
     return(.handleExceptionReport(sos, .response))
   }
   else {
@@ -484,6 +470,7 @@ setMethod(f = "sosRequest",
     return(.caps)
   }
 }
+
 setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
           def = function(sos, verbose, inspect, sections, acceptFormats,
                          updateSequence, owsVersion,	acceptLanguages) {
@@ -527,13 +514,10 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 
   .responseString = sosRequest(sos = sos, request = .ds,
                                verbose = verbose, inspect = inspect)
-  if(verbose || inspect){
-    cat("[.describeSensor_1.0.0] RESPONSE:\n", .responseString , "\n")
-  }
+  if (inspect) cat("[.describeSensor_1.0.0] RESPONSE:\n", .responseString , "\n")
 
   .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
-                           options = xmlParseOptions)
-  if(verbose || inspect) {
+  if (inspect) {
     cat("[.describeSensor_1.0.0] RESPONSE DOC:\n")
     print(.response)
   }

@@ -77,7 +77,7 @@
 
     .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE, options = xmlParseOptions)
 
-    if (verbose || inspect) {
+    if (inspect) {
       cat("[.getDataAvailability_1.0.0] Response XML document:\n")
       print(.response)
     }

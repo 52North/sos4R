@@ -16,7 +16,6 @@ Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
 Depends: R (>= 3.4.0)
 Imports:
     httr,
-    RCurl (>= 1.95),
     sp,
     stringr,
     xml2,
