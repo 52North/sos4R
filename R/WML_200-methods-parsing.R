@@ -34,7 +34,7 @@ parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
 
   .sampledFeatures <- list(obj[saSampledFeatureName])
 
-  .id <-XML::xmlGetAttr(node = obj, name = "id", default = NA_character_)
+  .id <-xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
 
   .names <- list(obj[gmlNameName])
 

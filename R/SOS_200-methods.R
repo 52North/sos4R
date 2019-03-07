@@ -165,8 +165,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 #
 #
 .getFeatureOfInterest_2.0.0 <- function(sos, featureOfInterest, verbose, inspect,
-                                        saveOriginal,
-                                        xmlParseOptions = c(XML::NOERROR, XML::RECOVER)){
+                                        saveOriginal){
 
   .filename <- NULL
   #
@@ -242,19 +241,17 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .contentType <- .contentType[[1]]
     }
 
-    .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
+    .response <- .internalXmlRead(x = .responseString)
     if (inspect) {
       cat("[.getFeatureOfInterest_2.0.0] RESPONSE DOC:\n")
       print(.response)
     }
     # select the parser and file ending based on the mime type FIRST
     .fileEnding <- ".xml"
-    if(.contentType == mimeTypeXML) {
-      if(verbose)
-        cat("[.getFeatureOfInterest_2.0.0] Got pure XML according to mime type.",
-            "Trying to parse with default parser, see SosParsingFunctions().\n")
+    if (.contentType == mimeTypeXML) {
+      if (verbose) cat("[.getFeatureOfInterest_2.0.0] Got pure XML according to mime type.",
+                       "Trying to parse with default parser, see SosParsingFunctions().\n")
       .parserName <- mimeTypeXML
-
     }
     else {
       # fall back, or more of a default: the function name
@@ -263,7 +260,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     if (!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
-      XML::saveXML(doc = .response, file = .filename)
+      xml2::write_xml(x = .response, file = .filename)
 
       if (verbose) cat("[.getFeatureOfInterest_2.0.0] Saved original document:",
                        .filename, "\n")
@@ -320,8 +317,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                                   valueReferenceTemporalFilter = sosDefaultTemporalValueReference,
                                   verbose,
                                   inspect,
-                                  saveOriginal,
-                                  xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
+                                  saveOriginal) {
 
   .filename <- NULL
   if(!is.null(saveOriginal)) {
@@ -403,7 +399,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .contentType <- .contentType[[1]]
     }
 
-    .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
+    .response <- .internalXmlRead(x = .responseString)
     if (inspect) {
       cat("[.getObservation_2.0.0] RESPONSE DOC:\n")
       print(.response)
@@ -437,7 +433,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     if(!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
-      XML::saveXML(doc = .response, file = .filename)
+      xml2::write_xml(x = .response, file = .filename)
 
       if(verbose) {
         cat("[.getObservation_2.0.0] Saved original document:",

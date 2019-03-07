@@ -33,10 +33,10 @@
 #
 parsePosition <- function(obj, sos) {
   .position <- NULL
-  
+
   # has href attribute?
-  .href <- XML::xmlGetAttr(node = obj, name = "href")
-  if(!is.null(.href)) {
+  .href <- xml2::xml_attr(x = obj, attr = "href")
+  if (!is.na(.href)) {
     # position is referenced
     .position <- GmlPointProperty(href = .href)
   }
@@ -45,7 +45,7 @@ parsePosition <- function(obj, sos) {
     .position <- GmlPointProperty(point = parsePoint(obj[[gmlPointName]],
                                                      sos = sos))
   }
-  
+
   return(.position)
 }
 
@@ -54,31 +54,28 @@ parsePosition <- function(obj, sos) {
 #
 parsePoint <- function(obj, sos) {
   .point <- NA
-  .pos <- obj[[gmlPosName]]
-  
-  .posString <- XML::xmlValue(x = .pos)
-  
+  .pos <- xml2::xml_child(x = obj, search = gmlPointName)
+  .posString <- xml2::xml_text(x = .pos)
+
   if(sosSwitchCoordinates(sos)) {
     warning("Switching coordinates in Point!")
     .orig <- strsplit(x = .posString, split = " ")
     .posString <- paste(.orig[[1]][[2]], .orig[[1]][[1]])
   }
-  
+
   # optional attributes:
-  .srsName <- XML::xmlGetAttr(node = .pos, name = "srsName",
-                         default = NA_character_)
-  .srsDimension <- XML::xmlGetAttr(node = .pos, name = "srsDimension",
-                              default = NA_integer_)
-  .axisLabels <- XML::xmlGetAttr(node = .pos, name = "axisLabels",
-                            default = NA_character_)
-  .uomLabels <- XML::xmlGetAttr(node = .pos, name = "uomLabels",
-                           default = NA_character_)
-  
-  .pos <- GmlDirectPosition(pos = .posString, srsName = .srsName,
-                            srsDimension = .srsDimension, axisLabels = .axisLabels,
+  .srsName <- xml2::xml_attr(x = .pos, attr = "srsName")
+  .srsDimension <- xml2::xml_attr(x = .pos, attr = "srsDimension", default = NA_integer_)
+  .axisLabels <- xml2::xml_attr(x = .pos, attr = "axisLabels")
+  .uomLabels <- xml2::xml_attr(x = .pos, attr = "uomLabels")
+
+  .pos <- GmlDirectPosition(pos = .posString,
+                            srsName = .srsName,
+                            srsDimension = .srsDimension,
+                            axisLabels = .axisLabels,
                             uomLabels = .uomLabels)
-  .point <- GmlPoint(pos = .pos)	
-  
+  .point <- GmlPoint(pos = .pos)
+
   return(.point)
 }
 
@@ -86,23 +83,23 @@ parsePoint <- function(obj, sos) {
 #
 #
 parseTimeInstant <- function(obj, format) {
-  .timePosXML <- .filterXmlChildren(node = obj, 
+  .timePosXML <- .filterXmlChildren(node = obj,
                                     xmlTagName = gmlTimePositionName, includeNamed = TRUE)[[1]]
-  
+
   .timePos <- parseTimePosition(obj = .timePosXML,
                                 format = format)
-  
+
   #optionals
-  .id = XML::xmlGetAttr(node = obj, name = "id",
+  .id = xml2::xml_attr(x = obj, attr = "id",
                    default = NA_character_)
-  .frame = XML::xmlGetAttr(node = obj, name = "frame",
-                      default = as.character(NA))
+  .frame = xml2::xml_attr(x = obj, attr = "frame",
+                      default = NA_character_)
   .noneTexts <- .filterXmlChildren(node = obj, gmlRelatedTimeName)
   if(!is.null(.noneTexts))
     .relatedTimes <- .noneTexts
   else
     .relatedTimes = list()
-  
+
   .ti <- GmlTimeInstant(timePosition = .timePos, id = .id,
                         relatedTimes = .relatedTimes, frame = .frame)
   return(.ti)
@@ -113,10 +110,10 @@ parseTimeInstant <- function(obj, format) {
 #
 parseTimeInstantProperty <- function(obj, format) {
   .timeProp <- NULL
-  
+
   # check if reference or inline phenomenon
-  .href <- XML::xmlGetAttr(node = obj, name = "href")
-  if(!is.null(.href)) {
+  .href <- xml2::xml_attr(x = obj, attr = "href")
+  if (!is.na(.href)) {
     .timeProp <- GmlTimeInstantProperty(href = .href)
   }
   else {
@@ -125,23 +122,22 @@ parseTimeInstantProperty <- function(obj, format) {
     .time <- parseTimeInstant(obj = .noneText[[1]], format = format)
     .timeProp <- GmlTimeInstantProperty(time = .time)
   }
-  
+
   return(.timeProp)
 }
 
 #
-# 
+#
 #
 parseTimePosition <- function(obj, format) {
-  .time <- strptime(XML::xmlValue(x = obj), format)
-  
+  .time <- strptime(xml2::xml_text(x = obj), format)
+
   # optional:
-  .frame <- XML::xmlGetAttr(node = obj, name = "frame", default = NA_character_)
-  .calendarEraName <- XML::xmlGetAttr(node = obj, name = "calendarEraName",
+  .frame <- xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
+  .calendarEraName <- xml2::xml_attr(x = obj, attr = "calendarEraName",
                                  default = NA_character_)
-  .indeterminatePosition <- XML::xmlGetAttr(node = obj,
-                                       name = "indeterminatePosition", default = NA_character_)
-  
+  .indeterminatePosition <- xml2::xml_attr(x = obj, attr = "indeterminatePosition", default = NA_character_)
+
   .timePosition <- GmlTimePosition(time = .time, frame = .frame,
                                    calendarEraName = .calendarEraName,
                                    indeterminatePosition = .indeterminatePosition)
@@ -152,28 +148,28 @@ parseTimePosition <- function(obj, format) {
 #
 parseTimePeriod <- function(obj, format) {
   .timeObject <- NULL
-  
+
   # optionals
-  .id = XML::xmlGetAttr(node = obj, name = "id",
+  .id = xml2::xml_attr(x = obj, attr = "id",
                    default = NA_character_)
-  .frame = XML::xmlGetAttr(node = obj, name = "frame",
-                      default = as.character(NA))
+  .frame = xml2::xml_attr(x = obj, attr = "frame",
+                      default = NA_character_)
   .noneTexts <- .filterXmlChildren(node = obj, gmlRelatedTimeName)
   if(!is.null(.noneTexts))
     .relatedTimes <- .noneTexts
   else
     .relatedTimes = list()
-  
+
   # TODO parse gml:timeLength
   .duration <- NA_character_
   .timeInterval <- NULL
-  
+
   # begin and end
   if(!is.null(obj[[gmlBeginName]]) || !is.null(obj[[gmlEndName]])) {
     .begin <- parseTimeInstantProperty(obj = obj[[gmlBeginName]],
                                        format = format)
     .end <- parseTimeInstantProperty(obj[[gmlEndName]], format = format)
-    
+
     .timeObject <- GmlTimePeriod(begin = .begin, end = .end, duration = .duration,
                                  timeInterval = .timeInterval, id = .id,
                                  relatedTimes = .relatedTimes, frame = .frame)
@@ -187,13 +183,13 @@ parseTimePeriod <- function(obj, format) {
     .endPosition <- parseTimePosition(
       obj = obj[[gmlEndPositionName]],
       format = format)
-    
+
     .timeObject <- GmlTimePeriod(beginPosition = .beginPosition,
                                  endPosition = .endPosition, duration = .duration,
                                  timeInterval = .timeInterval, id = .id,
                                  relatedTimes = .relatedTimes, frame = .frame)
   }
-  
+
   return(.timeObject)
 }
 
@@ -201,22 +197,22 @@ parseTimePeriod <- function(obj, format) {
 #
 #
 parseTimeGeometricPrimitiveFromParent <- function(obj, format) {
-  .tiXML <- XML::xmlChildren(x = obj)[[gmlTimeInstantName]]
-  .tpXML <- XML::xmlChildren(x = obj)[[gmlTimePeriodName]]
+  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
+  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
   .timeObject <- NULL
-  if(!is.null(.tiXML)) {
+  if(!is.na(.tiXML)) {
     .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
   }
-  else if(!is.null(.tpXML)) {
+  else if(!is.na(.tpXML)) {
     .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
   }
   else {
-    #		warning(paste("Could not create time from given samplingTime,", 
+    #		warning(paste("Could not create time from given samplingTime,",
     #						" require gml:TimeInstant or gml:TimePeriod as children."))
     .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
       time = as.POSIXct(x = NA)))
   }
-  
+
   return(.timeObject)
 }
 
@@ -226,12 +222,12 @@ parseTimeGeometricPrimitiveFromParent <- function(obj, format) {
 parseFeatureCollection <- function(obj, sos) {
   .members <- .filterXmlChildren(node = obj,
                                  xmlTagName = gmlFeatureMemberName)
-  
-  .id <- XML::xmlGetAttr(node = obj, name = "id", default = NA_character_)
-  
+
+  .id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
+
   if(length(.members) > 0) {
     .members <- lapply(.members, .parseFeatureMember, sos = sos)
-    
+
     .fc <- GmlFeatureCollection(featureMembers = .members, id = .id)
     return(.fc)
   }
@@ -243,9 +239,9 @@ parseFeatureCollection <- function(obj, sos) {
 .parseFeatureMember <- function(obj, sos) {
   .noneTexts <- .filterXmlOnlyNoneTexts(obj)
   .member <- .noneTexts[[1]]
-  
-  .name <- XML::xmlName(node =.member)
-  
+
+  .name <- xml2::xml_name(x = .member)
+
   if(.name == saSamplingPointName) {
     .sp <- parseSamplingPoint(.member, sos = sos)
     .member.parsed <- GmlFeatureProperty(feature = .sp)
@@ -263,8 +259,8 @@ parseFeatureCollection <- function(obj, sos) {
 #
 #
 parseMeasure <- function(obj) {
-  .value <- as.numeric(XML::xmlValue(x = obj))
-  .uom <- XML::xmlGetAttr(node = obj, name = "uom", default = NA_character_)
+  .value <- as.numeric(xml2::xml_text(x = obj))
+  .uom <- xml2::xml_attr(x = obj, attr = "uom", default = NA_character_)
   .result <- GmlMeasure(.value, .uom)
   return(.result)
 }

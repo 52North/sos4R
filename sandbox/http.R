@@ -30,7 +30,7 @@
 #####################################################
 # built-in download.file
 download.file(url="http://giv-sos.uni-muenster.de:8080/52nSOSv3/sos?request=GetCapabilities&version=1.0.0&service=SOS", destfile="text.xml")
-# works, but requires saving the file locally... 
+# works, but requires saving the file locally...
 
 #####################################################
 # http://cran.r-project.org/web/packages/httpRequest/
@@ -54,7 +54,7 @@ getcap <- getToHost(host=host, path=path, referer=referer, port=port)
 
 # getToHost2
 getcap <- getToHost2(host=host, path=path, referer=referer, port=port)
-# Error in socketConnection(host = host, port = port, open = "a+b", blocking = TRUE) : 
+# Error in socketConnection(host = host, port = port, open = "a+b", blocking = TRUE) :
 #		cannot open the connection
 # In addition: Warning message:
 # In socketConnection(host = host, port = port, open = "a+b", blocking = TRUE) :
@@ -116,67 +116,67 @@ library("XMLSchema")
 #
 #
 #
-myParseSchemaDoc <- function (url, removeComments = TRUE, 
-		namespaces = c(xs = "http://www.w3.org/2001/XMLSchema"), 
+myParseSchemaDoc <- function (url, removeComments = TRUE,
+		namespaces = c(xs = "http://www.w3.org/2001/XMLSchema"),
 		followImports = TRUE, followIncludes = followImports) {
-	
+
 	print("START...")
-	
+
 	baseURL = dirname(url)
 	doc = xmlInternalTreeParse(url)
-	
+
 	print(paste("parsed doc from url:", url))
-	
-	if (length(namespaces) == 0 || !("xs" %in% names(namespaces))) 
+
+	if (length(namespaces) == 0 || !("xs" %in% names(namespaces)))
 		names(namespaces)[1] = "xs"
 	if (followImports) {
-		imports = getNodeSet(doc, "//xs:schema/xs:import", namespaces)
+		imports = XML::getNodeSet(doc, "//xs:schema/xs:import", namespaces)
 		imports = lapply(imports, function(node) {
 					xdoc = myImportSchema(node, baseURL)
 					if (is.null(xdoc)) {
 						removeNodes(node)
 						return(NULL)
 					}
-					schema = XML::getNodeSet(doc = xdoc, "//xs:schema", namespaces)
-					sapply(schema, function(s) replaceNodes(node, XML::xmlRoot(x = s)))
+					schema = XML::XML::getNodeSet(doc = xdoc, "//xs:schema", namespaces)
+					sapply(schema, function(s) replaceNodes(node, xml2::xml_root(x = s)))
 				})
 	}
 	if (followIncludes) {
-		includes = getNodeSet(doc, "//xs:schema/xs:include", 
+		includes = XML::getNodeSet(doc, "//xs:schema/xs:include",
 				namespaces)
 		if (length(includes)) {
 			sapply(includes, function(node) {
 						xdoc = myImportSchema(node, baseURL)
-						schema = XML::getNodeSet(doc = xdoc, "//xs:schema", c(xs = "http://www.w3.org/2001/XMLSchema"))
+						schema = XML::XML::getNodeSet(doc = xdoc, "//xs:schema", c(xs = "http://www.w3.org/2001/XMLSchema"))
 						p = xmlParent(node)
-						sapply(schema, function(s) addChildren(p, kids = XML::xmlChildren(x = s)))
+						sapply(schema, function(s) addChildren(p, kids = xml2::xml_children(x = s)))
 					})
 			removeNodes(includes, TRUE)
 		}
 	}
 	if (removeComments) {
-		comments = getNodeSet(doc, "//comment()", c(xs = "http://www.w3.org/2001/XMLSchema"), 
+		comments = XML::getNodeSet(doc, "//comment()", c(xs = "http://www.w3.org/2001/XMLSchema"),
 				noMatchOkay = TRUE)
-		if (length(comments)) 
+		if (length(comments))
 			removeNodes(comments)
 	}
-	
+
 	print("DONE.")
-	
+
 	doc
 }
 
 myImportSchema <- function (node, baseURL) {
 	print(paste("Import schema from base url ", baseURL))
-	
-	u = xmlGetAttr(node, "schemaLocation", NA)
-	if (is.na(u)) 
+
+	u = XML::xmlGetAttr(node, "schemaLocation", NA)
+	if (is.na(u))
 		return(NULL)
 	u = getRelativeURL(u, baseURL)
 	myParseSchemaDoc(u)
 }
 
-myProcessWSDL <- function (fileName, handlers = WSDLParseHandlers(fileName), 
+myProcessWSDL <- function (fileName, handlers = WSDLParseHandlers(fileName),
 		nameSpaces = character(), useInternalNodes = TRUE, verbose = FALSE) {
 	if (!is(fileName, "XMLAbstractDocument")) {
 		if (useInternalNodes) {
@@ -185,36 +185,36 @@ myProcessWSDL <- function (fileName, handlers = WSDLParseHandlers(fileName),
 					followIncludes = FALSE)
 			print("Not following imports and includes!")
 		}
-		else wsdl = XML::xmlTreeParse(file = fileName, handlers = handlers, 
+		else wsdl = XML::xmlTreeParse(file = fileName, handlers = handlers,
 					asTree = TRUE, fullNamespaceInfo = TRUE)
 	}
-	root = XML::xmlRoot(x = wsdl)
+	root = xml2::xml_root(x = wsdl)
 	port = root[["service"]][["port"]]
-	
-	if (sum(xmlSApply(root[["service"]], xmlName) == "port") > 
-			1) 
+
+	if (sum(xmlSApply(root[["service"]], xmlName) == "port") >
+			1)
 		warning("Ignoring additional <service><port> ... elements")
-	
+
 	loc = XML::xmlGetAttr(node = port[["address"]], "location")
 	server = SOAPServer(loc)
-	
+
 	print("Server:")
 	print(server)
-	
+
 	types = processSchemaTypes(root[["types"]], root, verbose = verbose)
 	tmp = root[names(root) == "binding"]
 	ops = lapply(tmp, processWSDLBindings, root, types)
-	names(ops) = sapply(tmp, xmlGetAttr, "name")
+	names(ops) = xml2::xml_attr(x = tmp, attr = "name")
 	if (missing(nameSpaces)) {
 		schemaURIs = sapply(.SOAPDefaultNameSpaces, function(x) x["xsd"])
-		uris = sapply(xmlNamespaceDefinitions(root), function(x) x$uri)
+		uris = sapply(xml2::ns(root), function(x) x$uri)
 		i = match(uris, schemaURIs)
 		nameSpaces = NA
-		if (!all(is.na(i))) 
+		if (!all(is.na(i)))
 			nameSpaces = names(.SOAPDefaultNameSpaces)[i[!is.na(i)]]
 	}
-	
-	SOAPServerDescription(name = XML::xmlGetAttr(node = port, "name"), server = server, 
+
+	SOAPServerDescription(name = XML::xmlGetAttr(node = port, "name"), server = server,
 			operations = ops, types = types, nameSpaces = as.character(nameSpaces))
 }
 

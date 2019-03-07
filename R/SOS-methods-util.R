@@ -27,84 +27,29 @@
 #                                                                              #
 ################################################################################
 
-################################################################################
-# read function, a convenience function using non-SWE names for stuff
 #
-# parameters:
-#		sos:
-#				the sos to query
-# 		time = c():
-#				either one time as POSIXt (or character which is tried to be
-#				parsed to POSIXt) and forms a time instant, or two times
-#				(character or POSIXt) that form an interval
-#		mergeResult = FALSE:
-#				boolean flag that turns on merging of the result into one
-#				dataframe, the single observations cannot be accesses,
-#				essentially only gives all [measurement,observation]@result
-#		addLocation = FALSE
-#				trigger if the location from the  should be added to the result
-#				table fom the featureOfInterest
-#
-# * Function does not include "offering", which is/are instead automatically
-#	detected... but what if one sensor is in several offerings?
-#
-# * Function returns data.frame, NOT OmObservation or OmMeasurement classes
-#
-# * if querying several procedures with different positions, put in them into
-#	one data.frame, or a list?
-#
-read.sos <- function(sos,
-                     sensors = NA_character_,
-                     phenomena = NA_character_,
-                     bbox = NA_character_, # one, or several?
-                     times = NA_character_, # one, or several?
-                     mergeResult = FALSE,
-                     addLocation = FALSE,
-                     verbose = FALSE) {
-  warning("Method is 'read.sos' not implemented yet!")
-}
-
-
-# TODO method creates a list (whose items can are named and can be used to read data,
-# or just used in function read.sos)
-# for all available and valid combinations of off/foi/phen/proc
-#
-#sosTimeSeries <- function(sos) {
-#	warning("Method is not implemented yet!")
-#}
-
-
-# TODO get all the matching ungiven parameters for that are available for a set of
-# parameters that are given, e.g. all offerings that offer observed property
-# "A" for feature of interest "X", or all procedures measuring an observed
-# property "B".
-#
-#sosMatching <- function(offering = NA, procedure = NA, observedProperty = NA,
-#		foi = NA) {
-#	warning("Method is not implemented yet!")
-#}
-
-
-################################################################################
-# conversion methods
+# conversion methods ----
 #
 sosConvertTime <- function(x, sos) {
   .t <- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
   return(.t)
 }
+
 sosConvertDouble <- function(x, sos) {
   return(as.double(x = x))
 }
+
 sosConvertString <- function(x, sos) {
   return(as.character(x = x))
 }
+
 sosConvertLogical <- function(x, sos) {
   return(as.logical(x = x))
 }
 
 
-################################################################################
-# convenience functions
+#
+# convenience functions time class creation ----
 #
 setMethod(f = "sosCreateTimeInstant",
           signature = signature(sos = "SOS", time = "POSIXt"),
@@ -121,9 +66,6 @@ setMethod(f = "sosCreateTimeInstant",
           }
 )
 
-#
-#
-#
 setMethod(f = "sosCreateTimePeriod",
           signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
           def = function(sos, begin, end, frame, calendarEraName,
@@ -148,9 +90,6 @@ setMethod(f = "sosCreateTimePeriod",
           }
 )
 
-#
-#
-#
 setMethod(f = "sosCreateEventTimeList",
           signature = signature(time = "GmlTimeGeometricPrimitive"),
           def = function(time, operator) {
@@ -159,11 +98,6 @@ setMethod(f = "sosCreateEventTimeList",
           }
 )
 
-#
-# sosCreateTime ----
-#
-# test for instance: encodeXML(sosCreateTime(sos = sos, time = "2011-01-01", operator = "TM_Equals")[[1]], sos = sos)
-#
 setMethod(f = "sosCreateTime",
           signature = signature(sos = "SOS", time = "character"),
           def = function(sos, time, operator) {
@@ -254,9 +188,6 @@ setMethod(f = "sosCreateTime",
   warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
 }
 
-#
-#
-#
 setMethod(f = "sosCreateEventTime",
           signature = signature(time = "GmlTimeGeometricPrimitive"),
           def = function(time, operator) {
@@ -284,8 +215,14 @@ setMethod(f = "sosCreateEventTime",
           }
 )
 
+.createLatestEventTime <- function(verbose = FALSE) {
+  if(verbose) cat("Creating non-standard event time 'latest'\n")
+  .et <- SosEventTimeLatest()
+  return(.et)
+}
+
 #
-#
+# convenience function FOI ----
 #
 setMethod(f = "sosCreateFeatureOfInterest",
           signature = signature(),
@@ -321,6 +258,7 @@ setMethod(f = "sosCreateFeatureOfInterest",
 )
 
 #
+# convenience functions BBOX ----
 #
 setMethod(f = "sosCreateBBOX",
           signature = signature(lowLat = "numeric", lowLon = "numeric",
@@ -342,9 +280,6 @@ setMethod(f = "sosCreateBBOX",
           }
 )
 
-#
-#
-#
 setMethod(f = "sosCreateBBoxMatrix",
           signature = signature(lowLat = "numeric", lowLon = "numeric",
                                 uppLat = "numeric", uppLon = "numeric"),
@@ -358,11 +293,8 @@ setMethod(f = "sosCreateBBoxMatrix",
           }
 )
 
-################################################################################
-# MISC
-
 #
-#
+# helpers capabilities ----
 #
 setMethod(f = "sosCapabilitiesDocumentOriginal",
           signature = signature(sos = "SOS"),
@@ -374,14 +306,11 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
             .responseString = sosRequest(sos = sos, request = .gc,
                                          verbose = .verbose, inspect = FALSE)
 
-            .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE)
+            .response <- .internalXmlRead(x = .responseString)
             return(.response)
           }
 )
 
-#
-# Helper function to get the capabilities URL, e.g. in Sweave documents
-#
 setMethod(f = "sosCapabilitiesUrl",
           signature = signature(sos = "SOS"),
           def = function(sos) {
@@ -393,14 +322,15 @@ setMethod(f = "sosCapabilitiesUrl",
 )
 
 #
-# helper methods for exception response handling
+# helpers for exception response handling ----
 #
 .isExceptionReport <- function(document) {
-  if(owsExceptionReportName == XML::xmlName(node =XML::xmlRoot(x = document)))
+  if(owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = document)))
     return(TRUE)
   else
     return(FALSE)
 }
+
 .handleExceptionReport <- function(sos, obj) {
   if(sos@verboseOutput) warning("Received ExceptionReport!")
   .parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
@@ -410,69 +340,6 @@ setMethod(f = "sosCapabilitiesUrl",
   return(.er)
 }
 
-#
-#
-#
-.createLatestEventTime <- function(verbose = FALSE) {
-  if(verbose) cat("Creating non-standard event time 'latest'\n")
-  .et <- SosEventTimeLatest()
-  return(.et)
-}
-
-#
-# encoding functions that just pass given content along...
-#
-setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
-          def = function(obj, sos, verbose = FALSE) {
-            if(verbose) {
-              cat("[encodeXML] from XMLNode\n")
-            }
-            return(obj)
-          }
-)
-setMethod(f = "encodeXML", signature = signature(obj = "XMLInternalElementNode", sos = "SOS"),
-          def = function(obj, sos, verbose = FALSE) {
-            if(verbose) {
-              cat("[encodeXML] from XMLInternalElementNode: just returning it.\n")
-            }
-            return(obj)
-          }
-)
-setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS"),
-          def = function(obj, sos, addNamespaces = FALSE, verbose = FALSE) {
-            if(verbose) cat("[encodeXML] from character string\n")
-
-            if(XML::isXMLString(str = obj)) {
-              #FIXME this just won't work, see testing.R, section "encode xml character string (again)"
-              if(addNamespaces) {
-                if(verbose) cat("[encodeXML] Namespace hack for character string, trying to replace 'result>'!\n")
-                .hack <- 'result xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">'
-                .hackedString <- sub(pattern = "result>",
-                                     replacement = .hack,
-                                     x = obj)
-                .xml <- XML::xmlTreeParse(file = .hackedString, asText = TRUE,
-                                     useInternalNodes = FALSE)
-              }
-              else {
-                .xml <- XML::xmlParseString(content = obj)
-              }
-
-              if(verbose) {
-                cat("[encodeXML] Created XML from string:\n", toString(.xml))
-              }
-              return(.xml)
-            }
-            else {
-              warning(paste("[encodeXML] Could not encode given character string as XML!",
-                            " Character string: '", obj, "'", sep = ""))
-            }
-          }
-)
-
-################################################################################
-# Helper functions for OWS exceptions, e.g. to get the meaning of an exception
-# code.
-#
 setMethod(f = "sosExceptionCodeMeaning",
           signature = c(exceptionCode = "character"),
           def = function(exceptionCode) {
@@ -484,9 +351,38 @@ setMethod(f = "sosExceptionCodeMeaning",
           }
 )
 
-################################################################################
-# get coordiante refernce system CRS
 #
+# encoding functions ----
+#
+setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
+          def = function(obj, sos, verbose = FALSE) {
+            if(verbose) {
+              cat("[encodeXML] from XMLNode\n")
+            }
+            return(obj)
+          }
+)
+
+setMethod(f = "encodeXML", signature = signature(obj = "XMLInternalElementNode", sos = "SOS"),
+          def = function(obj, sos, verbose = FALSE) {
+            if(verbose) {
+              cat("[encodeXML] from XMLInternalElementNode: just returning it.\n")
+            }
+            return(obj)
+          }
+)
+
+setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS"),
+          definition = function(obj, sos, verbose = FALSE) {
+            if (verbose) cat("[encodeXML] from character string\n")
+            .xml <- .internalXmlRead(x = obj)
+            if (verbose) cat("[encodeXML] Created XML from string:\n", toString(.xml))
+            return(.xml)
+          }
+)
+
+#
+# convenience function CRS ----
 #
 setMethod(f = "sosGetCRS",
           signature = c(obj = "character"),
@@ -597,11 +493,11 @@ setMethod(f = "sosGetCRS",
 }
 
 
-################################################################################
 #
-# ", *, :, /, <, >, ?, \, and |
+# internal utils ----
 #
 .cleanupFileName <- function(obj) {
+  # cleans up ", *, :, /, <, >, ?, \, and |
   .clean <- gsub(
     pattern = "[\\/:\"|?<>*,]+",
     x = obj,
@@ -630,26 +526,6 @@ setMethod(f = "sosGetCRS",
   return(.name)
 }
 
-
-################################################################################
-# Access to cheat sheet shipping with the package
-#
-#
-sosCheatSheet <- function() {
-  .path <- file.path(find.package("sos4R", lib.loc = NULL),
-                 .sosCheatSheetDocumentName)
-
-  # see code of 'vignette' function
-  .z <- list(file = .sosCheatSheetDocumentName, PDF = .path)
-  .z$topic <- "sos4R Cheat Sheet"
-  class(.z) <- "vignette"
-
-  return(.z)
-}
-
-#
-#
-#
 .sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
 
   if(length(pattern) == 0) {
@@ -671,9 +547,6 @@ sosCheatSheet <- function() {
   return(.filtered)
 }
 
-#
-#
-#
 .encodeAdditionalKVPs <- function(kvps) {
   .kvpsString <- ""
   for (i in seq(1:length(kvps))) {
@@ -684,4 +557,28 @@ sosCheatSheet <- function() {
   .kvpsString <- substring(.kvpsString, 2, nchar(.kvpsString))
 
   return(.kvpsString)
+}
+
+
+#
+# cheat sheet ----
+#
+sosCheatSheet <- function() {
+  .path <- file.path(find.package("sos4R", lib.loc = NULL),
+                 .sosCheatSheetDocumentName)
+
+  # see code of 'vignette' function
+  .z <- list(file = .sosCheatSheetDocumentName, PDF = .path)
+  .z$topic <- "sos4R Cheat Sheet"
+  class(.z) <- "vignette"
+
+  return(.z)
+}
+
+
+#
+# XML parsing one stop shop ----
+#
+.internalXmlRead <- function(x, options = SosDefaultParsingOptions()) {
+  return(xml2::read_xml(x = .responseString, options = options))
 }

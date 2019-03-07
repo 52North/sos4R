@@ -1,5 +1,6 @@
 # sos4R 0.3.0.90xx
 
+- Switch from `XML` to `xml2`
 - Added a `NEWS.md` in Markdown format to track changes to the package (moved content from `inst/NEWS` and `inst/CHANGES`)
 - Overhauled vignettes, now Markdown format
 - Development version of SOS 2.0 support

@@ -42,14 +42,14 @@ setClass("OwsServiceOperation",
          validity = function(object) {
            #print("Entering validation: OwsServiceOperation")
            # TODO implement validity function
-           
+
            if(is.na(object@service))
              return("service parameter must be given")
            if(is.na(object@request))
              return("request parameter must be given")
            if(is.na(object@version))
              return("version parameter must be given")
-           
+
            return(TRUE)
          }
 )
@@ -67,19 +67,19 @@ setClass("OwsGetCapabilities",
          validity = function(object) {
            #print("Entering validation: OwsGetCapabilities")
            # TODO implement validity function
-           
+
            # service and request need to be there
            if(is.na(object@service))
              return("service parameter must be given")
            if(is.na(object@acceptVersions))
              return("acceptVersions vector must be given")
            # if acceptVersion is there, it hast to be in a certain format, see ows common
-           
+
            # owsVersion has to be one of 1.1.0 or 2.0.0
            .allowedOwsVersions <- c("1.1.0", "2.0.0")
            if(!any(sapply(.allowedOwsVersions, "==", object@owsVersion)))
              return(paste("owsVersion must be one of", paste(.allowedOwsVersions, collapse = ", ")))
-           
+
            return(TRUE)
          }
 )
@@ -95,15 +95,15 @@ setClass("OwsGetCapabilities_1.1.0",
          validity = function(object) {
            #print("Entering validation: OwsGetCapabilities_1.1.0")
            # TODO implement validity function
-           
+
            # service and request need to be there
            if(is.na(object@service))
              return("service parameter must be given")
            if(is.na(object@acceptVersions))
              return("acceptVersions vector must be given")
-           
+
            # if acceptVersion is there, it hast to be in a certain format, see ows common
-           
+
            return(TRUE)
          }
 )
@@ -119,15 +119,15 @@ setClass("OwsGetCapabilities_2.0.0",
          validity = function(object) {
            #print("Entering validation: OwsGetCapabilities_2.0.0")
            # TODO implement validity function
-           
+
            # service and request need to be there
            if(is.na(object@service))
              return("service parameter must be given")
            if(is.na(object@acceptVersions))
              return("acceptVersions vector must be given")
-           
+
            # TODO add check: if acceptVersion is there, it hast to be in a certainformat, see OWS Common...
-           
+
            return(TRUE)
          }
 )
@@ -136,20 +136,24 @@ setClass("OwsGetCapabilities_2.0.0",
 # Capabilities Content:
 
 #
-# See OGC 06-121r3, clause 7.4.6 
+# See OGC 06-121r3, clause 7.4.6
 #
 setClass("OwsOperationsMetadata",
-         representation(operations = "list", parameters = "list",
+         representation(operations = "list",
+                        parameters = "list",
                         constraints = "list",
-                        extendedCapabilities = "XMLAbstractNode"),
-         prototype = list(operations = list(NA)),
+                        extendedCapabilities = "ANY"),
+         prototype = list(operations = list(NA),
+                          parameters = list(NA),
+                          constraints = list(NA),
+                          extendedCapabilities = xml2::xml_missing()),
          validity = function(object) {
            #print("Entering validation: OwsOperationsMetadata")
            # TODO implement validity function
-           
+
            # operations must all be of class OwsOperation and at least one must
            # be there
-           
+
            return(TRUE)
          }
 )
@@ -167,11 +171,11 @@ setClass("OwsOperation",
          validity = function(object) {
            #print("Entering validation: OwsOperation")
            # TODO implement validity function
-           
+
            # name is mandatory
            # one dcp is mandatory (at the moment only http anyway, but more possible)
            # other parameters are optional
-           
+
            return(TRUE)
          }
 )
@@ -194,9 +198,9 @@ setClass("OwsServiceIdentification",
          validity = function(object) {
            #print("Entering validation: OwsServiceIdentification")
            # TODO implement validity function
-           
+
            # mandatory elements: serviceType, serviceTypeVersion, title
-           
+
            return(TRUE)
          }
 )
@@ -208,14 +212,17 @@ setClassUnion(name = "OwsServiceIdentificationOrNULL",
 # between the two versions).
 #
 setClass("OwsServiceProvider",
-         representation(providerName = "character", providerSite = "character",
-                        serviceContact = "XMLAbstractNode"),
-         prototype = list(providerName = as.character(NA)),
+         representation(providerName = "character",
+                        providerSite = "character",
+                        serviceContact = "ANY"),
+         prototype = list(providerName = as.character(NA),
+                          providerSite = as.character(NA),
+                          serviceContact = xml2::xml_missing()),
          validity = function(object) {
            #print("Entering validation: OwsServiceProvider")
-           
+
            #TODO implement validity function, providerName is mandatory
-           
+
            return(TRUE)
          }
 )
@@ -226,8 +233,8 @@ setClassUnion(name = "OwsServiceProviderOrNULL",
 # See OGC 06-121r3, clause 7.4.8
 #
 setClass("OwsContents",
-         representation(xml = "XMLAbstractNode"),
-         prototype = list(xml = NULL),
+         representation(xml = "ANY"),
+         prototype = list(xml = xml2::xml_missing()),
          validity = function(object) {
            #print("Entering validation: OwsContents")
            return(TRUE)
@@ -243,7 +250,7 @@ setClassUnion(name = "OwsContentsOrNULL",
 # Mandatory parameters, see OWS Common 2.0, OGC 06-121r3
 #
 setClass("OwsCapabilities",
-         representation(version = "character", 
+         representation(version = "character",
                         updateSequence = "character",
                         owsVersion = "character"),
          prototype = list(version = as.character(NA),
@@ -252,16 +259,16 @@ setClass("OwsCapabilities",
          validity = function(object) {
            #print("Entering validation: OwsCapabilities")
            # TODO implement validity function
-           
+
            # version is mandatory
            if(is.na(object@version))
              return("version parameter must be given")
-           
+
            # owsVersion has to be one of 1.1.0 or 2.0.0
            .allowedOwsVersions <- c("1.1.0", "2.0.0")
            if(!any(sapply(.allowedOwsVersions, "==", object@owsVersion)))
              return(paste("owsVersion must be one of", paste(.allowedOwsVersions, collapse = ", ")))
-           
+
            return(TRUE)
          }
 )
@@ -290,9 +297,9 @@ setClass("OwsCapabilities_1.1.0",
 # languages elements are represented by character only!
 #
 setClass("OwsCapabilities_2.0.0",
-         representation(languages = "XMLAbstractNode"),
+         representation(languages = "ANY"),
          prototype = list("GetCapabilities",
-                          languages = XML::xmlNode(name = NA),
+                          languages = xml2::xml_missing(),
                           owsVersion = "2.0.0"),
          contains = "OwsCapabilities_1.1.0",
          validity = function(object) {
@@ -320,11 +327,11 @@ setClass("OwsExceptionReport",
          validity = function(object) {
            #print("Entering validation: OwsExceptionReport")
            # TODO implement validity function
-           
+
            # version needs to be there
            if(is.na(object@version))
              return("version parameter must be given")
-           
+
            return(TRUE)
          }
 )
@@ -339,11 +346,11 @@ setClass("OwsException",
          validity = function(object) {
            #print("Entering validation: OwsException")
            # TODO implement validity function
-           
+
            # version needs to be there
            if(is.na(object@exceptionCode))
              return("exceptionCode parameter must be given")
-           
+
            return(TRUE)
          }
 )
@@ -358,9 +365,9 @@ setClass("OwsRange",
          validity = function(object) {
            #print("Entering validation: OwsRange")
            # TODO implement validity function
-           
+
            # all elements are optional!
-           
+
            # closure: one of closed, open, open-closed, closed-open, see owsDomainType.xsd
            return(TRUE)
          }

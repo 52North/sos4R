@@ -433,8 +433,7 @@ setMethod(f = "sosRequest",
 #
 #
 .getCapabilities_1.0.0 <- function(sos, verbose, inspect, sections,
-                                   acceptFormats, updateSequence, owsVersion,	acceptLanguages,
-                                   xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
+                                   acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
   if (verbose) {
     cat("[.getCapabilities_1.0.0] of", sosUrl(sos), "\n")
   }
@@ -451,7 +450,7 @@ setMethod(f = "sosRequest",
     cat("[.getCapabilities_1.0.0] RESPONSE:\n", .responseString , "\n")
   }
 
-  .response <- xmlParseDoc(file = .responseString, options = xmlParseOptions,
+  .response <- xmlParseDoc(file = .responseString,
                            asText = TRUE)
   if (inspect) {
     cat("[.getCapabilities_1.0.0] RESPONSE DOC:\n")
@@ -487,7 +486,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
 #
 #
 .describeSensor_1.0.0 <- function(sos, procedure, outputFormat, verbose,
-                                  inspect, saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
+                                  inspect, saveOriginal) {
   if(verbose) cat("[.describeSensor_1.0.0] ", procedure, "@", sos@url, "\n")
 
   # check if multiple sensors
@@ -516,48 +515,45 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
                                verbose = verbose, inspect = inspect)
   if (inspect) cat("[.describeSensor_1.0.0] RESPONSE:\n", .responseString , "\n")
 
-  .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
+  .response <- .internalXmlRead(x = .responseString)
   if (inspect) {
     cat("[.describeSensor_1.0.0] RESPONSE DOC:\n")
     print(.response)
   }
 
   .filename <- NULL
-  if(!is.null(saveOriginal)) {
-    if(is.character(saveOriginal)) {
+  if (!is.null(saveOriginal)) {
+    if (is.character(saveOriginal)) {
       .filename <- paste(saveOriginal, ".xml", sep = "")
-      if(verbose) cat("Using saveOriginal parameter for file name:",
-                      .filename, "\n")
+      if (verbose) cat("Using saveOriginal parameter for file name:", .filename, "\n")
     }
-    else if(is.logical(saveOriginal)) {
-      if(saveOriginal) .filename <- paste(.cleanupFileName(procedure),
+    else if (is.logical(saveOriginal)) {
+      if (saveOriginal) .filename <- paste(.cleanupFileName(procedure),
                                           ".xml", sep = "")
-      if(verbose) cat("Generating file name:", .filename, "\n")
+      if (verbose) cat("Generating file name:", .filename, "\n")
     }
 
-    if(verbose) {
-      cat("[.describeSensor_1.0.0] Saving original document...",
-          .filename, "in", getwd(), "\n")
-    }
+    if (verbose) cat("[.describeSensor_1.0.0] Saving original document...",
+                     .filename, "in", getwd(), "\n")
 
     # TODO alternatively one could use tempfile() instead of implicit getwd()
-    XML::saveXML(doc = .response, file = .filename)
+    xml2::write_xml(x = .response, file = .filename)
 
     cat("[sos4R] Original document saved:", .filename, "\n")
   }
 
-  if(.isExceptionReport(.response)) {
+  if (.isExceptionReport(.response)) {
     return(.handleExceptionReport(sos, .response))
   }
   else {
     .parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
     .sml <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
 
-    if(!is.null(.filename)) {
+    if (!is.null(.filename)) {
       .oldAttrs <- attributes(.sml)
       .newAttrs <- list(.filename)
       names(.newAttrs) <- list(sosAttributeFileName)
-      if(verbose) cat("[.describeSensor_1.0.0] Appending new attributes",
+      if (verbose) cat("[.describeSensor_1.0.0] Appending new attributes",
                       toString(.newAttrs), "(names",
                       toString(names(.newAttrs)), ")\n")
 
@@ -567,6 +563,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
     return(.sml)
   }
 }
+
 setMethod(f = "describeSensor",
           signature = signature(sos = "SOS_1.0.0", procedure  = "character"),
           def = function(sos, procedure, outputFormat, verbose, inspect,
@@ -596,8 +593,7 @@ setMethod(f = "getObservationById",
 )
 
 .getObservationById_1.0.0 <- function(sos, observationId, responseFormat, srsName,
-                                      resultModel, responseMode, verbose, inspect, saveOriginal,
-                                      xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
+                                      resultModel, responseMode, verbose, inspect, saveOriginal) {
   if(verbose) {
     cat("[.getObservationById_1.0.0] ID", observationId, "\n")
   }
@@ -627,20 +623,17 @@ setMethod(f = "getObservationById",
 
   .responseString = sosRequest(sos = sos, request = .go,
                                verbose = verbose, inspect = inspect)
-  if(verbose || inspect){
-    cat("[.getObservationById_1.0.0] RESPONSE:\n", .responseString , "\n")
-  }
+  if (inspect) cat("[.getObservationById_1.0.0] RESPONSE:\n", .responseString , "\n")
 
-  .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
-                           options = xmlParseOptions)
-  if(verbose || inspect) {
+  .response <- .internalXmlRead(x = .responseString)
+  if (inspect) {
     cat("[.getObservationById_1.0.0] RESPONSE DOC:\n")
     print(.response)
   }
 
-  if(!is.null(.filename)) {
+  if (!is.null(.filename)) {
     .filename <- paste(.filename, ".xml", sep = "")
-    XML::saveXML(doc = .response, file = .filename)
+    xml2::write_xml(x = .response, file = .filename)
     cat("[sos4R] Original document saved:", .filename, "\n")
   }
 
@@ -717,7 +710,7 @@ setMethod(f = "getObservationById",
 .getObservation_1.0.0 <- function(sos, offeringId, observedProperty,
                                   responseFormat, srsName, eventTime,	procedure, featureOfInterest,
                                   result, resultModel, responseMode, BBOX, latest, verbose, inspect,
-                                  saveOriginal, xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
+                                  saveOriginal) {
 
   .filename <- NULL
   if(!is.null(saveOriginal)) {
@@ -796,29 +789,28 @@ setMethod(f = "getObservationById",
       .contentType <- .contentType[[1]]
     }
 
-    .response <- XML::xmlParseDoc(file = .responseString, asText = TRUE,
-                             options = xmlParseOptions)
-    if(verbose || inspect) {
+    .response <- .internalXmlRead(x = .responseString)
+    if (inspect) {
       cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
       print(.response)
     }
+
     # select the parser and file ending based on the mime type FIRST
     .fileEnding <- ".xml"
-    if(.contentType == mimeTypeXML) {
-      if(.hasSubtype && .contentSubtype == mimeSubtypeOM) {
-        if(verbose)
+    if (.contentType == mimeTypeXML) {
+      if (.hasSubtype && .contentSubtype == mimeSubtypeOM) {
+        if (verbose)
           cat("[.getObservation_1.0.0] Got OM according to mime type.\n")
         .parserName <- mimeTypeOM
       }
       else {
-        if(verbose)
-          cat("[.getObservation_1.0.0] Got pure XML according to mime type.",
-              "Trying to parse with default parser, see SosParsingFunctions().\n")
+        if (verbose) cat("[.getObservation_1.0.0] Got pure XML according to mime type.",
+                         "Trying to parse with default parser, see SosParsingFunctions().\n")
         .parserName <- mimeTypeXML
       }
     }
     else if (.contentType == mimeTypeKML) {
-      if(verbose) cat("[.getObservation_1.0.0] Got KML according to mime type.\n")
+      if (verbose) cat("[.getObservation_1.0.0] Got KML according to mime type.\n")
 
       .fileEnding <- ".kml"
       .parserName <- mimeTypeKML
@@ -830,7 +822,7 @@ setMethod(f = "getObservationById",
 
     if(!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
-      XML::saveXML(doc = .response, file = .filename)
+      xml2::write_xml(x = .response, file = .filename)
 
       if(verbose) {
         cat("[.getObservation_1.0.0] Saved original document:",
@@ -921,8 +913,8 @@ setMethod(f = "getObservationById",
       return(.responseString)
     }
 
-    if(mimeTypeCSV == responseFormat) {
-      if(verbose || inspect) {
+    if (mimeTypeCSV == responseFormat) {
+      if (inspect) {
         cat("[.getObservation_1.0.0] CSV RESPONSE:\n")
         print(.responseString)
       }
@@ -930,7 +922,7 @@ setMethod(f = "getObservationById",
       .parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
       .csv <- .parsingFunction(obj = .responseString, verbose = verbose)
 
-      if(!is.null(.filename)) {
+      if (!is.null(.filename)) {
         .filename <- paste(file = .filename, ".csv", sep = "")
         write.csv(.csv, .filename)
       }
@@ -961,14 +953,14 @@ setMethod(f = "getObservationById",
   } # else
 
   # not xml nor csv nore otherwise handled
-  if(verbose || inspect) {
+  if (inspect) {
     cat("[.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response string: \n'")
     cat(.responseString, "'\n")
     cat("[.getObservation_1.0.0] Content-Type: ", .contentType)
     warning("Unknown response format!")
   }
 
-  if(!is.null(.filename)) {
+  if (!is.null(.filename)) {
     save(.responseString, file = .filename)
     cat("[sos4R] Saved original document:", .filename)
   }
@@ -1527,12 +1519,12 @@ setMethod(f = "encodeXML",
                                  namespace = ogcNamespacePrefix)
             .propertyName <- xmlNode(name = ogcPropertyNameName,
                                      namespace = ogcNamespacePrefix)
-            XML::xmlValue(x = .propertyName) <- sosDefaultTempOpPropertyName
+            xml2::xml_text(x = .propertyName) <- sosDefaultTempOpPropertyName
             .latestTime <- xmlNode(name = gmlTimeInstantName,
                                    namespace = gmlNamespacePrefix)
             .tpos <- xmlNode(name = gmlTimePositionName,
                              namespace = gmlNamespacePrefix)
-            XML::xmlValue(x = .tpos) <- sosEventTimeLatestValue
+            xml2::xml_text(x = .tpos) <- sosEventTimeLatestValue
 
             .latestTime$children[[1]] <- .tpos
             .tmEquals$children[[1]] <- .propertyName

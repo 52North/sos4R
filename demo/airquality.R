@@ -212,9 +212,9 @@ denw095_descr
 #denw095.descr@xml
 
 # Get the identifier of the station:
-denw095_id <- XML::xmlValue(x = getNodeSet(doc = denw095_descr@xml,
-		path = "//sml:Term[@definition='urn:ogc:def:identifier:OGC:1.0:longName']/sml:value/text()",
-		namespaces = sos4R:::.sos100_NamespaceDefinitionsSML)[[1]])
+denw095_id <- xml2::xml_text(x = xml2::xml_find_all(x = denw095_descr@xml,
+		xpath = "//sml:Term[@definition='urn:ogc:def:identifier:OGC:1.0:longName']/sml:value/text()",
+		namespaces = sos4R:::.sos100_NamespaceDefinitionsSML))
 
 # Request observations:
 obs_denw095_2004 <- getObservation(sos = aqe, # inspect = TRUE,

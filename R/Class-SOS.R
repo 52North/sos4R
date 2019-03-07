@@ -183,8 +183,8 @@ setClass("SosGetObservation",
            # result is null or an ogc:comparisonOps element
            cls <- class(slot(object, "result"))
            #			print(paste("class of result slot: ", cls))
-           if ( !any(cls %in% c("OgcComparisonOps", "XMLNode", "NULL",
-                                "XMLAbstractNode", "XMLInternalNode"))) {
+           if ( !any(cls %in% c("OgcComparisonOps", "xml_document",
+                                "xml_node"))) {
              return("'response' argument does not have allowed class!")
            }
 

@@ -506,3 +506,11 @@ SosDefaultDCPs <- function() {
   names(.defaults) <- .names
   return(.defaults)
 }
+
+.sosDefaultParsingOptions <- c(
+  #"NOERROR",
+  "RECOVER"
+  )
+SosDefaultParsingOptions <- function() {
+  return(.sosDefaultParsingOptions)
+}

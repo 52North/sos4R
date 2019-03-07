@@ -1,12 +1,12 @@
-parseXmlSnippet <- function(obj) {
-    .doc <- XML::xmlParseDoc(file = obj, asText = TRUE, options = NOERROR)
-    .docRoot <- XML::xmlRoot(x = .doc)
-    return(.docRoot)
-}
-
 context("parsing: composite phenomenon")
 
-.compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml" 
+parseXmlSnippet <- function(obj) {
+  .doc <- xml2::read_xml(x = obj, options = SosDefaultParsingOptions())
+  .docRoot <- xml2::xml_root(x = .doc)
+  return(.docRoot)
+}
+
+.compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml"
 xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink"
 gml:id="WaterQuality" dimension="4">
 <gml:name>WaterQuality</gml:name>
@@ -14,21 +14,28 @@ gml:id="WaterQuality" dimension="4">
 <swe:component xlink:href="urn:ogc:def:property:OGC-SWE:2:ID"/>
 </swe:CompositePhenomenon>'
 
+testsos <- SOS_Test(name = "testcompphen")
+axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_52N-SOS_Axiom.xml"), testsos)
+testsos@capabilities <- axiomCaps
+
 test_that("composite phenomenon name is parsed from snippet", {
     .doc <- parseXmlSnippet(.compositePhenomenon)
     .phen <- parseCompositePhenomenon(obj = .doc) #, verbose = TRUE)
     expect_that(.phen@name, equals("WaterQuality"))
 })
+
 test_that("composite phenomenon id is parsed from snippet", {
     .doc <- parseXmlSnippet(.compositePhenomenon)
     .phen <- parseCompositePhenomenon(obj = .doc)
     expect_that(.phen@id, equals("WaterQuality"))
 })
+
 test_that("composite phenomenon dimension is parsed from snippet", {
     .doc <- parseXmlSnippet(.compositePhenomenon)
     .phen <- parseCompositePhenomenon(obj = .doc)
     expect_that(.phen@dimension, equals(4))
 })
+
 test_that("composite phenomenon components are parsed from snippet", {
     .doc <- parseXmlSnippet(.compositePhenomenon)
     .phen <- parseCompositePhenomenon(obj = .doc)
@@ -38,8 +45,8 @@ test_that("composite phenomenon components are parsed from snippet", {
 
 context("capabilities: Mapserver")
 
-.compositePhenOffering <- '<sos:ObservationOffering gml:id="Water" 
-xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml" 
+.compositePhenOffering <- '<sos:ObservationOffering gml:id="Water"
+xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml"
 xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink">
     <sos:observedProperty>
         <swe:CompositePhenomenon gml:id="WaterQuality" dimension="4">
@@ -61,27 +68,22 @@ xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999
 
 test_that("composite phenomenon are parsed correctly from observedProperty snippet", {
     .doc5 <-  parseXmlSnippet(.compositePhenOffering)
-    obs_prop <- parseSosObservedProperty(.doc5[sosObservedPropertyName]) #, verbose = TRUE)
-    obs_prop_off1 <- obs_prop[[1]]
-    
-    expect_equal(length(obs_prop), 2)
-    expect_equal(obs_prop, list(observedProperty = "WaterQuality", observedProperty = "AirQuality"))
-    #expect_equal(obs_prop[[1]], "urn:ogc:def:property:OGC-SWE:1:STN_ID")
-})
+    obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = .doc5, xpath = sosObservedPropertyName)) #, verbose = TRUE)
 
+    expect_equal(length(obs_prop), 2)
+    expect_equal(obs_prop, list("WaterQuality", "AirQuality"))
+})
 
 # starting at package root: setwd(file.path(getwd(), "tests", "testthat"))
 mapserver <- SOS_Test(name = "testcaps")
-xmlCaps <- XML::xmlParseDoc(file = "../responses/Capabilities_Mapserver.xml")
+xmlCaps <- xml2::read_xml(x = "../responses/Capabilities_Mapserver.xml")
 parsedCaps <- parseSosCapabilities(obj = xmlCaps, sos = mapserver)
 mapserver@capabilities <- parsedCaps
 
 test_that("observed properties are parsed correctly from capabilities", {
     obs_prop <- sosObservedProperties(mapserver)
-    obs_prop_off1 <- obs_prop[[1]]
-    
     expect_equal(length(obs_prop), 1)
-    expect_equal(obs_prop[[1]][[1]], "WaterQuality")
+    expect_equal(obs_prop[[1]], "WaterQuality")
     # or should the components be listed?
     #expect_equal(obs_prop[[1]], "urn:ogc:def:property:OGC-SWE:1:STN_ID")
 })
@@ -119,7 +121,7 @@ offs <- sosOfferings(mapserver)
 context("capabilities: Axiom")
 
 .axiomOffering <- '<sos:ObservationOffering gml:id="urn_ioos_network_test_all"
-xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xlink="http://www.w3.org/1999/xlink"
 xmlns:gml="http://www.opengis.net/gml">
     <gml:name>urn:ioos:network:test:all</gml:name>
     <gml:boundedBy>
@@ -158,18 +160,18 @@ test_that("offering id is parsed correctly", {
 
 context("parsing: SOS Capabilities 2.0.0")
 
-testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
-sos200Caps <- parseSosCapabilities(XML::xmlParseDoc(file = "../responses/Capabilities_200_Example.xml"), testsos)
+testsos <- SOS_Test(name = "testcaps",version = sos200_version, verboseOutput = TRUE)
+sos200Caps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_200_Example.xml"), testsos)
 
 context("parsing: SOS Capabilities 2.0.0 swes:offering")
 
-testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version = sos200_version, verboseOutput = TRUE)
 
 test_that("offering is parsed correctly", {
-  .obs <- parseSosObservationOffering_200(XML::xmlRoot(x = XML::xmlParseDoc(file = "../xml-elements/swes-offering1.xml")), testsos)
+  .obs <- parseSosObservationOffering_200(xml2::xml_root(x = xml2::read_xml(x = "../xml-elements/swes-offering1.xml")), testsos)
   expect_equal(.obs@id, "ws2500")
   #TODO test other parameters
 })
- 
-testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
-axiomCaps <- parseSosCapabilities(XML::xmlParseDoc(file = "../responses/Capabilities_100_Example.xml"), testsos)
+
+testsos <- SOS_Test(name = "testcaps",version = sos100_version, verboseOutput = TRUE)
+axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_100_Example.xml"), testsos)

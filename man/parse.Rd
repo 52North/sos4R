@@ -91,7 +91,7 @@ parseNoParsing(obj)
 parseCategoryObservation(obj, sos, verbose = FALSE)
 parseComplexObservation(obj, sos, verbose = FALSE)
 parseComponent(obj, sos, verbose = FALSE)
-parseCompositePhenomenon(obj, sos, verbose = FALSE)
+parseCompositePhenomenon(obj, verbose = FALSE)
 parseCountObservation(obj, sos, verbose = FALSE)
 parseDataArray(obj, sos, verbose = FALSE)
 parseElementType(obj, sos, verbose = FALSE)
@@ -111,7 +111,7 @@ parseOwsOperation(obj)
 parseOwsRange(obj)
 parseOwsServiceIdentification(obj)
 parseOwsServiceProvider(obj)
-parsePhenomenonProperty(obj, sos, verbose = FALSE)
+parsePhenomenonProperty(obj, verbose = FALSE)
 parsePoint(obj, sos)
 parsePosition(obj, sos)
 parseResult(obj, sos, verbose = FALSE)
@@ -133,7 +133,7 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
 }
 
 \arguments{
-  \item{obj}{The object to decode, normally objects of either \verb{XMLNode} or \verb{XMLInternalDocument}.}
+  \item{obj}{The object to decode, normally objects of either \verb{xml_document}.}
   \item{sos}{An object of class \link{SOS-class}, which may be utilized/required by some parsing functions to access other parsing functions or encoding information.}
   \item{verbose}{A boolean value indication whether information is printed out to the console during the process - potentially a lot of output!}
   \item{format}{A character string defining the time format to be used in \code{strptime}.}

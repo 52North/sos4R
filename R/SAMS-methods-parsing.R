@@ -33,7 +33,7 @@
 #
 parseSamsShape <- function(obj, sos) {
   #TODO other shape types, check syntax [[1]]
-  .point <- parsePoint(obj[[1]][gmlPointName][[1]], sos = sos)
+  .point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = SosAllNamespaces()), sos = sos)
 
   SamsShape(point = .point)
 }
@@ -41,29 +41,18 @@ parseSamsShape <- function(obj, sos) {
 #
 # parseSams200SamplingFeature ----
 #
-# <sams:SF_SpatialSamplingFeature gml:id="ssf_88204F34D0B94590AA1EDE21577C9B5D907F4BAD">
-#   <gml:identifier codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">foi-1</gml:identifier>
-#   <gml:name codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">foi one</gml:name>
-#   <sf:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint"/>
-#   <sf:sampledFeature xlink:href="http://www.52north.org/test/featureOfInterest/world"/>
-#   <sams:shape>
-#     <ns:Point xmlns:ns="http://www.opengis.net/gml/3.2" ns:id="gml-id-p1">
-#       <ns:pos srsName="http://www.opengis.net/def/crs/EPSG/0/4326">51.883906 7.727958</ns:pos>
-#     </ns:Point>
-#   </sams:shape>
-# </sams:SF_SpatialSamplingFeature>
-#
-# TODO add test for parsing!
-#
 parseSams200SamplingFeature <- function(obj, sos) {
-  .gmlid <- xmlAttrs(node = obj)[["id"]]
+  .gmlid <- xml2::xml_attr(x = obj, attr = "id")
   # TODO should we add checks here, e.g. if the element is really available, is only one element in the list?
   # TODO Implement tuple with codespace and value for identifier and name, if required
-  .identifier <- XML::xmlValue(x = XML::xmlElementsByTagName(el = obj, name = "identifier")[[1]])
-  .name <- XML::xmlValue(x = XML::xmlElementsByTagName(el = obj, name = "name")[[1]])
-  .type <- xmlAttrs(node = XML::xmlElementsByTagName(el = obj, name = "type")[[1]])[["href"]]
-  .sampledFeature <- xmlAttrs(node = XML::xmlElementsByTagName(el = obj, name = "sampledFeature")[[1]])[["href"]]
-  .shape <- parseSamsShape(obj = XML::xmlElementsByTagName(el = obj, name = "shape"), sos = sos)
+
+  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName, ns = SosAllNamespaces()))
+  .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = SosAllNamespaces()))
+  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfTypeName, ns = SosAllNamespaces()),
+                          attr = "href")
+  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfSampledFeatureName, ns = SosAllNamespaces()),
+                                    attr = "href")
+  .shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = SosAllNamespaces()), sos = sos)
   SamsSamplingFeature(id = .gmlid,
                       identifier = .identifier,
                       name = .name,

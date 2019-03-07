@@ -35,7 +35,7 @@ sosNamespacePrefix <- "sos"
 sosIntendedApplicationName <- "intendedApplication"
 sosTimeName <- "time"
 sosProcedureName <- "procedure"
-sosObservedPropertyName <- "observedProperty"
+sosObservedPropertyName <- paste0(sosNamespacePrefix, ":observedProperty")
 sosFeatureOfInterestName <- "featureOfInterest"
 sosResultModelName <- "resultModel"
 sosResponseFormatName <- "responseFormat"
@@ -97,7 +97,7 @@ sosGetDataAvailabilityResponse <- "GetDataAvailabilityResponse"
 sosGDAMemberName <- "dataAvailabilityMember"
 
 SosSupportedOperations <- function() {
-  .supported <- c(sosGetCapabilitiesName, sosDescribeSensorName, 
+  .supported <- c(sosGetCapabilitiesName, sosDescribeSensorName,
                   sosGetObservationName ,sosGetObservationByIdName)
   return(.supported)
 }
@@ -110,7 +110,7 @@ sosKVPParamNameService <- "service"
 sosKVPParamNameVersion <- "version"
 sosKVPParamNameOffering <- "offering"
 sosKVPParamNameObsProp <- "observedProperty"
-sosKVPParamNameFoi <- "featureOfInterest" 
+sosKVPParamNameFoi <- "featureOfInterest"
 sosKVPParamNameResponseFormat <- "responseFormat"
 sosKVPParamNameSrsName <- "srsName"
 sosKVPParamNameEventTime <- "eventTime"
@@ -169,6 +169,9 @@ SosSupportedServiceVersions <- function() {
   return(.sosSupportedServiceVersions)
 }
 
+#
+# Namespaces ----
+#
 .sos100_NamespaceDefinitionsForAll <- c(sos = "http://www.opengis.net/sos/1.0",
                                         xsi = "http://www.w3.org/2001/XMLSchema-instance")
 .sos100_NamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
@@ -182,7 +185,29 @@ SosSupportedServiceVersions <- function() {
                                      swe = "http://www.opengis.net/swe/1.0.1",
                                      xlink = "http://www.w3.org/1999/xlink",
                                      xsi = "http://www.w3.org/2001/XMLSchema-instance")
-# TODO fix schema locations for SOS 2.0	
+.namespaceDefinitionsGML <- c(gml32 = "http://www.opengis.net/gml/3.2")
+.sos20_NamespaceDefinitions <- c(sams = "http://www.opengis.net/samplingSpatial/2.0",
+                                 sf = "http://www.opengis.net/sampling/2.0",
+                                 swes = "http://www.opengis.net/swes/2.0",
+                                 om20 = "http://www.opengis.net/om/2.0")
+
+SosAllNamespaces <- function(version = sos100_version) {
+  if (version == sos100_version) {
+    .all <- c(sos4R:::.sos100_NamespaceDefinitionsForAll,
+              sos4R:::.sos100_NamespaceDefinitionsGetObs,
+              sos4R:::.sos100_NamespaceDefinitionsGetCap,
+              sos4R:::.sos100_NamespaceDefinitionsSML,
+              sos4R:::.namespaceDefinitionsGML,
+              sos4R:::.sos20_NamespaceDefinitions)
+    return(.all[unique(names(.all))])
+    } else if (version == sos200_version) {
+    stop("SOS 2.0 namespaces not implemented yet!")
+  } else {
+    stop("Unsupported version", version)
+  }
+}
+
+# TODO fix schema locations for SOS 2.0
 
 .sos100_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
 .sos20_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd")
@@ -190,114 +215,130 @@ SosSupportedServiceVersions <- function() {
 #
 # O&M ----
 #
-omMeasurementName <- "Measurement"
-omMemberName <- "member"
-omObservationName <- "Observation"
-omObservationCollectionName <- "ObservationCollection"
-omFeatureOfInterestName <- "featureOfInterest"
-omProcedureName <- "procedure"
-omObservedPropertyName <- "observedProperty"
-omSamplingTimeName <- "samplingTime"
-omResultTimeName <- "resultTime"
-omResultName <- "result"
-omCategoryObservationName <- "CategoryObservation"
-omCountObservationName <- "CountObservation"
-omTruthObservationName <- "TruthObservation"
-omGeometryObservationName <- "GeometryObservation"
-omTemporalObservationName <- "TemporalObservation"
-omComplexObservationName <- "ComplexObservation"
+omNamespacePrefix <- "om"
+omMeasurementName <- paste0(omNamespacePrefix, ":Measurement")
+omMemberName <- paste0(omNamespacePrefix, ":member")
+omObservationName <- paste0(omNamespacePrefix, ":Observation")
+omObservationCollectionName <- paste0(omNamespacePrefix, ":ObservationCollection")
+omFeatureOfInterestName <- paste0(omNamespacePrefix, ":featureOfInterest")
+omProcedureName <- paste0(omNamespacePrefix, ":procedure")
+omObservedPropertyName <- paste0(omNamespacePrefix, ":observedProperty")
+omSamplingTimeName <- paste0(omNamespacePrefix, ":samplingTime")
+omResultTimeName <- paste0(omNamespacePrefix, ":resultTime")
+omResultName <- paste0(omNamespacePrefix, ":result")
+omCategoryObservationName <- paste0(omNamespacePrefix, ":CategoryObservation")
+omCountObservationName <- paste0(omNamespacePrefix, ":CountObservation")
+omTruthObservationName <- paste0(omNamespacePrefix, ":TruthObservation")
+omGeometryObservationName <- paste0(omNamespacePrefix, ":GeometryObservation")
+omTemporalObservationName <- paste0(omNamespacePrefix, ":TemporalObservation")
+omComplexObservationName <- paste0(omNamespacePrefix, ":ComplexObservation")
 
 #
 # O&M 2.0 ----
 #
-om20OM_Observation <- "OM_Observation"
-om20ResultTypeAttributeName <- "type"
-om20ResultMeasureTypeName <- "MeasureType"
-om20PhenomenonTimeName <- "phenomenonTime"
+om20NamespacePrefix <- "om20"
+om20OM_Observation <- paste0(om20NamespacePrefix, ":OM_Observation")
+om20ResultTypeAttributeName <- paste0(om20NamespacePrefix, ":type")
+om20ResultMeasureTypeName <- paste0(om20NamespacePrefix, ":MeasureType")
+om20PhenomenonTimeName <- paste0(om20NamespacePrefix, ":phenomenonTime")
 
 #
 # SA ----
 #
-saSamplingPointName <- "SamplingPoint"
-saSamplingSurface <- "SamplingSurface"
-saPositionName <- "position"
-saSampledFeatureName <- "sampledFeature"
-saSamplingTimeName <- "samplingTime"
+saNamespacePrefix <- "sa"
+saSamplingPointName <- paste0(saNamespacePrefix, ":SamplingPoint")
+saSamplingSurface <- paste0(saNamespacePrefix, ":SamplingSurface")
+saPositionName <- paste0(saNamespacePrefix, ":position")
+saSampledFeatureName <- paste0(saNamespacePrefix, ":sampledFeature")
+saSamplingTimeName <- paste0(saNamespacePrefix, ":samplingTime")
 
 #
 # SAMS ----
 #
-samsShapeName <- "shape"
-samsSamplingFeatureName <- "SF_SpatialSamplingFeature"
+samsNamespacePrefix <- "sams"
+samsShapeName <- paste0(samsNamespacePrefix, ":shape")
+samsSamplingFeatureName <- paste0(samsNamespacePrefix, ":SF_SpatialSamplingFeature")
+
+#
+# SF ----
+#
+sfNamespacePrefix <- "sf"
+sfTypeName <- paste0(sfNamespacePrefix, ":type")
+sfSampledFeatureName <- paste0(sfNamespacePrefix, ":sampledFeature")
+
 #
 # GML ----
 #
-gmlPosName <- "pos"
-gmlPointName <- "Point"
-gmlTimeInstantName <- "TimeInstant"
-gmlTimePeriodName <- "TimePeriod"
-gmlTimePositionName <- "timePosition"
-gmlRelatedTimeName <- "relatedTime"
-gmlNameName <- "name"
-gmlDescriptionName <- "description"
-gmlBeginName <- "begin"
-gmlEndName <- "end"
-gmlBeginPositionName <- "beginPosition"
-gmlEndPositionName <-"endPosition"
-gmlFeatureCollectionName <- "FeatureCollection"
-gmlBoundedByName <- "boundedBy"
-gmlEnvelopeName <- "Envelope"
-gmlLowerCornerName <- "lowerCorner"
-gmlUpperCornerName <- "upperCorner"
 gmlNamespacePrefix <- "gml"
-gmlTimeLengthName <- "timeLength"
-gmlDurationName <- "duration"
-gmlTimeIntervalName <- "timeInterval"
-gmlFeatureMemberName <- "featureMember"
-gmlIdentifierName = "identifier"
+gmlPosName <- paste0(gmlNamespacePrefix, ":pos")
+gmlPointName <- paste0(gmlNamespacePrefix, ":Point")
+gmlTimeInstantName <- paste0(gmlNamespacePrefix, ":TimeInstant")
+gmlTimePeriodName <- paste0(gmlNamespacePrefix, ":TimePeriod")
+gmlTimePositionName <- paste0(gmlNamespacePrefix, ":timePosition")
+gmlRelatedTimeName <- paste0(gmlNamespacePrefix, ":relatedTime")
+gmlNameName <- paste0(gmlNamespacePrefix, ":name")
+gmlDescriptionName <- paste0(gmlNamespacePrefix, ":description")
+gmlBeginName <- paste0(gmlNamespacePrefix, ":begin")
+gmlEndName <- paste0(gmlNamespacePrefix, ":end")
+gmlBeginPositionName <- paste0(gmlNamespacePrefix, ":beginPosition")
+gmlEndPositionName <- paste0(gmlNamespacePrefix, ":endPosition")
+gmlFeatureCollectionName <- paste0(gmlNamespacePrefix, ":FeatureCollection")
+gmlBoundedByName <- paste0(gmlNamespacePrefix, ":boundedBy")
+gmlEnvelopeName <- paste0(gmlNamespacePrefix, ":Envelope")
+gmlLowerCornerName <- paste0(gmlNamespacePrefix, ":lowerCorner")
+gmlUpperCornerName <- paste0(gmlNamespacePrefix, ":upperCorner")
+gmlTimeLengthName <- paste0(gmlNamespacePrefix, ":timeLength")
+gmlDurationName <- paste0(gmlNamespacePrefix, ":duration")
+gmlTimeIntervalName <- paste0(gmlNamespacePrefix, ":timeInterval")
+gmlFeatureMemberName <- paste0(gmlNamespacePrefix, ":featureMember")
+gmlIdentifierName <- paste0(gmlNamespacePrefix, ":identifier")
 
 #
 # SWE ----
 #
-sweCompositePhenomenonName <- "CompositePhenomenon"
-sweBaseName <- "base"
-sweComponentName <- "component"
-sweDataArrayName <- "DataArray"
-sweElementTypeName <- "elementType"
-sweSimpleDataRecordName <- "SimpleDataRecord"
-sweDataRecordName <- "DataRecord"
-sweFieldName <- "field"
-sweTimeName <- "Time"
-sweQuantityName <- "Quantity"
-sweCategoryName <- "Category"
-sweBooleanName <- "Boolean"
-sweCountName <- "Count"
-sweEncodingName <- "encoding"
-sweTextBlockName <- "TextBlock"
-sweTextEncodingName <- "TextEncoding"
-sweValuesName <- "values"
-sweValueName <- "value"
-sweCodeSpaceName <- "codeSpace"
-sweTextName <- "Text"
-sweUomName <- "uom"
-sweVectorName <- "Vector"
-sweLocationName <- "location"
-sweCoordinateName <- "coordinate"
-swePositionName <- "Position"
+sweNamespacePrefix <- "swe"
+sweCompositePhenomenonName <- paste0(sweNamespacePrefix, ":CompositePhenomenon")
+sweBaseName <- paste0(sweNamespacePrefix, ":base")
+sweComponentName <- paste0(sweNamespacePrefix, ":component")
+sweDataArrayName <- paste0(sweNamespacePrefix, ":DataArray")
+sweElementTypeName <- paste0(sweNamespacePrefix, ":elementType")
+sweSimpleDataRecordName <- paste0(sweNamespacePrefix, ":SimpleDataRecord")
+sweDataRecordName <- paste0(sweNamespacePrefix, ":DataRecord")
+sweFieldName <- paste0(sweNamespacePrefix, ":field")
+sweTimeName <- paste0(sweNamespacePrefix, ":Time")
+sweQuantityName <- paste0(sweNamespacePrefix, ":Quantity")
+sweCategoryName <- paste0(sweNamespacePrefix, ":Category")
+sweBooleanName <- paste0(sweNamespacePrefix, ":Boolean")
+sweCountName <- paste0(sweNamespacePrefix, ":Count")
+sweEncodingName <- paste0(sweNamespacePrefix, ":encoding")
+sweTextBlockName <- paste0(sweNamespacePrefix, ":TextBlock")
+sweTextEncodingName <- paste0(sweNamespacePrefix, ":TextEncoding")
+sweValuesName <- paste0(sweNamespacePrefix, ":values")
+sweValueName <- paste0(sweNamespacePrefix, ":value")
+sweCodeSpaceName <- paste0(sweNamespacePrefix, ":codeSpace")
+sweTextName <- paste0(sweNamespacePrefix, ":Text")
+sweUomName <- paste0(sweNamespacePrefix, ":uom")
+sweVectorName <- paste0(sweNamespacePrefix, ":Vector")
+sweLocationName <- paste0(sweNamespacePrefix, ":location")
+sweCoordinateName <- paste0(sweNamespacePrefix, ":coordinate")
+swePositionName <- paste0(sweNamespacePrefix, ":Position")
+sweLowerCornerName <- paste0(sweNamespacePrefix, ":upperCorner")
+sweUpperCornerName <- paste0(sweNamespacePrefix, ":lowerCorner")
 
 #
 # SWE Service Model ----
 #
-swesOfferingName = "offering"
-swesIdentifierName = "identifier"
-swesNameName = "name"
-swesObservablePropertyName = "observableProperty"
-swesProcedureDescriptionFormatName = "procedureDescriptionFormat"
+swesNamespacePrefix = "swes"
+swesOfferingName = paste0(swesNamespacePrefix, ":offering")
+swesIdentifierName = paste0(swesNamespacePrefix, ":identifier")
+swesNameName = paste0(swesNamespacePrefix, ":name")
+swesObservablePropertyName = paste0(swesNamespacePrefix, ":observableProperty")
+swesProcedureDescriptionFormatName = paste0(swesNamespacePrefix, ":procedureDescriptionFormat")
 
 #
 # WML 2.0 ----
 #
-wmlMonitoringPointName = "MonitoringPoint"
+wmlMonitoringPointName = "wml:MonitoringPoint"
 
 #
 # OGC ----
@@ -326,6 +367,7 @@ SosSupportedTemporalOperators <- function() {
   return(.ogcSupportedTemporalOps)
 }
 
+ogcNamespacePrefix <- "ogc"
 ogcSpatialOpBBOXName <- "BBOX"
 ogcSpatialOpContainsName <- "Contains"
 ogcSpatialOpIntersectsName <- "Intersects"
@@ -379,77 +421,75 @@ SosSupportedComparisonOperators <- function() {
   return(.ogcSupportedComparisonOperators)
 }
 
-ogcNamespacePrefix <- "ogc"
 ogcPropertyNameName <- "PropertyName"
 ogcBBOXName <- "BBOX"
 ogcContainsName <- "Contains"
 ogcIntersectsName <- "Intersects"
 ogcOverlapsName <- "Overlaps"
-ogcSpatialCapabilitiesName <- "Spatial_Capabilities"
-ogcTemporalCapabilitiesName <- "Temporal_Capabilities"
-ogcScalarCapabilitiesName <- "Scalar_Capabilities"
-ogcIdCapabilities <- "Id_Capabilities"
-ogcGeometryOperandsName <- "GeometryOperands"
-ogcGeometryOperandName <- "GeometryOperand"
-ogcSpatialOperatorsName <- "SpatialOperators"
-ogcSpatialOperatorName <- "SpatialOperator"
-ogcTemporalOperandsName <- "TemporalOperands"
-ogcTemporalOperandName <- "TemporalOperand" 
-ogcTemporalOperatorsName <- "TemporalOperators"
-ogcTemporalOperatorName <- "TemporalOperator"
-ogcLogicalOperatorsName <- "LogicalOperators"
-ogcComparisonOperatorsName <- "ComparisonOperators"
-ogcArithmeticOperatorsName <- "ArithmeticOperators"
-ogcEIDName <- "EID"
-ogcFIDName <- "FID"
-ogcLiteralName <- "Literal"
+ogcSpatialCapabilitiesName <- paste0(ogcNamespacePrefix, ":Spatial_Capabilities")
+ogcTemporalCapabilitiesName <- paste0(ogcNamespacePrefix, ":Temporal_Capabilities")
+ogcScalarCapabilitiesName <- paste0(ogcNamespacePrefix, ":Scalar_Capabilities")
+ogcIdCapabilities <- paste0(ogcNamespacePrefix, ":Id_Capabilities")
+ogcGeometryOperandsName <- paste0(ogcNamespacePrefix, ":GeometryOperands")
+ogcGeometryOperandName <- paste0(ogcNamespacePrefix, ":GeometryOperand")
+ogcSpatialOperatorsName <- paste0(ogcNamespacePrefix, ":SpatialOperators")
+ogcSpatialOperatorName <- paste0(ogcNamespacePrefix, ":SpatialOperator")
+ogcTemporalOperandsName <- paste0(ogcNamespacePrefix, ":TemporalOperands")
+ogcTemporalOperandName <- paste0(ogcNamespacePrefix, ":TemporalOperand")
+ogcTemporalOperatorsName <- paste0(ogcNamespacePrefix, ":TemporalOperators")
+ogcTemporalOperatorName <- paste0(ogcNamespacePrefix, ":TemporalOperator")
+ogcLogicalOperatorsName <- paste0(ogcNamespacePrefix, ":LogicalOperators")
+ogcComparisonOperatorsName <- paste0(ogcNamespacePrefix, ":ComparisonOperators")
+ogcArithmeticOperatorsName <- paste0(ogcNamespacePrefix, ":ArithmeticOperators")
+ogcEIDName <- paste0(ogcNamespacePrefix, ":EID")
+ogcFIDName <- paste0(ogcNamespacePrefix, ":FID")
+ogcLiteralName <- paste0(ogcNamespacePrefix, ":Literal")
 
-smlSensorMLName <- "SensorML"
+smlSensorMLName <- "sml:SensorML"
 
 #
 # OWS ----
 #
-owsServiceIdentificationName <- "ServiceIdentification"
-owsTitleName <- "Title"
-owsAbstractName <- "Abstract"
-owsKeywordsName <- "Keywords"
-owsKeywordName <- "Keyword"
-owsServiceTypeName <- "ServiceType"
-owsServiceTypeVersionName <- "ServiceTypeVersion"
-owsFeesName <- "Fees"
-owsAccessConstraintsName <- "AccessConstraints"
-owsServiceProviderName <- "ServiceProvider"
-owsOperationsMetadataName <- "OperationsMetadata"
-owsOperationName <- "Operation"
-owsDCPName <- "DCP"
-owsHTTPName <- "HTTP"
-owsGetName <- "Get"
-owsPostName <- "Post"
-owsParameterName <- "Parameter"
-owsAllowedValuesName <- "AllowedValues"
-owsValueName <- "Value"
-owsAnyValueName <- "AnyValue"
-owsRangeName <- "Range"
-owsMinimumValueName <- "MinimumValue"
-owsMaximumValueName <- "MaximumValue"
-owsSpacingName <- "Spacing"
-owsConstraintName <- "Constraint"
-owsMetadataName <- "Metadata"
-owsExceptionReportName <- "ExceptionReport"
-owsExceptionName <- "Exception"
-owsExceptionTextName <- "ExceptionText"
-owsProfileName <- "Profile"
-owsProviderNameName <- "ProviderName"
-owsProviderSiteName <- "ProviderSite"
-owsServiceContactName <- "ServiceContact"
+owsNamespacePrefix <- "ows"
+owsServiceIdentificationName <- paste0(owsNamespacePrefix, ":ServiceIdentification")
+owsTitleName <- paste0(owsNamespacePrefix, ":Title")
+owsAbstractName <- paste0(owsNamespacePrefix, ":Abstract")
+owsKeywordsName <- paste0(owsNamespacePrefix, ":Keywords")
+owsKeywordName <- paste0(owsNamespacePrefix, ":Keyword")
+owsServiceTypeName <- paste0(owsNamespacePrefix, ":ServiceType")
+owsServiceTypeVersionName <- paste0(owsNamespacePrefix, ":ServiceTypeVersion")
+owsFeesName <- paste0(owsNamespacePrefix, ":Fees")
+owsAccessConstraintsName <- paste0(owsNamespacePrefix, ":AccessConstraints")
+owsServiceProviderName <- paste0(owsNamespacePrefix, ":ServiceProvider")
+owsOperationsMetadataName <- paste0(owsNamespacePrefix, ":OperationsMetadata")
+owsOperationName <- paste0(owsNamespacePrefix, ":Operation")
+owsDCPName <- paste0(owsNamespacePrefix, ":DCP")
+owsHTTPName <- paste0(owsNamespacePrefix, ":HTTP")
+owsGetName <- paste0(owsNamespacePrefix, ":Get")
+owsPostName <- paste0(owsNamespacePrefix, ":Post")
+owsParameterName <- paste0(owsNamespacePrefix, ":Parameter")
+owsAllowedValuesName <- paste0(owsNamespacePrefix, ":AllowedValues")
+owsValueName <- paste0(owsNamespacePrefix, ":Value")
+owsAnyValueName <- paste0(owsNamespacePrefix, ":AnyValue")
+owsRangeName <- paste0(owsNamespacePrefix, ":Range")
+owsMinimumValueName <- paste0(owsNamespacePrefix, ":MinimumValue")
+owsMaximumValueName <- paste0(owsNamespacePrefix, ":MaximumValue")
+owsSpacingName <- paste0(owsNamespacePrefix, ":Spacing")
+owsConstraintName <- paste0(owsNamespacePrefix, ":Constraint")
+owsMetadataName <- paste0(owsNamespacePrefix, ":Metadata")
+owsExceptionReportName <- paste0(owsNamespacePrefix, ":ExceptionReport")
+owsExceptionName <- paste0(owsNamespacePrefix, ":Exception")
+owsExceptionTextName <- paste0(owsNamespacePrefix, ":ExceptionText")
+owsProfileName <- paste0(owsNamespacePrefix, ":Profile")
+owsProviderNameName <- paste0(owsNamespacePrefix, ":ProviderName")
+owsProviderSiteName <- paste0(owsNamespacePrefix, ":ProviderSite")
+owsServiceContactName <- paste0(owsNamespacePrefix, ":ServiceContact")
 
 kmlName <- "kml"
 
 #
+# OWS exception details ----
 #
-#
-owsNamespacePrefix <- "ows"
-owsNamespaceContext <- c(ows = "http://www.opengis.net/ows/1.1")
 .owsCodes = c(
   "OperationNotSupported",
   "MissingParameterValue",
@@ -480,7 +520,7 @@ owsNamespaceContext <- c(ows = "http://www.opengis.net/ows/1.1")
 
 .owsStandardExceptions <- data.frame(
   exceptionCode = .owsCodes,
-  meaningOfCode = .owsCodeMeanings, 
+  meaningOfCode = .owsCodeMeanings,
   locator = .owsCodeLocators,
   httpStatusCode = .httpCode,
   httpMessage = .httpMessage,
@@ -492,7 +532,6 @@ OwsExceptionsData <- function() {
 #
 # others ----
 #
-xmlInternalDocumentName <- "XMLInternalDocument"
 xmlTextNodeName <- "text"
 
 .sosCheatSheetDocumentName <- "sos4r_cheat-sheet.pdf"

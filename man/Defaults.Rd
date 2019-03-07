@@ -34,6 +34,7 @@
 
 \alias{SosDefaults}
 \alias{SosDefaults2}
+\alias{SosDefaultParsingOptions}
 
 
 \title{Default Parameter Settings and Handling Functions}
@@ -58,6 +59,8 @@ SosDefaults()
 SosResetParsingFunctions(sos)
 
 SosDefaultDCPs()
+
+SosDefaultParsingOptions()
 }
 
 \arguments{
@@ -168,6 +171,9 @@ SosDefaults()
 \dontrun{
 sos <- SosResetParsingFunctions(sos)
 }
+
+# parsing options used by xml2
+SosDefaultParsingOptions()
 
 }
 

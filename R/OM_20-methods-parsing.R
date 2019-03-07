@@ -34,18 +34,18 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 
   obj <- obj[[om20OM_Observation]]
 
-  .id <- XML::xmlGetAttr(node = obj, name = "id",
+  .id <- xml2::xml_attr(x = obj, attr = "id",
                     default = NA_character_)
   if(verbose) cat("[parseObservation]", .id, "\n")
 
   #TODO adjust the following OM 1.0 parsing functionality
 
   # 52N SOS only returns om:Observation with procedure ids xlink:href
-  .procedure <- XML::xmlGetAttr(node = obj[[omProcedureName]], name = "href",
+  .procedure <- xml2::xml_attr(x = obj[[omProcedureName]], attr = "href",
                            default = NA_character_)
 
   .observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
-                                               sos = sos, verbose = verbose)
+                                               verbose = verbose)
 
   timeObjectMap <- list()
 
@@ -125,22 +125,22 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
   if(verbose) cat("[parseTime]\n")
 
-  .tiXML <- XML::xmlChildren(x = obj)[[gmlTimeInstantName]]
-  .tpXML <- XML::xmlChildren(x = obj)[[gmlTimePeriodName]]
-  .timeReference <- xmlAttrs(node = obj)[["href"]]
+  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
+  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
+  .timeReference <- xml2::xml_attrs(x = obj, attr = "href")
   .timeObject <- NULL
 
-  if(!is.null(.tiXML)) {
+  if(!is.na(.tiXML)) {
     if(verbose) cat("[parseTime] time instant.\n")
     .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
-  else if(!is.null(.tpXML)) {
+  else if(!is.na(.tpXML)) {
     if(verbose) cat("[parseTime] time period.\n")
     .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
-  else if (!is.null(.timeReference)) {
+  else if (!is.na(.timeReference)) {
     if (verbose) cat("[parseTime] referenced time.\n")
     .timeObject <- timeObjectMap[[substring(.timeReference, 2)]]
     if (is.null(.timeObject)) {

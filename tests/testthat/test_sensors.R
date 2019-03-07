@@ -1,8 +1,8 @@
 
-context("DescribeSensor")
+context("DescribeSensor requests")
 
 testsos <- SOS_Test(name = "testcaps")
-axiomCaps <- parseSosCapabilities(XML::xmlParseDoc(file = "../responses/Capabilities_52N-SOS_Axiom.xml"), testsos)
+axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_52N-SOS_Axiom.xml"), testsos)
 testsos@capabilities <- axiomCaps
 
 test_that("output format is encoded correctly for POX", {
@@ -44,4 +44,35 @@ test_that("output format is encoded correctly for KVP", {
     url <- encodeRequestKVP(ds, testsos)
     expect_match(toString(url), "text/xml;%20subtype%3D\"sensorML/1.0.1\"")
 
+})
+
+context("DescribeSensor response parsing")
+
+sensorDescription <- xml2::read_xml(x = "../responses/SensorDescription_Bochum.xml")
+
+test_that("sensor id is parsed", {
+  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  expect_equal(sml@id, "http://www.52north.org/test/procedure/6")
+})
+
+test_that("sensor name is parsed", {
+  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  expect_equal(sml@name, "Hochschule Bochum")
+})
+
+test_that("sensor description is parsed", {
+  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  expect_equal(sml@description, "A test sensor in Bochum")
+})
+
+test_that("sensor position is parsed", {
+  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  expect_named(sml@coords, c("y", "x", "z"))
+  expect_equal(sml@coords[["y"]], 51.447722)
+  expect_equal(sml@coords[["x"]], 7.270806)
+  expect_equal(sml@coords[["z"]], 52.0)
+})
+
+test_that("sensor bbox is parsed", {
+  skip("TODO: implement test")
 })

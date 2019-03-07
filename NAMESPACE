@@ -22,7 +22,6 @@ exportMethods(
     "getFeatureOfInterest",
     "plot",
 	  "print",
-    "saveXML",
     "show",
     "sosAbstract",
     "sosCapabilitiesDocumentOriginal",

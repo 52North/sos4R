@@ -31,14 +31,19 @@
 # See OWS Common, OGC 06-121r9
 #
 setClass("SensorML",
-         representation(xml = "XMLInternalDocument", coords = "data.frame",
+         representation(xml = "ANY", coords = "data.frame",
                         id = "character", name = "character",
                         description = "character", boundedBy = "matrix"),
-         prototype = list(xml = NULL, coords = data.frame(), id = NA_character_,
-                          name = NA_character_, description = NA_character_, 
+         prototype = list(xml = xml2::xml_missing(), coords = data.frame(), id = NA_character_,
+                          name = NA_character_, description = NA_character_,
                           boundedBy = matrix()),
          validity = function(object) {
            #print("Entering validation: SensorML")
+
+           if (!any(class(sensorDescription) == c("xml_document", "xml_node"))) {
+             return("Slot 'xml' must extend class 'xml_document' or 'xml_node'.")
+           }
+
            return(TRUE)
          }
 )

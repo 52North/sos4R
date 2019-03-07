@@ -558,7 +558,7 @@ stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 		print(obj)
 	}
 	
-	.val <- XML::xmlValue(x = obj)
+	.val <- xml2::xml_text(x = obj)
 	return(.val)
 }
 print(omResultName)

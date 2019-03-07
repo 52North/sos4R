@@ -123,7 +123,7 @@ setMethod(f = "encodeXML",
   
   .tm <- xmlNode(name = nodeName, namespace = ogcNamespacePrefix)
   .pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
-  XML::xmlValue(x = .pn) <- propertyName
+  xml2::xml_text(x = .pn) <- propertyName
   .tm$children[[1]] <- .pn
   .time <- encodeXML(obj = time, sos = sos, verbose = verbose)
   .tm$children[[2]] <- .time
@@ -216,7 +216,7 @@ setMethod(f = "encodeXML",
 
 .createPropertyName <- function(node, propertyName) {
   .pN <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
-  XML::xmlValue(x = .pN) <- propertyName
+  xml2::xml_text(x = .pN) <- propertyName
   return(.pN)
 }
 

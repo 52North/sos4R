@@ -190,7 +190,7 @@
 }
 
 .print.OwsException <- function(x, ...) {
-  cat(.toString.OwsException, "\n")
+  cat(.toString.OwsException(x), "\n")
   invisible(x)
 }
 

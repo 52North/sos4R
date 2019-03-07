@@ -93,10 +93,10 @@ id.incorrect = "lala"
 
 er.xmltext <- "<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"><ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"><ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>"
 er.xmltext2 <- "<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\" lang=\"de-DE\" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"><ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"><ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception><ows:Exception exceptionCode=\"NoApplicableCode\" locator=\"@home\"><ows:ExceptionText>Just a second exception to make things saver...</ows:ExceptionText></ows:Exception></ows:ExceptionReport>"
-er.doc <- XML::xmlParseDoc(file = er.xmltext)
-er.root <- XML::xmlRoot(x = er.doc)
+er.doc <- xml2::read_xml(x = er.xmltext)
+er.root <- xml2::xml_root(x = er.doc)
 
-er2.doc <- XML::xmlParseDoc(file = er.xmltext2)
+er2.doc <- xml2::read_xml(x = er.xmltext2)
 er2.parsed <- parseOwsExceptionReport(er2.doc)
 str(er2.parsed)
 
@@ -149,13 +149,13 @@ weathersos@capabilities
 
 # some error
 caps <- '...'
-xmlCaps <- XML::xmlParseDoc(file = caps)
+xmlCaps <- xml2::read_xml(x = caps)
 debug(parseSosCapabilities)
 parsedCaps <- parseSosCapabilities(xmlCaps, weathersos)
 
-opXml <- XML::xmlParseDoc(file = 'COPY HERE')
+opXml <- xml2::read_xml(x = 'COPY HERE')
 debug(parseOwsOperation)
-parseOwsOperation(XML::xmlRoot(x = opXml))
+parseOwsOperation(xml2::xml_root(x = opXml))
 
 
 ################################################################################
@@ -176,7 +176,7 @@ caps.response <- postForm(uri = "http://v-swe.uni-muenster.de:8080/WeatherSOS/so
 		request = getCapRequest,
 		style = "POST",
 		.encoding = "UTF-8")
-caps.doc <- XML::xmlParseDoc(file = caps.response)
+caps.doc <- xml2::read_xml(x = caps.response)
 caps <- parseSosCapabilities(caps.doc)
 
 # GetCapabilities
@@ -206,8 +206,8 @@ result
 ################################################################################
 # Replace a parsing function... and inspect the request and response
 myParseSensorML <- function(obj) {
-	root <- XML::xmlRoot(x = obj)
-	return(XML::xmlName(node =root))
+	root <- xml2::xml_root(x = obj)
+	return(xml2::xml_name(x = root))
 }
 myER <- function(xml) {
 	return("EXCEPTION! RUN!!!!1111")
@@ -260,12 +260,12 @@ class(sensor2)
 # parsing om:Measurement
 
 meas <- '<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:Measurement gml:id="o_3376580"><om:samplingTime><gml:TimeInstant xsi:type="gml:TimeInstantType"><gml:timePosition>2010-09-08T09:45:00.000+02:00</gml:timePosition></gml:TimeInstant></om:samplingTime><om:procedure xlink:href="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/><om:observedProperty xlink:href="urn:ogc:def:property:OGC::Temperature"/><om:featureOfInterest><sa:SamplingPoint gml:id="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"><gml:name>NOT_SET</gml:name><sa:position><gml:Point><gml:pos srsName="urn:ogc:def:crs:EPSG:4326">51.9412 7.6103</gml:pos></gml:Point></sa:position></sa:SamplingPoint></om:featureOfInterest><om:result uom="Cel">12.9</om:result></om:Measurement></om:member><om:member><om:Measurement gml:id="o_3376580"><om:samplingTime><gml:TimeInstant xsi:type="gml:TimeInstantType"><gml:timePosition>2010-09-08T09:45:00.000+02:00</gml:timePosition></gml:TimeInstant></om:samplingTime><om:procedure xlink:href="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/><om:observedProperty xlink:href="urn:ogc:def:property:OGC::Temperature"/><om:featureOfInterest><sa:SamplingPoint gml:id="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"><gml:name>NOT_SET</gml:name><sa:position><gml:Point><gml:pos srsName="urn:ogc:def:crs:EPSG:4326">51.9412 7.6103</gml:pos></gml:Point></sa:position></sa:SamplingPoint></om:featureOfInterest><om:result uom="Cel">12.9</om:result></om:Measurement></om:member></om:ObservationCollection>'
-measDoc <- XML::xmlParseDoc(file = meas)
+measDoc <- xml2::read_xml(x = meas)
 
 # for partial testing
-tempM <- xmlChildren(XML::xmlRoot(x = measDoc))[["member"]][["Measurement"]]
+tempM <- xmlChildren(xml2::xml_root(x = measDoc))[["member"]][["Measurement"]]
 parsedM <- parseMeasurement(tempM, SosParsingFunctions(), verbose = T)
-tempSP <- XML::xmlChildren(x = tempM[["featureOfInterest"]])[[1]]
+tempSP <- xml2::xml_children(x = tempM[["featureOfInterest"]])[[1]]
 parseSamplingPoint(tempSP)
 
 om <- parseOM(obj = measDoc, parsers = SosParsingFunctions(), verbose = TRUE)
@@ -275,7 +275,7 @@ str(om)
 ################################################################################
 # test handling two of a few not supported observation specializations:
 # category observation and geometry observation
-obsDoc2 <- XML::xmlParseDoc(file = '<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:CategoryObservation></om:CategoryObservation></om:member><om:member><om:GeometryObservation></om:GeometryObservation></om:member></om:ObservationCollection>')
+obsDoc2 <- xml2::read_xml(x = '<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:CategoryObservation></om:CategoryObservation></om:member><om:member><om:GeometryObservation></om:GeometryObservation></om:member></om:ObservationCollection>')
 tempObs2 <- parseOM(obsDoc2, parsers = SosParsingFunctions(), verbose = TRUE)
 # works!
 
@@ -336,21 +336,21 @@ tempData[,!colnames(tempData)%in%tempId]
 ################################################################################
 # parsing om:Observation
 
-obsDoc <- XML::xmlParseDoc(file = '<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:Observation><om:samplingTime><gml:TimePeriod xsi:type="gml:TimePeriodType"><gml:beginPosition>2010-09-08T09:45:00.000+02:00</gml:beginPosition><gml:endPosition>2010-09-08T09:45:00.000+02:00</gml:endPosition></gml:TimePeriod></om:samplingTime><om:procedure xlink:href="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/><om:observedProperty><swe:CompositePhenomenon gml:id="cpid0" dimension="1"><gml:name>resultComponents</gml:name><swe:component xlink:href="urn:ogc:data:time:iso8601"/><swe:component xlink:href="urn:ogc:def:property:OGC::Temperature"/></swe:CompositePhenomenon></om:observedProperty><om:featureOfInterest><gml:FeatureCollection/></om:featureOfInterest><om:result><swe:DataArray><swe:elementCount><swe:Count><swe:value>1</swe:value></swe:Count></swe:elementCount><swe:elementType name="Components"><swe:SimpleDataRecord><swe:field name="Time"><swe:Time definition="urn:ogc:data:time:iso8601"/></swe:field><swe:field name="feature"><swe:Text definition="urn:ogc:data:feature"/></swe:field><swe:field name="urn:ogc:def:property:OGC::Temperature"><swe:Quantity definition="urn:ogc:def:property:OGC::Temperature"><swe:uom code="Cel"/></swe:Quantity></swe:field></swe:SimpleDataRecord></swe:elementType><swe:encoding><swe:TextBlock decimalSeparator="." tokenSeparator="," blockSeparator=";"/></swe:encoding><swe:values>2010-03-01T12:15:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,73.0;2010-03-01T12:30:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,68.0;2010-03-01T12:45:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,69.0;2010-03-01T13:00:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,65.0;2010-03-01T13:15:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,61.0;2010-03-01T13:30:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,56.0;2010-03-01T13:45:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,60.0;2010-03-01T14:00:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,57.0;</swe:values></swe:DataArray></om:result></om:Observation></om:member></om:ObservationCollection>')
+obsDoc <- xml2::read_xml(x = '<?xml version="1.0" encoding="UTF-8"?><om:ObservationCollection xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" gml:id="oc_0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd"><om:member><om:Observation><om:samplingTime><gml:TimePeriod xsi:type="gml:TimePeriodType"><gml:beginPosition>2010-09-08T09:45:00.000+02:00</gml:beginPosition><gml:endPosition>2010-09-08T09:45:00.000+02:00</gml:endPosition></gml:TimePeriod></om:samplingTime><om:procedure xlink:href="urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93"/><om:observedProperty><swe:CompositePhenomenon gml:id="cpid0" dimension="1"><gml:name>resultComponents</gml:name><swe:component xlink:href="urn:ogc:data:time:iso8601"/><swe:component xlink:href="urn:ogc:def:property:OGC::Temperature"/></swe:CompositePhenomenon></om:observedProperty><om:featureOfInterest><gml:FeatureCollection/></om:featureOfInterest><om:result><swe:DataArray><swe:elementCount><swe:Count><swe:value>1</swe:value></swe:Count></swe:elementCount><swe:elementType name="Components"><swe:SimpleDataRecord><swe:field name="Time"><swe:Time definition="urn:ogc:data:time:iso8601"/></swe:field><swe:field name="feature"><swe:Text definition="urn:ogc:data:feature"/></swe:field><swe:field name="urn:ogc:def:property:OGC::Temperature"><swe:Quantity definition="urn:ogc:def:property:OGC::Temperature"><swe:uom code="Cel"/></swe:Quantity></swe:field></swe:SimpleDataRecord></swe:elementType><swe:encoding><swe:TextBlock decimalSeparator="." tokenSeparator="," blockSeparator=";"/></swe:encoding><swe:values>2010-03-01T12:15:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,73.0;2010-03-01T12:30:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,68.0;2010-03-01T12:45:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,69.0;2010-03-01T13:00:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,65.0;2010-03-01T13:15:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,61.0;2010-03-01T13:30:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,56.0;2010-03-01T13:45:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,60.0;2010-03-01T14:00:00.000+01:00,urn:ogc:object:feature:OSIRIS-HWS:3d3b239f-7696-4864-9d07-15447eae2b93,57.0;</swe:values></swe:DataArray></om:result></om:Observation></om:member></om:ObservationCollection>')
 weathersos = SOS(url = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos", binding = "POX, verboseOutput = FALSE)
 
 # testing parts of the observation document:
-tempPP <- parsePhenomenonProperty(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omObservedPropertyName]])
-tempCP <- parseCompositePhenomenon(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omObservedPropertyName]][[sweCompositePhenomenonName]])
-tempTP <- parseSamplingTime(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omSamplingTimeName]])
-tempFOI <- parseFOI(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omFeatureOfInterestName]])
-tempResult <- parseResult(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]], sos = weathersos, verbose = TRUE)
-tempDA <- parseDataArray(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]], sos = weathersos, verbose = TRUE)
-tempFields <- parseElementType(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweElementTypeName]])
-tempEncoding <- parseEncoding(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweEncodingName]])
-tempValues <- parseValues(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweValuesName]], fields = tempFields, encoding = tempEncoding, sos = weathersos, verbose = TRUE)
+tempPP <- parsePhenomenonProperty(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omObservedPropertyName]])
+tempCP <- parseCompositePhenomenon(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omObservedPropertyName]][[sweCompositePhenomenonName]])
+tempTP <- parseSamplingTime(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omSamplingTimeName]])
+tempFOI <- parseFOI(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omFeatureOfInterestName]])
+tempResult <- parseResult(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]], sos = weathersos, verbose = TRUE)
+tempDA <- parseDataArray(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]], sos = weathersos, verbose = TRUE)
+tempFields <- parseElementType(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweElementTypeName]])
+tempEncoding <- parseEncoding(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweEncodingName]])
+tempValues <- parseValues(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]][[omResultName]][[sweDataArrayName]][[sweValuesName]], fields = tempFields, encoding = tempEncoding, sos = weathersos, verbose = TRUE)
 
-tempObs <- parseObservation(XML::xmlRoot(x = obsDoc)[[omMemberName]][[omObservationName]], sos = weathersos, verbose = TRUE)
+tempObs <- parseObservation(xml2::xml_root(x = obsDoc)[[omMemberName]][[omObservationName]], sos = weathersos, verbose = TRUE)
 
 # if the observation has a foi with a coordinate, add that to all data rows?
 
@@ -633,9 +633,9 @@ myResult1 <- XML::xmlParseString(content = '<sos:result><ogc:PropertyIsGreaterTh
 # results in problems with external pointers...
 
 pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
-XML::xmlValue(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
+xml2::xml_text(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
 l <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
-XML::xmlValue(x = l) <- "10"
+xml2::xml_text(x = l) <- "10"
 comp <- xmlNode(name = ogcComparisonOpGreaterThanName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
 myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
@@ -685,7 +685,7 @@ tempDataFrame[1:2,]
 # Was I stupid?
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]])
-sensorMLtemplate <- makeClassTemplate(xnode = XML::xmlRoot(x = sensor@xml))
+sensorMLtemplate <- makeClassTemplate(xnode = xml2::xml_root(x = sensor@xml))
 str(sensorMLtemplate)
 cat(sensorMLtemplate$def)
 cat(sensorMLtemplate$slots[["member"]])
@@ -745,9 +745,9 @@ str(xml1)
 # good
 
 pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
-XML::xmlValue(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
+xml2::xml_text(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
 l <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
-XML::xmlValue(x = l) <- "3"
+xml2::xml_text(x = l) <- "3"
 comp <- xmlNode(name = ogcComparisonOpLessThanOrEqualToName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
 myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
@@ -789,7 +789,7 @@ namespacedString <- sub(pattern = result, replacement = paste("result"))
 # all good.
 
 # some trick with handlers  could work ...
-XML::xmlParse(file = sosResultString, asText = TRUE, handlers=list("result"=function(x, ...){XML::xmlParse(file = x)}))
+XML::xmlParse(file = sosResultString, handlers=list("result"=function(x, ...){XML::xmlParse(file = x)}))
 # but doesn't right now
 
 .hack <- 'result xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">'

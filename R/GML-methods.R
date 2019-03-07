@@ -168,7 +168,7 @@ setMethod(f = "encodeXML",
                                      append = TRUE)
             }
             
-            XML::xmlValue(x = .tpos) <- encodeXML(obj = obj@time, sos = sos,
+            xml2::xml_text(x = .tpos) <- encodeXML(obj = obj@time, sos = sos,
                                          verbose = verbose)
             
             return(.tpos)
@@ -200,10 +200,10 @@ setMethod(f = "encodeXML",
             else if(!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
               .beginPosition <- encodeXML(obj = obj@beginPosition, sos = sos,
                                           verbose = verbose)
-              XML::xmlName(node =.beginPosition) <- gmlBeginPositionName
+              xml2::xml_name(x = .beginPosition) <- gmlBeginPositionName
               .endPosition <- encodeXML(obj = obj@endPosition, sos = sos,
                                         verbose = verbose)
-              XML::xmlName(node =.endPosition) <- gmlEndPositionName
+              xml2::xml_name(x = .endPosition) <- gmlEndPositionName
               .tp <- addChildren(node = .tp,
                                  kids = list(.beginPosition, .endPosition))
             }
@@ -216,7 +216,7 @@ setMethod(f = "encodeXML",
                                      namespace = gmlNamespacePrefix)
               .duration <-  xmlNode(name = gmlDurationName, 
                                     namespace = gmlNamespacePrefix)
-              XML::xmlValue(x = .duration) <- obj@duration
+              xml2::xml_text(x = .duration) <- obj@duration
               .timeLength$children[[1]] <- .duration
               .tp <- addChildren(node = .tp, kids = list(.timeLength))
             }
@@ -226,7 +226,7 @@ setMethod(f = "encodeXML",
               .timeInterval <-  xmlNode(name = gmlTimeIntervalName, 
                                         namespace = gmlNamespacePrefix)
               
-              XML::xmlValue(x = .timeInterval) <- obj@timeInterval@interval
+              xml2::xml_text(x = .timeInterval) <- obj@timeInterval@interval
               .timeInterval <- XML::addAttributes(node = .timeInterval,
                                              .attrs = list("unit" = obj@timeInterval@unit))
               
@@ -278,9 +278,9 @@ setMethod(f = "encodeXML",
             }
             
             .lC <- encodeXML(obj = obj@lowerCorner, sos = sos)
-            XML::xmlName(node =.lC) <- gmlLowerCornerName
+            xml2::xml_name(x = .lC) <- gmlLowerCornerName
             .uC <- encodeXML(obj = obj@upperCorner, sos = sos)
-            XML::xmlName(node =.uC) <- gmlUpperCornerName
+            xml2::xml_name(x = .uC) <- gmlUpperCornerName
             
             .env$children[[1]] <- .lC
             .env$children[[2]] <- .uC
@@ -297,7 +297,7 @@ setMethod(f = "encodeXML",
             
             .pos <- xmlNode(name = gmlPosName,
                             namespace = gmlNamespacePrefix)
-            XML::xmlValue(x = .pos) <- obj@pos
+            xml2::xml_text(x = .pos) <- obj@pos
             
             if( !is.na(obj@srsName)) {
               .pos <- XML::addAttributes(node = .pos,
