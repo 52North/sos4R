@@ -44,7 +44,7 @@ gml:id="WaterQuality" dimension="4">
 
 test_that("composite phenomenon name is parsed from snippet", {
     .doc <- parseXmlSnippet(.compositePhenomenon)
-    .phen <- parseCompositePhenomenon(obj = .doc) #, verbose = TRUE)
+    .phen <- parseCompositePhenomenon(obj = .doc)
     expect_that(.phen@name, equals("WaterQuality"))
 })
 test_that("composite phenomenon id is parsed from snippet", {
@@ -186,12 +186,12 @@ test_that("offering id is parsed correctly", {
 
 context("parsing: SOS Capabilities 2.0.0")
 
-testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version=sos200_version)
 sos200Caps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
 
 context("parsing: SOS Capabilities 2.0.0 swes:offering")
 
-testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version=sos200_version)
 
 test_that("offering is parsed correctly", {
   .obs <- parseSosObservationOffering_200(xmlRoot(xmlParseDoc("../xml-elements/swes-offering1.xml")), testsos)
@@ -199,5 +199,5 @@ test_that("offering is parsed correctly", {
   #TODO test other parameters
 })
  
-testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version=sos100_version)
 axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_100_Example.xml"), testsos)

@@ -105,8 +105,10 @@ parseOwsOperation <- function(obj) {
     warning("metadata elements are NOT processed!")
   .metadata = list(NA)
 
-  .op <- OwsOperation(name = .name, DCPs = .dcps,
-                      parameters = .parameters, constraints = .constraints,
+  .op <- OwsOperation(name = .name,
+                      DCPs = .dcps,
+                      parameters = .parameters,
+                      constraints = .constraints,
                       metadata = .metadata)
   return(.op)
 }

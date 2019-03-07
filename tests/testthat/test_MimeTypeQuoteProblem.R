@@ -35,7 +35,7 @@ test_that("No '&quot;' string inside Mimetypes mimeTypeOM and mimeTypeSML", {
 
 mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service")
 procs <- unique(unlist(sosProcedures(mySOS)))
-S = describeSensor(mySOS, procs[[1]]) #,verbose = T)
+S <- describeSensor(mySOS, procs[[1]])
 
 test_that("We can run describeSensor()", {
 	expect_equal(as.character(class(S)), "SensorML")

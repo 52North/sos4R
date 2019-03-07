@@ -133,7 +133,9 @@ SosSupportedBindings <- function() {
                   .sosConnectionMethodPost_Deprecated,
                   .sosBindingKVP,
                   .sosBindingPOX)
-  names(.supported) <- c("DEPRECATED", "DEPRECATED", "Key-value-pair (GET)",
+  names(.supported) <- c("DEPRECATED",
+                         "DEPRECATED",
+                         "Key-value-pair (GET)",
                          "Plain old XML (POST)")
   return(.supported)
 }
