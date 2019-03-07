@@ -33,10 +33,20 @@ test_that("No '&quot;' string inside Mimetypes mimeTypeOM and mimeTypeSML", {
 	expect_equal(grepl(mimeTypeSML, "quot"), FALSE)
 })
 
-mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service")
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", version = sos100_version, binding = "POX")
 procs <- unique(unlist(sosProcedures(mySOS)))
 S <- describeSensor(mySOS, procs[[1]])
 
-test_that("We can run describeSensor()", {
+test_that("We can run describeSensor() with SOSv1.0.0 with POX binding", {
 	expect_equal(as.character(class(S)), "SensorML")
 })
+
+
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", version = sos100_version, binding = "KVP")
+procs <- unique(unlist(sosProcedures(mySOS)))
+S <- describeSensor(mySOS, procs[[1]])
+
+test_that("We can run describeSensor() with SOSv1.0.0 with KVP binding", {
+  expect_equal(as.character(class(S)), "SensorML")
+})
+

@@ -1143,20 +1143,25 @@ setMethod(f = "sosUOM",
 )
 
 #
-# get distributed computing point
+# sosGetDCP - get distributed computing point ----
 #
 setMethod(f = "sosGetDCP",
           signature = c(sos = "SOS", operation = "character"),
           def = function(sos, operation, type = NA) {
             .ops <- sosOperations(sos)
-
             if(is.null(.ops)) return(NULL)
 
             .dcps <- .ops[[operation]]@DCPs
 
             if(!is.na(type)) {
-              .idxs <- grep(pattern = type, x = names(.dcps))
-              return(.dcps[.idxs])
+              .filteredDcps <- list()
+              for (.dcp in .dcps) {
+                message(paste0("DCP::type: '", .dcp[[owsDcpHttpMethodIndex]], "'"))
+                if (.dcp[[owsDcpHttpMethodIndex]] == type) {
+                  .filteredDcps[[length(.filteredDcps) + 1]] <- .dcp
+                }
+              }
+              return(.filteredDcps)
             }
             else return(.dcps)
           }

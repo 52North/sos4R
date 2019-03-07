@@ -444,6 +444,10 @@ owsProfileName <- "Profile"
 owsProviderNameName <- "ProviderName"
 owsProviderSiteName <- "ProviderSite"
 owsServiceContactName <- "ServiceContact"
+owsContentTypeConstraintName <- "Content-Type"
+owsDcpHttpMethodIndex <- 1
+owsDcpContentTypeIndex <- 2
+owsDcpUrlIndex <- 3
 
 kmlName <- "kml"
 
