@@ -46,4 +46,5 @@ RUN chmod +x /usr/local/bin/install-r-pkg && \
     install-r-pkg httr && \
     install-r-pkg stringr && \
     install-r-pkg devtools && \
+    install-r-pkg webmockr && \
     rm -rf /var/lib/apt/lists/*
