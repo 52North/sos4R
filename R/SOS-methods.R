@@ -397,17 +397,16 @@ SosGetObservationById <- function(
     if(verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
   else if(sos@binding == .sosBindingSOAP) {
+    # TODO add SOAP request method
+    stop("[sos4R] ERROR: SOAP is not implemented for SOS 1.0.0.\n")
     if(verbose || inspect) {
       print("[.sosRequest_1.0.0] SOAP! REQUEST:\n")
       print(.encodedRequest)
     }
-    
-    # TODO add SOAP request method
-    stop("[sos4R] ERROR: SOAP is not implemented for SOS 1.0.0.\n")
   }
   else {
-    stop(paste("Unsupported method, has to be one of",
-               SosSupportedBindings(), "but is", sos@binding))
+    stop(paste0("Unsupported method, has to be one of '",
+               SosSupportedBindings(), "' but is '", sos@binding, "'."))
   }
   
   if(verbose) {
