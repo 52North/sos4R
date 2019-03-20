@@ -126,16 +126,16 @@ set-up an isolated container just for sos4R development. This includes all
 required dependencies, RStudio as webapplication, and devtools. The current
 size of the image is ~4.02GB.
 
-1. Just clone this repository.
+1. Clone this repository.
 
 1. Change to the `docker` subfolder in any terminal of your choice.
 
 1. Perform the following command to build the image locally:<br />
    `docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .`.<br />
-   *On windows*, you need to replace `$(date +%Y-%m-%d)` with somethin useful,
+   *On windows*, you need to replace `$(date +%Y-%m-%d)` with something useful,
    like `2019-02-27`.
 
-1. Start the image as new container, use the following command:
+1. Start the image as new container using the following command:
 ```
 docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d sos4r-rstudio-dev:2019-02-27
 ```
