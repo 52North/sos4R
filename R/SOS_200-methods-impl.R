@@ -101,17 +101,9 @@
           .url, "\n")
     }
     
-    if(verbose) cat("[.sosRequest_2.0.0] Do request...")
+    if(verbose) cat("[.sosRequest_2.0.0] Do GET request...")
     
-    .response = getURL(url = .url, .opts = sos@curlOptions,
-                       curl = sos@curlHandle,
-                       .encoding = sosDefaultCharacterEncoding, httpauth = 1L)
-    
-    pos = regexpr('<\\?xml', .response)
-    
-    if(pos > 1){
-      .response = substr(.response, pos, nchar(.response))
-    }
+    .response = httr::GET(url = .url)
     
     if(verbose) cat("[.sosRequest_2.0.0] ... done.")
   }

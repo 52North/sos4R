@@ -1,6 +1,6 @@
 import("methods")
 import("XML")
-importFrom("RCurl", "getURL", "postForm", "getCurlHandle")
+import("httr")
 importFrom("graphics", "plot")
 importFrom("utils", "object.size", "str", "write.csv")
 import("sp")

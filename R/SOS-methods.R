@@ -34,8 +34,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 parsers = SosParsingFunctions(),
                 encoders = SosEncodingFunctions(),
                 dataFieldConverters = SosDataFieldConvertingFunctions(),
-                curlOptions = list(),
-                curlHandle = getCurlHandle(),
                 timeFormat = sosDefaultTimeFormat,
                 verboseOutput = FALSE,
                 switchCoordinates = FALSE,
@@ -43,11 +41,7 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 dcpFilter = SosDefaultDCPs(),
                 additionalKVPs = list(),
                 ...) {
-  
-  if(binding == .sosConnectionMethodPost_Deprecated)
-    .curlOpts <- curlOptions(url = url)
-  else .curlOpts <- curlOptions
-  
+
   if(binding == .sosConnectionMethodPost_Deprecated) {
     warning("You use a deprecated method parameter, please use 'POX' from now on.")
     method <- "POX"
@@ -69,8 +63,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 parsers = parsers,
                 encoders = encoders,
                 dataFieldConverters = dataFieldConverters,
-                curlOptions = .curlOpts,
-                curlHandle = curlHandle,
                 timeFormat = timeFormat,
                 verboseOutput = verboseOutput,
                 switchCoordinates = switchCoordinates,
@@ -103,8 +95,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 parsers = parsers,
                 encoders = encoders,
                 dataFieldConverters = dataFieldConverters,
-                curlOptions = .curlOpts,
-                curlHandle = curlHandle,
                 timeFormat = timeFormat,
                 verboseOutput = verboseOutput,
                 switchCoordinates = switchCoordinates,
@@ -342,9 +332,7 @@ SosGetObservationById <- function(
     
     if(verbose) cat("[.sosRequest_1.0.0] Do request...")
     
-    .response = getURL(url = .url, .opts = sos@curlOptions,
-                       curl = sos@curlHandle,
-                       .encoding = sosDefaultCharacterEncoding)
+    .response = httr::GET(url = .url)
     
     if(verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
@@ -426,8 +414,9 @@ SosGetObservationById <- function(
     else stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response,
                     "\n\n"))
   }
+  .content = httr::content(x = .response, encoding = sosDefaultCharacterEncoding)
   
-  return(.response)
+  return(.content)
 }
 
 setMethod(f = "sosRequest",

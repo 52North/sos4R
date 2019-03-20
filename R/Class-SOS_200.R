@@ -32,8 +32,7 @@
 # SOS_2.0.0 ----
 #
 setClass("SOS_2.0.0",
-         representation(url = "character", binding = "character",
-                        curlHandle = "CURLHandle", curlOptions = "ANY"),
+         representation(url = "character", binding = "character"),
          prototype = list(
            url = as.character(NA),
            binding = as.character(NA),
