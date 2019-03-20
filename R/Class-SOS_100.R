@@ -172,7 +172,7 @@ setClass("SosEventTime",
 }
 
 setMethod("print", "SosEventTime", function(x, ...) .print.SosEventTime(x, ...))
-setMethod("show", "SosEventTime", function(x) .print.SosEventTime(x))
+setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
 setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
 
 #

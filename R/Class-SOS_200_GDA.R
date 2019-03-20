@@ -129,7 +129,7 @@ paste("Object of class DataAvailabilityMember:",
       "\n  Phenomenon Time      : ", toString(x@phenomenonTime))
 }
 setMethod("toString", "DataAvailabilityMember", function(x, ...) .toString.DataAvailabilityMember(x, ...))
-setMethod("show", "DataAvailabilityMember", function(x) .print.DataAvailabilityMember(x))
+setMethod("show", "DataAvailabilityMember", function(object) .print.DataAvailabilityMember(object))
 setMethod("print", "DataAvailabilityMember", function(x, ...) {
   cat(.toString.DataAvailabilityMember(x, ...), "\n")
   invisible(x)})
