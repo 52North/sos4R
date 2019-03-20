@@ -189,7 +189,8 @@ SosSupportedServiceVersions <- function() {
 .sos20_NamespaceDefinitions <- c(sams = "http://www.opengis.net/samplingSpatial/2.0",
                                  sf = "http://www.opengis.net/sampling/2.0",
                                  swes = "http://www.opengis.net/swes/2.0",
-                                 om20 = "http://www.opengis.net/om/2.0")
+                                 om20 = "http://www.opengis.net/om/2.0",
+                                 sos20 = "http://www.opengis.net/sos/2.0")
 
 SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
@@ -197,11 +198,11 @@ SosAllNamespaces <- function(version = sos100_version) {
               sos4R:::.sos100_NamespaceDefinitionsGetObs,
               sos4R:::.sos100_NamespaceDefinitionsGetCap,
               sos4R:::.sos100_NamespaceDefinitionsSML,
-              sos4R:::.namespaceDefinitionsGML,
-              sos4R:::.sos20_NamespaceDefinitions)
+              sos4R:::.namespaceDefinitionsGML)
     return(.all[unique(names(.all))])
     } else if (version == sos200_version) {
-    stop("SOS 2.0 namespaces not implemented yet!")
+      .all <- c(sos4R:::.sos20_NamespaceDefinitions)
+      return(.all[unique(names(.all))])
   } else {
     stop("Unsupported version", version)
   }

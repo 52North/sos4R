@@ -32,7 +32,7 @@
 #
 parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 
-  obj <- obj[[om20OM_Observation]]
+  obj <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = SosAllNamespaces())
 
   .id <- xml2::xml_attr(x = obj, attr = "id",
                     default = NA_character_)
@@ -41,16 +41,16 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
   #TODO adjust the following OM 1.0 parsing functionality
 
   # 52N SOS only returns om:Observation with procedure ids xlink:href
-  .procedure <- xml2::xml_attr(x = obj[[omProcedureName]], attr = "href",
+  .procedure <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = omProcedureName, ns = SosAllNamespaces()), attr = "href",
                            default = NA_character_)
 
-  .observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
+  .observedProperty <- parsePhenomenonProperty(xml2::xml_child(x = obj, search = omObservedPropertyName, ns = SosAllNamespaces()),
                                                verbose = verbose)
 
   timeObjectMap <- list()
 
-  if(!is.null(obj[[om20PhenomenonTimeName]])) {
-    .pt <- parseTime(obj = obj[[om20PhenomenonTimeName]],
+  if(!is.na(xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()))) {
+    .pt <- parseTime(obj = xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()),
                  format = sosTimeFormat(sos = sos),
                  timeObjectMap = timeObjectMap,
                  verbose = verbose)
@@ -61,8 +61,8 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
     .phenomenonTime <- NULL
   }
 
-  if(!is.null(obj[[omFeatureOfInterestName]])) {
-    .featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]],
+  if(!is.na(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()))) {
+    .featureOfInterest <- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()),
                                    sos = sos, verbose = verbose)
     if(!is.null(.featureOfInterest@href)){
       if(verbose) cat("[trying to get referenced featureOfInterest]\n")
@@ -88,11 +88,11 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 
   # result parser is exchangeable
   .resultParsingFunction <- sosParsers(sos)[[omResultName]]
-  .result <- .resultParsingFunction(obj[[omResultName]], sos, verbose)
+  .result <- .resultParsingFunction(xml2::xml_child(x = obj, search = omResultName, ns = SosAllNamespaces()), sos, verbose)
 
   # optional elements
-  if(!is.null(obj[[omResultTimeName]])) {
-    .pt <- parseTime(obj = obj[[omResultTimeName]],
+  if(!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
+    .pt <- parseTime(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
                         format = sosTimeFormat(sos = sos),
                         timeObjectMap = timeObjectMap,
                         verbose = verbose)

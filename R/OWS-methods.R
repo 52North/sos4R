@@ -313,7 +313,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
           }
 )
 .sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
-  .xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
+  .xmlDoc <- XML2::xmlNode(name = sosGetCapabilitiesName,
                      namespace = sosNamespacePrefix,
                      namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
                                               .sos100_NamespaceDefinitionsGetCap),
@@ -322,30 +322,30 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
 
   # optional:
   if( !is.na(obj@acceptVersions)) {
-    .acceptVersions <- xmlNode(name = "AcceptVersions",
+    .acceptVersions <- XML2::xmlNode(name = "AcceptVersions",
                                namespace = owsNamespacePrefix)
     .acceptVersions$children <- lapply(
       obj@acceptVersions, "xmlNode", name="ows:Version")
-    .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
+    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptVersions))
   }
 
   if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
     .sections <- XML::xmlNode(name = "ows:Sections")
     .sections$children <- lapply(obj@sections, "xmlNode", name="Section",
                                  namespace = owsNamespacePrefix)
-    .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
+    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.sections))
   }
 
-  if( !is.na(obj@updateSequence)) {
-    .xmlDoc <- XML::addAttributes(node = .xmlDoc, updateSequence = obj@updateSequence)
+  if (!is.na(obj@updateSequence)) {
+    xml2::xml_set_attr(x = .xmlDoc, attr = "updateSequence", value = obj@updateSequence)
   }
 
-  if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-    .acceptFormats <- xmlNode(name = "AcceptFormats",
+  if (!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
+    .acceptFormats <- XML2::xmlNode(name = "AcceptFormats",
                               namespace = owsNamespacePrefix)
     .acceptFormats$children <- lapply(
       obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
-    .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
+    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptFormats))
   }
 
   return(.xmlDoc)
@@ -364,7 +364,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
           }
 )
 .sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
-  .xmlDoc <- xmlNode(name = sosGetCapabilitiesName,
+  .xmlDoc <- XML2::xmlNode(name = sosGetCapabilitiesName,
                      namespace = sosNamespacePrefix,
                      namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
                                               .sos100_NamespaceDefinitionsGetCap),
@@ -373,38 +373,38 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
 
   # optional:
   if( !is.na(obj@acceptVersions)) {
-    .acceptVersions <- xmlNode(name = "AcceptVersions",
+    .acceptVersions <- XML2::xmlNode(name = "AcceptVersions",
                                namespace = owsNamespacePrefix)
     .acceptVersions$children <- lapply(
       obj@acceptVersions, "xmlNode", name = "ows:Version")
-    .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptVersions))
+    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptVersions))
   }
 
   if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
     .sections <- XML::xmlNode(name = "ows:Sections")
     .sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
                                  namespace = owsNamespacePrefix)
-    .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.sections))
+    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.sections))
   }
 
   if( !is.na(obj@updateSequence)) {
-    .xmlDoc <- XML::addAttributes(node = .xmlDoc, updateSequence = obj@updateSequence)
+    xml2::xml_set_attr(x = .xmlDoc, attr = "updateSequence", value = obj@updateSequence)
   }
 
   if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-    .acceptFormats <- xmlNode(name = "AcceptFormats",
+    .acceptFormats <- XML2::xmlNode(name = "AcceptFormats",
                               namespace = owsNamespacePrefix)
     .acceptFormats$children <- lapply(
       obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
-    .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptFormats))
+    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptFormats))
   }
 
   if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
-    .acceptLanguages <- xmlNode(name = "AcceptLanguages",
+    .acceptLanguages <- XML2::xmlNode(name = "AcceptLanguages",
                                 namespace = owsNamespacePrefix)
     .acceptLanguages$children <- lapply(
       obj@acceptLanguages, "xmlNode", name="ows:Language")
-    .xmlDoc <- addChildren(node = .xmlDoc, kids = list(.acceptLanguages))
+    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptLanguages))
   }
 
   return(.xmlDoc)

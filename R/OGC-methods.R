@@ -72,7 +72,7 @@ OgcOverlaps <- function(propertyName = sosDefaultSpatialOpPropertyName,
 #
 setMethod(f = "encodeXML",
           signature = signature(obj = "TM_After", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] TM_After with", toString(obj@time))
             
             .encoded <- .encodeTM(nodeName = ogcTempOpTMAfterName,
@@ -83,7 +83,7 @@ setMethod(f = "encodeXML",
 )
 setMethod(f = "encodeXML",
           signature = signature(obj = "TM_Before", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] TM_After with", toString(obj@time),
                             "\n")
             
@@ -95,7 +95,7 @@ setMethod(f = "encodeXML",
 )
 setMethod(f = "encodeXML",
           signature = signature(obj = "TM_During", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] TM_During with", toString(obj@time),
                             "\n")
             
@@ -107,7 +107,7 @@ setMethod(f = "encodeXML",
 )
 setMethod(f = "encodeXML",
           signature = signature(obj = "TM_Equals", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] TM_Equals with", toString(obj@time),
                             "\n")
             
@@ -121,8 +121,8 @@ setMethod(f = "encodeXML",
 .encodeTM <- function(nodeName, propertyName, time, sos, verbose = FALSE) {
   if(verbose) cat("[.encodeTM] ", nodeName, "\n")
   
-  .tm <- xmlNode(name = nodeName, namespace = ogcNamespacePrefix)
-  .pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+  .tm <- XML2::xmlNode(name = nodeName, namespace = ogcNamespacePrefix)
+  .pn <- XML2::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
   xml2::xml_text(x = .pn) <- propertyName
   .tm$children[[1]] <- .pn
   .time <- encodeXML(obj = time, sos = sos, verbose = verbose)
@@ -133,16 +133,16 @@ setMethod(f = "encodeXML",
 
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcBBOX", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] OgcBBOX with", toString(obj@time),
                             "\n")
             
-            .bbox <- xmlNode(name = ogcBBOXName, namespace = ogcNamespacePrefix)
+            .bbox <- XML2::xmlNode(name = ogcBBOXName, namespace = ogcNamespacePrefix)
             
             .pN <- .createPropertyName(node = .bbox,
                                        propertyName = obj@propertyName)
             .env <- encodeXML(obj = obj@envelope, sos = sos)
-            .bbox <- addChildren(node = .bbox, kids = list(.pN, .env))
+            .bbox <- XML::addChildren(node = .bbox, kids = list(.pN, .env))
             
             return(.bbox)
           }
@@ -150,7 +150,7 @@ setMethod(f = "encodeXML",
 
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcContains", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] OgcContains with", toString(obj@time),
                             "\n")
             
@@ -164,7 +164,7 @@ setMethod(f = "encodeXML",
 
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcIntersects", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] OgcIntersects with",
                             toString(obj@time), "\n")
             
@@ -178,7 +178,7 @@ setMethod(f = "encodeXML",
 
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcOverlaps", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] OgcOverlaps with", toString(obj@time),
                             "\n")
             
@@ -192,7 +192,7 @@ setMethod(f = "encodeXML",
 
 .encodeBinarySpatialOp <- function(opName, propertyName, geometry, envelope,
                                    sos) {
-  .spOp <- xmlNode(name = opName, namespace = ogcNamespacePrefix)
+  .spOp <- XML2::xmlNode(name = opName, namespace = ogcNamespacePrefix)
   
   .pN <- .createPropertyName(node = .spOp,
                              propertyName = propertyName)
@@ -209,20 +209,20 @@ setMethod(f = "encodeXML",
     .geomOrEnv <- NULL
   }
   
-  .spOp <- addChildren(node = .spOp, kids = list(.pN, .geomOrEnv))
+  .spOp <- XML::addChildren(node = .spOp, kids = list(.pN, .geomOrEnv))
   
   return(.spOp)
 }
 
 .createPropertyName <- function(node, propertyName) {
-  .pN <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+  .pN <- XML2::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
   xml2::xml_text(x = .pN) <- propertyName
   return(.pN)
 }
 
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcComparisonOps", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeXML] OgcComparisonOps with",
                             toString(obj@time), "\n")
             warning("Encoding of OgcComparisonOps not implemented yet! Returning obj as is...")
@@ -235,7 +235,7 @@ setMethod(f = "encodeXML",
 #
 setMethod(f = "encodeKVP",
           signature = signature(obj = "OgcBinaryTemporalOp", sos = "SOS"),
-          def = function(obj, sos, verbose) {
+          definition = function(obj, sos, verbose) {
             if(verbose) cat("[encodeKVP] temporalOps: ", toString(obj), "\n")
             .time <- NULL
             .tempOpTime <- obj@time

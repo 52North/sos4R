@@ -209,12 +209,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                   ". Please re-check query parameters."))
   }
 
-  if(XML::isXMLString(str = .responseString)) {
-    if(verbose) {
-      cat("[.getFeatureOfInterest_2.0.0] Got XML string as response",
-          "(based on XML::isXMLString(str = )).\n")
-      cat("[.getFeatureOfInterest_2.0.0] Content type: '", toString(.contentType), "'.\n")
-    }
+  if (isXMLString(str = .responseString)) {
+    if (verbose) cat("[.getFeatureOfInterest_2.0.0] Got XML string as response, content type: '",
+                     toString(.contentType), "'.\n")
 
     .hasSubtype <- FALSE
     .contentSubtype <- NA
@@ -367,12 +364,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                   ". Please re-check query parameters."))
   }
 
-  if(XML::isXMLString(str = .responseString)) {
-    if(verbose) {
-      cat("[.getObservation_2.0.0] Got XML string as response",
-          "(based on XML::isXMLString(str = )).\n")
-      cat("[.getObservation_2.0.0] Content type: '", toString(.contentType), "'.\n")
-    }
+  if (isXMLString(str = .responseString)) {
+    if (verbose) cat("[.getObservation_2.0.0] Got XML string as response, content type: '",
+                     toString(.contentType), "'.\n")
 
     .hasSubtype <- FALSE
     .contentSubtype <- NA
@@ -841,12 +835,12 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
   }
 
   #TODO Implement procedure or a spatial filter
-  if (is.character(.optionals)  && str_length(.optionals) > 0) {
+  if (is.character(.optionals)  && stringr::str_length(.optionals) > 0) {
     .kvpString <- paste(.requestBase, .optionals, sep = "&")
   } else {
     .kvpString <- .requestBase
   }
-  if(verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0]",
+  if (verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0]",
                   "with request: ", .kvpString, "\n")
 
   return(.kvpString)

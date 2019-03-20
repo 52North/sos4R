@@ -1126,7 +1126,7 @@ setMethod(f = "sosUOM",
             .uom <- c()
             for (x in .names) {
               # get attribute for column
-              .u <- attributes(obj[[x]])[["unit of measurement"]]
+              .u <- attributes(xml2::xml_child(x = obj, search = x, ns = SosAllNamespaces()))[["unit of measurement"]]
               if(!is.null(.u)) {
                 names(.u) <- x
                 .uom <- c(.uom, .u)

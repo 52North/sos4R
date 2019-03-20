@@ -1,12 +1,12 @@
 context("parsing: composite phenomenon")
 
 parseXmlSnippet <- function(obj) {
-  .doc <- xml2::read_xml(x = obj, options = SosDefaultParsingOptions())
-  .docRoot <- xml2::xml_root(x = .doc)
-  return(.docRoot)
+  doc <- xml2::read_xml(x = obj, options = SosDefaultParsingOptions())
+  docRoot <- xml2::xml_root(x = doc)
+  return(docRoot)
 }
 
-.compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml"
+compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml"
 xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink"
 gml:id="WaterQuality" dimension="4">
 <gml:name>WaterQuality</gml:name>
@@ -19,28 +19,28 @@ axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_
 testsos@capabilities <- axiomCaps
 
 test_that("composite phenomenon name is parsed from snippet", {
-    .doc <- parseXmlSnippet(.compositePhenomenon)
-    .phen <- parseCompositePhenomenon(obj = .doc) #, verbose = TRUE)
-    expect_that(.phen@name, equals("WaterQuality"))
+    doc <- parseXmlSnippet(compositePhenomenon)
+    phen <- parseCompositePhenomenon(obj = doc) #, verbose = TRUE)
+    expect_that(phen@name, equals("WaterQuality"))
 })
 
 test_that("composite phenomenon id is parsed from snippet", {
-    .doc <- parseXmlSnippet(.compositePhenomenon)
-    .phen <- parseCompositePhenomenon(obj = .doc)
-    expect_that(.phen@id, equals("WaterQuality"))
+    doc <- parseXmlSnippet(compositePhenomenon)
+    phen <- parseCompositePhenomenon(obj = doc)
+    expect_that(phen@id, equals("WaterQuality"))
 })
 
 test_that("composite phenomenon dimension is parsed from snippet", {
-    .doc <- parseXmlSnippet(.compositePhenomenon)
-    .phen <- parseCompositePhenomenon(obj = .doc)
-    expect_that(.phen@dimension, equals(4))
+    doc <- parseXmlSnippet(compositePhenomenon)
+    phen <- parseCompositePhenomenon(obj = doc)
+    expect_that(phen@dimension, equals(4))
 })
 
 test_that("composite phenomenon components are parsed from snippet", {
-    .doc <- parseXmlSnippet(.compositePhenomenon)
-    .phen <- parseCompositePhenomenon(obj = .doc)
-    expect_that(length(.phen@components), equals(2))
-    expect_that(.phen@components[[2]]@href, equals("urn:ogc:def:property:OGC-SWE:2:ID"))
+    doc <- parseXmlSnippet(compositePhenomenon)
+    phen <- parseCompositePhenomenon(obj = doc)
+    expect_that(length(phen@components), equals(2))
+    expect_that(phen@components[[2]]@href, equals("urn:ogc:def:property:OGC-SWE:2:ID"))
 })
 
 context("capabilities: Mapserver")
@@ -67,8 +67,8 @@ xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999
 </sos:ObservationOffering>'
 
 test_that("composite phenomenon are parsed correctly from observedProperty snippet", {
-    .doc5 <-  parseXmlSnippet(.compositePhenOffering)
-    obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = .doc5, xpath = sosObservedPropertyName)) #, verbose = TRUE)
+    doc5 <-  parseXmlSnippet(.compositePhenOffering)
+    obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = doc5, xpath = sosObservedPropertyName)) #, verbose = TRUE)
 
     expect_equal(length(obs_prop), 2)
     expect_equal(obs_prop, list("WaterQuality", "AirQuality"))
@@ -152,10 +152,10 @@ xmlns:gml="http://www.opengis.net/gml">
 </sos:ObservationOffering>'
 
 test_that("offering id is parsed correctly", {
-    .doc3 <- parseXmlSnippet(.axiomOffering)
-    .obsProp <- parseSosObservedProperty(.doc3[sosObservedPropertyName]) #, verbose = TRUE)
-    expect_equal(.obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
-    expect_equal(length(.obsProp), 2)
+    doc3 <- parseXmlSnippet(.axiomOffering)
+    obsProp <- parseSosObservedProperty(doc3[sosObservedPropertyName]) #, verbose = TRUE)
+    expect_equal(obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
+    expect_equal(length(obsProp), 2)
 })
 
 context("parsing: SOS Capabilities 2.0.0")
@@ -168,10 +168,25 @@ context("parsing: SOS Capabilities 2.0.0 swes:offering")
 testsos <- SOS_Test(name = "testcaps",version = sos200_version, verboseOutput = TRUE)
 
 test_that("offering is parsed correctly", {
-  .obs <- parseSosObservationOffering_200(xml2::xml_root(x = xml2::read_xml(x = "../xml-elements/swes-offering1.xml")), testsos)
-  expect_equal(.obs@id, "ws2500")
+  obs <- parseSosObservationOffering_200(xml2::xml_root(x = xml2::read_xml(x = "../xml-elements/swes-offering1.xml")), testsos)
+  expect_equal(obs@id, "ws2500")
   #TODO test other parameters
 })
 
 testsos <- SOS_Test(name = "testcaps",version = sos100_version, verboseOutput = TRUE)
 axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_100_Example.xml"), testsos)
+
+
+context("parsing: operations metadata")
+
+rangeXml <- '<ows:Range xmlns:ows="http://www.opengis.net/ows/1.1">
+<ows:MinimumValue>2005-12-03T00:00:00.000+01:00</ows:MinimumValue>
+<ows:MaximumValue>2015-12-13T00:00:00.000+01:00</ows:MaximumValue>
+</ows:Range>'
+
+test_that("composite phenomenon name is parsed from snippet", {
+  doc <- parseXmlSnippet(rangeXml)
+  range <- parseOwsRange(obj = doc)
+  expect_equal(range@minimumValue, "2005-12-03T00:00:00.000+01:00")
+  expect_equal(range@maximumValue, "2015-12-13T00:00:00.000+01:00")
+})

@@ -56,12 +56,11 @@ parseSosCapabilities200 <- function(obj, sos) {
 
   if(!is.null(.caps.root[[owsOperationsMetadataName]])) {
     if(sos@verboseOutput)
-      cat("[parseSosCapabilities] entering", owsOperationsMetadataName,
-          "... \n")
+      cat("[parseSosCapabilities] entering", owsOperationsMetadataName, "... \n")
 
-    .operationsXML <- .filterXmlChildren(
-      node = .caps.root[[owsOperationsMetadataName]],
-      xmlTagName = owsOperationName)
+    .operationsXML <- xml2::xml_find_all(x = .caps.root,
+                                         xpath = paste0("//", owsOperationName),
+                                         ns = SosAllNamespaces())
 
     .operations <- lapply(.operationsXML, parseOwsOperation)
     # add names for indexing of list
@@ -79,9 +78,9 @@ parseSosCapabilities200 <- function(obj, sos) {
     if(sos@verboseOutput)
       cat("[parseSosCapabilities] entering", sos200ContentsName, "... \n")
 
-    .offeringsXML <- .filterXmlChildren(
-      node = .caps.root[[sos200ContentsName]][[sosContentsName]],
-      xmlTagName = swesOfferingName)
+    .offeringsXML <- xml2::xml_find_all(x = .caps.root,
+                                        xpath = paste0(sos200ContentsName, "/", sosContentsName, "/", swesOfferingName),
+                                        ns = SosAllNamespaces())
     .offerings <- sapply(.offeringsXML, parseSosObservationOffering_200,
                            sos = sos)
     # add names to list
@@ -299,7 +298,9 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
     print(obj)
   }
 
-  .observationsXML <- .filterXmlChildren(node = obj, xmlTagName = "observationData")
+  .observationsXML <- xml2::xml_find_all(x = obj,
+                                         xpath = "sos20:observationData",
+                                         ns = SosAllNamespaces(version = sos200_version))
   featureCache <<- list()
   .observations <- sapply(.observationsXML,
                          parseObservation_2.0,
@@ -315,19 +316,17 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
     print(obj)
   }
 
-  .featureXML <- .filterXmlChildren(
-    node = obj,
-    xmlTagName = "featureMember")
-  .foi = sapply(.featureXML, .parseFeatureMember,
-                sos = sos)
+  .featureXML <- xml2::xml_find_all(x = obj,
+                                    xpath = "sos20:featureMember",
+                                    SosAllNamespaces(version = sos200_version))
+  .foi = sapply(.featureXML, .parseFeatureMember, sos = sos)
   return(.foi)
 }
 
 .parseFeatureMember <- function(obj, sos) {
-  .noneTexts <- .filterXmlOnlyNoneTexts(obj)
-  .member <- .noneTexts[[1]]
+  .member <- xml2::xml_child(x = obj)
 
-  .name <- xml2::xml_name(x = .member)
+  .name <- xml2::xml_name(x = .member, ns = SosAllNamespaces())
 
   if(.name == wmlMonitoringPointName) {
     .sp <- parseMonitoringPoint(.member, sos = sos)

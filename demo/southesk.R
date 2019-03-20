@@ -72,7 +72,7 @@ format(testtime, format = sosDefaultTimeFormat)
 
 setMethod(f = "encodeXML",
 		signature = signature(obj = "POSIXt", sos = "SOS"),
-		def = function(obj, sos, verbose) {
+		definition = function(obj, sos, verbose) {
 			if(verbose) cat("CSIRO encoding... ")
 
 			# time zone hack!

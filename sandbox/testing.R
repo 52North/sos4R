@@ -605,8 +605,8 @@ manualResult1 <- XML::xmlParseString(content = manualResult)
 class(manualResult1)
 # [1] "XMLInternalDocument" "XMLAbstractDocument" "oldClass"  
 
-manualResult2 <- xmlNode(name = sosResultName)
-manualResult2$children[[1]] <- xmlNode(name = ogcComparisonOpEqualToName)
+manualResult2 <- XML2::xmlNode(name = sosResultName)
+manualResult2$children[[1]] <- XML2::xmlNode(name = ogcComparisonOpEqualToName)
 class(manualResult2)
 # [1] "XMLNode" "RXMLAbstractNode" "XMLAbstractNode"  "oldClass"
 
@@ -632,13 +632,13 @@ myResult1 <- XML::xmlParseString(content = '<sos:result><ogc:PropertyIsGreaterTh
 <ogc:Literal>20</ogc:Literal></ogc:PropertyIsGreaterThan></sos:result>')
 # results in problems with external pointers...
 
-pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+pn <- XML2::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 xml2::xml_text(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
-l <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
+l <- XML2::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
 xml2::xml_text(x = l) <- "10"
-comp <- xmlNode(name = ogcComparisonOpGreaterThanName,
+comp <- XML2::xmlNode(name = ogcComparisonOpGreaterThanName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
-myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
+myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
 		.children = list(comp))
 
 obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
@@ -744,13 +744,13 @@ xml1 <- encodeXML('<lala name="horst"><pooh /></lala>', weathersos)
 str(xml1)
 # good
 
-pn <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+pn <- XML2::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 xml2::xml_text(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
-l <- xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
+l <- XML2::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
 xml2::xml_text(x = l) <- "3"
-comp <- xmlNode(name = ogcComparisonOpLessThanOrEqualToName,
+comp <- XML2::xmlNode(name = ogcComparisonOpLessThanOrEqualToName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
-myResult2 <- xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
+myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
 		.children = list(comp))
 str(myResult2)
 class(myResult2)
@@ -781,7 +781,7 @@ XML::xmlParseString(content = shouldWorkString)
 str(encodeXML(shouldWorkString, weathersos))
 
 # try automatic namespace adding with encodeXML
-namespacedResult <- xmlNode(name = sosResultName,
+namespacedResult <- XML2::xmlNode(name = sosResultName,
 		namespace = sosNamespacePrefix,
 		namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 				.sosNamespaceDefinitionsGetObs))
@@ -803,7 +803,7 @@ encodeXML(obj = sosResultString, sos = weathersos)
 # cannot attach .result this to anything!
 n <- XML::xmlNode(name = "lala")
 n[[1]] <- list(.result)
-n <- addChildren(node = n, kids = list(.result))
+n <- XML::addChildren(node = n, kids = list(.result))
 #Fehler in as.vector(x, "list") : 
 #		cannot coerce type 'externalptr' to vector of type 'list'
 

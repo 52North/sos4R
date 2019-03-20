@@ -102,15 +102,15 @@ setMethod(f = "sosCreateTime",
           signature = signature(sos = "SOS", time = "character"),
           def = function(sos, time, operator) {
             .l <- NULL
-            if(regexpr(pattern = "::", text = time) > -1) {
+            if (regexpr(pattern = "::", text = time) > -1) {
               .l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
                                                       operator = operator, seperator = "::")
             }
-            else if(regexpr(pattern = "P", text = time) > -1) {
+            else if (regexpr(pattern = "P", text = time) > -1) {
               .l <- .sosCreateEventTimeListFromISOPeriod(sos = sos,
                                                          time = time, operator = operator)
             }
-            else if(regexpr(pattern = "/", text = time) > -1) {
+            else if (regexpr(pattern = "/", text = time) > -1) {
               .l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
                                                       operator = operator, seperator = "/")
             }
@@ -120,7 +120,7 @@ setMethod(f = "sosCreateTime",
                                                         operator = operator)
             }
 
-            if(is.null(.l)) warning("[sosCreateTime] could not create time.")
+            if (is.null(.l)) warning("[sosCreateTime] could not create time.")
 
             return(.l)
           }
@@ -141,30 +141,30 @@ setMethod(f = "sosCreateTime",
 .sosCreateEventTimeListFromPeriod <- function(sos, time, operator, seperator) {
   .times <- strsplit(x = time, split = seperator)[[1]]
   .start <- .times[[1]]
-  if(length(.times) > 1)
+  if (length(.times) > 1)
     .end <- .times[[2]]
   else .end <- NULL
 
   #	print(.start); print(.end);	print(nchar(.start)); print(nchar(.end));
   #	str(.start); print(.end);
 
-  if(is.null(.start) && is.null(.end)) {
+  if (is.null(.start) && is.null(.end)) {
     warning("Both start and endtime are null based on given time. Returning empty list!")
     return(list())
   }
   else {
-    if(is.null(.end)) {
+    if (is.null(.end)) {
       # no end time:
       .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.start))
       .l <- sosCreateEventTimeList(time = .ti,
                                    operator = SosSupportedTemporalOperators()[[ogcTempOpTMAfterName]])
     }
-    else if(nchar(.start) > 0) {
+    else if (nchar(.start) > 0) {
       .tp <- sosCreateTimePeriod(sos = sos, begin = as.POSIXct(.start),
                                  end = as.POSIXct(.end))
       .l <- sosCreateEventTimeList(.tp)
     }
-    else if(nchar(.start) < 1) {
+    else if (nchar(.start) < 1) {
       # no start time:
       .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.end))
       .l <- sosCreateEventTimeList(time = .ti,
@@ -192,16 +192,16 @@ setMethod(f = "sosCreateEventTime",
           signature = signature(time = "GmlTimeGeometricPrimitive"),
           def = function(time, operator) {
 
-            if(operator == ogcTempOpTMAfterName) {
+            if (operator == ogcTempOpTMAfterName) {
               .tOps <- TM_After(time = time)
             }
-            else if(operator == ogcTempOpTMBeforeName) {
+            else if (operator == ogcTempOpTMBeforeName) {
               .tOps <- TM_Before(time = time)
             }
-            else if(operator == ogcTempOpTMDuringName) {
+            else if (operator == ogcTempOpTMDuringName) {
               .tOps <- TM_During(time = time)
             }
-            else if(operator == ogcTempOpTMEqualsName) {
+            else if (operator == ogcTempOpTMEqualsName) {
               .tOps <- TM_Equals(time = time)
             }
             else {
@@ -216,7 +216,7 @@ setMethod(f = "sosCreateEventTime",
 )
 
 .createLatestEventTime <- function(verbose = FALSE) {
-  if(verbose) cat("Creating non-standard event time 'latest'\n")
+  if (verbose) cat("Creating non-standard event time 'latest'\n")
   .et <- SosEventTimeLatest()
   return(.et)
 }
@@ -228,14 +228,14 @@ setMethod(f = "sosCreateFeatureOfInterest",
           signature = signature(),
           def = function(objectIDs, spatialOps, bbox, srsName) {
             # switch cases, either objectIDs or one of the spatialOps shortcuts
-            if(!any(is.na(objectIDs))) {
+            if (!any(is.na(objectIDs))) {
               .foi <- SosFeatureOfInterest(objectIDs = objectIDs)
             }
             else if (!is.null(spatialOps)) {
               .foi <- SosFeatureOfInterest(spatialOps = spatialOps)
             }
-            else if(!is.null(bbox)) {
-              if(is.matrix(bbox)) {
+            else if (!is.null(bbox)) {
+              if (is.matrix(bbox)) {
                 .env <- GmlEnvelope(
                   lowerCorner = GmlDirectPositionLatLon(lat = bbox[2,1],
                                                         lon = bbox[1,1]),
@@ -325,17 +325,18 @@ setMethod(f = "sosCapabilitiesUrl",
 # helpers for exception response handling ----
 #
 .isExceptionReport <- function(document) {
-  if(owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = document)))
+  if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = document),
+                                              ns = SosAllNamespaces()))
     return(TRUE)
   else
     return(FALSE)
 }
 
 .handleExceptionReport <- function(sos, obj) {
-  if(sos@verboseOutput) warning("Received ExceptionReport!")
+  if (sos@verboseOutput) warning("Received ExceptionReport!")
   .parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
   .er <- .parsingFunction(obj)
-  if(class(.er) == "OwsExceptionReport")
+  if (class(.er) == "OwsExceptionReport")
     warning(toString(.er))
   return(.er)
 }
@@ -356,7 +357,7 @@ setMethod(f = "sosExceptionCodeMeaning",
 #
 setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
           def = function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("[encodeXML] from XMLNode\n")
             }
             return(obj)
@@ -365,7 +366,7 @@ setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
 
 setMethod(f = "encodeXML", signature = signature(obj = "XMLInternalElementNode", sos = "SOS"),
           def = function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("[encodeXML] from XMLInternalElementNode: just returning it.\n")
             }
             return(obj)
@@ -387,12 +388,12 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
 setMethod(f = "sosGetCRS",
           signature = c(obj = "character"),
           def = function(obj, verbose = FALSE) {
-            if(verbose) cat("[sosGetCRS] from '", obj, "'\n", sep = "")
+            if (verbose) cat("[sosGetCRS] from '", obj, "'\n", sep = "")
 
             # get the position of EPSG code
             .split <- strsplit(as.character(obj), split = ":")
             .idx <- which(toupper(.split[[1]]) == "EPSG")
-            if(length(.idx) == 0) {
+            if (length(.idx) == 0) {
               # possibly versioned, try one index higher?
               warning(paste("Could not create CRS from the given object:", obj))
               return(NULL)
@@ -401,15 +402,15 @@ setMethod(f = "sosGetCRS",
 
             .initString <- paste("+init=epsg", .epsg, sep = ":")
 
-            if(verbose) cat("[sosGetCRS] .initString:", .initString, "\n")
+            if (verbose) cat("[sosGetCRS] .initString:", .initString, "\n")
 
             .rgdal <- requireNamespace("rgdal", quietly = TRUE)
-            if(!.rgdal)
-              # if(!("rgdal" %in% .packages())) does only check loaded pkgs
+            if (!.rgdal)
+              # if (!("rgdal" %in% .packages())) does only check loaded pkgs
               warning("[sosGetCRS] rgdal not present: CRS values will not be validated.",
                       immediate. = TRUE)
             else
-              if(verbose) cat("[sosGetCRS] rgdal loaded! \n")
+              if (verbose) cat("[sosGetCRS] rgdal loaded! \n")
 
             .crs <- NULL
             tryCatch({
@@ -421,7 +422,7 @@ setMethod(f = "sosGetCRS",
             })
 
 
-            if(verbose) {
+            if (verbose) {
               cat("[sosGetCRS] found: ")
               show(.crs)
             }
@@ -435,7 +436,7 @@ setMethod(f = "sosGetCRS",
             .l <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
             .l <- unique(.l)
 
-            if(length(.l) == 1)
+            if (length(.l) == 1)
               return(.l[[1]])
             else return(.l)
           }
@@ -458,7 +459,7 @@ setMethod(f = "sosGetCRS",
           signature = c(obj = "SosObservationOffering"),
           def = function(obj, verbose = FALSE) {
             .srsName <- sosBoundedBy(obj)[["srsName"]]
-            if(is.null(.srsName))
+            if (is.null(.srsName))
               .crs <- NULL
             else .crs <- sosGetCRS(.srsName, verbose = verbose)
             return(.crs)
@@ -469,7 +470,7 @@ setMethod(f = "sosGetCRS",
           def = function(obj, verbose = FALSE) {
             .offs <- sosOfferings(obj)
             .crss <- lapply(.offs, sosGetCRS, verbose = verbose)
-            if(length(.crss) == 1)
+            if (length(.crss) == 1)
               return(.crss[[1]])
             return(.crss)
           }
@@ -487,7 +488,7 @@ setMethod(f = "sosGetCRS",
   .l <- sapply(X = .char, FUN = sosGetCRS)
   .l <- unique(.l)
 
-  if(length(.l) == 1)
+  if (length(.l) == 1)
     return(.l[[1]])
   else return(.l)
 }
@@ -528,19 +529,19 @@ setMethod(f = "sosGetCRS",
 
 .sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
 
-  if(length(pattern) == 0) {
-    if(verbose)
+  if (length(pattern) == 0) {
+    if (verbose)
       cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
     return(dcp)
   }
 
-  if(verbose)
+  if (verbose)
     cat("[.sosFilterDCPs] Applying pattern", toString(pattern), "to",
         toString(dcp), "\n")
 
   .idx <- grep(pattern = pattern, x = dcp)
   .filtered <- dcp[.idx]
-  if(verbose)
+  if (verbose)
     cat("[.sosFilterDCPs] Filtered from\n\t", toString(dcp), "\n\tto\n\t",
         toString(.filtered), "\n")
 
@@ -575,10 +576,13 @@ sosCheatSheet <- function() {
   return(.z)
 }
 
-
 #
-# XML parsing one stop shop ----
+# XML parsing ----
 #
 .internalXmlRead <- function(x, options = SosDefaultParsingOptions()) {
   return(xml2::read_xml(x = .responseString, options = options))
+}
+
+isXMLString <- function(str) {
+  return(grepl("^<(.*)>$", str))
 }

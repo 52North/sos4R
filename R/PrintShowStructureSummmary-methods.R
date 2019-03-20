@@ -1184,28 +1184,28 @@ setMethod("show", "OgcOverlaps", function(object) .print.OgcOverlaps(object))
 # SUMMARY FUNCTIONS
 summary.SOS_versioned = function(object, ...) {
   obj = list()
-  obj[["class"]] = class(object)
+  xml2::xml_child(x = obj, search = "class", ns = SosAllNamespaces()) = class(object)
 
   sosVersion = sosVersion(object)
 
-  obj[["version"]] = sosVersion
-  obj[["url"]] = sosUrl(object)
-  obj[["binding"]] = sosBinding(object)
-  obj[["title"]] = sosTitle(object)
-  obj[["abstract"]] = sosAbstract(object)
+  xml2::xml_child(x = obj, search = "version", ns = SosAllNamespaces()) = sosVersion
+  xml2::xml_child(x = obj, search = "url", ns = SosAllNamespaces()) = sosUrl(object)
+  xml2::xml_child(x = obj, search = "binding", ns = SosAllNamespaces()) = sosBinding(object)
+  xml2::xml_child(x = obj, search = "title", ns = SosAllNamespaces()) = sosTitle(object)
+  xml2::xml_child(x = obj, search = "abstract", ns = SosAllNamespaces()) = sosAbstract(object)
 
   if(!is.null(sosTime(object)))
-    obj[["time"]] = summary(sosTime(object))
-  else obj[["time"]] = NA_character_
+    xml2::xml_child(x = obj, search = "time", ns = SosAllNamespaces()) = summary(sosTime(object))
+  else xml2::xml_child(x = obj, search = "time", ns = SosAllNamespaces()) = NA_character_
 
-  obj[["offeringCount"]] = length(sosOfferingIds(object))
-  obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
+  xml2::xml_child(x = obj, search = "offeringCount", ns = SosAllNamespaces()) = length(sosOfferingIds(object))
+  xml2::xml_child(x = obj, search = "procedureCount", ns = SosAllNamespaces()) = length(unlist(sosProcedures(object)))
 
   if(sosVersion == sos100_version){
-    obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
+    xml2::xml_child(x = obj, search = "observedPropCount", ns = SosAllNamespaces()) = length(unlist(sosObservedProperties(object)))
   }
   else if(sosVersion == sos200_version){
-    obj[["observablePropCount"]] = length(unlist(sosObservableProperties(object)))
+    xml2::xml_child(x = obj, search = "observablePropCount", ns = SosAllNamespaces()) = length(unlist(sosObservableProperties(object)))
   }
 
   class(obj) = "summary.SOS_versioned"
@@ -1249,14 +1249,14 @@ print.summary.SOS = function(x, ...) {
 
 summary.SosObservationOffering = function(object, ...) {
   obj = list()
-  obj[["class"]] = class(object)
-  obj[["id"]] = sosId(object)
-  obj[["name"]] = sosName(object)
-  obj[["time"]] = summary(sosTime(object))
-  obj[["bbox"]] = toString(sosBoundedBy(object))
-  obj[["foiCount"]] = length(sosFeaturesOfInterest(object))
-  obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
-  obj[["observedPropCount"]] = length(unlist(sosObservedProperties(object)))
+  xml2::xml_child(x = obj, search = "class", ns = SosAllNamespaces()) = class(object)
+  xml2::xml_child(x = obj, search = "id", ns = SosAllNamespaces()) = sosId(object)
+  xml2::xml_child(x = obj, search = "name", ns = SosAllNamespaces()) = sosName(object)
+  xml2::xml_child(x = obj, search = "time", ns = SosAllNamespaces()) = summary(sosTime(object))
+  xml2::xml_child(x = obj, search = "bbox", ns = SosAllNamespaces()) = toString(sosBoundedBy(object))
+  xml2::xml_child(x = obj, search = "foiCount", ns = SosAllNamespaces()) = length(sosFeaturesOfInterest(object))
+  xml2::xml_child(x = obj, search = "procedureCount", ns = SosAllNamespaces()) = length(unlist(sosProcedures(object)))
+  xml2::xml_child(x = obj, search = "observedPropCount", ns = SosAllNamespaces()) = length(unlist(sosObservedProperties(object)))
   class(obj) = "summary.SosObservationOffering"
   obj
 }
@@ -1283,14 +1283,14 @@ print.summary.SosObservationOffering = function(x, ...) {
 
 summary.SosObservationOffering_2.0.0 = function(object, ...) {
   obj = list()
-  obj[["class"]] = class(object)
-  obj[["id"]] = sosId(object)
-  obj[["name"]] = sosName(object)
-  obj[["time"]] = summary(sosTime(object))
-  obj[["bbox"]] = toString(sosBoundedBy(object))
-  obj[["foiCount"]] = length(sosFeaturesOfInterest(object))
-  obj[["procedureCount"]] = length(unlist(sosProcedures(object)))
-  obj[["observablePropCount"]] = length(unlist(sosObservableProperties(object)))
+  xml2::xml_child(x = obj, search = "class", ns = SosAllNamespaces()) = class(object)
+  xml2::xml_child(x = obj, search = "id", ns = SosAllNamespaces()) = sosId(object)
+  xml2::xml_child(x = obj, search = "name", ns = SosAllNamespaces()) = sosName(object)
+  xml2::xml_child(x = obj, search = "time", ns = SosAllNamespaces()) = summary(sosTime(object))
+  xml2::xml_child(x = obj, search = "bbox", ns = SosAllNamespaces()) = toString(sosBoundedBy(object))
+  xml2::xml_child(x = obj, search = "foiCount", ns = SosAllNamespaces()) = length(sosFeaturesOfInterest(object))
+  xml2::xml_child(x = obj, search = "procedureCount", ns = SosAllNamespaces()) = length(unlist(sosProcedures(object)))
+  xml2::xml_child(x = obj, search = "observablePropCount", ns = SosAllNamespaces()) = length(unlist(sosObservableProperties(object)))
   class(obj) = "summary.SosObservationOffering_2.0.0"
   obj
 }
@@ -1317,8 +1317,8 @@ print.summary.SosObservationOffering_2.0.0 = function(x, ...) {
 
 summary.OwsRange = function(object, ...) {
   obj = list()
-  obj[["class"]] = class(object)
-  obj[["range"]] = paste(object@minimumValue, "-->", object@maximumValue)
+  xml2::xml_child(x = obj, search = "class", ns = SosAllNamespaces()) = class(object)
+  xml2::xml_child(x = obj, search = "range", ns = SosAllNamespaces()) = paste(object@minimumValue, "-->", object@maximumValue)
   class(obj) = "summary.OwsRange"
   obj
 }
@@ -1338,10 +1338,10 @@ summary.GmlTimePeriod = function(object, ...) {
   }
 
   obj = list()
-  obj[["class"]] = class(object)
-  obj[["duration"]] = object@duration
-  obj[["interval"]] = object@timeInterval
-  obj[["beginEnd"]] = .s
+  xml2::xml_child(x = obj, search = "class", ns = SosAllNamespaces()) = class(object)
+  xml2::xml_child(x = obj, search = "duration", ns = SosAllNamespaces()) = object@duration
+  xml2::xml_child(x = obj, search = "interval", ns = SosAllNamespaces()) = object@timeInterval
+  xml2::xml_child(x = obj, search = "beginEnd", ns = SosAllNamespaces()) = .s
   class(obj) = "summary.GmlTimePeriod"
   obj
 }
@@ -1353,12 +1353,12 @@ print.summary.GmlTimePeriod = function(x, ...) {
 
 summary.OmObservation = function(object, ...) {
   obj = list()
-  obj[["class"]] = class(object)
-  obj[["samplingTime"]] = length(object@samplingTime)
-  obj[["procedureCount"]] = length(object@procedure)
-  obj[["obsPropCount"]] = length(object@observedProperty)
-  obj[["featureCount"]] = length(object@featureOfInterest)
-  obj[["result"]] = summary(object@result)
+  xml2::xml_child(x = obj, search = "class", ns = SosAllNamespaces()) = class(object)
+  xml2::xml_child(x = obj, search = "samplingTime", ns = SosAllNamespaces()) = length(object@samplingTime)
+  xml2::xml_child(x = obj, search = "procedureCount", ns = SosAllNamespaces()) = length(object@procedure)
+  xml2::xml_child(x = obj, search = "obsPropCount", ns = SosAllNamespaces()) = length(object@observedProperty)
+  xml2::xml_child(x = obj, search = "featureCount", ns = SosAllNamespaces()) = length(object@featureOfInterest)
+  xml2::xml_child(x = obj, search = "result", ns = SosAllNamespaces()) = summary(object@result)
 
   class(obj) = "summary.OmObservation"
   obj
@@ -1381,13 +1381,13 @@ print.summary.OmObservation = function(x, ...) {
 
 summary.OmObservationCollection = function(object, ...) {
   obj = list()
-  obj[["class"]] = class(object)
-  obj[["memberCount"]] = length(object@members)
-  obj[["boundedBy"]] = toString(object@boundedBy)
-  obj[["procedureCount"]] = length(unique(unlist(sosProcedures(object))))
-  obj[["obsPropCount"]] = length(unique(unlist(
+  xml2::xml_child(x = obj, search = "class", ns = SosAllNamespaces()) = class(object)
+  xml2::xml_child(x = obj, search = "memberCount", ns = SosAllNamespaces()) = length(object@members)
+  xml2::xml_child(x = obj, search = "boundedBy", ns = SosAllNamespaces()) = toString(object@boundedBy)
+  xml2::xml_child(x = obj, search = "procedureCount", ns = SosAllNamespaces()) = length(unique(unlist(sosProcedures(object))))
+  xml2::xml_child(x = obj, search = "obsPropCount", ns = SosAllNamespaces()) = length(unique(unlist(
     sosObservedProperties(object))))
-  obj[["featureCount"]] = length(unique(unlist(sosFeatureIds(object))))
+  xml2::xml_child(x = obj, search = "featureCount", ns = SosAllNamespaces()) = length(unique(unlist(sosFeatureIds(object))))
 
   class(obj) = "summary.OmObservationCollection"
   obj

@@ -32,7 +32,7 @@
 #
 parseSamplingPoint <- function(obj, sos) {
   .sampledFeatures <- list(obj[saSampledFeatureName])
-  .position <- parsePosition(obj[[saPositionName]], sos = sos)
+  .position <- parsePosition(xml2::xml_child(x = obj, search = saPositionName, ns = SosAllNamespaces()), sos = sos)
   .id <-xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
   
   .sp <- SaSamplingPoint(sampledFeatures = .sampledFeatures,
