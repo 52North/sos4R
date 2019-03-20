@@ -506,8 +506,18 @@ SosDefaultDCPs <- function() {
   .names <- list()
   for (.x in SosSupportedBindings()) {
     .names <- c(.names, .x)
-    .defaults <- c(.defaults, "*")
+    .defaults <- c(.defaults, .getDcpDefaultPattern(.x))
   }
   names(.defaults) <- .names
   return(.defaults)
+}
+
+.getDcpDefaultPattern <- function(dcp) {
+  pattern <- switch(dcp,
+    "GET" = "application/x-kvp",
+    "POST" = "application/xml",
+    "KVP" = "application/x-kvp",
+    "POX" = "application/xml",
+    "*"
+  )
 }

@@ -55,7 +55,7 @@
                                       verbose = verbose)
   
   if(sos@binding == .sosBindingKVP) {
-    .dcp <- sos@url
+    .dcp <- list("Get", "application/x-kvp", sos@url)
     
     if(sos@useDCPs) {
       if(verbose)
@@ -63,14 +63,17 @@
       
       .dcp <- sosGetDCP(sos, sosName(request), owsGetName)
       
-      if(is.null(.dcp) || is.na(.dcp)) {
-        .dcp <- sos@url
+      if(is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
+        .dcp <- list("Get", "application/x-kvp", sos@url)
         if(verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request.\n")
       }
       
-      .dcp <- .sosFilterDCPs(dcp = .dcp,
-                             pattern = sos@dcpFilter[[.sosBindingKVP]],
-                             verbose = verbose)
+      if (is.list(.dcp) && length(.dcp) && is.list(.dcp[[1]])) {
+        .dcp <- .sosFilterDCPs(dcp = .dcp,
+                               pattern = sos@dcpFilter[[.sosBindingKVP]],
+                               verbose = verbose)
+        .dcp <- unlist(.dcp)
+      }
     }
     else if(verbose)
       cat("[.sosRequest_2.0.0] Not using DCP from capabilities.\n",
@@ -78,9 +81,9 @@
     
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
       if (verbose) cat("Given url already contains a '?', appending arguments!\n")
-      .url = paste0(.dcp, .encodedRequest)
+      .url = paste0(.dcp[[owsDcpUrlIndex]], .encodedRequest)
     }
-    else .url = paste(.dcp, .encodedRequest, sep = "?")
+    else .url = paste(.dcp[[owsDcpUrlIndex]], .encodedRequest, sep = "?")
     
     if(!is.na(sos@additionalKVPs) && length(sos@additionalKVPs) > 0) {
       .kvps <- sos@additionalKVPs
@@ -118,23 +121,24 @@
       print(.encodedRequest)
     }
     
-    .dcp <- sos@url
+    .dcp <- list("Post", "application/xml", sos@url)
     
     if(sos@useDCPs) {		
       .dcp <- sosGetDCP(sos, sosName(request), owsPostName) #sos@url as fallback
-      if(is.null(.dcp) || is.na(.dcp)) {
-        .dcp <- sos@url
+      if(is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
+        .dcp <- list("Post", "application/xml", sos@url)
         if(verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
       }
       else {
         if(verbose) cat("[.sosRequest_2.0.0] Got DCPs from capabilites:",
                         toString(.dcp), "\n")
       }
-      
-      .dcp <- .sosFilterDCPs(dcp = .dcp,
-                             pattern = sos@dcpFilter[[.sosBindingPOX]],
-                             verbose = verbose)
-      .dcp <- unlist(.dcp)
+      if (is.list(.dcp) && length(.dcp) && is.list(.dcp[[1]])) {
+        .dcp <- .sosFilterDCPs(dcp = .dcp,
+                               pattern = sos@dcpFilter[[.sosBindingPOX]],
+                               verbose = verbose)
+        .dcp <- unlist(.dcp)
+      }
       if(verbose)
         cat("[.sosRequest_2.0.0] Using DCP:", toString(.dcp), "\n")
     }
@@ -142,15 +146,15 @@
       cat("[.sosRequest_2.0.0] *NOT* using DCP from capabilities:",
           .dcp, "\n")
     
-    .requestString <- toString(.encodedRequest)
+    .request <- toString(.encodedRequest)
     
     # using 'POST' for application/xml encoded requests
     if(verbose) cat("[.sosRequest_2.0.0] Do request...")
     
-    .response <- POST(url = .dcp,
-                      content_type_xml(),
-                      accept_xml(),
-                      body = .requestString )
+    .response <- httr::POST(url = .dcp[[owsDcpUrlIndex]],
+                            content_type(.dcp[[owsDcpContentTypeIndex]]),
+                            accept(.dcp[[owsDcpContentTypeIndex]]),
+                            body = .request)
     
     stop_for_status(.response, "sending POST request")
     

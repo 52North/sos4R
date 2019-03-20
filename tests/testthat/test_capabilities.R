@@ -1,3 +1,31 @@
+################################################################################
+# Copyright (C) 2015 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.                                                    #
+#                                                                              #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.                                     #
+#                                                                              #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+# Created: 2015-01-27                                                          #
+# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+#                                                                              #
+################################################################################
 parseXmlSnippet <- function(obj) {
     .doc <- xmlParseDoc(obj, asText = TRUE, options = NOERROR)
     .docRoot <- xmlRoot(.doc)
@@ -16,7 +44,7 @@ gml:id="WaterQuality" dimension="4">
 
 test_that("composite phenomenon name is parsed from snippet", {
     .doc <- parseXmlSnippet(.compositePhenomenon)
-    .phen <- parseCompositePhenomenon(obj = .doc) #, verbose = TRUE)
+    .phen <- parseCompositePhenomenon(obj = .doc)
     expect_that(.phen@name, equals("WaterQuality"))
 })
 test_that("composite phenomenon id is parsed from snippet", {
@@ -158,12 +186,12 @@ test_that("offering id is parsed correctly", {
 
 context("parsing: SOS Capabilities 2.0.0")
 
-testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version=sos200_version)
 sos200Caps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
 
 context("parsing: SOS Capabilities 2.0.0 swes:offering")
 
-testsos <- SOS_Test(name = "testcaps",version=sos200_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version=sos200_version)
 
 test_that("offering is parsed correctly", {
   .obs <- parseSosObservationOffering_200(xmlRoot(xmlParseDoc("../xml-elements/swes-offering1.xml")), testsos)
@@ -171,5 +199,5 @@ test_that("offering is parsed correctly", {
   #TODO test other parameters
 })
  
-testsos <- SOS_Test(name = "testcaps",version=sos100_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version=sos100_version)
 axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_100_Example.xml"), testsos)

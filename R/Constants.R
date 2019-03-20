@@ -133,16 +133,18 @@ SosSupportedBindings <- function() {
                   .sosConnectionMethodPost_Deprecated,
                   .sosBindingKVP,
                   .sosBindingPOX)
-  names(.supported) <- c("DEPRECATED", "DEPRECATED", "Key-value-pair (GET)",
+  names(.supported) <- c("DEPRECATED",
+                         "DEPRECATED",
+                         "Key-value-pair (GET)",
                          "Plain old XML (POST)")
   return(.supported)
 }
 
-mimeTypeCSV <- "text/csv"
-mimeTypeXML <- "text/xml"
+mimeTypeCSV <- 'text/csv'
+mimeTypeXML <- 'text/xml'
 mimeTypeOM <- 'text/xml;subtype="om/1.0.0"'
 mimeTypeSML <- 'text/xml;subtype="sensorML/1.0.1"'
-mimeTypeKML <- "application/vnd.google-earth.kml+xml"
+mimeTypeKML <- 'application/vnd.google-earth.kml+xml'
 mimeSubtypeOM <- '"om/1.0.0"'
 
 .sosSupportedResponseFormats <- c(
@@ -442,6 +444,10 @@ owsProfileName <- "Profile"
 owsProviderNameName <- "ProviderName"
 owsProviderSiteName <- "ProviderSite"
 owsServiceContactName <- "ServiceContact"
+owsContentTypeConstraintName <- "Content-Type"
+owsDcpHttpMethodIndex <- 1
+owsDcpContentTypeIndex <- 2
+owsDcpUrlIndex <- 3
 
 kmlName <- "kml"
 

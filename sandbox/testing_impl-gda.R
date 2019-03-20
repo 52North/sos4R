@@ -78,3 +78,6 @@ myGetObservation <- getObservation(sos = sos,
 # toString(sosTime)
 # cat(paste0(sosTime))
 # .kvpEscapeSpecialCharacters(sosTime)
+
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", version = sos100_version, binding = "KVP")
+S <- describeSensor(mySOS, unique(unlist(sosProcedures(mySOS)))[[1]])

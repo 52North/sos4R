@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2013 by 52°North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -22,18 +22,30 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-09-24                                                          #
+# Created: 2013-03-06                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-#
-# http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
-# or
-# http://r-pkgs.had.co.nz/tests.html
-#
-# Do not execute this script manually! Use devtools::test()!
-#
-library(testthat)
-library(sos4R)
+context("utils")
 
-test_check("sos4R")
+test_that(".sosFilterDCPs works", {
+	dcps <- c("Post" = "http://url/with/endpoint/one",
+			"Post" = "url.to/endpoint/two",
+			"Get" = "some.thing.com/different/")
+
+	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
+			is_equivalent_to("url.to/endpoint/two"))
+	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
+	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
+			"http://url/with/endpoint/one")
+})
+
+test_that("addional KVPs are concatenated correctly", {
+			expected <- "this=is&working=correctly"
+			actual <- list("this" = "is", "working" = "correctly")
+
+			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
+
+		})

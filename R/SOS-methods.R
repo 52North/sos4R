@@ -294,7 +294,7 @@ SosGetObservationById <- function(
                                       verbose = verbose)
   
   if(sos@binding == .sosBindingKVP) {
-    .dcp <- sos@url
+    .dcp <- list("Get", "application/x-kvp", sos@url)
     
     if(sos@useDCPs) {
       if(verbose)
@@ -303,13 +303,16 @@ SosGetObservationById <- function(
       .dcp <- sosGetDCP(sos, sosName(request), owsGetName)
       
       if(is.null(.dcp) || is.na(.dcp)) {
-        .dcp <- sos@url
+        .dcp <- list("Get", "application/x-kvp", sos@url)
         if(verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request.\n")
       }
       
-      .dcp <- .sosFilterDCPs(dcp = .dcp,
-                             pattern = sos@dcpFilter[[.sosBindingKVP]],
-                             verbose = verbose)
+      if (is.list(.dcp) && length(.dcp) && is.list(.dcp[[1]])) {
+        .dcp <- .sosFilterDCPs(dcp = .dcp,
+                               pattern = sos@dcpFilter[[.sosBindingKVP]],
+                               verbose = verbose)
+        .dcp <- unlist(.dcp)
+      }
     }
     else if(verbose)
       cat("[.sosRequest_1.0.0] Not using DCP from capabilities.\n",
@@ -317,9 +320,9 @@ SosGetObservationById <- function(
     
     if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
       if (verbose) cat("Given url already contains a '?', appending arguments!\n")
-      .url = paste0(.dcp, .encodedRequest)
+      .url = paste0(.dcp[[owsDcpUrlIndex]], .encodedRequest)
     }
-    else .url = paste(.dcp, .encodedRequest, sep = "?")
+    else .url = paste(.dcp[[owsDcpUrlIndex]], .encodedRequest, sep = "?")
     
     if(!is.na(sos@additionalKVPs) && length(sos@additionalKVPs) > 0) {
       .kvps <- sos@additionalKVPs
@@ -351,12 +354,12 @@ SosGetObservationById <- function(
       print(.encodedRequest)
     }
     
-    .dcp <- sos@url
+    .dcp <- list("Post", "application/xml", sos@url)
     
     if(sos@useDCPs) {		
       .dcp <- sosGetDCP(sos, sosName(request), owsPostName) #sos@url as fallback
-      if(is.null(.dcp) || is.na(.dcp)) {
-        .dcp <- sos@url
+      if(is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
+        .dcp <- list("Post", "application/xml", sos@url)
         if(verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
       }
       else {
@@ -364,10 +367,12 @@ SosGetObservationById <- function(
                         toString(.dcp), "\n")
       }
       
-      .dcp <- .sosFilterDCPs(dcp = .dcp,
-                             pattern = sos@dcpFilter[[.sosBindingPOX]],
-                             verbose = verbose)
-      .dcp <- unlist(.dcp)
+      if (is.list(.dcp) && length(.dcp) && is.list(.dcp[[1]])) {
+        .dcp <- .sosFilterDCPs(dcp = .dcp,
+                               pattern = sos@dcpFilter[[.sosBindingPOX]],
+                               verbose = verbose)
+        .dcp <- unlist(.dcp)
+      }
       if(verbose)
         cat("[.sosRequest_1.0.0] Using DCP:", toString(.dcp), "\n")
     }
@@ -380,9 +385,9 @@ SosGetObservationById <- function(
     # using 'POST' for application/xml content
     if(verbose) cat("[.sosRequest_1.0.0] Do request...")
     
-    .response <- POST(url = .dcp,
-                      content_type_xml(),
-                      accept_xml(),
+    .response <- httr::POST(url = .dcp[[owsDcpUrlIndex]],
+                      content_type(.dcp[[owsDcpContentTypeIndex]]),
+                      accept(.dcp[[owsDcpContentTypeIndex]]),
                       body = .requestString )
     
     stop_for_status(.response, "sending POST request")
@@ -392,17 +397,16 @@ SosGetObservationById <- function(
     if(verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
   else if(sos@binding == .sosBindingSOAP) {
+    # TODO add SOAP request method
+    stop("[sos4R] ERROR: SOAP is not implemented for SOS 1.0.0.\n")
     if(verbose || inspect) {
       print("[.sosRequest_1.0.0] SOAP! REQUEST:\n")
       print(.encodedRequest)
     }
-    
-    # TODO add SOAP request method
-    stop("[sos4R] ERROR: SOAP is not implemented for SOS 1.0.0.\n")
   }
   else {
-    stop(paste("Unsupported method, has to be one of",
-               SosSupportedBindings(), "but is", sos@binding))
+    stop(paste0("Unsupported method, has to be one of '",
+               SosSupportedBindings(), "' but is '", sos@binding, "'."))
   }
   
   if(verbose) {
@@ -501,8 +505,7 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
   
   # check if multiple sensors
   if(length(procedure) > 1) {
-    if(verbose) cat("[.describeSensor_1.0.0] multiple sensors: ", procedure,
-                    "\n")
+    if(verbose) cat("[.describeSensor_1.0.0] multiple sensors: ", procedure, "\n")
     
     .descriptions <- list()
     for (p in procedure) {
@@ -1685,10 +1688,10 @@ setMethod(f = "checkRequest",
             .format <- gsub(operation@outputFormat, pattern = "\\&quot;",
                             replacement = '"')
             
-            if(!any(sapply(.supportedFormats, "==", .format), na.rm = TRUE)) {
-              warning(paste("Outputformat has to be one of",
+            if(!any(sapply(str_replace_all(.supportedFormats, " ", ""), "==", str_replace_all(.format, " ", "")), na.rm = TRUE)) {
+              warning(paste0("Outputformat has to be one of: '",
                             paste(.supportedFormats, sep = ", ",
-                                  collapse = " "), "but is", .format, " (", operation@outputFormat, ")"))
+                                  collapse = "', '"), "'. Received format is '", .format, "'."))
             }
             else {
               .oFSupported <- TRUE

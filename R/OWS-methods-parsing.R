@@ -28,25 +28,52 @@
 ################################################################################
 
 #
-#
+# <ows:Operation name="DescribeSensor">
+# <ows:DCP>
+#  <ows:HTTP>
+#   <ows:Get xlink:href="[...]/service/kvp?">
+#    <ows:Constraint name="Content-Type">
+#     <ows:AllowedValues>
+#      <ows:Value>application/x-kvp</ows:Value>
+#     </ows:AllowedValues>
+#    </ows:Constraint>
+#   </ows:Get>
+#   <ows:Post xlink:href="[...]/service/exi">
+#    <ows:Constraint name="Content-Type">
+#     <ows:AllowedValues>
+#      <ows:Value>application/exi</ows:Value>
+#     </ows:AllowedValues>
+#    </ows:Constraint>
+#   </ows:Post>
+#   <ows:Post xlink:href="[...]/service/json">
+#    <ows:Constraint name="Content-Type">
+#     <ows:AllowedValues>
+#      <ows:Value>application/json</ows:Value>
+#     </ows:AllowedValues>
+#    </ows:Constraint>
+#   </ows:Post>
+#   <ows:Post xlink:href="[...]/service/pox">
+#    <ows:Constraint name="Content-Type">
+#     <ows:AllowedValues>
+#      <ows:Value>application/xml</ows:Value>
+#       <ows:Value>text/xml</ows:Value>
+#     </ows:AllowedValues>
+#    </ows:Constraint>
+#   </ows:Post>
+#   <ows:Post xlink:href="[...]/service/soap">
+#    <ows:Constraint name="Content-Type">
+#     <ows:AllowedValues>
+#      <ows:Value>application/soap+xml</ows:Value>
+#     </ows:AllowedValues>
+#    </ows:Constraint>
+#   </ows:Post>
+#  </ows:HTTP>
+# </ows:DCP>
 #
 parseOwsOperation <- function(obj) {
   .name <- xmlGetAttr(obj, "name")
 
-  .dcpsXML <- .filterXmlChildren(obj, owsDCPName)
-  .dcps <- list()
-  for(.dcp in .dcpsXML) {
-    .http <- .dcp[[owsHTTPName]]
-    .endpoints <- c(
-      .filterXmlChildren(.http, owsGetName),
-      .filterXmlChildren(.http, owsPostName))
-
-    for(.ep in .endpoints) {
-      .newEndpoint <- list(xmlGetAttr(.ep, "href"))
-      names(.newEndpoint) <- xmlName(.ep)
-      .dcps <- c(.dcps, .newEndpoint)
-    }
-  }
+  .dcps <- .parseDCPs(obj)
 
   .parametersXML <- .filterXmlChildren(obj, owsParameterName)
   .parameters = list()
@@ -105,10 +132,70 @@ parseOwsOperation <- function(obj) {
     warning("metadata elements are NOT processed!")
   .metadata = list(NA)
 
-  .op <- OwsOperation(name = .name, DCPs = .dcps,
-                      parameters = .parameters, constraints = .constraints,
+  .op <- OwsOperation(name = .name,
+                      DCPs = .dcps,
+                      parameters = .parameters,
+                      constraints = .constraints,
                       metadata = .metadata)
   return(.op)
+}
+
+.parseDCPs <- function(obj) {
+  .dcpsXML <- .filterXmlChildren(obj, owsDCPName)
+  .dcps <- list()
+  for(.dcp in .dcpsXML) {
+    .http <- .dcp[[owsHTTPName]]
+    .endpoints <- c(
+      .filterXmlChildren(.http, owsGetName),
+      .filterXmlChildren(.http, owsPostName))
+
+    for(.endpoint in .endpoints) {
+      .httpMethod <- xmlName(.endpoint)
+      .href <- xmlGetAttr(.endpoint, "href")
+      .contentTypes <- .getContentTypes(.endpoint)
+
+      for (.contentType in .contentTypes) {
+        .dcps[[length(.dcps) + 1]] <- list(.httpMethod, .contentType, .href)
+      }
+    }
+  }
+  return(.dcps)
+}
+
+#
+# <ows:Get xlink:href="http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?">
+#  <ows:Constraint name="Content-Type">
+#   <ows:AllowedValues>
+#    <ows:Value>application/x-kvp</ows:Value>
+#   </ows:AllowedValues>
+#  </ows:Constraint>
+# </ows:Get>
+#
+# If constraint is not available, use NA as content type
+#
+.getContentTypes <- function(endpointXml) {
+  .constraints <- .filterXmlChildren(endpointXml, owsConstraintName)
+  if (!length(.constraints)) {
+    return(list(NA))
+  }
+  .contentTypeConstraintFound <- FALSE
+  .contentTypes <- list()
+  for (.constraint in .constraints) {
+    if (xmlGetAttr(.constraint, "name") == owsContentTypeConstraintName) {
+      .allowedValues <- .filterXmlChildren(.constraint, owsAllowedValuesName)
+      for (.allowedValue in .allowedValues) {
+        .values <- .filterXmlChildren(.allowedValue, owsValueName)
+        for (.value in .values) {
+          .contentTypeConstraintFound <- TRUE
+          .contentTypes <- c(.contentTypes, xmlValue(.value))
+        }
+      }
+    }
+  }
+  if (!.contentTypeConstraintFound) {
+    return(list(NA))
+  }
+  return(.contentTypes)
 }
 
 #

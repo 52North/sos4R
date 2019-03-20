@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2013 by 52°North                                               #
+# Copyright (C) 2015 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -22,31 +22,31 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2013-03-06                                                          #
+# Created: 2015-02-12                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
+context("Quoting characters inside MimeTypes")
 
-context("utils")
-
-test_that(".sosFilterDCPs works", {
-	dcps <- c("Post" = "http://url/with/endpoint/one",
-			"Post" = "url.to/endpoint/two",
-			"Get" = "some.thing.com/different/")
-			
-	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
-			is_equivalent_to("url.to/endpoint/two"))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
-			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
-	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
-			"http://url/with/endpoint/one")
+test_that("No '&quot;' string inside Mimetypes mimeTypeOM and mimeTypeSML", {
+	expect_equal(grepl(mimeTypeOM, "quot"), FALSE)
+	expect_equal(grepl(mimeTypeSML, "quot"), FALSE)
 })
 
-test_that("addional KVPs are concatenated correctly", {
-			expected <- "this=is&working=correctly"
-			actual <- list("this" = "is", "working" = "correctly")
-			
-			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
-			
-		})
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", version = sos100_version, binding = "POX")
+procs <- unique(unlist(sosProcedures(mySOS)))
+S <- describeSensor(mySOS, procs[[1]])
+
+test_that("We can run describeSensor() with SOSv1.0.0 with POX binding", {
+	expect_equal(as.character(class(S)), "SensorML")
+})
+
+
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", version = sos100_version, binding = "KVP")
+procs <- unique(unlist(sosProcedures(mySOS)))
+S <- describeSensor(mySOS, procs[[1]])
+
+test_that("We can run describeSensor() with SOSv1.0.0 with KVP binding", {
+  expect_equal(as.character(class(S)), "SensorML")
+})
+
