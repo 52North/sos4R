@@ -26,25 +26,18 @@
 # Project: sos4R - visit the project web page,                                 #
 #      http://52north.org/communities/sensorweb/clients/sos4R/                 #
 ################################################################################
-FROM rocker/geospatial:3.5.2
+FROM rocker/geospatial:latest
 MAINTAINER "Jürrens, Eike Hinderk" e.h.juerrens@52north.org
 
-COPY install-r-pkg /usr/local/bin/
-RUN chmod +x /usr/local/bin/install-r-pkg && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-    r-base-dev \
-    libxml2-dev \
-    libgdal-dev \
-    libproj-dev \
-    libgeos-dev && \
-    install-r-pkg methods && \
-    install-r-pkg XML && \
-    install-r-pkg RCurl && \
-    install-r-pkg sp && \
-    install-r-pkg graphics && \
-    install-r-pkg httr && \
-    install-r-pkg stringr && \
-    install-r-pkg devtools && \
-    install-r-pkg webmockr && \
+RUN install2.r --error --skipinstalled methods && \
+    install2.r --error --skipinstalled XML && \
+    install2.r --error --skipinstalled RCurl && \
+    install2.r --error --skipinstalled sp && \
+    install2.r --error --skipinstalled graphics && \
+    install2.r --error --skipinstalled httr && \
+    install2.r --error --skipinstalled stringr && \
+    install2.r --error --skipinstalled devtools && \
+    install2.r --error --skipinstalled webmockr && \
+    rm -rf /tmp/downloaded_packages && \
+    rm -rf /tmp/repos_*.rds && \
     rm -rf /var/lib/apt/lists/*
