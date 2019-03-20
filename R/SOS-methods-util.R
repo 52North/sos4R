@@ -326,7 +326,7 @@ setMethod(f = "sosCapabilitiesUrl",
 #
 .isExceptionReport <- function(document) {
   if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = document),
-                                              ns = SosAllNamespaces()))
+                                               ns = SosAllNamespaces()))
     return(TRUE)
   else
     return(FALSE)
@@ -355,20 +355,16 @@ setMethod(f = "sosExceptionCodeMeaning",
 #
 # encoding functions ----
 #
-setMethod(f = "encodeXML", signature = signature(obj = "XMLNode", sos = "SOS"),
-          def = function(obj, sos, verbose = FALSE) {
-            if (verbose) {
-              cat("[encodeXML] from XMLNode\n")
-            }
+setMethod(f = "encodeXML", signature = signature(obj = "xml_node", sos = "SOS"),
+          definition = function(obj, sos, verbose = FALSE) {
+            if (verbose) cat("[encodeXML] from xml_node: just returning it.\n")
             return(obj)
           }
 )
 
-setMethod(f = "encodeXML", signature = signature(obj = "XMLInternalElementNode", sos = "SOS"),
-          def = function(obj, sos, verbose = FALSE) {
-            if (verbose) {
-              cat("[encodeXML] from XMLInternalElementNode: just returning it.\n")
-            }
+setMethod(f = "encodeXML", signature = signature(obj = "xml_document", sos = "SOS"),
+          definition = function(obj, sos, verbose = FALSE) {
+            if (verbose) cat("[encodeXML] from xml_document: just returning it.\n")
             return(obj)
           }
 )
@@ -566,7 +562,7 @@ setMethod(f = "sosGetCRS",
 #
 sosCheatSheet <- function() {
   .path <- file.path(find.package("sos4R", lib.loc = NULL),
-                 .sosCheatSheetDocumentName)
+                     .sosCheatSheetDocumentName)
 
   # see code of 'vignette' function
   .z <- list(file = .sosCheatSheetDocumentName, PDF = .path)

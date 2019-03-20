@@ -29,7 +29,7 @@
 
 #
 # Classes are based on GML
-# 
+#
 # http://www.opengeospatial.org/standards/gml
 #
 
@@ -96,9 +96,9 @@ setClass("GmlTimePosition",
          validity = function(object) {
            #print("Entering validation: GmlTimePosition")
            # TODO implement validity function
-           # time needs to be set			
+           # time needs to be set
            return(TRUE)
-         }		
+         }
 )
 setClassUnion(name = "GmlTimePositionOrNULL",
               members = c("GmlTimePosition", "NULL"))
@@ -113,9 +113,9 @@ setClass("GmlTimeInstant",
          validity = function(object) {
            #print("Entering validation: GmlTimeInstant")
            # TODO implement validity function
-           # timePosition needs to be set			
+           # timePosition needs to be set
            return(TRUE)
-         }		
+         }
 )
 setClassUnion(name = "GmlTimeInstantOrNULL",
               members = c("GmlTimeInstant", "NULL"))
@@ -130,7 +130,7 @@ setClass("GmlTimeInstantProperty",
          validity = function(object) {
            #print("Entering validation: GmlTimeInstant")
            # TODO implement validity function
-           # time needs to be set			
+           # time needs to be set
            return(TRUE)
          }
 )
@@ -153,7 +153,7 @@ setClass("GmlTimeInterval",
            # TODO implement validity function
            # interval and unit need to be set, radix must be positive
            return(TRUE)
-         }		
+         }
 )
 setClassUnion(name = "GmlTimeIntervalOrNULL",
               members = c("GmlTimeInterval", "NULL"))
@@ -171,7 +171,7 @@ setClass("GmlTimePeriod",
                         duration = "character",
                         timeInterval = "GmlTimeIntervalOrNULL"
          ),
-         prototype = list(begin = NULL, beginPosition = NULL, end = NULL, 
+         prototype = list(begin = NULL, beginPosition = NULL, end = NULL,
                           endPosition = NULL),
          contains = "GmlTimeGeometricPrimitive",
          validity = function(object) {
@@ -180,7 +180,7 @@ setClass("GmlTimePeriod",
            # either both begin and end, or beginPosition and endPosition need to be set.
            # only one of the optional duration and timeInterval can be set!
            return(TRUE)
-         }		
+         }
 )
 
 #
@@ -201,7 +201,7 @@ setClassUnion(name = "GmlFeatureOrNULL", members = c("GmlFeature", "NULL"))
 # GmlFeatureProperty ----
 #
 setClass("GmlFeatureProperty",
-         representation(href = "character",	
+         representation(href = "character",
                         feature = "GmlFeatureOrNULL"),
          prototype = list(href = as.character(NA), feature = NULL),
          validity = function(object) {
@@ -319,7 +319,7 @@ setClass("GmlPolygon",
 # GmlPointProperty ----
 #
 setClass("GmlPointProperty",
-         representation(href = "character",	
+         representation(href = "character",
                         point = "GmlPointOrNULL"),
          #prototype = list(),
          validity = function(object) {

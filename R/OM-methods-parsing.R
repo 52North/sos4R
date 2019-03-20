@@ -87,8 +87,12 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
 parseMeasurement <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseMeasurement]\n")
 
-  .samplingTime <- parseTime(obj = xml2::xml_child(x = obj, search = omSamplingTimeName, ns = SosAllNamespaces()),
-                                     format = sosTimeFormat(sos), verbose = verbose)[[1]]
+  .samplingTimeXml <- xml2::xml_child(x = obj,
+                                      search = omSamplingTimeName,
+                                      ns = SosAllNamespaces())
+  .samplingTime <- parseTime(obj = .samplingTimeXml,
+                             format = sosTimeFormat(sos),
+                             verbose = verbose)
 
   # 52N SOS only returns om:Measurements (!) with procedure ids and observed
   # properties in xlink:href
@@ -155,7 +159,7 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
   # optional elements
   if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
     .resultTime <- parseTime(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
-                                     format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
+                             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
   }
   else {
     .resultTime <- NULL
@@ -168,8 +172,10 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
   #.metadata
 
   .obs <- OmObservation(samplingTime = .samplingTime,
-                        procedure = .procedure, observedProperty = .observedProperty,
-                        featureOfInterest = .featureOfInterest, result = .result)
+                        procedure = .procedure,
+                        observedProperty = .observedProperty,
+                        featureOfInterest = .featureOfInterest,
+                        result = .result)
 
   return(.obs)
 }
@@ -299,10 +305,6 @@ parseResult <- function(obj, sos, verbose = FALSE) {
   return(.result)
 }
 
-
-################################################################################
-# not yet supported specializations (constraints):
-
 parseGeometryObservation <- function(obj, sos, verbose = FALSE) {
   warning("Parsing of om:GeometryObservation is not implemented!")
   return(NA)
@@ -333,13 +335,9 @@ parseComplexObservation <- function(obj, sos, verbose = FALSE) {
   return(NA)
 }
 
-
-################################################################################
-# not exchangeable parsing functions:
-
 #
 # parseFOI ----
-#
+# (not exchangeable)
 # parse sos:featureOfInterest to according Element of GML or SA
 #
 parseFOI <- function(obj, sos, verbose = FALSE) {
@@ -386,4 +384,43 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
   }
 
   return(.foi)
+}
+
+
+#
+# parseTime ----
+# (not exchangeable)
+# handles time instant, time period, and time reference
+#
+parseTime <- function(obj, format, verbose = FALSE) {
+  if (verbose) cat("[parseTime]\n")
+
+  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName, ns = SosAllNamespaces())
+  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName, ns = SosAllNamespaces())
+  .timeReference <- xml2::xml_attr(x = obj, attr = "xlink:href", ns = SosAllNamespaces())
+  .timeObject <- NULL
+
+  if (!is.na(.tiXML)) {
+    if (verbose) cat("[parseTime] time instant.\n")
+    .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
+  }
+  else if (!is.na(.tpXML)) {
+    if (verbose) cat("[parseTime] time period.\n")
+    .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
+  }
+  else if (!is.na(.timeReference)) {
+    if (verbose) cat("[parseTime] referenced time.\n")
+    .timeObject <- GmlTimeInstantProperty(href = .timeReference)
+    #if (is.null(.timeObject)) {
+    #  stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
+    #}
+  }
+  else {
+    warning("Could not create GmlTimeObject from given O&M time object.
+            Require gml:TimeInstant or gml:TimePeriod as children.")
+    .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
+      time = as.POSIXct(x = NA)))
+  }
+
+  return(.timeObject)
 }

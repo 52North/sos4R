@@ -773,6 +773,10 @@ setMethod(f = "sosParsers", signature = signature(sos = "SOS"),
           def = function(sos) {
             return(sos@parsers)
           })
+setMethod(f = "sosParsers", signature = signature(sos = "SOS_Test"),
+          def = function(sos) {
+            return(sos@parsers)
+          })
 
 if (!isGeneric("sosResult"))
   setGeneric(name = "sosResult", def = function(obj, coordinates = FALSE,
@@ -1072,6 +1076,10 @@ if (!isGeneric("sosDataFieldConverters"))
     standardGeneric("sosDataFieldConverters")
   })
 setMethod(f = "sosDataFieldConverters", signature = signature(sos = "SOS"),
+          def = function(sos) {
+            return(sos@dataFieldConverters)
+          })
+setMethod(f = "sosDataFieldConverters", signature = signature(sos = "SOS_Test"),
           def = function(sos) {
             return(sos@dataFieldConverters)
           })

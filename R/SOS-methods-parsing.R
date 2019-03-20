@@ -141,7 +141,7 @@ parseSosObservationOffering <- function(obj, sos) {
     .warningText <- "\t'gml:boundedBy' is NA/empty.\n"
   }
   if (extends(class(.time), "GmlTimeInstant") &&
-     is.na(.time@timePosition@time)) {
+      is.na(.time@timePosition@time)) {
     .warningText <- paste(.warningText, "\t'sos:time' is NA/empty.\n")
   }
   if (length(.warningText) > 1) {
@@ -315,21 +315,15 @@ parseSosCapabilities100 <- function(obj, sos) {
 }
 
 parseSosFilter_Capabilities <- function(obj, sos) {
-  if (sos@verboseOutput) {
-    cat("[parseSosFilter_Capabilities] entering... \n")
-    print(obj)
-  }
+  if (sos@verboseOutput) cat("[parseSosFilter_Capabilities] entering... \n")
 
-  if (!is.na(xml2::xml_child(x = obj, search = ogcSpatialCapabilitiesName, ns = SosAllNamespaces()))) {
-    if (sos@verboseOutput)
-      cat("[parseSosFilter_Capabilities] parsing",
-          ogcSpatialCapabilitiesName, "\n")
-
-    .s <- xml2::xml_child(x = obj, search = ogcSpatialCapabilitiesName, ns = SosAllNamespaces())
+  .s <- xml2::xml_child(x = obj, search = ogcSpatialCapabilitiesName, ns = SosAllNamespaces())
+  if (!is.na(.s)) {
+    if (sos@verboseOutput) cat("[parseSosFilter_Capabilities] parsing", ogcSpatialCapabilitiesName, "\n")
 
     .geometryOperands <- xml2::xml_find_all(x = .s, xpath = ogcGeometryOperandsName, ns = SosAllNamespaces())
     if (!is.na(.geometryOperands)) {
-      .spatial.geom <- .geometryOperands
+      .spatial.geom <- xml2::xml_find_all(x = .geometryOperands, xpath = ogcGeometryOperandName, ns = SosAllNamespaces())
       .spatial.geom.values <- xml2::xml_text(.spatial.geom)
     }
     else {
@@ -341,7 +335,7 @@ parseSosFilter_Capabilities <- function(obj, sos) {
 
     .spatialOperators <- xml2::xml_find_all(x = .s, xpath = ogcSpatialOperatorsName, ns = SosAllNamespaces())
     if (!is.na(.spatialOperators)) {
-      .spatial.spat <- .spatialOperators
+      .spatial.spat <- xml2::xml_find_all(x = .spatialOperators, xpath = ogcSpatialOperatorName, ns = SosAllNamespaces())
       .spatial.spat.values <- xml2::xml_attr(x = .spatial.spat, attr = "name")
     }
     else {
@@ -361,18 +355,17 @@ parseSosFilter_Capabilities <- function(obj, sos) {
   }
 
   if (!is.na(xml2::xml_child(x = obj, search = ogcTemporalCapabilitiesName, ns = SosAllNamespaces()))) {
-    if (sos@verboseOutput)
-      cat("[parseSosFilter_Capabilities] parsing", ogcTemporalCapabilitiesName, "\n")
-
-    .geometryOperands <- xml2::xml_find_all(x = .s, xpath = ogcGeometryOperandsName, ns = SosAllNamespaces())
+    if (sos@verboseOutput) cat("[parseSosFilter_Capabilities] parsing", ogcTemporalCapabilitiesName, "\n")
 
     .temporal.ands <- xml2::xml_find_all(x = obj,
                                          xpath = paste0(ogcTemporalCapabilitiesName,
-                                                        "/", ogcTemporalOperandsName),
+                                                        "/", ogcTemporalOperandsName,
+                                                        "/", ogcTemporalOperandName),
                                          ns = SosAllNamespaces())
     .temporal.ators <- xml2::xml_find_all(x = obj,
                                           xpath = paste0(ogcTemporalCapabilitiesName,
-                                                         "/", ogcTemporalOperatorsName),
+                                                         "/", ogcTemporalOperatorsName,
+                                                         "/", ogcTemporalOperatorName),
                                           ns = SosAllNamespaces())
     .temporal <- list(xml2::xml_text(.temporal.ands), xml2::xml_attr(x = .temporal.ators, attr = "name"))
     names(.temporal) <- c(ogcTemporalOperandsName, ogcTemporalOperatorsName)
@@ -403,7 +396,7 @@ parseSosFilter_Capabilities <- function(obj, sos) {
                                           search = ogcComparisonOperatorsName,
                                           ns = SosAllNamespaces())
     if (!is.na(.scalar.compXML)) {
-      .scalar.comp <- xml2::xml_text(.scalar.compXML)
+      .scalar.comp <- xml2::xml_text(xml2::xml_children(x = .scalar.compXML))
       .scalar <- c(.scalar, .scalar.comp)
     }
 
@@ -421,13 +414,11 @@ parseSosFilter_Capabilities <- function(obj, sos) {
                   "missing in", sosFilterCapabilitiesName))
   }
 
-  if (!is.na(xml2::xml_child(x = obj, search = ogcIdCapabilities, ns = SosAllNamespaces()))) {
-    if (sos@verboseOutput)
-      cat("[parseSosFilter_Capabilities] parsing",
-          ogcIdCapabilities, "\n")
+  .idXml <- xml2::xml_child(x = obj, search = ogcIdCapabilities, ns = SosAllNamespaces())
+  if (!is.na(.idXml)) {
+    if (sos@verboseOutput) cat("[parseSosFilter_Capabilities] parsing", ogcIdCapabilities, "\n")
 
-    .idXML <- xml2::xml_find_all(x = obj, xpath = ogcIdCapabilities, ns = SosAllNamespaces())
-    .id <- xml2::xml_name(.idXML, ns = SosAllNamespaces())
+    .id <- as.list(xml2::xml_name(xml2::xml_children(.idXml), ns = SosAllNamespaces()))
   }
   else {
     .id <- list(NA_character_)
@@ -435,11 +426,12 @@ parseSosFilter_Capabilities <- function(obj, sos) {
                   "missing in", sosFilterCapabilitiesName))
   }
 
-  .fc <- SosFilter_Capabilities(spatial = .spatial, temporal = .temporal,
-                                scalar = .scalar, id = .id)
+  .fc <- SosFilter_Capabilities(spatial = .spatial,
+                                temporal = .temporal,
+                                scalar = .scalar,
+                                id = .id)
 
-  if (sos@verboseOutput)
-    cat("[parseSosFilter_Capabilities] done:", toString(.fc), "\n")
+  if (sos@verboseOutput) cat("[parseSosFilter_Capabilities] done:", toString(.fc), "\n")
 
   return(.fc)
 }

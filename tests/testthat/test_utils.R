@@ -33,20 +33,17 @@ test_that(".sosFilterDCPs works", {
 	dcps <- c("Post" = "http://url/with/endpoint/one",
 			"Post" = "url.to/endpoint/two",
 			"Get" = "some.thing.com/different/")
-			
-	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
-			is_equivalent_to("url.to/endpoint/two"))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
-			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
+
+	expect_equals(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), 3)
+	expect_equivalent(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]], "url.to/endpoint/two")
+	expect_equal(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+	             c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two"))
 	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
-			"http://url/with/endpoint/one")
+	                  "http://url/with/endpoint/one")
 })
 
 test_that("addional KVPs are concatenated correctly", {
-			expected <- "this=is&working=correctly"
-			actual <- list("this" = "is", "working" = "correctly")
-			
-			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
-			
-		})
+  expected <- "this=is&working=correctly"
+  actual <- list("this" = "is", "working" = "correctly")
+  expect_equal(.encodeAdditionalKVPs(actual), expected)
+})

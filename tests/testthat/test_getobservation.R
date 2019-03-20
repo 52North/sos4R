@@ -28,7 +28,8 @@ test_that("creation temporal filter has a valueReference in SOS 2.0, but not for
                                                               begin = as.POSIXct("2019-01-01"),
                                                               end = as.POSIXct("2019-01-02")))
 
-  request <- SosGetObservation(service = sosService, version = testsos100@version, offering = "off", observedProperty = list("prop"), responseFormat = "fmt",
+  request <- SosGetObservation(service = sosService, version = testsos100@version,
+                               offering = "off", observedProperty = list("prop"), responseFormat = "fmt",
                                eventTime = eventTimeList, valueReferenceTemporalFilter = "om:time")
   request100 <- encodeRequestKVP(request, testsos100)
   request20 <- encodeRequestKVP(request, testsos20)

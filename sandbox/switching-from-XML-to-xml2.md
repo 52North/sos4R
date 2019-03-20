@@ -156,7 +156,7 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
   - Update `NAMESPACE` to import `xml2` and not `XML`
   - Parsing tests of `test_sensors.R` work
   - `XML::isXMLString`
-    - Replace with simple regex test: `grepl("^<(.*)>$", "...")`
+    - Replace with own function using simple regex test: `grepl("^<(.*)>$", "...")`
   - get rid of `.filterXmlChildren` and `.filterXmlOnlyNoneTexts` _manually_ using `xml2::xml_child(..)`, `xml2::xml_find_first(..)` or `xml2::xml_find_all(..)`
     - also remove all `".noneText"` objects (and by that fix all occurrences of `xmlTagName`)
     - `is.na(xml2::` > fix using `is.na(..)` (regex, 16 occurrences)
@@ -164,24 +164,13 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
     - trying to automate by replacing `obj\[\[(.*?)\]\]` with `xml2::xml_child(x = obj, search = $1, ns = SosAllNamespaces())`
     - does not work for multiple subsets, e.g. `obj[["elementCount"]][["Count"]][["value"]]` > search for `SosAllNamespaces())[[` and fix manually to use XPath (4 occurrences)
     - re-check occurrences of `.children[[`
-    - New test for...
+    - `is.null\(\.` with some XML object, should be `is.na(..)` which picks up on `"xml_missing"` objects
+    - New tests added for...
       - `parseOwsRange`
-
-
-
-
-
-
-
       - `parseSosFilter_Capabilities`
       - `parseOwsServiceIdentification`
+      - `parseTime`
 
-
-      - `parseTimeInstantProperty`
-      - `parseTimePeriod`
-
-
-    
 
 
   - **[Encoding functions]**
@@ -199,7 +188,6 @@ TODO:
 
   
 
-  - `is.null\(\.` with some XML object, should be `is.na(..)` which picks up on `"xml_missing"` objects
   
 
 

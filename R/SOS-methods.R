@@ -120,7 +120,8 @@ SOS <- function(url, binding = SosDefaultBinding(),
 
 
 SosFilter_Capabilities <- function(spatial = list(NA_character_),
-                                   temporal = list(NA_character_), scalar = list(NA_character_),
+                                   temporal = list(NA_character_),
+                                   scalar = list(NA_character_),
                                    id = list(NA_character_)) {
   new("SosFilter_Capabilities", spatial = spatial, temporal = temporal,
       scalar = scalar, id = id)
@@ -217,7 +218,7 @@ SosGetObservation <- function(
   responseMode = as.character(NA),
   BBOX = as.character(NA),
   valueReferenceTemporalFilter = as.character(NA)
-  ) {
+) {
   new("SosGetObservation",
       request = sosGetObservationName,
       service = service,

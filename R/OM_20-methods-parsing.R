@@ -50,7 +50,7 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
   timeObjectMap <- list()
 
   if(!is.na(xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()))) {
-    .pt <- parseTime(obj = xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()),
+    .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()),
                  format = sosTimeFormat(sos = sos),
                  timeObjectMap = timeObjectMap,
                  verbose = verbose)
@@ -92,10 +92,10 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 
   # optional elements
   if(!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
-    .pt <- parseTime(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
-                        format = sosTimeFormat(sos = sos),
-                        timeObjectMap = timeObjectMap,
-                        verbose = verbose)
+    .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
+                           format = sosTimeFormat(sos = sos),
+                           timeObjectMap = timeObjectMap,
+                           verbose = verbose)
     .resultTime <- .pt[[1]]
     timeObjectMap <- .pt[[2]]
   }
@@ -122,26 +122,26 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 #
 # create according GmlTimeObject from om:samplingTime/om:resultTime/om:phenomenonTime
 #
-parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
-  if(verbose) cat("[parseTime]\n")
+parseTimeObject <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
+  if (verbose) cat("[parseTimeObject]\n")
 
   .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
   .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
-  .timeReference <- xml2::xml_attrs(x = obj, attr = "href")
+  .timeReference <- xml2::xml_attr(x = obj, attr = "href")
   .timeObject <- NULL
 
-  if(!is.na(.tiXML)) {
-    if(verbose) cat("[parseTime] time instant.\n")
+  if (!is.na(.tiXML)) {
+    if (verbose) cat("[parseTimeObject] time instant.\n")
     .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
-  else if(!is.na(.tpXML)) {
-    if(verbose) cat("[parseTime] time period.\n")
+  else if (!is.na(.tpXML)) {
+    if (verbose) cat("[parseTimeObject] time period.\n")
     .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
   else if (!is.na(.timeReference)) {
-    if (verbose) cat("[parseTime] referenced time.\n")
+    if (verbose) cat("[parseTimeObject] referenced time.\n")
     .timeObject <- timeObjectMap[[substring(.timeReference, 2)]]
     if (is.null(.timeObject)) {
       stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
@@ -149,7 +149,7 @@ parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
   }
   else {
     warning("Could not create GmlTimeObject from given O&M time object.
-            Required gml:TimeInstant or gml:TimePeriod as children.")
+            Require gml:TimeInstant or gml:TimePeriod as children.")
     .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
       time = as.POSIXct(x = NA)))
   }

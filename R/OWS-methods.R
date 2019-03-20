@@ -107,21 +107,26 @@ OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
       accessConstraints = accessConstraints)
 }
 
-OwsServiceProvider <- function(providerName, providerSite = as.character(NA),
-                               serviceContact = XML::xmlNode(name = NA)) {
+OwsServiceProvider <- function(providerName,
+                               providerSite = as.character(NA),
+                               serviceContact = xml2::xml_new_document()) {
   new("OwsServiceProvider", providerName = providerName,
       providerSite = providerSite, serviceContact = serviceContact)
 }
 
-OwsOperationsMetadata <- function(operations, parameters = list(NA),
-                                  constraints = list(NA), extendedCapabilities = XML::xmlNode(name = NA)) {
+OwsOperationsMetadata <- function(operations,
+                                  parameters = list(NA),
+                                  constraints = list(NA),
+                                  extendedCapabilities = xml2::xml_new_document()) {
   new("OwsOperationsMetadata", operations = operations,
       parameters = parameters, constraints = constraints,
       extendedCapabilities = extendedCapabilities)
 }
 
-OwsOperation <- function(name, DCPs, parameters = list(NA),
-                         constraints = list(NA), metadata = list(NA)) {
+OwsOperation <- function(name, DCPs,
+                         parameters = list(NA),
+                         constraints = list(NA),
+                         metadata = list(NA)) {
   new("OwsOperation", name = name, DCPs = DCPs, parameters = parameters,
       constraints = constraints, metadata = metadata)
 }

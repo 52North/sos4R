@@ -27,9 +27,8 @@
 #                                                                              #
 ################################################################################
 
-
 #
-#
+# position parsing ----
 #
 parsePosition <- function(obj, sos) {
   .position <- NULL
@@ -49,9 +48,6 @@ parsePosition <- function(obj, sos) {
   return(.position)
 }
 
-#
-#
-#
 parsePoint <- function(obj, sos) {
   .point <- NA
   .pos <- xml2::xml_child(x = obj, search = gmlPointName)
@@ -80,7 +76,7 @@ parsePoint <- function(obj, sos) {
 }
 
 #
-#
+# time parsing ----
 #
 parseTimeInstant <- function(obj, format) {
   .timePosXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePositionName,
@@ -91,15 +87,16 @@ parseTimeInstant <- function(obj, format) {
   .id = xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
   .frame = xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
   .relatedTimes <- xml2::xml_find_all(x = obj, xpath = gmlRelatedTimeName)
+  if (length(.relatedTimes) < 1)
+    .relatedTimes <- list()
 
-  .ti <- GmlTimeInstant(timePosition = .timePos, id = .id,
-                        relatedTimes = .relatedTimes, frame = .frame)
+  .ti <- GmlTimeInstant(timePosition = .timePos,
+                        id = .id,
+                        relatedTimes = .relatedTimes,
+                        frame = .frame)
   return(.ti)
 }
 
-#
-#
-#
 parseTimeInstantProperty <- function(obj, format) {
   .timeProp <- NULL
 
@@ -116,9 +113,6 @@ parseTimeInstantProperty <- function(obj, format) {
   return(.timeProp)
 }
 
-#
-#
-#
 parseTimePosition <- function(obj, format) {
   .time <- strptime(xml2::xml_text(x = obj), format)
 
@@ -130,20 +124,18 @@ parseTimePosition <- function(obj, format) {
   .timePosition <- GmlTimePosition(time = .time, frame = .frame,
                                    calendarEraName = .calendarEraName,
                                    indeterminatePosition = .indeterminatePosition)
+  return(.timePosition)
 }
 
-#
-#
-#
 parseTimePeriod <- function(obj, format) {
   .timeObject <- NULL
 
   # optionals
-  .id = xml2::xml_attr(x = obj, attr = "id",
-                   default = NA_character_)
-  .frame = xml2::xml_attr(x = obj, attr = "frame",
-                      default = NA_character_)
+  .id = xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
+  .frame = xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
   .relatedTimes <- xml2::xml_find_all(x = obj, xpath = gmlRelatedTimeName, ns = SosAllNamespaces())
+  if (length(.relatedTimes) < 1)
+    .relatedTimes <- list()
 
   # TODO parse gml:timeLength
   .duration <- NA_character_
@@ -164,7 +156,7 @@ parseTimePeriod <- function(obj, format) {
   }
   # beginPosition and endPosition
   else if (!is.na(xml2::xml_child(x = obj, search = gmlBeginPositionName, ns = SosAllNamespaces()))
-          || !is.na(xml2::xml_child(x = obj, search = gmlEndPositionName, ns = SosAllNamespaces()))) {
+           || !is.na(xml2::xml_child(x = obj, search = gmlEndPositionName, ns = SosAllNamespaces()))) {
     .beginPosition <- parseTimePosition(
       obj = xml2::xml_child(x = obj, search = gmlBeginPositionName, ns = SosAllNamespaces()),
       format = format)

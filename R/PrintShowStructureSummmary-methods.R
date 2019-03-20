@@ -113,6 +113,7 @@
               "\n\tProfile(s): ", toString(x@profile),
               "\n\tAbstract(s): ", toString(x@abstract),
               "\n\tKeywords(s): ", toString(x@keywords),
+              "\n\tFees: ", toString(x@fees),
               "\n\tAccessConstraints(s): ", paste(x@accessConstraints,
                                                   collapse = "; "))
   return(.s)

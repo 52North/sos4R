@@ -152,8 +152,6 @@ parseOwsException <- function(obj) {
 #
 #
 parseOwsServiceIdentification <- function(obj) {
-  #	print("parsing ows service identification!")
-
   .children <- xml2::xml_children(x = obj)
   .serviceType <- xml2::xml_text(xml2::xml_child(x = obj,
                                                  search = owsServiceTypeName,
@@ -170,38 +168,46 @@ parseOwsServiceIdentification <- function(obj) {
 
   .abstract <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsAbstractName, ns = SosAllNamespaces()))
 
+  .keywords <- c(NA)
   .keywordsList <- xml2::xml_child(x = obj, search = owsKeywordsName, ns = SosAllNamespaces())
   if (!is.na(.keywordsList))
     .keywords <- xml2::xml_text(xml2::xml_find_all(x = .keywordsList,
                                                    xpath = owsKeywordName,
                                                    ns = SosAllNamespaces()))
-  else .keywords <- c(NA)
 
   .fees <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsFeesName, ns = SosAllNamespaces()))
 
-  .accessConstraings <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsAccessConstraintsName, ns = SosAllNamespaces()))
+  .accessConstraints <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsAccessConstraintsName, ns = SosAllNamespaces()))
 
   .si <- OwsServiceIdentification(serviceType =  .serviceType,
-                                  serviceTypeVersion = .serviceTypeVersion, profile = .profile,
-                                  title = .title, abstract = .abstract, keywords = .keywords,
-                                  fees = .fees, accessConstraints = .accessConstraints)
+                                  serviceTypeVersion = .serviceTypeVersion,
+                                  profile = .profile,
+                                  title = .title,
+                                  abstract = .abstract,
+                                  keywords = .keywords,
+                                  fees = .fees,
+                                  accessConstraints = .accessConstraints)
+  return(.si)
 }
 
 #
 #
 #
 parseOwsServiceProvider <- function(obj) {
-  #print("parsing ows service provider!")
-  .name <- xml2::xml_text(x = xml2::xml_child(x = obj, search = owsProviderNameName, ns = SosAllNamespaces()))
+  .name <- xml2::xml_text(x = xml2::xml_child(x = obj,
+                                              search = owsProviderNameName,
+                                              ns = SosAllNamespaces()))
 
   # optional:
-  if (!is.na(xml2::xml_children(x = obj)[[owsProviderSiteName]]))
-    .site <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = owsProviderSiteName, ns = SosAllNamespaces()), attr = "href", default = NA_character_)
+  .site <- xml2::xml_child(x = obj, search = owsProviderSiteName, ns = SosAllNamespaces())
+  if (!is.na(.site))
+    .site <- xml2::xml_attr(x = .site, attr = "href", default = NA_character_)
   else .site <- as.character(NA)
 
-  if (!is.na(xml2::xml_children(x = obj)[[owsServiceContactName]])) {
-    .contact <- xml2::xml_child(x = obj, search = owsServiceContactName, ns = SosAllNamespaces())
-    .sp <- OwsServiceProvider(providerName = .name, providerSite = .site,
+  .contact <- xml2::xml_child(x = obj, search = owsServiceContactName, ns = SosAllNamespaces())
+  if (!is.na(.contact)) {
+    .sp <- OwsServiceProvider(providerName = .name,
+                              providerSite = .site,
                               serviceContact = .contact)
   }
   else .sp <- OwsServiceProvider(providerName = .name, providerSite = .site)

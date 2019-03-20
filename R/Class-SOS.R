@@ -132,6 +132,9 @@ setClass("SosDescribeSensor",
 ################################################################################
 # See SOS specification, OGC 06-009r6, section 8.4
 # Includes extensions for SOS 2.0
+setClassUnion(name = "ANYorNULL",
+              members = c("ANY", "NULL"))
+
 setClass("SosGetObservation",
          representation(
            offering = "character",
@@ -141,7 +144,7 @@ setClass("SosGetObservation",
            eventTime = "list",
            procedure = "character",
            featureOfInterest = "SosFeatureOfInterestOrNULL",
-           result = "ANY", # OgcComparisonOpsOrXMLOrNULL
+           result = "ANYorNULL", # handled in validation below
            resultModel = "character",
            responseMode = "character",
            BBOX = "character",
@@ -183,8 +186,7 @@ setClass("SosGetObservation",
            # result is null or an ogc:comparisonOps element
            cls <- class(slot(object, "result"))
            #			print(paste("class of result slot: ", cls))
-           if ( !any(cls %in% c("OgcComparisonOps", "xml_document",
-                                "xml_node"))) {
+           if ( !any(cls %in% c("OgcComparisonOps", "xml_document", "xml_node", "NULL"))) {
              return("'response' argument does not have allowed class!")
            }
 
@@ -194,4 +196,3 @@ setClass("SosGetObservation",
            return(TRUE)
          }
 )
-

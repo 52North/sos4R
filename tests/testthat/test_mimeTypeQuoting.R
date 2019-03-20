@@ -1,4 +1,3 @@
-library(sos4R)
 context("Quoting characters inside MimeTypes")
 
 test_that("No '&quot;' string inside Mimetypes mimeTypeOM and mimeTypeSML", {
