@@ -30,7 +30,7 @@ devtools::load_all()
 #
 # https://climate-sos.niwa.co.nz/?service=SOS&version=2.0.0&request=GetCapabilities
 #.sos <- "https://climate-sos.niwa.co.nz/"
-#.foi <- 
+#.foi <-
 #.temporalFilter <- "2018-12-27T00:00:00+00:00/2018-12-28T02:30:00+00:00"
 #
 # Set-Up SOS object----

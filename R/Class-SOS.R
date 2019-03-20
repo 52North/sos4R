@@ -28,7 +28,7 @@
 ################################################################################
 
 #
-#
+# SOS ----
 #
 setClass("SOS",
          representation(version = "character",
@@ -40,7 +40,9 @@ setClass("SOS",
          contains = c("VIRTUAL"))
 
 #
-# SOS class for local testing, i.e. without an URL and default verbose output
+# SOS class for local testing ----
+#
+# i.e. without an URL and default verbose output
 #
 setClass("SOS_Test",
          representation(name = "character", binding = "character"),

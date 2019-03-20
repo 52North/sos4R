@@ -34,6 +34,8 @@
 # Do not execute this script manually! Use devtools::test()!
 #
 library(testthat)
+library(webmockr)
+library(httr)
 library(sos4R)
 
 test_check("sos4R")
