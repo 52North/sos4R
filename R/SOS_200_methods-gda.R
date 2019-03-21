@@ -64,49 +64,42 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  .responseString = sosRequest(sos = sos, request = .gda,
+  .response = sosRequest(sos = sos, request = .gda,
                                verbose = verbose, inspect = inspect)
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.responseString),
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.response),
                    "bytes), parsing ...\n")
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Response string: \n'", .responseString, "'\n")
+  if (inspect) {
+    cat("[.getDataAvailability_1.0.0] Response XML document:\n")
+    print(.response)
+  }
 
-  if (isXMLString(str = .responseString)) {
-
-    .response <- .internalXmlRead(x = .responseString)
-
-    if (inspect) {
-      cat("[.getDataAvailability_1.0.0] Response XML document:\n")
-      print(.response)
-    }
-
-    if (!is.null(.filename)) {
-      .filename <- paste0(.filename, ".xml")
-      xml2::write_xml(x = .response, file = .filename)
-
-      if (verbose) {
-        cat("[.getDataAvailability_1.0.0] Saved original document:",
-            .filename, "\n")
-      }
-    }
-
-    if (.isExceptionReport(.response)) {
-      return(.handleExceptionReport(sos, .response))
-    }
-
-    .parsingFunction <- sosParsers(sos)[[mimeTypeXML]]
+  if (!is.null(.filename)) {
+    .filename <- paste0(.filename, ".xml")
+    xml2::write_xml(x = .response, file = .filename)
 
     if (verbose) {
-      cat("[.getDataAvailability_1.0.0] Parsing with function ")
-      print(.parsingFunction)
+      cat("[.getDataAvailability_1.0.0] Saved original document:",
+          .filename, "\n")
     }
-
-    .dams <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
-    if (verbose) cat("[.getDataAvailability_1.0.0] Received and parsed", length(.dams),
-                     "data availability members.\n")
-    return (.dams)
   }
+
+  if (.isExceptionReport(.response)) {
+    return(.handleExceptionReport(sos, .response))
+  }
+
+  .parsingFunction <- sosParsers(sos)[[mimeTypeXML]]
+
+  if (verbose) {
+    cat("[.getDataAvailability_1.0.0] Parsing with function ")
+    print(.parsingFunction)
+  }
+
+  .dams <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received and parsed", length(.dams),
+                    "data availability members.\n")
+  return (.dams)
 }
 
 

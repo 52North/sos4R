@@ -53,7 +53,7 @@ sosConvertLogical <- function(x, sos) {
 #
 setMethod(f = "sosCreateTimeInstant",
           signature = signature(sos = "SOS", time = "POSIXt"),
-          def = function(sos, time, frame, calendarEraName,
+          definition = function(sos, time, frame, calendarEraName,
                          indeterminatePosition) {
             #			.time <- format(time, sosTimeFormat(sos))
             .timePos <- GmlTimePosition(
@@ -68,7 +68,7 @@ setMethod(f = "sosCreateTimeInstant",
 
 setMethod(f = "sosCreateTimePeriod",
           signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
-          def = function(sos, begin, end, frame, calendarEraName,
+          definition = function(sos, begin, end, frame, calendarEraName,
                          indeterminatePosition, duration, timeInterval) {
             #			.tf <- sosTimeFormat(sos)
             .beginPos <- GmlTimePosition(
@@ -92,7 +92,7 @@ setMethod(f = "sosCreateTimePeriod",
 
 setMethod(f = "sosCreateEventTimeList",
           signature = signature(time = "GmlTimeGeometricPrimitive"),
-          def = function(time, operator) {
+          definition = function(time, operator) {
             .et <- list(sosCreateEventTime(time = time, operator = operator))
             return(.et)
           }
@@ -100,7 +100,7 @@ setMethod(f = "sosCreateEventTimeList",
 
 setMethod(f = "sosCreateTime",
           signature = signature(sos = "SOS", time = "character"),
-          def = function(sos, time, operator) {
+          definition = function(sos, time, operator) {
             .l <- NULL
             if (regexpr(pattern = "::", text = time) > -1) {
               .l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
@@ -190,7 +190,7 @@ setMethod(f = "sosCreateTime",
 
 setMethod(f = "sosCreateEventTime",
           signature = signature(time = "GmlTimeGeometricPrimitive"),
-          def = function(time, operator) {
+          definition = function(time, operator) {
 
             if (operator == ogcTempOpTMAfterName) {
               .tOps <- TM_After(time = time)
@@ -226,7 +226,7 @@ setMethod(f = "sosCreateEventTime",
 #
 setMethod(f = "sosCreateFeatureOfInterest",
           signature = signature(),
-          def = function(objectIDs, spatialOps, bbox, srsName) {
+          definition = function(objectIDs, spatialOps, bbox, srsName) {
             # switch cases, either objectIDs or one of the spatialOps shortcuts
             if (!any(is.na(objectIDs))) {
               .foi <- SosFeatureOfInterest(objectIDs = objectIDs)
@@ -263,10 +263,10 @@ setMethod(f = "sosCreateFeatureOfInterest",
 setMethod(f = "sosCreateBBOX",
           signature = signature(lowLat = "numeric", lowLon = "numeric",
                                 uppLat = "numeric", uppLon = "numeric"),
-          def = function(lowLat, lowLon, uppLat, uppLon, srsName,
-                         srsDimension = NA_integer_, axisLabels = NA_character_,
-                         uomLabels = NA_character_,
-                         propertyName = sosDefaultSpatialOpPropertyName) {
+          definition = function(lowLat, lowLon, uppLat, uppLon, srsName,
+                                srsDimension = NA_integer_, axisLabels = NA_character_,
+                                uomLabels = NA_character_,
+                                propertyName = sosDefaultSpatialOpPropertyName) {
             .env <- GmlEnvelope(
               lowerCorner = GmlDirectPosition(
                 pos = paste(lowLat, lowLon, sep = " ")),
@@ -283,7 +283,7 @@ setMethod(f = "sosCreateBBOX",
 setMethod(f = "sosCreateBBoxMatrix",
           signature = signature(lowLat = "numeric", lowLon = "numeric",
                                 uppLat = "numeric", uppLon = "numeric"),
-          def = function(lowLat, lowLon, uppLat, uppLon) {
+          definition = function(lowLat, lowLon, uppLat, uppLon) {
             .m <- matrix(data = c(lowLon, lowLat, uppLon, uppLat),
                          nrow = 2, ncol = 2,
                          dimnames = list(
@@ -298,22 +298,21 @@ setMethod(f = "sosCreateBBoxMatrix",
 #
 setMethod(f = "sosCapabilitiesDocumentOriginal",
           signature = signature(sos = "SOS"),
-
-          def = function(sos, verbose = FALSE) {
+          definition = function(sos, verbose = FALSE) {
             .verbose <- sos@verboseOutput || verbose
             .gc <- OwsGetCapabilities(service = sosService,
                                       acceptVersions = c(sos@version))
-            .responseString = sosRequest(sos = sos, request = .gc,
-                                         verbose = .verbose, inspect = FALSE)
-
-            .response <- .internalXmlRead(x = .responseString)
+            .response = sosRequest(sos = sos,
+                                   request = .gc,
+                                   verbose = .verbose,
+                                   inspect = FALSE)
             return(.response)
           }
 )
 
 setMethod(f = "sosCapabilitiesUrl",
           signature = signature(sos = "SOS"),
-          def = function(sos) {
+          definition = function(sos) {
             .gc <- OwsGetCapabilities(service = sosService,
                                       acceptVersions = c(sos@version))
             .request <- paste0(sosUrl(sos), "?", encodeRequestKVP(.gc, sos))
@@ -343,7 +342,7 @@ setMethod(f = "sosCapabilitiesUrl",
 
 setMethod(f = "sosExceptionCodeMeaning",
           signature = c(exceptionCode = "character"),
-          def = function(exceptionCode) {
+          definition = function(exceptionCode) {
             .meaning <- as.character(
               .owsStandardExceptions[
                 .owsStandardExceptions$exceptionCode==exceptionCode,
@@ -372,7 +371,7 @@ setMethod(f = "encodeXML", signature = signature(obj = "xml_document", sos = "SO
 setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS"),
           definition = function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeXML] from character string\n")
-            .xml <- .internalXmlRead(x = obj)
+            .xml <- xml2::read_xml(x = obj, options = SosDefaultParsingOptions())
             if (verbose) cat("[encodeXML] Created XML from string:\n", toString(.xml))
             return(.xml)
           }
@@ -383,7 +382,7 @@ setMethod(f = "encodeXML", signature = signature(obj = "character", sos = "SOS")
 #
 setMethod(f = "sosGetCRS",
           signature = c(obj = "character"),
-          def = function(obj, verbose = FALSE) {
+          definition = function(obj, verbose = FALSE) {
             if (verbose) cat("[sosGetCRS] from '", obj, "'\n", sep = "")
 
             # get the position of EPSG code
@@ -428,7 +427,7 @@ setMethod(f = "sosGetCRS",
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "OmObservationCollection"),
-          def = function(obj, verbose = FALSE) {
+          definition = function(obj, verbose = FALSE) {
             .l <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
             .l <- unique(.l)
 
@@ -439,21 +438,21 @@ setMethod(f = "sosGetCRS",
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "OmObservation"),
-          def = function(obj, verbose = FALSE) {
+          definition = function(obj, verbose = FALSE) {
             .crs <- .getCRSfromOM(obj)
             return(.crs)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "OmMeasurement"),
-          def = function(obj, verbose = FALSE) {
+          definition = function(obj, verbose = FALSE) {
             .crs <- .getCRSfromOM(obj)
             return(.crs)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "SosObservationOffering"),
-          def = function(obj, verbose = FALSE) {
+          definition = function(obj, verbose = FALSE) {
             .srsName <- sosBoundedBy(obj)[["srsName"]]
             if (is.null(.srsName))
               .crs <- NULL
@@ -463,7 +462,7 @@ setMethod(f = "sosGetCRS",
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "SOS"),
-          def = function(obj, verbose = FALSE) {
+          definition = function(obj, verbose = FALSE) {
             .offs <- sosOfferings(obj)
             .crss <- lapply(.offs, sosGetCRS, verbose = verbose)
             if (length(.crss) == 1)
@@ -473,7 +472,7 @@ setMethod(f = "sosGetCRS",
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "list"),
-          def = function(obj, verbose = FALSE) {
+          definition = function(obj, verbose = FALSE) {
             .crs <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
             return(.crs)
           }
@@ -575,10 +574,6 @@ sosCheatSheet <- function() {
 #
 # XML parsing ----
 #
-.internalXmlRead <- function(x, options = SosDefaultParsingOptions()) {
-  return(xml2::read_xml(x = .responseString, options = options))
-}
-
 isXMLString <- function(str) {
   return(grepl("^<(.*)>$", str))
 }
