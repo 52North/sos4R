@@ -638,7 +638,7 @@ l <- XML2::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
 xml2::xml_text(x = l) <- "10"
 comp <- XML2::xmlNode(name = ogcComparisonOpGreaterThanName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
-myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
+myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sos100NamespacePrefix,
 		.children = list(comp))
 
 obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
@@ -750,7 +750,7 @@ l <- XML2::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
 xml2::xml_text(x = l) <- "3"
 comp <- XML2::xmlNode(name = ogcComparisonOpLessThanOrEqualToName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
-myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sosNamespacePrefix,
+myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sos100NamespacePrefix,
 		.children = list(comp))
 str(myResult2)
 class(myResult2)
@@ -782,7 +782,7 @@ str(encodeXML(shouldWorkString, weathersos))
 
 # try automatic namespace adding with encodeXML
 namespacedResult <- XML2::xmlNode(name = sosResultName,
-		namespace = sosNamespacePrefix,
+		namespace = sos100NamespacePrefix,
 		namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 				.sosNamespaceDefinitionsGetObs))
 namespacedString <- sub(pattern = result, replacement = paste("result"))

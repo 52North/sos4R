@@ -1207,14 +1207,14 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservation",
 .sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos,
                                                      verbose = FALSE) {
   .xmlDoc <- XML2::xmlNode(name = sosGetObservationName,
-                     namespace = sosNamespacePrefix,
+                     namespace = sos100NamespacePrefix,
                      namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
                                               .sos100_NamespaceDefinitionsGetObs),
                      attrs = c(.sos100_xsiSchemaLocationAttribute, service = obj@service,
                              version = sos@version))
 
   # required and optional are mixed - schema requires a particular order:
-  .offering <- XML2::xmlNode(name = "offering", namespace = sosNamespacePrefix,
+  .offering <- XML2::xmlNode(name = "offering", namespace = sos100NamespacePrefix,
                        obj@offering)
   .xmlDoc <- XML::addChildren(node = .xmlDoc, .offering)
 
@@ -1229,13 +1229,13 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservation",
 
   if (!any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
     .procedureList <- lapply(obj@procedure, "xmlNode",
-                             name="procedure", namespace = sosNamespacePrefix)
+                             name="procedure", namespace = sos100NamespacePrefix)
     .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = .procedureList,
                            append = TRUE)
   }
 
   .observedProperties <- lapply(obj@observedProperty, "xmlNode",
-                                name="observedProperty", namespace = sosNamespacePrefix)
+                                name="observedProperty", namespace = sos100NamespacePrefix)
   .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = .observedProperties,
                          append = TRUE)
 
@@ -1262,14 +1262,14 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservation",
     .rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
 
     .responseFormat <- XML2::xmlNode(name = "responseFormat",
-                               namespace = sosNamespacePrefix, value = .rF)
+                               namespace = sos100NamespacePrefix, value = .rF)
     .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseFormat),
                            append = TRUE)
   }
 
   if (!is.na(obj@resultModel)) {
     .resultModel <- XML2::xmlNode(name = "resultModel",
-                            namespace = sosNamespacePrefix,
+                            namespace = sos100NamespacePrefix,
                             obj@resultModel)
     .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.resultModel),
                            append = TRUE)
@@ -1277,7 +1277,7 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservation",
 
   if (!is.na(obj@responseMode)) {
     .responseMode <- XML2::xmlNode(name = "responseMode",
-                             namespace = sosNamespacePrefix,
+                             namespace = sos100NamespacePrefix,
                              obj@responseMode)
     .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseMode),
                            append = TRUE)
@@ -1311,25 +1311,25 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservationById",
 )
 .sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
   .xmlDoc <- XML2::xmlNode(name = "GetObservationById",
-                     namespace = sosNamespacePrefix,
+                     namespace = sos100NamespacePrefix,
                      namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
                                               .sos100_NamespaceDefinitionsGetObs),
                      attrs=c(.sos100_xsiSchemaLocationAttribute,
                              service = obj@service, version = sos@version))
 
-  .obsId <- XML2::xmlNode(name = "ObservationId", namespace = sosNamespacePrefix,
+  .obsId <- XML2::xmlNode(name = "ObservationId", namespace = sos100NamespacePrefix,
                     obj@observationId)
   .xmlDoc <- XML::addChildren(node = .xmlDoc, .obsId)
 
   .rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
   .responseFormat <- XML2::xmlNode(name = "responseFormat",
-                             namespace =  sosNamespacePrefix, .rF)
+                             namespace =  sos100NamespacePrefix, .rF)
   .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseFormat),
                          append = TRUE)
 
   if (!is.na(obj@resultModel)) {
     .resultModel <- XML2::xmlNode(name = "resultModel",
-                            namespace =  sosNamespacePrefix,
+                            namespace =  sos100NamespacePrefix,
                             obj@resultModel)
     .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.resultModel),
                            append = TRUE)
@@ -1337,7 +1337,7 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservationById",
 
   if (!is.na(obj@responseMode)) {
     .responseMode <- XML2::xmlNode(name = "responseMode",
-                             namespace =  sosNamespacePrefix,
+                             namespace =  sos100NamespacePrefix,
                              obj@responseMode)
     .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseMode),
                            append = TRUE)
@@ -1370,14 +1370,14 @@ setMethod(f = "encodeRequestXML", signature = "SosDescribeSensor",
 )
 .sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj, sos) {
   xmlDoc <- XML2::xmlNode(name = sosDescribeSensorName,
-                    namespace = sosNamespacePrefix,
+                    namespace = sos100NamespacePrefix,
                     namespaceDefinitions = .sos100_NamespaceDefinitionsForAll,
                     attrs=c(.sos100_xsiSchemaLocationAttribute,
                             service = obj@service,
                             outputFormat = obj@outputFormat,
                             version = sos@version))
 
-  procedure <- XML2::xmlNode(name = "procedure", namespace = sosNamespacePrefix,
+  procedure <- XML2::xmlNode(name = "procedure", namespace = sos100NamespacePrefix,
                        obj@procedure)
   xmlDoc$children[[1]] <- procedure
 
@@ -1431,7 +1431,7 @@ setMethod(f = "encodeXML",
             .temporalOpsClass <- class(obj@temporalOps)
             if (!is.null(SosSupportedTemporalOperators()[[.temporalOpsClass]])) {
               .eventTime <- XML2::xmlNode(name = sosEventTimeName,
-                                    namespace = sosNamespacePrefix)
+                                    namespace = sos100NamespacePrefix)
               .temporalOpsXML <- encodeXML(obj = obj@temporalOps,
                                            sos = sos, verbose = verbose)
               .eventTime$children[[1]] <- .temporalOpsXML
@@ -1453,7 +1453,7 @@ setMethod(f = "encodeXML",
             }
 
             .eventTime <- XML2::xmlNode(name = sosEventTimeName,
-                                  namespace = sosNamespacePrefix)
+                                  namespace = sos100NamespacePrefix)
             .tmEquals <- XML2::xmlNode(name = ogcTempOpTMEqualsName,
                                  namespace = ogcNamespacePrefix)
             .propertyName <- XML2::xmlNode(name = ogcPropertyNameName,
@@ -1480,12 +1480,12 @@ setMethod(f = "encodeXML",
             if (verbose) cat("[encodeXML]", class(obj), "\n")
 
             .foi <- XML2::xmlNode(name = sosFeatureOfInterestName,
-                            namespace = sosNamespacePrefix)
+                            namespace = sos100NamespacePrefix)
 
             # switch between objectIDs and spatialOps
             if (!any(is.na(obj@objectIDs))) {
               .ids <- lapply(X = obj@objectIDs, FUN = xmlNode,
-                             name = sosObjectIDName, namespace = sosNamespacePrefix)
+                             name = sosObjectIDName, namespace = sos100NamespacePrefix)
               .foi <- XML::addChildren(node = .foi, kids = .ids)
             }
             else if (!is.null(obj@spatialOps)) {

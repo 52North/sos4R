@@ -26,39 +26,42 @@
 # Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
 #                                                                              #
 ################################################################################
+
 #
 # SOS ----
 #
 sos100_version <- "1.0.0"
 sosService <- "SOS"
-sosNamespacePrefix <- "sos"
-sosIntendedApplicationName <- "intendedApplication"
-sosTimeName <- "time"
-sosProcedureName <- "procedure"
-sosObservedPropertyName <- paste0(sosNamespacePrefix, ":observedProperty")
-sosFeatureOfInterestName <- "featureOfInterest"
-sosResultModelName <- "resultModel"
-sosResponseFormatName <- "responseFormat"
-sosResponseModeName <- "responseMode"
-sosObservationOfferingName <- "ObservationOffering"
-sosObservationOfferingListName <- "ObservationOfferingList"
-sosContentsName <- "Contents"
-sosFilterCapabilitiesName <- "Filter_Capabilities"
-sosCapabilitiesName <- "Capabilities"
-sosEventTimeName <- "eventTime"
-sosEventTimeLatestValue <- "latest"
-sosObjectIDName <- "ObjectID"
-sosResultName <- "result"
-sosResultTimeName <- "resultTime"
-sosPhenomenonTimeName <- "phenomenonTime"
-sosObservationTypeName <- "observationType"
-sosFeatureOfInterestTypeName <- "featureOfInterestType"
-sosProcedureDescriptionFormat <- "procedureDescriptionFormat"
-sosObservedAreaName <- "observedArea"
-#
+sos100NamespacePrefix <- "sos"
+sosIntendedApplicationName <- paste0(sos100NamespacePrefix, "intendedApplication")
+sosTimeName <- paste0(sos100NamespacePrefix, "time")
+sosProcedureName <- paste0(sos100NamespacePrefix, "procedure")
+sosObservedPropertyName <- paste0(sos100NamespacePrefix, ":observedProperty")
+sosFeatureOfInterestName <- paste0(sos100NamespacePrefix, "featureOfInterest")
+sosResultModelName <- paste0(sos100NamespacePrefix, "resultModel")
+sosResponseFormatName <- paste0(sos100NamespacePrefix, "responseFormat")
+sosResponseModeName <- paste0(sos100NamespacePrefix, "responseMode")
+sosObservationOfferingName <- paste0(sos100NamespacePrefix, "ObservationOffering")
+sosObservationOfferingListName <- paste0(sos100NamespacePrefix, "ObservationOfferingList")
+sosContentsName <- paste0(sos100NamespacePrefix, "Contents")
+sosFilterCapabilitiesName <- paste0(sos100NamespacePrefix, "Filter_Capabilities")
+sosCapabilitiesName <- paste0(sos100NamespacePrefix, "Capabilities")
+sosEventTimeName <- paste0(sos100NamespacePrefix, "eventTime")
+sosEventTimeLatestValue <- "latest")
+sosObjectIDName <- paste0(sos100NamespacePrefix, "ObjectID")
+sosResultName <- paste0(sos100NamespacePrefix, "result")
+sosResultTimeName <- paste0(sos100NamespacePrefix, "resultTime")
+sosPhenomenonTimeName <- paste0(sos100NamespacePrefix, "phenomenonTime")
+sosObservationTypeName <- paste0(sos100NamespacePrefix, "observationType")
+sosFeatureOfInterestTypeName <- paste0(sos100NamespacePrefix, "featureOfInterestType")
+sosProcedureDescriptionFormat <- paste0(sos100NamespacePrefix, "procedureDescriptionFormat")
+sosObservedAreaName <- paste0(sos100NamespacePrefix, "observedArea")
+
+                              #
 # SOS v2.0 ----
 #
 sos200_version <- "2.0.0"
+sos200NamespacePrefix <- "sos20"
 sos200ContentsName <- "contents"
 sos200FilterCapabilitiesName = "filterCapabilities"
 sos200_emptyGetObservationResponseString <-

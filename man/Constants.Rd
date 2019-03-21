@@ -143,7 +143,7 @@
 \alias{saSampledFeatureName}
 \alias{saSamplingTimeName}
 \alias{sosService}
-\alias{sosNamespacePrefix}
+\alias{sos100NamespacePrefix}
 \alias{sosGetCapabilitiesName}
 \alias{sosDescribeSensorName}
 \alias{sosGetObservationName}
@@ -290,7 +290,7 @@ Whiteside A. (Ed.), OGC Web Services Common Specification, Open Geospatial Conso
 \examples{
 
 # example constants
-sosNamespacePrefix
+sos100NamespacePrefix
 gmlNameName
 sweUomName
 
