@@ -147,6 +147,27 @@ mySOS
 summary(mySOS)
 ```
 
+## Get Data
+
+The `GetObservation` operation is the main data download request of the SOS, and the package's functional equivalent is `getObservation(..)`.
+You can build a request using the information from the offerings, as they are extracted from the capabilities document when a new connection is created.
+
+```{r offering}
+off.1 <- sosOfferings(mySOS)[[1]]
+sosProcedures(off.1)
+sosObservedProperties(off.1)
+```
+
+Not all combinations off procedure, observed property and event time will deliver a result, but the following one should.
+
+```{r download}
+obs.1 <- getObservation(sos = mySOS, offering = off.1,
+	procedure = sosProcedures(off.1)[[1]],
+	observedProperty = sosObservedProperties(off.1)[1],
+	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-19::2017-12-20"),
+	inspect = TRUE)
+```
+
 ## Inspect Requests and Verbose Printing
 
 The package offers two levels of inspection of the ongoing operations indicated by two boolean parameters, `inspect` and `verbose`.
@@ -183,7 +204,6 @@ verboseSOS <- SOS(sosUrl(mySOS),
                   binding = sosBinding(mySOS),
                   dcpFilter = mySOS@dcpFilter)
 ```
-
 
 ## Support
 

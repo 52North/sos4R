@@ -526,7 +526,7 @@ defaultResponseFormatGetObs
 - `eventTime`: A list of objects of class `SosEventTime` which specify the time period(s) for which observations are requested. See section [Temporal Fitering](#temporal-filtering) for more information.
 - `procedure`: A list of procedure identifiers for which observations are requested. See section [Spatial Filtering](#spatial-filtering) for more information.
 - `featureOfInterest`: An object of class `SosFeatureOfInterest` which specifies the feature for which observations are requested. See sections [Spatial Filtering](#spatial-filtering) and [Feature Filtering](#feature-filtering) for more information.
-- `result`: An object of class `OgcComparisonOps` for result filtering with filter expressions from Filter Encoding.  See section [Value Filtering](#value-filtering) for more information.
+- `result`: An object of class `OgcComparisonOps` for result filtering with filter expressions from Filter Encoding. See section [Value Filtering](#value-filtering) for more information.
 - `resultModel`: The qualified XML name of the root element of the response, e.g. `om:Measurement`. The available models of a service can be found in the service metadata using `sosResultModel()`.
 - `responseMode`: The response mode defines the form of the response, e.g. inline, out-of-band, or attached. The available models of a service can be found in the service metadata using `sosResponseMode()`.
 - `BBOX`: A bounding box to be used only in HTTP GET connections (parameter is discarded for POST connections). The format must one character string with `minlon,minlat,maxlon,maxlat,srsURI?`, the spatial reference system is optional.
@@ -814,32 +814,28 @@ print(sosFeaturesOfInterest(obs.oneWeek.fois))
 Value Filtering is realized via the slot `result` in a GetObservation request.
 The filtering in the request is based on comparison operators and operands specified by OGC Filter Encoding (Vretanos, 2005).
 
-The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the package `XML`.
+The classes and methods of this specification are not yet implemented, but manual definition of the XML elements is possible with the methods of the package `xml2`.
 
 The following code example uses a literal comparison of a property.
 The elements names are taken from constants within `sos4R` (with the naming scheme `"<namespace><ElementName>Name"`), but can equally as well be put in directly.
 
 ```{r valueFiltering1, eval=FALSE}
-# result filtering
-filter.value <- -2.3
-filter.propertyname <- xmlNode(name = ogcPropertyNameName,
-	namespace = ogcNamespacePrefix)
-xmlValue(filter.propertyname) <-
-		"urn:ogc:def:property:OGC::Temperature"
-filter.literal <- xmlNode(name = ogcLiteralName,
-	namespace = ogcNamespacePrefix)
-xmlValue(filter.literal) <- as.character(filter.value)
-filter.comparisonop <- xmlNode(
-	name = ogcComparisonOpGreaterThanName,
-	namespace = ogcNamespacePrefix,
-	.children = list(filter.propertyname,
-	filter.literal))
-filter.result <- xmlNode(name = sosResultName,
-	namespace = sosNamespacePrefix,
-	.children = list(filter.comparisonop))
+# TODO update result filter example with xml2
+#filter.value <- -2.3
+#filter.propertyname <- xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+#xmlValue(filter.propertyname) <- "urn:ogc:def:property:OGC::Temperature"
+#filter.literal <- xmlNode(name = ogcLiteralName, namespace = ogcNamespacePrefix)
+#xmlValue(filter.literal) <- as.character(filter.value)
+#filter.comparisonop <- xmlNode(name = ogcComparisonOpGreaterThanName,
+#                               namespace = ogcNamespacePrefix,
+#                               .children = list(filter.propertyname,
+#                                                filter.literal))
+#filter.result <- xmlNode(name = sosResultName,
+#                         namespace = sosNamespacePrefix,
+#                         .children = list(filter.comparisonop))
 ```
 
-Please consult to the extensive documentation of the `XML` package for details.
+Please consult to the extensive documentation of the `xml2` package for details.
 The commands above result in the following output which is inserted into the request without further processing.
 
 ```{r valueFiltering2, eval=FALSE}

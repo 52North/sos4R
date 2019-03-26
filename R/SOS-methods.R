@@ -153,11 +153,17 @@ SosCapabilities <- function(version,  updateSequence = NA, owsVersion = "1.1.0",
   }
 }
 
-SosObservationOffering <- function(id, name = as.character(NA),
-                                   time, procedure, observedProperty,
-                                   featureOfInterest, responseFormat,
-                                   intendedApplication = as.character(NA), resultModel = as.character(NA),
-                                   responseMode = as.character(NA), boundedBy = list()) {
+SosObservationOffering <- function(id,
+                                   name = as.character(NA),
+                                   time,
+                                   procedure,
+                                   observedProperty,
+                                   featureOfInterest,
+                                   responseFormat,
+                                   intendedApplication = as.character(NA),
+                                   resultModel = as.character(NA),
+                                   responseMode = as.character(NA),
+                                   boundedBy = list()) {
   new("SosObservationOffering", id = id, name = name,
       time = time, procedure = procedure,
       observedProperty = observedProperty,

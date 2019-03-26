@@ -6,13 +6,13 @@ er2 <- "<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:
 test_that("exception is parsed from exception report", {
   er1.doc <- xml2::xml_root(x = xml2::read_xml(x = er1))
   exceptionReport <- parseOwsExceptionReport(obj = er1.doc) #, verbose = TRUE)
-  expect_equal(length(exceptionReport@exceptions), 1)
+  expect_length(exceptionReport@exceptions, 1)
 })
 
 test_that("multiple exceptions are parsed from exception report", {
   er2.doc <- xml2::xml_root(x = xml2::read_xml(x = er2))
   exceptionReport <- parseOwsExceptionReport(obj = er2.doc) #, verbose = TRUE)
-  expect_equal(length(exceptionReport@exceptions), 2)
+  expect_length(exceptionReport@exceptions, 2)
 })
 
 test_that("version is parsed from exception report", {

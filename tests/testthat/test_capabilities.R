@@ -1,10 +1,10 @@
-context("capabilities: Mapserver")
-
 parseXmlSnippet <- function(obj) {
   doc <- xml2::read_xml(x = obj, options = SosDefaultParsingOptions())
   docRoot <- xml2::xml_root(x = doc)
   return(docRoot)
 }
+
+context("capabilities: composite phenomenon")
 
 .compositePhenOffering <- '<sos:ObservationOffering gml:id="Water"
 xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml"
@@ -31,19 +31,21 @@ test_that("composite phenomenon offering is parsed correctly from snippet", {
   doc5 <-  parseXmlSnippet(.compositePhenOffering)
   obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = doc5, xpath = sosObservedPropertyName)) #, verbose = TRUE)
 
-  expect_equal(length(obs_prop), 2)
+  expect_length(obs_prop, 2)
   expect_equal(obs_prop, list("WaterQuality", "AirQuality"))
 })
 
-mapserver <- SOS_Test(name = "testcaps")
+context("capabilities: Mapserver")
+
+mapserver <- SOS_Test(name = "testmapserver")
 xmlCaps <- xml2::read_xml(x = "../responses/Capabilities_Mapserver.xml")
 parsedCaps <- parseSosCapabilities(obj = xmlCaps, sos = mapserver)
 mapserver@capabilities <- parsedCaps
 
 test_that("observed properties are parsed correctly from capabilities", {
   obs_prop <- sosObservedProperties(mapserver)
-  expect_equal(length(obs_prop), 1)
-  expect_equal(obs_prop[[1]], "WaterQuality")
+  expect_length(obs_prop, 1)
+  expect_equal(obs_prop[[1]], list("WaterQuality"))
   # or should the components be listed?
   #expect_equal(obs_prop[[1]], "urn:ogc:def:property:OGC-SWE:1:STN_ID")
 })
@@ -62,28 +64,26 @@ test_that("offering id", {
 })
 
 test_that("procedures", {
-  #sosProcedures(mapserver)
-  skip("Test not implemented yet.")
+  expect_length(sosProcedures(mapserver)[[1]], 3)
+  expect_equal(sosProcedures(mapserver)[[1]][1], "urn:ogc:def:procedure:35")
 })
 
 test_that("result models", {
-  #sosResultModels(mapserver)
-  skip("Test not implemented yet.")
+  expect_true(is.list(sosResultModels(mapserver)$GetObservation))
+  expect_length(sosResultModels(mapserver)$GetObservation, 1)
 })
 
 test_that("abstract", {
-  #sosAbstract(mapserver)
-  skip("Test not implemented yet.")
+  expect_equal(sosAbstract(mapserver), "Test SOS Abstract")
 })
 
 test_that("title", {
-  #sosTitle(mapserver)
-  skip("Test not implemented yet.")
+  expect_equal(sosTitle(mapserver), "Test SOS Title")
 })
 
-test_that("CRS", {
-  #sosGetCRS(mapserver)
-  skip("Test not implemented yet.")
+test_that("CRS from boundedBy", {
+  expect_s4_class(sosGetCRS(mapserver), "CRS")
+  expect_match(sosGetCRS(mapserver)@projargs, "init=epsg:4326")
 })
 
 test_that("time", {
@@ -92,13 +92,10 @@ test_that("time", {
 })
 
 test_that("offerings", {
-  #offs <- sosOfferings(mapserver)
-  skip("Test not implemented yet.")
-})
-
-test_that("name of offering", {
-  #sosName(offs)
-  skip("Test not implemented yet.")
+  offs <- sosOfferings(mapserver)
+  expect_length(offs, 1)
+  expect_named(offs, c("Water"))
+  expect_equal(sosName(sosOfferings(mapserver)), list(Water = "Water"))
 })
 
 test_that("bounds of offering", {
@@ -107,22 +104,15 @@ test_that("bounds of offering", {
 })
 
 test_that("time of offering", {
-  #sosTime(offs)
-  skip("Test not implemented yet.")
+  offs <- sosOfferings(mapserver)
+  expect_s4_class(sosTime(offs)[[1]], "GmlTimePeriod")
 })
-
-test_that("procedures of offering", {
-  #sosProcedures(offs)
-  #sosProcedures(offs[[1]])
-  skip("Test not implemented yet.")
-})
-
 
 context("capabilities: Axiom")
 
 .axiomOffering <- '<sos:ObservationOffering gml:id="urn_ioos_network_test_all"
 xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xlink="http://www.w3.org/1999/xlink"
-xmlns:gml="http://www.opengis.net/gml">
+xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <gml:name>urn:ioos:network:test:all</gml:name>
     <gml:boundedBy>
     <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
@@ -152,30 +142,14 @@ xmlns:gml="http://www.opengis.net/gml">
 </sos:ObservationOffering>'
 
 test_that("offering id is parsed correctly", {
-  doc3 <- parseXmlSnippet(.axiomOffering)
-  obsProp <- parseSosObservedProperty(doc3[sosObservedPropertyName]) #, verbose = TRUE)
+  doc <- parseXmlSnippet(.axiomOffering)
+  obsProp <- parseSosObservedProperty(xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName))
   expect_equal(obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
   expect_equal(length(obsProp), 2)
 })
 
-context("parsing: SOS Capabilities 2.0.0")
-
-testsos <- SOS_Test(name = "testcaps",version = sos200_version, verboseOutput = TRUE)
-sos200Caps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_200_Example.xml"), testsos)
-
-context("parsing: SOS Capabilities 2.0.0 swes:offering")
-
-testsos <- SOS_Test(name = "testcaps",version = sos200_version, verboseOutput = TRUE)
-
-test_that("offering is parsed correctly", {
-  obs <- parseSosObservationOffering_200(xml2::xml_root(x = xml2::read_xml(x = "../xml-elements/swes-offering1.xml")), testsos)
-  expect_equal(obs@id, "ws2500")
-  #TODO test other parameters
-})
-
-testsos <- SOS_Test(name = "testcaps",version = sos100_version, verboseOutput = TRUE)
+testsos <- SOS_Test(name = "testcaps",version = sos100_version) #, verboseOutput = TRUE)
 axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_100_Example.xml"), testsos)
-
 
 context("parsing: operations metadata")
 
@@ -427,3 +401,10 @@ test_that("name and site", {
   expect_match(serviceProv@providerSite, "http://www.de")
   expect_s3_class(serviceProv@serviceContact, "xml_node")
 })
+
+context("capabilities: 52N SOS")
+
+fivetwon <- SOS_Test(name = "testfivetwon")
+xmlCaps <- xml2::read_xml(x = "../responses/Capabilities_Mapserver.xml")
+parsedCaps <- parseSosCapabilities(obj = xmlCaps, sos = mapserver)
+mapserver@capabilities <- parsedCaps

@@ -15,7 +15,7 @@ test_that("creation of request fails if eventTime contains objects of wrong clas
                           responseFormat = "test",
                           eventTime = eventTimeList)
   expect_equal(getobs@eventTime, eventTimeList)
-  eventTimeList[[2]] <- sessionInfo()
+  eventTimeList[[2]] <- list("not right")
   expect_error(SosGetObservation(service = "test", version = "test", offering = "test", observedProperty = list("test"),
                                        responseFormat = "test",
                                        eventTime = eventTimeList), "must extend SosEventTime")

@@ -113,11 +113,10 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
   - `XML::xmlParseDoc`
     - Replace `XML::xmlParseDoc(file = ` with `xml2::read_xml(x = ` (26 occurrences)
     - Fix parameters
-      - replace `, asText = TRUE` with `` (blank, 11 occurrences)
+      - drop `, asText = TRUE` by replacing it with `` (blank, 11 occurrences)
       - turn `options` into vector with strings
       - replace `c(XML::NOERROR, XML::RECOVER)` with `SosDefaultParsingOptions()`
       - use `xmlParseOptions` everywhere
-    - _Refactor:_ have only one call in `SOS-methods-util.R` in internal function `.internalXmlRead(..)`., drop parameter `xmlParseOptions` from all functions
   - `XML::xmlParseString`
     - Replaced manually by simplifying the implementation of `encodeXML` for signature `"character"`
   - `XML::xmlParse`
@@ -162,6 +161,7 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
     - `is.na(xml2::` > fix using `is.na(..)` (regex, 16 occurrences)
   - must fix all `obj[[` because subsetting with `[[` does not work with XML (107 occurrences at this point!)
     - trying to automate by replacing `obj\[\[(.*?)\]\]` with `xml2::xml_child(x = obj, search = $1, ns = SosAllNamespaces())`
+    - revert the changes in summary functions where `obj[[..]]` was used (file `PrintShowStructureSummary-methods.R`)
     - does not work for multiple subsets, e.g. `obj[["elementCount"]][["Count"]][["value"]]` > search for `SosAllNamespaces())[[` and fix manually to use XPath (4 occurrences)
     - re-check occurrences of `.children[[`
     - `is.null\(\.` with some XML object, should be `is.na(..)` which picks up on `"xml_missing"` objects
@@ -170,7 +170,16 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
       - `parseSosFilter_Capabilities`
       - `parseOwsServiceIdentification`
       - `parseTime`
+      - `parseSosObservationOffering` (also for 2.0.0)
+      
 
+
+
+    - fix tests in `test_sensors.R`
+
+
+      - `parseMonitoringPoint`
+      - `parseSamplingPoint`
 
 
   - **[Encoding functions]**
@@ -178,19 +187,13 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
     - switched manually because sometimes `.attrs` is used, which is replaced with `xml2::xml_set_attrs()`, and sometimes not (single `...`), which is replaced with `xml2::xml_set_attr()`, the `_set_attr` variants operate directly on the object (no need to re-assign), and often statements are multi-line (18 occurrences)
 
 
+`XML2::xmlNode` - da muss was falsch gelaufen sein...
 
 
-TODO:
 
   - `XML::addChildren`
 
-= "ANY"
-
-  
-
-  
-
-
+- must revisit SOS-methodsR lines 700 and following, about a lot of commented out response code handling
   
 
 

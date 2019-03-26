@@ -155,13 +155,13 @@ parseTimePeriod <- function(obj, format) {
                                  relatedTimes = .relatedTimes, frame = .frame)
   }
   # beginPosition and endPosition
-  else if (!is.na(xml2::xml_child(x = obj, search = gmlBeginPositionName, ns = SosAllNamespaces()))
-           || !is.na(xml2::xml_child(x = obj, search = gmlEndPositionName, ns = SosAllNamespaces()))) {
+  else if (!is.na(xml2::xml_child(x = obj, search = gmlBeginPositionName))
+           || !is.na(xml2::xml_child(x = obj, search = gmlEndPositionName))) {
     .beginPosition <- parseTimePosition(
-      obj = xml2::xml_child(x = obj, search = gmlBeginPositionName, ns = SosAllNamespaces()),
+      obj = xml2::xml_child(x = obj, search = gmlBeginPositionName),
       format = format)
     .endPosition <- parseTimePosition(
-      obj = xml2::xml_child(x = obj, search = gmlEndPositionName, ns = SosAllNamespaces()),
+      obj = xml2::xml_child(x = obj, search = gmlEndPositionName),
       format = format)
 
     .timeObject <- GmlTimePeriod(beginPosition = .beginPosition,

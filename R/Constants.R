@@ -33,29 +33,29 @@
 sos100_version <- "1.0.0"
 sosService <- "SOS"
 sos100NamespacePrefix <- "sos"
-sosIntendedApplicationName <- paste0(sos100NamespacePrefix, "intendedApplication")
-sosTimeName <- paste0(sos100NamespacePrefix, "time")
-sosProcedureName <- paste0(sos100NamespacePrefix, "procedure")
+sosIntendedApplicationName <- paste0(sos100NamespacePrefix, ":intendedApplication")
+sosTimeName <- paste0(sos100NamespacePrefix, ":time")
+sosProcedureName <- paste0(sos100NamespacePrefix, ":procedure")
 sosObservedPropertyName <- paste0(sos100NamespacePrefix, ":observedProperty")
-sosFeatureOfInterestName <- paste0(sos100NamespacePrefix, "featureOfInterest")
-sosResultModelName <- paste0(sos100NamespacePrefix, "resultModel")
-sosResponseFormatName <- paste0(sos100NamespacePrefix, "responseFormat")
-sosResponseModeName <- paste0(sos100NamespacePrefix, "responseMode")
-sosObservationOfferingName <- paste0(sos100NamespacePrefix, "ObservationOffering")
-sosObservationOfferingListName <- paste0(sos100NamespacePrefix, "ObservationOfferingList")
-sosContentsName <- paste0(sos100NamespacePrefix, "Contents")
-sosFilterCapabilitiesName <- paste0(sos100NamespacePrefix, "Filter_Capabilities")
-sosCapabilitiesName <- paste0(sos100NamespacePrefix, "Capabilities")
-sosEventTimeName <- paste0(sos100NamespacePrefix, "eventTime")
-sosEventTimeLatestValue <- "latest")
-sosObjectIDName <- paste0(sos100NamespacePrefix, "ObjectID")
-sosResultName <- paste0(sos100NamespacePrefix, "result")
-sosResultTimeName <- paste0(sos100NamespacePrefix, "resultTime")
-sosPhenomenonTimeName <- paste0(sos100NamespacePrefix, "phenomenonTime")
-sosObservationTypeName <- paste0(sos100NamespacePrefix, "observationType")
-sosFeatureOfInterestTypeName <- paste0(sos100NamespacePrefix, "featureOfInterestType")
-sosProcedureDescriptionFormat <- paste0(sos100NamespacePrefix, "procedureDescriptionFormat")
-sosObservedAreaName <- paste0(sos100NamespacePrefix, "observedArea")
+sosFeatureOfInterestName <- paste0(sos100NamespacePrefix, ":featureOfInterest")
+sosResultModelName <- paste0(sos100NamespacePrefix, ":resultModel")
+sosResponseFormatName <- paste0(sos100NamespacePrefix, ":responseFormat")
+sosResponseModeName <- paste0(sos100NamespacePrefix, ":responseMode")
+sosObservationOfferingName <- paste0(sos100NamespacePrefix, ":ObservationOffering")
+sosObservationOfferingListName <- paste0(sos100NamespacePrefix, ":ObservationOfferingList")
+sosContentsName <- paste0(sos100NamespacePrefix, ":Contents")
+sosFilterCapabilitiesName <- paste0(sos100NamespacePrefix, ":Filter_Capabilities")
+sosCapabilitiesName <- paste0(sos100NamespacePrefix, ":Capabilities")
+sosEventTimeName <- paste0(sos100NamespacePrefix, ":eventTime")
+sosEventTimeLatestValue <- "latest"
+sosObjectIDName <- paste0(sos100NamespacePrefix, ":ObjectID")
+sosResultName <- paste0(sos100NamespacePrefix, ":result")
+sosResultTimeName <- paste0(sos100NamespacePrefix, ":resultTime")
+sosPhenomenonTimeName <- paste0(sos100NamespacePrefix, ":phenomenonTime")
+sosObservationTypeName <- paste0(sos100NamespacePrefix, ":observationType")
+sosFeatureOfInterestTypeName <- paste0(sos100NamespacePrefix, ":featureOfInterestType")
+sosProcedureDescriptionFormat <- paste0(sos100NamespacePrefix, ":procedureDescriptionFormat")
+sosObservedAreaName <- paste0(sos100NamespacePrefix, ":observedArea")
 
                               #
 # SOS v2.0 ----
@@ -193,7 +193,7 @@ SosSupportedServiceVersions <- function() {
                                  sf = "http://www.opengis.net/sampling/2.0",
                                  swes = "http://www.opengis.net/swes/2.0",
                                  om20 = "http://www.opengis.net/om/2.0",
-                                 sos20 = "http://www.opengis.net/sos/2.0")
+                                 sos = "http://www.opengis.net/sos/2.0")
 
 SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
@@ -337,6 +337,7 @@ swesOfferingName = paste0(swesNamespacePrefix, ":offering")
 swesIdentifierName = paste0(swesNamespacePrefix, ":identifier")
 swesNameName = paste0(swesNamespacePrefix, ":name")
 swesObservablePropertyName = paste0(swesNamespacePrefix, ":observableProperty")
+swesProcedureName = paste0(swesNamespacePrefix, ":procedure")
 swesProcedureDescriptionFormatName = paste0(swesNamespacePrefix, ":procedureDescriptionFormat")
 
 #

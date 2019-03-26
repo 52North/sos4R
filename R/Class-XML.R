@@ -22,20 +22,10 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-09-15                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
 #                                                                              #
 ################################################################################
 
 #
+# TO BE REMOVED, see https://github.com/r-lib/xml2/issues/248 ----
 #
-#
-parseSamplingPoint <- function(obj, sos) {
-  .sampledFeatures <- xml2::xml_find_all(x = obj, xpath = saSampledFeatureName, ns = SosAllNamespaces())
-  .position <- parsePosition(xml2::xml_child(x = obj, search = saPositionName, ns = SosAllNamespaces()), sos = sos)
-  .id <-xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
-  
-  .sp <- SaSamplingPoint(sampledFeatures = .sampledFeatures,
-                         position = .position, id = .id)
-  return(.sp)
-}
+methods::setOldClass(Classes = c("xml_node", "xml_document"))
