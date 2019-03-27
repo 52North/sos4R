@@ -1,20 +1,23 @@
-
-context("DescribeSensor requests")
+context("DescribeSensor: request encoding")
 
 testsos <- SOS_Test(name = "testcaps")
 axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_52N-SOS_Axiom.xml"), testsos)
 testsos@capabilities <- axiomCaps
 
-test_that("output format is encoded correctly for POX", {
+test_that("output format for POX", {
     describeSensorOp <- sosOperation(testsos, sosDescribeSensorName)
     of <- describeSensorOp@parameters[["outputFormat"]][[1]]
-
-    ds <- SosDescribeSensor(service = testsos@name, version = testsos@version, procedure = sosProcedures(testsos)[[1]], outputFormat = of)
-
+    ds <- SosDescribeSensor(service = testsos@name, version = testsos@version, procedure = NA_character_, outputFormat = of)
     expect_equal(ds@outputFormat, "text/xml; subtype=\"sensorML/1.0.1/profiles/ioos_sos/1.0\"")
 
     xml <- encodeRequestXML(obj = ds, sos = testsos)
     expect_match(toString(xml), "text/xml; subtype=&quot;sensorML/1.0.1/profiles/ioos_sos/1.0&quot;")
+})
+
+test_that("procedure for POX", {
+  ds <- SosDescribeSensor(service = testsos@name, version = testsos@version, procedure = "best_procedure", outputFormat = NA_character_)
+  xml <- encodeRequestXML(obj = ds, sos = testsos)
+  expect_match(toString(xml), "<procedure>best_procedure</procedure>")
 })
 
 test_that("output format is encoded correctly for KVP", {

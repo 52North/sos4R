@@ -1375,18 +1375,16 @@ setMethod(f = "encodeRequestXML", signature = "SosDescribeSensor",
           }
 )
 .sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj, sos) {
-  xmlDoc <- XML2::xmlNode(name = sosDescribeSensorName,
-                    namespace = sos100NamespacePrefix,
-                    namespaceDefinitions = .sos100_NamespaceDefinitionsForAll,
-                    attrs=c(.sos100_xsiSchemaLocationAttribute,
-                            service = obj@service,
-                            outputFormat = obj@outputFormat,
-                            version = sos@version))
+  xmlDoc <- xml2::xml_new_root(sosDescribeSensorName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos100Namespace,
+                                "xmlns:xsi" = xsiNamespace,
+                                service = obj@service,
+                                outputFormat = obj@outputFormat,
+                                version = sos@version),
+                      ns = SosAllNamespaces())
 
-  procedure <- XML2::xmlNode(name = "procedure", namespace = sos100NamespacePrefix,
-                       obj@procedure)
-  xmlDoc$children[[1]] <- procedure
-
+  xml2::xml_add_child(xmlDoc, "procedure", obj@procedure)
   return(xmlDoc)
 }
 
