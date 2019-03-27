@@ -38,23 +38,27 @@ OwsGetCapabilities <- function(
   updateSequence = c(as.character(NA)),
   owsVersion = sosDefaultGetCapOwsVersion,
   acceptLanguages = c(NA)) {
-  if(owsVersion == "1.1.0") {
-    if(!any(sapply(acceptLanguages, "is.na"), na.rm = TRUE))
+  if (owsVersion == "1.1.0") {
+    if (!any(sapply(acceptLanguages, "is.na"), na.rm = TRUE))
       warning("Parameter 'acceptLanguages' is lost because it is not included in 1.1.0!")
     new("OwsGetCapabilities_1.1.0",
         request = sosGetCapabilitiesName,
         version = "1.1.0",
         service = service,
-        acceptVersions = acceptVersions, sections = sections,
-        acceptFormats = acceptFormats, updateSequence = updateSequence)
+        acceptVersions = acceptVersions,
+        sections = sections,
+        acceptFormats = acceptFormats,
+        updateSequence = updateSequence)
   }
-  else if(owsVersion == "2.0.0") {
+  else if (owsVersion == "2.0.0") {
     new("OwsGetCapabilities_2.0.0",
         request = sosGetCapabilitiesName,
         version = "2.0.0",
         service = service,
-        acceptVersions = acceptVersions, sections = sections,
-        acceptFormats = acceptFormats, updateSequence = updateSequence,
+        acceptVersions = acceptVersions,
+        sections = sections,
+        acceptFormats = acceptFormats,
+        updateSequence = updateSequence,
         acceptLanguages = acceptLanguages)
   }
   else {
@@ -74,8 +78,8 @@ OwsCapabilities <- function(
   operations = NULL,
   contents = NULL,
   languages = NULL) {
-  if(owsVersion == "1.1.0") {
-    if(!is.na(languages))
+  if (owsVersion == "1.1.0") {
+    if (!is.na(languages))
       warning("Parameter 'languages' is lost because it is not included in 1.1.0!")
     new("OwsCapabilities_1.1.0",
         version = version, updateSequence = updateSequence,
@@ -83,7 +87,7 @@ OwsCapabilities <- function(
         provider = provider, operations = operations,
         contents = contents)
   }
-  else if(owsVersion == "2.0.0") {
+  else if (owsVersion == "2.0.0") {
     new("OwsCapabilities_2.0.0",
         version = version, updateSequence = updateSequence,
         owsVersion = owsVersion, identification = identification,
@@ -190,7 +194,7 @@ setMethod(f = "checkRequest",
 # to add (possible) multiple values in kvp
 #
 .kvpKeyAndValues <- function(key, values) {
-  if(is(values, "vector")) {
+  if (is(values, "vector")) {
     .values <- sapply(values, .kvpEscapeSpecialCharacters)
     valueList <- paste(.values, collapse = ",")
     return(paste(key, valueList, sep = "="))
@@ -259,29 +263,29 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_1.1.0",
   .mandatory <- .sosEncodeRequestKVPGetCapabilities(obj, verbose)
 
   .optionals = ""
-  if( !is.na(obj@acceptVersions)) {
+  if (!is.na(obj@acceptVersions)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("acceptVersions",
                                                      obj@acceptVersions), sep = "&")
   }
 
-  if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
+  if (!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("sections",
                                                      obj@sections), sep = "&")
   }
 
-  if( !is.na(obj@updateSequence)) {
+  if (!is.na(obj@updateSequence)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("updateSequence",
                                                      obj@updateSequence), sep = "&")
   }
 
-  if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
+  if (!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
     .optionals <- paste(.optionals, .kvpKeyAndValues("acceptFormats",
                                                      obj@acceptFormats), sep = "&")
   }
 
   .kvpString <- paste(.mandatory, .optionals, sep = "")
 
-  if(verbose) cat("[.sosEncodeRequestKVPGetCapabilities_1.1.0] done: ",
+  if (verbose) cat("[.sosEncodeRequestKVPGetCapabilities_1.1.0] done: ",
                   .kvpString, "\n")
 
   return(.kvpString)
@@ -294,12 +298,12 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
 .sosEncodeRequestKVPGetCapabilities_2.0.0 <- function(obj, verbose = FALSE) {
   .kvpString <- .sosEncodeRequestKVPGetCapabilities_1.1.0(obj)
 
-  if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
+  if (!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
     .kvpString <- paste(.kvpString, .kvpKeyAndValues("acceptLanguages",
                                                      obj@acceptLanguages), sep = "&")
   }
 
-  if(verbose) cat("[.sosEncodeRequestKVPGetCapabilities_2.0.0] done: ",
+  if (verbose) cat("[.sosEncodeRequestKVPGetCapabilities_2.0.0] done: ",
                   .kvpString, "\n")
 
   return(.kvpString)
@@ -310,7 +314,7 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
 #
 setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
@@ -318,42 +322,42 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
           }
 )
 .sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
-  .xmlDoc <- XML2::xmlNode(name = sosGetCapabilitiesName,
-                     namespace = sos100NamespacePrefix,
-                     namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
-                                              .sos100_NamespaceDefinitionsGetCap),
-                     attrs=c(.sos100_xsiSchemaLocationAttribute,
-                             service=obj@service))
+  xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos100Namespace,
+                                "xmlns:xsi" = xsiNamespace,
+                                service = obj@service,
+                                "xmlns:ows" = owsNamespace,
+                                "xmlns:ogc" = ogcNamespace),
+                      ns = SosAllNamespaces())
 
   # optional:
-  if( !is.na(obj@acceptVersions)) {
-    .acceptVersions <- XML2::xmlNode(name = "AcceptVersions",
-                               namespace = owsNamespacePrefix)
-    .acceptVersions$children <- lapply(
-      obj@acceptVersions, "xmlNode", name="ows:Version")
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptVersions))
+  if (!is.na(obj@acceptVersions)) {
+    acceptVersions <- xml2::xml_add_child(xmlDoc, owsAcceptVersionsName)
+    for (v in obj@acceptVersions) {
+      xml2::xml_add_child(acceptVersions, owsVersionName, v)
+    }
   }
 
-  if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-    .sections <- XML::xmlNode(name = "ows:Sections")
-    .sections$children <- lapply(obj@sections, "xmlNode", name="Section",
-                                 namespace = owsNamespacePrefix)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.sections))
+  if (!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
+    sections <- xml2::xml_add_child(xmlDoc, owsSectionsName)
+    for (section in obj@sections) {
+      xml2::xml_add_child(sections, owsSectionName, section)
+    }
   }
 
   if (!is.na(obj@updateSequence)) {
-    xml2::xml_set_attr(x = .xmlDoc, attr = "updateSequence", value = obj@updateSequence)
+    xml2::xml_set_attr(x = xmlDoc, attr = "updateSequence", value = obj@updateSequence)
   }
 
   if (!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-    .acceptFormats <- XML2::xmlNode(name = "AcceptFormats",
-                              namespace = owsNamespacePrefix)
-    .acceptFormats$children <- lapply(
-      obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptFormats))
+    acceptFormats <- xml2::xml_add_child(xmlDoc, owsAcceptFormatsName)
+    for (format in obj@acceptFormats) {
+      xml2::xml_add_child(acceptFormats, owsOutputFormatName, format)
+    }
   }
 
-  return(.xmlDoc)
+  return(xmlDoc)
 }
 
 #
@@ -361,7 +365,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
 #
 setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
@@ -369,50 +373,49 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
           }
 )
 .sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
-  .xmlDoc <- XML2::xmlNode(name = sosGetCapabilitiesName,
-                     namespace = sos100NamespacePrefix,
-                     namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
-                                              .sos100_NamespaceDefinitionsGetCap),
-                     attrs=c(.sos100_xsiSchemaLocationAttribute,
-                             service=obj@service))
+  xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos200Namespace,
+                                "xmlns:xsi" = xsiNamespace,
+                                service = obj@service,
+                                "xmlns:ows" = owsNamespace,
+                                "xmlns:ogc" = ogcNamespace),
+                      ns = SosAllNamespaces())
 
   # optional:
-  if( !is.na(obj@acceptVersions)) {
-    .acceptVersions <- XML2::xmlNode(name = "AcceptVersions",
-                               namespace = owsNamespacePrefix)
-    .acceptVersions$children <- lapply(
-      obj@acceptVersions, "xmlNode", name = "ows:Version")
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptVersions))
+  if (!is.na(obj@acceptVersions)) {
+    acceptVersions <- xml2::xml_add_child(xmlDoc, owsAcceptVersionsName)
+    for (v in obj@acceptVersions) {
+      xml2::xml_add_child(acceptVersions, owsVersionName, v)
+    }
   }
 
-  if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
-    .sections <- XML::xmlNode(name = "ows:Sections")
-    .sections$children <- lapply(obj@sections, "xmlNode", name = "Section",
-                                 namespace = owsNamespacePrefix)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.sections))
+  if (!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
+    sections <- xml2::xml_add_child(xmlDoc, owsSectionsName)
+    for (section in obj@sections) {
+      xml2::xml_add_child(sections, owsSectionName, section)
+    }
   }
 
-  if( !is.na(obj@updateSequence)) {
-    xml2::xml_set_attr(x = .xmlDoc, attr = "updateSequence", value = obj@updateSequence)
+  if (!is.na(obj@updateSequence)) {
+    xml2::xml_set_attr(x = xmlDoc, attr = "updateSequence", value = obj@updateSequence)
   }
 
-  if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
-    .acceptFormats <- XML2::xmlNode(name = "AcceptFormats",
-                              namespace = owsNamespacePrefix)
-    .acceptFormats$children <- lapply(
-      obj@acceptFormats, "xmlNode", name="ows:OutputFormat")
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptFormats))
+  if (!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
+    acceptFormats <- xml2::xml_add_child(xmlDoc, owsAcceptFormatsName)
+    for (format in obj@acceptFormats) {
+      xml2::xml_add_child(acceptFormats, owsOutputFormatName, format)
+    }
   }
 
-  if(!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
-    .acceptLanguages <- XML2::xmlNode(name = "AcceptLanguages",
-                                namespace = owsNamespacePrefix)
-    .acceptLanguages$children <- lapply(
-      obj@acceptLanguages, "xmlNode", name="ows:Language")
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.acceptLanguages))
+  if (!any(sapply(obj@acceptLanguages, "is.na"), na.rm = TRUE)) {
+    acceptLangs <- xml2::xml_add_child(xmlDoc, owsAcceptLanguagesName)
+    for (lang in obj@acceptLanguages) {
+      xml2::xml_add_child(acceptLangs, owsLanguageName, lang)
+    }
   }
 
-  return(.xmlDoc)
+  return(xmlDoc)
 }
 
 
@@ -420,7 +423,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
 # SOAP encoding
 setMethod("encodeRequestSOAP", "OwsGetCapabilities",
           function(obj, sos, verbose = FALSE) {
-            if(verbose) {
+            if (verbose) {
               cat("ENCODE SOAP ", class(obj), "\n")
             }
 

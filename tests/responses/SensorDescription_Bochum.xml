@@ -72,13 +72,13 @@
 									<swe:coordinate name="easting">
 										<swe:Quantity axisID="x">
 											<swe:uom code="degree"/>
-											<swe:value>7.270806</swe:value>
+											<swe:value>7.370806</swe:value>
 										</swe:Quantity>
 									</swe:coordinate>
 									<swe:coordinate name="northing">
 										<swe:Quantity axisID="y">
 											<swe:uom code="degree"/>
-											<swe:value>51.447722</swe:value>
+											<swe:value>51.557722</swe:value>
 										</swe:Quantity>
 									</swe:coordinate>
 								</swe:Vector>

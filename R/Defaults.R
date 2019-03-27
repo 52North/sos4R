@@ -76,9 +76,9 @@ SosExampleServices <- function() {
     parseEncoding,
     parseValues,
     parseSwePosition,
-    parseLocation,
-    parseVector,
-    parseCoordinate,
+    parseSweLocation,
+    parseSweVector,
+    parseSweCoordinate,
     #
     parseGeometryObservation,
     parseCategoryObservation,

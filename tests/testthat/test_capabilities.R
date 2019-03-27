@@ -158,7 +158,7 @@ rangeXml <- '<ows:Range xmlns:ows="http://www.opengis.net/ows/1.1">
 <ows:MaximumValue>2015-12-13T00:00:00.000+01:00</ows:MaximumValue>
 </ows:Range>'
 
-test_that("composite phenomenon name is parsed from snippet", {
+test_that("range", {
   doc <- parseXmlSnippet(rangeXml)
   range <- parseOwsRange(obj = doc)
   expect_equal(range@minimumValue, "2005-12-03T00:00:00.000+01:00")
@@ -168,8 +168,8 @@ test_that("composite phenomenon name is parsed from snippet", {
 operationXml <- '<ows:Operation name="GetCapabilities" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
       <ows:DCP>
         <ows:HTTP>
-          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos/sos?"/>
-          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos/sos"/>
+          <ows:Get xlink:href="http://sos/GET?"/>
+          <ows:Post xlink:href="http://sos/POST"/>
         </ows:HTTP>
       </ows:DCP>
       <ows:Parameter name="updateSequence">
@@ -198,16 +198,29 @@ operationXml <- '<ows:Operation name="GetCapabilities" xmlns:ows="http://www.ope
       </ows:Parameter>
     </ows:Operation>'
 
-test_that("name from operation", {
+test_that("name", {
   doc <- parseXmlSnippet(operationXml)
   operation <- parseOwsOperation(obj = doc)
   expect_equal(sosName(operation), "GetCapabilities")
 })
 
-test_that("DCPs are parsed from operation", {
+test_that("parameter names", {
   doc <- parseXmlSnippet(operationXml)
   operation <- parseOwsOperation(obj = doc)
-  skip("Test not implemented yet.")
+  expect_named(operation@parameters, c("updateSequence", "AcceptVersions", "Sections", "AcceptFormats"))
+})
+
+test_that("parameter any value", {
+  doc <- parseXmlSnippet(operationXml)
+  operation <- parseOwsOperation(obj = doc)
+  expect_equal(operation@parameters[["updateSequence"]], list(owsAnyValueName))
+})
+
+test_that("parameter allowed values", {
+  doc <- parseXmlSnippet(operationXml)
+  operation <- parseOwsOperation(obj = doc)
+  expect_length(operation@parameters[["Sections"]], 6)
+  expect_equal(operation@parameters[["AcceptFormats"]], list("text/xml", "application/zip"))
 })
 
 context("parsing: filter capabilities")
@@ -402,9 +415,63 @@ test_that("name and site", {
   expect_s3_class(serviceProv@serviceContact, "xml_node")
 })
 
-context("capabilities: 52N SOS")
+context("GetCapabilities: request encoding 1.0.0")
 
-fivetwon <- SOS_Test(name = "testfivetwon")
-xmlCaps <- xml2::read_xml(x = "../responses/Capabilities_Mapserver.xml")
-parsedCaps <- parseSosCapabilities(obj = xmlCaps, sos = mapserver)
-mapserver@capabilities <- parsedCaps
+testsos <- SOS_Test(name = "testgetcap10")
+
+test_that("default for POX", {
+  obj <- OwsGetCapabilities(service = sosService,
+                            acceptVersions = c(sosVersion(testsos)),
+                            )
+  encoded <- encodeRequestXML(obj = obj, sos = testsos)
+  expect_match(toString(encoded), '<GetCapabilities')
+  expect_match(toString(encoded), 'service="SOS"')
+  expect_match(toString(encoded), '<ows:Version>1.0.0</ows:Version>')
+})
+
+test_that("update sequence in POX", {
+  obj <- OwsGetCapabilities(service = sosService,
+                            acceptVersions = c(sosVersion(testsos)),
+                            updateSequence = "test_seq"
+                            )
+  encoded <- encodeRequestXML(obj = obj, sos = testsos)
+  expect_match(toString(encoded), 'updateSequence="test_seq"')
+})
+
+test_that("accept formats and sections", {
+  obj <- OwsGetCapabilities(service = sosService,
+                            acceptVersions = c(sosVersion(testsos)),
+                            sections = c("Contents", "ServiceProvider")
+  )
+  encoded <- encodeRequestXML(obj = obj, sos = testsos)
+  expect_match(toString(encoded), '<ows:Section>Contents</ows:Section>')
+  expect_match(toString(encoded), '<ows:Section>ServiceProvider</ows:Section>')
+  expect_false(grepl(pattern = '<ows:Section>All</ows:Section>', x = toString(encoded)))
+
+  expect_match(toString(encoded), '<ows:OutputFormat>text/xml</ows:OutputFormat>')
+})
+
+context("GetCapabilities: request encoding 2.0.0")
+
+testsos20 <- SOS_Test(name = "testgetcap20", version = sos200_version)
+
+test_that("namespace and version", {
+  obj <- OwsGetCapabilities(service = sosService,
+                            acceptVersions = c(sosVersion(testsos20)),
+                            owsVersion = "2.0.0")
+  encoded <- encodeRequestXML(obj = obj, sos = testsos20)
+
+  expect_match(toString(encoded), 'xmlns="http://www.opengis.net/sos/2.0"')
+  expect_match(toString(encoded), '<ows:Version>2.0.0</ows:Version>')
+})
+
+test_that("accept language is set", {
+  obj <- OwsGetCapabilities(service = sosService,
+                            acceptVersions = c(sosVersion(testsos20)),
+                            acceptLanguages = c("DE", "EN"),
+                            owsVersion = "2.0.0")
+  encoded <- encodeRequestXML(obj = obj, sos = testsos20)
+  encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
+  expect_match(encodedString, '<ows:Language>DE</ows:Language>')
+  expect_match(encodedString, '<ows:Language>EN</ows:Language></ows:AcceptLanguages>')
+})

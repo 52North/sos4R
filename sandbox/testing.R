@@ -605,8 +605,8 @@ manualResult1 <- XML::xmlParseString(content = manualResult)
 class(manualResult1)
 # [1] "XMLInternalDocument" "XMLAbstractDocument" "oldClass"  
 
-manualResult2 <- XML2::xmlNode(name = sosResultName)
-manualResult2$children[[1]] <- XML2::xmlNode(name = ogcComparisonOpEqualToName)
+manualResult2 <- XML::xmlNode(name = sosResultName)
+manualResult2$children[[1]] <- XML::xmlNode(name = ogcComparisonOpEqualToName)
 class(manualResult2)
 # [1] "XMLNode" "RXMLAbstractNode" "XMLAbstractNode"  "oldClass"
 
@@ -632,13 +632,13 @@ myResult1 <- XML::xmlParseString(content = '<sos:result><ogc:PropertyIsGreaterTh
 <ogc:Literal>20</ogc:Literal></ogc:PropertyIsGreaterThan></sos:result>')
 # results in problems with external pointers...
 
-pn <- XML2::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+pn <- XML::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 xml2::xml_text(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
-l <- XML2::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
+l <- XML::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
 xml2::xml_text(x = l) <- "10"
-comp <- XML2::xmlNode(name = ogcComparisonOpGreaterThanName,
+comp <- XML::xmlNode(name = ogcComparisonOpGreaterThanName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
-myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sos100NamespacePrefix,
+myResult2 <- XML::xmlNode(name = sosResultName, namespace = sos100NamespacePrefix,
 		.children = list(comp))
 
 obs2 <- getObservation(sos = weathersos, eventTime = lastTenHours,
@@ -744,13 +744,13 @@ xml1 <- encodeXML('<lala name="horst"><pooh /></lala>', weathersos)
 str(xml1)
 # good
 
-pn <- XML2::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
+pn <- XML::xmlNode(name = ogcPropertyNameName, namespace = ogcNamespacePrefix)
 xml2::xml_text(x = pn) <- "urn:ogc:def:property:OGC::Temperature"
-l <- XML2::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
+l <- XML::xmlNode(name = "Literal", namespace = ogcNamespacePrefix)
 xml2::xml_text(x = l) <- "3"
-comp <- XML2::xmlNode(name = ogcComparisonOpLessThanOrEqualToName,
+comp <- XML::xmlNode(name = ogcComparisonOpLessThanOrEqualToName,
 		namespace = ogcNamespacePrefix, .children = list(pn, l))
-myResult2 <- XML2::xmlNode(name = sosResultName, namespace = sos100NamespacePrefix,
+myResult2 <- XML::xmlNode(name = sosResultName, namespace = sos100NamespacePrefix,
 		.children = list(comp))
 str(myResult2)
 class(myResult2)
@@ -781,7 +781,7 @@ XML::xmlParseString(content = shouldWorkString)
 str(encodeXML(shouldWorkString, weathersos))
 
 # try automatic namespace adding with encodeXML
-namespacedResult <- XML2::xmlNode(name = sosResultName,
+namespacedResult <- XML::xmlNode(name = sosResultName,
 		namespace = sos100NamespacePrefix,
 		namespaceDefinitions = c(.sosNamespaceDefinitionsForAll,
 				.sosNamespaceDefinitionsGetObs))

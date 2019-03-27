@@ -264,7 +264,8 @@ if (!isGeneric("sosCreateTimeInstant"))
 #
 if (!isGeneric("sosCreateTimePeriod"))
   setGeneric(name = "sosCreateTimePeriod",
-             def = function(sos, begin, end, frame = as.character(NA),
+             def = function(sos, begin, end,
+                            frame = as.character(NA),
                             calendarEraName = as.character(NA),
                             indeterminatePosition = as.character(NA),
                             duration = as.character(NA),

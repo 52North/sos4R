@@ -92,8 +92,8 @@
 
 .toString.OwsOperation <- function(x, ...) {
   .s <- paste("Object of class OwsOperation: Name: ", x@name,
-              "\n\tParameters (names): ", paste(names(x@parameters)),
-              "\n\tDCPs (types): ", paste(names(x@DCPs)),
+              "\n\tParameters (names): ", toString(names(x@parameters)),
+              "\n\tDCPs (types): ", toString(names(x@DCPs)),
               "\n\tConstraints: ", toString(x@constraints),
               "\n\tMetadata: ", toString(x@metadata))
   return(.s)

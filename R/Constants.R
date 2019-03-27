@@ -175,33 +175,38 @@ SosSupportedServiceVersions <- function() {
 #
 # Namespaces ----
 #
-.sos100_NamespaceDefinitionsForAll <- c(sos = "http://www.opengis.net/sos/1.0",
-                                        xsi = "http://www.w3.org/2001/XMLSchema-instance")
+sos100Namespace <- "http://www.opengis.net/sos/1.0"
+xsiNamespace <- "http://www.w3.org/2001/XMLSchema-instance"
+owsNamespace <- "http://www.opengis.net/ows/1.1"
+ogcNamespace <- "http://www.opengis.net/ogc"
+gmlNamespace <- "http://www.opengis.net/gml"
+gml32Namespace <- "http://www.opengis.net/gml/3.2"
+smlNamespace <- "http://www.opengis.net/sensorML/1.0.1"
+sweNamespace <- "http://www.opengis.net/swe/1.0.1"
+xlinkNamespace <- "http://www.w3.org/1999/xlink"
 .sos100_NamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
                                         om = "http://www.opengis.net/om/1.0",
                                         ogc = "http://www.opengis.net/ogc",
                                         gml = "http://www.opengis.net/gml")
-.sos100_NamespaceDefinitionsGetCap <- c(ows = "http://www.opengis.net/ows/1.1",
-                                        ogc = "http://www.opengis.net/ogc")
-.sos100_NamespaceDefinitionsSML <- c(sml = "http://www.opengis.net/sensorML/1.0.1",
-                                     gml = "http://www.opengis.net/gml",
-                                     swe = "http://www.opengis.net/swe/1.0.1",
-                                     xlink = "http://www.w3.org/1999/xlink",
-                                     xsi = "http://www.w3.org/2001/XMLSchema-instance")
-.namespaceDefinitionsGML <- c(gml32 = "http://www.opengis.net/gml/3.2")
 .sos20_NamespaceDefinitions <- c(sams = "http://www.opengis.net/samplingSpatial/2.0",
                                  sf = "http://www.opengis.net/sampling/2.0",
                                  swes = "http://www.opengis.net/swes/2.0",
                                  om20 = "http://www.opengis.net/om/2.0",
                                  sos = "http://www.opengis.net/sos/2.0")
 
+sos200Namespace = "http://www.opengis.net/sos/2.0"
+
 SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
-    .all <- c(sos4R:::.sos100_NamespaceDefinitionsForAll,
+    .all <- c(sos = sos100Namespace,
+              xsi = xsiNamespace,
               sos4R:::.sos100_NamespaceDefinitionsGetObs,
-              sos4R:::.sos100_NamespaceDefinitionsGetCap,
-              sos4R:::.sos100_NamespaceDefinitionsSML,
-              sos4R:::.namespaceDefinitionsGML)
+              ows = owsNamespace,
+              ogc = ogcNamespace,
+              sml = smlNamespace,
+              swe = sweNamespace,
+              xlink = xlinkNamespace,
+              gml = gmlNamespace)
     return(.all[unique(names(.all))])
     } else if (version == sos200_version) {
       .all <- c(sos4R:::.sos20_NamespaceDefinitions)
@@ -210,8 +215,6 @@ SosAllNamespaces <- function(version = sos100_version) {
     stop("Unsupported version", version)
   }
 }
-
-# TODO fix schema locations for SOS 2.0
 
 .sos100_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd")
 .sos20_xsiSchemaLocationAttribute <- c("xsi:schemaLocation" = "http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd")
@@ -426,11 +429,11 @@ SosSupportedComparisonOperators <- function() {
   return(.ogcSupportedComparisonOperators)
 }
 
-ogcPropertyNameName <- "PropertyName"
-ogcBBOXName <- "BBOX"
-ogcContainsName <- "Contains"
-ogcIntersectsName <- "Intersects"
-ogcOverlapsName <- "Overlaps"
+ogcPropertyNameName <- paste0(ogcNamespacePrefix, ":PropertyName")
+ogcBBOXName <- paste0(ogcNamespacePrefix, ":BBOX")
+ogcContainsName <- paste0(ogcNamespacePrefix, ":Contains")
+ogcIntersectsName <- paste0(ogcNamespacePrefix, ":Intersects")
+ogcOverlapsName <- paste0(ogcNamespacePrefix, ":Overlaps")
 ogcSpatialCapabilitiesName <- paste0(ogcNamespacePrefix, ":Spatial_Capabilities")
 ogcTemporalCapabilitiesName <- paste0(ogcNamespacePrefix, ":Temporal_Capabilities")
 ogcScalarCapabilitiesName <- paste0(ogcNamespacePrefix, ":Scalar_Capabilities")
@@ -459,6 +462,7 @@ owsNamespacePrefix <- "ows"
 owsServiceIdentificationName <- paste0(owsNamespacePrefix, ":ServiceIdentification")
 owsTitleName <- paste0(owsNamespacePrefix, ":Title")
 owsAbstractName <- paste0(owsNamespacePrefix, ":Abstract")
+owsAcceptVersionsName <- paste0(owsNamespacePrefix, ":AcceptVersions")
 owsKeywordsName <- paste0(owsNamespacePrefix, ":Keywords")
 owsKeywordName <- paste0(owsNamespacePrefix, ":Keyword")
 owsServiceTypeName <- paste0(owsNamespacePrefix, ":ServiceType")
@@ -489,7 +493,17 @@ owsProfileName <- paste0(owsNamespacePrefix, ":Profile")
 owsProviderNameName <- paste0(owsNamespacePrefix, ":ProviderName")
 owsProviderSiteName <- paste0(owsNamespacePrefix, ":ProviderSite")
 owsServiceContactName <- paste0(owsNamespacePrefix, ":ServiceContact")
+owsVersionName <- paste0(owsNamespacePrefix, ":Version")
+owsSectionsName <- paste0(owsNamespacePrefix, ":Sections")
+owsSectionName <- paste0(owsNamespacePrefix, ":Section")
+owsAcceptFormatsName <- paste0(owsNamespacePrefix, ":AcceptFormats")
+owsOutputFormatName <- paste0(owsNamespacePrefix, ":OutputFormat")
+owsAcceptLanguagesName <- paste0(owsNamespacePrefix, ":AcceptLanguages")
+owsLanguageName <- paste0(owsNamespacePrefix, ":Language")
 
+#
+# KML ----
+#
 kmlName <- "kml"
 
 #

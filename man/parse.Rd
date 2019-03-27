@@ -58,14 +58,14 @@
 \alias{parseFile,SOS_1.0.0,character-method}
 \alias{parseFile,SOS_versioned,character-method}
 
-\alias{parseCoordinate}
-\alias{parseCoordinate-method}
-\alias{parseVector}
-\alias{parseVector-method}
-\alias{parseLocation}
-\alias{parseLocation-method}
+\alias{parseSweCoordinate}
+\alias{parseSweCoordinate-method}
+\alias{parseSweLocation}
+\alias{parseSweLocation-method}
 \alias{parseSwePosition}
 \alias{parseSwePosition-method}
+\alias{parseSweVector}
+\alias{parseSweVector-method}
 
 \alias{parseGetFeatureOfInterestResponse}
 \alias{parseGetObservationResponse}

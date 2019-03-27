@@ -72,7 +72,7 @@ The most useful functions are highlighted in **bold font**.
 ### Demos and services
 
 The **demos** are a good way to get started with the package.
-Please be aware that you need an internet connection for these demos, the used SOSs might be temporarily unavailable.
+Please be aware that you need an internet connection for these demos, the used SOSs might be temporarily unavailable or not available anymore.
 
 ```{r demos, eval=FALSE}
 # list available demos:

@@ -53,37 +53,30 @@ parseOwsOperation <- function(obj) {
 
   if (length(.parametersXML) > 0) {
     for (.p in .parametersXML) {
-      .allowedValues <- NULL
-      .ranges <- NULL
-      .allowedValuesAndRanges <- NULL
+      .allowedValuesAndRanges <- list()
 
       # check for ows:AnyValue
-      if (length(.p[owsAnyValueName]) > 0)
+      if (!is.na(xml2::xml_child(x = .p, search = owsAnyValueName, ns = SosAllNamespaces()))) {
         .allowedValuesAndRanges = list(owsAnyValueName)
+      }
       else {
-        # list of allowed values
-        .xpathAllowedValues <- paste("./", owsNamespacePrefix, ":",
-                                     owsAllowedValuesName, "/", owsNamespacePrefix, ":",
-                                     owsValueName, sep = "")
-        .allowedValues <- xml2::xml_text(
-          xml2::xml_find_all(x = .p,
-                             xpath = .xpathAllowedValues,
-                             ns = SosAllNamespaces()))
-        # list of ranges
-        .xpathRanges <- paste("./", owsNamespacePrefix, ":",
-                              owsAllowedValuesName, "/", owsNamespacePrefix, ":",
-                              owsRangeName, sep = "")
-        .ranges <-  sapply(xml2::xml_find_all(x = .p,
-                                              xpath = .xpathRanges,
-                                              ns = SosAllNamespaces()),
-                           parseOwsRange)
-        .allowedValuesAndRanges <- c(.allowedValues, .ranges)
+        # try list of allowed values
+        .allowedValuesXml <- xml2::xml_find_all(x = .p,
+                                                xpath = paste0(owsAllowedValuesName, "/", owsValueName),
+                                                ns = SosAllNamespaces())
+        if (length(.allowedValuesXml) > 0)
+          .allowedValuesAndRanges <- c(.allowedValuesAndRanges, xml2::xml_text(.allowedValuesXml))
+
+        # try list of ranges
+        .rangesXml <- xml2::xml_find_all(x = .p,
+                                         xpath = paste0(owsAllowedValuesName, "/", owsRangeName),
+                                         ns = SosAllNamespaces())
+        if (length(.rangesXml) > 0)
+          .allowedValuesAndRanges <- c(.allowedValuesAndRanges, sapply(.rangesXml, parseOwsRange))
       }
 
       .names <- c(.names, xml2::xml_attr(x =  .p, attr = "name"))
       .parameters[[length(.parameters) + 1]] <- .allowedValuesAndRanges
-      # the following does NOT work as it recursively concatenates the
-      # lists: .parameters <- c(.parameters, .allowedValuesAndRanges)
     }
 
     names(.parameters) <- .names

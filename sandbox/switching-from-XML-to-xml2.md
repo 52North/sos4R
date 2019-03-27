@@ -69,7 +69,7 @@ The `itdepends` package helps with finding all usages of XML, see https://speake
 | `XML::addChildren(node = <node object>, kids = list())` | `xml2::xml_add_child(.x = <document or nodeset>, .value = <document, node or nodeset>)` | Add child nodes to a node |
 | `XML::saveXML(doc = <xml document object>, file = "<file name>")` | `xml2::write_xml(x = <document or node>, file = "<path or connection">)` | Write XML document to string or file |
 | `XML::xmlNamespaceDefinitions(x = <node>)` | `xml2::xml_ns(x = <document, node, or node set>)` | Get namespace definitions from a node |
-| `XML::xmlNode(name = "<node name>")` | `xml2::xml_new_document %>% xml2::xml_add_child("<node name>")` or (preferred in docs) `xml_new_root("<node name>")` | Create a new node |
+| `XML::xmlNode(name = "<node name>")` | `xml2::xml_new_document %>% xml2::xml_add_child("<node name>")` or (preferred in docs) `xml2::xml_new_root("<node name>")` | Create a new node |
 | `XML::xmlValue()` | `xml2::xml_text(x = <document, node, or node set>)` | Get/Set contents of a leaf node |
 
 ### Classes
@@ -171,32 +171,18 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
       - `parseOwsServiceIdentification`
       - `parseTime`
       - `parseSosObservationOffering` (also for 2.0.0)
-      
-
-
-
     - fix tests in `test_sensors.R`
-
-
-      - `parseMonitoringPoint`
-      - `parseSamplingPoint`
-
-
-  - **[Encoding functions]**
+  - **[Continue with encoding functions]**
   - `XML::addAttributes`
     - switched manually because sometimes `.attrs` is used, which is replaced with `xml2::xml_set_attrs()`, and sometimes not (single `...`), which is replaced with `xml2::xml_set_attr()`, the `_set_attr` variants operate directly on the object (no need to re-assign), and often statements are multi-line (18 occurrences)
+    - get rid of `.sos100_NamespaceDefinitionsForAll`
+  - `XML::xmlNode` and `XML::addChildren`
+    - manually switched to `xml2::xml_new_root("<node name>")` and `xml2::xml_add_child("<node name>")`
+    - `attrs` parameter replaced with `xml2::xml_set_attrs()`
+    - https://github.com/r-lib/xml2/issues/239 is a problem
 
 
-`XML2::xmlNode` - da muss was falsch gelaufen sein...
-
-
-
-  - `XML::addChildren`
-
-- must revisit SOS-methodsR lines 700 and following, about a lot of commented out response code handling
-  
-
-
+    remaining: encoding functions in SOS-methods.R
 
 _Limitations of regexes_ for the actual switch are due to multi-line statements and the result of functions not being the same.
 Especially the subsetting with `[[` used extensively does not work the same way anymore.

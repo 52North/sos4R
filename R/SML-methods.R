@@ -63,7 +63,8 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
   .descrNode <- xml2::xml_find_first(x = .root,
                                         xpath = .smlXPathDescription,
                                         ns = SosAllNamespaces())
-  .description <- xml2::xml_text(x = .descrNode)
+  if (!is.na(.descrNode))
+    .description <- xml2::xml_text(x = .descrNode)
 
   if (verbose) cat("[parseSensorML] Got ID", .id,
                    "and shortName", .shortName,
@@ -76,11 +77,11 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
                                         ns = SosAllNamespaces())
   if (!is.na(.observedBBox)) {
     .referenceFrame <- xml2::xml_attr(x = .observedBBox, attr = "referenceFrame", ns = SosAllNamespaces())
-    .llVector <- parseVector(xml2::xml_child(x = .observedBBox,
+    .llVector <- parseSweVector(xml2::xml_child(x = .observedBBox,
                                              search = paste0(sweUpperCornerName, "/", sweVectorName),
                                              ns = SosAllNamespaces()),
                              sos = sos, verbose = verbose)
-    .uuVector <- parseVector(xml2::xml_child(x = .observedBBox,
+    .uuVector <- parseSweVector(xml2::xml_child(x = .observedBBox,
                                              search = paste0(sweLowerCornerName, "/", sweVectorName),
                                              ns = SosAllNamespaces()),
                              sos = sos, verbose = verbose)
@@ -158,7 +159,8 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 #
 #
 .smlIdentifier <- function(doc, identifierName, verbose = FALSE) {
-  .xpath <- gsub(pattern = .xPathToken, replacement = identifierName,
+  .xpath <- gsub(pattern = .xPathToken,
+                 replacement = identifierName,
                  x = .smlXPathIdentifier)
 
   if (verbose) cat("[.smlIdentifier] Accessing path ", .xpath, "\n")

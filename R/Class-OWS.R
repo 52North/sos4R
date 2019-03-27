@@ -88,7 +88,8 @@ setClass("OwsGetCapabilities",
 # See OWS Common 1.1.0, OGC 06-121r3
 #
 setClass("OwsGetCapabilities_1.1.0",
-         representation(sections = "vector", acceptFormats = "vector",
+         representation(sections = "vector",
+                        acceptFormats = "vector",
                         updateSequence = "vector"),
          prototype = list(owsVersion = "1.1.0"),
          contains = "OwsGetCapabilities",

@@ -331,39 +331,37 @@ setMethod(f = "sosObservableProperties", signature = signature(
     .op <- sapply(obj@components, sosObservableProperties)
     return(.op)
   })
-setMethod(f = "sosObservableProperties", signature = signature(
-  obj = "SwePhenomenonProperty"),
-  def = function(obj) {
-    return(obj@href)
-  })
+setMethod(f = "sosObservableProperties", signature = signature(obj = "SwePhenomenonProperty"),
+          definition = function(obj) {
+            return(obj@href)
+            })
 
 if (!isGeneric("sosBoundedBy"))
   setGeneric(name = "sosBoundedBy", def = function(obj, ...) {
     standardGeneric("sosBoundedBy")
   })
-setMethod(f = "sosBoundedBy", signature = signature(
-  obj = "SosObservationOffering"),
-  def = function(obj, bbox = FALSE) {
+setMethod(f = "sosBoundedBy",
+          signature = signature(obj = "SosObservationOffering"),
+          definition = function(obj, bbox = FALSE) {
     return(.boundedBy(obj, bbox))
   })
-setMethod(f = "sosBoundedBy", signature = signature(obj = "list"),
-          def = function(obj, bbox = FALSE) {
+setMethod(f = "sosBoundedBy",
+          signature = signature(obj = "list"),
+          definition = function(obj, bbox = FALSE) {
             .bb <- lapply(obj, sosBoundedBy, bbox = bbox)
             return(.bb)
           })
 setMethod(f = "sosBoundedBy",
           signature = signature(obj = "OmObservationCollection"),
-          def = function(obj, bbox = FALSE) {
+          definition = function(obj, bbox = FALSE) {
             return(.boundedBy(obj, bbox))
           })
 .boundedBy <- function(obj, bbox) {
   .bb <- NA
 
   if(bbox) {
-    .lC <- strsplit(x = obj@boundedBy[[gmlLowerCornerName]],
-                    split = " ")[[1]]
-    .uC <- strsplit(x = obj@boundedBy[[gmlUpperCornerName]],
-                    split = " ")[[1]]
+    .lC <- strsplit(x = obj@boundedBy[[gmlLowerCornerName]], split = " ")[[1]]
+    .uC <- strsplit(x = obj@boundedBy[[gmlUpperCornerName]], split = " ")[[1]]
 
     warning <- FALSE
     if((length(.lC) < 2)) {
@@ -385,8 +383,7 @@ setMethod(f = "sosBoundedBy",
       max2 <- as.double(.uC[[2]])
     }
 
-    if(warning)
-      warning(paste("No valid bounding box found for", sosId(obj)))
+    if(warning) warning(paste("No valid bounding box found for", sosId(obj)))
 
     .bb <- matrix(c(min2, min1, max2, max1), ncol = 2,
                   dimnames = list(c("coords.lon", "coords.lat"),

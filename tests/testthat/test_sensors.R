@@ -1,6 +1,6 @@
 context("DescribeSensor: request encoding")
 
-testsos <- SOS_Test(name = "testcaps")
+testsos <- SOS_Test(name = "testsensor")
 axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_52N-SOS_Axiom.xml"), testsos)
 testsos@capabilities <- axiomCaps
 
@@ -49,33 +49,40 @@ test_that("output format is encoded correctly for KVP", {
 
 })
 
-context("DescribeSensor response parsing")
+context("parsing: sensor description")
 
 sensorDescription <- xml2::read_xml(x = "../responses/SensorDescription_Bochum.xml")
 
 test_that("sensor id is parsed", {
-  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  sml <- parseSensorML(obj = sensorDescription, sos = testsos)
   expect_equal(sml@id, "http://www.52north.org/test/procedure/6")
 })
 
 test_that("sensor name is parsed", {
-  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  sml <- parseSensorML(obj = sensorDescription, sos = testsos)
   expect_equal(sml@name, "Hochschule Bochum")
 })
 
 test_that("sensor description is parsed", {
-  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  sml <- parseSensorML(obj = sensorDescription, sos = testsos)
   expect_equal(sml@description, "A test sensor in Bochum")
 })
 
 test_that("sensor position is parsed", {
-  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  sml <- parseSensorML(obj = sensorDescription, sos = testsos)
   expect_named(sml@coords, c("y", "x", "z"))
   expect_equal(sml@coords[["y"]], 51.447722)
   expect_equal(sml@coords[["x"]], 7.270806)
   expect_equal(sml@coords[["z"]], 52.0)
 })
 
-test_that("sensor bbox is parsed", {
-  skip("TODO: implement test")
+test_that("sensor boundedBy", {
+  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  expect_equal(dim(sosBoundedBy(sml)), c(2, 2))
+  expect_equal(dimnames(sosBoundedBy(sml)), list(c("coords.lon", "coords.lat"), c("min", "max")))
+})
+
+test_that("sp bbox can be created from boundedBy", {
+  sml <- parseSensorML(obj = xml2::xml_root(sensorDescription), sos = testsos)
+  expect_match(toString(sp::bbox(sosBoundedBy(sml))), "7.270806, 7.370806, 51.447722, 51.557722")
 })

@@ -264,9 +264,9 @@ parseEncoding <- function(obj, sos, verbose = FALSE) {
   }
 }
 
-################################################################################
-# sub-parsing functions, not exchangeable via SosParsers
-
+#
+# unexchangeable sub-parsing functions ----
+#
 .sosParseFieldName <- ".sosParseFieldName"
 .sosParseFieldDefinition <- ".sosParseFieldDefinition"
 .sosParseFieldUOM <- ".sosParseFieldUOM"
@@ -354,9 +354,6 @@ parseField <- function(obj, sos, verbose = FALSE) {
   return(.field)
 }
 
-#
-#
-#
 parseTextBlock <- function(obj) {
   .id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
   .tS <- xml2::xml_attr(x = obj, attr = "tokenSeparator")
@@ -368,9 +365,6 @@ parseTextBlock <- function(obj) {
   return(.tb)
 }
 
-#
-#
-#
 parseTextEncoding <- function(obj) {
   .id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
   .tS <- xml2::xml_attr(x = obj, attr = "tokenSeparator")
@@ -382,9 +376,6 @@ parseTextEncoding <- function(obj) {
   return(.tb)
 }
 
-#
-#
-#
 parsePhenomenonProperty <- function(obj, verbose = FALSE) {
   .obsProp <- NULL
 
@@ -413,9 +404,6 @@ parsePhenomenonProperty <- function(obj, verbose = FALSE) {
   return(.obsProp)
 }
 
-#
-#
-#
 parseCompositePhenomenon <- function(obj, verbose = FALSE) {
   .id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
   if (verbose) cat("[parseCompositePhenomenon] with id", .id, "\n")
@@ -448,9 +436,6 @@ parseCompositePhenomenon <- function(obj, verbose = FALSE) {
   return(.compPhen)
 }
 
-#
-#
-#
 parseComponent <- function(obj, verbose = FALSE) {
   if (verbose) cat("[parseComponent] ", as(obj, "character"), "\n")
   # 52N SOS only sets the href property on swe components, but still reuse function
@@ -458,9 +443,6 @@ parseComponent <- function(obj, verbose = FALSE) {
   return(.component)
 }
 
-#
-#
-#
 parseSwePosition <- function(obj, sos, verbose = FALSE) {
   .rF <- xml2::xml_attr(x = obj, attr = "referenceFrame", ns = SosAllNamespaces())
   if (verbose) cat("[parseSwePosition] with referenceFrame", .rF, "\n")
@@ -476,66 +458,45 @@ parseSwePosition <- function(obj, sos, verbose = FALSE) {
   return(.pos)
 }
 
-#
-#
-#
-parseLocation <- function(obj, sos, verbose = FALSE) {
+parseSweLocation <- function(obj, sos, verbose = FALSE) {
   .vector <- xml2::xml_child(x = obj, search = sweVectorName, ns = SosAllNamespaces())
   .id <- xml2::xml_attr(x = obj, attr = "id")
-  if (verbose) cat("[parseLocation] with id", .id, "\n")
+  if (verbose) cat("[parseSweLocation] with id", .id, "\n")
 
   .parser <- sosParsers(sos)[[sweVectorName]]
+  location <- .parser(.vector, sos = sos, verbose = verbose)
 
-  .pos <- .parser(.vector, sos = sos, verbose = verbose)
-  return(.pos)
+  return(location)
 }
 
-#
-#
-#
-parseVector <- function(obj, sos, verbose = FALSE) {
+parseSweVector <- function(obj, sos, verbose = FALSE) {
   .children <- xml2::xml_find_all(x = obj,
                                   xpath = sweCoordinateName,
                                   ns = SosAllNamespaces())
 
-  .coords <- list()
-  .names <- list()
-  for (i in seq(1, length(.children))) {
-    .c <- xml2::xml_child(x = .children, search = i)
-    .coord <- parseCoordinate(.c, sos = sos, verbose = verbose)
-    .coords <- c(.coords, list(.coord))
-    .names <- c(.names, list(.coord[["axisID"]]))
+  .parser <- sosParsers(sos)[[sweCoordinateName]]
+  .vector <- lapply(X = .children, FUN = .parser, sos = sos, verbose = verbose)
+  names(.vector) <- sapply(.vector, function(current) {return(current$axisID)})
+  if (verbose) cat("[parseSweVector] parsed vector with coordinates: ", toString(names(.vector)), "\n")
 
-    if (verbose) cat("[parseVector] parsed coordinate: ", toString(.coord), "\n")
-  }
-
-  names(.coords) <- .names
-
-  return(.coords)
+  return(.vector)
 }
 
-#
-# <coordinate name="easting">
-# <swe:Quantity axisID="x">
-# <swe:uom code="degree"/>
-# <swe:value>7.270806</swe:value>
-# </swe:Quantity>
-#
-parseCoordinate <- function(obj, sos, verbose = FALSE) {
+parseSweCoordinate <- function(obj, sos, verbose = FALSE) {
   .name <- xml2::xml_attr(x = obj, attr = "name")
-  if (verbose) cat("[parseCoordinate] with name", .name, "\n")
+  if (verbose) cat("[parseSweCoordinate] with name", .name, "\n")
 
   .quantity <- xml2::xml_child(x = obj, search = sweQuantityName, ns = SosAllNamespaces())
   .axisID <- xml2::xml_attr(x = .quantity, attr = "axisID")
-  if (verbose) cat("[parseCoordinate] axisID: ", .axisID, "\n")
+  if (verbose) cat("[parseSweCoordinate] axisID: ", .axisID, "\n")
 
   .uomNode <- xml2::xml_child(x = .quantity, search = sweUomName, ns = SosAllNamespaces())
   .uomCode <- xml2::xml_attr(x = .uomNode, attr = "code", ns = SosAllNamespaces())
-  if (verbose) cat("[parseCoordinate] uomCode: ", .uomCode, "\n")
+  if (verbose) cat("[parseSweCoordinate] uomCode: ", .uomCode, "\n")
 
   .valueNode <- xml2::xml_child(x = .quantity, search = sweValueName, ns = SosAllNamespaces())
   .value <- as.double(xml2::xml_text(x = .valueNode))
-  if (verbose) cat("[parseCoordinate] value: ", .value, "\n")
+  if (verbose) cat("[parseSweCoordinate] value: ", .value, "\n")
 
   return(list(name = .name,
               axisID = .axisID,

@@ -70,21 +70,19 @@ setMethod(f = "sosCreateTimePeriod",
           signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
           definition = function(sos, begin, end, frame, calendarEraName,
                          indeterminatePosition, duration, timeInterval) {
-            #			.tf <- sosTimeFormat(sos)
             .beginPos <- GmlTimePosition(
-              #					time = strptime(format(begin, .tf), .tf),
               time = begin,
               frame = frame, calendarEraName = calendarEraName,
               indeterminatePosition = indeterminatePosition
             )
             .endPos <- GmlTimePosition(
-              #					time = strptime(format(end, .tf), .tf),
               time = end,
               frame = frame, calendarEraName = calendarEraName,
               indeterminatePosition = indeterminatePosition
             )
             .tp <- GmlTimePeriod(beginPosition = .beginPos,
-                                 endPosition = .endPos, duration = duration,
+                                 endPosition = .endPos,
+                                  duration = duration,
                                  timeInterval = timeInterval)
             return(.tp)
           }
@@ -120,7 +118,7 @@ setMethod(f = "sosCreateTime",
                                                         operator = operator)
             }
 
-            if (is.null(.l)) warning("[sosCreateTime] could not create time.")
+            if (is.null(.l)) stop("[sosCreateTime] could not create time.")
 
             return(.l)
           }
