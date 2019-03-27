@@ -92,7 +92,7 @@ if (!isGeneric("getObservation"))
              signature = signature("sos", "offering", "observedProperty",
                                    "responseFormat", "srsName", "eventTime", "procedure",
                                    "featureOfInterest", "result", "resultModel",
-                                   "responseMode", "BBOX", "latest", "verbose", "inspect",
+                                   "responseMode", "BBOX", "verbose", "inspect",
                                    "saveOriginal"),
              def = function(sos, offering,
                             observedProperty = sosObservedProperties(obj = offering),
@@ -106,7 +106,6 @@ if (!isGeneric("getObservation"))
                             resultModel = as.character(NA),
                             responseMode = as.character(NA),
                             BBOX = as.character(NA),
-                            latest = FALSE,
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
                             saveOriginal = NULL) {

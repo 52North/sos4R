@@ -35,15 +35,6 @@ print(object.size(pegelsos), units = c("Mb"))
 
 sosFeaturesOfInterest(pegelsos)
 
-off <- sosOfferings(pegelsos)[[1]]
-latestObs <- getObservation(sos = pegelsos,
-		offering = off,
-#		observedProperty = sosObservedProperties(offering),
-		procedure = sosProcedures(off)[11:13],
-		latest = TRUE,
-		inspect = TRUE) #, verbose = TRUE)
-sosResult(latestObs)
-
 # three procedures, but only getting 1 element with one procedure...
 pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
 pegelObs <- getObservation(sos = pegelsos,
@@ -1098,14 +1089,13 @@ property_temp='00060'
 # Environmental Data Discovery and Transformation - Beta Service Version
 # About: http://nwisvaws02.er.usgs.gov/ogc-swie/index.jsp
 
-# GetObservation - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional), Latest(optional)
+# GetObservation - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional)
 #
 # observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 
 # - corresponds to: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH 
 # beginPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to earliest record)
 # endPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to most recent record)
 # Interval: Today, ThisWeek Future plan to implement ISO-8601 Duration option
-# Latest: only the most recent data point is reported
 # offering: UNIT (defaults to UNIT)
 #
 # Gage height observation by feature ID and begin time:
@@ -1120,28 +1110,10 @@ sosCapabilitiesDocumentOriginal(nwis)
 sosOfferings(nwis)
 sosFeaturesOfInterest(nwis) # > GetFeature request on WFS...
 
-
-# TODO: write simple getData wrapper function that takes fois and observed properties as strings
-sosKVPParamNameFoi <- "featureId" # non-standard request param name
-sosDefaultGetBindingParamLatest <- "latest"
-SosDefaults()
-obs <- getObservation(sos = nwis, offering = "UNIT", observedProperty = list("00060"),
-						featureOfInterest = SosFeatureOfInterest(objectIDs = list("05407000")),
-						responseFormat = as.character(NA),
-						latest = TRUE, # latest not standard-conform
-						inspect = FALSE, verbose = TRUE)
-
-# implement latest > FIXME so that user can set the value...
-# TODO add settings parameter to SOS classes and the default content is SosDefaults()!!!
-encodeKVP(obj = sos4R:::.createLatestEventTime(TRUE), sos = nwis, verbose = TRUE)
-
-# TODO implement WML parser
-
 ###############################################################################
 # SOS 1.0.0 in new 52N SOS 4.0 - a "Testsuite"
 # http://localhost:8080/sos/
 # 4.0.0-SNAPSHOT, Revision: 0, Build date: 2013-03-01 09:33:03
-#
 
 .sos4Rpath <- "D:/workspace-R/sos4R";
 source("D:/workspace-R/sos4R/sandbox/loadSources.R")

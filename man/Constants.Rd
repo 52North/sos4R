@@ -166,7 +166,6 @@
 \alias{sosFilterCapabilitiesName}
 \alias{sosCapabilitiesName}
 \alias{sosEventTimeName}
-\alias{sosEventTimeLatestValue}
 \alias{sosObjectIDName}
 \alias{sosResultName}
 \alias{sweCompositePhenomenonName}

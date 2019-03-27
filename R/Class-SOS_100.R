@@ -181,33 +181,6 @@ setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
 setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
 
 #
-# SosEventTimeLatest ----
-#
-# class needed for the non-standard request for latest value
-#
-setClass("SosEventTimeLatest",
-         representation(temporalOps = "OgcBinaryTemporalOp"),
-         contains = "SosEventTime",
-         prototype = list(temporalOps = NA),
-         validity = function(object) {
-           #print("Entering validation: SosEventTimeLatest")
-           # TODO implement validity function
-           return(TRUE)
-         }
-)
-
-
-.toString.SosEventTimeLatest <- function(x, ...) {
-  paste("Object of class SosEventTimeLatest; temporalOps value:",
-        x@temporalOps)
-}
-
-.print.SosEventTimeLatest <- function(x, ...) {
-  cat(.toString.SosEventTimeLatest(x, ...), "\n")
-  invisible(x)
-}
-
-#
 # SosFeatureOfInterest ----
 #
 setClass("SosFeatureOfInterest",

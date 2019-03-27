@@ -8,6 +8,7 @@
 - Add AppVeyor CI configuration
 - Use R Markdown based README (`README.Rmd`)
 - Combination of `verbose` and `inspect`: full requests and responses are only printed with `inspect = TRUE`
+- Drop support for non-standard "latest" time request 
 
 # sos4R 0.2-12
 

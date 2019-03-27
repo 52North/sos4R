@@ -4,12 +4,10 @@
 \docType{class}
 
 \alias{SosEventTime-class}
-\alias{SosEventTimeLatest-class}
 \alias{show,SosEventTime-method}
 \alias{print,SosEventTime-method}
 \alias{toString,SosEventTime-method}
 \alias{SosEventTime}
-\alias{SosEventTimeLatest}
 
 \title{Classes and Construction Functions for sos:eventTime elements.}
 
@@ -17,7 +15,6 @@
 
 \usage{
 SosEventTime(temporalOps)
-SosEventTimeLatest()
 }
 
 \arguments{
@@ -25,7 +22,7 @@ SosEventTimeLatest()
 }
 
 \section{Objects from the Classes}{
-Objects can be created by calls to the construction functions of the form \code{SosEventTime(...)} or \code{SosEventTimeLatest(...)}.
+Objects can be created by calls to the construction functions of the form \code{SosEventTime(...)}.
 }
 
 \section{Slots}{
@@ -37,14 +34,12 @@ Objects can be created by calls to the construction functions of the form \code{
 \section{Methods}{
   \describe{
     \item{encodeKVP}{\code{signature(obj = "SosEventTime", sos = "SOS")}: Encode the given object as a key-value pair.}
-    \item{encodeXML}{\code{signature(obj = "SosEventTime", sos = "SOS")} or \code{signature(obj = "SosEventTimeLatest", sos = "SOS")}: Encode the given object as XML.}
+    \item{encodeXML}{\code{signature(obj = "SosEventTime", sos = "SOS")}: Encode the given object as XML.}
 	 }
 }
 
 \details{
 Specifies the time period(s) for which observations are requested. This allows a client to request observations from a specific instant, multiple instances or periods of time in the past, present and future. The supported range is listed in the selected offering capabilities. The objects of these classes are used in the GetObservation (paramter in \link{GetObservation}).
-
-The request for the latest observation is \bold{not} standard conform. The distinction between the classes happens eventually during encoding, where both classes have different encoding functions.
 
 A typical example in a POST request:
 \verb{
@@ -75,7 +70,6 @@ It is recommended to use the creation functions as shown in the examples.
 
 \examples{
 showClass("SosEventTime")
-showClass("SosEventTimeLatest")
 
 \dontrun{
 # create SosEventTime for all times after the given time stamp
@@ -86,9 +80,6 @@ time1 <- SosEventTime(tOps)
 # encode it as XML and KVP
 encodeXML(time1)
 encodeKVP(time1)
-
-time2 <- SosEventTimeLatest()
-encodeXML(time2)
 }
 
 }

@@ -182,10 +182,6 @@ SosEventTime <- function(temporalOps) {
   new("SosEventTime", temporalOps = temporalOps)
 }
 
-SosEventTimeLatest <- function() {
-  new("SosEventTimeLatest")
-}
-
 SosFeatureOfInterest <- function(objectIDs = list(NA), spatialOps = NULL) {
   new("SosFeatureOfInterest", objectIDs = objectIDs, spatialOps = spatialOps)
 }
@@ -653,15 +649,8 @@ setMethod(f = "getObservationById",
 #
 .createGetObservation_1.0.0 <- function(sos, offeringId, observedProperty,
                                         responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                        result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+                                        result, resultModel, responseMode, BBOX, verbose, inspect,
                                         saveOriginal) {
-
-  if (latest) .eventTime <- list(.createLatestEventTime(verbose))
-  else .eventTime <- eventTime
-
-  if (latest && !is.na(eventTime))
-    warning("'Latest' is set to TRUE > given eventTime is ignored!")
-
   .go <- SosGetObservation(service = sosService, version = sos@version,
                            offering = offeringId, observedProperty = observedProperty,
                            responseFormat =  responseFormat, srsName = srsName,
@@ -681,7 +670,7 @@ setMethod(f = "getObservationById",
 #
 .getObservation_1.0.0 <- function(sos, offeringId, observedProperty,
                                   responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                  result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+                                  result, resultModel, responseMode, BBOX, verbose, inspect,
                                   saveOriginal) {
 
   .filename <- NULL
@@ -705,7 +694,7 @@ setMethod(f = "getObservationById",
 
   .go <- .createGetObservation_1.0.0(sos, offeringId, observedProperty,
                                      responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                     result, resultModel, responseMode, BBOX, latest, verbose, inspect,
+                                     result, resultModel, responseMode, BBOX, verbose, inspect,
                                      saveOriginal)
 
   if (verbose) cat("[.getObservation_1.0.0] REQUEST:\n\n", toString(.go), "\n")
@@ -719,8 +708,8 @@ setMethod(f = "getObservationById",
 
   # responseFormat starts with text/xml OR the response string is XML content,
   # for example an exception (which is xml even if request wants something else
-  #.contentType <- NA_character_
-  #.contentType <- attributes(.responseString)[["Content-Type"]]
+  .contentType <- NA_character_
+  .contentType <- attributes(.responseString)[["Content-Type"]]
 
   if (verbose) cat("[.getObservation_1.0.0] Content-Type:", .contentType, "\n")
 
@@ -732,63 +721,63 @@ setMethod(f = "getObservationById",
   if (inherits(.response, "xml_document")) {
   #if (isXMLString(str = .responseString)) {
     if (verbose) cat("[.getObservation_1.0.0] Got XML document as response.\n")
-  #
-  #  .hasSubtype <- FALSE
-  #  .contentSubtype <- NA
-  #  if (length(.contentType) < 1) {
-  #    if (verbose) cat("[.getObservation_1.0.0] No content type!",
-  #                     "Falling back to '", mimeTypeXML, "'\n")
-  #    .contentType <- mimeTypeXML
-  #  }
-  #  else if (length(.contentType) > 1) {
-  #    # check if subtype is present or take just the first
-  #    .subtypeIdx <- which(names(.contentType) == "subtype")
-  #    if (length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
-  #      .hasSubtype <- TRUE
-  #      .contentSubtype <- .contentType[[.subtypeIdx]]
-  #      if (verbose) cat("[.getObservation_1.0.0] Found mime subtype: ",
-  #                      toString(.contentSubtype), "'\n")
-  #    }
-  #    else if (verbose) cat(
-  #      "[.getObservation_1.0.0] More than one content type, ",
-  #      "no subtype detected : '",
-  #      toString(.contentType),
-  #      "'\n\tUsing the first one: '",
-  #      .contentType[[1]], "'\n")
-  #    .contentType <- .contentType[[1]]
-  #  }
-  #
-  #  .response <- .internalXmlRead(x = .responseString)
-  #  if (inspect) {
-  #    cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
-  #    print(.response)
-  #  }
-  #
-  #  # select the parser and file ending based on the mime type FIRST
-  #  .fileEnding <- ".xml"
-  #  if (.contentType == mimeTypeXML) {
-  #    if (.hasSubtype && .contentSubtype == mimeSubtypeOM) {
-  #      if (verbose)
-  #        cat("[.getObservation_1.0.0] Got OM according to mime type.\n")
-  #      .parserName <- mimeTypeOM
-  #    }
-  #    else {
-  #      if (verbose) cat("[.getObservation_1.0.0] Got pure XML according to mime type.",
-  #                       "Trying to parse with default parser, see SosParsingFunctions().\n")
-  #      .parserName <- mimeTypeXML
-  #    }
-  #  }
-  #  else if (.contentType == mimeTypeKML) {
-  #    if (verbose) cat("[.getObservation_1.0.0] Got KML according to mime type.\n")
-  #
-  #    .fileEnding <- ".kml"
-  #    .parserName <- mimeTypeKML
-  #  }
-  #  else {
-  #    # fall back, or more of a default: the function name
-  #    .parserName <- sosGetObservationName
-  #  }
-  #
+
+    .hasSubtype <- FALSE
+    .contentSubtype <- NA
+    if (length(.contentType) < 1) {
+      if (verbose) cat("[.getObservation_1.0.0] No content type!",
+                       "Falling back to '", mimeTypeXML, "'\n")
+      .contentType <- mimeTypeXML
+    }
+    else if (length(.contentType) > 1) {
+      # check if subtype is present or take just the first
+      .subtypeIdx <- which(names(.contentType) == "subtype")
+      if (length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
+        .hasSubtype <- TRUE
+        .contentSubtype <- .contentType[[.subtypeIdx]]
+        if (verbose) cat("[.getObservation_1.0.0] Found mime subtype: ",
+                        toString(.contentSubtype), "'\n")
+      }
+      else if (verbose) cat(
+        "[.getObservation_1.0.0] More than one content type, ",
+        "no subtype detected : '",
+        toString(.contentType),
+        "'\n\tUsing the first one: '",
+        .contentType[[1]], "'\n")
+      .contentType <- .contentType[[1]]
+    }
+
+    .response <- .internalXmlRead(x = .responseString)
+    if (inspect) {
+      cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
+      print(.response)
+    }
+
+     # select the parser and file ending based on the mime type FIRST
+    .fileEnding <- ".xml"
+    if (.contentType == mimeTypeXML) {
+      if (.hasSubtype && .contentSubtype == mimeSubtypeOM) {
+        if (verbose)
+          cat("[.getObservation_1.0.0] Got OM according to mime type.\n")
+        .parserName <- mimeTypeOM
+      }
+      else {
+        if (verbose) cat("[.getObservation_1.0.0] Got pure XML according to mime type.",
+                         "Trying to parse with default parser, see SosParsingFunctions().\n")
+        .parserName <- mimeTypeXML
+      }
+    }
+    else if (.contentType == mimeTypeKML) {
+      if (verbose) cat("[.getObservation_1.0.0] Got KML according to mime type.\n")
+
+      .fileEnding <- ".kml"
+      .parserName <- mimeTypeKML
+    }
+    else {
+      # fall back, or more of a default: the function name
+      .parserName <- sosGetObservationName
+    }
+
     if (!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
       xml2::write_xml(x = .response, file = .filename)
@@ -937,7 +926,7 @@ setMethod(f = "getObservation",
                                 offering = "SosObservationOffering"),
           definition = function(sos, offering, observedProperty, responseFormat, srsName,
                                 eventTime,	procedure, featureOfInterest, result, resultModel,
-                                responseMode, BBOX, latest, verbose, inspect, saveOriginal) {
+                                responseMode, BBOX, verbose, inspect, saveOriginal) {
             .offeringId <- offering@id
             if (verbose)	cat("[getObservation] Requesting offering", .offeringId,
                              "by SosObservationOffering.\n")
@@ -953,7 +942,6 @@ setMethod(f = "getObservation",
                                          resultModel = resultModel,
                                          responseMode = responseMode,
                                          BBOX = BBOX,
-                                         latest = latest,
                                          verbose = verbose,
                                          inspect = inspect,
                                          saveOriginal = saveOriginal))
@@ -968,7 +956,7 @@ setMethod(f = "getObservation",
                                 offering = "character"),
           definition = function(sos, offering, observedProperty = list(), responseFormat,
                          srsName, eventTime,	procedure, featureOfInterest, result,
-                         resultModel, responseMode, BBOX, latest, verbose, inspect,
+                         resultModel, responseMode, BBOX, verbose, inspect,
                          saveOriginal) {
             if (verbose)	cat("[getObservation] Requesting offering", offering,
                              "by name.\n")
@@ -992,7 +980,7 @@ setMethod(f = "getObservation",
                                          featureOfInterest = featureOfInterest,
                                          result = result, resultModel = resultModel,
                                          responseMode = responseMode, BBOX = BBOX,
-                                         latest = latest, verbose = verbose,
+                                         verbose = verbose,
                                          inspect = inspect, saveOriginal = saveOriginal))
           }
 )
@@ -1454,35 +1442,6 @@ setMethod(f = "encodeXML",
 )
 
 setMethod(f = "encodeXML",
-          signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
-          function(obj, sos, verbose = FALSE) {
-            if (verbose) {
-              cat("[encodeXML]", class(obj), "\n")
-            }
-
-            .eventTime <- XML::xmlNode(name = sosEventTimeName,
-                                  namespace = sos100NamespacePrefix)
-            .tmEquals <- XML::xmlNode(name = ogcTempOpTMEqualsName,
-                                 namespace = ogcNamespacePrefix)
-            .propertyName <- XML::xmlNode(name = ogcPropertyNameName,
-                                     namespace = ogcNamespacePrefix)
-            xml2::xml_text(x = .propertyName) <- sosDefaultTempOpPropertyName
-            .latestTime <- XML::xmlNode(name = gmlTimeInstantName,
-                                   namespace = gmlNamespacePrefix)
-            .tpos <- XML::xmlNode(name = gmlTimePositionName,
-                             namespace = gmlNamespacePrefix)
-            xml2::xml_text(x = .tpos) <- sosEventTimeLatestValue
-
-            .latestTime$children[[1]] <- .tpos
-            .tmEquals$children[[1]] <- .propertyName
-            .tmEquals$children[[2]] <- .latestTime
-            .eventTime$children[[1]] <- .tmEquals
-
-            return(.eventTime)
-          }
-)
-
-setMethod(f = "encodeXML",
           signature = signature(obj = "SosFeatureOfInterest", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeXML]", class(obj), "\n")
@@ -1531,17 +1490,6 @@ setMethod(f = "encodeKVP",
             return(.temporalOpsKVP)
           }
 )
-
-setMethod(f = "encodeKVP",
-          signature = signature(obj = "SosEventTimeLatest", sos = "SOS"),
-          function(obj, sos, verbose = FALSE) {
-            if (verbose) cat("ENCODE KVP latest ", class(obj), "\n")
-
-            # if eventTime is not given in GET binding, then the latest observation is returned
-            return(sosDefaultGetBindingParamLatest)
-          }
-)
-
 
 # to make just the time encoding interchangeable by users
 setMethod(f = "encodeKVP",

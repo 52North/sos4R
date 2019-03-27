@@ -339,7 +339,7 @@ op <- SosDescribeSensor(service = sosService, version = axiom@version, procedure
 encodeRequestXML(op, sos = axiom, verbose = TRUE)
 # looks good
 
-# test with 52N SOS latest
+# test with 52N SOS
 demo.kvp <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/sos/kvp", binding = "KVP")
 # fix DCPs
 wrongUrl <- demo.kvp@capabilities@operations@operations$DescribeSensor@DCPs$Get

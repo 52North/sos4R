@@ -530,7 +530,6 @@ defaultResponseFormatGetObs
 - `resultModel`: The qualified XML name of the root element of the response, e.g. `om:Measurement`. The available models of a service can be found in the service metadata using `sosResultModel()`.
 - `responseMode`: The response mode defines the form of the response, e.g. inline, out-of-band, or attached. The available models of a service can be found in the service metadata using `sosResponseMode()`.
 - `BBOX`: A bounding box to be used only in HTTP GET connections (parameter is discarded for POST connections). The format must one character string with `minlon,minlat,maxlon,maxlat,srsURI?`, the spatial reference system is optional.
-- `latest`: A boolean parameter to request the latest observation only (see example below) --- this is not standard conform but only supported by \fivetwon SOS.
 - `saveOriginal`: Saves a copy of the response document in the current working directory. Accepts boolean values (`TRUE` will automatically create file name with time stamp) or character string to be used as file name.
 
 The returned data of all GetObservation operations is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely `OmObservation`, `OmMeasurement`, or `OmObservationCollection`.

@@ -8,7 +8,6 @@
 \alias{encodeKVP,OgcBinaryTemporalOp,SOS-method}
 \alias{encodeKVP,SosEventTime,SOS-method}
 \alias{encodeKVP,SosEventTime,ANY-method}
-\alias{encodeKVP,SosEventTimeLatest,SOS-method}
 \alias{encodeKVP,POSIXt,SOS-method}
 
 \title{Encode Classes as KVP}

@@ -137,7 +137,6 @@ exportClasses(
      "SosGetObservation",
      "SosGetObservationById",
      "SosEventTime",
-     "SosEventTimeLatest",
      "SosFeatureOfInterest",
      "SosFeatureOfInterestOrNULL",
      "SosFilter_Capabilities",

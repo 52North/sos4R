@@ -59,7 +59,6 @@ length(ioos.procedures); length(ioos.off)
 # Create similar plot: http://www.pmel.noaa.gov/cgi-tao/cover.cgi?P1=uwnd&P2=20110304-March-6-2011&P3=month&P4=off&script=jsdisplay/scripts/lat-lon-5day-jsd.csh
 # About the buoys: http://www.pmel.noaa.gov/tao/proj_over/pubs/mil96paper.html
 
-# OR JUST GET LATEST VALUE FOR ALL INSTEAD!!
 offerings.wmo52 <- ioos.off[grep(pattern = "wmo:52", x = off.names)]
 obsProps.wmo52 <- unique(unlist(sosObservedProperties(offerings.wmo52)))
 

@@ -213,12 +213,6 @@ setMethod(f = "sosCreateEventTime",
           }
 )
 
-.createLatestEventTime <- function(verbose = FALSE) {
-  if (verbose) cat("Creating non-standard event time 'latest'\n")
-  .et <- SosEventTimeLatest()
-  return(.et)
-}
-
 #
 # convenience function FOI ----
 #

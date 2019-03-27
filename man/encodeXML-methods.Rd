@@ -20,7 +20,6 @@
 \alias{encodeXML,OgcIntersects,SOS-method}
 \alias{encodeXML,OgcOverlaps,SOS-method}
 \alias{encodeXML,SosEventTime,SOS-method}
-\alias{encodeXML,SosEventTimeLatest,SOS-method}
 \alias{encodeXML,SosFeatureOfInterest,SOS-method}
 \alias{encodeXML,TM_After,SOS-method}
 \alias{encodeXML,TM_Before,SOS-method}
@@ -72,8 +71,6 @@ These methods convert the given objects to XML representations for \code{HTTP PO
 	\item{\code{signature(obj = "OgcOverlaps", sos = "SOS")}}{Convert the given object to an XML representation.}
 	
 	\item{\code{signature(obj = "SosEventTime", sos = "SOS")}}{Convert the given object to an XML representation.}
-	
-	\item{\code{signature(obj = "SosEventTimeLatest", sos = "SOS")}}{Convert the given object to an XML representation.}
 	
 	\item{\code{signature(obj = "SosFeatureOfInterest", sos = "SOS")}}{Convert the given object to an XML representation.}
 	

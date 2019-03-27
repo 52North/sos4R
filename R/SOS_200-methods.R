@@ -86,7 +86,7 @@ setMethod(f = "getObservation",
                                 offering = "SosObservationOffering_2.0.0"),
           def = function(sos, offering, observedProperty, responseFormat, srsName,
                          eventTime,	procedure, featureOfInterest, result, resultModel,
-                         responseMode, BBOX, latest, verbose, inspect, saveOriginal) {
+                         responseMode, BBOX, verbose, inspect, saveOriginal) {
             .offeringId <- offering@id
             if(verbose)	cat("[getObservation] Requesting offering", .offeringId,
                             "by SosObservationOffering.\n")
@@ -98,7 +98,7 @@ setMethod(f = "getObservation",
                                          featureOfInterest = featureOfInterest,
                                          result = result, resultModel = resultModel,
                                          responseMode = responseMode, BBOX = BBOX,
-                                         latest = latest, verbose = verbose,
+                                         verbose = verbose,
                                          inspect = inspect, saveOriginal = saveOriginal))
           }
 )
@@ -111,7 +111,7 @@ setMethod(f = "getObservation",
                                 offering = "character"),
           def = function(sos, offering, observedProperty = list(), responseFormat,
                          srsName, eventTime,	procedure, featureOfInterest, result,
-                         resultModel, responseMode, BBOX, latest, verbose, inspect,
+                         resultModel, responseMode, BBOX, verbose, inspect,
                          saveOriginal) {
             if(verbose)	cat("[getObservation] Requesting offering", offering,
                             "by name.\n")
@@ -135,7 +135,7 @@ setMethod(f = "getObservation",
                                          featureOfInterest = featureOfInterest,
                                          result = result, resultModel = resultModel,
                                          responseMode = responseMode, BBOX = BBOX,
-                                         latest = latest, verbose = verbose,
+                                         verbose = verbose,
                                          inspect = inspect, saveOriginal = saveOriginal))
           }
 )
@@ -310,7 +310,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 #
 .getObservation_2.0.0 <- function(sos, offeringId, observedProperty,
                                   responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                  result, resultModel, responseMode, BBOX, latest,
+                                  result, resultModel, responseMode, BBOX,
                                   valueReferenceTemporalFilter = sosDefaultTemporalValueReference,
                                   verbose,
                                   inspect,
@@ -338,7 +338,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
   .go <- .createGetObservation_2.0.0(sos, offeringId, observedProperty,
                                      responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                     result, resultModel, responseMode, BBOX, latest,
+                                     result, resultModel, responseMode, BBOX,
                                      valueReferenceTemporalFilter,
                                      verbose, inspect,
                                      saveOriginal)
@@ -589,17 +589,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 #
 .createGetObservation_2.0.0 <- function(sos, offeringId, observedProperty,
                                         responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                        result, resultModel, responseMode, BBOX, latest,
+                                        result, resultModel, responseMode, BBOX,
                                         valueReferenceTemporalFilter,
                                         verbose, inspect,
                                         saveOriginal) {
-
-  if(latest) .eventTime <- list(.createLatestEventTime(verbose))
-  else .eventTime <- eventTime
-
-  if(latest && !is.na(eventTime))
-    warning("'Latest' is set to TRUE > given eventTime is ignored!")
-
   .go <- SosGetObservation_2.0.0(service = sosService,
                                  version = sos@version,
                                  offering = offeringId,

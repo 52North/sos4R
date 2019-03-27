@@ -25,14 +25,6 @@ plot(weathersos, add = TRUE, lwd = 3)
 title(main = paste("Offerings by '", sosTitle(weathersos), "'", sep = ""),
 		sub = toString(names(sosOfferings(weathersos))))
 
-# get the latest observation (not standard conform!)
-off <- sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]]
-obs <- getObservation(sos = weathersos, offering = off, #verbose = TRUE,
-		latest = TRUE)
-
-# show the result for latest observation
-sosResult(obs)
-
 ############################################
 # Request two procedures, then create a plot
 # Attention: plots ignore the fact that the times do NOT perfectly match!

@@ -443,15 +443,6 @@ encodeXML(foiBBox2, weathersos)
 # GetObservations
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
 
-# LATEST
-obs <- getObservation(sos = weathersos,
-		observedProperty = sosObservedProperties(weathersos)[4],
-		offering = sosOfferings(weathersos)[["ATMOSPHERIC_TEMPERATURE"]],
-		latest = TRUE,
-		inspect = TRUE, verbose = TRUE)
-obs@result
-# works!
-
 # TIME INTERVAL
 go.eventTime1 = sosCreateEventTimeList(
 		operator = SosSupportedTemporalOperators()[["TM_After"]],
@@ -986,7 +977,6 @@ sosGetDCP(weathersos, operation = sosGetObservationName, type = "Get")
 sosGetDCP(weathersos, operation = sosGetObservationName, type = "Post")
 
 describeSensor(weathersos, sosProcedures(weathersos)[[1]][[1]])
-getObservation(weathersos, sosOfferings(weathersos)[[1]], latest = TRUE)
 # still works
 
 ################################################################################
@@ -1262,11 +1252,6 @@ edit(vignette("sos4R"))
 
 sosUOM(GmlMeasure(42.0, "m"))
 
-sosUOM(obs.temp.latest[[1]])
-sosUOM(obs.temp.latest[1:2])
-sosUOM(obs.temp.latest)
-sosUOM(sosResult(obs.temp.latest))
-
 ################################################################################
 # adding filename attribute testing
 weathersos <- SOS(SosExampleServices()[[1]])
@@ -1276,14 +1261,6 @@ obs <- getObservationById(weathersos, "o_4995049", verbose = TRUE,
 		saveOriginal = TRUE)
 attributes(obs)
 attributes(obs)[[sosAttributeFileName]]
-# works!
-
-obs2 <- getObservation(weathersos, offering = sosOfferings(weathersos)[[1]],
-#		verbose = TRUE,
-		latest = TRUE,
-		saveOriginal = "testObservation"
-)
-attributes(obs2)
 # works!
 
 sensor <- describeSensor(weathersos, sosProcedures(weathersos)[[1]][[1]],

@@ -103,7 +103,7 @@ The method `SOS()` is a construction method for classes encapsulating a connecti
 It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class `SOS`.
 
 ```{r mySOS}
-mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp", binding = "KVP")
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp", binding = "KVP", useDCPs = FALSE)
 ```
 
 To create a SOS connection you only need the URL of the service (i.e. the URL endpoint which can be used for HTTP requests).
@@ -152,9 +152,12 @@ summary(mySOS)
 The `GetObservation` operation is the main data download request of the SOS, and the package's functional equivalent is `getObservation(..)`.
 You can build a request using the information from the offerings, as they are extracted from the capabilities document when a new connection is created.
 
-```{r offering}
+```{r offering_procedure}
 off.1 <- sosOfferings(mySOS)[[1]]
 sosProcedures(off.1)
+```
+
+```{r offering_obsprop}
 sosObservedProperties(off.1)
 ```
 

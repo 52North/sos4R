@@ -47,7 +47,6 @@ sosContentsName <- paste0(sos100NamespacePrefix, ":Contents")
 sosFilterCapabilitiesName <- paste0(sos100NamespacePrefix, ":Filter_Capabilities")
 sosCapabilitiesName <- paste0(sos100NamespacePrefix, ":Capabilities")
 sosEventTimeName <- paste0(sos100NamespacePrefix, ":eventTime")
-sosEventTimeLatestValue <- "latest"
 sosObjectIDName <- paste0(sos100NamespacePrefix, ":ObjectID")
 sosResultName <- paste0(sos100NamespacePrefix, ":result")
 sosResultTimeName <- paste0(sos100NamespacePrefix, ":resultTime")
