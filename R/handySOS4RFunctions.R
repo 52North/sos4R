@@ -84,16 +84,22 @@ setMethod(f = "phenomena",
 #
 # .simplePhenomenaList ----
 #
+# phenomena(sos) → data.frame[phenomenon] using GetCapabilities::Contents
+#
+# see: https://github.com/52North/sos4R/issues/81
+#
 .simplePhenomenaList <- function(sos) {
-  .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
-  stopifnot(!is.null(.dams))
-  stopifnot(is.list(.dams))
-  if (length(.dams) == 0) {
-    return(list())
+  .properties <- sosObservableProperties(sos)
+  stopifnot(!is.null(.properties))
+  stopifnot(is.list(.properties))
+  if (length(unlist(.properties)) == 0) {
+    phens <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
+  } else {
+    .properties <- unique(sort(as.vector(unlist(.properties))))
+    phens <- data.frame("phenomenon" = .properties, stringsAsFactors = FALSE)
   }
-  stop("Implementation not yet finished!")
+  return(phens)
 }
-
 
 # siteList ####
 # ~ us.2.1: List all sites (containing data) ####
