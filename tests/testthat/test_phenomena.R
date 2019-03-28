@@ -33,7 +33,7 @@ webmockr::enable("httr")
 webmockr::httr_mock()
 context("convenience layer -> phenomena()")
 
-test_that("phenomena() returns the current list of phenomena as one column data.frame", {
+test_that("KVP::phenomena() returns the current list of phenomena as one column data.frame", {
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
     webmockr::wi_th(
       headers = list("Accept" = "application/xml")
@@ -87,29 +87,24 @@ test_that("phenomena() returns the current list of phenomena as one column data.
   expect_equal("WindSpeedMinimum",      dataFrameOfPhenomena[32, 1])
   expect_equal("WindSpeedMperSec",      dataFrameOfPhenomena[33, 1])
 })
-# test_that("phenomena() with wrong inputs stops", {
-#   expect_error(
-#     phenomena(SOS_Test()),
-#     "unable to find an inherited method for function 'phenomena' for signature '\"SOS_Test\"'",
-#     fixed=TRUE)
-#
-#   expect_error(
-#     phenomena(SOS_2.0.0_Test(), includeTemporalBBox = 2.0),
-#     "is.logical(includeTemporalBBox) is not TRUE",
-#     fixed=TRUE)
-#
-#   expect_error(
-#     phenomena(SOS_2.0.0_Test(), includeSiteId = 2.0),
-#     "is.logical(includeSiteId) is not TRUE",
-#     fixed=TRUE)
-#
-#   expect_error(
-#     phenomena(SOS_2.0.0_Test(), includeSiteId = 2.0, includeTemporalBBox = 2.0),
-#     "is.logical(includeTemporalBBox) is not TRUE",
-#     fixed=TRUE)
-#
-#   expect_error(
-#     phenomena(SOS_2.0.0_Test(), includeSiteId = 2.0, includeTemporalBBox = FALSE),
-#     "is.logical(includeSiteId) is not TRUE",
-#     fixed=TRUE)
-# })
+
+test_that("KVP::phenomena() returns an empty list of phenomena as one column data.frame if the SOS is empty", {
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena-empty?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com_empty.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena-empty", binding = "KVP")
+  dataFrameOfPhenomena <- phenomena(sos)
+
+  expect_true(!is.null(dataFrameOfPhenomena))
+  expect_true(is.data.frame(dataFrameOfPhenomena))
+  expect_equal(length(colnames(dataFrameOfPhenomena)), 1, info = "number of columns in phenomena data.frame")
+  expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "correct column name")
+  expect_equal(nrow(dataFrameOfPhenomena), 0, info = "number of unique phenomena")
+})
