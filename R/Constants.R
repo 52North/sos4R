@@ -124,18 +124,14 @@ sosKVPParamNameBBOX <- "BBOX"
 #
 # not exported SOS ----
 #
-.sosConnectionMethodGet_Deprecated <- "GET"
 .sosBindingKVP <- "KVP"
-.sosConnectionMethodPost_Deprecated <- "POST"
 .sosBindingPOX <- "POX"
 .sosBindingSOAP <- "SOAP"
 
 SosSupportedBindings <- function() {
-  .supported <- c(.sosConnectionMethodGet_Deprecated,
-                  .sosConnectionMethodPost_Deprecated,
-                  .sosBindingKVP,
+  .supported <- c(.sosBindingKVP,
                   .sosBindingPOX)
-  names(.supported) <- c("DEPRECATED", "DEPRECATED", "Key-value-pair (GET)",
+  names(.supported) <- c("Key-value-pair (GET)",
                          "Plain old XML (POST)")
   return(.supported)
 }

@@ -34,7 +34,7 @@
   # check the request for consistency with service description
   .checkResult <- checkRequest(service = sos, operation = request,
                                verbose = verbose)
-  if(!.checkResult) {
+  if (!.checkResult) {
     warning("Check returned FALSE! Turn on verbose option for possible details.",
             immediate. = TRUE)
   }
@@ -43,7 +43,7 @@
 
   # get encoding function for the respective method
   .encodingFunction <- sos@encoders[[sos@binding]]
-  if(verbose) {
+  if (verbose) {
     .f <- functionBody(.encodingFunction)
     cat("[.sosRequest_2.0.0] Encoding Function (beginning of function body): ",
         substring(text = .f, first = 0, last = 60), " ... [",
@@ -54,37 +54,37 @@
   .encodedRequest = .encodingFunction(obj = request, sos = sos,
                                       verbose = verbose)
 
-  if(sos@binding == .sosBindingKVP) {
+  if (sos@binding == .sosBindingKVP) {
     .dcp <- sos@url
 
-    if(sos@useDCPs) {
-      if(verbose)
+    if (sos@useDCPs) {
+      if (verbose)
         cat("[.sosRequest_2.0.0] Using DCP from operation description.\n")
 
       .dcp <- sosGetDCP(sos, sosName(request), owsGetName)
 
-      if(is.null(.dcp) || is.na(.dcp)) {
+      if (is.null(.dcp) || is.na(.dcp)) {
         .dcp <- sos@url
-        if(verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request.\n")
+        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request.\n")
       }
 
       .dcp <- .sosFilterDCPs(dcp = .dcp,
                              pattern = sos@dcpFilter[[.sosBindingKVP]],
                              verbose = verbose)
     }
-    else if(verbose)
+    else if (verbose)
       cat("[.sosRequest_2.0.0] Not using DCP from capabilities, but use ", .dcp, "\n")
 
-    if(isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
+    if (isTRUE(grep(pattern = "[\\?]", x = .dcp) > 0)) {
       if (verbose) cat("Given url already contains a '?', appending arguments!\n")
       .url = paste0(.dcp, .encodedRequest)
     }
     else .url = paste(.dcp, .encodedRequest, sep = "?")
 
-    if(!is.na(sos@additionalKVPs) && length(sos@additionalKVPs) > 0) {
+    if (!is.na(sos@additionalKVPs) && length(sos@additionalKVPs) > 0) {
       .kvps <- sos@additionalKVPs
 
-      if(verbose)
+      if (verbose)
         cat("[.sosRequest_2.0.0] adding extra KVP parameters:\n\t",
             toString(.kvps))
 
@@ -108,14 +108,14 @@
 
     .dcp <- sos@url
 
-    if(sos@useDCPs) {
+    if (sos@useDCPs) {
       .dcp <- sosGetDCP(sos, sosName(request), owsPostName) #sos@url as fallback
-      if(is.null(.dcp) || is.na(.dcp)) {
+      if (is.null(.dcp) || is.na(.dcp)) {
         .dcp <- sos@url
-        if(verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
+        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
       }
       else {
-        if(verbose) cat("[.sosRequest_2.0.0] Got DCPs from capabilites:",
+        if (verbose) cat("[.sosRequest_2.0.0] Got DCPs from capabilites:",
                         toString(.dcp), "\n")
       }
 
@@ -123,7 +123,7 @@
                              pattern = sos@dcpFilter[[.sosBindingPOX]],
                              verbose = verbose)
       .dcp <- unlist(.dcp)
-      if(verbose)
+      if (verbose)
         cat("[.sosRequest_2.0.0] Using DCP:", toString(.dcp), "\n")
     }
     else if (verbose)
@@ -133,16 +133,16 @@
     .requestString <- toString(.encodedRequest)
 
     # using 'POST' for application/xml encoded requests
-    if(verbose) cat("[.sosRequest_2.0.0] Do request...")
+    if (verbose) cat("[.sosRequest_2.0.0] Do request...")
 
-    .response <- POST(url = .dcp,
-                      content_type_xml(),
-                      accept_xml(),
-                      body = .requestString )
+    .response <- httr::POST(url = .dcp,
+                            httr::content_type_xml(),
+                            httr::accept_xml(),
+                            body = .requestString )
 
-    stop_for_status(.response, "sending POST request")
+    httr::stop_for_status(.response, "sending POST request")
 
-    .response <- content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
+    .response <- httr::content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -191,11 +191,11 @@
                             acceptVersions = c(sosVersion(sos)), sections = sections,
                             acceptFormats = acceptFormats, updateSequence = updateSequence,
                             owsVersion = owsVersion, acceptLanguages = acceptLanguages)
-  if(verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
+  if (verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
 
   .responseString = sosRequest(sos = sos, request = .gc,
                                verbose = verbose, inspect = inspect)
-  if(verbose){
+  if (verbose){
     cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
   }
 

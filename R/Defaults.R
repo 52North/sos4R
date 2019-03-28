@@ -139,14 +139,10 @@ SosExampleServices <- function() {
 # one way of encoding something (in contrast to parsing). So the different
 # objects (and versions) override the respective encoding functions.
 .sosDefaultEncoders <- list(
-  encodeRequestKVP,
-  encodeRequestXML,
   encodeRequestSOAP,
   encodeRequestXML,
   encodeRequestKVP)
 names(.sosDefaultEncoders) <- list(
-  .sosConnectionMethodGet_Deprecated,
-  .sosConnectionMethodPost_Deprecated,
   .sosBindingSOAP,
   .sosBindingPOX,
   .sosBindingKVP

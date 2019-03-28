@@ -135,8 +135,8 @@ OwsOperation <- function(name, DCPs,
       constraints = constraints, metadata = metadata)
 }
 
-OwsContents <- function(xmlNode) {
-  new("OwsContents", xml = xmlNode)
+OwsContents <- function(xml) {
+  new("OwsContents", xml = xml)
 }
 
 OwsExceptionReport <- function(version, lang = as.character(NA),

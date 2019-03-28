@@ -465,10 +465,7 @@ setMethod(f = "parseFile",
               .parsingFunction <- sosParsers(sos)[[.opName]]
               .obj <- .parsingFunction(obj = .parsed, verbose = verbose)
 
-              if (verbose) {
-                cat("[parseFile] done:\n")
-                print(.obj)
-              }
+              if (verbose) cat("[parseFile] done\n")
 
               return(.obj)
             }
@@ -476,18 +473,13 @@ setMethod(f = "parseFile",
               stop(paste("Root element", .name, "not supported by file parser!"))
             }
 
-            if (verbose) cat("[parseFile] parsing with parser for operation",
-                            .opName, "\n")
+            if (verbose) cat("[parseFile] parsing with parser for operation", .opName, "\n")
             # check if parsers are disabled, then just return the parsed object?
 
             .parsingFunction <- sosParsers(sos)[[.opName]]
-            .obj <- .parsingFunction(obj = .parsed, sos = sos,
-                                     verbose = verbose)
+            .obj <- .parsingFunction(obj = .parsed, sos = sos, verbose = verbose)
 
-            if (verbose) {
-              cat("[parseFile] done:\n")
-              print(.obj)
-            }
+            if (verbose) cat("[parseFile] done\n")
 
             return(.obj)
           }

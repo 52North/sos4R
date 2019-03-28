@@ -204,6 +204,12 @@ test_that("name", {
   expect_equal(sosName(operation), "GetCapabilities")
 })
 
+test_that("DCP", {
+  doc <- parseXmlSnippet(operationXml)
+  operation <- parseOwsOperation(obj = doc)
+  expect_equal(operation@DCPs, "GetCapabilities")
+})
+
 test_that("parameter names", {
   doc <- parseXmlSnippet(operationXml)
   operation <- parseOwsOperation(obj = doc)

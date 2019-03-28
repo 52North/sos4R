@@ -710,13 +710,11 @@ setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
             .end <- NA
 
             if(!is.null(obj@begin) && !is.null(obj@end)) {
-              #				print("begin and end!")
               .start <- sosTime(obj@begin)
               .end <- sosTime(obj@end)
             }
 
             if(!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
-              #				print("positions!")
               .start <- sosTime(obj@beginPosition)
               .end <- sosTime(obj@endPosition)
             }

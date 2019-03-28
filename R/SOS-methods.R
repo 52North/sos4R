@@ -42,16 +42,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 dcpFilter = SosDefaultDCPs(),
                 additionalKVPs = list(),
                 ...) {
-
-  if (binding == .sosConnectionMethodPost_Deprecated) {
-    warning("You use a deprecated method parameter, please use 'POX' from now on.")
-    method <- "POX"
-  }
-  if (binding == .sosConnectionMethodGet_Deprecated) {
-    warning("You use a deprecated method parameter, please use 'KVP' from now on.")
-    method <- "KVP"
-  }
-
   if (version == sos100_version) {
     .sos <- new("SOS_1.0.0",
                 url = url,
@@ -354,11 +344,11 @@ SosGetObservationById <- function(
     if (verbose) cat("[.sosRequest_1.0.0] Do request...")
 
     .response <- httr::POST(url = .dcp,
-                      content_type_xml(),
-                      accept_xml(),
-                      body = .requestString )
+                            httr::content_type_xml(),
+                            httr::accept_xml(),
+                            body = .requestString )
 
-    stop_for_status(.response, "sending POST request")
+    httr::stop_for_status(.response, "sending POST request")
 
     if (verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
@@ -368,7 +358,6 @@ SosGetObservationById <- function(
       print(.encodedRequest)
     }
 
-    # TODO add SOAP request method
     stop("[sos4R] ERROR: SOAP is not implemented for SOS 1.0.0.\n")
   }
   else {
@@ -433,9 +422,6 @@ setMethod(f = "sosRequest",
                          request = .gc,
                          verbose = verbose,
                          inspect = inspect)
-  if (verbose){
-    cat("[.getCapabilities_1.0.0] RESPONSE:\n", .response, "\n")
-  }
 
   if (inspect) {
     cat("[.getCapabilities_1.0.0] RESPONSE DOC:\n")

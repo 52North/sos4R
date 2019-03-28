@@ -3,8 +3,9 @@
 - Switch from `XML` to `xml2`
 - Added a `NEWS.md` in Markdown format to track changes to the package (moved content from `inst/NEWS` and `inst/CHANGES`)
 - Overhauled vignettes, now Markdown format
-- Development version of SOS 2.0 support
+- Development version of SOS 2.0 support (KVP only)
 - Extended developer documentation in `DEV-README.md`
+- Drop deprecated bindings "GET" and "POST", now only "KVP" and "POX" are supported
 - Add AppVeyor CI configuration
 - Use R Markdown based README (`README.Rmd`)
 - Combination of `verbose` and `inspect`: full requests and responses are only printed with `inspect = TRUE`
