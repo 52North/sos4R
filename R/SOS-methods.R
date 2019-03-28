@@ -305,6 +305,7 @@ SosGetObservationById <- function(
     if (verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
     .response = httr::GET(url = .url)
+    .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_1.0.0] ... done.\n")
   }
@@ -339,14 +340,13 @@ SosGetObservationById <- function(
     .requestString <- toString(.encodedRequest)
 
     # using 'POST' for application/xml content
-    if (verbose) cat("[.sosRequest_1.0.0] Do request...")
+    if (verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
     .response <- httr::POST(url = .dcp,
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-
-    httr::stop_for_status(.response, "sending POST request")
+    .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
@@ -1490,3 +1490,27 @@ setMethod(f = "checkRequest",
             return(TRUE)
           }
 )
+
+#
+# util functions for response handling ----
+#
+.processResponse <- function(response, verbose) {
+  .contentType <- httr::http_type(response)
+
+  if (!httr::has_content(response)) {
+    stop("Response has no content: ", toString(response),
+         " | headers: ", paste(names(httr::headers(response)),
+                               httr::headers(response),
+                               sep = ": ",
+                               collapse = "; "))
+  }
+
+  if (verbose) cat("[.processResponse] Response status: ", httr::status_code(response),
+                   " | type: ", .contentType, "\n")
+
+  if (httr::status_code(response) == 405)
+    warning("Response is HTTP 405 - Method Not Allowed: Please check if endpoint and binding match.")
+
+  httr::stop_for_status(response, "sending request to SOS")
+  return()
+}

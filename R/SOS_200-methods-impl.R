@@ -133,16 +133,13 @@
     .requestString <- toString(.encodedRequest)
 
     # using 'POST' for application/xml encoded requests
-    if (verbose) cat("[.sosRequest_2.0.0] Do request...")
+    if (verbose) cat("[.sosRequest_2.0.0] Do request...\n")
 
     .response <- httr::POST(url = .dcp,
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-
-    httr::stop_for_status(.response, "sending POST request")
-
-    .response <- httr::content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
+    .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -152,7 +149,6 @@
       print(.encodedRequest)
     }
 
-    # TODO add SOAP request method
     stop("[sos4R] ERROR: SOAP is not implemented for SOS 2.0.0.\n")
   }
   else {
@@ -160,18 +156,9 @@
                SosSupportedBindings(), "but is", sos@binding))
   }
 
-  if (verbose) {
-    cat("[.sosRequest_2.0.0] RESPONSE:\n")
-    print(.response)
-    if (is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
-  }
+  .content <- httr::content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
 
-  if (length(.response) > 0 &
-     regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
-    stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response, "\n\n"))
-  }
-
-  return(.response)
+  return(.content)
 }
 
 .getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
