@@ -33,7 +33,7 @@
 # ~ us.1.1 ####
 # What phenomena are available from a SOS?
 #   phenomena(sos)
-# → list[siteID]
+# → list[phenomenonId]
 # GetCapabilities::Contents
 #
 # ~ us.1.2 ####
@@ -53,7 +53,7 @@
 #
 # phenomena - generic method ----
 #
-if (!isGeneric("phenomena"))
+if (!isGeneric("phenomena")) {
   setGeneric(name = "phenomena",
              signature = signature("sos",
                                    "includeTemporalBBox",
@@ -63,6 +63,7 @@ if (!isGeneric("phenomena"))
                             includeSiteId = FALSE) {
                standardGeneric("phenomena")
              })
+}
 
 #
 # phenomena - call with sos parameter only ----
@@ -77,6 +78,9 @@ setMethod(f = "phenomena",
             stopifnot(is.logical(includeSiteId))
             if (!includeTemporalBBox && !includeSiteId) {
               return(.simplePhenomenaList(sos))
+            }
+            else if (includeTemporalBBox && !includeSiteId) {
+              return(.phenomenaWithTemporalBBox(sos))
             }
           })
 
@@ -97,6 +101,27 @@ setMethod(f = "phenomena",
   } else {
     .properties <- unique(sort(as.vector(unlist(.properties))))
     phens <- data.frame("phenomenon" = .properties, stringsAsFactors = FALSE)
+  }
+  return(phens)
+}
+
+#
+# phenomena(sos, includeTemporalBBox=TRUE) → data.frame[phenomenon, timeBegin, timeEnd]
+#
+# see: https://github.com/52North/sos4R/issues/82
+#
+.phenomenaWithTemporalBBox <- function(sos) {
+  .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  stopifnot(!is.null(.dams))
+  stopifnot(is.list(.dams))
+  if (length(.dams) == 0) {
+    phens <- data.frame("phenomenon" = character(0),
+                          "timeBegin" = double(0),
+                          "timeEnd" = double(0),
+                        stringsAsFactors = FALSE)
+  }
+  else {
+    stop(".phenomenaWithTemporalBBox not implemented")
   }
   return(phens)
 }
