@@ -130,7 +130,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
                         " with the definition ",
                         .currentField[[.sosParseFieldDefinition]],
                         "! Trying a default, but you can add one when creating a SOS using",
-                        "SosDataFieldConvertingFunctions()."))
+                        "SosDataFieldConvertingFunctions().\n"))
 
           .method <- .converters[["fallBack"]]
         }

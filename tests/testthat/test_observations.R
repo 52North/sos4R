@@ -157,3 +157,69 @@ test_that("time reference", {
   samplingTime <- parseTime(obj = doc, format = testsos@timeFormat)
   expect_equal(samplingTime@href, "#abc")
 })
+
+observationXml <- '<om:Observation gml:id="o_1553776324284" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1">
+      <om:samplingTime>
+<gml:TimePeriod gml:id="phenomenonTime_172">
+<gml:beginPosition>2012-11-19T13:01:00.000Z</gml:beginPosition>
+<gml:endPosition>2012-11-19T13:09:00.000Z</gml:endPosition>
+</gml:TimePeriod>
+</om:samplingTime>
+<om:resultTime>
+<gml:TimeInstant gml:id="resultTime_172">
+<gml:timePosition>2012-11-19T13:01:00.000Z</gml:timePosition>
+</gml:TimeInstant>
+</om:resultTime>
+<om:procedure xlink:href="http://www.52north.org/test/procedure/6"/>
+<om:observedProperty xlink:href="http://www.52north.org/test/observableProperty/6"/>
+<om:featureOfInterest>
+<sa:SamplingPoint gml:id="sf_8D0EA55680FEC1646E1A01C441D7220F9BD9F57C">
+<gml:name codeSpace="uniquID">http://www.52north.org/test/featureOfInterest/6</gml:name>
+<gml:name codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">Hochschule Bochum</gml:name>
+<sa:sampledFeature xlink:href="http://www.52north.org/test/featureOfInterest/world" xlink:title="Hochschule Bochum"/>
+<sa:position>
+<gml:Point gml:id="point_sf_8D0EA55680FEC1646E1A01C441D7220F9BD9F57C">
+<gml:pos srsName="urn:ogc:def:crs:EPSG::4326">51.447722 7.270806</gml:pos>
+</gml:Point>
+</sa:position>
+</sa:SamplingPoint>
+</om:featureOfInterest>
+<om:result>
+<swe:DataArray>
+<swe:elementCount>
+<swe:Count>
+<swe:value>9</swe:value>
+</swe:Count>
+</swe:elementCount>
+<swe:elementType name="Components">
+<swe:DataRecord xmlns:ns="http://www.opengis.net/swe/1.0.1">
+<ns:field name="phenomenonTime">
+<ns:Time definition="http://www.opengis.net/def/property/OGC/0/PhenomenonTime">
+<ns:uom xlink:href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"/>
+</ns:Time>
+</ns:field>
+<ns:field name="http://www.52north.org/test/observableProperty/6">
+<ns:Quantity definition="http://www.52north.org/test/observableProperty/6">
+<ns:uom code="test_unit_6"/>
+</ns:Quantity>
+</ns:field>
+</swe:DataRecord>
+</swe:elementType>
+<swe:encoding>
+<swe:TextBlock blockSeparator="@@" decimalSeparator="." tokenSeparator=","/>
+</swe:encoding>
+<swe:values>2012-11-19T13:01:00.000Z,2.1@@2012-11-19T13:02:00.000Z,2.2@@2012-11-19T13:03:00.000Z,2.3@@2012-11-19T13:04:00.000Z,2.4@@2012-11-19T13:05:00.000Z,2.5@@2012-11-19T13:06:00.000Z,2.6@@2012-11-19T13:07:00.000Z,2.7@@2012-11-19T13:08:00.000Z,2.8@@2012-11-19T13:09:00.000Z,2.9</swe:values>
+</swe:DataArray>
+</om:result>
+</om:Observation>'
+
+test_that("coordinates from observation", {
+  doc <- parseXmlSnippet(observationXml)
+
+  expect_warning(obs <- parseObservation(obj = doc, sos = testsos))
+
+  sosCoordinates(obs)
+
+  expect_equal(coords, "51.447722 7.270806")
+})
+

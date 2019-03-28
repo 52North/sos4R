@@ -315,12 +315,18 @@ setMethod(f = "sosCapabilitiesUrl",
 #
 # helpers for exception response handling ----
 #
-.isExceptionReport <- function(document) {
-  if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = document),
-                                               ns = SosAllNamespaces()))
-    return(TRUE)
-  else
-    return(FALSE)
+.isExceptionReport <- function(obj) {
+  if (inherits(obj, "xml_document")) {
+    if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = obj),
+                                                 ns = SosAllNamespaces()))
+      return(TRUE)
+    else
+      return(FALSE)
+  }
+  else if (is.list(obj)) {
+    return(!is.null(obj[["exceptions"]]))
+  }
+  stop("Unsupported input for functin .isExceptionReport")
 }
 
 .handleExceptionReport <- function(sos, obj) {

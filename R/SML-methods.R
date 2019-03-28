@@ -55,16 +55,14 @@ SensorML <- function(xml, coords = data.frame(), id = NA_character_,
 # parseSensorML(mySensor@xml, sos = mySOS, verbose = TRUE)
 #
 parseSensorML <- function(obj, sos, verbose = FALSE) {
-  .root <- xml2::xml_root(x = obj)
   if (verbose) cat("[parseSensorML] Starting... \n")
 
-  .id <- .smlIdentifier(.root, "uniqueID", verbose = verbose)
-  .shortName <- .smlIdentifier(.root, "shortName", verbose = verbose)
-  .descrNode <- xml2::xml_find_first(x = .root,
-                                        xpath = .smlXPathDescription,
-                                        ns = SosAllNamespaces())
-  if (!is.na(.descrNode))
-    .description <- xml2::xml_text(x = .descrNode)
+  .id <- .smlIdentifier(obj, "uniqueID", verbose = verbose)
+  .shortName <- .smlIdentifier(obj, "shortName", verbose = verbose)
+  .descrNode <- xml2::xml_find_first(x = obj,
+                                     xpath = .smlXPathDescription,
+                                     ns = SosAllNamespaces())
+  .description <- xml2::xml_text(x = .descrNode)
 
   if (verbose) cat("[parseSensorML] Got ID", .id,
                    "and shortName", .shortName,
@@ -72,7 +70,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 
   # bounded by
   if (verbose) cat("[parseSensorML] Parsing boundedBy from", .smlXPathObservedBBox, "\n")
-  .observedBBox <- xml2::xml_find_first(x = .root,
+  .observedBBox <- xml2::xml_find_first(x = obj,
                                         xpath = .smlXPathObservedBBox,
                                         ns = SosAllNamespaces())
   if (!is.na(.observedBBox)) {
@@ -105,7 +103,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 
   # coordinates
   if (verbose) cat("[parseSensorML] Parsing coordinates from", .smlXPathPosition, "\n")
-  .xmlPosition <- xml2::xml_find_first(x = .root,
+  .xmlPosition <- xml2::xml_find_first(x = obj,
                                        xpath = .smlXPathPosition,
                                        ns = SosAllNamespaces())
   if (!is.na(.xmlPosition)) {
@@ -146,8 +144,12 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
   }
 
   # create instance
-  .sml = SensorML(xml = obj, coords = .coords, id = .id, name = .shortName,
-                  description = .description, boundedBy = .bb)
+  .sml = SensorML(xml = obj,
+                  coords = .coords,
+                  id = .id,
+                  name = .shortName,
+                  description = .description,
+                  boundedBy = .bb)
 
   if (verbose) cat("[parseSensorML]  Done: ", toString(.sml), "\n")
 
@@ -180,6 +182,5 @@ plot.SensorML <- function(x, y, ...) {
   .sp <- as(x, "SpatialPointsDataFrame")
   plot(.sp, ...)
 }
-setMethod("plot", signature(x = "SensorML", y = "missing"),
-          plot.SensorML)
+setMethod("plot", signature(x = "SensorML", y = "missing"), plot.SensorML)
 

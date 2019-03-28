@@ -88,7 +88,7 @@ setMethod(f = "getObservation",
                          eventTime,	procedure, featureOfInterest, result, resultModel,
                          responseMode, BBOX, verbose, inspect, saveOriginal) {
             .offeringId <- offering@id
-            if(verbose)	cat("[getObservation] Requesting offering", .offeringId,
+            if (verbose)	cat("[getObservation] Requesting offering", .offeringId,
                             "by SosObservationOffering.\n")
             return(.getObservation_2.0.0(sos = sos, offeringId = .offeringId,
                                          observedProperty = observedProperty,
@@ -113,14 +113,14 @@ setMethod(f = "getObservation",
                          srsName, eventTime,	procedure, featureOfInterest, result,
                          resultModel, responseMode, BBOX, verbose, inspect,
                          saveOriginal) {
-            if(verbose)	cat("[getObservation] Requesting offering", offering,
+            if (verbose)	cat("[getObservation] Requesting offering", offering,
                             "by name.\n")
 
             .off <- sosOfferings(sos)[[offering]]
 
-            if(length(observedProperty) == 0) {
+            if (length(observedProperty) == 0) {
               .obsProps <- sosObservableProperties(.off)
-              if(verbose) cat("[getObservation] Got observation(s) from offering because none given:",
+              if (verbose) cat("[getObservation] Got observation(s) from offering because none given:",
                               toString(.obsProps), "\n")
             }
             else {
@@ -169,32 +169,32 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
   .filename <- NULL
   #
-  #   if(!is.null(saveOriginal)) {
-  #     if(is.character(saveOriginal)) {
+  #   if (!is.null(saveOriginal)) {
+  #     if (is.character(saveOriginal)) {
   #       .filename <- paste(saveOriginal, ".xml", sep = "")
-  #       if(verbose) cat("Using saveOriginal parameter for file name:",
+  #       if (verbose) cat("Using saveOriginal parameter for file name:",
   #                       .filename, "\n")
   #     }
-  #     else if(is.logical(saveOriginal)) {
-  #       if(saveOriginal) .filename <- paste(.cleanupFileName(featureOfInterest),
+  #     else if (is.logical(saveOriginal)) {
+  #       if (saveOriginal) .filename <- paste(.cleanupFileName(featureOfInterest),
   #                                           ".xml", sep = "")
-  #       if(verbose) cat("Generating file name:", .filename, "\n")
+  #       if (verbose) cat("Generating file name:", .filename, "\n")
   #     }
   #   }
 
-  if(verbose)
+  if (verbose)
     cat("[.getFeatureOfInterest_2.0.0] to ", sos@url, " with featureOfInterest ",
         featureOfInterest, "\n")
 
   .gfoi <- SosGetFeatureOfInterest_2.0.0(sosService, sos@version, featureOfInterest)
 
-  if(verbose)
+  if (verbose)
     cat("[.getFeatureOfInterest_2.0.0] REQUEST:\n\n", toString(.gfoi), "\n")
 
   .responseString = sosRequest(sos = sos, request = .gfoi,
                                verbose = verbose, inspect = inspect)
 
-  if(verbose) cat("[sos4R] Received response (size:", object.size(.responseString),
+  if (verbose) cat("[sos4R] Received response (size:", object.size(.responseString),
       "bytes), parsing ...\n")
 
   # responseFormat starts with text/xml OR the response string is XML content,
@@ -202,9 +202,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   .contentType <- NA_character_
   .contentType <- attributes(.responseString)[["Content-Type"]]
 
-  if(verbose) cat("[.getFeatureOfInterest_2.0.0] Content-Type:", .contentType, "\n")
+  if (verbose) cat("[.getFeatureOfInterest_2.0.0] Content-Type:", .contentType, "\n")
 
-  if(nchar(.responseString) < 1) {
+  if (nchar(.responseString) < 1) {
     warning(paste("Response string has length ", nchar(.responseString),
                   ". Please re-check query parameters."))
   }
@@ -215,21 +215,21 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     .hasSubtype <- FALSE
     .contentSubtype <- NA
-    if(length(.contentType) < 1) {
-      if(verbose) cat("[.getFeatureOfInterest_2.0.0] No content type!",
+    if (length(.contentType) < 1) {
+      if (verbose) cat("[.getFeatureOfInterest_2.0.0] No content type!",
                       "Falling back to '", mimeTypeXML, "'\n")
       .contentType <- mimeTypeXML
     }
-    else if(length(.contentType) > 1) {
+    else if (length(.contentType) > 1) {
       # check if subtype is present or take just the first
       .subtypeIdx <- which(names(.contentType) == "subtype")
-      if(length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
+      if (length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
         .hasSubtype <- TRUE
         .contentSubtype <- .contentType[[.subtypeIdx]]
-        if(verbose) cat("[.getFeatureOfInterest_2.0.0] Found mime subtype: ",
+        if (verbose) cat("[.getFeatureOfInterest_2.0.0] Found mime subtype: ",
                         toString(.contentSubtype), "'\n")
       }
-      else if(verbose) cat(
+      else if (verbose) cat(
         "[.getFeatureOfInterest_2.0.0] More than one content type, ",
         "no subtype detected : '",
         toString(.contentType),
@@ -263,13 +263,13 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                        .filename, "\n")
     }
 
-    if(.isExceptionReport(.response)) {
+    if (.isExceptionReport(.response)) {
       return(.handleExceptionReport(sos, .response))
     }
 
     .parsingFunction <- sosParsers(sos)[[.parserName]]
 
-    if(verbose) {
+    if (verbose) {
       cat("[.getFeatureOfInterest_2.0.0] Parsing with function ")
       print(.parsingFunction)
     }
@@ -279,14 +279,14 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     .msg <- paste("[sos4R] Finished getFeatureOfInterest to", sos@url, "\n")
 
-    if(!is.null(.filename)) {
+    if (!is.null(.filename)) {
       .msg <- paste(.msg,
                     "[sos4R] Original document saved:", .filename, "\n")
 
       .oldAttrs <- attributes(.obs)
       .newAttrs <- list(.filename)
       names(.newAttrs) <- list(sosAttributeFileName)
-      if(verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
+      if (verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
                       toString(.newAttrs), "(names",
                       toString(names(.newAttrs)), ")\n")
 
@@ -317,22 +317,21 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                                   saveOriginal) {
 
   .filename <- NULL
-  if(!is.null(saveOriginal)) {
-    if(is.character(saveOriginal)) {
+  if (!is.null(saveOriginal)) {
+    if (is.character(saveOriginal)) {
       .filename <- saveOriginal
-      if(verbose) cat("[.getObservation_2.0.0] Using saveOriginal parameter for file name:",
+      if (verbose) cat("[.getObservation_2.0.0] Using saveOriginal parameter for file name:",
                       .filename, "\n")
     }
-    else if(is.logical(saveOriginal) && saveOriginal) {
+    else if (is.logical(saveOriginal) && saveOriginal) {
       .filename <- paste(.cleanupFileName(offeringId),
                          format(Sys.time(), sosDefaultFilenameTimeFormat),
                          sep = "_")
-      if(verbose) cat("[.getObservation_2.0.0] Generating file name:",
-                      .filename, "\n")
+      if (verbose) cat("[.getObservation_2.0.0] Generated file name:", .filename, "\n")
     }
   }
 
-  if(verbose)
+  if (verbose)
     cat("[.getObservation_2.0.0] to ", sos@url, " with offering ",
         offeringId, "\n")
 
@@ -343,7 +342,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                                      verbose, inspect,
                                      saveOriginal)
 
-  if(verbose)
+  if (verbose)
     cat("[.getObservation_2.0.0] REQUEST:\n\n", toString(.go), "\n")
 
   .responseString = sosRequest(sos = sos, request = .go,
@@ -357,9 +356,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   .contentType <- NA_character_
   .contentType <- attributes(.responseString)[["Content-Type"]]
 
-  if(verbose) cat("[.getObservation_2.0.0] Content-Type:", .contentType, "\n")
+  if (verbose) cat("[.getObservation_2.0.0] Content-Type:", .contentType, "\n")
 
-  if(nchar(.responseString) < 1) {
+  if (nchar(.responseString) < 1) {
     warning(paste("Response string has length ", nchar(.responseString),
                   ". Please re-check query parameters."))
   }
@@ -370,21 +369,21 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     .hasSubtype <- FALSE
     .contentSubtype <- NA
-    if(length(.contentType) < 1) {
-      if(verbose) cat("[.getObservation_2.0.0] No content type!",
+    if (length(.contentType) < 1) {
+      if (verbose) cat("[.getObservation_2.0.0] No content type!",
                       "Falling back to '", mimeTypeXML, "'\n")
       .contentType <- mimeTypeXML
     }
-    else if(length(.contentType) > 1) {
+    else if (length(.contentType) > 1) {
       # check if subtype is present or take just the first
       .subtypeIdx <- which(names(.contentType) == "subtype")
-      if(length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
+      if (length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
         .hasSubtype <- TRUE
         .contentSubtype <- .contentType[[.subtypeIdx]]
-        if(verbose) cat("[.getObservation_2.0.0] Found mime subtype: ",
+        if (verbose) cat("[.getObservation_2.0.0] Found mime subtype: ",
                         toString(.contentSubtype), "'\n")
       }
-      else if(verbose) cat(
+      else if (verbose) cat(
         "[.getObservation_2.0.0] More than one content type, ",
         "no subtype detected : '",
         toString(.contentType),
@@ -401,21 +400,21 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
 
     # select the parser and file ending based on the mime type FIRST
     .fileEnding <- ".xml"
-    if(.contentType == mimeTypeXML) {
-      if(.hasSubtype && .contentSubtype == mimeSubtypeOM) {
-        if(verbose)
+    if (.contentType == mimeTypeXML) {
+      if (.hasSubtype && .contentSubtype == mimeSubtypeOM) {
+        if (verbose)
           cat("[.getObservation_2.0.0] Got OM according to mime type.\n")
         .parserName <- mimeTypeOM
       }
       else {
-        if(verbose)
+        if (verbose)
           cat("[.getObservation_2.0.0] Got pure XML according to mime type.",
               "Trying to parse with default parser, see SosParsingFunctions().\n")
         .parserName <- mimeTypeXML
       }
     }
     else if (.contentType == mimeTypeKML) {
-      if(verbose) cat("[.getObservation_2.0.0] Got KML according to mime type.\n")
+      if (verbose) cat("[.getObservation_2.0.0] Got KML according to mime type.\n")
 
       .fileEnding <- ".kml"
       .parserName <- mimeTypeKML
@@ -425,28 +424,28 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .parserName <- sosGetObservationName
     }
 
-    if(!is.null(.filename)) {
+    if (!is.null(.filename)) {
       .filename <- paste(.filename, .fileEnding, sep = "")
       xml2::write_xml(x = .response, file = .filename)
 
-      if(verbose) {
+      if (verbose) {
         cat("[.getObservation_2.0.0] Saved original document:",
             .filename, "\n")
       }
     }
 
-    if(.isExceptionReport(.response)) {
+    if (.isExceptionReport(.response)) {
       return(.handleExceptionReport(sos, .response))
     }
 
-    if( !is.na(responseFormat) &&
+    if ( !is.na(responseFormat) &&
         isTRUE(grep(pattern = "text/xml", x = responseFormat) != 1)) {
       warning("Got XML string, but request did not require text/xml (or subtype).")
     }
 
     .parsingFunction <- sosParsers(sos)[[.parserName]]
 
-    if(verbose) {
+    if (verbose) {
       cat("[.getObservation_2.0.0] Parsing with function ")
       print(.parsingFunction)
     }
@@ -455,15 +454,15 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                              verbose = verbose)
 
     # calculate result length vector
-    if(inherits(.obs, "OmObservationCollection")) {
-      if(verbose) cat("[.getObservation_2.0.0] Got OmObservationCollection",
+    if (inherits(.obs, "OmObservationCollection")) {
+      if (verbose) cat("[.getObservation_2.0.0] Got OmObservationCollection",
                       "... calculating length with sosResult()")
 
       .result <- sosResult(.obs, bind = FALSE, coordinates = FALSE)
-      if(verbose) cat("[.getObservation_2.0.0] result: ", toString(.result))
+      if (verbose) cat("[.getObservation_2.0.0] result: ", toString(.result))
 
       .resultLength <- sapply(.result, nrow)
-      if(length(.resultLength) == 0){
+      if (length(.resultLength) == 0){
         # nothing
         .resultLength <- 0
       }
@@ -473,14 +472,14 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     }
     else .resultLength <- NA
 
-    if(verbose) {
+    if (verbose) {
       cat("[.getObservation_2.0.0] PARSED RESPONSE:",
           class(.obs), "\n")
       cat("[.getObservation_2.0.0] Result length(s): ",
           toString(.resultLength), "\n")
     }
 
-    if(is.list(.obs) && any(sapply(.obs, is.null))) {
+    if (is.list(.obs) && any(sapply(.obs, is.null))) {
       .countInfo <- paste("NO DATA, turn on 'verbose' for more information.")
     }
     else {
@@ -492,14 +491,14 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     .msg <- paste("[sos4R] Finished getObservation to", sos@url,
                   "\n\t--> received", length(.obs), "observation(s) having",
                   .countInfo , "\n")
-    if(!is.null(.filename)) {
+    if (!is.null(.filename)) {
       .msg <- paste(.msg,
                     "[sos4R] Original document saved:", .filename, "\n")
 
       .oldAttrs <- attributes(.obs)
       .newAttrs <- list(.filename)
       names(.newAttrs) <- list(sosAttributeFileName)
-      if(verbose) cat("[.getObservation_2.0.0] Appending new attributes",
+      if (verbose) cat("[.getObservation_2.0.0] Appending new attributes",
                       toString(.newAttrs), "(names",
                       toString(names(.newAttrs)), ")\n")
 
@@ -511,17 +510,17 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     return(.obs)
   }
   else if (.isEmptyResponse(.responseString)) {
-    if(verbose)
+    if (verbose)
       cat("[.getObservation_2.0.0] Received empty observation response.", "\n")
     return(list())
   }
   else { # response is NOT an XML string:
-    if(verbose)
+    if (verbose)
       cat("[.getObservation_2.0.0] Did NOT get XML string as response, trying to parse with",
           responseFormat, "\n")
 
-    if(is.na(responseFormat) || is.null(responseFormat)) {
-      if(verbose)
+    if (is.na(responseFormat) || is.null(responseFormat)) {
+      if (verbose)
         cat("[.getObservation_2.0.0] responseFormat is ",
             responseFormat, " >>> returning response string...\n")
       return(.responseString)
@@ -551,7 +550,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
         .oldAttrs <- attributes(.csv)
         .newAttrs <- list(.filename)
         names(.newAttrs) <- list(sosAttributeFileName)
-        if(verbose) cat("[.getObservation_2.0.0] Appending new attributes",
+        if (verbose) cat("[.getObservation_2.0.0] Appending new attributes",
                         toString(.newAttrs), "(names",
                         toString(names(.newAttrs)), ")\n")
 
@@ -578,7 +577,6 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     save(.responseString, file = .filename)
     cat("[sos4R] Saved original document:", .filename)
   }
-  else warning("File name is NULL, could not save document!")
 
   # RETURN ##############
   return(.responseString)
@@ -607,7 +605,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                                  responseMode = responseMode,
                                  BBOX = BBOX,
                                  valueReferenceTemporalFilter = valueReferenceTemporalFilter)
-  if(verbose)
+  if (verbose)
     cat("[.createGetObservation_2.0.0] Done:\n", toString(.go), "\n")
 
   return(.go)
@@ -621,7 +619,7 @@ setMethod(f = "checkRequest",
                                 verbose = "logical"),
           definition = function(service, operation, verbose) {
             # check if operation is for SOS and operation is GetObservation
-            if(!(operation@service == sosService &&
+            if (!(operation@service == sosService &&
                  operation@request == sosGetObservationName)) {
               stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetObservation' as operation.")
               return(FALSE)
@@ -645,7 +643,7 @@ setMethod(f = "checkRequest",
                                 verbose = "logical"),
           definition = function(service, operation, verbose) {
             # check if operation is for SOS and operation is DescribeSensor
-            if(!(operation@service == sosService &&
+            if (!(operation@service == sosService &&
                  operation@request == sosGetFeatureOfInterestName)) {
               stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetFeatureOfInterest' as operation.")
               return(FALSE)
@@ -665,7 +663,7 @@ setMethod(f = "checkRequest",
 #
 setMethod("encodeRequestKVP", "SosGetObservation_2.0.0",
           function(obj, sos, verbose = FALSE) {
-            if(obj@version == sos200_version) {
+            if (obj@version == sos200_version) {
               return(.sosEncodeRequestKVPGetObservation_2.0.0(obj, sos,
                                                               verbose))
             }
@@ -679,7 +677,7 @@ setMethod("encodeRequestKVP", "SosGetObservation_2.0.0",
 #
 setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
           function(obj, sos, verbose = FALSE) {
-            if(obj@version == sos200_version) {
+            if (obj@version == sos200_version) {
               return(.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0(obj, sos,
                                                                     verbose))
             }
@@ -690,7 +688,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
 )
 
 .sosEncodeRequestKVPGetObservation_2.0.0 <- function(obj, sos, verbose = FALSE) {
-  if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] encoding", toString(obj), "\n")
+  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] encoding", toString(obj), "\n")
 
   # required:
   .requestBase <- .kvpBuildRequestBase(sos, sosGetObservationName)
@@ -702,14 +700,14 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
   .mandatory <- paste(.requestBase, .offering,
                       .observedProperty, sep = "&")
 
-  if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
+  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
                   "mandatory elements: ", .mandatory, "\n")
 
   # optional:
   .optionals = ""
   # is optional for GET
-  if(!is.na(obj@srsName)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding SRS name ",
+  if (!is.na(obj@srsName)) {
+    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding SRS name ",
                     obj@srsName, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameSrsName,
                                           .kvpEscapeSpecialCharacters(x = obj@srsName),
@@ -717,10 +715,10 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                         sep = "&")
   }
 
-  if( !length(obj@eventTime) == 0) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding event time",
+  if ( !length(obj@eventTime) == 0) {
+    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding event time",
                     toString(obj@eventTime), " with valueReference ", toString(obj@valueReferenceTemporalFilter), "\n")
-    if(length(obj@eventTime) > 1)
+    if (length(obj@eventTime) > 1)
       warning("Only first event time in the list is used for KVP!")
 
     .timeString <- encodeKVP(obj = obj@eventTime[[1]],
@@ -728,7 +726,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
 
     # if the eventTime is a latest request, it returns NA, the GET binding
     # says for the latest observation eventTime is omitted
-    if(!is.na(.timeString)) {
+    if (!is.na(.timeString)) {
       # http://www.opengis.net/spec/SOS/2.0/req/kvp-core/go-temporalFilter-encoding
       if (!is.na(obj@valueReferenceTemporalFilter))
         .timeString <- paste0(obj@valueReferenceTemporalFilter, ",", .timeString)
@@ -746,24 +744,24 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                           sep = "&")
     }
     else {
-      if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] ",
+      if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] ",
                       "encodeKVP returned NA for eventTime, omitting",
                       "parameter for request for latest observation.")
     }
   }
 
-  if( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding procedures ",
+  if ( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
+    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding procedures ",
                     obj@procedure, "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(sosKVPParamNameProcedure, obj@procedure),
                         sep = "&")
   }
 
-  if( !is.null(obj@featureOfInterest)) {
+  if ( !is.null(obj@featureOfInterest)) {
     .foiIDs <- obj@featureOfInterest@objectIDs
 
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding features ",
+    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding features ",
                     toString(obj@featureOfInterest), "by IDs ", toString(.foiIDs), "\n")
 
     .optionals <- paste(.optionals,
@@ -771,12 +769,12 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                         sep = "&")
   }
 
-  if( !is.null(obj@result)) {
+  if ( !is.null(obj@result)) {
     warning("'result' is not supported for 'GET' - parameter is discarded, use another method to include it!")
   }
 
-  if( !is.na(obj@resultModel)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding result model ",
+  if ( !is.na(obj@resultModel)) {
+    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding result model ",
                     obj@resultModel, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameResultModel,
                                           .kvpEscapeSpecialCharacters(x = obj@resultModel),
@@ -784,8 +782,8 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                         sep = "&")
   }
 
-  if( !is.na(obj@responseMode)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding response mode ",
+  if ( !is.na(obj@responseMode)) {
+    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding response mode ",
                     obj@responseMode, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameResponseMode,
                                           .kvpEscapeSpecialCharacters(x = obj@responseMode),
@@ -793,20 +791,20 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
                         sep = "&")
   }
 
-  if( !is.na(obj@BBOX)) {
-    if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding BBOX ",
+  if ( !is.na(obj@BBOX)) {
+    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding BBOX ",
                     obj@BBOX, "\n")
     .optionals <- paste(.optionals, paste(sosKVPParamNameBBOX,
                                           .kvpEscapeSpecialCharacters(x = obj@BBOX), sep = "="),
                         sep = "&")
   }
 
-  if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
+  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
                   "optional elements: ", .optionals, "\n")
 
   .kvpString <- paste(.mandatory, .optionals, sep = "")
 
-  if(verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
+  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
                   "Finished KVP string creation:\n", .kvpString, "\n")
 
   return(.kvpString)
@@ -814,7 +812,7 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
 
 .sosEncodeRequestKVPGetFeatureOfInterest_2.0.0 <- function(obj, sos,
                                                            verbose = FALSE) {
-  if(verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0] encoding",
+  if (verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0] encoding",
                   toString(obj), "\n")
 
   # required:

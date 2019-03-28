@@ -137,14 +137,14 @@ setMethod(f = "encodeXML",
       # time zone hack to fix that the time format option
       # %z does not work on windows machines:
       .time <- obj + 11 * 60 * 60 # add 11 hours
-      .formatted <- strftime(x = .time,
+      formatted <- strftime(x = .time,
         format = sosTimeFormat(sos))
-      .formatted <- paste(.formatted,
+      formatted <- paste(formatted,
         "+11:00", sep = "")	# append 11:00
 
       if(verbose) cat("Formatted ", toString(obj),
-        " to ", .formatted, "\n")
-      return(.formatted)
+        " to ", formatted, "\n")
+      return(formatted)
     }
 )
 ```
@@ -186,7 +186,7 @@ Please be aware that some parsers contain require a parameter of class `SOS` upo
 myER <- function(xml) {
 	return("EXCEPTION!!!11")
 }
-myParsers <- SosParsingFunctions("ExceptionReport" = myER)
+myParsers <- SosParsingFunctions("ows:ExceptionReport" = myER)
 exceptionParserSOS <- SOS(sosUrl(mySOS),
                           parsers = myParsers,
                           binding = sosBinding(mySOS),
@@ -212,7 +212,7 @@ names(SosDisabledParsers())
 
 This is also the recommended way to start if you want to set-up your own parsers (given you have responses in XML) and an alternative to debugging if you want to inspect responses directly.
 
-The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class `XMLInternalDocument`:
+The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class `xml_document`:
 
 ```{r reponse_passthrough}
 disabledParserSOS <- SOS(sosUrl(mySOS),
@@ -225,7 +225,7 @@ unparsed <- getObservation(disabledParserSOS,
 class(unparsed)
 # (Using XML functions here for accesing the root of a
 # document and the name of an element.)
-print(xmlName(xmlRoot(unparsed)))
+unparsed
 ```
 
 
@@ -265,8 +265,7 @@ names(SosDataFieldConvertingFunctions())
 
 The current list of a SOS connection's converters can be accessed with
 
-
-```{r converters2}
+```{r converters2, eval=FALSE}
 sosDataFieldConverters(mySOS)
 ```
 
@@ -279,12 +278,6 @@ testsosobsprop <- sosObservedProperties(testsosoffering)[1]
 getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop)
 ```
 
-An excerpt from the warnings list with regard to the conversion reads as follows.
-
-```{r converters3b}
-warnings()
-```
-
 Looking at the raw response data gives us a hint at a suitable type.
 
 ```{r converters3c}
@@ -292,7 +285,7 @@ getObservation(sos = testsos, offering = testsosoffering, observedProperty = tes
                inspect = TRUE)
 ```
 
-Converters may be matched by XML properties `swe:Quatity[@definition]` or `swe:uom[@code]`.
+Converters may be matched by XML properties `swe:Quantity[@definition]` or `swe:uom[@code]`.
 
 ```{r converters3d}
 testconverters <- SosDataFieldConvertingFunctions(
@@ -333,7 +326,7 @@ No converter found! Skipping field S/m
 This shows warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field).
 The next example creates conversion functions for these fields and repeats the operation.
 
-```{r converters4, eval=FALSE}
+```{r converters4}
 myConverters <- SosDataFieldConvertingFunctions(
 	"S/m" = sosConvertDouble,
 	"http://mmisw.org/ont/cf/parameter/sea_water_salinity"

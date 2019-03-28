@@ -22,8 +22,6 @@ library("sos4R")
 
 ################################################################################
 ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS")
-#		binding = "GET",
-#		verboseOutput = TRUE)
 ioosdif_off <- sosOfferings(ioosdif)
 sosName(ioosdif_off)
 
@@ -37,15 +35,6 @@ sosResponseFormats(ioosdif)
 #sosObservedProperties(ioosdif_off)
 unique(unlist(sosObservedProperties(ioosdif_off)))
 
-# TODO create a map using background data as described in
-# http://r-sig-geo.2731867.n2.nabble.com/Reading-a-WMS-layer-as-a-sp-object-td6311972.html
-
-
-################################################################################
-# more data available
-#TODO use new data values for mapping example and custom filters
-#TODO use KML data from SOS with kmlPlot?
-
 #CO-OPS has expanded its SOS services with an addition of the following 3 new services.
 #
 #High Low Tide Predictions
@@ -53,6 +42,6 @@ unique(unlist(sosObservedProperties(ioosdif_off)))
 #Rain Fall
 #
 #
-#These services are offered for single station and as collections and in the following data formats; CSV, TSV and KML.
+#These services are offered for single station and as collections and in the following data formats; CSV, TSV.
 #Please note that these services are presently available on the evaluation test site (http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos-test/).
 #On January 24th, 2012 at 10:00 am EST, CO-OPS will add these new changes to our operational SOS web site (http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/).

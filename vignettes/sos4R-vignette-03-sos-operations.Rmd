@@ -59,21 +59,13 @@ SosSupportedResponseModes()
 SosSupportedResultModels()
 ```
 
-The output of the following calls are named lists (the name being the same as the value) which are simplified here for brevity using `toString()`.
+The output of the following calls are named lists (the name being the same as the value).
 
-```{r supported03, eval=FALSE}
+```{r supported03}
 SosSupportedSpatialOperators()
 ```
 
 ```{r supported04}
-toString(SosSupportedSpatialOperators())
-```
-
-```{r supported05, eval=FALSE}
-SosSupportedTemporalOperators()
-```
-
-```{r supported06}
 toString(SosSupportedTemporalOperators())
 ```
 
@@ -111,7 +103,7 @@ The method `SOS()` is a construction method for classes encapsulating a connecti
 It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class `SOS`.
 
 ```{r conn}
-mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp", binding = "KVP")
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp", binding = "KVP")
 ```
 
 To create a SOS connection you only need the URL of the service (i.e. the URL endpoint which can be used for HTTP requests).
@@ -119,8 +111,8 @@ The service connection created above is used for all examples throughout this do
 
 All parameters except the service endpoint are optional and use default settings:
 
-- `method`: The transport protocol. Currently available are `r toString(names(SosSupportedBindings()))`, the default is `r SosDefaultBinding()`.
-`GET` is less powerful, especially regarding filtering operations.
+- `method`: The transport protocol. Currently available are `r toString(SosSupportedBindings())`, the default is `r SosDefaultBinding()`.
+`POX` supports more powerful filtering.
 - `version`: The service version. Currently available version(s) is/are `r SosSupportedServiceVersions()`.
 - `parsers`: The list of parsing functions. See vignette "Extending".
 - `encoders`: The list of encoding functions. See vignette "Extending".
@@ -166,7 +158,7 @@ The GetCapabilities operations is automatically conducted during the connecting 
 The response is the **capabilities document**, which contains a detailed description of the services capabilities.
 It's sections describe: service identification, service provider, operations metadata (parameter names, ...), filter capabilities, and contents (a list of offering descriptions).
 Please see section 8.2.3 of the SOS specification for details.
-If you want to inspect the original capabilities document it can be re-requested using
+If you want to inspect the original capabilities document XML, it can be re-requested using
 
 ```{r capsOriginal, eval=FALSE}
 sosCapabilitiesDocumentOriginal(sos = mySOS)
@@ -186,17 +178,28 @@ The parameters of the operation are:
 
 #### Exploring the Capabilities Document
 
-The respective **parts of the capabilities document** are modelled as R classes and can be accessed with these functions:
+The respective **parts of the capabilities document** are modelled as R classes and can be accessed with accessor functions:
 
-```{r getCap2, eval=FALSE}
+```{r getCap2a}
 sosServiceIdentification(mySOS)
+```
+
+```{r getCap2b}
 sosServiceProvider(mySOS)
+```
+
+```{r getCap2c}
 sosFilter_Capabilities(mySOS)
+```
+
+```{r getCap2d}
 sosContents(mySOS)
 ```
 
-The first four functions extract clearly structured, self-explanatory parts of the document, so no further discussion is made here.
-The contents part however is described in detail in section [Metadata Extraction](#metadata-extraction-for-request-building), as it can (and should) be used to extract query parameters.
+The first three functions extract clearly structured, self-explanatory parts of the document.
+You can use this to add proper accredetation to your figures, for example.
+
+The _contents_ part however is described in detail in section [Metadata Extraction](#metadata-extraction-for-request-building), as it can (and should) be used to extract query parameters.
 
 The function `sosTime()` returns the time period for which observations are available within the service.
 To be precise, it accesses the `ows:Range` element of the parameter eventTime in the description of the GetObservation operation.
@@ -220,9 +223,15 @@ The following accessor methods return either
 (ii) with the `unique` parameter set to `TRUE`, a unique list of all allowed values.
 Please be aware that these are not allowed for all operations, not are all options supported by `sos4R`.
 
-```{r getCap5, eval=FALSE}
+```{r getCap5a}
 sosResponseFormats(mySOS)
+```
+
+```{r getCap5b}
 sosResponseMode(mySOS)
+```
+
+```{r getCap5c}
 sosResultModels(mySOS)
 ```
 
@@ -231,14 +240,6 @@ Note the missing values for some operations (where options are not required they
 
 ```{r getCap6}
 sosResponseMode(mySOS, unique = TRUE)
-```
-
-```{r getCap7}
-sosResultModels(mySOS)[1:3]
-```
-
-```{r getCap8}
-sosResponseMode(mySOS)
 ```
 
 ```{r getCap9}
@@ -255,15 +256,19 @@ For future analyses, but also for correct plotting, one must know the coordinate
 You can get this information using the method `sosGetCRS()` from variuos objects.
 
 The function utilizes the [EPSG code](http://www.epsg-registry.org/) in GML attributes like `srsName="urn:ogc:def:crs:EPSG:4326"` to initialize an object of class `CRS` from the package `sp`.
-For `SOS` and code{SosObservationOffering} objects these are taken from the bounding box given in the `gml:boundedBy` element.
+For `SOS` and `SosObservationOffering` objects these are taken from the bounding box given in the `gml:boundedBy` element.
 
-```{r getCRS}
-sosGetCRS("urn:ogc:def:crs:EPSG:4326")
+```{r getCRSa}
+sosGetCRS("urn:ogc:def:crs:EPSG::4326")
+```
 
+```{r getCRSb}
 # returns the CRS of offering(s) based on the CRS
 # used in the element gml:boundedBy:
 sosGetCRS(mySOS)[1:2]
+```
 
+```{r getCRSc}
 sosGetCRS(sosOfferings(mySOS)[[1]])
 ```
 
@@ -272,12 +277,12 @@ Mre examples for `sosGetSRS()` can be found in section [Spatial Reference System
 #### Plotting SOS and Offerings
 
 The content of the capabilities document allows the plotting of a service's offerings.
-The following example uses the packages `maps}, `mapdata` and \pkg{maptools` to create a background map.
+The following example uses the packages `maps`, `mapdata` and `maptools` to create a background map.
 Plotting functions exist for objects of class `SOS` and `SosObservationOffering`, so offerings can also be plotted separately.
 
 ```{r sosPlot}
 # background map:
-library(maps); library(mapdata); library(maptools)
+library("maps"); library("mapdata"); library("maptools")
 data(worldHiresMapEnv)
 crs <- sosGetCRS(mySOS)[[1]]
 worldHigh <- pruneMap(
@@ -310,14 +315,10 @@ Please see other sections of this document on how to get supported respectively 
 
 A simple example is as follows.
 
-```{r describeSensor1, eval=FALSE}
-testsos <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox",
-             binding = "POX", dcpFilter = list("POX" = "/pox"))
-
-mySensor <- describeSensor(sos = testsos,
-		procedure = sosProcedures(obj = testsos)[[1]][[1]],
+```{r describeSensor1}
+mySensor <- describeSensor(sos = mySOS,
+		procedure = sosProcedures(mySOS)[[1]],
 		outputFormat = 'text/xml; subtype="sensorML/1.0.1"', # space is needed!
-		#verbose = TRUE
 		)
 
 mySensor
@@ -340,11 +341,15 @@ sosAbstract(mySensor)
 ```
 
 This includes the coordinates with unit and reference system information in the attributes of the returned object.
-The observed bounding box is also available.
 
 ```{r describeSensorCoords, eval=FALSE}
 mySensor.coords <- sosCoordinates(mySensor)
 attributes(mySensor.coords)
+```
+
+The observed bounding box is also available for reuse.
+
+```{r box}
 sosBoundedBy(mySensor)
 ```
 
@@ -357,13 +362,14 @@ data(worldHiresMapEnv)
 
 # get sensor descriptions
 procs <- unique(unlist(sosProcedures(mySOS)))
-procs.descr <- lapply(X = procs, FUN = describeSensor, sos = mySOS)
+procs.descr <- lapply(X = procs, FUN = describeSensor,
+                      sos = mySOS,
+                      outputFormat = 'text/xml; subtype="sensorML/1.0.1"')
 
-sensors.crs <- unique(sosGetCRS(procs.descr))[[1]]
+sensors.crs <- sosGetCRS(procs.descr[[1]])
 worldHigh <- pruneMap(map(database = "worldHires",
-				region = c("Germany", "Austria", "Netherlands",
-						"Italy"),
-				plot = FALSE))
+                          region = c("Germany"),
+                          plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = sensors.crs)
 
 plot(worldHigh.lines, col = "grey50", ylim = c(44.0, 54.8))
@@ -389,15 +395,18 @@ It is recommended to extract the identifiers of procedures et cetera that are to
 This often ensures forward compatiblity and minimizes typing errors.
 The offerings are the "index" of the service and therefore we concentrate on the contents section of the capabilities here.
 
-The class `SosContents` simply contains a list of objects of the class `SosObservationOffering` which one can get directly from the connection object:
-
+The class `SosContents` simply contains a list of objects of the class `SosObservationOffering` which one can get directly from the connection object and also by name of the :
 
 ```{r metadataExtraction1a, eval=FALSE}
 sosOfferings(mySOS)
-sosOfferings(mySOS, name = "wxt520")
 ```
 
-The output when printing this list is quite extensive, so we concentrate on just on element of it in the following examples.
+```{r metadataExtraction1b}
+#length(sosOfferings(mySOS))
+sosOfferings(mySOS)[[1]]
+```
+
+The output when printing the full list is quite extensive, so we concentrate on just on element of it in the following examples.
 Printing and summary methods are available of objects of the class `SosObservationOffering`.
 
 ```{r metadataExtraction1b}
@@ -406,9 +415,15 @@ summary(sosOfferings(mySOS)[[1]])
 
 The offerings list is named with the offering identifier, so the following statements return the same list.
 
-```{r metadataExtraction2, eval=FALSE}
+```{r metadataExtraction2a}
 sosOfferingIds(mySOS)
+```
+
+```{r metadataExtraction2b}
 names(sosOfferings(mySOS))
+```
+
+```{r metadataExtraction2c}
 sosName(sosOfferings(mySOS))
 ```
 
@@ -419,7 +434,7 @@ The offerings list is a standard R list, so all subsetting operations are possib
 So indexing by name (though counteracting the mentioned forward compatibility, as names might change) is recommended at at least one point in the analysis so that changes in the contents of a service result in an error.
 
 ```{r metadataExtraction3}
-myOffering <- sosOfferings(mySOS)[["adxl345"]]
+myOffering <- sosOfferings(mySOS)[["ws2500"]]
 ```
 
 Metadata about the whole **offering** are identifier, name, and spatial and temporal extends.
@@ -433,7 +448,13 @@ The offerings also contains metadata about the format and model that are support
 
 ```{r metadataExtraction4b}
 sosResultModels(myOffering)
+```
+
+```{r metadataExtraction4c}
 sosResponseMode(myOffering)
+```
+
+```{r metadataExtraction4d}
 sosResponseFormats(myOffering)
 ```
 
@@ -450,12 +471,16 @@ The optional attribute `bbox` can be used to obtain a bounding box matrix as use
 sosBoundedBy(myOffering, bbox = TRUE)
 ```
 
-The **temporal extend** is modeled as an object of the respective class of the element in the offering description, which normally is a gml:TimePeriod, but does not have to be. The last two statements in the following snipped show how one can access the actual data and what their class is.
+The **temporal extend** is modeled as an object of the respective class of the element in the offering description, which normally is a gml:TimePeriod, but does not have to be.
 
-```{r metadataExtraction7}
+```{r metadataExtraction7a}
 myOffering.time <- sosTime(myOffering)
 str(myOffering.time)
+```
 
+You can also access the actual timestamps, which is a bit cumbersome.
+
+```{r metadataExtraction7b}
 myOffering.time@beginPosition@time
 myOffering.time@endPosition@time
 class(myOffering.time@endPosition@time)
@@ -470,7 +495,7 @@ myOffering.time.converted <- sosTime(myOffering, convert = TRUE)
 str(myOffering.time.converted)
 ```
 
-Furthermore the offering comprises **lists of procedures}, \textbf{observed properties}, and \textbf{features of interest**.
+Furthermore the offering comprises **lists of procedures, **observed properties**, and **features of interest**.
 In our example the feature and procedure identifiers are the same - this does not have to be the case.
 
 **Important Note:** The order of these lists is not guaranteed to be the same upon every connection to a service.
@@ -486,16 +511,28 @@ The following examples only print out a part of the returned lists.
 
 ```{r metadataExtraction10a}
 sosProcedures(mySOS)[1:2]
+```
+
+```{r metadataExtraction10b}
 sosObservedProperties(mySOS)[1:2]
+```
+
+```{r metadataExtraction10c}
 sosFeaturesOfInterest(mySOS)[1:2]
 ```
 
 Also (parts of) a list of offerings are possible with these functions:
 
-```{r metadataExtraction10b}
+```{r metadataExtraction10d}
 sosProcedures(sosOfferings(mySOS)[2:3])
+```
+
+```{r metadataExtraction10e}
 sosObservedProperties(sosOfferings(mySOS)[2:3])
-sosFeaturesOfInterest(sosOfferings(mySOS)[1:4])
+```
+
+```{r metadataExtraction10f}
+sosFeaturesOfInterest(sosOfferings(mySOS)[1:2])
 ```
 
 Please carefully inspect the structure in each case, as these functions will return named lists of lists and not combine procedures from different offerings.
@@ -521,7 +558,7 @@ defaultResponseFormatGetObs
 - `sos`: The service connection to be used, an object of class `SOS`.
 - `offering`: The offering to be used, either the identifier as a character string or an object of class `SosObservationOffering`.
 - `observedProperty`: The observed property of the desired observations. The default is all observed property of the offering, `sosObservedProperties(obj = offering)`.
-- `responseFormat`: The format of the response document. The default is \Sexpr{defaultResponseFormatGetObs}.
+- `responseFormat`: The format of the response document. The default is `defaultResponseFormatGetObs`.
 - `srsName`: The name of the spatial reference system that should be used for the geometries in the response.
 - `eventTime`: A list of objects of class `SosEventTime` which specify the time period(s) for which observations are requested. See section [Temporal Fitering](#temporal-filtering) for more information.
 - `procedure`: A list of procedure identifiers for which observations are requested. See section [Spatial Filtering](#spatial-filtering) for more information.
@@ -535,18 +572,20 @@ defaultResponseFormatGetObs
 The returned data of all GetObservation operations is an XML document of type om:Observation, om:Measurement, or om:ObservationCollection which holds a list of the former two. All three of these have corresponding S4 classes, namely `OmObservation`, `OmMeasurement`, or `OmObservationCollection`.
 
 The most straightforward (and most simple to use) methods to query certain observations are to request one (or several) specific **observed property** (phenomenon) or **procedure** (sensor).
-Note that the procedures and observed properties have to match the given offering.
+Note that the procedures and observed properties have to match the given offering, which the do not in the second case.
+In the first case, there is no temporal filter, so the code is not executed here.
 
-```{r getObsPropPhen, eval=FALSE}
+```{r getObsPropPhen1, eval=FALSE}
 myObservationData.procedure.1 <- getObservation(sos = mySOS,
 	offering = myOffering,
 	procedure = sosProcedures(myOffering)[[1]])
+```
 
-myObservationData.offering.34 <- getObservation(sos = mySOS,
+```{r getObsPropPhen2}
+getObservation(sos = mySOS,
 	offering = myOffering,
 	procedure = sosProcedures(myOffering),
-	observedProperty =
-		sosObservedProperties(mySOS)[3:4])
+	observedProperty = as.list(names(sosObservedProperties(mySOS)[3:4])))
 ```
 
 These request would potentially retrieve a lot of data, since there is no temporal (or thematical/spatial) limitation.
@@ -556,7 +595,8 @@ This feature is described extensively in section [Temporal Filtering](#temporal-
 ```{r getObs0a, eval=FALSE}
 myObservationData <- getObservation(sos = mySOS,
 		offering = myOffering,
-		eventTime = sosCreateTime(sos = mySOS, time = "2015-11-01::2015-11-02"))
+		eventTime = sosCreateTime(sos = mySOS,
+		                          time = "2018-01-01::2018-01-06"))
 ```
 
 The logging output above starting with `[sos4R]` informs the user when the download of data is complete and when the parsing has finished.
@@ -565,7 +605,7 @@ In following requests, this ouput is **not** included for brevity.
 
 The response `myObservationData` of this request is the base for the next sections.
 
-```{r getObs1a, eval=FALSE}
+```{r getObs1a}
 class(myObservationData)
 str(myObservationData, max.level = 2)
 ```
@@ -574,35 +614,51 @@ str(myObservationData, max.level = 2)
 
 Subsetting of elements in an `OmObservationCollection` can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators `[` and `[[`. Summary functions are available for single observations or an observation collection.
 
-```{r getObs1b, eval=FALSE}
+```{r getObs1b}
 length(myObservationData)
+```
+
+```{r getObs1c}
 myObservationData[[1]]
+```
+
+```{r getObs1d}
 summary(myObservationData)
+```
+
+```{r getObs1e}
 summary(myObservationData[[1]])
 ```
 
 The collection can also be subset in parts:
 
-```{r getObs1c, eval=FALSE}
+```{r getObs1f, eval=FALSE}
 myObservationData[2:3]
 ```
 
 **Observation collection indexing** is possible with identifiers of procedure(s), observed property(ies), and feature(s) of interest.
 
-```{r getObs1d, eval=FALSE}
+```{r getObs1_foi}
 index.foiId <- sosFeaturesOfInterest(myOffering)[[1]]
 index.foiId
+cat("------\n")
 myObservationData[index.foiId]
+```
 
+```{r getObs1_obsprop}
 index.obsProp <- sosObservedProperties(myOffering)[[1]]
+index.obsProp
+cat("------\n")
 myObservationData[index.obsProp]
+```
 
-index.obsProp.several <- sosObservedProperties(myOffering)[4:6]
-myObservationData[index.obsProp.several]
-
+```{r getObs1_proc}
 index.proc <- sosProcedures(myOffering)
 index.proc.alternative1 <- sosProcedures(myOffering)[1]
 index.proc.alternative2 <- sosProcedures(mySOS)
+
+index.proc
+cat("------\n")
 myObservationData[index.proc]
 ```
 
@@ -612,20 +668,27 @@ myObservationData[index.proc]
 The function returns an object of class `data.frame`.
 In the case of collections, it automatically binds the data frames (you can turn this off by adding `bind = FALSE` as a parameter).
 
-```{r getObs2, eval=FALSE}
+```{r getObs2a}
 names(myObservationData)
-myObservationData.result.2 <- sosResult(myObservationData[[2]])
-# FIXME:
-# myObservationData.result <- sosResult(myObservationData[1:2])
+```
+
+```{r getObs2b}
+myObservationData.result.2 <- sosResult(myObservationData[[1]])
+myObservationData.result.2
 ```
 
 Additional metadata, like units of measurement or definitions, is accessible via `attributes()` for every column of the data frame.
 
-```{r getObs3, eval=FALSE}
-attrs <- attributes(myObservationData.result.2) # [["AirTemperature"]]
+```{r getObs3a}
+attributes(myObservationData.result.2)
+```
 
+```{r getObs3b}
 attributes(myObservationData.result.2[["phenomenonTime"]])
-attributes(myObservationData.result.2[["AthmosphericPressure"]])
+```
+
+```{r getObs3c}
+attributes(myObservationData.result.2[["AirTemperature"]])
 ```
 
 **Spatial Information** can be stored in an observation in several ways:
@@ -634,40 +697,30 @@ attributes(myObservationData.result.2[["AthmosphericPressure"]])
 In the latter case the utility functions `sosCoordinates()` and `sosFeatureIds()` can be used to extract the coordinates respectively the identifiers from `OmObservationCollection` or `OmObservation` classes.
 A variety of feature types gml:Point or sa:SamplingPoint are supported by `sosCoordinates()`.
 
-```{r getObsSpatial1a, eval=FALSE}
-myObservationData.foiIDs <- sosFeatureIds(myObservationData)
-myObservationData.coords <- sosCoordinates(myObservationData)
-myObservationData.coords.1 <- sosCoordinates(myObservationData[[1]])
+```{r getObsSpatial1a}
+sosFeatureIds(myObservationData)
+```
+
+```{r getObsSpatial1b, eval = FALSE}
+sosCoordinates(myObservationData)
+sosCoordinates(myObservationData[[1]])
 ```
 
 An observation collection also contains a bounding box of the contained observations, which can be extracted with the function `sosBoundedBy()`.
 The optional attribute `bbox` can be used to obtain a bounding box matrix as used by package `sp`.
 
-```{r getObsSpatial1b, eval=FALSE}
+```{r getObsSpatial1c}
 sosBoundedBy(myObservationData)
+```
+
+```{r getObsSpatial1d}
 sosBoundedBy(myObservationData, bbox = TRUE)
 ```
 
 The combination of data values and coordinates strongly depends on the use case and existing spatial information.
-In the case of coordinates encoded in the features, a matching of the two data frames can easily be accomplished manually with the function `merge()`.
 
-```{r getObsSpatial2, eval=FALSE}
-# FIXME:
-#result.names <- names(myObservationData.result)
-coords.names <- names(myObservationData.coords)
-# print(toString(result.names))
-print(toString(coords.names))
-
-# FIXME
-# myObservationData.data <- merge(
-# 	x = myObservationData.result,
-# 	y = myObservationData.coords,
-# 	by.x = result.names[[2]],
-# 	by.y = coords.names[[4]])
-```
-
-The default column name for the feature identifiers is `\Sexpr{sosDefaultColumnNameFeatureIdentifier`}.
-If the name of the feature identifier attribute in the data table matches (which is the case for \fivetwon SOS), `merge` does not need additional information. In that case, the merging reduces to the following code:
+The default column name for the feature identifiers is `sosDefaultColumnNameFeatureIdentifier`.
+If the name of the feature identifier attribute in the data table matches (which is the case for 52°North SOS), `merge` does not need additional information. In that case, the merging reduces to the following code:
 
 ```{r getObsSpatial3, eval=FALSE}
 myObservationData.data <- merge(x = myObservationData.result.2, y = myObservationData.coords)
@@ -690,12 +743,11 @@ lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = (Sys.time() - 3600 * 24 * 7),
 	end = Sys.time())
 
-oneWeek.period <- sosCreateTimePeriod(sos = mySOS,
+period <- sosCreateTimePeriod(sos = mySOS,
 		begin = as.POSIXct("2015/11/01"),
-		end = as.POSIXct("2015/11/07"))
-oneWeek.eventTime <- sosCreateEventTimeList(oneWeek.period)
-
-oneWeek.eventTime
+		end = as.POSIXct("2015/11/02"))
+eventTime <- sosCreateEventTimeList(period)
+eventTime
 ```
 
 Please note that the create function `sosCreateEventTimeList()` wraps the created objects in a list as required by the method `getObservation()`.
@@ -715,17 +767,19 @@ sosCreateTime(sos = mySOS, time = "2007-08-05/")
 
 **Example:** What was the minimum, average and maximum temperature during one week?
 
+For temporal filtering, we use `"POX"`-based connection to the same SOS server:
+
 ```{r temporalFiltering2a}
-obs.oneWeek <- getObservation(sos = mySOS,
-	offering = myOffering,
-	eventTime = oneWeek.eventTime)
+mySOSpox <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox", 
+             binding = "POX", useDCPs = FALSE)
+nov2015 <- getObservation(sos = mySOSpox,
+                          offering = myOffering,
+                          eventTime = eventTime)
 ```
 
 ```{r temporalFiltering2b}
-obs.oneWeek.result <- sosResult(obs.oneWeek[[1]])
-head(obs.oneWeek.result)
-# FIXME
-# summary(obs.oneWeek.result[,"urn:ogc:def:property:OGC::Temperature"])
+nov2015.result.1 <- sosResult(nov2015[[1]])
+summary(nov2015.result.1)
 ```
 
 The default temporal operator is `"during"`, but others are supported as well.
@@ -734,10 +788,22 @@ Here the creation function creates just one object of class `SosEventTime` which
 
 ```{r temporalFiltering3}
 lastDay.instant <- sosCreateTimeInstant(
-	time = as.POSIXct(Sys.time() - 3600 * 24), sos = mySOS)
+	time = as.POSIXct(Sys.time() - 3600 * 24), sos = mySOSpox)
 lastDay.eventTime <- sosCreateEventTime(time = lastDay.instant,
 	operator = SosSupportedTemporalOperators()[["TM_After"]])
 print(lastDay.eventTime)
+```
+
+Another example workflow, using a `KVP`-based connection.
+
+```{r temporalFiltering4}
+sept15.period <- sosCreateTimePeriod(sos = mySOS,
+                                     begin = as.POSIXct("2015-09-01 00:00"),
+                                     end = as.POSIXct("2015-09-30 00:00"))
+sept15.eventTimeList <- sosCreateEventTimeList(sept15.period)
+obs.sept15 <- getObservation(sos = mySOS,
+	offering = myOffering,
+	eventTime = sept15.eventTimeList)
 ```
 
 #### Spatial Filtering
@@ -745,37 +811,25 @@ print(lastDay.eventTime)
 The possibly most typical spatial filter is a [bounding box](https://en.wikipedia.org/wiki/Bounding_box) within which measurements of interest must have been made.
 Here the creation function returns an object of class `OgcBBOX`, which can be wrapped in an object of class `SosFeatureOfInterest`, which is passed into the get-observation call.
 
-```{r spatialFiltering1a}
-sept15.period <- sosCreateTimePeriod(sos = mySOS,
-	begin = as.POSIXct("2015-09-01 00:00"), end = as.POSIXct("2015-09-30 00:00"))
-sept15.eventTimeList <- sosCreateEventTimeList(sept15.period)
-```
-
-```{r spatialFiltering2}
-obs.sept15 <- getObservation(sos = mySOS,
-	offering = myOffering,
-	eventTime = sept15.eventTimeList)
-```
-
 ```{r spatialFiltering3, eval=FALSE}
 # FIXME find a spatial filter that has a result
-# request.bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 5.0,
-# 	uppLat = 55.0, uppLon = 10.0,
-# 	srsName = "urn:ogc:def:crs:EPSG:4326")
-# request.bbox.foi <- sosCreateFeatureOfInterest(
-# 	spatialOps = request.bbox)
-# obs.sept09.bbox <- getObservation(sos = mySOS,
-# 	offering = myOffering,
-# 	featureOfInterest = request.bbox.foi,
-# 	eventTime = sept09.eventTimeList)
+request.bbox <- sosCreateBBOX(lowLat = 5.0, lowLon = 1.0,
+                              uppLat = 10.0, uppLon = 3.0,
+                              srsName = "urn:ogc:def:crs:EPSG::4326")
+request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
+
+obs.sept15.bbox <- getObservation(sos = mySOSpox,
+                                  offering = myOffering,
+                                  featureOfInterest = request.bbox.foi,
+                                  eventTime = sept15.eventTimeList)
 ```
 
 Unfiltered versus spatially filtered coordinates of the responses:
 
 ```{r spatialFiltering1b}
-# FIXME
-# print(sosCoordinates(obs.sept09)[,1:2])
-# print(sosCoordinates(obs.sept09.bbox)[,1:2])
+summary(sosCoordinates(obs.sept15))
+cat("--------\n")
+sosCoordinates(obs.sept15.bbox)
 ```
 
 More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented.
@@ -792,20 +846,20 @@ Here the encoding function is called to show how the content of the result eleme
 myOffering.fois <- sosFeaturesOfInterest(myOffering)
 request.fois <- sosCreateFeatureOfInterest(
 	objectIDs = list(myOffering.fois[[1]]))
-encodeXML(obj = request.fois, sos = mySOS)
+encodeXML(obj = request.fois, sos = mySOSpox)
 ```
 
 An exemplary GetObservation operation is as follows.
 
 ```{r featureFiltering1a, eval=FALSE}
-obs.oneWeek.fois <- getObservation(sos = mySOS,
+obs.oneWeek.fois <- getObservation(sos = mySOSpox,
 	offering = myOffering,
 	featureOfInterest = request.fois,
 	eventTime = oneWeek.eventTime)
 ```
 
-```{r featureFiltering1b, eval=FALSE}
-print(sosFeaturesOfInterest(obs.oneWeek.fois))
+```{r featureFiltering1b}
+length(sosFeaturesOfInterest(obs.oneWeek.fois))
 ```
 
 #### Value Filtering
@@ -851,8 +905,7 @@ The length of the returned results is compared in the end.
 obs.oneWeek.filter <- getObservation(sos = mySOS,
 		eventTime = oneWeek.eventTime,
 		offering = sosOfferings(mySOS)[["wxt520"]],
-		result = filter.result,
-		saveOriginal = .obsFile)
+		result = filter.result)
 ```
 
 ```{r valueFiltering3b, eval=FALSE}
@@ -870,17 +923,17 @@ obs.oneWeek.filter <- getObservation(sos = mySOS,
 
 #### Result Exporting
 
-A tighter integration with data structures of packages `sp} or \pkg{spacetime` (both available on CRAN) is planned for the future.
+A tighter integration with data structures of packages `sp`, `spacetime`, and `sf` (all on CRAN) is planned for the future.
 Please consult the developers for the current status.
 
 As an example the following code creates a `SpatialPointsDataFrame` (can only contain one data value per position!) based on the features of a result.
 
 ```{r resultExporting1}
 library("sp")
-obs.oneWeek <- getObservation(sos = mySOS,
+obs.oneWeek <- getObservation(sos = mySOSpox,
 	offering = myOffering,
 	procedure = sosProcedures(myOffering),
-	eventTime = oneWeek.eventTime)
+	eventTime = eventTime)
 ```
 
 ```{r resultExporting3, eval=FALSE}
@@ -894,10 +947,9 @@ str(spdf)
 
 #### Spatial Reference Systems
 
-For following analyses and plotting, the **spatial reference system} can be extracted as follows.
+For following analyses and plotting, the **spatial reference system** can be extracted with `sosGetCRS(..)`.
 
-```{r getObsCRS, eval=FALSE}
-sosGetCRS(myObservationData)
+```{r getObsCRS}
 sosGetCRS(obs.oneWeek)
 ```
 
@@ -913,9 +965,8 @@ In this case the returned observation collection contains an om:Measurement elem
 The result extraction works the same as with objects of class `OmObservation`.
 
 ```{r geObsById}
-# Not supported by SOS anymore
-# obsId <- getObservationById(sos = mySOS, observationId = "o_3508493")
-# sosResult(obsId, coordinates = TRUE)
+obsId <- getObservationById(sos = mySOSpox, observationId = "http://www.52north.org/test/observation/1")
+sosResult(obsId, coordinates = TRUE)
 ```
 
 Just as for `getObservation()` you can **save the orginal** response document with an automatically generated name or a selected one.

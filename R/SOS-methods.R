@@ -254,8 +254,6 @@ SosGetObservationById <- function(
             immediate. = TRUE)
   }
 
-  .response = ""
-
   # get encoding function for the respective method
   .encodingFunction <- sos@encoders[[sos@binding]]
   if (verbose) {
@@ -474,29 +472,25 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
   if (verbose) cat("[.describeSensor_1.0.0] REQUEST:\n", toString(.ds), "\n")
 
   .response = sosRequest(sos = sos,
-                               request = .ds,
-                               verbose = verbose,
-                               inspect = inspect)
-  if (inspect) cat("[.describeSensor_1.0.0] RESPONSE:\n", .response, "\n")
+                         request = .ds,
+                         verbose = verbose,
+                         inspect = inspect)
+  if (inspect) cat("[.describeSensor_1.0.0] RESPONSE:\n", toString(.response), "\n")
 
   .filename <- NULL
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
-      .filename <- paste(saveOriginal, ".xml", sep = "")
+      .filename <- saveOriginal
       if (verbose) cat("Using saveOriginal parameter for file name:", .filename, "\n")
     }
     else if (is.logical(saveOriginal)) {
-      if (saveOriginal) .filename <- paste(.cleanupFileName(procedure),
-                                          ".xml", sep = "")
-      if (verbose) cat("Generating file name:", .filename, "\n")
+      if (saveOriginal) .filename <- paste(.cleanupFileName(procedure), ".xml", sep = "")
+      if (verbose) cat("Generated file name:", .filename, "\n")
     }
 
-    if (verbose) cat("[.describeSensor_1.0.0] Saving original document...",
-                     .filename, "in", getwd(), "\n")
+    if (verbose) cat("[.describeSensor_1.0.0] Saving original document...", .filename, "in", getwd(), "\n")
 
-    # TODO alternatively one could use tempfile() instead of implicit getwd()
     xml2::write_xml(x = .response, file = .filename)
-
     cat("[sos4R] Original document saved:", .filename, "\n")
   }
 
@@ -557,8 +551,7 @@ setMethod(f = "getObservationById",
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
       .filename <- saveOriginal
-      if (verbose) cat("[.getObservationById_1.0.0] Using saveOriginal parameter for file name:",
-                       .filename, "\n")
+      if (verbose) cat("[.getObservationById_1.0.0] Using saveOriginal parameter for file name:", .filename, "\n")
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) .filename <- paste(observationId,
@@ -584,7 +577,6 @@ setMethod(f = "getObservationById",
   if (inspect) cat("[.getObservationById_1.0.0] RESPONSE:\n", toString(.response), "\n")
 
   if (!is.null(.filename)) {
-    .filename <- paste(.filename, ".xml", sep = "")
     xml2::write_xml(x = .response, file = .filename)
     cat("[sos4R] Original document saved:", .filename, "\n")
   }
@@ -659,13 +651,14 @@ setMethod(f = "getObservationById",
   .filename <- NULL
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
-      .filename <- paste0(saveOriginal, ".xml")
+      .filename <- saveOriginal
       if (verbose) cat("[.getObservation_1.0.0] Using saveOriginal parameter for file name:", .filename, "\n")
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) .filename <- paste(.cleanupFileName(offeringId),
-                                          format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
-      if (verbose) cat("[.getObservation_1.0.0] Generating file name:", .filename, "\n")
+                                           format(Sys.time(),
+                                                  sosDefaultFilenameTimeFormat), sep = "_")
+      if (verbose) cat("[.getObservation_1.0.0] Generated file name:", .filename, "\n")
     }
   }
 
@@ -791,8 +784,7 @@ setMethod(f = "getObservationById",
                     "--> received observations with dimensions",
                     toString(dim(.csv)), "\n")
       if (!is.null(.filename)) {
-        .msg <- paste(.msg,
-                      "[sos4R] Original document saved:", .filename, "\n")
+        .msg <- paste(.msg, "[sos4R] Original document saved:", .filename, "\n")
 
         .oldAttrs <- attributes(.csv)
         .newAttrs <- list(.filename)
@@ -822,7 +814,6 @@ setMethod(f = "getObservationById",
     save(.response, file = .filename)
     cat("[sos4R] Saved original document:", .filename)
   }
-  else warning("File name is NULL, could not save document!")
 
   return(.response)
 }
@@ -1354,7 +1345,7 @@ setMethod(f = "encodeXML",
               xml2::xml_add_child(foi, spOp)
             }
 
-            return(.foi)
+            return(foi)
           }
 )
 
@@ -1364,11 +1355,11 @@ setMethod(f = "encodeXML",
           definition = function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeXML] POSIXt with value", toString(obj), "\n")
 
-            .formatted <- strftime(x = obj, format = sosTimeFormat(sos))
+            formatted <- strftime(x = obj, format = sosTimeFormat(sos))
 
-            if (verbose) cat("Formatted ", obj, " to ", .formatted)
+            if (verbose) cat("Formatted ", obj, " to ", formatted)
 
-            return(.formatted)
+            return(formatted)
           }
 )
 
@@ -1390,11 +1381,11 @@ setMethod(f = "encodeKVP",
           definition = function(obj, sos, verbose) {
             if (verbose) cat("[encodeKVP] POSIXt with value", toString(obj), "\n")
 
-            .formatted <- strftime(x = obj, format = sosTimeFormat(sos))
+            formatted <- strftime(x = obj, format = sosTimeFormat(sos))
 
-            if (verbose) cat("Formatted ", obj, " to ", .formatted, "\n")
+            if (verbose) cat("Formatted ", obj, " to ", formatted, "\n")
 
-            return(.formatted)
+            return(formatted)
           }
 )
 

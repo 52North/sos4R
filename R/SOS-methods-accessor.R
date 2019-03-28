@@ -360,8 +360,8 @@ setMethod(f = "sosBoundedBy",
   .bb <- NA
 
   if(bbox) {
-    .lC <- strsplit(x = obj@boundedBy[[gmlLowerCornerName]], split = " ")[[1]]
-    .uC <- strsplit(x = obj@boundedBy[[gmlUpperCornerName]], split = " ")[[1]]
+    .lC <- strsplit(x = obj@boundedBy[["lowerCorner"]], split = " ")[[1]]
+    .uC <- strsplit(x = obj@boundedBy[["upperCorner"]], split = " ")[[1]]
 
     warning <- FALSE
     if((length(.lC) < 2)) {
@@ -866,6 +866,11 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "OmObservation"),
             .coords <- sosCoordinates(obj = obj@featureOfInterest)
             return(.coords)
           })
+setMethod(f = "sosCoordinates", signature = signature(obj = "OmObservationProperty"),
+          def = function(obj) {
+            warning("No coordinates in om:ObservationProperty ", obj@href)
+            return(c())
+          })
 setMethod(f = "sosCoordinates", signature = signature(obj = "OmOM_Observation"),
           def = function(obj) {
             .coords <- sosCoordinates(obj = obj@featureOfInterest)
@@ -911,8 +916,7 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "GmlPoint"),
 setMethod(f = "sosCoordinates",
           signature = signature(obj = "GmlDirectPosition"),
           def = function(obj) {
-            .coordinateDoubles <- as.double(
-              strsplit(x = obj@pos, split = " ")[[1]])
+            .coordinateDoubles <- as.double(strsplit(x = obj@pos, split = " ")[[1]])
             .coords <- as.data.frame(list(.coordinateDoubles[[1]],
                                           .coordinateDoubles[[2]], sosSrsName(obj)))
             names(.coords) <- c(sosDefaultColumnNameLat,

@@ -184,18 +184,21 @@ setMethod(f = "encodeXML",
             # 1. begin and end
             if (!is.null(obj@begin) && !is.null(obj@end)) {
               stop("Encoding of 'begin'/'end' time period not supported")
+              #beginTime <- encodeXML(obj = obj@beginPosition, sos = sos, verbose = verbose)
+              #beginPosition <- xml2::xml_add_child(tperiod, gmlBeginPositionName)
+              #xml2::xml_add_child(beginPosition, beginTime)
+              #endTime <- encodeXML(obj = obj@endPosition, sos = sos, verbose = verbose)
+              #endPosition <- xml2::xml_add_child(tperiod, gmlEndPositionName)
+              #xml2::xml_add_child(endPosition, endTime)
             }
             # 2. beginPosition and endPosition
             else if (!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
               if (verbose) cat("[encodeXML] GmlTimePeriod beginPosition/endPosition found\n")
 
-              beginTime <- encodeXML(obj = obj@beginPosition, sos = sos, verbose = verbose)
-              beginPosition <- xml2::xml_add_child(tperiod, gmlBeginPositionName)
-              xml2::xml_add_child(beginPosition, beginTime)
-
-              endTime <- encodeXML(obj = obj@endPosition, sos = sos, verbose = verbose)
-              endPosition <- xml2::xml_add_child(tperiod, gmlEndPositionName)
-              xml2::xml_add_child(endPosition, endTime)
+              beginTimeString <- encodeXML(obj = obj@beginPosition@time, sos = sos, verbose = verbose)
+              xml2::xml_add_child(tperiod, gmlBeginPositionName, beginTimeString)
+              endTimeString <- encodeXML(obj = obj@endPosition@time, sos = sos, verbose = verbose)
+              xml2::xml_add_child(tperiod, gmlEndPositionName, endTimeString)
             }
 
             # time duration stuff: prefer duration over timeInterval
@@ -258,12 +261,13 @@ setMethod(f = "encodeXML",
               xml2::xml_set_attr(x = env, attr = "uomLabels", value = obj@uomLabels)
             }
 
-            lowerPos <- encodeXML(obj = obj@lowerCorner, sos = sos)
+            #lowerPos <- encodeXML(obj = obj@lowerCorner, sos = sos)
             lowerCorner <- xml2::xml_add_child(env, gmlLowerCornerName)
-            xml2::xml_add_child(lowerCorner, lowerPos)
-            upperPos <- encodeXML(obj = obj@upperCorner, sos = sos)
+            xml2::xml_text(lowerCorner) <- obj@lowerCorner@pos
+
+            #upperPos <- encodeXML(obj = obj@upperCorner, sos = sos)
             upperCorner <- xml2::xml_add_child(env, gmlUpperCornerName)
-            xml2::xml_add_child(upperCorner, upperPos)
+            xml2::xml_text(upperCorner) <- obj@upperCorner@pos
 
             if (verbose) cat("[encodeXML] Encoded: ", toString(env), "\n")
             return(env)

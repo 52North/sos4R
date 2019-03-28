@@ -34,8 +34,8 @@ test_that("envelope", {
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
   expect_match(encodedString, '<gml:Envelope')
-  expect_match(encodedString, '1 2</gml:pos></gml:lowerCorner>')
-  expect_match(encodedString, '8 9</gml:pos></gml:upperCorner>')
+  expect_match(encodedString, '1 2</gml:lowerCorner>')
+  expect_match(encodedString, '8 9</gml:upperCorner>')
 })
 
 context("encoding GML: temporal")
@@ -81,8 +81,8 @@ test_that("time period", {
   encoded <- encodeXML(obj = period, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
-  expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition></gml:beginPosition>')
-  expect_match(encodedString, '2019-02-03T00:00:00</gml:timePosition></gml:endPosition></gml:TimePeriod>')
+  expect_match(encodedString, '2019-01-01T00:00:00</gml:beginPosition>')
+  expect_match(encodedString, '2019-02-03T00:00:00</gml:endPosition></gml:TimePeriod>')
 })
 
 test_that("time interval", {

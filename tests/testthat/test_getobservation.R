@@ -67,13 +67,17 @@ test_that("with event time", {
                               eventTime = sosCreateTime(sos = mySOS,
                                                         time = "2017-12-19::2017-12-20"))
   request <- encodeRequestXML(obj = getobs, sos = testsos)
-  expect_match(toString(request), 'service="ser"')
-  expect_match(toString(request), ' version="1.0.0"')
-  expect_match(toString(request), "<sos:offering>off</sos:offering>")
-  expect_match(toString(request), "<sos:observedProperty>p1</sos:observedProperty>")
-  expect_match(toString(request), "<sos:observedProperty>p2</sos:observedProperty>")
-  expect_match(toString(request), "<sos:responseFormat>fmt</sos:responseFormat>")
-  expect_equal(stringr::str_count(toString(request), "time"), 0)
+  encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
+  expect_match(encodedString, 'service="ser"')
+  expect_match(encodedString, ' version="1.0.0"')
+  expect_match(encodedString, "<sos:offering>off</sos:offering>")
+  expect_match(encodedString, "<sos:observedProperty>p1</sos:observedProperty>")
+  expect_match(encodedString, "<sos:observedProperty>p2</sos:observedProperty>")
+  expect_match(encodedString, "<sos:responseFormat>fmt</sos:responseFormat>")
+  expect_match(encodedString, "<ogc:TM_During")
+  expect_match(encodedString, "<ogc:PropertyName>om:samplingTime</ogc:PropertyName>")
+  expect_match(encodedString, "2017-12-20T00:00:00</gml:endPosition>")
+  expect_match(encodedString, "</ogc:TM_During></sos:eventTime>")
 })
 
 context("GetObservation: integration tests")
@@ -88,8 +92,8 @@ test_that("KVP", {
                           procedure = sosProcedures(off.1)[[1]],
                           observedProperty = sosObservedProperties(off.1)[1],
                           eventTime = sosCreateTime(sos = mySOS,
-                                                    time = "2017-12-19::2017-12-20"),
-                          #verbose = TRUE
+                                                    time = "2017-12-19::2017-12-20")
+                          #,verbose = TRUE
   )
   expect_s4_class(obs.1, "OmObservationCollection")
   expect_length(obs.1, 1)
@@ -109,11 +113,14 @@ test_that("POX", {
                           procedure = sosProcedures(off.1)[[1]],
                           observedProperty = sosObservedProperties(off.1)[1],
                           eventTime = sosCreateTime(sos = mySOS,
-                                                    time = "2017-12-19::2017-12-20"),
-                          verbose = TRUE
+                                                    time = "2017-12-19::2017-12-20")
+                          #,verbose = TRUE,
+                          #inspect = TRUE
   )
   expect_s4_class(obs.1, "OmObservationCollection")
   expect_length(obs.1, 1)
   expect_s4_class(obs.1[[1]], "OmObservation")
-  expect_equal(dim(sosResult(obs.1)), c(72, 2))
+  result <- sosResult(obs.1)
+  expect_equal(dim(result), c(71, 2))
+  expect_named(result, c("phenomenonTime", "AirTemperature"))
 })

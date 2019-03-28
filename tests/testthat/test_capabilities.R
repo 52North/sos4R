@@ -6,7 +6,7 @@ parseXmlSnippet <- function(obj) {
 
 context("capabilities: composite phenomenon")
 
-.compositePhenOffering <- '<sos:ObservationOffering gml:id="Water"
+compositePhenOffering <- '<sos:ObservationOffering gml:id="Water"
 xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml"
 xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink">
     <sos:observedProperty>
@@ -28,7 +28,7 @@ xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999
 </sos:ObservationOffering>'
 
 test_that("composite phenomenon offering is parsed correctly from snippet", {
-  doc5 <-  parseXmlSnippet(.compositePhenOffering)
+  doc5 <-  parseXmlSnippet(compositePhenOffering)
   obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = doc5, xpath = sosObservedPropertyName)) #, verbose = TRUE)
 
   expect_length(obs_prop, 2)
@@ -110,7 +110,7 @@ test_that("time of offering", {
 
 context("capabilities: Axiom")
 
-.axiomOffering <- '<sos:ObservationOffering gml:id="urn_ioos_network_test_all"
+axiomOffering <- '<sos:ObservationOffering gml:id="urn_ioos_network_test_all"
 xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xlink="http://www.w3.org/1999/xlink"
 xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <gml:name>urn:ioos:network:test:all</gml:name>
@@ -142,10 +142,19 @@ xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSche
 </sos:ObservationOffering>'
 
 test_that("offering id is parsed correctly", {
-  doc <- parseXmlSnippet(.axiomOffering)
+  doc <- parseXmlSnippet(axiomOffering)
   obsProp <- parseSosObservedProperty(xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName))
   expect_equal(obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
   expect_equal(length(obsProp), 2)
+})
+
+test_that("can extract bbox from bounds of offering", {
+  doc <- parseXmlSnippet(axiomOffering)
+  testsos <- SOS_Test(name = "testbbox")
+  offering <- parseSosObservationOffering(obj = doc, sos = testsos)
+
+  box <- sosBoundedBy(offering, bbox = TRUE)
+  expect_equal(toString(box), "-44.7159634789651, -171.370441435668, 67.972129750194, 142.92375463033")
 })
 
 testsos <- SOS_Test(name = "testcaps",version = sos100_version) #, verboseOutput = TRUE)

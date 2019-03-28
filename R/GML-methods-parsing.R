@@ -34,45 +34,45 @@ parsePosition <- function(obj, sos) {
   .position <- NULL
 
   # has href attribute?
-  .href <- xml2::xml_attr(x = obj, attr = "href")
-  if (!is.na(.href)) {
+  href <- xml2::xml_attr(x = obj, attr = "href")
+  if (!is.na(href)) {
     # position is referenced
-    .position <- GmlPointProperty(href = .href)
+    position <- GmlPointProperty(href = href)
   }
   else {
     # must be point
-    .position <- GmlPointProperty(point = parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = SosAllNamespaces()),
-                                                     sos = sos))
+    pointXml <- xml2::xml_child(x = obj, search = gmlPointName, ns = SosAllNamespaces())
+    position <- GmlPointProperty(point = parsePoint(pointXml, sos = sos))
   }
 
-  return(.position)
+  return(position)
 }
 
 parsePoint <- function(obj, sos) {
-  .point <- NA
-  .pos <- xml2::xml_child(x = obj, search = gmlPointName)
-  .posString <- xml2::xml_text(x = .pos)
+  point <- NA
+  pos <- xml2::xml_child(x = obj, search = gmlPosName)
+  posString <- xml2::xml_text(x = pos)
 
   if (sosSwitchCoordinates(sos)) {
     warning("Switching coordinates in Point!")
-    .orig <- strsplit(x = .posString, split = " ")
-    .posString <- paste(.orig[[1]][[2]], .orig[[1]][[1]])
+    orig <- strsplit(x = posString, split = " ")
+    posString <- paste(orig[[1]][[2]], orig[[1]][[1]])
   }
 
   # optional attributes:
-  .srsName <- xml2::xml_attr(x = .pos, attr = "srsName")
-  .srsDimension <- xml2::xml_attr(x = .pos, attr = "srsDimension", default = NA_integer_)
-  .axisLabels <- xml2::xml_attr(x = .pos, attr = "axisLabels")
-  .uomLabels <- xml2::xml_attr(x = .pos, attr = "uomLabels")
+  srsName <- xml2::xml_attr(x = pos, attr = "srsName")
+  srsDimension <- xml2::xml_attr(x = pos, attr = "srsDimension", default = NA_integer_)
+  axisLabels <- xml2::xml_attr(x = pos, attr = "axisLabels")
+  uomLabels <- xml2::xml_attr(x = pos, attr = "uomLabels")
 
-  .pos <- GmlDirectPosition(pos = .posString,
-                            srsName = .srsName,
-                            srsDimension = .srsDimension,
-                            axisLabels = .axisLabels,
-                            uomLabels = .uomLabels)
-  .point <- GmlPoint(pos = .pos)
+  pos <- GmlDirectPosition(pos = posString,
+                           srsName = srsName,
+                           srsDimension = as.integer(srsDimension),
+                           axisLabels = axisLabels,
+                           uomLabels = uomLabels)
+  point <- GmlPoint(pos = pos)
 
-  return(.point)
+  return(point)
 }
 
 #

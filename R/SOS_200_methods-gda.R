@@ -41,18 +41,14 @@
   .filename <- NULL
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
-      .filename <- paste0(saveOriginal, ".xml")
-      if (verbose){
-        cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
-      }
+      .filename <- saveOriginal
+      if (verbose) cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) {
-        .filename <- tempfile(pattern=format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
+        .filename <- tempfile(pattern = format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
       }
-      if (verbose) {
-        cat("[.getDataAvailability_1.0.0] Generating file name:", .filename, "\n")
-      }
+      if (verbose) cat("[.getDataAvailability_1.0.0] Generated file name:", .filename, "\n")
     }
   }
   .gda <- SosGetDataAvailability_1.0.0(service = sosService,
@@ -64,8 +60,10 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  .response = sosRequest(sos = sos, request = .gda,
-                               verbose = verbose, inspect = inspect)
+  .response = sosRequest(sos = sos,
+                         request = .gda,
+                         verbose = verbose,
+                         inspect = inspect)
 
   if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.response),
                    "bytes), parsing ...\n")
@@ -76,13 +74,8 @@
   }
 
   if (!is.null(.filename)) {
-    .filename <- paste0(.filename, ".xml")
     xml2::write_xml(x = .response, file = .filename)
-
-    if (verbose) {
-      cat("[.getDataAvailability_1.0.0] Saved original document:",
-          .filename, "\n")
-    }
+    if (verbose) cat("[.getDataAvailability_1.0.0] Saved original document:", .filename, "\n")
   }
 
   if (.isExceptionReport(.response)) {

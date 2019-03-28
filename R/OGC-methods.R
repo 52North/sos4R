@@ -139,7 +139,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcBBOX", sos = "SOS"),
           definition = function(obj, sos, verbose) {
-            if (verbose) cat("[encodeXML] OgcBBOX with", toString(obj@time), "\n")
+            if (verbose) cat("[encodeXML] OgcBBOX with", toString(obj), "\n")
 
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #operation <- xml2::xml_new_root(opName,
@@ -157,7 +157,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcContains", sos = "SOS"),
           definition = function(obj, sos, verbose) {
-            if (verbose) cat("[encodeXML] OgcContains with", toString(obj@time), "\n")
+            if (verbose) cat("[encodeXML] OgcContains with", toString(obj), "\n")
 
             .contains <- .encodeBinarySpatialOp(opName = ogcContainsName,
                                                 propertyName = obj@propertyName,
@@ -172,8 +172,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcIntersects", sos = "SOS"),
           definition = function(obj, sos, verbose) {
-            if (verbose) cat("[encodeXML] OgcIntersects with",
-                            toString(obj@time), "\n")
+            if (verbose) cat("[encodeXML] OgcIntersects with", toString(obj), "\n")
 
             .intersects <- .encodeBinarySpatialOp(opName = ogcIntersectsName,
                                                   propertyName = obj@propertyName,
@@ -188,8 +187,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcOverlaps", sos = "SOS"),
           definition = function(obj, sos, verbose) {
-            if (verbose) cat("[encodeXML] OgcOverlaps with", toString(obj@time),
-                            "\n")
+            if (verbose) cat("[encodeXML] OgcOverlaps with", toString(obj), "\n")
 
             .overlaps <- .encodeBinarySpatialOp(opName = ogcOverlapsName,
                                                 propertyName = obj@propertyName, geometry = obj@geometry,
@@ -237,8 +235,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeXML",
           signature = signature(obj = "OgcComparisonOps", sos = "SOS"),
           definition = function(obj, sos, verbose) {
-            if (verbose) cat("[encodeXML] OgcComparisonOps with",
-                            toString(obj@time), "\n")
+            if (verbose) cat("[encodeXML] OgcComparisonOps with", toString(obj), "\n")
             warning("Encoding of OgcComparisonOps not implemented yet! Returning obj as is...")
             return(obj)
           }

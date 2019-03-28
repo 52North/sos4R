@@ -31,7 +31,7 @@
 # See OWS Common, OGC 06-121r9
 #
 setClass("SensorML",
-         representation(xml = "ANY",
+         representation(xml = "xml_document",
                         coords = "data.frame",
                         id = "character",
                         name = "character",
@@ -45,11 +45,6 @@ setClass("SensorML",
                           boundedBy = matrix()),
          validity = function(object) {
            #print("Entering validation: SensorML")
-
-           if (!any(class(sensorDescription) == c("xml_document", "xml_node"))) {
-             return("Slot 'xml' must extend class 'xml_document' or 'xml_node'.")
-           }
-
            return(TRUE)
          }
 )

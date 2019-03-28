@@ -19,7 +19,7 @@ npbg_converter <- SosDataFieldConvertingFunctions(
 		"urn:ogc:def:property:OGC:Reflection" = sosConvertDouble,
 		"urn:ogc:def:property:OGC:Insolation" = sosConvertDouble)
 npbg <- SOS("http://ispacevm10.researchstudio.at/geoservices/npbg",
-		binding = "GET",
+		binding = "KVP",
 		#verboseOutput = TRUE,
 		dataFieldConverters = npbg_converter,
 		sections = NA)
@@ -78,7 +78,6 @@ title(main = paste("Offerings by '", sosTitle(npbg), "'", sep = ""),
 #text(sosCoordinates(procs_descr)[c("x", "y")], labels = sosId(procs_descr),
 #		pos = 4)
 
-
 #########################
 # superordinate offering:
 np.off <- sosOfferings(npbg)[["org:npbg:Nationalpark"]]
@@ -112,7 +111,6 @@ summary(result_proc1)
 coords.proc1 <- unique(result_proc1[c("Latitude", "Longitude")])
 coords.proc1
 
-
 ##################
 # plot all values:
 names(result_proc1)
@@ -131,7 +129,6 @@ xyplot(Insolation ~ RelativeHumidity | AirTemperature,
 		data = result_proc1[1:100,])
 
 dotplot(Insolation ~ RelativeHumidity, data = result_proc1)
-
 
 ####################################
 # plot values against time with xts:
@@ -158,7 +155,6 @@ plot(proc1_zoo, main = paste("Time Series at", npbg_proc[[1]], "(",
 				toString(coords.proc1), ")"),
 		plot.type = "multiple")
 
-
 ####################
 # request more data:
 obs_proc123 <- getObservation(sos = npbg, offering = np.off, # inspect = TRUE,
@@ -175,10 +171,6 @@ ooe <- SOS("http://ispacevm10.researchstudio.at/geoservices/ooe", sections = NA,
 		verboseOutput = TRUE)
 ooe
 summary(ooe)
-
-# TODO KML export, or make visualization example following howto:
-# http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE
-
 
 ###################################
 # Demo finished, try another one! #
