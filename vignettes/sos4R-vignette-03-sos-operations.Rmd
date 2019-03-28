@@ -409,7 +409,7 @@ sosOfferings(mySOS)[[1]]
 The output when printing the full list is quite extensive, so we concentrate on just on element of it in the following examples.
 Printing and summary methods are available of objects of the class `SosObservationOffering`.
 
-```{r metadataExtraction1b}
+```{r metadataExtraction1c}
 summary(sosOfferings(mySOS)[[1]])
 ```
 
@@ -592,7 +592,7 @@ These request would potentially retrieve a lot of data, since there is no tempor
 The following example requests data for about one day of temperature data and stores it in the object `myObservationData`.
 This feature is described extensively in section [Temporal Filtering](#temporal-filtering).
 
-```{r getObs0a, eval=FALSE}
+```{r getObs0}
 myObservationData <- getObservation(sos = mySOS,
 		offering = myOffering,
 		eventTime = sosCreateTime(sos = mySOS,
@@ -811,8 +811,7 @@ obs.sept15 <- getObservation(sos = mySOS,
 The possibly most typical spatial filter is a [bounding box](https://en.wikipedia.org/wiki/Bounding_box) within which measurements of interest must have been made.
 Here the creation function returns an object of class `OgcBBOX`, which can be wrapped in an object of class `SosFeatureOfInterest`, which is passed into the get-observation call.
 
-```{r spatialFiltering3, eval=FALSE}
-# FIXME find a spatial filter that has a result
+```{r spatialFiltering3}
 request.bbox <- sosCreateBBOX(lowLat = 5.0, lowLon = 1.0,
                               uppLat = 10.0, uppLon = 3.0,
                               srsName = "urn:ogc:def:crs:EPSG::4326")
@@ -824,7 +823,7 @@ obs.sept15.bbox <- getObservation(sos = mySOSpox,
                                   eventTime = sept15.eventTimeList)
 ```
 
-Unfiltered versus spatially filtered coordinates of the responses:
+Unfiltered versus spatially filtered coordinates of the responses (spatial filter did not match anything):
 
 ```{r spatialFiltering1b}
 summary(sosCoordinates(obs.sept15))
@@ -851,11 +850,11 @@ encodeXML(obj = request.fois, sos = mySOSpox)
 
 An exemplary GetObservation operation is as follows.
 
-```{r featureFiltering1a, eval=FALSE}
+```{r featureFiltering1a}
 obs.oneWeek.fois <- getObservation(sos = mySOSpox,
 	offering = myOffering,
 	featureOfInterest = request.fois,
-	eventTime = oneWeek.eventTime)
+	eventTime = eventTime)
 ```
 
 ```{r featureFiltering1b}
@@ -903,7 +902,7 @@ The length of the returned results is compared in the end.
 
 ```{r valueFiltering3a, eval=FALSE}
 obs.oneWeek.filter <- getObservation(sos = mySOS,
-		eventTime = oneWeek.eventTime,
+		eventTime = eventTime,
 		offering = sosOfferings(mySOS)[["wxt520"]],
 		result = filter.result)
 ```
@@ -911,7 +910,7 @@ obs.oneWeek.filter <- getObservation(sos = mySOS,
 ```{r valueFiltering3b, eval=FALSE}
 # request  values for the week with a value higher than 0 degrees:
 obs.oneWeek.filter <- getObservation(sos = mySOS,
-	eventTime = oneWeek.eventTime,
+	eventTime = eventTime,
 	offering = sosOfferings(mySOS)[["ATMOSPHERIC_TEMPERATURE"]],
 	result = filter.result)
 

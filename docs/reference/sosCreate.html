@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
       </span>
     </div>
 
@@ -297,9 +297,9 @@
 <span class='no'>last.period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
         <span class='kw'>begin</span> <span class='kw'>=</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>() - <span class='fl'>3600</span> * <span class='fl'>24</span> * <span class='fl'>7</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())
 
-<span class='no'>oneWeek.period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
+<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
                 <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010/01/01"</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010/01/07"</span>))
-<span class='no'>oneWeek.eventTime</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateEventTimeList</span>(<span class='no'>oneWeek.period</span>)
+<span class='no'>eventTime</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateEventTimeList</span>(<span class='no'>period</span>)
 
 <span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-07-07 07:00::2008-08-08 08:00"</span>)
 <span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-07-07 07:00/2010-10-10 10:00"</span>)
@@ -334,7 +334,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -140,7 +140,6 @@
     <pre class="usage"><span class='fu'>SOS</span>(<span class='no'>url</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultBinding</a></span>(), <span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>sosDefaultServiceVersion</span>,
         <span class='kw'>parsers</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosParsingFunctions</a></span>(), <span class='kw'>encoders</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosEncodingFunctions</a></span>(),
         <span class='kw'>dataFieldConverters</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDataFieldConvertingFunctions</a></span>(),
-        <span class='kw'>curlOptions</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>curlHandle</span> <span class='kw'>=</span> <span class='fu'>getCurlHandle</span>(),
         <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='no'>sosDefaultTimeFormat</span>, <span class='kw'>verboseOutput</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
         <span class='kw'>switchCoordinates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultDCPs</a></span>(),
         <span class='kw'>additionalKVPs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>)
@@ -179,14 +178,6 @@
     </tr>
     <tr>
       <th>dataFieldConverters</th>
-      <td><p>See the corresponding slot description.</p></td>
-    </tr>
-    <tr>
-      <th>curlOptions</th>
-      <td><p>See the corresponding slot description.</p></td>
-    </tr>
-    <tr>
-      <th>curlHandle</th>
       <td><p>See the corresponding slot description.</p></td>
     </tr>
     <tr>
@@ -238,8 +229,6 @@
     <dt><code>parsers</code>:</dt><dd><p>Object of class <code>"list"</code>: A list of named functions for parsing of SOS responses.</p></dd>
     <dt><code>encoders</code>:</dt><dd><p>Object of class <code>"list"</code>: A list of named functions for encoding of SOS requests.</p></dd>
     <dt><code>dataFieldConverters</code>:</dt><dd><p>Object of class <code>"list"</code>: A list of named functions to be used by the parsing methods to convert data values to the correct <span style="R">R</span> type, see <code><a href='Defaults.html'>SosDataFieldConvertingFunctions</a></code> for the default functions and how to add your own converters.</p></dd>
-    <dt><code>curlHandle</code>:</dt><dd><p>Object of class <code>"CURLHandle"</code>: The curl options to be passed on to the methods <code>getURL</code> and <code>postForm</code> from the package <span class="pkg">RCurl</span>.</p></dd>
-    <dt><code>curlOptions</code>:</dt><dd><p>Object of class <code>"ANY"</code>: The curl handle to be passed on to the methods <code>getURL</code> and <code>postForm</code> from the package <span class="pkg">RCurl</span>.</p></dd>
     <dt><code>timeFormat</code>:</dt><dd><p>Object of class <code>"character"</code>: The time format to be used or decoding and encoding time character strings to and from <code>POSIXt</code> classes.</p></dd>
     <dt><code>verboseOutput</code>:</dt><dd><p>Object of class <code>"logical"</code>: Trigger parameter for extensive debugging information on the console.</p></dd>
     <dt><code>switchCoordinates</code>:</dt><dd><p>Object of class <code>"logical"</code>: Trigger enabling switching of lat/long during parsing stage.</p></dd>
@@ -393,7 +382,7 @@ SOS(url = "http://localhost:8080/52n-sos/sos/service",
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

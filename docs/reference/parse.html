@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -143,7 +143,7 @@
 <span class='fu'>parseCategoryObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseComplexObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseComponent</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>parseCompositePhenomenon</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseCompositePhenomenon</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseCountObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseDataArray</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseElementType</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -163,7 +163,7 @@
 <span class='fu'>parseOwsRange</span>(<span class='no'>obj</span>)
 <span class='fu'>parseOwsServiceIdentification</span>(<span class='no'>obj</span>)
 <span class='fu'>parseOwsServiceProvider</span>(<span class='no'>obj</span>)
-<span class='fu'>parsePhenomenonProperty</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parsePhenomenonProperty</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parsePoint</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parsePosition</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseResult</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -188,7 +188,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>obj</th>
-      <td><p>The object to decode, normally objects of either <code>XMLNode</code> or <code>XMLInternalDocument</code>.</p></td>
+      <td><p>The object to decode, normally objects of either <code>xml_document</code>.</p></td>
     </tr>
     <tr>
       <th>sos</th>
@@ -253,20 +253,7 @@
   <span class='st'>" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"&gt;"</span>,
   <span class='st'>"&lt;ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"&gt;"</span>,
   <span class='st'>"&lt;ows:ExceptionText&gt;The parameter 'AcceptVersions' does not contain the version"</span>,
-  <span class='st'>" of this SOS: '1.0.0'&lt;/ows:ExceptionText&gt;&lt;/ows:Exception&gt;&lt;/ows:ExceptionReport&gt;"</span>))
-<span class='no'>er.parsed</span> <span class='kw'>&lt;-</span> <span class='fu'>parseOwsExceptionReport</span>(<span class='no'>er.doc</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
-#&gt;  1 exception(s) (code @ locator : text):
-#&gt;   VersionNegotiationFailed @ AcceptVersions :
-#&gt; 	The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0' 
-#&gt;  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Formal class 'OwsExceptionReport' [package "sos4R"] with 3 slots
-#&gt;   ..@ version   : chr "1.0.0"
-#&gt;   ..@ lang      : chr NA
-#&gt;   ..@ exceptions:List of 1
-#&gt;   .. ..$ :Formal class 'OwsException' [package "sos4R"] with 3 slots
-#&gt;   .. .. .. ..@ exceptionCode: chr "VersionNegotiationFailed"
-#&gt;   .. .. .. ..@ exceptionText: chr "The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'"
-#&gt;   .. .. .. ..@ locator      : chr "AcceptVersions"</div><div class='input'>
+  <span class='st'>" of this SOS: '1.0.0'&lt;/ows:ExceptionText&gt;&lt;/ows:Exception&gt;&lt;/ows:ExceptionReport&gt;"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in xmlParseDoc(paste0("&lt;ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\"",     " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\"",     " xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"&gt;",     "&lt;ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"&gt;",     "&lt;ows:ExceptionText&gt;The parameter 'AcceptVersions' does not contain the version",     " of this SOS: '1.0.0'&lt;/ows:ExceptionText&gt;&lt;/ows:Exception&gt;&lt;/ows:ExceptionReport&gt;")): could not find function "xmlParseDoc"</span></div><div class='input'><span class='no'>er.parsed</span> <span class='kw'>&lt;-</span> <span class='fu'>parseOwsExceptionReport</span>(<span class='no'>er.doc</span>)</div><div class='output co'>#&gt; <span class='error'>Error in inherits(x, c("xml_node", "xml_document", "xml_nodeset")): object 'er.doc' not found</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; <span class='error'>Error in print(er.parsed): object 'er.parsed' not found</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; <span class='error'>Error in str(er.parsed): object 'er.parsed' not found</span></div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># save and re-parse an observation from file</span>
 <span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getObservation-methods.html'>getObservationById</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"o_3508493"</span>,
@@ -306,7 +293,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
       </span>
     </div>
 
@@ -220,8 +220,8 @@
 <a href="#build-vignettes" class="anchor"></a>Build vignettes</h3>
 <p>The vignettes should build as part of the docs website or package check process. To build single vingettes manually you can use</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">rmarkdown<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/render">render</a></span>(<span class="st">"vignettes/sos4R-vignette-01-quickstart.Rmd"</span>)</a></code></pre></div>
-<p>You can also then move the rendered file to the docs folder:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">mv</span> vignettes/*.html docs/</a></code></pre></div>
+<p>You can also then copy the rendered file to the docs folder:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">cp</span> vignettes/*.html docs/</a></code></pre></div>
 <hr>
 </div>
 </div>
@@ -286,7 +286,8 @@
 </div>
 <div id="sandbox" class="section level3">
 <h3 class="hasAnchor">
-<a href="#sandbox" class="anchor"></a>/sandbox</h3>
+<a href="#sandbox" class="anchor"></a><code>/sandbox</code>
+</h3>
 <p>In addition to the regular directories, the <code>/sandbox</code> folder contains a wild list of R scripts with tests and demos etc. Code in this directory is not exported from the package but is used during development to test during the implementation of (new) functionality. Please consider using this extensively as a history to be able to resolve problems that occurred before and to document what is working and what not. It is also recommended to run related tests again after (even minor) changes in the code.</p>
 <ul>
 <li>
@@ -423,7 +424,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -151,7 +151,9 @@
 
 <span class='fu'>SosResetParsingFunctions</span>(<span class='no'>sos</span>)
 
-<span class='fu'>SosDefaultDCPs</span>()</pre>
+<span class='fu'>SosDefaultDCPs</span>()
+
+<span class='fu'>SosDefaultParsingOptions</span>()</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -248,7 +250,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $ExceptionReport
+#&gt; $`ows:ExceptionReport`
 #&gt; function (obj) 
 #&gt; {
 #&gt;     return(obj)
@@ -264,7 +266,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xeab2538&gt;
+#&gt; &lt;environment: 0xcffa6a8&gt;
 #&gt; 
 #&gt; $GetCapabilities
 #&gt; function (obj, sos) 
@@ -281,30 +283,30 @@
 #&gt; $DescribeSensor
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .root &lt;- xmlRoot(obj)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Starting... \n")
-#&gt;     .id &lt;- .smlIdentifier(.root, "uniqueID", verbose = verbose)
-#&gt;     .shortName &lt;- .smlIdentifier(.root, "shortName", verbose = verbose)
-#&gt;     .descrNodeSet &lt;- getNodeSet(doc = .root, path = .smlXPathDescription, 
-#&gt;         namespaces = .sos100_NamespaceDefinitionsSML)
-#&gt;     if (is.null(.descrNodeSet)) 
-#&gt;         .description &lt;- NA_character_
-#&gt;     else .description &lt;- xmlValue(.descrNodeSet[[1]])
+#&gt;     .id &lt;- .smlIdentifier(obj, "uniqueID", verbose = verbose)
+#&gt;     .shortName &lt;- .smlIdentifier(obj, "shortName", verbose = verbose)
+#&gt;     .descrNode &lt;- xml2::xml_find_first(x = obj, xpath = .smlXPathDescription, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .description &lt;- xml2::xml_text(x = .descrNode)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Got ID", .id, "and shortName", .shortName, 
 #&gt;             "and description", .description, "\n")
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Parsing boundedBy from", .smlXPathObservedBBox, 
 #&gt;             "\n")
-#&gt;     .observedBBox &lt;- getNodeSet(doc = .root, path = .smlXPathObservedBBox, 
-#&gt;         namespaces = .sos100_NamespaceDefinitionsSML)[[1]]
-#&gt;     if (!is.null(.observedBBox)) {
-#&gt;         .referenceFrame &lt;- .observedBBox[["referenceFrame"]]
-#&gt;         .llVector &lt;- parseVector(.observedBBox[["lowerCorner"]][["Vector"]], 
-#&gt;             sos = sos, verbose = verbose)
-#&gt;         .uuVector &lt;- parseVector(.observedBBox[["upperCorner"]][["Vector"]], 
-#&gt;             sos = sos, verbose = verbose)
+#&gt;     .observedBBox &lt;- xml2::xml_find_first(x = obj, xpath = .smlXPathObservedBBox, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!is.na(.observedBBox)) {
+#&gt;         .referenceFrame &lt;- xml2::xml_attr(x = .observedBBox, 
+#&gt;             attr = "referenceFrame", ns = SosAllNamespaces())
+#&gt;         .llVector &lt;- parseSweVector(xml2::xml_child(x = .observedBBox, 
+#&gt;             search = paste0(sweUpperCornerName, "/", sweVectorName), 
+#&gt;             ns = SosAllNamespaces()), sos = sos, verbose = verbose)
+#&gt;         .uuVector &lt;- parseSweVector(xml2::xml_child(x = .observedBBox, 
+#&gt;             search = paste0(sweLowerCornerName, "/", sweVectorName), 
+#&gt;             ns = SosAllNamespaces()), sos = sos, verbose = verbose)
 #&gt;         .bb &lt;- matrix(c(.llVector[["x"]][["value"]], .llVector[["y"]][["value"]], 
 #&gt;             .uuVector[["x"]][["value"]], .uuVector[["y"]][["value"]]), 
 #&gt;             ncol = 2, dimnames = list(c("coords.lon", "coords.lat"), 
@@ -324,10 +326,9 @@
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Parsing coordinates from", .smlXPathPosition, 
 #&gt;             "\n")
-#&gt;     .xmlPosition &lt;- getNodeSet(doc = .root, path = .smlXPathPosition, 
-#&gt;         namespaces = .sos100_NamespaceDefinitionsSML)
-#&gt;     if (length((.xmlPosition)) &gt; 0) {
-#&gt;         .xmlPosition &lt;- .xmlPosition[[1]]
+#&gt;     .xmlPosition &lt;- xml2::xml_find_first(x = obj, xpath = .smlXPathPosition, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!is.na(.xmlPosition)) {
 #&gt;         .position &lt;- parseSwePosition(.xmlPosition, sos = sos, 
 #&gt;             verbose = verbose)
 #&gt;         .referenceFrame = attributes(.position)[["referenceFrame"]]
@@ -371,22 +372,19 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
 #&gt; }
@@ -399,7 +397,8 @@
 #&gt;         cat("[parseGetObservationResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .observationsXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "observationData")
+#&gt;     .observationsXML &lt;- xml2::xml_find_all(x = obj, xpath = "sos20:observationData", 
+#&gt;         ns = SosAllNamespaces(version = sos200_version))
 #&gt;     featureCache &lt;&lt;- list()
 #&gt;     .observations &lt;- sapply(.observationsXML, parseObservation_2.0, 
 #&gt;         sos = sos)
@@ -415,7 +414,8 @@
 #&gt;         cat("[parseGetFeatureOfInterestResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .featureXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "featureMember")
+#&gt;     .featureXML &lt;- xml2::xml_find_all(x = obj, xpath = "sos20:featureMember", 
+#&gt;         SosAllNamespaces(version = sos200_version))
 #&gt;     .foi = sapply(.featureXML, .parseFeatureMember, sos = sos)
 #&gt;     return(.foi)
 #&gt; }
@@ -425,24 +425,41 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
+#&gt; }
+#&gt; &lt;environment: namespace:sos4R&gt;
+#&gt; 
+#&gt; $`ows:ExceptionReport`
+#&gt; function (obj, verbose = FALSE) 
+#&gt; {
+#&gt;     if (verbose) 
+#&gt;         cat("[parseOwsExceptionReport] Starting ...\n")
+#&gt;     .docRoot &lt;- xml2::xml_root(x = obj)
+#&gt;     .version &lt;- xml2::xml_attr(x = .docRoot, attr = "version")
+#&gt;     .lang &lt;- xml2::xml_attr(x = .docRoot, attr = "lang", default = NA_character_)
+#&gt;     .exceptionsXML &lt;- xml2::xml_find_all(x = .docRoot, xpath = paste0("//", 
+#&gt;         owsExceptionName), ns = SosAllNamespaces())
+#&gt;     .exceptions = sapply(.exceptionsXML, parseOwsException)
+#&gt;     if (verbose) 
+#&gt;         cat("[parseOwsExceptionReport]", length(.exceptions), 
+#&gt;             "exceptions.")
+#&gt;     .report &lt;- OwsExceptionReport(version = .version, lang = .lang, 
+#&gt;         exceptions = .exceptions)
+#&gt;     return(.report)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
@@ -455,8 +472,8 @@
 #&gt;         stop(paste0("[parseGetDataAvailabilityResponse] SOS version 2.0 required! Received '", 
 #&gt;             sos@version, "'"))
 #&gt;     }
-#&gt;     .gdaMembers &lt;- .filterXmlChildren(obj, sosGDAMemberName, 
-#&gt;         includeNamed = TRUE)
+#&gt;     .gdaMembers &lt;- xml2::xml_find_all(x = obj, xpath = sosGDAMemberName, 
+#&gt;         ns = SosAllNamespaces())
 #&gt;     if (verbose) 
 #&gt;         cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), 
 #&gt;             "element(s).\n")
@@ -471,19 +488,24 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Measurement
+#&gt; $`om:Measurement`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
 #&gt;         cat("[parseMeasurement]\n")
-#&gt;     .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
-#&gt;         format = sosTimeFormat(sos), verbose = verbose)[[1]]
-#&gt;     .procedure &lt;- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
-#&gt;     .observedProperty &lt;- SwePhenomenonProperty(href = xmlGetAttr(node = obj[[omObservedPropertyName]], 
-#&gt;         name = "href"))
-#&gt;     .featureOfInterest &lt;- parseFOI(obj[[omFeatureOfInterestName]], 
-#&gt;         sos = sos, verbose = verbose)
-#&gt;     .result &lt;- parseMeasure(obj[[omResultName]])
+#&gt;     .samplingTimeXml &lt;- xml2::xml_child(x = obj, search = omSamplingTimeName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .samplingTime &lt;- parseTime(obj = .samplingTimeXml, format = sosTimeFormat(sos), 
+#&gt;         verbose = verbose)
+#&gt;     .procedure &lt;- xml2::xml_attr(x = xml2::xml_child(x = obj, 
+#&gt;         search = omProcedureName, ns = SosAllNamespaces()), attr = "href")
+#&gt;     .observedProperty &lt;- SwePhenomenonProperty(href = xml2::xml_attr(x = xml2::xml_child(x = obj, 
+#&gt;         search = omObservedPropertyName, ns = SosAllNamespaces()), 
+#&gt;         attr = "href"))
+#&gt;     .featureOfInterest &lt;- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, 
+#&gt;         ns = SosAllNamespaces()), sos = sos, verbose = verbose)
+#&gt;     .result &lt;- parseMeasure(xml2::xml_child(x = obj, search = omResultName, 
+#&gt;         ns = SosAllNamespaces()))
 #&gt;     .measurement &lt;- OmMeasurement(samplingTime = .samplingTime, 
 #&gt;         procedure = .procedure, observedProperty = .observedProperty, 
 #&gt;         featureOfInterest = .featureOfInterest, result = .result)
@@ -491,30 +513,28 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $member
+#&gt; $`om:member`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     if (xmlSize(obj) &gt;= 1) {
-#&gt;         .noneTexts &lt;- .filterXmlChildren(obj, xmlTextNodeName, 
-#&gt;             includeNamed = FALSE)
-#&gt;         .child &lt;- .noneTexts[[1]]
-#&gt;         if (verbose) {
+#&gt;     if (xml2::xml_length(x = obj) &gt;= 1) {
+#&gt;         .child &lt;- xml2::xml_child(obj)
+#&gt;         if (verbose) 
 #&gt;             cat("[parseObservationProperty] Parsing child of member:", 
-#&gt;                 xmlName(.child), "\n")
-#&gt;         }
+#&gt;                 xml2::xml_name(x = .child, ns = SosAllNamespaces()), 
+#&gt;                 "\n")
 #&gt;         .mResult &lt;- parseOM(.child, sos, verbose)
 #&gt;     }
 #&gt;     else {
 #&gt;         if (verbose) 
 #&gt;             cat("[parseObservationProperty] Member has no direct child!\n")
-#&gt;         .href &lt;- xmlGetAttr(node = obj, name = "href", default = NA_character_)
+#&gt;         .href &lt;- xml2::xml_attr(x = obj, attr = "href", default = NA_character_)
 #&gt;         if (!is.na(.href)) {
 #&gt;             warning(paste("[parseObservationProperty] Only reference to Observation was returned:", 
 #&gt;                 .href))
 #&gt;             .mResult &lt;- OmObservationProperty(href = .href)
 #&gt;         }
 #&gt;         else {
-#&gt;             warning("[parseObservationProperty] No Observation found in response!")
+#&gt;             warning("[parseObservationProperty] No observation found!")
 #&gt;             .mResult &lt;- OmObservationProperty()
 #&gt;         }
 #&gt;     }
@@ -522,26 +542,32 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Observation
+#&gt; $`om:Observation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .id &lt;- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+#&gt;     .id &lt;- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseObservation]", .id, "\n")
-#&gt;     .procedure &lt;- xmlGetAttr(node = obj[[omProcedureName]], name = "href", 
+#&gt;     .procedure &lt;- xml2::xml_attr(x = xml2::xml_child(x = obj, 
+#&gt;         search = omProcedureName, ns = SosAllNamespaces()), attr = "href", 
 #&gt;         default = NA_character_)
-#&gt;     .observedProperty &lt;- parsePhenomenonProperty(obj[[omObservedPropertyName]], 
-#&gt;         sos = sos, verbose = verbose)
-#&gt;     if (!is.null(obj[[omSamplingTimeName]])) {
-#&gt;         .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
+#&gt;     .observedProperty &lt;- parsePhenomenonProperty(xml2::xml_child(x = obj, 
+#&gt;         search = omObservedPropertyName, ns = SosAllNamespaces()), 
+#&gt;         verbose = verbose)
+#&gt;     if (!is.na(xml2::xml_child(x = obj, search = omSamplingTimeName, 
+#&gt;         ns = SosAllNamespaces()))) {
+#&gt;         .samplingTime &lt;- parseTime(obj = xml2::xml_child(x = obj, 
+#&gt;             search = omSamplingTimeName, ns = SosAllNamespaces()), 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
 #&gt;     }
 #&gt;     else {
 #&gt;         warning("om:samplingTime is mandatory in om:Observation, but is missing!")
 #&gt;         .samplingTime &lt;- NULL
 #&gt;     }
-#&gt;     if (!is.null(obj[[omFeatureOfInterestName]])) {
-#&gt;         .featureOfInterest &lt;- parseFOI(obj[[omFeatureOfInterestName]], 
+#&gt;     if (!is.na(xml2::xml_child(x = obj, search = omFeatureOfInterestName, 
+#&gt;         ns = SosAllNamespaces()))) {
+#&gt;         .featureOfInterest &lt;- parseFOI(xml2::xml_child(x = obj, 
+#&gt;             search = omFeatureOfInterestName, ns = SosAllNamespaces()), 
 #&gt;             sos = sos, verbose = verbose)
 #&gt;     }
 #&gt;     else {
@@ -549,11 +575,14 @@
 #&gt;         .featureOfInterest &lt;- NULL
 #&gt;     }
 #&gt;     .resultParsingFunction &lt;- sosParsers(sos)[[omResultName]]
-#&gt;     .result &lt;- .resultParsingFunction(obj[[omResultName]], sos, 
+#&gt;     .result &lt;- .resultParsingFunction(xml2::xml_child(x = obj, 
+#&gt;         search = omResultName, ns = SosAllNamespaces()), sos, 
 #&gt;         verbose)
-#&gt;     if (!is.null(obj[[omResultTimeName]])) {
-#&gt;         .resultTime &lt;- parseTime(obj = obj[[omResultTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
+#&gt;     if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, 
+#&gt;         ns = SosAllNamespaces()))) {
+#&gt;         .resultTime &lt;- parseTime(obj = xml2::xml_child(x = obj, 
+#&gt;             search = omResultTimeName, ns = SosAllNamespaces()), 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
 #&gt;     }
 #&gt;     else {
 #&gt;         .resultTime &lt;- NULL
@@ -565,18 +594,22 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $ObservationCollection
-#&gt; function (obj, sos, verbose) 
+#&gt; $`om:ObservationCollection`
+#&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .members &lt;- .filterXmlChildren(obj, omMemberName, includeNamed = TRUE)
+#&gt;     .members &lt;- xml2::xml_find_all(x = obj, xpath = omMemberName, 
+#&gt;         ns = SosAllNamespaces())
 #&gt;     if (verbose) 
 #&gt;         cat("[parseObservationCollection] with ", length(.members), 
 #&gt;             "element(s).\n")
-#&gt;     .env &lt;- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
-#&gt;     if (!is.null(.env)) {
-#&gt;         .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
-#&gt;             lowerCorner = xmlValue(.env[[gmlLowerCornerName]]), 
-#&gt;             upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+#&gt;     .env &lt;- xml2::xml_child(x = obj, search = paste0(gmlBoundedByName, 
+#&gt;         "/", gmlEnvelopeName))
+#&gt;     if (!is.na(.env)) {
+#&gt;         .boundedBy &lt;- list(srsName = xml2::xml_attr(x = .env, 
+#&gt;             attr = "srsName", ns = SosAllNamespaces()), lowerCorner = xml2::xml_text(x = xml2::xml_child(x = .env, 
+#&gt;             search = gmlLowerCornerName, ns = SosAllNamespaces())), 
+#&gt;             upperCorner = xml2::xml_text(x = xml2::xml_child(x = .env, 
+#&gt;                 search = gmlUpperCornerName, ns = SosAllNamespaces())))
 #&gt;         if (verbose) 
 #&gt;             cat("[parseObservationCollection] Parsed envelope:", 
 #&gt;                 toString(.boundedBy), "\n")
@@ -588,8 +621,8 @@
 #&gt;             .origUC &lt;- strsplit(x = .boundedBy[["upperCorner"]], 
 #&gt;                 split = " ")
 #&gt;             .uC &lt;- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-#&gt;             .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
-#&gt;                 lowerCorner = .lC, upperCorner = .uC)
+#&gt;             .boundedBy &lt;- list(srsName = xml2::xml_attr(x = .env, 
+#&gt;                 attr = "srsName"), lowerCorner = .lC, upperCorner = .uC)
 #&gt;         }
 #&gt;     }
 #&gt;     else {
@@ -597,8 +630,9 @@
 #&gt;             cat("[parseObservationCollection] Empty envelope!\n")
 #&gt;         .boundedBy &lt;- list()
 #&gt;     }
-#&gt;     .resultList &lt;- lapply(.members, parseOM, sos, verbose)
-#&gt;     names(.resultList) &lt;- lapply(.resultList, class)
+#&gt;     .resultList &lt;- lapply(X = .members, FUN = parseOM, sos = sos, 
+#&gt;         verbose = verbose)
+#&gt;     names(.resultList) &lt;- lapply(X = .resultList, FUN = class)
 #&gt;     if (is.list(.resultList)) {
 #&gt;         .obsColl &lt;- OmObservationCollection(members = .resultList, 
 #&gt;             boundedBy = .boundedBy)
@@ -614,25 +648,22 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $result
+#&gt; $`om:result`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) {
 #&gt;         cat("[parseResult] Starting ...\n")
 #&gt;     }
 #&gt;     .result &lt;- NULL
-#&gt;     .children &lt;- .filterXmlChildren(node = obj, "WeWantAllXmlNodes", 
-#&gt;         includeNamed = FALSE, verbose = verbose)
-#&gt;     .children &lt;- obj
-#&gt;     if (verbose) {
+#&gt;     .children &lt;- xml2::xml_children(x = obj)
+#&gt;     if (verbose) 
 #&gt;         cat("[parseResult]", length(.children), " non-text nodes, names:", 
 #&gt;             names(.children), "\n")
-#&gt;     }
 #&gt;     if (length(.children) == 0) {
-#&gt;         .children &lt;- xmlChildren(obj)
+#&gt;         .children &lt;- xml2::xml_children(x = obj)
 #&gt;         stop("Continue implementation here: OM-methods-parsing.R")
 #&gt;         cat("[parseResult] No non-text nodes in result, returning NULL.\n")
-#&gt;         .typeAttributValue &lt;- xmlGetAttr(node = obj, name = om20ResultTypeAttributeName, 
+#&gt;         .typeAttributValue &lt;- xml2::xml_attr(x = obj, attr = om20ResultTypeAttributeName, 
 #&gt;             default = NA_character_)
 #&gt;         .typeWithQualifiedname &lt;- strsplit(.typeAttributValue, 
 #&gt;             ":")
@@ -644,29 +675,29 @@
 #&gt;         }
 #&gt;         if (!is.na(.type)) {
 #&gt;             if (.type == om20ResultMeasureTypeName) {
-#&gt;                 return(xmlValue(obj))
+#&gt;                 return(xml2::xml_text(x = obj))
 #&gt;             }
 #&gt;         }
 #&gt;         return(NULL)
 #&gt;     }
-#&gt;     if (xmlName(.children[[1]]) == sweDataArrayName) {
+#&gt;     .name &lt;- xml2::xml_name(x = .children[[1]], ns = SosAllNamespaces())
+#&gt;     if (.name == sweDataArrayName) {
 #&gt;         if (verbose) 
 #&gt;             cat("[parseResult] Parsing result with swe:DataArray.\n")
 #&gt;         .dataArrayParsingFunction &lt;- sosParsers(sos)[[sweDataArrayName]]
-#&gt;         .dataArray &lt;- .children[[1]]
-#&gt;         .result &lt;- .dataArrayParsingFunction(.dataArray, sos, 
-#&gt;             verbose)
+#&gt;         .result &lt;- .dataArrayParsingFunction(.children[[1]], 
+#&gt;             sos, verbose)
 #&gt;     }
-#&gt;     else if (xmlName(.children[[1]]) == xmlTextNodeName) {
-#&gt;         .result &lt;- as.numeric(xmlValue(.children))
+#&gt;     else if (.name == xmlTextNodeName) {
+#&gt;         .result &lt;- as.numeric(xml2::xml_text(x = .children))
 #&gt;         if (is.na(.result)) {
-#&gt;             .result &lt;- xmlValue(.children, trim = TRUE)
+#&gt;             .result &lt;- xml2::xml_text(x = .children, trim = TRUE)
 #&gt;         }
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseResult] Parsing of given result is NOT supported:", 
-#&gt;             xmlName(.children[[1]]), "-- only", sweDataArrayName, 
-#&gt;             " or text nodes containing strings or numbers can be parsed."))
+#&gt;             xml2::xml_name(x = .children[[1]], ns = SosAllNamespaces()), 
+#&gt;             "-- only", sweDataArrayName, " or text nodes containing strings or numbers can be parsed."))
 #&gt;     }
 #&gt;     if (is.null(.result)) {
 #&gt;         stop("[parseResult] result is null! Given result:\n")
@@ -678,41 +709,48 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $DataArray
+#&gt; $`swe:DataArray`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .elementCount &lt;- xmlValue(obj[["elementCount"]][["Count"]][["value"]])
+#&gt;     .elementCount &lt;- xml2::xml_text(xml2::xml_find_first(x = obj, 
+#&gt;         xpath = "./swe:elementCount/swe:Count/swe:value", ns = SosAllNamespaces()))
 #&gt;     if (verbose) 
 #&gt;         cat("[parseDataArray] Parsing DataArray with", .elementCount, 
 #&gt;             "elements.\n")
-#&gt;     .eTParser &lt;- sosParsers(sos)[[sweElementTypeName]]
-#&gt;     .fields &lt;- .eTParser(obj = obj[[sweElementTypeName]], verbose = verbose)
+#&gt;     .elementTypeParser &lt;- sosParsers(sos)[[sweElementTypeName]]
+#&gt;     .fields &lt;- .elementTypeParser(obj = xml2::xml_child(x = obj, 
+#&gt;         search = sweElementTypeName, ns = SosAllNamespaces()), 
+#&gt;         verbose = verbose)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseDataArray]  Parsed field descriptions:", toString(.fields), 
 #&gt;             "\n")
 #&gt;     .encParser &lt;- sosParsers(sos)[[sweEncodingName]]
-#&gt;     .encoding &lt;- .encParser(obj = obj[[sweEncodingName]], verbose = verbose)
+#&gt;     .encoding &lt;- .encParser(obj = xml2::xml_child(x = obj, search = sweEncodingName, 
+#&gt;         ns = SosAllNamespaces()), verbose = verbose)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseDataArray]  Parsed encoding description:", 
 #&gt;             toString(.encoding), "\n")
 #&gt;     .valParser &lt;- sosParsers(sos)[[sweValuesName]]
-#&gt;     .values &lt;- .valParser(values = obj[[sweValuesName]], fields = .fields, 
-#&gt;         encoding = .encoding, sos = sos, verbose = verbose)
+#&gt;     .values &lt;- .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, 
+#&gt;         ns = SosAllNamespaces()), fields = .fields, encoding = .encoding, 
+#&gt;         sos = sos, verbose = verbose)
 #&gt;     return(.values)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $elementType
+#&gt; $`swe:elementType`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .simpleDataRecord &lt;- obj[[sweSimpleDataRecordName]]
-#&gt;     .dataRecord &lt;- obj[[sweDataRecordName]]
-#&gt;     if (!is.null(.simpleDataRecord) || !is.null(.dataRecord)) {
-#&gt;         if (!is.null(.simpleDataRecord)) 
+#&gt;     .simpleDataRecord &lt;- xml2::xml_child(x = obj, search = sweSimpleDataRecordName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .dataRecord &lt;- xml2::xml_child(x = obj, search = sweDataRecordName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!is.na(.simpleDataRecord) || !is.na(.dataRecord)) {
+#&gt;         if (!is.na(.simpleDataRecord)) 
 #&gt;             .dr &lt;- .simpleDataRecord
 #&gt;         else .dr &lt;- .dataRecord
-#&gt;         .fields &lt;- .filterXmlChildren(node = .dr, xmlTagName = sweFieldName, 
-#&gt;             includeNamed = TRUE)
+#&gt;         .fields &lt;- xml2::xml_find_all(x = .dr, xpath = sweFieldName, 
+#&gt;             ns = SosAllNamespaces())
 #&gt;         if (verbose) 
 #&gt;             cat("[parseElementType] Got data record with", length(.fields), 
 #&gt;                 "fields. \n")
@@ -733,16 +771,18 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $encoding
+#&gt; $`swe:encoding`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .textBlock &lt;- obj[[sweTextBlockName]]
-#&gt;     .textEncoding &lt;- obj[[sweTextEncodingName]]
-#&gt;     if (!(is.null(.textBlock))) {
+#&gt;     .textBlock &lt;- xml2::xml_child(x = obj, search = sweTextBlockName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .textEncoding &lt;- xml2::xml_child(x = obj, search = sweTextEncodingName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!(is.na(.textBlock))) {
 #&gt;         .tb &lt;- parseTextBlock(.textBlock)
 #&gt;         return(.tb)
 #&gt;     }
-#&gt;     else if (!(is.null(.textEncoding))) {
+#&gt;     else if (!(is.na(.textEncoding))) {
 #&gt;         .tb &lt;- parseTextEncoding(.textEncoding)
 #&gt;         return(.tb)
 #&gt;     }
@@ -753,7 +793,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $values
+#&gt; $`swe:values`
 #&gt; function (values, fields, encoding, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
@@ -765,7 +805,7 @@
 #&gt;         stop("Handling for given encoding not implemented!")
 #&gt;     }
 #&gt;     .converters &lt;- sosDataFieldConverters(sos)
-#&gt;     .blockLines &lt;- strsplit(x = xmlValue(values), split = encoding@blockSeparator)
+#&gt;     .blockLines &lt;- strsplit(x = xml2::xml_text(x = values), split = encoding@blockSeparator)
 #&gt;     .tokenLines &lt;- sapply(.blockLines, strsplit, split = encoding@tokenSeparator)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseValues] Parsing values from lines: ", toString(.tokenLines), 
@@ -800,7 +840,7 @@
 #&gt;                     .currentField[[.sosParseFieldUOM]], " with the definition ", 
 #&gt;                     .currentField[[.sosParseFieldDefinition]], 
 #&gt;                     "! Trying a default, but you can add one when creating a SOS using", 
-#&gt;                     "SosDataFieldConvertingFunctions()."))
+#&gt;                     "SosDataFieldConvertingFunctions().\n"))
 #&gt;                   .method &lt;- .converters[["fallBack"]]
 #&gt;                 }
 #&gt;             }
@@ -857,13 +897,14 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Position
+#&gt; $`swe:Position`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .rF &lt;- xmlGetAttr(node = obj, name = "referenceFrame")
+#&gt;     .rF &lt;- xml2::xml_attr(x = obj, attr = "referenceFrame", ns = SosAllNamespaces())
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSwePosition] with referenceFrame", .rF, "\n")
-#&gt;     .location &lt;- obj[[sweLocationName]]
+#&gt;     .location &lt;- xml2::xml_child(x = obj, search = sweLocationName, 
+#&gt;         ns = SosAllNamespaces())
 #&gt;     .parser &lt;- sosParsers(sos)[[sweLocationName]]
 #&gt;     .pos &lt;- .parser(.location, sos = sos, verbose = verbose)
 #&gt;     .oldAttrs &lt;- attributes(.pos)
@@ -872,66 +913,65 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $location
+#&gt; $`swe:location`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .vector &lt;- obj[[sweVectorName]]
-#&gt;     .id &lt;- xmlGetAttr(node = obj, name = "id")
+#&gt;     .vector &lt;- xml2::xml_child(x = obj, search = sweVectorName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .id &lt;- xml2::xml_attr(x = obj, attr = "id")
 #&gt;     if (verbose) 
-#&gt;         cat("[parseLocation] with id", .id, "\n")
+#&gt;         cat("[parseSweLocation] with id", .id, "\n")
 #&gt;     .parser &lt;- sosParsers(sos)[[sweVectorName]]
-#&gt;     .pos &lt;- .parser(.vector, sos = sos, verbose = verbose)
-#&gt;     return(.pos)
+#&gt;     location &lt;- .parser(.vector, sos = sos, verbose = verbose)
+#&gt;     return(location)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Vector
+#&gt; $`swe:Vector`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .children &lt;- .filterXmlChildren(node = obj, xmlTagName = sweCoordinateName)
-#&gt;     .coords &lt;- list()
-#&gt;     .names &lt;- list()
-#&gt;     for (i in seq(1, length(.children))) {
-#&gt;         .c &lt;- .children[[i]]
-#&gt;         .coord &lt;- parseCoordinate(.c, sos = sos, verbose = verbose)
-#&gt;         .coords &lt;- c(.coords, list(.coord))
-#&gt;         .names &lt;- c(.names, list(.coord[["axisID"]]))
-#&gt;         if (verbose) 
-#&gt;             cat("[parseVector] parsed coordinate: ", toString(.coord), 
-#&gt;                 "\n")
-#&gt;     }
-#&gt;     names(.coords) &lt;- .names
-#&gt;     return(.coords)
+#&gt;     .children &lt;- xml2::xml_find_all(x = obj, xpath = sweCoordinateName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .parser &lt;- sosParsers(sos)[[sweCoordinateName]]
+#&gt;     .vector &lt;- lapply(X = .children, FUN = .parser, sos = sos, 
+#&gt;         verbose = verbose)
+#&gt;     names(.vector) &lt;- sapply(.vector, function(current) {
+#&gt;         return(current$axisID)
+#&gt;     })
+#&gt;     if (verbose) 
+#&gt;         cat("[parseSweVector] parsed vector with coordinates: ", 
+#&gt;             toString(names(.vector)), "\n")
+#&gt;     return(.vector)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $coordinate
+#&gt; $`swe:coordinate`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .name &lt;- xmlGetAttr(node = obj, name = "name", default = NA_character_)
+#&gt;     .name &lt;- xml2::xml_attr(x = obj, attr = "name")
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] with name", .name, "\n")
-#&gt;     .quantity &lt;- obj[[sweQuantityName]]
-#&gt;     .axisID &lt;- xmlGetAttr(node = .quantity, name = "axisID", default = NA_character_)
+#&gt;         cat("[parseSweCoordinate] with name", .name, "\n")
+#&gt;     .quantity &lt;- xml2::xml_child(x = obj, search = sweQuantityName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .axisID &lt;- xml2::xml_attr(x = .quantity, attr = "axisID")
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] axisID: ", .axisID, "\n")
-#&gt;     .uomCode &lt;- NA_character_
-#&gt;     if (!is.null(.quantity[[sweUomName]])) 
-#&gt;         .uomCode &lt;- xmlGetAttr(node = .quantity[[sweUomName]], 
-#&gt;             name = "code", default = NA_character_)
+#&gt;         cat("[parseSweCoordinate] axisID: ", .axisID, "\n")
+#&gt;     .uomNode &lt;- xml2::xml_child(x = .quantity, search = sweUomName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .uomCode &lt;- xml2::xml_attr(x = .uomNode, attr = "code", ns = SosAllNamespaces())
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] uomCode: ", .uomCode, "\n")
-#&gt;     .value &lt;- NA_character_
-#&gt;     if (!is.null(.quantity[[sweValueName]])) 
-#&gt;         .value &lt;- as.double(xmlValue(.quantity[[sweValueName]]))
+#&gt;         cat("[parseSweCoordinate] uomCode: ", .uomCode, "\n")
+#&gt;     .valueNode &lt;- xml2::xml_child(x = .quantity, search = sweValueName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .value &lt;- as.double(xml2::xml_text(x = .valueNode))
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] value: ", .value, "\n")
+#&gt;         cat("[parseSweCoordinate] value: ", .value, "\n")
 #&gt;     return(list(name = .name, axisID = .axisID, uomCode = .uomCode, 
 #&gt;         value = .value))
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $GeometryObservation
+#&gt; $`om:GeometryObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:GeometryObservation is not implemented!")
@@ -939,7 +979,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $CategoryObservation
+#&gt; $`om:CategoryObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:CategoryObservation is not implemented!")
@@ -947,7 +987,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $CountObservation
+#&gt; $`om:CountObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:CountObservation is not implemented!")
@@ -955,7 +995,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $TruthObservation
+#&gt; $`om:TruthObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:TruthObservation is not implemented!")
@@ -963,7 +1003,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $TemporalObservation
+#&gt; $`om:TemporalObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:TemporalObservatio is not implemented!")
@@ -971,7 +1011,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $ComplexObservation
+#&gt; $`om:ComplexObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:ComplexObservation is not implemented!")
@@ -1027,22 +1067,19 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
 #&gt; }
@@ -1052,7 +1089,7 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
-#&gt;         cat("[parseKML] Processing KML...\n")
+#&gt;         cat("[parseKML] Processing KML... returning raw object!\n")
 #&gt;     return(obj)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -1061,7 +1098,7 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
-#&gt;         cat("[parseKML] Processing KML...\n")
+#&gt;         cat("[parseKML] Processing KML... returning raw object!\n")
 #&gt;     return(obj)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -1070,22 +1107,19 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
 #&gt; }
@@ -1098,22 +1132,19 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
 #&gt; }
@@ -1122,30 +1153,30 @@
 #&gt; $DescribeSensor
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .root &lt;- xmlRoot(obj)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Starting... \n")
-#&gt;     .id &lt;- .smlIdentifier(.root, "uniqueID", verbose = verbose)
-#&gt;     .shortName &lt;- .smlIdentifier(.root, "shortName", verbose = verbose)
-#&gt;     .descrNodeSet &lt;- getNodeSet(doc = .root, path = .smlXPathDescription, 
-#&gt;         namespaces = .sos100_NamespaceDefinitionsSML)
-#&gt;     if (is.null(.descrNodeSet)) 
-#&gt;         .description &lt;- NA_character_
-#&gt;     else .description &lt;- xmlValue(.descrNodeSet[[1]])
+#&gt;     .id &lt;- .smlIdentifier(obj, "uniqueID", verbose = verbose)
+#&gt;     .shortName &lt;- .smlIdentifier(obj, "shortName", verbose = verbose)
+#&gt;     .descrNode &lt;- xml2::xml_find_first(x = obj, xpath = .smlXPathDescription, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .description &lt;- xml2::xml_text(x = .descrNode)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Got ID", .id, "and shortName", .shortName, 
 #&gt;             "and description", .description, "\n")
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Parsing boundedBy from", .smlXPathObservedBBox, 
 #&gt;             "\n")
-#&gt;     .observedBBox &lt;- getNodeSet(doc = .root, path = .smlXPathObservedBBox, 
-#&gt;         namespaces = .sos100_NamespaceDefinitionsSML)[[1]]
-#&gt;     if (!is.null(.observedBBox)) {
-#&gt;         .referenceFrame &lt;- .observedBBox[["referenceFrame"]]
-#&gt;         .llVector &lt;- parseVector(.observedBBox[["lowerCorner"]][["Vector"]], 
-#&gt;             sos = sos, verbose = verbose)
-#&gt;         .uuVector &lt;- parseVector(.observedBBox[["upperCorner"]][["Vector"]], 
-#&gt;             sos = sos, verbose = verbose)
+#&gt;     .observedBBox &lt;- xml2::xml_find_first(x = obj, xpath = .smlXPathObservedBBox, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!is.na(.observedBBox)) {
+#&gt;         .referenceFrame &lt;- xml2::xml_attr(x = .observedBBox, 
+#&gt;             attr = "referenceFrame", ns = SosAllNamespaces())
+#&gt;         .llVector &lt;- parseSweVector(xml2::xml_child(x = .observedBBox, 
+#&gt;             search = paste0(sweUpperCornerName, "/", sweVectorName), 
+#&gt;             ns = SosAllNamespaces()), sos = sos, verbose = verbose)
+#&gt;         .uuVector &lt;- parseSweVector(xml2::xml_child(x = .observedBBox, 
+#&gt;             search = paste0(sweLowerCornerName, "/", sweVectorName), 
+#&gt;             ns = SosAllNamespaces()), sos = sos, verbose = verbose)
 #&gt;         .bb &lt;- matrix(c(.llVector[["x"]][["value"]], .llVector[["y"]][["value"]], 
 #&gt;             .uuVector[["x"]][["value"]], .uuVector[["y"]][["value"]]), 
 #&gt;             ncol = 2, dimnames = list(c("coords.lon", "coords.lat"), 
@@ -1165,10 +1196,9 @@
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSensorML] Parsing coordinates from", .smlXPathPosition, 
 #&gt;             "\n")
-#&gt;     .xmlPosition &lt;- getNodeSet(doc = .root, path = .smlXPathPosition, 
-#&gt;         namespaces = .sos100_NamespaceDefinitionsSML)
-#&gt;     if (length((.xmlPosition)) &gt; 0) {
-#&gt;         .xmlPosition &lt;- .xmlPosition[[1]]
+#&gt;     .xmlPosition &lt;- xml2::xml_find_first(x = obj, xpath = .smlXPathPosition, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!is.na(.xmlPosition)) {
 #&gt;         .position &lt;- parseSwePosition(.xmlPosition, sos = sos, 
 #&gt;             verbose = verbose)
 #&gt;         .referenceFrame = attributes(.position)[["referenceFrame"]]
@@ -1213,7 +1243,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xeab2538&gt;
+#&gt; &lt;environment: 0xcffa6a8&gt;
 #&gt; </div><div class='input'><span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))</div><div class='output co'>#&gt; $GetCapabilities
 #&gt; function (obj, sos) 
 #&gt; {
@@ -1233,7 +1263,8 @@
 #&gt;         cat("[parseGetObservationResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .observationsXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "observationData")
+#&gt;     .observationsXML &lt;- xml2::xml_find_all(x = obj, xpath = "sos20:observationData", 
+#&gt;         ns = SosAllNamespaces(version = sos200_version))
 #&gt;     featureCache &lt;&lt;- list()
 #&gt;     .observations &lt;- sapply(.observationsXML, parseObservation_2.0, 
 #&gt;         sos = sos)
@@ -1249,7 +1280,8 @@
 #&gt;         cat("[parseGetFeatureOfInterestResponse] entering... \n")
 #&gt;         print(obj)
 #&gt;     }
-#&gt;     .featureXML &lt;- .filterXmlChildren(node = obj, xmlTagName = "featureMember")
+#&gt;     .featureXML &lt;- xml2::xml_find_all(x = obj, xpath = "sos20:featureMember", 
+#&gt;         SosAllNamespaces(version = sos200_version))
 #&gt;     .foi = sapply(.featureXML, .parseFeatureMember, sos = sos)
 #&gt;     return(.foi)
 #&gt; }
@@ -1259,41 +1291,34 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $ExceptionReport
+#&gt; $`ows:ExceptionReport`
 #&gt; function (obj, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
-#&gt;         cat("[parseOwsExceptionReport] Starting ...")
-#&gt;     .docRoot &lt;- xmlRoot(obj)
-#&gt;     .version &lt;- xmlGetAttr(node = .docRoot, name = "version")
-#&gt;     .lang &lt;- xmlGetAttr(node = .docRoot, name = "lang", default = NA_character_)
-#&gt;     .children &lt;- xmlChildren(.docRoot)
-#&gt;     .exceptionsXML &lt;- list()
-#&gt;     for (x in .children) {
-#&gt;         if (xmlName(x) == owsExceptionName) 
-#&gt;             .exceptionsXML = c(.exceptionsXML, x)
-#&gt;     }
+#&gt;         cat("[parseOwsExceptionReport] Starting ...\n")
+#&gt;     .docRoot &lt;- xml2::xml_root(x = obj)
+#&gt;     .version &lt;- xml2::xml_attr(x = .docRoot, attr = "version")
+#&gt;     .lang &lt;- xml2::xml_attr(x = .docRoot, attr = "lang", default = NA_character_)
+#&gt;     .exceptionsXML &lt;- xml2::xml_find_all(x = .docRoot, xpath = paste0("//", 
+#&gt;         owsExceptionName), ns = SosAllNamespaces())
 #&gt;     .exceptions = sapply(.exceptionsXML, parseOwsException)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseOwsExceptionReport]", length(.exceptions), 
@@ -1313,8 +1338,8 @@
 #&gt;         stop(paste0("[parseGetDataAvailabilityResponse] SOS version 2.0 required! Received '", 
 #&gt;             sos@version, "'"))
 #&gt;     }
-#&gt;     .gdaMembers &lt;- .filterXmlChildren(obj, sosGDAMemberName, 
-#&gt;         includeNamed = TRUE)
+#&gt;     .gdaMembers &lt;- xml2::xml_find_all(x = obj, xpath = sosGDAMemberName, 
+#&gt;         ns = SosAllNamespaces())
 #&gt;     if (verbose) 
 #&gt;         cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), 
 #&gt;             "element(s).\n")
@@ -1329,19 +1354,24 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Measurement
+#&gt; $`om:Measurement`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
 #&gt;         cat("[parseMeasurement]\n")
-#&gt;     .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
-#&gt;         format = sosTimeFormat(sos), verbose = verbose)[[1]]
-#&gt;     .procedure &lt;- xmlGetAttr(node = obj[[omProcedureName]], name = "href")
-#&gt;     .observedProperty &lt;- SwePhenomenonProperty(href = xmlGetAttr(node = obj[[omObservedPropertyName]], 
-#&gt;         name = "href"))
-#&gt;     .featureOfInterest &lt;- parseFOI(obj[[omFeatureOfInterestName]], 
-#&gt;         sos = sos, verbose = verbose)
-#&gt;     .result &lt;- parseMeasure(obj[[omResultName]])
+#&gt;     .samplingTimeXml &lt;- xml2::xml_child(x = obj, search = omSamplingTimeName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .samplingTime &lt;- parseTime(obj = .samplingTimeXml, format = sosTimeFormat(sos), 
+#&gt;         verbose = verbose)
+#&gt;     .procedure &lt;- xml2::xml_attr(x = xml2::xml_child(x = obj, 
+#&gt;         search = omProcedureName, ns = SosAllNamespaces()), attr = "href")
+#&gt;     .observedProperty &lt;- SwePhenomenonProperty(href = xml2::xml_attr(x = xml2::xml_child(x = obj, 
+#&gt;         search = omObservedPropertyName, ns = SosAllNamespaces()), 
+#&gt;         attr = "href"))
+#&gt;     .featureOfInterest &lt;- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, 
+#&gt;         ns = SosAllNamespaces()), sos = sos, verbose = verbose)
+#&gt;     .result &lt;- parseMeasure(xml2::xml_child(x = obj, search = omResultName, 
+#&gt;         ns = SosAllNamespaces()))
 #&gt;     .measurement &lt;- OmMeasurement(samplingTime = .samplingTime, 
 #&gt;         procedure = .procedure, observedProperty = .observedProperty, 
 #&gt;         featureOfInterest = .featureOfInterest, result = .result)
@@ -1349,30 +1379,28 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $member
+#&gt; $`om:member`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     if (xmlSize(obj) &gt;= 1) {
-#&gt;         .noneTexts &lt;- .filterXmlChildren(obj, xmlTextNodeName, 
-#&gt;             includeNamed = FALSE)
-#&gt;         .child &lt;- .noneTexts[[1]]
-#&gt;         if (verbose) {
+#&gt;     if (xml2::xml_length(x = obj) &gt;= 1) {
+#&gt;         .child &lt;- xml2::xml_child(obj)
+#&gt;         if (verbose) 
 #&gt;             cat("[parseObservationProperty] Parsing child of member:", 
-#&gt;                 xmlName(.child), "\n")
-#&gt;         }
+#&gt;                 xml2::xml_name(x = .child, ns = SosAllNamespaces()), 
+#&gt;                 "\n")
 #&gt;         .mResult &lt;- parseOM(.child, sos, verbose)
 #&gt;     }
 #&gt;     else {
 #&gt;         if (verbose) 
 #&gt;             cat("[parseObservationProperty] Member has no direct child!\n")
-#&gt;         .href &lt;- xmlGetAttr(node = obj, name = "href", default = NA_character_)
+#&gt;         .href &lt;- xml2::xml_attr(x = obj, attr = "href", default = NA_character_)
 #&gt;         if (!is.na(.href)) {
 #&gt;             warning(paste("[parseObservationProperty] Only reference to Observation was returned:", 
 #&gt;                 .href))
 #&gt;             .mResult &lt;- OmObservationProperty(href = .href)
 #&gt;         }
 #&gt;         else {
-#&gt;             warning("[parseObservationProperty] No Observation found in response!")
+#&gt;             warning("[parseObservationProperty] No observation found!")
 #&gt;             .mResult &lt;- OmObservationProperty()
 #&gt;         }
 #&gt;     }
@@ -1380,26 +1408,32 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Observation
+#&gt; $`om:Observation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .id &lt;- xmlGetAttr(node = obj, name = "id", default = NA_character_)
+#&gt;     .id &lt;- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseObservation]", .id, "\n")
-#&gt;     .procedure &lt;- xmlGetAttr(node = obj[[omProcedureName]], name = "href", 
+#&gt;     .procedure &lt;- xml2::xml_attr(x = xml2::xml_child(x = obj, 
+#&gt;         search = omProcedureName, ns = SosAllNamespaces()), attr = "href", 
 #&gt;         default = NA_character_)
-#&gt;     .observedProperty &lt;- parsePhenomenonProperty(obj[[omObservedPropertyName]], 
-#&gt;         sos = sos, verbose = verbose)
-#&gt;     if (!is.null(obj[[omSamplingTimeName]])) {
-#&gt;         .samplingTime &lt;- parseTime(obj = obj[[omSamplingTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
+#&gt;     .observedProperty &lt;- parsePhenomenonProperty(xml2::xml_child(x = obj, 
+#&gt;         search = omObservedPropertyName, ns = SosAllNamespaces()), 
+#&gt;         verbose = verbose)
+#&gt;     if (!is.na(xml2::xml_child(x = obj, search = omSamplingTimeName, 
+#&gt;         ns = SosAllNamespaces()))) {
+#&gt;         .samplingTime &lt;- parseTime(obj = xml2::xml_child(x = obj, 
+#&gt;             search = omSamplingTimeName, ns = SosAllNamespaces()), 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
 #&gt;     }
 #&gt;     else {
 #&gt;         warning("om:samplingTime is mandatory in om:Observation, but is missing!")
 #&gt;         .samplingTime &lt;- NULL
 #&gt;     }
-#&gt;     if (!is.null(obj[[omFeatureOfInterestName]])) {
-#&gt;         .featureOfInterest &lt;- parseFOI(obj[[omFeatureOfInterestName]], 
+#&gt;     if (!is.na(xml2::xml_child(x = obj, search = omFeatureOfInterestName, 
+#&gt;         ns = SosAllNamespaces()))) {
+#&gt;         .featureOfInterest &lt;- parseFOI(xml2::xml_child(x = obj, 
+#&gt;             search = omFeatureOfInterestName, ns = SosAllNamespaces()), 
 #&gt;             sos = sos, verbose = verbose)
 #&gt;     }
 #&gt;     else {
@@ -1407,11 +1441,14 @@
 #&gt;         .featureOfInterest &lt;- NULL
 #&gt;     }
 #&gt;     .resultParsingFunction &lt;- sosParsers(sos)[[omResultName]]
-#&gt;     .result &lt;- .resultParsingFunction(obj[[omResultName]], sos, 
+#&gt;     .result &lt;- .resultParsingFunction(xml2::xml_child(x = obj, 
+#&gt;         search = omResultName, ns = SosAllNamespaces()), sos, 
 #&gt;         verbose)
-#&gt;     if (!is.null(obj[[omResultTimeName]])) {
-#&gt;         .resultTime &lt;- parseTime(obj = obj[[omResultTimeName]], 
-#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
+#&gt;     if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, 
+#&gt;         ns = SosAllNamespaces()))) {
+#&gt;         .resultTime &lt;- parseTime(obj = xml2::xml_child(x = obj, 
+#&gt;             search = omResultTimeName, ns = SosAllNamespaces()), 
+#&gt;             format = sosTimeFormat(sos = sos), verbose = verbose)
 #&gt;     }
 #&gt;     else {
 #&gt;         .resultTime &lt;- NULL
@@ -1423,18 +1460,22 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $ObservationCollection
-#&gt; function (obj, sos, verbose) 
+#&gt; $`om:ObservationCollection`
+#&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .members &lt;- .filterXmlChildren(obj, omMemberName, includeNamed = TRUE)
+#&gt;     .members &lt;- xml2::xml_find_all(x = obj, xpath = omMemberName, 
+#&gt;         ns = SosAllNamespaces())
 #&gt;     if (verbose) 
 #&gt;         cat("[parseObservationCollection] with ", length(.members), 
 #&gt;             "element(s).\n")
-#&gt;     .env &lt;- obj[[gmlBoundedByName]][[gmlEnvelopeName]]
-#&gt;     if (!is.null(.env)) {
-#&gt;         .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
-#&gt;             lowerCorner = xmlValue(.env[[gmlLowerCornerName]]), 
-#&gt;             upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+#&gt;     .env &lt;- xml2::xml_child(x = obj, search = paste0(gmlBoundedByName, 
+#&gt;         "/", gmlEnvelopeName))
+#&gt;     if (!is.na(.env)) {
+#&gt;         .boundedBy &lt;- list(srsName = xml2::xml_attr(x = .env, 
+#&gt;             attr = "srsName", ns = SosAllNamespaces()), lowerCorner = xml2::xml_text(x = xml2::xml_child(x = .env, 
+#&gt;             search = gmlLowerCornerName, ns = SosAllNamespaces())), 
+#&gt;             upperCorner = xml2::xml_text(x = xml2::xml_child(x = .env, 
+#&gt;                 search = gmlUpperCornerName, ns = SosAllNamespaces())))
 #&gt;         if (verbose) 
 #&gt;             cat("[parseObservationCollection] Parsed envelope:", 
 #&gt;                 toString(.boundedBy), "\n")
@@ -1446,8 +1487,8 @@
 #&gt;             .origUC &lt;- strsplit(x = .boundedBy[["upperCorner"]], 
 #&gt;                 split = " ")
 #&gt;             .uC &lt;- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-#&gt;             .boundedBy &lt;- list(srsName = xmlGetAttr(node = .env, "srsName"), 
-#&gt;                 lowerCorner = .lC, upperCorner = .uC)
+#&gt;             .boundedBy &lt;- list(srsName = xml2::xml_attr(x = .env, 
+#&gt;                 attr = "srsName"), lowerCorner = .lC, upperCorner = .uC)
 #&gt;         }
 #&gt;     }
 #&gt;     else {
@@ -1455,8 +1496,9 @@
 #&gt;             cat("[parseObservationCollection] Empty envelope!\n")
 #&gt;         .boundedBy &lt;- list()
 #&gt;     }
-#&gt;     .resultList &lt;- lapply(.members, parseOM, sos, verbose)
-#&gt;     names(.resultList) &lt;- lapply(.resultList, class)
+#&gt;     .resultList &lt;- lapply(X = .members, FUN = parseOM, sos = sos, 
+#&gt;         verbose = verbose)
+#&gt;     names(.resultList) &lt;- lapply(X = .resultList, FUN = class)
 #&gt;     if (is.list(.resultList)) {
 #&gt;         .obsColl &lt;- OmObservationCollection(members = .resultList, 
 #&gt;             boundedBy = .boundedBy)
@@ -1472,25 +1514,22 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $result
+#&gt; $`om:result`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) {
 #&gt;         cat("[parseResult] Starting ...\n")
 #&gt;     }
 #&gt;     .result &lt;- NULL
-#&gt;     .children &lt;- .filterXmlChildren(node = obj, "WeWantAllXmlNodes", 
-#&gt;         includeNamed = FALSE, verbose = verbose)
-#&gt;     .children &lt;- obj
-#&gt;     if (verbose) {
+#&gt;     .children &lt;- xml2::xml_children(x = obj)
+#&gt;     if (verbose) 
 #&gt;         cat("[parseResult]", length(.children), " non-text nodes, names:", 
 #&gt;             names(.children), "\n")
-#&gt;     }
 #&gt;     if (length(.children) == 0) {
-#&gt;         .children &lt;- xmlChildren(obj)
+#&gt;         .children &lt;- xml2::xml_children(x = obj)
 #&gt;         stop("Continue implementation here: OM-methods-parsing.R")
 #&gt;         cat("[parseResult] No non-text nodes in result, returning NULL.\n")
-#&gt;         .typeAttributValue &lt;- xmlGetAttr(node = obj, name = om20ResultTypeAttributeName, 
+#&gt;         .typeAttributValue &lt;- xml2::xml_attr(x = obj, attr = om20ResultTypeAttributeName, 
 #&gt;             default = NA_character_)
 #&gt;         .typeWithQualifiedname &lt;- strsplit(.typeAttributValue, 
 #&gt;             ":")
@@ -1502,29 +1541,29 @@
 #&gt;         }
 #&gt;         if (!is.na(.type)) {
 #&gt;             if (.type == om20ResultMeasureTypeName) {
-#&gt;                 return(xmlValue(obj))
+#&gt;                 return(xml2::xml_text(x = obj))
 #&gt;             }
 #&gt;         }
 #&gt;         return(NULL)
 #&gt;     }
-#&gt;     if (xmlName(.children[[1]]) == sweDataArrayName) {
+#&gt;     .name &lt;- xml2::xml_name(x = .children[[1]], ns = SosAllNamespaces())
+#&gt;     if (.name == sweDataArrayName) {
 #&gt;         if (verbose) 
 #&gt;             cat("[parseResult] Parsing result with swe:DataArray.\n")
 #&gt;         .dataArrayParsingFunction &lt;- sosParsers(sos)[[sweDataArrayName]]
-#&gt;         .dataArray &lt;- .children[[1]]
-#&gt;         .result &lt;- .dataArrayParsingFunction(.dataArray, sos, 
-#&gt;             verbose)
+#&gt;         .result &lt;- .dataArrayParsingFunction(.children[[1]], 
+#&gt;             sos, verbose)
 #&gt;     }
-#&gt;     else if (xmlName(.children[[1]]) == xmlTextNodeName) {
-#&gt;         .result &lt;- as.numeric(xmlValue(.children))
+#&gt;     else if (.name == xmlTextNodeName) {
+#&gt;         .result &lt;- as.numeric(xml2::xml_text(x = .children))
 #&gt;         if (is.na(.result)) {
-#&gt;             .result &lt;- xmlValue(.children, trim = TRUE)
+#&gt;             .result &lt;- xml2::xml_text(x = .children, trim = TRUE)
 #&gt;         }
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseResult] Parsing of given result is NOT supported:", 
-#&gt;             xmlName(.children[[1]]), "-- only", sweDataArrayName, 
-#&gt;             " or text nodes containing strings or numbers can be parsed."))
+#&gt;             xml2::xml_name(x = .children[[1]], ns = SosAllNamespaces()), 
+#&gt;             "-- only", sweDataArrayName, " or text nodes containing strings or numbers can be parsed."))
 #&gt;     }
 #&gt;     if (is.null(.result)) {
 #&gt;         stop("[parseResult] result is null! Given result:\n")
@@ -1536,41 +1575,48 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $DataArray
+#&gt; $`swe:DataArray`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .elementCount &lt;- xmlValue(obj[["elementCount"]][["Count"]][["value"]])
+#&gt;     .elementCount &lt;- xml2::xml_text(xml2::xml_find_first(x = obj, 
+#&gt;         xpath = "./swe:elementCount/swe:Count/swe:value", ns = SosAllNamespaces()))
 #&gt;     if (verbose) 
 #&gt;         cat("[parseDataArray] Parsing DataArray with", .elementCount, 
 #&gt;             "elements.\n")
-#&gt;     .eTParser &lt;- sosParsers(sos)[[sweElementTypeName]]
-#&gt;     .fields &lt;- .eTParser(obj = obj[[sweElementTypeName]], verbose = verbose)
+#&gt;     .elementTypeParser &lt;- sosParsers(sos)[[sweElementTypeName]]
+#&gt;     .fields &lt;- .elementTypeParser(obj = xml2::xml_child(x = obj, 
+#&gt;         search = sweElementTypeName, ns = SosAllNamespaces()), 
+#&gt;         verbose = verbose)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseDataArray]  Parsed field descriptions:", toString(.fields), 
 #&gt;             "\n")
 #&gt;     .encParser &lt;- sosParsers(sos)[[sweEncodingName]]
-#&gt;     .encoding &lt;- .encParser(obj = obj[[sweEncodingName]], verbose = verbose)
+#&gt;     .encoding &lt;- .encParser(obj = xml2::xml_child(x = obj, search = sweEncodingName, 
+#&gt;         ns = SosAllNamespaces()), verbose = verbose)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseDataArray]  Parsed encoding description:", 
 #&gt;             toString(.encoding), "\n")
 #&gt;     .valParser &lt;- sosParsers(sos)[[sweValuesName]]
-#&gt;     .values &lt;- .valParser(values = obj[[sweValuesName]], fields = .fields, 
-#&gt;         encoding = .encoding, sos = sos, verbose = verbose)
+#&gt;     .values &lt;- .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, 
+#&gt;         ns = SosAllNamespaces()), fields = .fields, encoding = .encoding, 
+#&gt;         sos = sos, verbose = verbose)
 #&gt;     return(.values)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $elementType
+#&gt; $`swe:elementType`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .simpleDataRecord &lt;- obj[[sweSimpleDataRecordName]]
-#&gt;     .dataRecord &lt;- obj[[sweDataRecordName]]
-#&gt;     if (!is.null(.simpleDataRecord) || !is.null(.dataRecord)) {
-#&gt;         if (!is.null(.simpleDataRecord)) 
+#&gt;     .simpleDataRecord &lt;- xml2::xml_child(x = obj, search = sweSimpleDataRecordName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .dataRecord &lt;- xml2::xml_child(x = obj, search = sweDataRecordName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!is.na(.simpleDataRecord) || !is.na(.dataRecord)) {
+#&gt;         if (!is.na(.simpleDataRecord)) 
 #&gt;             .dr &lt;- .simpleDataRecord
 #&gt;         else .dr &lt;- .dataRecord
-#&gt;         .fields &lt;- .filterXmlChildren(node = .dr, xmlTagName = sweFieldName, 
-#&gt;             includeNamed = TRUE)
+#&gt;         .fields &lt;- xml2::xml_find_all(x = .dr, xpath = sweFieldName, 
+#&gt;             ns = SosAllNamespaces())
 #&gt;         if (verbose) 
 #&gt;             cat("[parseElementType] Got data record with", length(.fields), 
 #&gt;                 "fields. \n")
@@ -1591,16 +1637,18 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $encoding
+#&gt; $`swe:encoding`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .textBlock &lt;- obj[[sweTextBlockName]]
-#&gt;     .textEncoding &lt;- obj[[sweTextEncodingName]]
-#&gt;     if (!(is.null(.textBlock))) {
+#&gt;     .textBlock &lt;- xml2::xml_child(x = obj, search = sweTextBlockName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .textEncoding &lt;- xml2::xml_child(x = obj, search = sweTextEncodingName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     if (!(is.na(.textBlock))) {
 #&gt;         .tb &lt;- parseTextBlock(.textBlock)
 #&gt;         return(.tb)
 #&gt;     }
-#&gt;     else if (!(is.null(.textEncoding))) {
+#&gt;     else if (!(is.na(.textEncoding))) {
 #&gt;         .tb &lt;- parseTextEncoding(.textEncoding)
 #&gt;         return(.tb)
 #&gt;     }
@@ -1611,7 +1659,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $values
+#&gt; $`swe:values`
 #&gt; function (values, fields, encoding, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
@@ -1623,7 +1671,7 @@
 #&gt;         stop("Handling for given encoding not implemented!")
 #&gt;     }
 #&gt;     .converters &lt;- sosDataFieldConverters(sos)
-#&gt;     .blockLines &lt;- strsplit(x = xmlValue(values), split = encoding@blockSeparator)
+#&gt;     .blockLines &lt;- strsplit(x = xml2::xml_text(x = values), split = encoding@blockSeparator)
 #&gt;     .tokenLines &lt;- sapply(.blockLines, strsplit, split = encoding@tokenSeparator)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseValues] Parsing values from lines: ", toString(.tokenLines), 
@@ -1658,7 +1706,7 @@
 #&gt;                     .currentField[[.sosParseFieldUOM]], " with the definition ", 
 #&gt;                     .currentField[[.sosParseFieldDefinition]], 
 #&gt;                     "! Trying a default, but you can add one when creating a SOS using", 
-#&gt;                     "SosDataFieldConvertingFunctions()."))
+#&gt;                     "SosDataFieldConvertingFunctions().\n"))
 #&gt;                   .method &lt;- .converters[["fallBack"]]
 #&gt;                 }
 #&gt;             }
@@ -1715,13 +1763,14 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Position
+#&gt; $`swe:Position`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .rF &lt;- xmlGetAttr(node = obj, name = "referenceFrame")
+#&gt;     .rF &lt;- xml2::xml_attr(x = obj, attr = "referenceFrame", ns = SosAllNamespaces())
 #&gt;     if (verbose) 
 #&gt;         cat("[parseSwePosition] with referenceFrame", .rF, "\n")
-#&gt;     .location &lt;- obj[[sweLocationName]]
+#&gt;     .location &lt;- xml2::xml_child(x = obj, search = sweLocationName, 
+#&gt;         ns = SosAllNamespaces())
 #&gt;     .parser &lt;- sosParsers(sos)[[sweLocationName]]
 #&gt;     .pos &lt;- .parser(.location, sos = sos, verbose = verbose)
 #&gt;     .oldAttrs &lt;- attributes(.pos)
@@ -1730,66 +1779,65 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $location
+#&gt; $`swe:location`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .vector &lt;- obj[[sweVectorName]]
-#&gt;     .id &lt;- xmlGetAttr(node = obj, name = "id")
+#&gt;     .vector &lt;- xml2::xml_child(x = obj, search = sweVectorName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .id &lt;- xml2::xml_attr(x = obj, attr = "id")
 #&gt;     if (verbose) 
-#&gt;         cat("[parseLocation] with id", .id, "\n")
+#&gt;         cat("[parseSweLocation] with id", .id, "\n")
 #&gt;     .parser &lt;- sosParsers(sos)[[sweVectorName]]
-#&gt;     .pos &lt;- .parser(.vector, sos = sos, verbose = verbose)
-#&gt;     return(.pos)
+#&gt;     location &lt;- .parser(.vector, sos = sos, verbose = verbose)
+#&gt;     return(location)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $Vector
+#&gt; $`swe:Vector`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .children &lt;- .filterXmlChildren(node = obj, xmlTagName = sweCoordinateName)
-#&gt;     .coords &lt;- list()
-#&gt;     .names &lt;- list()
-#&gt;     for (i in seq(1, length(.children))) {
-#&gt;         .c &lt;- .children[[i]]
-#&gt;         .coord &lt;- parseCoordinate(.c, sos = sos, verbose = verbose)
-#&gt;         .coords &lt;- c(.coords, list(.coord))
-#&gt;         .names &lt;- c(.names, list(.coord[["axisID"]]))
-#&gt;         if (verbose) 
-#&gt;             cat("[parseVector] parsed coordinate: ", toString(.coord), 
-#&gt;                 "\n")
-#&gt;     }
-#&gt;     names(.coords) &lt;- .names
-#&gt;     return(.coords)
+#&gt;     .children &lt;- xml2::xml_find_all(x = obj, xpath = sweCoordinateName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .parser &lt;- sosParsers(sos)[[sweCoordinateName]]
+#&gt;     .vector &lt;- lapply(X = .children, FUN = .parser, sos = sos, 
+#&gt;         verbose = verbose)
+#&gt;     names(.vector) &lt;- sapply(.vector, function(current) {
+#&gt;         return(current$axisID)
+#&gt;     })
+#&gt;     if (verbose) 
+#&gt;         cat("[parseSweVector] parsed vector with coordinates: ", 
+#&gt;             toString(names(.vector)), "\n")
+#&gt;     return(.vector)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $coordinate
+#&gt; $`swe:coordinate`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     .name &lt;- xmlGetAttr(node = obj, name = "name", default = NA_character_)
+#&gt;     .name &lt;- xml2::xml_attr(x = obj, attr = "name")
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] with name", .name, "\n")
-#&gt;     .quantity &lt;- obj[[sweQuantityName]]
-#&gt;     .axisID &lt;- xmlGetAttr(node = .quantity, name = "axisID", default = NA_character_)
+#&gt;         cat("[parseSweCoordinate] with name", .name, "\n")
+#&gt;     .quantity &lt;- xml2::xml_child(x = obj, search = sweQuantityName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .axisID &lt;- xml2::xml_attr(x = .quantity, attr = "axisID")
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] axisID: ", .axisID, "\n")
-#&gt;     .uomCode &lt;- NA_character_
-#&gt;     if (!is.null(.quantity[[sweUomName]])) 
-#&gt;         .uomCode &lt;- xmlGetAttr(node = .quantity[[sweUomName]], 
-#&gt;             name = "code", default = NA_character_)
+#&gt;         cat("[parseSweCoordinate] axisID: ", .axisID, "\n")
+#&gt;     .uomNode &lt;- xml2::xml_child(x = .quantity, search = sweUomName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .uomCode &lt;- xml2::xml_attr(x = .uomNode, attr = "code", ns = SosAllNamespaces())
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] uomCode: ", .uomCode, "\n")
-#&gt;     .value &lt;- NA_character_
-#&gt;     if (!is.null(.quantity[[sweValueName]])) 
-#&gt;         .value &lt;- as.double(xmlValue(.quantity[[sweValueName]]))
+#&gt;         cat("[parseSweCoordinate] uomCode: ", .uomCode, "\n")
+#&gt;     .valueNode &lt;- xml2::xml_child(x = .quantity, search = sweValueName, 
+#&gt;         ns = SosAllNamespaces())
+#&gt;     .value &lt;- as.double(xml2::xml_text(x = .valueNode))
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCoordinate] value: ", .value, "\n")
+#&gt;         cat("[parseSweCoordinate] value: ", .value, "\n")
 #&gt;     return(list(name = .name, axisID = .axisID, uomCode = .uomCode, 
 #&gt;         value = .value))
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $GeometryObservation
+#&gt; $`om:GeometryObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:GeometryObservation is not implemented!")
@@ -1797,7 +1845,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $CategoryObservation
+#&gt; $`om:CategoryObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:CategoryObservation is not implemented!")
@@ -1805,7 +1853,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $CountObservation
+#&gt; $`om:CountObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:CountObservation is not implemented!")
@@ -1813,7 +1861,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $TruthObservation
+#&gt; $`om:TruthObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:TruthObservation is not implemented!")
@@ -1821,7 +1869,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $TemporalObservation
+#&gt; $`om:TemporalObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:TemporalObservatio is not implemented!")
@@ -1829,7 +1877,7 @@
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
 #&gt; 
-#&gt; $ComplexObservation
+#&gt; $`om:ComplexObservation`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     warning("Parsing of om:ComplexObservation is not implemented!")
@@ -1885,22 +1933,19 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
 #&gt; }
@@ -1910,7 +1955,7 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
-#&gt;         cat("[parseKML] Processing KML...\n")
+#&gt;         cat("[parseKML] Processing KML... returning raw object!\n")
 #&gt;     return(obj)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -1919,7 +1964,7 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
-#&gt;         cat("[parseKML] Processing KML...\n")
+#&gt;         cat("[parseKML] Processing KML... returning raw object!\n")
 #&gt;     return(obj)
 #&gt; }
 #&gt; &lt;environment: namespace:sos4R&gt;
@@ -1928,22 +1973,19 @@
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
 #&gt;     .om &lt;- NULL
-#&gt;     if (inherits(obj, xmlInternalDocumentName)) 
-#&gt;         .root &lt;- xmlRoot(obj)
-#&gt;     else .root &lt;- obj
-#&gt;     .rootName &lt;- xmlName(.root)
-#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.rootName]]
+#&gt;     .name &lt;- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+#&gt;     .parsingFunction &lt;- sosParsers(sos)[[.name]]
 #&gt;     if (!is.null(.parsingFunction)) {
 #&gt;         if (verbose) 
-#&gt;             cat("[parseOM] rootName is", .rootName, "\n")
-#&gt;         .om &lt;- .parsingFunction(obj = .root, sos = sos, verbose = verbose)
-#&gt;         if (verbose) 
-#&gt;             cat("[parseOM] Done!", .rootName, ":", toString(.om), 
+#&gt;             cat("[parseOM] Matched name for parser is", .name, 
 #&gt;                 "\n")
+#&gt;         .om &lt;- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+#&gt;         if (verbose) 
+#&gt;             cat("[parseOM] Done parsing\n")
 #&gt;     }
 #&gt;     else {
 #&gt;         warning(paste("[parseOM] No parsing function for given element", 
-#&gt;             .rootName))
+#&gt;             .name))
 #&gt;     }
 #&gt;     return(.om)
 #&gt; }
@@ -2025,14 +2067,13 @@ describeSensor(sos, sosProcedures(sos)[[1]])
 #&gt; 
 #&gt; $sosDefaultReferenceFrameSensorDescription
 #&gt; [1] "urn:ogc:def:crs:EPSG:4326"
-#&gt; 
-#&gt; $sosDefaultGetBindingParamLatest
-#&gt; [1] NA
 #&gt; </div><div class='input'>
 # replace the parsing functions with the default ones
 </div><span class='co'># NOT RUN {</span>
 <span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'>SosResetParsingFunctions</span>(<span class='no'>sos</span>)
 <span class='co'># }</span><div class='input'>
+<span class='co'># parsing options used by xml2</span>
+<span class='fu'>SosDefaultParsingOptions</span>()</div><div class='output co'>#&gt; [1] "RECOVER"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -2058,7 +2099,7 @@ describeSensor(sos, sosProcedures(sos)[[1]])
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>
