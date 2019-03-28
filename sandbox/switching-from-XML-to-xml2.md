@@ -180,9 +180,7 @@ Ideally the lessons learned on what can be "regex-ed" and what needs manual inte
     - manually switched to `xml2::xml_new_root("<node name>")` and `xml2::xml_add_child("<node name>")`
     - `attrs` parameter replaced with `xml2::xml_set_attrs()`
     - https://github.com/r-lib/xml2/issues/239 is a problem
-
-
-    remaining: encoding functions in SOS-methods.R
+    - `XML::addChildren` with `"append = TRUE"` replace with a for loop and `xml2::xml_add_child(..)`
 
 _Limitations of regexes_ for the actual switch are due to multi-line statements and the result of functions not being the same.
 Especially the subsetting with `[[` used extensively does not work the same way anymore.

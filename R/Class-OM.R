@@ -47,7 +47,7 @@ setClass("OmObservationCollection",
 #
 setClass("OmObservation",
          representation(
-           samplingTime = "GmlTimeObjectOrNULL",	
+           samplingTime = "GmlTimeObjectOrNULL",
            procedure = "ANY",
            observedProperty = "SwePhenomenonPropertyOrNULL",
            featureOfInterest = "GmlFeatureOrGmlFeaturePropertyOrNULL",
@@ -74,7 +74,7 @@ setClassUnion(name = "OmObservationOrNULL",
 #
 #
 setClass("OmObservationProperty",
-         representation(href = "character",	
+         representation(href = "character",
                         obs = "OmObservationOrNULL"),
          #prototype = list(),
          validity = function(object) {
@@ -93,7 +93,6 @@ setClass("OmMeasurement",
          contains = "OmObservation",
          validity = function(object) {
            #print("Entering validation: OmMeasurement")
-           print(object)
            # TODO implement validity function
            return(TRUE)
          }

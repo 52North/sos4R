@@ -394,7 +394,8 @@
               "\nresultModel(s): ",
               x@resultModel,
               "\ntemporal value reference: ",
-              x@valueReferenceTemporalFilter)
+              x@valueReferenceTemporalFilter,
+              "\n")
   return(.s)
 }
 

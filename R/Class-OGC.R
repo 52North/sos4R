@@ -134,7 +134,7 @@ setClass("OgcBinarySpatialOp",
          prototype = list(propertyName = as.character(NA), geometry = NULL,
                           envelope = NULL),
          validity = function(object) {
-           print("Entering validation: OgcBinarySpatialOp")
+           #print("Entering validation: OgcBinarySpatialOp")
            # TODO implement validity function
            # only one of geometry of envelope can be set
            return(TRUE)
@@ -143,21 +143,21 @@ setClass("OgcBinarySpatialOp",
 setClass("OgcContains",
          contains = c("OgcBinarySpatialOp"),
          validity = function(object) {
-           print("Entering validation: OgcContains")
+           #print("Entering validation: OgcContains")
            return(TRUE)
          }
 )
 setClass("OgcIntersects",
          contains = c("OgcBinarySpatialOp"),
          validity = function(object) {
-           print("Entering validation: OgcIntersects")
+           #print("Entering validation: OgcIntersects")
            return(TRUE)
          }
 )
 setClass("OgcOverlaps",
          contains = c("OgcBinarySpatialOp"),
          validity = function(object) {
-           print("Entering validation: OgcOverlaps")
+           #print("Entering validation: OgcOverlaps")
            return(TRUE)
          }
 )
