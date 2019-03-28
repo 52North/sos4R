@@ -1,12 +1,20 @@
 context("parsing: SOS Capabilities 2.0.0")
 
-testsos <- SOS_Test(name = "testcaps", version = sos200_version) #, verboseOutput = TRUE)
-sos200Caps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_200_Example.xml",
-                                                  options = SosDefaultParsingOptions()),
-                                   sos = testsos)
+testsos <- SOS_Test(name = "testcaps", version = sos200_version
+                    #, verboseOutput = TRUE
+                    )
+xmlDoc <- xml2::read_xml(x = "../responses/Capabilities_200_Example.xml", options = SosDefaultParsingOptions())
+sos200Caps <- parseSosCapabilities(obj = xmlDoc, sos = testsos)
 testsos@capabilities <- sos200Caps
 
-test_that("identification", {
+test_that("identification snippet", {
+  ident <- parseOwsServiceIdentification(obj = xml2::xml_child(xmlDoc, owsServiceIdentificationName),
+                                         namespaces = SosAllNamespaces(sos200_version))
+  expect_match(sosTitle(ident), "Wupperverband SOS")
+  expect_match(sosAbstract(ident), "Wupperverband(.*)Catchment Area")
+})
+
+test_that("identification from capabilities", {
   expect_match(sosTitle(testsos), "Wupperverband SOS")
   expect_match(sosAbstract(testsos), "Wupperverband(.*)Catchment Area")
 })
@@ -28,9 +36,14 @@ test_that("profiles", {
   expect_length(sosServiceIdentification(testsos)@profile, 34)
 })
 
+test_that("content: offerings", {
+  expect_length(sosOfferings(testsos), 8)
+  expect_equal(sosName(sosOfferings(testsos)[[2]]), "Zeitreihen für Prozedur Einzelwert")
+})
+
 test_that("content: offering IDs", {
   expect_length(sosOfferingIds(testsos), 8)
-  expect_length(sosOfferingIds(testsos)[[2]], "Zeitreihen_Einzelwert")
+  expect_equal(sosOfferingIds(testsos)[[2]], "Zeitreihen_Einzelwert")
 })
 
 context("parsing: SOS Capabilities 2.0.0 swes:offering")
@@ -99,9 +112,6 @@ test_that("offering is parsed correctly", {
   expect_equal(sosResponseFormats(obs)[[4]], "http://www.opengis.net/waterml-dr/2.0")
   expect_length(obs@featureOfInterestType, 2)
   expect_equal(obs@observationType[[1]], "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement")
-  # TODO:
-  #expect_equal(sosPhenomenonTime(obs), )
-  #expect_equal(sosResultTime(obs), 1)
 })
 
 context("capabilities: NIWA 2.0 SOS")

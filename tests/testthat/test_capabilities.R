@@ -70,7 +70,8 @@ test_that("procedures", {
 
 test_that("result models", {
   expect_true(is.list(sosResultModels(mapserver)$GetObservation))
-  expect_length(sosResultModels(mapserver)$GetObservation, 1)
+  expect_length(sosResultModels(mapserver)$GetObservation, 2)
+  expect_equal(sosResultModels(mapserver)$GetObservation, list("Observation", "Measurement"))
 })
 
 test_that("abstract", {
@@ -216,7 +217,8 @@ test_that("name", {
 test_that("DCP", {
   doc <- parseXmlSnippet(operationXml)
   operation <- parseOwsOperation(obj = doc)
-  expect_equal(operation@DCPs, "GetCapabilities")
+  expect_named(operation@DCPs, c("ows:Get", "ows:Post"))
+  expect_equal(operation@DCPs[[2]], "http://sos/POST")
 })
 
 test_that("parameter names", {

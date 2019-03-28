@@ -30,23 +30,23 @@
 #
 #
 #
-parseOwsOperation <- function(obj) {
+parseOwsOperation <- function(obj, namespaces = SosAllNamespaces()) {
   .name <- xml2::xml_attr(x = obj, attr = "name")
 
-  .dcpsXML <- xml2::xml_find_all(x = obj, xpath = owsDCPName, ns = SosAllNamespaces())
+  .dcpsXML <- xml2::xml_find_all(x = obj, xpath = owsDCPName, ns = namespaces)
   .dcps <- list()
   for (.dcp in .dcpsXML) {
-    .http <- xml2::xml_child(x = .dcp, search = owsHTTPName, ns = SosAllNamespaces())
-    .endpoints <- xml2::xml_find_all(x = .http, xpath = paste0(owsGetName, "|", owsPostName), ns = SosAllNamespaces())
+    .http <- xml2::xml_child(x = .dcp, search = owsHTTPName, ns = namespaces)
+    .endpoints <- xml2::xml_find_all(x = .http, xpath = paste0(owsGetName, "|", owsPostName), ns = namespaces)
 
     for (.ep in .endpoints) {
-      .newEndpoint <- list(xml2::xml_attr(x = .ep, attr = "xlink:href", ns = SosAllNamespaces()))
-      names(.newEndpoint) <- xml2::xml_name(x = .ep, ns = SosAllNamespaces())
+      .newEndpoint <- list(xml2::xml_attr(x = .ep, attr = "xlink:href", ns = namespaces))
+      names(.newEndpoint) <- xml2::xml_name(x = .ep, ns = namespaces)
       .dcps <- c(.dcps, .newEndpoint)
     }
   }
 
-  .parametersXML <- xml2::xml_find_all(x = obj, xpath = owsParameterName, ns = SosAllNamespaces())
+  .parametersXML <- xml2::xml_find_all(x = obj, xpath = owsParameterName, ns = namespaces)
   .parameters = list()
   .names = list()
 
@@ -55,21 +55,21 @@ parseOwsOperation <- function(obj) {
       .allowedValuesAndRanges <- list()
 
       # check for ows:AnyValue
-      if (!is.na(xml2::xml_child(x = .p, search = owsAnyValueName, ns = SosAllNamespaces()))) {
+      if (!is.na(xml2::xml_child(x = .p, search = owsAnyValueName, ns = namespaces))) {
         .allowedValuesAndRanges = list(owsAnyValueName)
       }
       else {
         # try list of allowed values
         .allowedValuesXml <- xml2::xml_find_all(x = .p,
                                                 xpath = paste0(owsAllowedValuesName, "/", owsValueName),
-                                                ns = SosAllNamespaces())
+                                                ns = namespaces)
         if (length(.allowedValuesXml) > 0)
           .allowedValuesAndRanges <- c(.allowedValuesAndRanges, xml2::xml_text(.allowedValuesXml))
 
         # try list of ranges
         .rangesXml <- xml2::xml_find_all(x = .p,
                                          xpath = paste0(owsAllowedValuesName, "/", owsRangeName),
-                                         ns = SosAllNamespaces())
+                                         ns = namespaces)
         if (length(.rangesXml) > 0)
           .allowedValuesAndRanges <- c(.allowedValuesAndRanges, sapply(.rangesXml, parseOwsRange))
       }
@@ -144,32 +144,32 @@ parseOwsException <- function(obj) {
 #
 #
 #
-parseOwsServiceIdentification <- function(obj) {
+parseOwsServiceIdentification <- function(obj, namespaces = SosAllNamespaces()) {
   .serviceType <- xml2::xml_text(xml2::xml_child(x = obj,
                                                  search = owsServiceTypeName,
-                                                 ns = SosAllNamespaces()))
+                                                 ns = namespaces))
   .serviceTypeVersion <- xml2::xml_text(xml2::xml_child(x = obj,
                                                         search = owsServiceTypeVersionName,
-                                                        ns = SosAllNamespaces()))
+                                                        ns = namespaces))
   .title <- xml2::xml_text(xml2::xml_child(x = obj,
                                            search = owsTitleName,
-                                           ns = SosAllNamespaces()))
+                                           ns = namespaces))
 
   # optional:
-  .profile <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsProfileName, ns = SosAllNamespaces()))
+  .profile <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsProfileName, ns = namespaces))
 
-  .abstract <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsAbstractName, ns = SosAllNamespaces()))
+  .abstract <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsAbstractName, ns = namespaces))
 
   .keywords <- c(NA)
-  .keywordsList <- xml2::xml_child(x = obj, search = owsKeywordsName, ns = SosAllNamespaces())
+  .keywordsList <- xml2::xml_child(x = obj, search = owsKeywordsName, ns = namespaces)
   if (!is.na(.keywordsList))
     .keywords <- xml2::xml_text(xml2::xml_find_all(x = .keywordsList,
                                                    xpath = owsKeywordName,
-                                                   ns = SosAllNamespaces()))
+                                                   ns = namespaces))
 
-  .fees <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsFeesName, ns = SosAllNamespaces()))
+  .fees <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsFeesName, ns = namespaces))
 
-  .accessConstraints <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsAccessConstraintsName, ns = SosAllNamespaces()))
+  .accessConstraints <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = owsAccessConstraintsName, ns = namespaces))
 
   .si <- OwsServiceIdentification(serviceType =  .serviceType,
                                   serviceTypeVersion = .serviceTypeVersion,

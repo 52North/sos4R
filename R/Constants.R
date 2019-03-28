@@ -64,7 +64,15 @@ sosObservationIdName <- paste0(sos100NamespacePrefix, ":ObservationId")
 #
 sos200_version <- "2.0.0"
 sos200NamespacePrefix <- "sos20"
-sos200ContentsName <- paste0(sos200NamespacePrefix, ":contents")
+sos200contentsName <- paste0(sos200NamespacePrefix, ":contents")
+sos200ContentsName <- paste0(sos200NamespacePrefix, ":Contents")
+sos200ObservationOfferingListName <- paste0(sos200NamespacePrefix, ":ObservationOfferingList")
+sos200ObservationOfferingName <- paste0(sos200NamespacePrefix, ":ObservationOffering")
+sos200FeatureOfInterestTypeName <- paste0(sos200NamespacePrefix, ":featureOfInterestType")
+sos200ObservationTypeName <- paste0(sos200NamespacePrefix, ":observationType")
+sos200ResponseFormatName <- paste0(sos200NamespacePrefix, ":responseFormat")
+sos200ResponseModeName <- paste0(sos200NamespacePrefix, ":responseMode")
+sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
 sos200FilterCapabilitiesName = paste0(sos200NamespacePrefix, ":filterCapabilities")
 sos200_emptyGetObservationResponseString <-
   paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
@@ -212,6 +220,7 @@ SosAllNamespaces <- function(version = sos100_version) {
     return(.all[unique(names(.all))])
     } else if (version == sos200_version) {
       .all <- c(sos20 = sos200Namespace,
+                ows = owsNamespace,
                 sams = samsNamespace,
                 sf = sf20Namespace,
                 swes = swesNamespace,

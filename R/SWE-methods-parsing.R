@@ -99,8 +99,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
   # do following for all fields
   .fieldCount <- length(fields)
   for (.currentFieldIdx in seq(1,.fieldCount)) {
-    if (verbose)
-      cat("[parseValues] Processing field index", .currentFieldIdx , "of", .fieldCount,"\n")
+    if (verbose) cat("[parseValues] Processing field index", .currentFieldIdx , "of", .fieldCount,"\n")
 
     # create list for each variable
     .currentValues <- sapply(.tokenLines, "[[", .currentFieldIdx)
