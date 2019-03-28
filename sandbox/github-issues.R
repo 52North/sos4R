@@ -40,3 +40,11 @@ do.call(rbind, lapply(jan1992, function(obj) {
   return(data.frame(time = obj@phenomenonTime@timePosition@time, result = as.numeric(obj@result)))
 })
 )
+
+# https://github.com/52North/sos4R/issues/49
+
+irceline <- SOS(url = "http://geo.irceline.be/sos/service",
+                verboseOutput = TRUE,
+                version = sos200_version)
+irceline
+# works!

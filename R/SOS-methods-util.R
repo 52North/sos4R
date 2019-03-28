@@ -317,8 +317,7 @@ setMethod(f = "sosCapabilitiesUrl",
 #
 .isExceptionReport <- function(obj) {
   if (inherits(obj, "xml_document")) {
-    if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = obj),
-                                                 ns = SosAllNamespaces()))
+    if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = obj)))
       return(TRUE)
     else
       return(FALSE)
@@ -326,7 +325,7 @@ setMethod(f = "sosCapabilitiesUrl",
   else if (is.list(obj)) {
     return(!is.null(obj[["exceptions"]]))
   }
-  stop("Unsupported input for functin .isExceptionReport")
+  stop("Unsupported input for function .isExceptionReport")
 }
 
 .handleExceptionReport <- function(sos, obj) {

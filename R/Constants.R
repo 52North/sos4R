@@ -194,7 +194,8 @@ sf20Namespace <- "http://www.opengis.net/sampling/2.0"
 swesNamespace <- "http://www.opengis.net/swes/2.0"
 om20Namespace <- "http://www.opengis.net/om/2.0"
 
-sos200Namespace = "http://www.opengis.net/sos/2.0"
+sos200Namespace <- "http://www.opengis.net/sos/2.0"
+fesNamespace <- "http://www.opengis.net/fes/2.0"
 
 SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
@@ -218,7 +219,8 @@ SosAllNamespaces <- function(version = sos100_version) {
                 xsi = xsiNamespace,
                 xlink = xlinkNamespace,
                 sml = smlNamespace,
-                gml = gml32Namespace)
+                gml = gml32Namespace,
+                fes = fesNamespace)
       return(.all[unique(names(.all))])
   } else {
     stop("Unsupported version ", version)
