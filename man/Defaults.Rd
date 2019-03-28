@@ -13,6 +13,7 @@
 \alias{sosDefaultSpatialOpPropertyName}
 \alias{sosDefaultTempOpPropertyName}
 \alias{sosDefaultTemporalOperator}
+\alias{sosDefaultTemporalValueReference}
 \alias{sosDefaultTimeFormat}
 \alias{sosDefaultFilenameTimeFormat}
 \alias{sosDefaultColumnNameFeatureIdentifier}
@@ -21,7 +22,6 @@
 \alias{sosDefaultColumnNameSRS}
 \alias{sosDefaultColorPalette}
 \alias{sosDefaultReferenceFrameSensorDescription}
-\alias{sosDefaultGetBindingParamLatest}
 \alias{sosDefaultServiceVersion}
 
 \alias{SosParsingFunctions}
@@ -33,6 +33,7 @@
 
 \alias{SosDefaults}
 \alias{SosDefaults2}
+\alias{SosDefaultParsingOptions}
 
 
 \title{Default Parameter Settings and Handling Functions}
@@ -57,6 +58,8 @@ SosDefaults()
 SosResetParsingFunctions(sos)
 
 SosDefaultDCPs()
+
+SosDefaultParsingOptions()
 }
 
 \arguments{
@@ -86,7 +89,7 @@ The function \code{SosResetParsingFunctions} can be used to replace the included
 	\item{sosDefaultGetCapOwsVersion}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetCapOwsVersion}}} % "1.1.0"
 	\item{sosDefaultGetObsResponseFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetObsResponseFormat}}} % SosSupportedResponseFormats()[1]
 	\item{sosDefaultTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTimeFormat}}} % "%Y-%m-%dT%H:%M:%OS"
-	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} % 
+	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} %
 	\item{sosDefaultTempOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTempOpPropertyName}}} % "om:samplingTime"
 	\item{sosDefaultTemporalOperator}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTemporalOperator}}} % SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 	\item{sosDefaultSpatialOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultSpatialOpPropertyName}}} % "urn:ogc:data:location"
@@ -167,6 +170,9 @@ SosDefaults()
 \dontrun{
 sos <- SosResetParsingFunctions(sos)
 }
+
+# parsing options used by xml2
+SosDefaultParsingOptions()
 
 }
 

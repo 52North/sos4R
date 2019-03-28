@@ -31,39 +31,32 @@
 # function for parsing Capabilities SOS v 2.0.0
 #
 parseSosCapabilities200 <- function(obj, sos) {
-  if(sos@verboseOutput)
-    cat("[parseSosCapabilities] entered... \n")
+  if (sos@verboseOutput) cat("[parseSosCapabilities200] entered... \n")
 
-  .caps.root <- xmlRoot(obj)
+  .caps.root <- xml2::xml_root(x = obj)
 
   # attributes:
-  .caps.version <- xmlGetAttr(node = .caps.root, name = "version",
-                              default = NA_character_)
-  .caps.updateSequence <- xmlGetAttr(node = .caps.root,
-                                     name = "updateSequence", default = NA_character_)
-  if(sos@verboseOutput)
-    cat("[parseSosCapabilities] version, update sequence:", .caps.version,
-        .caps.updateSequence, "\n")
+  .caps.version <- xml2::xml_attr(x = .caps.root, attr = "version", default = NA_character_, ns = SosAllNamespaces())
+  .caps.updateSequence <- xml2::xml_attr(x = .caps.root, attr = "updateSequence", default = NA_character_, ns = SosAllNamespaces())
+  if (sos@verboseOutput) cat("[parseSosCapabilities200] version, update sequence:", .caps.version, .caps.updateSequence, "\n")
 
-  if(!is.null(.caps.root[[owsServiceIdentificationName]])) {
-    .caps.si <- parseOwsServiceIdentification(
-      .caps.root[[owsServiceIdentificationName]])
-  }
+  .owsSI <- xml2::xml_child(x = .caps.root, search = owsServiceIdentificationName, ns = SosAllNamespaces())
+  if (!is.na(.owsSI))
+    .caps.si <- parseOwsServiceIdentification(.owsSI)
   else .caps.si <- NULL
 
-  if(!is.null(.caps.root[[owsServiceProviderName]])) {
-    .caps.sp <- parseOwsServiceProvider(.caps.root[[owsServiceProviderName]])
-  }
+  .owsSP <- xml2::xml_child(x = .caps.root, search = owsServiceProviderName, ns = SosAllNamespaces())
+  if (!is.na(.owsSP))
+    .caps.sp <- parseOwsServiceProvider(.owsSP)
   else .caps.sp <- NULL
 
-  if(!is.null(.caps.root[[owsOperationsMetadataName]])) {
-    if(sos@verboseOutput)
-      cat("[parseSosCapabilities] entering", owsOperationsMetadataName,
-          "... \n")
+  .owsOM <- xml2::xml_child(x = .caps.root, search = owsOperationsMetadataName, ns = SosAllNamespaces())
+  if (!is.na(.owsOM)) {
+    if (sos@verboseOutput) cat("[parseSosCapabilities] entering", owsOperationsMetadataName, "... \n")
 
-    .operationsXML <- .filterXmlChildren(
-      node = .caps.root[[owsOperationsMetadataName]],
-      xmlTagName = owsOperationName)
+    .operationsXML <- xml2::xml_find_all(x = .caps.root,
+                                         xpath = paste0(owsOperationsMetadataName, "/", owsOperationName),
+                                         ns = SosAllNamespaces())
 
     .operations <- lapply(.operationsXML, parseOwsOperation)
     # add names for indexing of list
@@ -75,38 +68,29 @@ parseSosCapabilities200 <- function(obj, sos) {
   }
   else .caps.om <- NULL
 
-  #  <sos:contents>
-  #     <sos:Contents>
-  if(!is.null(.caps.root[[sos200ContentsName]])) {
-    if(sos@verboseOutput)
+  .sosContents <- xml2::xml_child(x = .caps.root, search = sos200ContentsName, ns = SosAllNamespaces())
+  if (!is.na(.sosContents)) {
+    if (sos@verboseOutput)
       cat("[parseSosCapabilities] entering", sos200ContentsName, "... \n")
 
-    .offeringsXML <- .filterXmlChildren(
-      node = .caps.root[[sos200ContentsName]][[sosContentsName]],
-      xmlTagName = swesOfferingName)
-    .offerings <- sapply(.offeringsXML, parseSosObservationOffering_200,
+    .observationsXML <- xml2::xml_find_all(x = .sosContents,
+                                           xpath = paste0(sosObservationOfferingListName,
+                                                          "/", sosObservationOfferingName),
+                                           ns = SosAllNamespaces())
+    .observations = sapply(X = .observationsXML,
+                           FUN = parseSosObservationOffering_200,
                            sos = sos)
     # add names to list
-    names(.offerings) <- lapply(.offerings,
+    names(.observations) <- lapply(.observations,
                                    function(obj) {
                                      return(obj@id)
                                    })
 
-    .caps.contents <- SosContents(observationOfferings = .offerings)
+    .caps.contents <- SosContents(observationOfferings = .observations)
   }
   else .caps.contents <- NULL
 
-  #TODO implement if needed
-  #if(!is.null(.caps.root[[sos200FilterCapabilitiesName]])) {
-  #  if(sos@verboseOutput)
-  #    cat("[parseSosCapabilities] entering", sos200FilterCapabilitiesName,
-  #        "... \n")
-  #
-  #  .caps.fc <- parseFesFilter_Capabilities(
-  #    obj = .caps.root[sos200FilterCapabilitiesName][[sosFilterCapabilitiesName]], sos = sos)
-  #}
-  #else .caps.fc <- NULL
-
+  # TODO implement if needed, see parseSosCapabilities100(..)
   .caps.fc <- NULL
 
   .capabilities <- SosCapabilities(version = .caps.version,
@@ -122,160 +106,113 @@ parseSosCapabilities200 <- function(obj, sos) {
 }
 
 parseSosObservationOffering_200 <- function(obj, sos) {
-  .sosOffering = xmlChildren(obj)[[sosObservationOfferingName]]
-  #if(!is.na(.sosOffering)){
-  #  parseSosObservationOffering(.sosOffering, sos)
-  #}
-
-  if(sos@verboseOutput) {
+  if (sos@verboseOutput) {
     cat("[parseSosObservationOffering_200] entering... \n")
-    print(.sosOffering)
+    print(obj)
+  }
+
+  .sosOffering <- xml2::xml_child(x = obj, search = sosObservationOfferingName, ns = SosAllNamespaces(version = sos200_version))
+  if (is.na(.sosOffering)) {
+    warning("No offering found with name ", sosObservationOfferingName)
+    return(NULL)
   }
 
   # not optional, but have a default just in case...
-  .id <- xmlValue(.sosOffering[[swesIdentifierName]])
-  .name <- xmlValue(.sosOffering[[swesNameName]])
-  if(sos@verboseOutput)
+  .id <- xml2::xml_text(x = xml2::xml_child(x = .sosOffering,
+                                            search = swesIdentifierName,
+                                            ns = SosAllNamespaces(version = sos200_version)))
+  .name <- xml2::xml_text(x = xml2::xml_child(x = .sosOffering,
+                                              search = swesNameName,
+                                              ns = SosAllNamespaces(version = sos200_version)))
+  if (sos@verboseOutput)
     cat("[parseSosObservationOffering_200] id:", .id, "name:", .name, "\n")
 
   # can be references or contained inline, so use lists
-  .observableProperty <- parseSwesObservableProperty(.sosOffering[swesObservablePropertyName],
+  .observableProperty <- parseSwesObservableProperty(xml2::xml_find_all(x = .sosOffering,
+                                                                        xpath = swesObservablePropertyName,
+                                                                        ns = SosAllNamespaces(version = sos200_version)),
                                                      verbose = sos@verboseOutput)
+  .observableProperty <- as.list(.observableProperty)
+  if (sos@verboseOutput) cat("[parseSosObservationOffering_200] observableProperty:", toString(.observableProperty), "\n")
 
-  if(sos@verboseOutput)
-    cat("[parseSosObservationOffering_200] observableProperty:",
-        toString(.observableProperty), "\n")
-  #.featureOfInterestType <- .sosOffering[sosFeatureOfInterestTypeName]
+  .featureOfInterestType <- xml2::xml_text(xml2::xml_find_all(x = .sosOffering,
+                                                              xpath = sosFeatureOfInterestTypeName,
+                                                              ns = SosAllNamespaces(version = sos200_version)))
+  .featureOfInterestType <- as.list(.featureOfInterestType)
+  if (sos@verboseOutput) cat("[parseSosObservationOffering_200] featureOfInterestType:", toString(.featureOfInterestType), "\n")
 
-  .featureOfInterestType <- lapply(.sosOffering[sosFeatureOfInterestTypeName], xmlValue)
+  .observationType <- xml2::xml_text(xml2::xml_find_all(x = .sosOffering,
+                                                        xpath = sosObservationTypeName,
+                                                        ns = SosAllNamespaces(version = sos200_version)))
+  .observationType <- as.list(.observationType)
+  if (sos@verboseOutput) cat("[parseSosObservationOffering_200] observationType:", toString(.observationType), "\n")
 
-  if(sos@verboseOutput)
-    cat("[parseSosObservationOffering_200] featureOfInterestType:",
-        toString(.featureOfInterestType), "\n")
+  .procedure <- xml2::xml_text(xml2::xml_find_all(x = .sosOffering,
+                                                  xpath = swesProcedureName,
+                                                  ns = SosAllNamespaces(version = sos200_version)))
+  if (sos@verboseOutput) cat("[parseSosObservationOffering_200] procedure:", toString(.observationType), "\n")
 
-  .observationType <- lapply(.sosOffering[sosObservationTypeName], xmlValue)
+  .procedureDescriptionFormat <- xml2::xml_text(xml2::xml_find_all(x = .sosOffering,
+                                                                   xpath = swesProcedureDescriptionFormatName,
+                                                                   ns = SosAllNamespaces(version = sos200_version)))
+  .procedureDescriptionFormat <- as.list(.procedureDescriptionFormat)
+  if (sos@verboseOutput) cat("[parseSosObservationOffering_200] procedure description format:", toString(.observationType), "\n")
 
-  if(sos@verboseOutput)
-    cat("[parseSosObservationOffering_200] observationType:",
-        toString(.observationType), "\n")
+  .responseFormat <- xml2::xml_text(xml2::xml_find_all(x = .sosOffering,
+                                                       xpath = sosResponseFormatName,
+                                                       ns = SosAllNamespaces(version = sos200_version)))
+  .responseFormat <- as.list(.responseFormat)
+  if (sos@verboseOutput) cat("[parseSosObservationOffering_200] responseFormat:", toString(.responseFormat), "\n")
 
-  # can be transformed to character vectors
-  # this works, but its really swes:procedure element NOT 1...* sos:procedure elements for SOS v 2.0.0
-  .procedure <- xmlValue(.sosOffering[[sosProcedureName]])
-
-  # handle missing procedures
-  if(.procedure == "") {
-    .procedure <- as.character(NA)
-    warning(paste("Mandatory element 'procedure' missing in offering",
-                  .id))
-  }
-  if(sos@verboseOutput)
-    cat("[parseSosObservationOffering_200] procedure:",
-        toString(.procedure), "\n")
-
-  if(!length(.sosOffering[swesProcedureDescriptionFormatName]) < 1) {
-    .procedureDescriptionFormat <- lapply(.sosOffering[swesProcedureDescriptionFormatName], xmlValue)
-    if(sos@verboseOutput)
-      cat("[parseSosObservationOffering_200] procedureDescriptionFormat:",
-          toString(.procedureDescriptionFormat), "\n")
-  }
-  else {
-    .procedureDescriptionFormat <- NA_character_
-    warning(paste("Mandatory element 'procedureDescriptionFormat' missing in offering",
-                  .id))
-  }
-
-  #
-  # not optional, but potentially missing in some instances...
-  #
-  if(!length(.sosOffering[sosResponseFormatName]) < 1) {
-    .responseFormat <- lapply(.sosOffering[sosResponseFormatName], xmlValue)
-    if(sos@verboseOutput)
-      cat("[parseSosObservationOffering_200] responseFormat:",
-          toString(.responseFormat), "\n")
-  }
-  else {
-    .responseFormat <- NA_character_
-    warning(paste("Mandatory element 'responseFormat' missing in offering",
-                  .id))
-  }
-
-  if(!is.null(.sosOffering[[sosResultTimeName]])) {
-    .resultTime <- parseTimeGeometricPrimitiveFromParent(obj = .sosOffering[[sosResultTimeName]],
+  .resultTimeXml <- xml2::xml_child(x = .sosOffering, search = sosResultTimeName, ns = SosAllNamespaces(version = sos200_version))
+  if (!is.na(.resultTimeXml)) {
+    .resultTime <- parseTimeGeometricPrimitiveFromParent(obj = .resultTimeXml,
                                                          format = sosTimeFormat(sos))
-    if(sos@verboseOutput)
-      cat("[parseSosObservationOffering_200] resultTime: ", toString(.resultTime), "\n")
+    if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(.resultTime), "\n")
   }
   else {
-    warning("Mandatory element 'time' missing in offering", .id)
-    .resultTime <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
+    warning("Mandatory element 'result time' missing in offering", .id)
+    .resultTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
   }
 
-  if(!is.null(.sosOffering[[sosPhenomenonTimeName]])) {
-    .phenomenonTime <- parseTimeGeometricPrimitiveFromParent(obj = .sosOffering[[sosPhenomenonTimeName]],
+  .phenomenonTimeXml <- xml2::xml_child(x = .sosOffering, search = sosPhenomenonTimeName, ns = SosAllNamespaces(version = sos200_version))
+  if (!is.na(.resultTimeXml)) {
+    .phenomenonTime <- parseTimeGeometricPrimitiveFromParent(obj = .phenomenonTimeXml,
                                                              format = sosTimeFormat(sos))
-    if(sos@verboseOutput)
-      cat("[parseSosObservationOffering_200] phenomenonTime: ", toString(.phenomenonTime), "\n")
+    if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(.resultTime), "\n")
   }
   else {
-    warning("Mandatory element 'time' missing in offering", .id)
-    .phenomenonTime <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
+    warning("Mandatory element 'phenomenon time' missing in offering", .id)
+    .phenomenonTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
   }
 
-  #
-  # optional, so check if list is empty!
-  #
-  .resultModel <- sapply(.sosOffering[sosResultModelName], xmlValue)
-  if(length(.resultModel) == 0) .resultModel <- NA_character_
-  .intendedApplication <- sapply(.sosOffering[sosIntendedApplicationName], xmlValue)
-  if(length(.intendedApplication) == 0) .intendedApplication <- NA_character_
-
-  .env <- .sosOffering[[sosObservedAreaName]][[gmlEnvelopeName]]
-  if(!is.null(.env)) {
+  .env <- xml2::xml_find_first(x = .sosOffering,
+                               xpath = paste0(sosObservedAreaName, "/", gmlEnvelopeName))
+  if (!is.na(.env)) {
     .observedArea <- list(
-      srsName = xmlGetAttr(.env, "srsName"),
-      lowerCorner = xmlValue(.env[[gmlLowerCornerName]]),
-      upperCorner = xmlValue(.env[[gmlUpperCornerName]]))
+      srsName = xml2::xml_attr(x = .env, attr = "srsName"),
+      lowerCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlLowerCornerName)),
+      upperCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlUpperCornerName))
+    )
 
-    if(sosSwitchCoordinates(sos)) {
+    if (sosSwitchCoordinates(sos)) {
       warning("Switching coordinates in envelope of ObservationOffering!")
       .origLC <- strsplit(x = .observedArea[["lowerCorner"]], split = " ")
       .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
       .origUC <- strsplit(x = .observedArea[["upperCorner"]], split = " ")
       .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .observedArea <- list(srsName = xmlGetAttr(.env, "srsName"),
+      .observedArea <- list(srsName = xml2::xml_attr(x = .env, attr = "srsName"),
                             lowerCorner = .lC, upperCorner = .uC)
     }
 
-    if(sos@verboseOutput)
-      cat("[parseSosObservationOffering_200] boundedBy:",
-          toString(.observedArea), "\n")
+    if (sos@verboseOutput) cat("[parseSosObservationOffering_200] boundedBy:", toString(.observedArea), "\n")
   }
   else {
     .observedArea <- list()
   }
 
-  # warn if time or envelope is missing -> probably sensor without data.
-  .warningText <- ""
-  if(length(.observedArea) < 1) {
-    .warningText <- "\t'sos:observedArea' is NA/empty.\n"
-  }
-  if(extends(class(.resultTime), "GmlTimeInstant") &&
-     is.na(.resultTime@timePosition@time)) {
-    .warningText <- paste(.warningText, "\t'sos:resultTime' is NA/empty.\n")
-  }
-  if(extends(class(.phenomenonTime), "GmlTimeInstant") &&
-     is.na(.phenomenonTime@timePosition@time)) {
-    .warningText <- paste(.warningText, "\t'sos:phenomenonTime' is NA/empty.\n")
-  }
-  if(length(.warningText) > 1) {
-    warning(paste("Error when parsing offering '", .id, "':\n",
-                  .warningText, sep = ""))
-  }
-
-  .ob <- new("SosObservationOffering_2.0.0", id = .id, name = .name,
+  .ob <- new("SosObservationOffering_2.0.0",
+             id = .id, name = .name,
              resultTime = .resultTime,
              phenomenonTime = .phenomenonTime,
              procedure = .procedure,
@@ -286,7 +223,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
              procedureDescriptionFormat = .procedureDescriptionFormat,
              observedArea = .observedArea)
 
-  if(sos@verboseOutput)
+  if (sos@verboseOutput)
     cat("[parseSosObservationOffering] done: ", toString(.ob), "\n")
 
   return(.ob)
@@ -296,12 +233,14 @@ parseSosObservationOffering_200 <- function(obj, sos) {
 
 parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
 
-  if(sos@verboseOutput) {
+  if (sos@verboseOutput) {
     cat("[parseGetObservationResponse] entering... \n")
     print(obj)
   }
 
-  .observationsXML <- .filterXmlChildren(node = obj, xmlTagName = "observationData")
+  .observationsXML <- xml2::xml_find_all(x = obj,
+                                         xpath = "sos20:observationData",
+                                         ns = SosAllNamespaces(version = sos200_version))
   featureCache <<- list()
   .observations <- sapply(.observationsXML,
                          parseObservation_2.0,
@@ -312,26 +251,24 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
 
 parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
 
-  if(sos@verboseOutput) {
+  if (sos@verboseOutput) {
     cat("[parseGetFeatureOfInterestResponse] entering... \n")
     print(obj)
   }
 
-  .featureXML <- .filterXmlChildren(
-    node = obj,
-    xmlTagName = "featureMember")
-  .foi = sapply(.featureXML, .parseFeatureMember,
-                sos = sos)
+  .featureXML <- xml2::xml_find_all(x = obj,
+                                    xpath = "sos20:featureMember",
+                                    SosAllNamespaces(version = sos200_version))
+  .foi = sapply(.featureXML, .parseFeatureMember, sos = sos)
   return(.foi)
 }
 
 .parseFeatureMember <- function(obj, sos) {
-  .noneTexts <- .filterXmlOnlyNoneTexts(obj)
-  .member <- .noneTexts[[1]]
+  .member <- xml2::xml_child(x = obj)
 
-  .name <- xmlName(.member)
+  .name <- xml2::xml_name(x = .member, ns = SosAllNamespaces())
 
-  if(.name == wmlMonitoringPointName) {
+  if (.name == wmlMonitoringPointName) {
     .sp <- parseMonitoringPoint(.member, sos = sos)
     .member.parsed <- GmlFeatureProperty(feature = .sp)
   }

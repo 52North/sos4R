@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
 #                                                                              #
 ################################################################################
 
@@ -31,11 +31,17 @@
 # See OWS Common, OGC 06-121r9
 #
 setClass("SensorML",
-         representation(xml = "XMLInternalDocument", coords = "data.frame",
-                        id = "character", name = "character",
-                        description = "character", boundedBy = "matrix"),
-         prototype = list(xml = NULL, coords = data.frame(), id = NA_character_,
-                          name = NA_character_, description = NA_character_, 
+         representation(xml = "xml_document",
+                        coords = "data.frame",
+                        id = "character",
+                        name = "character",
+                        description = "character",
+                        boundedBy = "matrix"),
+         prototype = list(xml = xml2::xml_missing(),
+                          coords = data.frame(),
+                          id = NA_character_,
+                          name = NA_character_,
+                          description = NA_character_,
                           boundedBy = matrix()),
          validity = function(object) {
            #print("Entering validation: SensorML")

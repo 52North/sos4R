@@ -58,19 +58,19 @@
 \alias{parseFile,SOS_1.0.0,character-method}
 \alias{parseFile,SOS_versioned,character-method}
 
-\alias{parseCoordinate}
-\alias{parseCoordinate-method}
-\alias{parseVector}
-\alias{parseVector-method}
-\alias{parseLocation}
-\alias{parseLocation-method}
+\alias{parseSweCoordinate}
+\alias{parseSweCoordinate-method}
+\alias{parseSweLocation}
+\alias{parseSweLocation-method}
 \alias{parseSwePosition}
 \alias{parseSwePosition-method}
+\alias{parseSweVector}
+\alias{parseSweVector-method}
 
 \alias{parseGetFeatureOfInterestResponse}
 \alias{parseGetObservationResponse}
 \alias{parseMonitoringPoint}
-\alias{parseObservation_2.0} 
+\alias{parseObservation_2.0}
 \alias{parseSamsShape}
 \alias{parseSosCapabilities100}
 \alias{parseSosCapabilities200}
@@ -91,7 +91,7 @@ parseNoParsing(obj)
 parseCategoryObservation(obj, sos, verbose = FALSE)
 parseComplexObservation(obj, sos, verbose = FALSE)
 parseComponent(obj, sos, verbose = FALSE)
-parseCompositePhenomenon(obj, sos, verbose = FALSE)
+parseCompositePhenomenon(obj, verbose = FALSE)
 parseCountObservation(obj, sos, verbose = FALSE)
 parseDataArray(obj, sos, verbose = FALSE)
 parseElementType(obj, sos, verbose = FALSE)
@@ -111,7 +111,7 @@ parseOwsOperation(obj)
 parseOwsRange(obj)
 parseOwsServiceIdentification(obj)
 parseOwsServiceProvider(obj)
-parsePhenomenonProperty(obj, sos, verbose = FALSE)
+parsePhenomenonProperty(obj, verbose = FALSE)
 parsePoint(obj, sos)
 parsePosition(obj, sos)
 parseResult(obj, sos, verbose = FALSE)
@@ -133,7 +133,7 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
 }
 
 \arguments{
-  \item{obj}{The object to decode, normally objects of either \verb{XMLNode} or \verb{XMLInternalDocument}.}
+  \item{obj}{The object to decode, normally objects of either \verb{xml_document}.}
   \item{sos}{An object of class \link{SOS-class}, which may be utilized/required by some parsing functions to access other parsing functions or encoding information.}
   \item{verbose}{A boolean value indication whether information is printed out to the console during the process - potentially a lot of output!}
   \item{format}{A character string defining the time format to be used in \code{strptime}.}
@@ -173,7 +173,12 @@ Some of the functions are placeholders for future implementations!
 
 \examples{
 # parsing a XML string to an exception report object
-er.doc <- xmlParseDoc("<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"><ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"><ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>")
+er.doc <- xmlParseDoc(paste0("<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\"",
+  " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\"",
+  " xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\">",
+  "<ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\">",
+  "<ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version",
+  " of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>"))
 er.parsed <- parseOwsExceptionReport(er.doc)
 print(er.parsed)
 str(er.parsed)

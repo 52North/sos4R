@@ -11,7 +11,7 @@
 
 % Version 2.0.0
 \alias{checkRequest,SOS_2.0.0,SosGetFeatureOfInterest_2.0.0,logical-method}
-\alias{checkRequest,SOS_2.0.0,SosGetObservation_2.0.0,logical-method}
+\alias{checkRequest,SOS_2.0.0,SosGetObservation,logical-method}
 
 
 \title{Methods for Function checkRequest}

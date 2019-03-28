@@ -2,7 +2,7 @@
 # This program is free software; you can redistribute and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program (see gpl-2.0.txt). If not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the Free Software Foundation web page, http://www.fsf.org.
 # Author: 	Daniel Nuest (daniel.nuest@uni-muenster.de)
 #			Edzer Pebesma (edzer.pebesma@uni-muenster.de)
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R
 library("sos4R")
 
 ################################################################################
@@ -212,9 +212,9 @@ denw095_descr
 #denw095.descr@xml
 
 # Get the identifier of the station:
-denw095_id <- xmlValue(getNodeSet(doc = denw095_descr@xml,
-		path = "//sml:Term[@definition='urn:ogc:def:identifier:OGC:1.0:longName']/sml:value/text()",
-		namespaces = sos4R:::.sos100_NamespaceDefinitionsSML)[[1]])
+denw095_id <- xml2::xml_text(x = xml2::xml_find_all(x = denw095_descr@xml,
+		xpath = "//sml:Term[@definition='urn:ogc:def:identifier:OGC:1.0:longName']/sml:value/text()",
+		namespaces = sos4R:::.sos100_NamespaceDefinitionsSML))
 
 # Request observations:
 obs_denw095_2004 <- getObservation(sos = aqe, # inspect = TRUE,

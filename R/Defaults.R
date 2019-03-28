@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
 #                                                                              #
 ################################################################################
 
@@ -42,18 +42,12 @@ sosDefaultServiceVersion <- sos100_version
 # sos4R or quality of data, accessible using accessor/getter function.
 #
 .sosExampleServices <- list(
-  "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos",
-  "http://v-sos.uni-muenster.de:8080/PegelOnlineSOSv2/sos",
-  "http://giv-uw.uni-muenster.de:8080/AQE/sos",
-  "http://mmisw.org/oostethys/sos",
-  "http://sdf.ndbc.noaa.gov/sos/server.php"
+  "https://sdf.ndbc.noaa.gov/sos/server.php",
+  "www.pegelonline.wsv.de/webservices/gis/sos"
 )
 names(.sosExampleServices) <- list(
-  "52 North SOS: Weather Data, station at IFGI, Muenster, Germany",
-  "52 North SOS: Water gauge data for Germany",
-  "52 North SOS: Air Quality Data for Europe",
-  "OOTethys SOS: Marine Metadata Interoperability Initiative (MMI)",
-  "NOAA SOS: "
+  "NOAA National Data Buoy Center",
+  "WSV PegelOnline"
 )
 SosExampleServices <- function() {
   return(.sosExampleServices)
@@ -82,9 +76,9 @@ SosExampleServices <- function() {
     parseEncoding,
     parseValues,
     parseSwePosition,
-    parseLocation,
-    parseVector,
-    parseCoordinate,
+    parseSweLocation,
+    parseSweVector,
+    parseSweCoordinate,
     #
     parseGeometryObservation,
     parseCategoryObservation,
@@ -98,7 +92,7 @@ SosExampleServices <- function() {
     parseKML,
     parseKML,
     parseOM)
-  
+
   names(.defP) <- list(
     sosGetCapabilitiesName,
     sosDescribeSensorName,
@@ -135,7 +129,7 @@ SosExampleServices <- function() {
     mimeTypeKML,
     kmlName,
     mimeTypeXML)
-  
+
   return(.defP)
 }
 
@@ -145,14 +139,10 @@ SosExampleServices <- function() {
 # one way of encoding something (in contrast to parsing). So the different
 # objects (and versions) override the respective encoding functions.
 .sosDefaultEncoders <- list(
-  encodeRequestKVP,
-  encodeRequestXML,
   encodeRequestSOAP,
   encodeRequestXML,
   encodeRequestKVP)
 names(.sosDefaultEncoders) <- list(
-  .sosConnectionMethodGet_Deprecated,
-  .sosConnectionMethodPost_Deprecated,
   .sosBindingSOAP,
   .sosBindingPOX,
   .sosBindingKVP
@@ -317,7 +307,7 @@ names(.sosDefaultFieldConverters) <- list(
   "ug/m3", # micrograms per cubic meter
   "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
   "degC", # degree celsius
-  "°C", # degree Celsius
+  "\u00B0C", # degree Celsius
   # 52N SOS 4.x
   "http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
 )
@@ -369,7 +359,7 @@ SosParsingFunctions <- function (..., include = character(0),
   }
   # no replacements given, base in-/exclusion on all defaults
   else els <- defaults
-  
+
   if (length(include)) {
     els <- els[include]
   }
@@ -378,7 +368,7 @@ SosParsingFunctions <- function (..., include = character(0),
     if (any(!is.na(.which)))
       els <- els[-(.which[!is.na(.which)])]
   }
-  
+
   return(els)
 }
 
@@ -406,18 +396,13 @@ SosDisabledParsers <- function() {
   #	attributes(.sosDisabledParsers) <- list("isDisabledParsers" = TRUE)
   return(.sosDisabledParsers)
 }
-#.isDisabledParsers <- function(obj) {
-#	.b <- attributes(obj)[["isDisabledParsers"]]
-#	if(is.null(.b)) return(FALSE)
-#	else return(.b)
-#}
 
 #
 #
 #
 SosResetParsingFunctions <- function(sos) {
   sos@parsers <- .createDefaultParsers()
-  
+
   return(sos)
 }
 
@@ -434,6 +419,7 @@ sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
 sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H-%M-%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
+sosDefaultTemporalValueReference <- "om:phenomenonTime"
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"
 
 # use for the names created data.frames
@@ -449,11 +435,8 @@ sosDefaultColorPalette <- c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
 
 sosDefaultReferenceFrameSensorDescription <- "urn:ogc:def:crs:EPSG:4326"
 
-# default values for non-standard stuff
-sosDefaultGetBindingParamLatest <- NA_character_ # e.g. time=latest
-
 #
-#
+# Defaults ----
 #
 SosDefaults <- function() {
   .defaults <- list(sosDefaultCharacterEncoding,
@@ -471,8 +454,7 @@ SosDefaults <- function() {
                     sosDefaultColumnNameLat,
                     sosDefaultColumnNameLon,
                     sosDefaultColumnNameSRS,
-                    sosDefaultReferenceFrameSensorDescription,
-                    sosDefaultGetBindingParamLatest)
+                    sosDefaultReferenceFrameSensorDescription)
   names(.defaults) <- list("sosDefaultCharacterEncoding",
                            "sosDefaultDescribeSensorOutputFormat",
                            "sosDefaultGetCapSections",
@@ -488,9 +470,8 @@ SosDefaults <- function() {
                            "sosDefaultColumnNameLat",
                            "sosDefaultColumnNameLon",
                            "sosDefaultColumnNameSRS",
-                           "sosDefaultReferenceFrameSensorDescription",
-                           "sosDefaultGetBindingParamLatest")
-  
+                           "sosDefaultReferenceFrameSensorDescription")
+
   return(.defaults)
 }
 
@@ -510,4 +491,12 @@ SosDefaultDCPs <- function() {
   }
   names(.defaults) <- .names
   return(.defaults)
+}
+
+.sosDefaultParsingOptions <- c(
+  #"NOERROR",
+  "RECOVER"
+  )
+SosDefaultParsingOptions <- function() {
+  return(.sosDefaultParsingOptions)
 }

@@ -1,7 +1,7 @@
 # Copyright (C) 2015 by 52 North Initiative for Geospatial Open Source Software GmbH, Contact: info@52north.org
 # This program is free software; you can redistribute and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program (see gpl-2.0.txt). If not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the Free Software Foundation web page, http://www.fsf.org.
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R
 library("sos4R")
 
 ################################################################################
@@ -19,7 +19,7 @@ npbg_converter <- SosDataFieldConvertingFunctions(
 		"urn:ogc:def:property:OGC:Reflection" = sosConvertDouble,
 		"urn:ogc:def:property:OGC:Insolation" = sosConvertDouble)
 npbg <- SOS("http://ispacevm10.researchstudio.at/geoservices/npbg",
-		binding = "GET",
+		binding = "KVP",
 		#verboseOutput = TRUE,
 		dataFieldConverters = npbg_converter,
 		sections = NA)
@@ -78,7 +78,6 @@ title(main = paste("Offerings by '", sosTitle(npbg), "'", sep = ""),
 #text(sosCoordinates(procs_descr)[c("x", "y")], labels = sosId(procs_descr),
 #		pos = 4)
 
-
 #########################
 # superordinate offering:
 np.off <- sosOfferings(npbg)[["org:npbg:Nationalpark"]]
@@ -112,7 +111,6 @@ summary(result_proc1)
 coords.proc1 <- unique(result_proc1[c("Latitude", "Longitude")])
 coords.proc1
 
-
 ##################
 # plot all values:
 names(result_proc1)
@@ -131,7 +129,6 @@ xyplot(Insolation ~ RelativeHumidity | AirTemperature,
 		data = result_proc1[1:100,])
 
 dotplot(Insolation ~ RelativeHumidity, data = result_proc1)
-
 
 ####################################
 # plot values against time with xts:
@@ -158,7 +155,6 @@ plot(proc1_zoo, main = paste("Time Series at", npbg_proc[[1]], "(",
 				toString(coords.proc1), ")"),
 		plot.type = "multiple")
 
-
 ####################
 # request more data:
 obs_proc123 <- getObservation(sos = npbg, offering = np.off, # inspect = TRUE,
@@ -175,10 +171,6 @@ ooe <- SOS("http://ispacevm10.researchstudio.at/geoservices/ooe", sections = NA,
 		verboseOutput = TRUE)
 ooe
 summary(ooe)
-
-# TODO KML export, or make visualization example following howto:
-# http://spatial-analyst.net/wiki/index.php?title=Export_maps_to_GE
-
 
 ###################################
 # Demo finished, try another one! #

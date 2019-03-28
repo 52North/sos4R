@@ -5,9 +5,8 @@
 \alias{sos4R-package}
 \alias{sos4R}
 
-\alias{sosChanges}
 \alias{sosCheatSheet}
-\alias{sosNews}
+\alias{release_questions}
 
 \title{A client for the OGC Sensor Observation Service}
 
@@ -24,7 +23,7 @@
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr
-	Depends: \tab XML, RCurl, sp\cr
+	Imports: \tab xml2, httr, sp\cr
 	}
 }
 
@@ -43,7 +42,7 @@ The development of this software was gratefully supported by the 52North Student
 
 To stay updated on all matters around \pkg{sos4R} go to the development blog at \url{http://www.nordholmen.net/sos4r/}.
 
-If you want to ask questions about using the software, please go to the 52North forum for the geostatistics community (\url{http://geostatistics.forum.52north.org/}), or consider subscribing to the mailing list (\url{http://list.52north.org/mailman/listinfo}).
+If you want to ask questions about using the software, please go to the to the issue tracker at \url{https://github.com/52North/sos4R/issues}.
 
 The most extensive documenation is contained in the \strong{package vignette}.
 }
@@ -100,10 +99,7 @@ sosDataFieldConverters(mySos)
 sosCheatSheet()
 
 # view the NEWS file
-sosNews()
-# DEPRECATED: the changes document
-#sosChanges()
-
+news(package = "sos4R")
 }
 
 }

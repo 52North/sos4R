@@ -23,10 +23,9 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-09-24                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
 #                                                                              #
 ################################################################################
 
-# http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
 library("testthat")
 test_check("sos4R")

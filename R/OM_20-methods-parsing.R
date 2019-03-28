@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
 #                                                                              #
 ################################################################################
 
@@ -32,25 +32,25 @@
 #
 parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 
-  obj <- obj[[om20OM_Observation]]
+  obj <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = SosAllNamespaces())
 
-  .id <- xmlGetAttr(node = obj, name = "id",
+  .id <- xml2::xml_attr(x = obj, attr = "id",
                     default = NA_character_)
   if(verbose) cat("[parseObservation]", .id, "\n")
 
   #TODO adjust the following OM 1.0 parsing functionality
 
   # 52N SOS only returns om:Observation with procedure ids xlink:href
-  .procedure <- xmlGetAttr(node = obj[[omProcedureName]], name = "href",
+  .procedure <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = omProcedureName, ns = SosAllNamespaces()), attr = "href",
                            default = NA_character_)
 
-  .observedProperty <- parsePhenomenonProperty(obj[[omObservedPropertyName]],
-                                               sos = sos, verbose = verbose)
+  .observedProperty <- parsePhenomenonProperty(xml2::xml_child(x = obj, search = omObservedPropertyName, ns = SosAllNamespaces()),
+                                               verbose = verbose)
 
   timeObjectMap <- list()
 
-  if(!is.null(obj[[om20PhenomenonTimeName]])) {
-    .pt <- parseTime(obj = obj[[om20PhenomenonTimeName]],
+  if(!is.na(xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()))) {
+    .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()),
                  format = sosTimeFormat(sos = sos),
                  timeObjectMap = timeObjectMap,
                  verbose = verbose)
@@ -61,8 +61,8 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
     .phenomenonTime <- NULL
   }
 
-  if(!is.null(obj[[omFeatureOfInterestName]])) {
-    .featureOfInterest <- parseFOI(obj[[omFeatureOfInterestName]],
+  if(!is.na(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()))) {
+    .featureOfInterest <- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()),
                                    sos = sos, verbose = verbose)
     if(!is.null(.featureOfInterest@href)){
       if(verbose) cat("[trying to get referenced featureOfInterest]\n")
@@ -88,14 +88,14 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 
   # result parser is exchangeable
   .resultParsingFunction <- sosParsers(sos)[[omResultName]]
-  .result <- .resultParsingFunction(obj[[omResultName]], sos, verbose)
+  .result <- .resultParsingFunction(xml2::xml_child(x = obj, search = omResultName, ns = SosAllNamespaces()), sos, verbose)
 
   # optional elements
-  if(!is.null(obj[[omResultTimeName]])) {
-    .pt <- parseTime(obj = obj[[omResultTimeName]],
-                        format = sosTimeFormat(sos = sos),
-                        timeObjectMap = timeObjectMap,
-                        verbose = verbose)
+  if(!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
+    .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
+                           format = sosTimeFormat(sos = sos),
+                           timeObjectMap = timeObjectMap,
+                           verbose = verbose)
     .resultTime <- .pt[[1]]
     timeObjectMap <- .pt[[2]]
   }
@@ -122,26 +122,26 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
 #
 # create according GmlTimeObject from om:samplingTime/om:resultTime/om:phenomenonTime
 #
-parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
-  if(verbose) cat("[parseTime]\n")
+parseTimeObject <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
+  if (verbose) cat("[parseTimeObject]\n")
 
-  .tiXML <- xmlChildren(obj)[[gmlTimeInstantName]]
-  .tpXML <- xmlChildren(obj)[[gmlTimePeriodName]]
-  .timeReference <- xmlAttrs(node = obj)[["href"]]
+  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
+  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
+  .timeReference <- xml2::xml_attr(x = obj, attr = "href")
   .timeObject <- NULL
 
-  if(!is.null(.tiXML)) {
-    if(verbose) cat("[parseTime] time instant.\n")
+  if (!is.na(.tiXML)) {
+    if (verbose) cat("[parseTimeObject] time instant.\n")
     .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
-  else if(!is.null(.tpXML)) {
-    if(verbose) cat("[parseTime] time period.\n")
+  else if (!is.na(.tpXML)) {
+    if (verbose) cat("[parseTimeObject] time period.\n")
     .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
-  else if (!is.null(.timeReference)) {
-    if (verbose) cat("[parseTime] referenced time.\n")
+  else if (!is.na(.timeReference)) {
+    if (verbose) cat("[parseTimeObject] referenced time.\n")
     .timeObject <- timeObjectMap[[substring(.timeReference, 2)]]
     if (is.null(.timeObject)) {
       stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
@@ -149,7 +149,7 @@ parseTime <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
   }
   else {
     warning("Could not create GmlTimeObject from given O&M time object.
-            Required gml:TimeInstant or gml:TimePeriod as children.")
+            Require gml:TimeInstant or gml:TimePeriod as children.")
     .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
       time = as.POSIXct(x = NA)))
   }

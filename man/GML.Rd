@@ -290,7 +290,7 @@ No objects may be created from the following virtual classes: \code{GmlFeature},
 The \verb{"...OrNULL"} classes are used to model optional slots.
 }
 
-\references{GML specification at \url{http://www.opengeospatial.org/standards/gml}.}
+\references{GML specification at \url{https://www.opengeospatial.org/standards/gml}.}
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 

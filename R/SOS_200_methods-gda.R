@@ -37,23 +37,18 @@
                                        offerings,
                                        verbose,
                                        inspect,
-                                       saveOriginal,
-                                       xmlParseOptions = c(XML::NOERROR, XML::RECOVER)) {
+                                       saveOriginal) {
   .filename <- NULL
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
-      .filename <- paste0(saveOriginal, ".xml")
-      if (verbose){
-        cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
-      }
+      .filename <- saveOriginal
+      if (verbose) cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) {
-        .filename <- tempfile(pattern=format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
+        .filename <- tempfile(pattern = format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
       }
-      if (verbose) {
-        cat("[.getDataAvailability_1.0.0] Generating file name:", .filename, "\n")
-      }
+      if (verbose) cat("[.getDataAvailability_1.0.0] Generated file name:", .filename, "\n")
     }
   }
   .gda <- SosGetDataAvailability_1.0.0(service = sosService,
@@ -65,49 +60,39 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  .responseString = sosRequest(sos = sos, request = .gda,
-                               verbose = verbose, inspect = inspect)
+  .response = sosRequest(sos = sos,
+                         request = .gda,
+                         verbose = verbose,
+                         inspect = inspect)
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.responseString),
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.response),
                    "bytes), parsing ...\n")
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Response string: \n'", .responseString, "'\n")
-
-  if (isXMLString(.responseString)) {
-
-    .response <- xmlParseDoc(.responseString, asText = TRUE, options = xmlParseOptions)
-
-    if (verbose || inspect) {
-      cat("[.getDataAvailability_1.0.0] Response XML document:\n")
-      print(.response)
-    }
-
-    if (!is.null(.filename)) {
-      .filename <- paste0(.filename, ".xml")
-      saveXML(.response, file = .filename)
-
-      if (verbose) {
-        cat("[.getDataAvailability_1.0.0] Saved original document:",
-            .filename, "\n")
-      }
-    }
-
-    if (.isExceptionReport(.response)) {
-      return(.handleExceptionReport(sos, .response))
-    }
-
-    .parsingFunction <- sosParsers(sos)[[mimeTypeXML]]
-
-    if (verbose) {
-      cat("[.getDataAvailability_1.0.0] Parsing with function ")
-      print(.parsingFunction)
-    }
-
-    .dams <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
-    if (verbose) cat("[.getDataAvailability_1.0.0] Received and parsed", length(.dams),
-                     "data availability members.\n")
-    return (.dams)
+  if (inspect) {
+    cat("[.getDataAvailability_1.0.0] Response XML document:\n")
+    print(.response)
   }
+
+  if (!is.null(.filename)) {
+    xml2::write_xml(x = .response, file = .filename)
+    if (verbose) cat("[.getDataAvailability_1.0.0] Saved original document:", .filename, "\n")
+  }
+
+  if (.isExceptionReport(.response)) {
+    return(.handleExceptionReport(sos, .response))
+  }
+
+  .parsingFunction <- sosParsers(sos)[[mimeTypeXML]]
+
+  if (verbose) {
+    cat("[.getDataAvailability_1.0.0] Parsing with function ")
+    print(.parsingFunction)
+  }
+
+  .dams <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received and parsed", length(.dams),
+                    "data availability members.\n")
+  return (.dams)
 }
 
 
@@ -250,7 +235,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
                 sos@version, "'"))
   }
 
-  .gdaMembers <- .filterXmlChildren(obj, sosGDAMemberName, includeNamed = TRUE)
+  .gdaMembers <- xml2::xml_find_all(x = obj, xpath = sosGDAMemberName, ns = SosAllNamespaces())
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), "element(s).\n")
   .phenTimeCache <<- list()
@@ -275,7 +260,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   #
   # phenomenon time
   .phenTime <- NULL
-  .ptNode <- .filterXmlChildren(gdaMember, xmlTagName = sosPhenomenonTimeName)
+  .ptNode <- xml2::xml_find_all(x = obj, xpath = sosPhenomenonTimeName, ns = SosAllNamespaces())
   # Case A: Encoded
   if (!.nodeFound(.ptNode)) {
     stop(paste0("[parseGDAMember] ", sosPhenomenonTimeName, " not found!"))
@@ -283,16 +268,18 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   .ptNode <- .ptNode[[1]]
   # href is an in-document reference starting with "#" and than the GML:id of the referenced element
   if (.isHrefAttributeAvailable(.ptNode)) {
-    .ptNodeHref <- xmlAttrs(.ptNode)[["href"]]
+    .ptNodeHref <- xml2::xml_attr(x = .ptNode, attr = "href")
     if(verbose) cat(paste0("[parseGDAMember] trying to get referenced phenomenon time via '", .ptNodeHref, "'."))
-    .phenTime <- .phenTimeCache[[str_sub(.ptNodeHref, start = 2)]]
+    .phenTime <- .phenTimeCache[[stringr::str_sub(.ptNodeHref, start = 2)]]
     if (is.null(.phenTime)) {
       stop(paste0("[parseGDAMember] XML document invalid. Time reference '", .ptNodeHref ,"' not in document."))
     }
   }
   # Case B: in-document reference -> cache
   else {
-    .phenTime <- parseTimePeriod(.filterXmlChildren(.ptNode, gmlTimePeriodName, includeNamed = TRUE)[[1]],
+    .phenTime <- parseTimePeriod(xml2::xml_find_first(x = obj,
+                                                      xpath = gmlTimePeriodName,
+                                                      ns = SosAllNamespaces()),
                                  format = sosDefaultTimeFormat)
     .phenTimeCache[[.phenTime@id]] <<- .phenTime
   }
@@ -308,7 +295,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
 
 .isHrefAttributeAvailable <- function(.node = NULL) {
   if (is.null(.node)) return(FALSE)
-  .nodeAttributes <- xmlAttrs(.node)
+  .nodeAttributes <- xml2::xml_attrs(x = .node)
 
   if (is.null(.nodeAttributes)) return(FALSE)
   .href <- .nodeAttributes[["href"]]
@@ -316,12 +303,12 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
 }
 
 .parseGDAReferencedElement <- function(gdaMember, sos, elementName, verbose = FALSE) {
-  .nodes <- .filterXmlChildren(gdaMember, xmlTagName = elementName, includeNamed = TRUE, verbose)
-  if (is.null(.nodes) || !is.list(.nodes) || length(.nodes) != 1) {
+  .nodes <- xml2::xml_find_all(x = gdaMember, xpath = elementName, ns = SosAllNamespaces())
+  if (is.na(.nodes) || length(.nodes) != 1) {
     stop(paste0("[parseGDAMember] no element found for '", elementName, "'."))
   }
-  .element <- xmlAttrs(.nodes[[1]])[["href"]]
-  if (is.null(.element) || str_length(.element) < 1) {
+  .element <- xml2::xml_attr(x = .nodes[[1]], attr = "href")
+  if (is.na(.element) || stringr::str_length(.element) < 1) {
     stop(paste0("[parseGDAMember] element found for '", elementName, "' misses href attribute. Found '",
                 .element, "'."))
   }
