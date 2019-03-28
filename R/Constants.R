@@ -64,8 +64,8 @@ sosObservationIdName <- paste0(sos100NamespacePrefix, ":ObservationId")
 #
 sos200_version <- "2.0.0"
 sos200NamespacePrefix <- "sos20"
-sos200ContentsName <- "contents"
-sos200FilterCapabilitiesName = "filterCapabilities"
+sos200ContentsName <- paste0(sos200NamespacePrefix, ":contents")
+sos200FilterCapabilitiesName = paste0(sos200NamespacePrefix, ":filterCapabilities")
 sos200_emptyGetObservationResponseString <-
   paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
          "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",
@@ -101,9 +101,13 @@ sosGetDataAvailabilityName <- "GetDataAvailability"
 sosGetDataAvailabilityResponse <- "GetDataAvailabilityResponse"
 sosGDAMemberName <- "dataAvailabilityMember"
 
-SosSupportedOperations <- function() {
-  .supported <- c(sosGetCapabilitiesName, sosDescribeSensorName,
-                  sosGetObservationName ,sosGetObservationByIdName)
+SosSupportedOperations <- function(version = sos100_version) {
+  if (version == sos100_version) {
+    .supported <- c(sosGetCapabilitiesName,
+                    sosDescribeSensorName,
+                    sosGetObservationName,
+                    sosGetObservationByIdName)
+  }
   return(.supported)
 }
 
@@ -206,7 +210,8 @@ SosAllNamespaces <- function(version = sos100_version) {
               sa = saNamespace)
     return(.all[unique(names(.all))])
     } else if (version == sos200_version) {
-      .all <- c(sams = samsNamespace,
+      .all <- c(sos20 = sos200Namespace,
+                sams = samsNamespace,
                 sf = sf20Namespace,
                 swes = swesNamespace,
                 om = om20Namespace,
@@ -216,7 +221,7 @@ SosAllNamespaces <- function(version = sos100_version) {
                 gml = gml32Namespace)
       return(.all[unique(names(.all))])
   } else {
-    stop("Unsupported version", version)
+    stop("Unsupported version ", version)
   }
 }
 
