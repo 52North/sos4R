@@ -373,14 +373,7 @@ SosGetObservationById <- function(
 
   if (length(.response) > 0 &
      regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
-    if (verbose) cat("[.sosRequest_1.0.0] Got HTML, probably an error.\n")
-
-    # might still be KML with embedded HTML!
-    if (regexpr("(http://www.opengis.net/kml/)", .response) > 0) {
-      if (verbose) cat("[.sosRequest_1.0.0] Got KML! Can continue...\n")
-    }
-    else stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response,
-                    "\n\n"))
+    stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response, "\n\n"))
   }
 
   .content = httr::content(x = .response, encoding = sosDefaultCharacterEncoding)
@@ -576,15 +569,19 @@ setMethod(f = "getObservationById",
   }
 
   .go <- SosGetObservationById(service = sosService,
-                               version = sos@version, observationId = observationId,
-                               responseFormat =  responseFormat, srsName = srsName,
-                               resultModel = resultModel, responseMode = responseMode)
+                               version = sos@version,
+                               observationId = observationId,
+                               responseFormat =  responseFormat,
+                               srsName = srsName,
+                               resultModel = resultModel,
+                               responseMode = responseMode)
 
   if (verbose) cat("[.getObservationById_1.0.0] REQUEST:\n", toString(.go), "\n")
 
-  .response = sosRequest(sos = sos, request = .go,
-                               verbose = verbose, inspect = inspect)
-  if (inspect) cat("[.getObservationById_1.0.0] RESPONSE:\n", .response, "\n")
+  .response = sosRequest(sos = sos,
+                         request = .go,
+                         verbose = verbose, inspect = inspect)
+  if (inspect) cat("[.getObservationById_1.0.0] RESPONSE:\n", toString(.response), "\n")
 
   if (!is.null(.filename)) {
     .filename <- paste(.filename, ".xml", sep = "")
@@ -640,7 +637,7 @@ setMethod(f = "getObservationById",
   .go <- SosGetObservation(service = sosService, version = sos@version,
                            offering = offeringId, observedProperty = observedProperty,
                            responseFormat =  responseFormat, srsName = srsName,
-                           eventTime = .eventTime, procedure = procedure,
+                           eventTime = eventTime, procedure = procedure,
                            featureOfInterest = featureOfInterest, result = result,
                            resultModel = resultModel, responseMode = responseMode,
                            BBOX = BBOX)
@@ -663,20 +660,16 @@ setMethod(f = "getObservationById",
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
       .filename <- paste0(saveOriginal, ".xml")
-      if (verbose) cat("[.getObservation_1.0.0] Using saveOriginal parameter for file name:",
-                      .filename, "\n")
+      if (verbose) cat("[.getObservation_1.0.0] Using saveOriginal parameter for file name:", .filename, "\n")
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) .filename <- paste(.cleanupFileName(offeringId),
                                           format(Sys.time(), sosDefaultFilenameTimeFormat), sep = "_")
-      if (verbose) cat("[.getObservation_1.0.0] Generating file name:",
-                      .filename, "\n")
+      if (verbose) cat("[.getObservation_1.0.0] Generating file name:", .filename, "\n")
     }
   }
 
-  if (verbose)
-    cat("[.getObservation_1.0.0] to ", sos@url, " with offering ",
-        offeringId, "\n")
+  if (verbose) cat("[.getObservation_1.0.0] to ", sos@url, " with offering ", offeringId, "\n")
 
   .go <- .createGetObservation_1.0.0(sos, offeringId, observedProperty,
                                      responseFormat, srsName, eventTime,	procedure, featureOfInterest,
@@ -692,86 +685,16 @@ setMethod(f = "getObservationById",
 
   if (verbose) cat("[sos4R] Received response (object size:", object.size(.response), "bytes), parsing ...\n")
 
-  # responseFormat starts with text/xml OR the response string is XML content,
-  # for example an exception (which is xml even if request wants something else
-  .contentType <- NA_character_
-  .contentType <- attributes(.responseString)[["Content-Type"]]
-
-  if (verbose) cat("[.getObservation_1.0.0] Content-Type:", .contentType, "\n")
-
-  #if (nchar(.responseString) < 1) {
-  #  warning(paste("Response string has length ", nchar(.responseString),
-  #                ". Please re-check query parameters."))
-  #}
-
   if (inherits(.response, "xml_document")) {
-  #if (isXMLString(str = .responseString)) {
     if (verbose) cat("[.getObservation_1.0.0] Got XML document as response.\n")
-
-    .hasSubtype <- FALSE
-    .contentSubtype <- NA
-    if (length(.contentType) < 1) {
-      if (verbose) cat("[.getObservation_1.0.0] No content type!",
-                       "Falling back to '", mimeTypeXML, "'\n")
-      .contentType <- mimeTypeXML
-    }
-    else if (length(.contentType) > 1) {
-      # check if subtype is present or take just the first
-      .subtypeIdx <- which(names(.contentType) == "subtype")
-      if (length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
-        .hasSubtype <- TRUE
-        .contentSubtype <- .contentType[[.subtypeIdx]]
-        if (verbose) cat("[.getObservation_1.0.0] Found mime subtype: ",
-                        toString(.contentSubtype), "'\n")
-      }
-      else if (verbose) cat(
-        "[.getObservation_1.0.0] More than one content type, ",
-        "no subtype detected : '",
-        toString(.contentType),
-        "'\n\tUsing the first one: '",
-        .contentType[[1]], "'\n")
-      .contentType <- .contentType[[1]]
-    }
-
-    .response <- .internalXmlRead(x = .responseString)
     if (inspect) {
       cat("[.getObservation_1.0.0] RESPONSE DOC:\n")
       print(.response)
     }
 
-     # select the parser and file ending based on the mime type FIRST
-    .fileEnding <- ".xml"
-    if (.contentType == mimeTypeXML) {
-      if (.hasSubtype && .contentSubtype == mimeSubtypeOM) {
-        if (verbose)
-          cat("[.getObservation_1.0.0] Got OM according to mime type.\n")
-        .parserName <- mimeTypeOM
-      }
-      else {
-        if (verbose) cat("[.getObservation_1.0.0] Got pure XML according to mime type.",
-                         "Trying to parse with default parser, see SosParsingFunctions().\n")
-        .parserName <- mimeTypeXML
-      }
-    }
-    else if (.contentType == mimeTypeKML) {
-      if (verbose) cat("[.getObservation_1.0.0] Got KML according to mime type.\n")
-
-      .fileEnding <- ".kml"
-      .parserName <- mimeTypeKML
-    }
-    else {
-      # fall back, or more of a default: the function name
-      .parserName <- sosGetObservationName
-    }
-
     if (!is.null(.filename)) {
-      .filename <- paste(.filename, .fileEnding, sep = "")
       xml2::write_xml(x = .response, file = .filename)
-
-      if (verbose) {
-        cat("[.getObservation_1.0.0] Saved original document:",
-            .filename, "\n")
-      }
+      if (verbose) cat("[.getObservation_1.0.0] Saved original document:", .filename, "\n")
     }
 
     if (.isExceptionReport(.response)) {
@@ -782,7 +705,7 @@ setMethod(f = "getObservationById",
       warning("Got XML string, but request did not require text/xml (or subtype).")
     }
 
-    .parsingFunction <- sosParsers(sos)[[.parserName]]
+    .parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
 
     if (verbose) {
       cat("[.getObservation_1.0.0] Parsing with function ")
@@ -974,7 +897,7 @@ setMethod(f = "getObservation",
 #
 # see: http://www.oostethys.org/best-practices/best-practices-get
 #
-setMethod(f = "encodeRequestKVP", signature = c("SosDescribeSensor"),
+setMethod(f = "encodeRequestKVP", signature = signature(obj = "SosDescribeSensor"),
           definition = function(obj, sos, verbose = FALSE) {
 
             if (sos@version == sos100_version) {
@@ -1015,7 +938,7 @@ setMethod(f = "encodeRequestKVP", signature = c("SosDescribeSensor"),
   return(.kvpString)
 }
 
-setMethod(f = "encodeRequestKVP", signature = "SosGetObservation",
+setMethod(f = "encodeRequestKVP", signature = signature(obj = "SosGetObservation"),
           definition = function(obj, sos, verbose = FALSE) {
             if (sos@version == sos100_version) {
               return(.sosEncodeRequestKVPGetObservation_1.0.0(obj, sos,
@@ -1160,7 +1083,7 @@ setMethod(f = "encodeRequestKVP", signature = "SosGetObservation",
   return(.kvpString)
 }
 
-setMethod(f = "encodeRequestKVP", signature = "SosGetObservationById",
+setMethod(f = "encodeRequestKVP", signature = signature(obj = "SosGetObservationById"),
           definition = function(obj, sos, verbose = TRUE) {
             stop("KVP encoding of operation 'GetObservationById' not supported!")
           }
@@ -1169,7 +1092,7 @@ setMethod(f = "encodeRequestKVP", signature = "SosGetObservationById",
 #
 # encode as XML
 #
-setMethod(f = "encodeRequestXML", signature = "SosGetObservation",
+setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation"),
           definition = function(obj, sos, verbose = FALSE) {
             if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
@@ -1182,103 +1105,96 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservation",
             }
             else if (sos@version == sos200_version) {
               stop(paste("XML request encoding for SOS 2.0 GetObservation",
-                         " not implemented. Use KVP binding if possible."))
+                         " not implemented. Use KVP binding."))
             } else {
               stop("Version not supported!")
             }
           }
 )
-.sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos,
-                                                     verbose = FALSE) {
-  .xmlDoc <- XML::xmlNode(name = sosGetObservationName,
-                     namespace = sos100NamespacePrefix,
-                     namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
-                                              .sos100_NamespaceDefinitionsGetObs),
-                     attrs = c(.sos100_xsiSchemaLocationAttribute, service = obj@service,
-                             version = sos@version))
+.sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
+  xmlDoc <- xml2::xml_new_root(sosGetObservationName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos100Namespace,
+                                service = obj@service,
+                                version = sos@version,
+                                "xmlns:xsi" = xsiNamespace,
+                                "xmlns:ows" = owsNamespace,
+                                "xmlns:sos" = sos100Namespace,
+                                "xmlns:om" = omNamespace,
+                                "xmlns:ogc" = ogcNamespace,
+                                "xmlns:gml" = gmlNamespace))
 
   # required and optional are mixed - schema requires a particular order:
-  .offering <- XML::xmlNode(name = "offering", namespace = sos100NamespacePrefix,
-                       obj@offering)
-  .xmlDoc <- XML::addChildren(node = .xmlDoc, .offering)
+  xml2::xml_add_child(xmlDoc, sosOfferingName, obj@offering)
 
   if (!length(obj@eventTime) == 0) {
-    .eventTimeList <- lapply(X = obj@eventTime,
-                             FUN = sos4R::encodeXML,
+    eventTimeList <- lapply(X = obj@eventTime,
+                             FUN = encodeXML,
                              sos = sos,
                              verbose = verbose)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = .eventTimeList,
-                           append = TRUE)
+    for (et in eventTimeList) {
+      xml2::xml_add_child(xmlDoc, et)
+    }
   }
 
   if (!any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
-    .procedureList <- lapply(obj@procedure, "xmlNode",
-                             name="procedure", namespace = sos100NamespacePrefix)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = .procedureList,
-                           append = TRUE)
+    for (p in obj@procedure) {
+      xml2::xml_add_child(xmlDoc, sosProcedureName, p)
+    }
   }
 
-  .observedProperties <- lapply(obj@observedProperty, "xmlNode",
-                                name="observedProperty", namespace = sos100NamespacePrefix)
-  .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = .observedProperties,
-                         append = TRUE)
+  for (op in obj@observedProperty) {
+    xml2::xml_add_child(xmlDoc, sosObservedPropertyName, op)
+  }
 
   if (!is.null(obj@featureOfInterest)) {
-    .foi <- encodeXML(obj = obj@featureOfInterest, sos = sos,
+    foi <- encodeXML(obj = obj@featureOfInterest,
+                      sos = sos,
                       verbose = verbose)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.foi),
-                           append = TRUE)
+    xml2::xml_add_child(xmlDoc, foi)
   }
 
   if (!is.null(obj@result)) {
     if (is.character(obj@result)) {
-      .result <- encodeXML(obj = obj@result, sos = sos,
-                           addNamespaces = TRUE, verbose = verbose)
+      result <- encodeXML(obj = obj@result,
+                          sos = sos,
+                          addNamespaces = TRUE,
+                          verbose = verbose)
     }
     else {
-      .result <- encodeXML(obj = obj@result, sos = sos, verbose = verbose)
+      result <- encodeXML(obj = obj@result,
+                          sos = sos,
+                          verbose = verbose)
     }
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.result),
-                           append = TRUE)
+    xml2::xml_add_child(xmlDoc, result)
   }
 
   if (!is.na(obj@responseFormat)) {
-    .rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
-
-    .responseFormat <- XML::xmlNode(name = "responseFormat",
-                               namespace = sos100NamespacePrefix, value = .rF)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseFormat),
-                           append = TRUE)
+    rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
+    xml2::xml_add_child(xmlDoc, sosResponseFormatName, rF)
   }
 
   if (!is.na(obj@resultModel)) {
-    .resultModel <- XML::xmlNode(name = "resultModel",
-                            namespace = sos100NamespacePrefix,
-                            obj@resultModel)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.resultModel),
-                           append = TRUE)
+    xml2::xml_add_child(xmlDoc, sosResultModelName, obj@resultModel)
   }
 
   if (!is.na(obj@responseMode)) {
-    .responseMode <- XML::xmlNode(name = "responseMode",
-                             namespace = sos100NamespacePrefix,
-                             obj@responseMode)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseMode),
-                           append = TRUE)
+    xml2::xml_add_child(xmlDoc, sosResponseModeName, obj@responseMode)
   }
 
   if (!is.na(obj@srsName)) {
-    xml2::xml_set_attr(x = .xmlDoc, attr = "srsName", value = obj@updateSequence)
+    xml2::xml_set_attr(x = xmlDoc, attr = "srsName", value = obj@updateSequence)
   }
 
   if (!is.na(obj@BBOX)) {
-    warning("GetObservation contains BBOX, but that is not supported for 'POST' (and not at all in the SOS Specification...) - use featureOfInterest instead!")
+    warning("GetObservation contains BBOX, but that is not supported for 'POST' and ignored.",
+            "This is also not in the SOS Specification - use featureOfInterest instead!")
   }
 
-  return(.xmlDoc)
+  return(xmlDoc)
 }
 
-setMethod(f = "encodeRequestXML", signature = "SosGetObservationById",
+setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservationById"),
           definition = function(obj, sos, verbose = FALSE) {
             if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
@@ -1294,48 +1210,36 @@ setMethod(f = "encodeRequestXML", signature = "SosGetObservationById",
           }
 )
 .sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
-  .xmlDoc <- XML::xmlNode(name = "GetObservationById",
-                     namespace = sos100NamespacePrefix,
-                     namespaceDefinitions = c(.sos100_NamespaceDefinitionsForAll,
-                                              .sos100_NamespaceDefinitionsGetObs),
-                     attrs=c(.sos100_xsiSchemaLocationAttribute,
-                             service = obj@service, version = sos@version))
+  xmlDoc <- xml2::xml_new_root(sosGetObservationByIdName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos100Namespace,
+                                service = obj@service,
+                                version = sos@version,
+                                "xmlns:xsi" = xsiNamespace,
+                                "xmlns:sos" = sos100Namespace))
 
-  .obsId <- XML::xmlNode(name = "ObservationId", namespace = sos100NamespacePrefix,
-                    obj@observationId)
-  .xmlDoc <- XML::addChildren(node = .xmlDoc, .obsId)
+  xml2::xml_add_child(xmlDoc, sosObservationIdName, obj@observationId)
 
-  .rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
-  .responseFormat <- XML::xmlNode(name = "responseFormat",
-                             namespace =  sos100NamespacePrefix, .rF)
-  .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseFormat),
-                         append = TRUE)
+  rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
+  xml2::xml_add_child(xmlDoc, sosResponseFormatName, rF)
 
   if (!is.na(obj@resultModel)) {
-    .resultModel <- XML::xmlNode(name = "resultModel",
-                            namespace =  sos100NamespacePrefix,
-                            obj@resultModel)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.resultModel),
-                           append = TRUE)
+    xml2::xml_add_child(xmlDoc, sosResultModelName, obj@resultModel)
   }
 
   if (!is.na(obj@responseMode)) {
-    .responseMode <- XML::xmlNode(name = "responseMode",
-                             namespace =  sos100NamespacePrefix,
-                             obj@responseMode)
-    .xmlDoc <- XML::addChildren(node = .xmlDoc, kids = list(.responseMode),
-                           append = TRUE)
+    xml2::xml_add_child(xmlDoc, sosResponseModeName, obj@responseMode)
   }
 
   if (!is.na(obj@srsName)) {
-    xml2::xml_set_attr(x = .xmlDoc, attr = "srsName", value = obj@updateSequence)
+    xml2::xml_set_attr(x = xmlDoc, attr = "srsName", value = obj@updateSequence)
   }
 
-  return(.xmlDoc)
+  return(xmlDoc)
 }
 
 
-setMethod(f = "encodeRequestXML", signature = "SosDescribeSensor",
+setMethod(f = "encodeRequestXML", signature = signature(obj = "SosDescribeSensor"),
           definition = function(obj, sos, verbose = FALSE) {
             if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
@@ -1406,19 +1310,20 @@ setMethod("encodeRequestSOAP", "SosGetObservationById",
 setMethod(f = "encodeXML",
           signature = signature(obj = "SosEventTime", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
-            if (verbose) {
-              cat("[encodeXML]", class(obj), "\n")
-            }
+            if (verbose) cat("[encodeXML] SosEventTime", class(obj), "\n")
 
             .temporalOpsClass <- class(obj@temporalOps)
             if (!is.null(SosSupportedTemporalOperators()[[.temporalOpsClass]])) {
-              .eventTime <- XML::xmlNode(name = sosEventTimeName,
-                                    namespace = sos100NamespacePrefix)
-              .temporalOpsXML <- encodeXML(obj = obj@temporalOps,
-                                           sos = sos, verbose = verbose)
-              .eventTime$children[[1]] <- .temporalOpsXML
+              # FIXME: https://github.com/r-lib/xml2/issues/239
+              #eventTime <- xml2::xml_new_root(sosEventTimeName, xmlns = sos100Namespace)
+              eventTime <- xml2::read_xml(paste0("<", sosEventTimeName,
+                                                 " xmlns:", sos100NamespacePrefix, "=\"", sos100Namespace,
+                                                 "\" />"))
 
-              return(.eventTime)
+              temporalOpsXML <- encodeXML(obj = obj@temporalOps, sos = sos, verbose = verbose)
+              xml2::xml_add_child(eventTime, temporalOpsXML)
+
+              return(eventTime)
             }
             else {
               stop(paste("temporalOps type not supported:",
@@ -1432,19 +1337,21 @@ setMethod(f = "encodeXML",
           function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeXML]", class(obj), "\n")
 
-            .foi <- XML::xmlNode(name = sosFeatureOfInterestName,
-                            namespace = sos100NamespacePrefix)
+            # FIXME: https://github.com/r-lib/xml2/issues/239
+            #foi <- xml2::xml_new_root(sosEventTimeName, xmlns = sos100Namespace)
+            foi <- xml2::read_xml(paste0("<", sosFeatureOfInterestName,
+                                         " xmlns:", sos100NamespacePrefix, "=\"", sos100Namespace,
+                                         "\" />"))
 
             # switch between objectIDs and spatialOps
             if (!any(is.na(obj@objectIDs))) {
-              .ids <- lapply(X = obj@objectIDs, FUN = xmlNode,
-                             name = sosObjectIDName, namespace = sos100NamespacePrefix)
-              .foi <- XML::addChildren(node = .foi, kids = .ids)
+              for (id in obj@objectIDs) {
+                xml2::xml_add_child(foi, sosObjectIDName, id)
+              }
             }
             else if (!is.null(obj@spatialOps)) {
-              .spOp <- encodeXML(obj = obj@spatialOps, sos = sos,
-                                 verbose = verbose)
-              .foi <- XML::addChildren(node = .foi, kids = list(.spOp))
+              spOp <- encodeXML(obj = obj@spatialOps, sos = sos, verbose = verbose)
+              xml2::xml_add_child(foi, spOp)
             }
 
             return(.foi)

@@ -124,7 +124,8 @@ setMethod(f = "encodeXML",
   # FIXME: https://github.com/r-lib/xml2/issues/239
   #operation <- xml2::xml_new_root(nodeName,
   #                          xmlns = ogcNamespace)
-  tm <- xml2::read_xml(paste0("<", nodeName, " xmlns=\"", ogcNamespace, "\" />"))
+  tm <- xml2::read_xml(paste0("<", ogcNamespacePrefix, ":", nodeName,
+                              " xmlns:", ogcNamespacePrefix, "=\"", ogcNamespace, "\" />"))
 
   pn <- xml2::xml_add_child(tm, ogcPropertyNameName)
   xml2::xml_text(x = pn) <- propertyName

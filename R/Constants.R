@@ -55,8 +55,11 @@ sosObservationTypeName <- paste0(sos100NamespacePrefix, ":observationType")
 sosFeatureOfInterestTypeName <- paste0(sos100NamespacePrefix, ":featureOfInterestType")
 sosProcedureDescriptionFormat <- paste0(sos100NamespacePrefix, ":procedureDescriptionFormat")
 sosObservedAreaName <- paste0(sos100NamespacePrefix, ":observedArea")
+sosOfferingName <- paste0(sos100NamespacePrefix, ":offering")
+sosProcedureName <- paste0(sos100NamespacePrefix, ":procedure")
+sosObservationIdName <- paste0(sos100NamespacePrefix, ":ObservationId")
 
-                              #
+#
 # SOS v2.0 ----
 #
 sos200_version <- "2.0.0"
@@ -179,15 +182,13 @@ gml32Namespace <- "http://www.opengis.net/gml/3.2"
 smlNamespace <- "http://www.opengis.net/sensorML/1.0.1"
 sweNamespace <- "http://www.opengis.net/swe/1.0.1"
 xlinkNamespace <- "http://www.w3.org/1999/xlink"
-.sos100_NamespaceDefinitionsGetObs <- c(ows = "http://www.opengis.net/ows/1.1",
-                                        om = "http://www.opengis.net/om/1.0",
-                                        ogc = "http://www.opengis.net/ogc",
-                                        gml = "http://www.opengis.net/gml")
-.sos20_NamespaceDefinitions <- c(sams = "http://www.opengis.net/samplingSpatial/2.0",
-                                 sf = "http://www.opengis.net/sampling/2.0",
-                                 swes = "http://www.opengis.net/swes/2.0",
-                                 om20 = "http://www.opengis.net/om/2.0",
-                                 sos = "http://www.opengis.net/sos/2.0")
+saNamespace <- "http://www.opengis.net/sampling/1.0"
+omNamespace <- "http://www.opengis.net/om/1.0"
+
+samsNamespace <- "http://www.opengis.net/samplingSpatial/2.0"
+sf20Namespace <- "http://www.opengis.net/sampling/2.0"
+swesNamespace <- "http://www.opengis.net/swes/2.0"
+om20Namespace <- "http://www.opengis.net/om/2.0"
 
 sos200Namespace = "http://www.opengis.net/sos/2.0"
 
@@ -195,16 +196,24 @@ SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
     .all <- c(sos = sos100Namespace,
               xsi = xsiNamespace,
-              sos4R:::.sos100_NamespaceDefinitionsGetObs,
+              om = omNamespace,
               ows = owsNamespace,
               ogc = ogcNamespace,
               sml = smlNamespace,
               swe = sweNamespace,
               xlink = xlinkNamespace,
-              gml = gmlNamespace)
+              gml = gmlNamespace,
+              sa = saNamespace)
     return(.all[unique(names(.all))])
     } else if (version == sos200_version) {
-      .all <- c(sos4R:::.sos20_NamespaceDefinitions)
+      .all <- c(sams = samsNamespace,
+                sf = sf20Namespace,
+                swes = swesNamespace,
+                om = om20Namespace,
+                xsi = xsiNamespace,
+                xlink = xlinkNamespace,
+                sml = smlNamespace,
+                gml = gml32Namespace)
       return(.all[unique(names(.all))])
   } else {
     stop("Unsupported version", version)

@@ -163,19 +163,12 @@
   if (verbose) {
     cat("[.sosRequest_2.0.0] RESPONSE:\n")
     print(.response)
-    if(is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
+    if (is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
   }
 
-  if(length(.response) > 0 &
+  if (length(.response) > 0 &
      regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
-    if(verbose) cat("[.sosRequest_2.0.0] Got HTML, probably an error.\n")
-
-    # might still be KML with embedded HTML!
-    if(regexpr("(http://www.opengis.net/kml/)", .response) > 0) {
-      if(verbose) cat("[.sosRequest_2.0.0] Got KML! Can continue...\n")
-    }
-    else stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response,
-                    "\n\n"))
+    stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response, "\n\n"))
   }
 
   return(.response)

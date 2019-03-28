@@ -8,8 +8,8 @@ test_that("during", {
   encoded <- encodeXML(obj = during, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
-  expect_match(encodedString, "<PropertyName>om:samplingTime</PropertyName>")
-  expect_match(encodedString, "2019-01-01T00:00:00</gml:timePosition></gml:endPosition></gml:TimePeriod></TM_During>")
+  expect_match(encodedString, "<ogc:PropertyName>om:samplingTime</ogc:PropertyName>")
+  expect_match(encodedString, "2019-01-01T00:00:00</gml:timePosition></gml:endPosition></gml:TimePeriod></ogc:TM_During>")
 })
 
 test_that("bbox", {

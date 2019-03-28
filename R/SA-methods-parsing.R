@@ -31,11 +31,12 @@
 #
 #
 parseSamplingPoint <- function(obj, sos) {
-  .sampledFeatures <- xml2::xml_find_all(x = obj, xpath = saSampledFeatureName, ns = SosAllNamespaces())
+  .sampledFeatures <- as.list(xml2::xml_text(
+    xml2::xml_find_first(x = obj, xpath = gmlNameName, ns = SosAllNamespaces()))
+  )
   .position <- parsePosition(xml2::xml_child(x = obj, search = saPositionName, ns = SosAllNamespaces()), sos = sos)
-  .id <-xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
-  
-  .sp <- SaSamplingPoint(sampledFeatures = .sampledFeatures,
-                         position = .position, id = .id)
+  .id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
+
+  .sp <- SaSamplingPoint(sampledFeatures = .sampledFeatures, position = .position, id = .id)
   return(.sp)
 }

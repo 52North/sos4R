@@ -103,7 +103,7 @@ The method `SOS()` is a construction method for classes encapsulating a connecti
 It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class `SOS`.
 
 ```{r mySOS}
-mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp", binding = "KVP", useDCPs = FALSE)
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp", binding = "KVP")
 ```
 
 To create a SOS connection you only need the URL of the service (i.e. the URL endpoint which can be used for HTTP requests).
@@ -152,23 +152,38 @@ summary(mySOS)
 The `GetObservation` operation is the main data download request of the SOS, and the package's functional equivalent is `getObservation(..)`.
 You can build a request using the information from the offerings, as they are extracted from the capabilities document when a new connection is created.
 
-```{r offering_procedure}
+```{r offering}
 off.1 <- sosOfferings(mySOS)[[1]]
+summary(off.1)
+```
+
+```{r procedures}
 sosProcedures(off.1)
 ```
 
-```{r offering_obsprop}
+```{r obsprops}
 sosObservedProperties(off.1)
 ```
 
-Not all combinations off procedure, observed property and event time will deliver a result, but the following one should.
+```{r fois}
+sosFeaturesOfInterest(off.1)
+```
+
+Not all combinations of procedure, observed property, feature of interest, and event time will deliver a result, but the following one should.
 
 ```{r download}
-obs.1 <- getObservation(sos = mySOS, offering = off.1,
-	procedure = sosProcedures(off.1)[[1]],
+obs.1 <- getObservation(sos = mySOS,
+  offering = off.1,
+  procedure = sosProcedures(off.1)[[1]],
 	observedProperty = sosObservedProperties(off.1)[1],
-	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-19::2017-12-20"),
-	inspect = TRUE)
+	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-19::2017-12-20"))
+```
+
+You can then access the result data with the helper function `sosResult(..)`.
+
+```{r data}
+#sosResult(data)
+summary(sosResult(obs.1))
 ```
 
 ## Inspect Requests and Verbose Printing
@@ -180,12 +195,8 @@ These are available in all service operation calls.
 - **`verbose`** prints not only the requests, but also debugging and processing statements (e.g. intermediate steps during parsing).
 
 The option `verboseOutput` when using the method `SOS()` turns on the verbose setting for all subsequent requests made to the created connection unless deactivated in an operation call.
-By using `verboseOutput` you can also debug the automatic GetCapabilities operations when creating a new SOS connections.
-
-The output with these parameters enabled is too extensive to show within this document for actual GetObservation request.
 
 ```{r inspect}
-off.1 <- sosOfferings(mySOS)[[1]]
 obs.1 <- getObservation(sos = mySOS, offering = off.1,
 	procedure = sosProcedures(off.1)[[1]],
 	observedProperty = sosObservedProperties(off.1)[1],
@@ -200,6 +211,9 @@ getObservation(sos = mySOS, offering = off.1,
 	eventTime = sosCreateTime(sos = mySOS, time = "2018-01-01::2018-01-03"),
 	verbose = TRUE)
 ```
+
+By using `verboseOutput` you can also debug the automatic GetCapabilities operation when creating a new SOS connection.
+That output is too extensive to show within this document.
 
 ```{r verbose_global, eval=FALSE}
 verboseSOS <- SOS(sosUrl(mySOS),

@@ -38,11 +38,9 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 
   .parsingFunction <- sosParsers(sos)[[.name]]
   if (!is.null(.parsingFunction)) {
-    if (verbose) cat("[parseOM] matched name for parser is", .name, "\n") #, "with: "); print(.parsingFunction)
+    if (verbose) cat("[parseOM] Matched name for parser is", .name, "\n") #, "with: "); print(.parsingFunction)
     .om <- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
-    if (verbose) cat("[parseOM] Done with", .name, ":",
-                    #substr(toString(.om), 0, 200), "...\n")
-                    toString(.om), "\n")
+    if (verbose) cat("[parseOM] Done parsing\n")
   }
   else {
     warning(paste("[parseOM] No parsing function for given element", .name))
@@ -68,8 +66,7 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
 
     .href <- xml2::xml_attr(x = obj, attr = "href", default = NA_character_)
     if (!is.na(.href)) {
-      warning(paste("[parseObservationProperty] Only reference to Observation was returned:",
-                    .href))
+      warning(paste("[parseObservationProperty] Only reference to Observation was returned:", .href))
       .mResult <- OmObservationProperty(href = .href)
     }
     else {
@@ -137,8 +134,10 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
                                                verbose = verbose)
 
   if (!is.na(xml2::xml_child(x = obj, search = omSamplingTimeName, ns = SosAllNamespaces()))) {
-    .samplingTime <- parseTime(obj = xml2::xml_child(x = obj, search = omSamplingTimeName, ns = SosAllNamespaces()),
-                               format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
+    .samplingTime <- parseTime(obj = xml2::xml_child(x = obj,
+                                                     search = omSamplingTimeName,
+                                                     ns = SosAllNamespaces()),
+                               format = sosTimeFormat(sos = sos), verbose = verbose)
   } else {
     warning("om:samplingTime is mandatory in om:Observation, but is missing!")
     .samplingTime <- NULL
@@ -159,7 +158,7 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
   # optional elements
   if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
     .resultTime <- parseTime(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
-                             format = sosTimeFormat(sos = sos), verbose = verbose)[[1]]
+                             format = sosTimeFormat(sos = sos), verbose = verbose)
   }
   else {
     .resultTime <- NULL
@@ -358,29 +357,28 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
 
     if (verbose) cat("[parseFOI] inline FOI:", .name, "\n")
 
-    .foi <- switch(.name,
-                   saSamplingPointName = {
-                     .sp <- parseSamplingPoint(.feature, sos = sos)
-                     GmlFeatureProperty(feature = .sp)
-                   },
-                   saSamplingSurface = {
-                     warning("[parseFOI] No parsing for sa:SamplingSurface implemented!")
-                     GmlFeatureProperty(href = .name)
-                   },
-                   gmlFeatureCollectionName = {
-                     parseFeatureCollection(.feature, sos = sos)
-                   },
-                   wmlMonitoringPointName = {
-                     parseMonitoringPoint(.feature, sos = sos)
-                   },
-                   samsSamplingFeatureName = {
-                     parseSams200SamplingFeature(.feature, sos = sos)
-                   },
-                   {
-                     warning("[parseFOI] No parsing for given feature implemented!")
-                     GmlFeatureProperty(href = .name)
-                   }
-    )
+    # cannot use switch here, because it does not work with a ':' in the expresssion
+    if (.name == saSamplingPointName) {
+      .sp <- parseSamplingPoint(.feature, sos = sos)
+      .foi <- GmlFeatureProperty(feature = .sp)
+    }
+    else if (.name == gmlFeatureCollectionName) {
+      .foi <- parseFeatureCollection(.feature, sos = sos)
+    }
+    else if (.name == wmlMonitoringPointName) {
+      .foi <- parseMonitoringPoint(.feature, sos = sos)
+    }
+    else if (.name == samsSamplingFeatureName) {
+      .foi <- parseSams200SamplingFeature(.feature, sos = sos)
+    }
+    else if (.name == saSamplingSurface) {
+      warning("[parseFOI] No parsing for sa:SamplingSurface implemented!")
+      GmlFeatureProperty(href = .name)
+    }
+    else {
+      warning("[parseFOI] No parsing for given feature implemented!")
+      GmlFeatureProperty(href = .name)
+    }
   }
 
   return(.foi)
@@ -393,7 +391,7 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
 # handles time instant, time period, and time reference
 #
 parseTime <- function(obj, format, verbose = FALSE) {
-  if (verbose) cat("[parseTime]\n")
+  if (verbose) cat("[parseTime] Entering\n")
 
   .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName, ns = SosAllNamespaces())
   .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName, ns = SosAllNamespaces())

@@ -36,12 +36,11 @@ parseOwsOperation <- function(obj) {
   .dcpsXML <- xml2::xml_find_all(x = obj, xpath = owsDCPName, ns = SosAllNamespaces())
   .dcps <- list()
   for (.dcp in .dcpsXML) {
-    .http <- .dcp[[owsHTTPName]]
-    .endpoints <- c(xml2::xml_find_all(x = obj, xpath = owsGetName, ns = SosAllNamespaces()),
-                    xml2::xml_find_all(x = obj, xpath = owsPostName, ns = SosAllNamespaces()))
+    .http <- xml2::xml_child(x = .dcp, search = owsHTTPName, ns = SosAllNamespaces())
+    .endpoints <- xml2::xml_find_all(x = .http, xpath = paste0(owsGetName, "|", owsPostName), ns = SosAllNamespaces())
 
     for (.ep in .endpoints) {
-      .newEndpoint <- list(xml2::xml_attr(x = .ep, attr = "href"))
+      .newEndpoint <- list(xml2::xml_attr(x = .ep, attr = "xlink:href", ns = SosAllNamespaces()))
       names(.newEndpoint) <- xml2::xml_name(x = .ep, ns = SosAllNamespaces())
       .dcps <- c(.dcps, .newEndpoint)
     }
@@ -90,8 +89,10 @@ parseOwsOperation <- function(obj) {
     warning("metadata elements are NOT processed!")
   .metadata = list(NA)
 
-  .op <- OwsOperation(name = .name, DCPs = .dcps,
-                      parameters = .parameters, constraints = .constraints,
+  .op <- OwsOperation(name = .name,
+                      DCPs = .dcps,
+                      parameters = .parameters,
+                      constraints = .constraints,
                       metadata = .metadata)
   return(.op)
 }
@@ -102,7 +103,6 @@ parseOwsOperation <- function(obj) {
 parseOwsExceptionReport <- function(obj, verbose = FALSE) {
   if (verbose) cat("[parseOwsExceptionReport] Starting ...\n")
   .docRoot <- xml2::xml_root(x = obj)
-  ## print(.docRoot)
 
   .version <- xml2::xml_attr(x = .docRoot, attr = "version")
   .lang <- xml2::xml_attr(x = .docRoot, attr = "lang", default = NA_character_)
@@ -145,7 +145,6 @@ parseOwsException <- function(obj) {
 #
 #
 parseOwsServiceIdentification <- function(obj) {
-  .children <- xml2::xml_children(x = obj)
   .serviceType <- xml2::xml_text(xml2::xml_child(x = obj,
                                                  search = owsServiceTypeName,
                                                  ns = SosAllNamespaces()))

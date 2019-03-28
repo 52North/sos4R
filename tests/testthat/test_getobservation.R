@@ -37,3 +37,83 @@ test_that("creation temporal filter has a valueReference in SOS 2.0, but not for
   expect_match(request100, "&eventTime=2019-01-01")
   expect_match(request20, "&temporalFilter=om%3Atime%2C2019-01-01")
 })
+
+context("GetObservation: POX encoding")
+
+test_that("minimal", {
+  testsos <- SOS_Test(name = "getobspox")
+  getobs <- SosGetObservation(service = "ser",
+                              version = "ver",
+                              offering = "off",
+                              observedProperty = list("p1", "p2"),
+                              responseFormat = "fmt")
+  request <- encodeRequestXML(obj = getobs, sos = testsos)
+  expect_match(toString(request), 'service="ser"')
+  expect_match(toString(request), ' version="1.0.0"')
+  expect_match(toString(request), "<sos:offering>off</sos:offering>")
+  expect_match(toString(request), "<sos:observedProperty>p1</sos:observedProperty>")
+  expect_match(toString(request), "<sos:observedProperty>p2</sos:observedProperty>")
+  expect_match(toString(request), "<sos:responseFormat>fmt</sos:responseFormat>")
+  expect_equal(stringr::str_count(toString(request), "time"), 0)
+})
+
+test_that("with event time", {
+  testsos <- SOS_Test(name = "getobspox")
+  getobs <- SosGetObservation(service = "ser",
+                              version = "ver",
+                              offering = "off",
+                              observedProperty = list("p1", "p2"),
+                              responseFormat = "fmt",
+                              eventTime = sosCreateTime(sos = mySOS,
+                                                        time = "2017-12-19::2017-12-20"))
+  request <- encodeRequestXML(obj = getobs, sos = testsos)
+  expect_match(toString(request), 'service="ser"')
+  expect_match(toString(request), ' version="1.0.0"')
+  expect_match(toString(request), "<sos:offering>off</sos:offering>")
+  expect_match(toString(request), "<sos:observedProperty>p1</sos:observedProperty>")
+  expect_match(toString(request), "<sos:observedProperty>p2</sos:observedProperty>")
+  expect_match(toString(request), "<sos:responseFormat>fmt</sos:responseFormat>")
+  expect_equal(stringr::str_count(toString(request), "time"), 0)
+})
+
+context("GetObservation: integration tests")
+
+test_that("KVP", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", binding = "KVP")
+  off.1 <- sosOfferings(mySOS)[[1]]
+  obs.1 <- getObservation(sos = mySOS,
+                          offering = off.1,
+                          procedure = sosProcedures(off.1)[[1]],
+                          observedProperty = sosObservedProperties(off.1)[1],
+                          eventTime = sosCreateTime(sos = mySOS,
+                                                    time = "2017-12-19::2017-12-20"),
+                          #verbose = TRUE
+  )
+  expect_s4_class(obs.1, "OmObservationCollection")
+  expect_length(obs.1, 1)
+  expect_s4_class(obs.1[[1]], "OmObservation")
+  expect_equal(dim(sosResult(obs.1)), c(72, 2))
+})
+
+test_that("POX", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+               binding = "POX",
+               useDCPs = FALSE)
+  off.1 <- sosOfferings(mySOS)[[1]]
+  obs.1 <- getObservation(sos = mySOS,
+                          offering = off.1,
+                          procedure = sosProcedures(off.1)[[1]],
+                          observedProperty = sosObservedProperties(off.1)[1],
+                          eventTime = sosCreateTime(sos = mySOS,
+                                                    time = "2017-12-19::2017-12-20"),
+                          verbose = TRUE
+  )
+  expect_s4_class(obs.1, "OmObservationCollection")
+  expect_length(obs.1, 1)
+  expect_s4_class(obs.1[[1]], "OmObservation")
+  expect_equal(dim(sosResult(obs.1)), c(72, 2))
+})
