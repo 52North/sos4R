@@ -16,6 +16,9 @@ checks](https://cranchecks.info/badges/summary/sos4R)](https://cran.r-project.or
 Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/sos4R)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/52North/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/52North/sos4R)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 ## Documentation & Links
 
@@ -57,8 +60,6 @@ install.packages("devtools")
 devtools::install_github("52North/sos4R", ref = "dev")
 # To also install the vignettes run: devtools::install_github("52North/sos4R", build_vignettes = TRUE)
 ```
-
-The [DEV-README.md](DEV-README.md) outlines more details and conventions regarding the development of sos4R.
 
 ### Contributors
 

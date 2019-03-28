@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9043</span>
       </span>
     </div>
 
@@ -128,7 +128,35 @@
 
 <div id="sos4r-developer-documentation" class="section level1">
 
-<p>This file contains information for developers of the <a href="http://r-project.org/">R</a> package <code>sos4R</code>. Documentation for users can be found in the package’s vignette (see <code><a href="https://www.rdocumentation.org/packages/utils/topics/browseVignettes">browseVignettes("sos4R")</a></code>).</p>
+<!-- TOC START min:2 max:4 link:true update:true -->
+<ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#package-structure">Package structure</a></li>
+<li>
+<a href="#important-folders">Important Folders</a>
+<ul>
+<li><a href="#r">/R</a></li>
+<li><a href="#sandbox">/sandbox</a></li>
+</ul>
+</li>
+<li>
+<a href="#building-the-vignette-locally">Building the vignette locally</a>
+<ul>
+<li><a href="#the-goonline-option">The <code>.goOnline</code> option</a></li>
+</ul>
+</li>
+<li><a href="#classes">Classes</a></li>
+<li><a href="#tests">Tests</a></li>
+<li><a href="#using-docker">Using docker</a></li>
+<li>
+<a href="#add-features">Add features</a>
+<ul>
+<li><a href="#how-to-add-a-parser">How to add a parser</a></li>
+<li><a href="#how-to-add-an-encoder">How to add an encoder</a></li>
+</ul>
+</li>
+</ul>
+<!-- TOC END --><!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R --><p>This file contains information for developers of the <a href="http://r-project.org/">R</a> package <code>sos4R</code>. Documentation for users can be found in the package’s vignette (see <code><a href="https://www.rdocumentation.org/packages/utils/topics/browseVignettes">browseVignettes("sos4R")</a></code>).</p>
 <div id="requirements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#requirements" class="anchor"></a>Requirements</h2>
@@ -138,7 +166,7 @@
 <ul>
 <li>r-base-dev</li>
 <li>libxml2-dev</li>
-<li>libgdal1-dev</li>
+<li>libgdal-dev</li>
 <li>libproj-dev</li>
 <li>libgeos-dev</li>
 <li>texinfo</li>
@@ -159,11 +187,6 @@
 <strong>R packages</strong> (see fields Depends and Suggests in <code>DESCRIPTION</code>)</li>
 </ul>
 </div>
-<div id="package-structure" class="section level2">
-<h2 class="hasAnchor">
-<a href="#package-structure" class="anchor"></a>Package structure</h2>
-<!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R -->
-</div>
 <div id="contribute" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contribute" class="anchor"></a>Contribute</h2>
@@ -174,11 +197,10 @@
 <div id="development-versions-and-branches" class="section level2">
 <h2 class="hasAnchor">
 <a href="#development-versions-and-branches" class="anchor"></a>Development, versions, and branches</h2>
-<p>We use the <a href="https://en.wikipedia.org/wiki/Fork_and_pull_model">“fork &amp; pull” development model</a>. The development is managed with the following guidelines:</p>
 <ul>
 <li>Roadmap and release planning is done in <a href="https://github.com/52North/sos4R/projects">projects</a>.</li>
 <li>The <strong><code>master</code> branch</strong> is up to date with the version on CRAN. Bugfixes should be based on this branch.</li>
-<li>Tasks are developed in <a href="https://trunkbaseddevelopment.com/short-lived-feature-branches/">task or feature branches</a> based on the <strong><code>dev</code> branch</strong>.</li>
+<li>Tasks are developed in <a href="https://trunkbaseddevelopment.com/short-lived-feature-branches/">task or feature branches</a> based on the <strong><code>dev</code> branch</strong>. Pull requests are sent from the features branches to the dev branch once they are complete.</li>
 <li>Feature ideas as issues tagged <a href="https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">“enhancement”</a>.</li>
 <li>Bugs are issues tagged as <a href="https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Abug">“bugs”</a>.</li>
 <li>The package uses <a href="https://semver.org/"><strong>semantic versioning</strong></a>.
@@ -220,14 +242,14 @@
 <a href="#build-vignettes" class="anchor"></a>Build vignettes</h3>
 <p>The vignettes should build as part of the docs website or package check process. To build single vingettes manually you can use</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">rmarkdown<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/render">render</a></span>(<span class="st">"vignettes/sos4R-vignette-01-quickstart.Rmd"</span>)</a></code></pre></div>
-<p>You can also then copy the rendered file to the docs folder:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">cp</span> vignettes/*.html docs/</a></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pkgdown<span class="op">::</span><span class="kw"><a href="https://pkgdown.r-lib.org/reference/build_articles.html">build_article</a></span>(<span class="st">"sos4R-vignette-01-quickstart"</span>)</a></code></pre></div>
 <hr>
 </div>
 </div>
-<div id="package-structure-1" class="section level2">
+<div id="package-structure" class="section level2">
 <h2 class="hasAnchor">
-<a href="#package-structure-1" class="anchor"></a>Package structure</h2>
+<a href="#package-structure" class="anchor"></a>Package structure</h2>
 <p>sos4R follows the regular R extension package structure. General documentation about R package development can be found at the following two websites.</p>
 <ul>
 <li>R extension packages by Hadley: <a href="http://r-pkgs.had.co.nz/" class="uri">http://r-pkgs.had.co.nz/</a> (well written with tight coupling to devtools and RStudio)</li>
@@ -346,26 +368,29 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a></code></pre></div>
 <p>or by clicking the “Check” button in RStudio (which does more than just running the tests!).</p>
 </div>
+<div id="using-docker" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-docker" class="anchor"></a>Using docker</h2>
+<p>In the <a href="docker/">docker</a> folder, a Dockerfile is provided that can be used to set-up an isolated container just for sos4R development. This includes all required dependencies, RStudio as webapplication, and devtools. The current size of the image is ~4.02GB.</p>
+<ol>
+<li><p>Clone this repository.</p></li>
+<li><p>Change to the <code>docker</code> subfolder in any terminal of your choice.</p></li>
+<li><p>Perform the following command to build the image locally:<br><code>docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .</code>.<br><em>On windows</em>, you need to replace <code>$(date +%Y-%m-%d)</code> with something useful, like <code>2019-02-27</code>.</p></li>
+<li>Start the image as new container using the following command:</li>
+</ol>
+<pre><code>docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d sos4r-rstudio-dev:2019-02-27</code></pre>
+<p>You can start and stop the container by its name <code>sos4r-dev</code>.</p>
+<ol>
+<li><p>Point your browser to <a href="http://localhost:8787/" class="uri">http://localhost:8787/</a>.</p></li>
+<li><p>Login with <strong>Username</strong> <code>rstudio</code> and <strong>Password</strong> <code>r</code>.<br> If the password is not secure enough, please delete the container via <code>docker stop sos4r-dev; docker rm sos4r-dev</code> and re-run the above <code>docker run ...</code> with a different value for <code>PASSWORD</code>.</p></li>
+<li><p>Open the sos4R project via menu <code>File</code> → <code>Open Project</code> → open folder <code>sos4R</code> → select <code>sos4R.Rproj</code>.</p></li>
+<li><p>Start developing.</p></li>
+</ol>
+</div>
 <div id="add-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#add-features" class="anchor"></a>Add features</h2>
 <p>See <a href="#versions-and-branches">Versions and Branches</a> for information about the release flow. In your new feature branch, implement the feature. Add tests.</p>
-<div id="how-to-add-a-parser" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-add-a-parser" class="anchor"></a>How to add a parser</h3>
-<ul>
-<li>by element name</li>
-<li>by mime type</li>
-</ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>()</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># add a local parser</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"TimeseriesKVP"</span> =<span class="st"> </span><span class="cf">function</span>() { ... })</a></code></pre></div>
-</div>
-<div id="how-to-add-an-encoder" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-add-an-encoder" class="anchor"></a>How to add an encoder</h3>
-<p>…</p>
-</div>
 </div>
 <div id="releases" class="section level2">
 <h2 class="hasAnchor">
