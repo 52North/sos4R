@@ -65,15 +65,21 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  .responseString = sosRequest(sos = sos, request = .gda,
+  .responseString <- sosRequest(sos = sos, request = .gda,
                                verbose = verbose, inspect = inspect)
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.responseString),
-                   "bytes), parsing ...\n")
+  if (verbose) {
+    cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.responseString),
+        "bytes), parsing ...\n")
+    cat("[.getDataAvailability_1.0.0] Response string: \n'", .responseString, "'\n")
+  }
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Response string: \n'", .responseString, "'\n")
-
-  if (isXMLString(.responseString)) {
+  if (.isEmptyGetDataAvailabilityResponse(.responseString)) {
+    if(verbose)
+      cat("[.getDataAvailability_1.0.0] Received empty data availability response.", "\n")
+    return(list())
+  }
+  else if (isXMLString(.responseString)) {
 
     .response <- xmlParseDoc(.responseString, asText = TRUE, options = xmlParseOptions)
 
@@ -326,4 +332,8 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
                 .element, "'."))
   }
   return(.element)
+}
+
+.isEmptyGetDataAvailabilityResponse <- function(response = "") {
+  gsub(pattern = "\t|\r|\n", x = response, replacement = "") == sos200_emptyGetDataAvailabilityResponseString
 }

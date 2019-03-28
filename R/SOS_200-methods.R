@@ -309,7 +309,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   }
 }
 
-.isEmptyResponse <- function(response = "") {
+.isEmptyGetObservationResponse <- function(response = "") {
   gsub(pattern = "\t|\r|\n", x = response, replacement = "") == sos200_emptyGetObservationResponseString
 }
 
@@ -519,7 +519,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     # RETURN ###
     return(.obs)
   }
-  else if (.isEmptyResponse(.responseString)) {
+  else if (.isEmptyGetObservationResponse(.responseString)) {
     if(verbose)
       cat("[.getObservation_2.0.0] Received empty observation response.", "\n")
     return(list())

@@ -66,6 +66,12 @@ sos200_emptyGetObservationResponseString <-
          "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",
          "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
          "xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetObservation.xsd\"/>")
+sos200_emptyGetDataAvailabilityResponseString <-
+  paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+         "<gda:GetDataAvailabilityResponse xmlns:gda=\"http://www.opengis.net/sosgda/1.0\"",
+         " xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:swe=\"http://www.opengis.net/swe/2.0\"",
+         " xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"",
+         " xsi:schemaLocation=\"http://www.opengis.net/sosgda/1.0 http://waterml2.org/schemas/gda/1.0/gda.xsd\"/>")
 #
 # Core Operations Profile ----
 #
