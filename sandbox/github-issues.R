@@ -48,3 +48,9 @@ irceline <- SOS(url = "http://geo.irceline.be/sos/service",
                 version = sos200_version)
 irceline
 # works!
+
+sosTime(irceline)
+sosOfferings(irceline)
+# empty!
+# checking http://geo.irceline.be/sos/sos?request=GetCapabilities&service=SOS
+# and http://geo.irceline.be/sos/sos?request=GetCapabilities&service=SOS&version=1.0.0
