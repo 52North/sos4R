@@ -903,6 +903,16 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "SaSamplingPoint"),
             names(.coords) <- c(.names, sosDefaultColumnNameFeatureIdentifier)
             return(.coords)
           })
+setMethod(f = "sosCoordinates", signature = signature(obj = "SamsSamplingFeature"),
+          def = function(obj) {
+            .coords <- sosCoordinates(obj = obj@shape)
+            return(.coords)
+          })
+setMethod(f = "sosCoordinates", signature = signature(obj = "SamsShape"),
+          def = function(obj) {
+            .coords <- sosCoordinates(obj = obj@point)
+            return(.coords)
+          })
 setMethod(f = "sosCoordinates", signature = signature(obj = "GmlPointProperty"),
           def = function(obj) {
             .coords <- sosCoordinates(obj = obj@point)

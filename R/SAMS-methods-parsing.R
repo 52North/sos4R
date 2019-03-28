@@ -32,8 +32,8 @@
 # parseSamsShape ----
 #
 parseSamsShape <- function(obj, sos) {
-  #TODO other shape types, check syntax [[1]]
-  .point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = SosAllNamespaces()), sos = sos)
+  namespaces <- SosAllNamespaces(version = sos200_version)
+  .point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = namespaces), sos = sos)
 
   SamsShape(point = .point)
 }
@@ -42,17 +42,16 @@ parseSamsShape <- function(obj, sos) {
 # parseSams200SamplingFeature ----
 #
 parseSams200SamplingFeature <- function(obj, sos) {
+  namespaces <- SosAllNamespaces(version = sos200_version)
   .gmlid <- xml2::xml_attr(x = obj, attr = "id")
-  # TODO should we add checks here, e.g. if the element is really available, is only one element in the list?
-  # TODO Implement tuple with codespace and value for identifier and name, if required
 
-  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName, ns = SosAllNamespaces()))
-  .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = SosAllNamespaces()))
-  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfTypeName, ns = SosAllNamespaces()),
+  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName)) #, ns = namespaces))
+  .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = namespaces))
+  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfTypeName, ns = namespaces),
                           attr = "href")
-  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfSampledFeatureName, ns = SosAllNamespaces()),
+  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfSampledFeatureName, ns = namespaces),
                                     attr = "href")
-  .shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = SosAllNamespaces()), sos = sos)
+  .shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = namespaces), sos = sos)
   SamsSamplingFeature(id = .gmlid,
                       identifier = .identifier,
                       name = .name,

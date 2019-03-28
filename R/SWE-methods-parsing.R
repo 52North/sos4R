@@ -111,7 +111,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
       cat("[parseValues] Parsing field", paste(.currentField), "\n")
 
     # convert values to the correct types
-    .fieldDefinition <- .currentField[[.sosParseFieldDefinition]]
+    .fieldDefinition <- .currentField[["definition"]]
     .method <- .converters[[.fieldDefinition]]
     if (verbose) {
       cat("[parseValues] Using converter:\n")
@@ -120,14 +120,14 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 
     if (is.null(.method)) {
       # could still be a unit of measurement given, use as
-      if (!is.na(.currentField[.sosParseFieldUOM])) {
-        .method <- .converters[[.currentField[[.sosParseFieldUOM]]]]
+      if (!is.na(.currentField["uom"])) {
+        .method <- .converters[[.currentField[["uom"]]]]
         if (is.null(.method)) {
           # fallback option
           warning(paste("No converter for the unit of measurement ",
-                        .currentField[[.sosParseFieldUOM]],
+                        .currentField[["uom"]],
                         " with the definition ",
-                        .currentField[[.sosParseFieldDefinition]],
+                        .currentField[["definition"]],
                         "! Trying a default, but you can add one when creating a SOS using",
                         "SosDataFieldConvertingFunctions().\n"))
 
@@ -156,12 +156,12 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 
     # bind new and existing data:
     if (verbose) cat("[parseValues] Binding additional data.frame for",
-                    .currentField[[.sosParseFieldName]],
+                    .currentField[["name"]],
                     "-- value range", toString(range(.currentValues)), "\n")
     .newData <- data.frame(.currentValues)
 
     # create the names of the new data:
-    .newDataName <- .currentField[[.sosParseFieldName]]
+    .newDataName <- .currentField[["name"]]
     names(.newData) <- .cleanupColumnName(.newDataName)
 
     if (verbose) cat("[parseValues] Added column name:", names(.newData), "\n")
@@ -226,7 +226,7 @@ parseElementType <- function(obj, sos, verbose = FALSE) {
     # extract the fields, naming with attribute 'name'
     .parsedFields <- lapply(.fields, parseField, sos = sos,
                             verbose = verbose)
-    .names <- sapply(.parsedFields, "[", .sosParseFieldName)
+    .names <- sapply(.parsedFields, "[", "name")
     names(.parsedFields) <- .names
 
     if (verbose) cat("[parseElementType] Names of parsed fields:",
@@ -264,16 +264,8 @@ parseEncoding <- function(obj, sos, verbose = FALSE) {
 }
 
 #
-# unexchangeable sub-parsing functions ----
+# human readable versions of field names ----
 #
-.sosParseFieldName <- ".sosParseFieldName"
-.sosParseFieldDefinition <- ".sosParseFieldDefinition"
-.sosParseFieldUOM <- ".sosParseFieldUOM"
-.sosParseFieldCategoryName <- ".sosParseFieldCategoryName"
-.sosParseFieldValue <- ".sosParseFieldValue"
-.sosParseFieldCodeSpace <- ".sosParseFieldCodeSpace"
-
-# human readable versions of the names:
 .sosParseFieldReadable <- list(
   "name",
   "definition",
@@ -282,75 +274,70 @@ parseEncoding <- function(obj, sos, verbose = FALSE) {
   "category value",
   "category code space")
 names(.sosParseFieldReadable) <- list(
-  .sosParseFieldName,
-  .sosParseFieldDefinition,
-  .sosParseFieldUOM,
-  .sosParseFieldCategoryName,
-  .sosParseFieldValue,#
-  .sosParseFieldCodeSpace)
+  "name",
+  "definition",
+  "uom",
+  "category",
+  "value",
+  "codeSpace")
 
 #
 # Function creates a named character vector (using field names from variables
 # like ".sosParseFieldXYZ") with all information stored in a swe:field.
 #
 parseField <- function(obj, sos, verbose = FALSE) {
-  .field <- NULL
-  .name <- xml2::xml_attr(x = obj, attr = "name")
-  if (verbose) cat("[parseField] Parsing field description of ", .name, "\n")
+  field <- NULL
+  name <- xml2::xml_attr(x = obj, attr = "name", ns = SosAllNamespaces())
+  if (verbose) cat("[parseField] Parsing field description of ", name, "\n")
 
-  .innerField <- xml2::xml_child(x = obj)
-  .innerFieldName <- xml2::xml_name(x = .innerField, ns = SosAllNamespaces())
+  innerField <- xml2::xml_child(x = obj)
+  innerFieldName <- xml2::xml_name(x = innerField, ns = SosAllNamespaces())
 
   # Available options: Time, Text, Quantity, Category, Boolean
   # The parsed elements and fields are closely bound to 52N SOS (OMEncoder.java)
-  if (.innerFieldName == sweTimeName || .innerFieldName == sweTextName) {
-    .def <- xml2::xml_attr(x = .innerField, attr = "definition")
-
-    .field <- c(.sosParseFieldName = .name, .sosParseFieldDefinition = .def)
+  if (innerFieldName == sweTimeName || innerFieldName == sweTextName) {
+    def <- xml2::xml_attr(x = innerField, attr = "definition")
+    field <- c(name = name, definition = def)
   }
-  else if (.innerFieldName == sweQuantityName) {
-    .def <- xml2::xml_attr(x = .innerField, attr = "definition")
+  else if (innerFieldName == sweQuantityName) {
+    def <- xml2::xml_attr(x = innerField, attr = "definition", ns = SosAllNamespaces())
 
-    .uomXml <- xml2::xml_child(x = .innerField, search = sweUomName, ns = SosAllNamespaces())
-    if (!is.na(.uomXml)) {
-      .uom <- xml2::xml_attr(x = .uomXml, attr = "code")
+    child <- xml2::xml_child(x = innerField)
+    uom <- NA
+    if (sweUomName == xml2::xml_name(child, ns = SosAllNamespaces())) {
+      uom <- xml2::xml_attr(x = child, attr = "code")
     }
-    else {
-      warning(paste("swe:Quantity given without unit of measurement:", .name))
-      .uom <- NA_character_
-    }
-    .field <- c(.sosParseFieldName = .name,
-                .sosParseFieldDefinition = .def,
-                .sosParseFieldUOM = .uom)
+    field <- c(name = name, definition = def, uom = uom)
   }
-  else if (.innerFieldName == sweCategoryName) {
-    .catName <- xml2::xml_attr(x = .innerField, attr = "name")
-    .value <- xml2::xml_text(x = xml2::xml_child(x = .innerField,
-                                                 search = sweValueName,
-                                                 ns = SosAllNamespaces()))
-    .codeSpace <- xml2::xml_attr(x = xml2::xml_child(x = .innerField,
-                                                     search = sweCodeSpaceName,
-                                                     ns = SosAllNamespaces()),
-                                 attr = "type")
+  else if (innerFieldName == sweCategoryName) {
+    catName <- xml2::xml_attr(x = innerField, attr = "name")
+    definition <- xml2::xml_attr(x = innerField, attr = "definition")
+    value <- xml2::xml_text(x = xml2::xml_child(x = innerField,
+                                                search = sweValueName,
+                                                ns = SosAllNamespaces()))
+    codeSpace <- xml2::xml_attr(x = xml2::xml_child(x = innerField,
+                                                    search = sweCodeSpaceName,
+                                                    ns = SosAllNamespaces()),
+                                attr = "xlink:href",
+                                ns = SosAllNamespaces())
 
-    .field <- c(.sosParseFieldName = .name,
-                .sosParseFieldCategoryName = .catName,
-                .sosParseFieldValue = .value,
-                .sosParseFieldCodeSpace = .codeSpace)
+    field <- c(name = name,
+               category = catName,
+               definition = definition,
+               value = value,
+               codeSpace = codeSpace)
   }
-  else if (.innerFieldName == sweCountName) {
-    warning("Parsing of the given swe:field ", .innerFieldName,
-            " is not implemented! Please extend the parsing funtion of swe:elementType.")
-    .field <- c(name = .innerField)
+  else if (name == sweCountName) {
+    warning("Parsing of the given swe:field ", name, " is not implemented!")
+    field <- c(name = innerField)
   }
-  else if (.innerFieldName == sweDataRecordName) {
-    stop(paste("Parsing of nested swe:DataRecords is not supported!",
-               "Please extend the parsing funtion of swe:elementType."))
+  else if (name == sweDataRecordName) {
+    stop("Parsing of nested swe:DataRecords is not supported!")
   }
 
-  if (verbose) cat("[parseField] Parsed field", toString(.field), "\n")
+  if (verbose) cat("[parseField] Parsed field", toString(field), "\n")
 
-  return(.field)
+  return(field)
 }
 
 parseTextBlock <- function(obj) {

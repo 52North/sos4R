@@ -52,23 +52,29 @@ test_that("parse time field", {
   fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
 
   timeField <- parseField(obj = fieldsXml[[1]], sos = testsos)
-  expect_equal(timeField[[.sosParseFieldName]], "time")
-  expect_equal(timeField[[".sosParseFieldDefinition"]], "urn:ogc:property:time:iso8601")
+  expect_equal(timeField[["name"]], "time")
+  expect_equal(timeField[["definition"]], "urn:ogc:property:time:iso8601")
 })
 
 test_that("parse quantity field", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
   fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
 
-  quantityField <- parseField(obj = fieldsXml[[3]], sos = testsos)
+  quantityField <- parseField(obj = fieldsXml[[2]], sos = testsos)
+
+  expect_equal(quantityField[["name"]], "longitude")
+  expect_equal(quantityField[["definition"]], "urn:ogc:property:location:EPSG:4326:longitude")
+  expect_equal(quantityField[["uom"]], "deg")
 })
 
 test_that("parse category field", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
   fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
 
-  categoryField <- parseField(obj = fieldsXml[[6]], sos = testsos)
-
+  categoryField <- parseField(obj = fieldsXml[[5]], sos = testsos)
+  expect_equal(categoryField[["name"]], "MS")
+  expect_equal(categoryField[["definition"]], "urn:ogc:def:property:OGC:ChemicalPresenceInAirMS")
+  expect_equal(categoryField[["uom"]], "ppm")
 })
 
 test_that("parse data array (i.e. parse the values using encoding and fields", {

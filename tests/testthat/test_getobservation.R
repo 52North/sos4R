@@ -80,7 +80,7 @@ test_that("with event time", {
   expect_match(encodedString, "</ogc:TM_During></sos:eventTime>")
 })
 
-context("GetObservation: integration tests")
+context("GetObservation: integration tests\n")
 
 test_that("KVP", {
   skip_on_cran()

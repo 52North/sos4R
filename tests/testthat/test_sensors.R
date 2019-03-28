@@ -87,7 +87,7 @@ test_that("sp bbox can be created from boundedBy", {
   expect_match(toString(sp::bbox(sosBoundedBy(sml))), "7.270806, 7.370806, 51.447722, 51.557722")
 })
 
-context("DescribeSensor: integration tests")
+context("DescribeSensor: integration tests\n")
 
 test_that("sensor description can be requested", {
   skip_on_cran()

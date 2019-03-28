@@ -30,16 +30,15 @@
 context("utils")
 
 test_that(".sosFilterDCPs works", {
-	dcps <- c("Post" = "http://url/with/endpoint/one",
-			"Post" = "url.to/endpoint/two",
-			"Get" = "some.thing.com/different/")
+	dcps <- c("ows:Post" = "http://url/with/endpoint/one",
+			"ows:Post" = "url.to/endpoint/two",
+			"ows:Get" = "some.thing.com/different/")
 
-	expect_equals(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), 3)
-	expect_equivalent(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]], "url.to/endpoint/two")
-	expect_equal(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
-	             c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two"))
-	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
-	                  "http://url/with/endpoint/one")
+	expect_equal(length(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = "*")), 3)
+	expect_equivalent(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]], "url.to/endpoint/two")
+	expect_equal(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+	             c("ows:Post" = "http://url/with/endpoint/one", "ows:Post" = "url.to/endpoint/two"))
+	expect_equivalent(sos4R:::.sosFilterDCPs(dcps, list("POX" = "/one")), "http://url/with/endpoint/one")
 })
 
 test_that("addional KVPs are concatenated correctly", {
