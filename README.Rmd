@@ -56,6 +56,10 @@ devtools::install_github("52North/sos4R", ref = "dev")
 - [\@bpross-52n](https://github.com/bpross-52n)
 - [\@EHJ-52n](https://github.com/EHJ-52n)
 
+sos4R is a project of [52°North](https://52north.org).
+
+[![](https://52north.org/wp-content/uploads/2016/06/logo-main.png)](https://52north.org)
+
 ### Contact
 
 Do you have a question that is not anwsered in the links above? Contact Daniel: [daniel.nuest@uni-muenster.de](daniel.nuest@uni-muenster.de)
