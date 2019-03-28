@@ -1,5 +1,24 @@
 # sos4R developer documentation
 
+<!-- TOC START min:2 max:4 link:true update:true -->
+- [Requirements](#requirements)
+- [Package structure](#package-structure)
+- [Important Folders](#important-folders)
+  - [/R](#r)
+  - [/sandbox](#sandbox)
+- [Building the vignette locally](#building-the-vignette-locally)
+  - [The ``.goOnline`` option](#the-goonline-option)
+- [Classes](#classes)
+- [Tests](#tests)
+- [Using docker](#using-docker)
+- [Add features](#add-features)
+  - [How to add a parser](#how-to-add-a-parser)
+  - [How to add an encoder](#how-to-add-an-encoder)
+
+<!-- TOC END -->
+
+<!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R -->
+
 This file contains information for developers of the [R](http://r-project.org/) package `sos4R`.
 Documentation for users can be found in the package's vignette (see `browseVignettes("sos4R")`).
 
@@ -8,7 +27,7 @@ Documentation for users can be found in the package's vignette (see `browseVigne
 * **System packages (e.g. on Ubuntu 18.04)**
     * r-base-dev
     * libxml2-dev
-    * libgdal1-dev
+    * libgdal-dev
     * libproj-dev
     * libgeos-dev
     * texinfo
@@ -25,10 +44,6 @@ Documentation for users can be found in the package's vignette (see `browseVigne
     * texlive-pstricks
 * **R packages** (see fields Depends and Suggests in `DESCRIPTION`)
 
-## Package structure
-
-<!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R -->
-
 ## Contribute
 
 Please get in touch with the [community contact](https://52north.org/research/rd-communities/geostatistics/)
@@ -40,12 +55,9 @@ You can also dive right in and join the chat room: [![Join the chat at https://g
 
 ## Development, versions, and branches
 
-We use the ["fork & pull" development model](https://en.wikipedia.org/wiki/Fork_and_pull_model).
-The development is managed with the following guidelines:
-
 - Roadmap and release planning is done in [projects](https://github.com/52North/sos4R/projects).
 - The **`master` branch** is up to date with the version on CRAN. Bugfixes should be based on this branch.
-- Tasks are developed in [task or feature branches](https://trunkbaseddevelopment.com/short-lived-feature-branches/) based on the **`dev` branch**.
+- Tasks are developed in [task or feature branches](https://trunkbaseddevelopment.com/short-lived-feature-branches/) based on the **`dev` branch**. Pull requests are sent from the features branches to the dev branch once they are complete.
 - Feature ideas as issues tagged ["enhancement"](https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement).
 - Bugs are issues tagged as ["bugs"](https://github.com/52North/sos4R/issues?q=is%3Aissue+is%3Aopen+label%3Abug).
 - The package uses [**semantic versioning**](https://semver.org/).
@@ -92,10 +104,10 @@ To build single vingettes manually you can use
 rmarkdown::render("vignettes/sos4R-vignette-01-quickstart.Rmd")
 ```
 
-You can also then copy the rendered file to the docs folder:
+or
 
-```bash
-cp vignettes/*.html docs/
+```r
+pkgdown::build_article("sos4R-vignette-01-quickstart")
 ```
 
 ------
@@ -182,27 +194,44 @@ devtools::test()
 
 or by clicking the "Check" button in RStudio (which does more than just running the tests!).
 
+## Using docker
+
+In the [docker](docker/) folder, a Dockerfile is provided that can be used to
+set-up an isolated container just for sos4R development. This includes all
+required dependencies, RStudio as webapplication, and devtools. The current
+size of the image is ~4.02GB.
+
+1. Clone this repository.
+
+1. Change to the `docker` subfolder in any terminal of your choice.
+
+1. Perform the following command to build the image locally:<br />
+   `docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .`.<br />
+   *On windows*, you need to replace `$(date +%Y-%m-%d)` with something useful,
+   like `2019-02-27`.
+
+1. Start the image as new container using the following command:
+```
+docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d sos4r-rstudio-dev:2019-02-27
+```
+You can start and stop the container by its name `sos4r-dev`.
+
+1. Point your browser to [http://localhost:8787/](http://localhost:8787/).
+
+1. Login with **Username** `rstudio` and **Password** `r`.<br />
+   If the password is not secure enough, please delete the container
+  via `docker stop sos4r-dev; docker rm sos4r-dev` and re-run the
+  above `docker run ...` with a different value for `PASSWORD`.
+
+1. Open the sos4R project via menu `File` &rarr; `Open Project` &rarr; open folder `sos4R` &rarr; select `sos4R.Rproj`.
+
+1. Start developing.
+
 ## Add features
 
 See [Versions and Branches](#versions-and-branches) for information about the release flow.
 In your new feature branch, implement the feature.
 Add tests.
-
-### How to add a parser
-
-* by element name
-* by mime type
-
-```r
-SosParsingFunctions()
-# add a local parser
-SosParsingFunctions("TimeseriesKVP" = function() { ... })
-```
-
-### How to add an encoder
-
-...
-
 
 ## Releases
 

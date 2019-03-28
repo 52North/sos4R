@@ -16,3 +16,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^_pkgdown.yml
+sandbox
+sos4R-Ex.R
+sos4R.Rproj
+README.md
+docker

@@ -58,6 +58,8 @@ devtools::install_github("52North/sos4R", ref = "dev")
 # To also install the vignettes run: devtools::install_github("52North/sos4R", build_vignettes = TRUE)
 ```
 
+The [DEV-README.md](DEV-README.md) outlines more details and conventions regarding the development of sos4R.
+
 ### Contributors
 
   - [@nuest](https://github.com/nuest)
