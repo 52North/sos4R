@@ -42,6 +42,7 @@ webmockr::httr_mock()
 context("Parsing -> GetDataAvailability -> v1.0.0")
 
 test_that("parseGetDataAvailabilityResponse() returns an empty list if an empty response is received", {
+  webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
     webmockr::wi_th(
       headers = list("Accept" = "application/xml")
@@ -62,6 +63,7 @@ test_that("parseGetDataAvailabilityResponse() returns an empty list if an empty 
 })
 
 test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of DataAvailabilityMembers if a response is received", {
+  webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
     webmockr::wi_th(
       headers = list("Accept" = "application/xml")
