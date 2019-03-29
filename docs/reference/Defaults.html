@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9048</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -266,7 +266,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xcffa6a8&gt;
+#&gt; &lt;environment: 0xe23c958&gt;
 #&gt; 
 #&gt; $GetCapabilities
 #&gt; function (obj, sos) 
@@ -651,9 +651,8 @@
 #&gt; $`om:result`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     if (verbose) {
+#&gt;     if (verbose) 
 #&gt;         cat("[parseResult] Starting ...\n")
-#&gt;     }
 #&gt;     .result &lt;- NULL
 #&gt;     .children &lt;- xml2::xml_children(x = obj)
 #&gt;     if (verbose) 
@@ -756,7 +755,7 @@
 #&gt;                 "fields. \n")
 #&gt;         .parsedFields &lt;- lapply(.fields, parseField, sos = sos, 
 #&gt;             verbose = verbose)
-#&gt;         .names &lt;- sapply(.parsedFields, "[", .sosParseFieldName)
+#&gt;         .names &lt;- sapply(.parsedFields, "[", "name")
 #&gt;         names(.parsedFields) &lt;- .names
 #&gt;         if (verbose) 
 #&gt;             cat("[parseElementType] Names of parsed fields:", 
@@ -826,20 +825,19 @@
 #&gt;         if (verbose) 
 #&gt;             cat("[parseValues] Parsing field", paste(.currentField), 
 #&gt;                 "\n")
-#&gt;         .fieldDefinition &lt;- .currentField[[.sosParseFieldDefinition]]
+#&gt;         .fieldDefinition &lt;- .currentField[["definition"]]
 #&gt;         .method &lt;- .converters[[.fieldDefinition]]
 #&gt;         if (verbose) {
 #&gt;             cat("[parseValues] Using converter:\n")
 #&gt;             print(.method)
 #&gt;         }
 #&gt;         if (is.null(.method)) {
-#&gt;             if (!is.na(.currentField[.sosParseFieldUOM])) {
-#&gt;                 .method &lt;- .converters[[.currentField[[.sosParseFieldUOM]]]]
+#&gt;             if (!is.na(.currentField["uom"])) {
+#&gt;                 .method &lt;- .converters[[.currentField[["uom"]]]]
 #&gt;                 if (is.null(.method)) {
 #&gt;                   warning(paste("No converter for the unit of measurement ", 
-#&gt;                     .currentField[[.sosParseFieldUOM]], " with the definition ", 
-#&gt;                     .currentField[[.sosParseFieldDefinition]], 
-#&gt;                     "! Trying a default, but you can add one when creating a SOS using", 
+#&gt;                     .currentField[["uom"]], " with the definition ", 
+#&gt;                     .currentField[["definition"]], "! Trying a default, but you can add one when creating a SOS using", 
 #&gt;                     "SosDataFieldConvertingFunctions().\n"))
 #&gt;                   .method &lt;- .converters[["fallBack"]]
 #&gt;                 }
@@ -860,10 +858,10 @@
 #&gt;         .currentValues &lt;- .method(x = .currentValues, sos = sos)
 #&gt;         if (verbose) 
 #&gt;             cat("[parseValues] Binding additional data.frame for", 
-#&gt;                 .currentField[[.sosParseFieldName]], "-- value range", 
-#&gt;                 toString(range(.currentValues)), "\n")
+#&gt;                 .currentField[["name"]], "-- value range", toString(range(.currentValues)), 
+#&gt;                 "\n")
 #&gt;         .newData &lt;- data.frame(.currentValues)
-#&gt;         .newDataName &lt;- .currentField[[.sosParseFieldName]]
+#&gt;         .newDataName &lt;- .currentField[["name"]]
 #&gt;         names(.newData) &lt;- .cleanupColumnName(.newDataName)
 #&gt;         if (verbose) 
 #&gt;             cat("[parseValues] Added column name:", names(.newData), 
@@ -1243,7 +1241,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xcffa6a8&gt;
+#&gt; &lt;environment: 0xe23c958&gt;
 #&gt; </div><div class='input'><span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))</div><div class='output co'>#&gt; $GetCapabilities
 #&gt; function (obj, sos) 
 #&gt; {
@@ -1517,9 +1515,8 @@
 #&gt; $`om:result`
 #&gt; function (obj, sos, verbose = FALSE) 
 #&gt; {
-#&gt;     if (verbose) {
+#&gt;     if (verbose) 
 #&gt;         cat("[parseResult] Starting ...\n")
-#&gt;     }
 #&gt;     .result &lt;- NULL
 #&gt;     .children &lt;- xml2::xml_children(x = obj)
 #&gt;     if (verbose) 
@@ -1622,7 +1619,7 @@
 #&gt;                 "fields. \n")
 #&gt;         .parsedFields &lt;- lapply(.fields, parseField, sos = sos, 
 #&gt;             verbose = verbose)
-#&gt;         .names &lt;- sapply(.parsedFields, "[", .sosParseFieldName)
+#&gt;         .names &lt;- sapply(.parsedFields, "[", "name")
 #&gt;         names(.parsedFields) &lt;- .names
 #&gt;         if (verbose) 
 #&gt;             cat("[parseElementType] Names of parsed fields:", 
@@ -1692,20 +1689,19 @@
 #&gt;         if (verbose) 
 #&gt;             cat("[parseValues] Parsing field", paste(.currentField), 
 #&gt;                 "\n")
-#&gt;         .fieldDefinition &lt;- .currentField[[.sosParseFieldDefinition]]
+#&gt;         .fieldDefinition &lt;- .currentField[["definition"]]
 #&gt;         .method &lt;- .converters[[.fieldDefinition]]
 #&gt;         if (verbose) {
 #&gt;             cat("[parseValues] Using converter:\n")
 #&gt;             print(.method)
 #&gt;         }
 #&gt;         if (is.null(.method)) {
-#&gt;             if (!is.na(.currentField[.sosParseFieldUOM])) {
-#&gt;                 .method &lt;- .converters[[.currentField[[.sosParseFieldUOM]]]]
+#&gt;             if (!is.na(.currentField["uom"])) {
+#&gt;                 .method &lt;- .converters[[.currentField[["uom"]]]]
 #&gt;                 if (is.null(.method)) {
 #&gt;                   warning(paste("No converter for the unit of measurement ", 
-#&gt;                     .currentField[[.sosParseFieldUOM]], " with the definition ", 
-#&gt;                     .currentField[[.sosParseFieldDefinition]], 
-#&gt;                     "! Trying a default, but you can add one when creating a SOS using", 
+#&gt;                     .currentField[["uom"]], " with the definition ", 
+#&gt;                     .currentField[["definition"]], "! Trying a default, but you can add one when creating a SOS using", 
 #&gt;                     "SosDataFieldConvertingFunctions().\n"))
 #&gt;                   .method &lt;- .converters[["fallBack"]]
 #&gt;                 }
@@ -1726,10 +1722,10 @@
 #&gt;         .currentValues &lt;- .method(x = .currentValues, sos = sos)
 #&gt;         if (verbose) 
 #&gt;             cat("[parseValues] Binding additional data.frame for", 
-#&gt;                 .currentField[[.sosParseFieldName]], "-- value range", 
-#&gt;                 toString(range(.currentValues)), "\n")
+#&gt;                 .currentField[["name"]], "-- value range", toString(range(.currentValues)), 
+#&gt;                 "\n")
 #&gt;         .newData &lt;- data.frame(.currentValues)
-#&gt;         .newDataName &lt;- .currentField[[.sosParseFieldName]]
+#&gt;         .newDataName &lt;- .currentField[["name"]]
 #&gt;         names(.newData) &lt;- .cleanupColumnName(.newDataName)
 #&gt;         if (verbose) 
 #&gt;             cat("[parseValues] Added column name:", names(.newData), 

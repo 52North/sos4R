@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9048</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -316,7 +316,8 @@ Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
 <span class='no'>obsReq</span> <span class='kw'>&lt;-</span> <span class='fu'>SosGetObservation</span>(<span class='kw'>service</span> <span class='kw'>=</span> <span class='st'>"SOS"</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"1.0.0"</span>,
                             <span class='kw'>offering</span> <span class='kw'>=</span> <span class='st'>"temperatures"</span>,
                             <span class='kw'>observedProperty</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"urn:property:AirTemperature"</span>),
-                            <span class='kw'>responseFormat</span> <span class='kw'>=</span> <span class='no'>responseFormat</span>)</div><div class='output co'>#&gt;  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>obsReq</span>)</div><div class='output co'>#&gt; Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  temperatures 
+                            <span class='kw'>responseFormat</span> <span class='kw'>=</span> <span class='no'>responseFormat</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>obsReq</span>)</div><div class='output co'>#&gt; Object of class SosGetObservation:  service:  SOS , version:  1.0.0 , offering:  temperatures 
 #&gt; observered property:  urn:property:AirTemperature 
 #&gt; responseFormat(s):  text/xml;subtype=&amp;quot;om/1.0.0&amp;quot; , responseMode(s):  NA 
 #&gt; procedure(s) NA 
