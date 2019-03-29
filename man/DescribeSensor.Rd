@@ -77,8 +77,9 @@ describeSensorRequest <- SosDescribeSensor(service = "SOS", version = "1.0.0",
 print(describeSensorRequest)
 
 # encode the request in XML
-encodeRequestXML(describeSensorRequest)
-
+sos <- SOS_Test()
+encodeRequestXML(describeSensorRequest, sos)
+toString(encodeRequestXML(describeSensorRequest, sos))
 }
 
 \keyword{classes}
