@@ -314,7 +314,8 @@ setMethod(f = "sosCapabilitiesUrl",
 #
 .isExceptionReport <- function(obj) {
   if (inherits(obj, "xml_document")) {
-    return(owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = obj)))
+    name <- xml2::xml_name(x = xml2::xml_root(x = obj)) # intentionally without namespaces
+    return(owsExceptionReportNameOnly == name)
   }
   else if (is.character(obj) && startsWith(obj, "<?xml")) {
     return(grepl(obj, "ExceptionReport"))

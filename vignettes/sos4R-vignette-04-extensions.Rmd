@@ -23,7 +23,7 @@ vignette: >
 ---
 
 ```{r library_testsos}
-suppressPackageStartupMessages(library("sos4R"))
+library("sos4R")
 mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox",
              binding = "POX", dcpFilter = list("POX" = "/pox"))
 ```
@@ -179,18 +179,18 @@ If you want to _replace only selected parsers_ use the include parameter as desc
 You can also base your own parsing functions on a variety of existing parsing functions.
 For example you can replace the base function for `om:ObservationCollection`, element name `ObservationCollection`, but still use the parsing function for `om:Observation` within your own function if you include it in the parser list.
 The existing parsing functions are all named in the pattern `parse<ElementName>()`.
-Please be aware that some parsers contain require a parameter of class `SOS` upon which they might rely for example for formatting information.
+Please be aware that some parsers require a parameter `sos` of class `SOS` upon which they might rely for example for formatting information, and some also have `verbose` (type `logical`).
+In case of "unused arguments" errors, please try different signatures.
 
 ```{r parsers_load_or_download}
 # Create own parsing function:
-myER <- function(xml) {
+myER <- function(xml, sos, verbose) {
 	return("EXCEPTION!!!11")
 }
 myParsers <- SosParsingFunctions("ows:ExceptionReport" = myER)
-exceptionParserSOS <- SOS(sosUrl(mySOS),
+exceptionParserSOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox",
                           parsers = myParsers,
-                          binding = sosBinding(mySOS),
-                          dcpFilter = mySOS@dcpFilter)
+                          binding = "POX", useDCPs = FALSE)
 # Triggers exception:
 erroneousResponse <- getObservation(exceptionParserSOS,
                                     #verbose = TRUE,

@@ -60,3 +60,19 @@ test_that("text, code, and locator are parsed from second exception", {
   expect_equal(exceptionReport@exceptions[[2]]@exceptionCode, "NoApplicableCode")
   expect_equal(exceptionReport@exceptions[[2]]@locator, "@home")
 })
+
+context("Exception handling: intgration test")
+
+test_that("wrong parameters return exception to user", {
+  skip_on_cran()
+
+  sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+             binding = "POX", useDCPs = FALSE)
+  response <- getObservation(sos,
+                             offering = sosOfferings(sos)[[1]],
+                             observedProperty = list("Bazinga!"))
+  expect_s4_class(response, "OwsExceptionReport")
+  expect_length(response@exceptions, 1)
+  expect_match(toString(response@exceptions), "InvalidParameterValue")
+  expect_match(toString(response@exceptions), "Bazinga!")
+})
