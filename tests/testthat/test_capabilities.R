@@ -1,9 +1,3 @@
-parseXmlSnippet <- function(obj) {
-  doc <- xml2::read_xml(x = obj, options = SosDefaultParsingOptions())
-  docRoot <- xml2::xml_root(x = doc)
-  return(docRoot)
-}
-
 context("capabilities: composite phenomenon")
 
 compositePhenOffering <- '<sos:ObservationOffering gml:id="Water"
@@ -28,8 +22,8 @@ xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999
 </sos:ObservationOffering>'
 
 test_that("composite phenomenon offering is parsed correctly from snippet", {
-  doc5 <-  parseXmlSnippet(compositePhenOffering)
-  obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = doc5, xpath = sosObservedPropertyName)) #, verbose = TRUE)
+  doc <-  xml2::read_xml(x = compositePhenOffering)
+  obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName)) #, verbose = TRUE)
 
   expect_length(obs_prop, 2)
   expect_equal(obs_prop, list("WaterQuality", "AirQuality"))
@@ -87,8 +81,24 @@ test_that("CRS from boundedBy", {
   expect_match(sosGetCRS(mapserver)@projargs, "init=epsg:4326")
 })
 
-test_that("time", {
-  #sosTime(mapserver)
+test_that("time accessor function", {
+  time <- sosTime(mapserver)
+  expect_true(is.list(time))
+  expect_s4_class(time[["Water"]], "GmlTimePeriod")
+
+  offeringTime <- sosTime(sosOfferings(mapserver))
+  expect_true(is.list(offeringTime))
+  expect_s4_class(offeringTime[["Water"]], "GmlTimePeriod")
+  expect_match(toString(offeringTime[["Water"]]), "--> GmlTimePosition \\[ time: 2007-10-30 08")
+
+  offeringTimeConv <- sosTime(sosOfferings(mapserver), convert = TRUE)
+  expect_true(is.list(offeringTimeConv))
+  expect_true(is.list(offeringTimeConv[["Water"]]))
+  expect_named(offeringTimeConv[["Water"]], c("begin", "end"))
+  expect_s3_class(offeringTimeConv[["Water"]][["begin"]], "POSIXlt")
+
+  # applying sosTime to GmlTimePeriod results in conversion
+  expect_equal(sosTime(sosTime(mapserver)), sosTime(sosOfferings(mapserver), convert = TRUE))
   skip("Test not implemented yet.")
 })
 
@@ -100,8 +110,10 @@ test_that("offerings", {
 })
 
 test_that("bounds of offering", {
-  #sosBoundedBy(offs)
-  skip("Test not implemented yet.")
+  bounds <- sosBoundedBy(sosOfferings(mapserver))
+  expect_true(is.list(bounds))
+  expect_true(is.list(bounds[["Water"]]))
+  expect_named(bounds[["Water"]], c("srsName", "lowerCorner", "upperCorner"))
 })
 
 test_that("time of offering", {
@@ -143,14 +155,14 @@ xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSche
 </sos:ObservationOffering>'
 
 test_that("offering id is parsed correctly", {
-  doc <- parseXmlSnippet(axiomOffering)
+  doc <- xml2::read_xml(x = axiomOffering)
   obsProp <- parseSosObservedProperty(xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName))
   expect_equal(obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
   expect_equal(length(obsProp), 2)
 })
 
 test_that("can extract bbox from bounds of offering", {
-  doc <- parseXmlSnippet(axiomOffering)
+  doc <- xml2::read_xml(x = axiomOffering)
   testsos <- SOS_Test(name = "testbbox")
   offering <- parseSosObservationOffering(obj = doc, sos = testsos)
 
@@ -169,7 +181,7 @@ rangeXml <- '<ows:Range xmlns:ows="http://www.opengis.net/ows/1.1">
 </ows:Range>'
 
 test_that("range", {
-  doc <- parseXmlSnippet(rangeXml)
+  doc <- xml2::read_xml(x = rangeXml)
   range <- parseOwsRange(obj = doc)
   expect_equal(range@minimumValue, "2005-12-03T00:00:00.000+01:00")
   expect_equal(range@maximumValue, "2015-12-13T00:00:00.000+01:00")
@@ -209,32 +221,32 @@ operationXml <- '<ows:Operation name="GetCapabilities" xmlns:ows="http://www.ope
     </ows:Operation>'
 
 test_that("name", {
-  doc <- parseXmlSnippet(operationXml)
+  doc <- xml2::read_xml(x = operationXml)
   operation <- parseOwsOperation(obj = doc)
   expect_equal(sosName(operation), "GetCapabilities")
 })
 
 test_that("DCP", {
-  doc <- parseXmlSnippet(operationXml)
+  doc <- xml2::read_xml(x = operationXml)
   operation <- parseOwsOperation(obj = doc)
   expect_named(operation@DCPs, c("ows:Get", "ows:Post"))
   expect_equal(operation@DCPs[[2]], "http://sos/POST")
 })
 
 test_that("parameter names", {
-  doc <- parseXmlSnippet(operationXml)
+  doc <- xml2::read_xml(x = operationXml)
   operation <- parseOwsOperation(obj = doc)
   expect_named(operation@parameters, c("updateSequence", "AcceptVersions", "Sections", "AcceptFormats"))
 })
 
 test_that("parameter any value", {
-  doc <- parseXmlSnippet(operationXml)
+  doc <- xml2::read_xml(x = operationXml)
   operation <- parseOwsOperation(obj = doc)
   expect_equal(operation@parameters[["updateSequence"]], list(owsAnyValueName))
 })
 
 test_that("parameter allowed values", {
-  doc <- parseXmlSnippet(operationXml)
+  doc <- xml2::read_xml(x = operationXml)
   operation <- parseOwsOperation(obj = doc)
   expect_length(operation@parameters[["Sections"]], 6)
   expect_equal(operation@parameters[["AcceptFormats"]], list("text/xml", "application/zip"))
@@ -328,7 +340,7 @@ filterCapsXml <- '<sos:Filter_Capabilities xmlns:sos="http://www.opengis.net/sos
 testsos <- SOS_Test(name = "testfilter")
 
 test_that("spatial capabilities", {
-  doc <- parseXmlSnippet(filterCapsXml)
+  doc <- xml2::read_xml(x = filterCapsXml)
   filterCaps <- parseSosFilter_Capabilities(obj = doc, sos = testsos)
   expect_equal(length(filterCaps@spatial$`ogc:GeometryOperands`), 4)
   expect_equal(filterCaps@spatial$`ogc:GeometryOperands`[[3]], "gml:LineString")
@@ -337,7 +349,7 @@ test_that("spatial capabilities", {
 })
 
 test_that("temporal capabilities", {
-  doc <- parseXmlSnippet(filterCapsXml)
+  doc <- xml2::read_xml(x = filterCapsXml)
   filterCaps <- parseSosFilter_Capabilities(obj = doc, sos = testsos)
   expect_equal(length(filterCaps@temporal), 2)
   expect_named(filterCaps@temporal, c("ogc:TemporalOperands", "ogc:TemporalOperators"))
@@ -346,14 +358,14 @@ test_that("temporal capabilities", {
 })
 
 test_that("scalar capabilities", {
-  doc <- parseXmlSnippet(filterCapsXml)
+  doc <- xml2::read_xml(x = filterCapsXml)
   filterCaps <- parseSosFilter_Capabilities(obj = doc, sos = testsos)
   expect_equal(length(filterCaps@scalar), 8)
   expect_equal(filterCaps@scalar[[2]], "EqualTo")
 })
 
 test_that("id capabilities", {
-  doc <- parseXmlSnippet(filterCapsXml)
+  doc <- xml2::read_xml(x = filterCapsXml)
   filterCaps <- parseSosFilter_Capabilities(obj = doc, sos = testsos)
   expect_equal(filterCaps@id, list("ogc:FID", "ogc:EID"))
 })
@@ -374,27 +386,27 @@ serviceIdentXml <- '<ows:ServiceIdentification xmlns:ows="http://www.opengis.net
   </ows:ServiceIdentification>'
 
 test_that("title and abstract", {
-  doc <- parseXmlSnippet(serviceIdentXml)
+  doc <- xml2::read_xml(x = serviceIdentXml)
   serviceIdent <- parseOwsServiceIdentification(obj = doc)
   expect_equal(serviceIdent@title, "SOStitle")
   expect_equal(serviceIdent@abstract, "SOSabstract")
 })
 
 test_that("keywords", {
-  doc <- parseXmlSnippet(serviceIdentXml)
+  doc <- xml2::read_xml(x = serviceIdentXml)
   serviceIdent <- parseOwsServiceIdentification(obj = doc)
   expect_equal(length(serviceIdent@keywords), 1)
   expect_match(serviceIdent@keywords, "air temperature, air pressure")
 })
 
 test_that("fees", {
-  doc <- parseXmlSnippet(serviceIdentXml)
+  doc <- xml2::read_xml(x = serviceIdentXml)
   serviceIdent <- parseOwsServiceIdentification(obj = doc)
   expect_equal(serviceIdent@fees, "NONE")
 })
 
 test_that("access constraints", {
-  doc <- parseXmlSnippet(serviceIdentXml)
+  doc <- xml2::read_xml(x = serviceIdentXml)
   serviceIdent <- parseOwsServiceIdentification(obj = doc)
   expect_match(serviceIdent@accessConstraints, "http://open.data/sos.pdf")
 })
@@ -425,7 +437,7 @@ serviceProviderXml <- '<ows:ServiceProvider xmlns:ows="http://www.opengis.net/ow
   </ows:ServiceProvider>'
 
 test_that("name and site", {
-  doc <- parseXmlSnippet(serviceProviderXml)
+  doc <- xml2::read_xml(x = serviceProviderXml)
   serviceProv <- parseOwsServiceProvider(obj = doc)
   expect_match(serviceProv@providerName, "the_name")
   expect_match(serviceProv@providerSite, "http://www.de")

@@ -74,6 +74,8 @@ sos200ResponseFormatName <- paste0(sos200NamespacePrefix, ":responseFormat")
 sos200ResponseModeName <- paste0(sos200NamespacePrefix, ":responseMode")
 sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
 sos200FilterCapabilitiesName = paste0(sos200NamespacePrefix, ":filterCapabilities")
+sos200ResultTimeName <- paste0(sos200NamespacePrefix, ":resultTime")
+sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
 sos200_emptyGetObservationResponseString <-
   paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
          "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",

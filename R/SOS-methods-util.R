@@ -143,9 +143,6 @@ setMethod(f = "sosCreateTime",
     .end <- .times[[2]]
   else .end <- NULL
 
-  #	print(.start); print(.end);	print(nchar(.start)); print(nchar(.end));
-  #	str(.start); print(.end);
-
   if (is.null(.start) && is.null(.end)) {
     warning("Both start and endtime are null based on given time. Returning empty list!")
     return(list())
@@ -317,10 +314,10 @@ setMethod(f = "sosCapabilitiesUrl",
 #
 .isExceptionReport <- function(obj) {
   if (inherits(obj, "xml_document")) {
-    if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = obj)))
-      return(TRUE)
-    else
-      return(FALSE)
+    return(owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = obj)))
+  }
+  else if (is.character(obj) && startsWith(obj, "<?xml")) {
+    return(grepl(obj, "ExceptionReport"))
   }
   else if (is.list(obj)) {
     return(!is.null(obj[["exceptions"]]))

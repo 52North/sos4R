@@ -139,7 +139,7 @@
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-    .processResponse(.response, verbose)
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -155,8 +155,6 @@
     stop(paste("Unsupported method, has to be one of",
                SosSupportedBindings(), "but is", sos@binding))
   }
-
-  .content <- httr::content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
 
   return(.content)
 }

@@ -1,11 +1,5 @@
 context("parsing: observation collection")
 
-parseXmlSnippet <- function(obj) {
-  doc <- xml2::read_xml(x = obj, options = SosDefaultParsingOptions())
-  docRoot <- xml2::xml_root(x = doc)
-  return(docRoot)
-}
-
 testsos <- SOS_Test(name = "testobscoll")
 
 test_that("bounded by is parsed from collection", {
@@ -102,25 +96,25 @@ axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_
 testsos@capabilities <- axiomCaps
 
 test_that("composite phenomenon name is parsed from snippet", {
-  doc <- parseXmlSnippet(compositePhenomenon)
+  doc <- xml2::read_xml(x = compositePhenomenon)
   phen <- parseCompositePhenomenon(obj = doc) #, verbose = TRUE)
   expect_equal(phen@name, "WaterQuality")
 })
 
 test_that("composite phenomenon id is parsed from snippet", {
-  doc <- parseXmlSnippet(compositePhenomenon)
+  doc <- xml2::read_xml(x = compositePhenomenon)
   phen <- parseCompositePhenomenon(obj = doc)
   expect_equal(phen@id, "WaterQuality")
 })
 
 test_that("composite phenomenon dimension is parsed from snippet", {
-  doc <- parseXmlSnippet(compositePhenomenon)
+  doc <- xml2::read_xml(x = compositePhenomenon)
   phen <- parseCompositePhenomenon(obj = doc)
   expect_equal(phen@dimension, 4)
 })
 
 test_that("composite phenomenon components are parsed from snippet", {
-  doc <- parseXmlSnippet(compositePhenomenon)
+  doc <- xml2::read_xml(x = compositePhenomenon)
   phen <- parseCompositePhenomenon(obj = doc)
   expect_equal(length(phen@components), 2)
   expect_equal(phen@components[[2]]@href, "urn:ogc:def:property:OGC-SWE:2:ID")
@@ -135,7 +129,7 @@ samplingTimeInstantXml <- '<om:samplingTime xmlns:om="http://www.opengis.net/om/
   </om:samplingTime>'
 
 test_that("time instant", {
-  doc <- parseXmlSnippet(samplingTimeInstantXml)
+  doc <- xml2::read_xml(x = samplingTimeInstantXml)
   samplingTime <- parseTime(obj = doc, format = testsos@timeFormat)
   expect_equal(strftime(samplingTime@timePosition@time, format = "%Y%d"), "200505")
   expect_s3_class(sosTime(samplingTime), "POSIXlt")
@@ -149,7 +143,7 @@ samplingTimePeriodXml <- '<om:samplingTime xmlns:om="http://www.opengis.net/om/1
   </om:samplingTime>'
 
 test_that("time period", {
-  doc <- parseXmlSnippet(samplingTimePeriodXml)
+  doc <- xml2::read_xml(x = samplingTimePeriodXml)
   samplingTime <- parseTime(obj = doc, format = testsos@timeFormat)
   expect_equal(samplingTime@id, "phenomenonTime_1")
   expect_s4_class(samplingTime@beginPosition, "GmlTimePosition")
@@ -159,7 +153,7 @@ test_that("time period", {
 samplingTimeReferenceXml <- '<om:samplingTime xmlns:om="http://www.opengis.net/om/1.0" xlink:href="#abc" xmlns:xlink="http://www.w3.org/1999/xlink" />'
 
 test_that("time reference", {
-  doc <- parseXmlSnippet(samplingTimeReferenceXml)
+  doc <- xml2::read_xml(x = samplingTimeReferenceXml)
   samplingTime <- parseTime(obj = doc, format = testsos@timeFormat)
   expect_equal(samplingTime@href, "#abc")
 })
@@ -220,12 +214,11 @@ observationXml <- '<om:Observation gml:id="o_1553776324284" xmlns:om="http://www
 </om:Observation>'
 
 test_that("coordinates from observation", {
-  doc <- parseXmlSnippet(observationXml)
-
+  doc <- xml2::read_xml(x = observationXml)
   expect_warning(obs <- parseObservation(obj = doc, sos = testsos))
+  coords <- sosCoordinates(obs)
 
-  sosCoordinates(obs)
-
-  expect_equal(coords, "51.447722 7.270806")
+  expect_equal(coords$lat, 51.447722)
+  expect_equal(coords$lon, 7.270806)
+  expect_equal(as.character(coords$SRS), "urn:ogc:def:crs:EPSG::4326")
 })
-

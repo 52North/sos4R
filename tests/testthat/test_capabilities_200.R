@@ -53,7 +53,7 @@ swes_offering <- '<?xml version="1.0" encoding="UTF-8"?>
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
 xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
 xsi:schemaLocation="http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
-<sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+<sos:ObservationOffering>
 <swes:identifier>ws2500</swes:identifier>
 <swes:procedure>ws2500</swes:procedure>
 <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
@@ -112,6 +112,8 @@ test_that("offering is parsed correctly", {
   expect_equal(sosResponseFormats(obs)[[4]], "http://www.opengis.net/waterml-dr/2.0")
   expect_length(obs@featureOfInterestType, 2)
   expect_equal(obs@observationType[[1]], "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement")
+  expect_match(toString(obs@resultTime), "--> GmlTimePosition \\[ time: 2015-12-02")
+  expect_match(toString(obs@phenomenonTime), "--> GmlTimePosition \\[ time: 2015-12-02")
 })
 
 context("capabilities: NIWA 2.0 SOS")

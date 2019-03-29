@@ -235,10 +235,7 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
 # om:result
 #
 parseResult <- function(obj, sos, verbose = FALSE) {
-  if (verbose) {
-    cat("[parseResult] Starting ...\n")
-    #		print(obj)
-  }
+  if (verbose) cat("[parseResult] Starting ...\n")
   .result <- NULL
 
   .children <- xml2::xml_children(x = obj)

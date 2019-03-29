@@ -40,7 +40,6 @@ test_that("POX", {
   expect_s4_class(obs, "OmObservationCollection")
   expect_length(obs, 1)
 
-  skip("FIXME")
   #expect_s4_class(obs[[1]], "OmObservation")
   #expect_equal(sosResult(obs), 1.0)
 })

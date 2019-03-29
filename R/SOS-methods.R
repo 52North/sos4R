@@ -305,7 +305,7 @@ SosGetObservationById <- function(
     if (verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
     .response = httr::GET(url = .url)
-    .processResponse(.response, verbose)
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_1.0.0] ... done.\n")
   }
@@ -346,7 +346,7 @@ SosGetObservationById <- function(
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-    .processResponse(.response, verbose)
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
@@ -365,16 +365,8 @@ SosGetObservationById <- function(
 
   if (verbose) {
     cat("[.sosRequest_1.0.0] RESPONSE:\n")
-    print(.response)
-    if (is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
+    print(.content)
   }
-
-  if (length(.response) > 0 &
-     regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
-    stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response, "\n\n"))
-  }
-
-  .content = httr::content(x = .response, encoding = sosDefaultCharacterEncoding)
 
   return(.content)
 }
@@ -806,7 +798,6 @@ setMethod(f = "getObservationById",
   # not xml nor csv nore otherwise handled
   if (inspect) {
     cat("[.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response:\n'", .response, "'\n")
-    #cat("[.getObservation_1.0.0] Content-Type: ", .contentType)
     warning("Unknown response format!")
   }
 
@@ -1492,10 +1483,10 @@ setMethod(f = "checkRequest",
 )
 
 #
-# util functions for response handling ----
+# util functions for getting content from response ----
 #
 .processResponse <- function(response, verbose) {
-  .contentType <- httr::http_type(response)
+  contentType <- httr::http_type(response)
 
   if (!httr::has_content(response)) {
     stop("Response has no content: ", toString(response),
@@ -1506,11 +1497,27 @@ setMethod(f = "checkRequest",
   }
 
   if (verbose) cat("[.processResponse] Response status: ", httr::status_code(response),
-                   " | type: ", .contentType, "\n")
+                   " | type: ", contentType, "\n")
 
   if (httr::status_code(response) == 405)
     warning("Response is HTTP 405 - Method Not Allowed: Please check if endpoint and binding match.")
 
   httr::stop_for_status(response, "sending request to SOS")
-  return()
+
+  if (contentType == "text/plain") {
+    text <- httr::content(response)
+    if (length(text) > 0 &
+        regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", text) > 0) {
+      stop(paste("[sos4R] ERROR: Got HTML response!:\n", text, "\n\n"))
+    }
+
+    xml <- xml2::read_xml(text)
+    return(xml)
+  }
+  else if (contentType == "application/xml") {
+    xml <- httr::content(x = response, encoding = sosDefaultCharacterEncoding)
+    return(xml)
+  }
+
+  stop("Unsupported content type in response")
 }

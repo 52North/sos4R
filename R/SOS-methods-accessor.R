@@ -677,27 +677,17 @@ if (!isGeneric("sosTime"))
     standardGeneric("sosTime")
   })
 setMethod(f = "sosTime", signature = signature(obj = "SOS"),
-          def = function(obj) {
-            .caps <- sosCaps(obj)
-            .operations <- sosOperations(obj)
-            if(length(.operations) > 1 && !is.na(.operations)) {
-              .getOb <- .caps@operations@operations[[sosGetObservationName]]
-              .time <- .getOb@parameters$eventTime
-              if(is.list(.time) && length(.time) == 1)
-                return(.time[[1]])
-              return(.time)
-            }
-            else return(NA_character_)
+          definition = function(obj, convert = FALSE) {
+            times <- lapply(sosOfferings(obj), sosTime, convert = convert)
+            return(times)
           })
-setMethod(f = "sosTime", signature = signature(
-  obj = "SosObservationOffering"),
+setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering"),
   def = function(obj, convert = FALSE) {
-    if(!convert)
+    if (!convert)
       return(obj@time)
 
-    # TODO implement time conversion
     .time <- obj@time
-    if(is(.time, "GmlTimePeriod")) {
+    if (is(.time, "GmlTimePeriod")) {
       return(sosTime(.time))
     }
 
@@ -705,7 +695,7 @@ setMethod(f = "sosTime", signature = signature(
     return(obj@time)
   })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
-          def = function(obj) {
+          def = function(obj, ...) {
             .start <- NA
             .end <- NA
 
@@ -724,7 +714,7 @@ setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
             return(.period)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePosition"),
-          def = function(obj) {
+          def = function(obj, ...) {
             .time <- obj@time
             .newAttrs <- list("frame" = obj@frame,
                               "calendarEraName" = obj@calendarEraName,
@@ -733,7 +723,7 @@ setMethod(f = "sosTime", signature = signature(obj = "GmlTimePosition"),
             return(.time)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimeInstantProperty"),
-          def = function(obj) {
+          def = function(obj, ...) {
             if(is.na(obj@href))
               return(obj@href)
 
@@ -743,12 +733,12 @@ setMethod(f = "sosTime", signature = signature(obj = "GmlTimeInstantProperty"),
             return(NA)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimeInstant"),
-          def = function(obj) {
+          def = function(obj, ...) {
             return(sosTime(obj@timePosition))
           })
 setMethod(f = "sosTime", signature = signature(obj = "list"),
-          def = function(obj) {
-            return(lapply(X = obj, FUN = sosTime))
+          def = function(obj, convert = FALSE) {
+            return(lapply(X = obj, FUN = sosTime, convert = convert))
           })
 
 if (!isGeneric("sosTimeFormat"))

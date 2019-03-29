@@ -125,8 +125,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   .name <- xml2::xml_text(x = xml2::xml_child(x = .sosOffering,
                                               search = swesNameName,
                                               ns = namespaces))
-  if (sos@verboseOutput)
-    cat("[parseSosObservationOffering_200] id:", .id, "name:", .name, "\n")
+  if (sos@verboseOutput) cat("[parseSosObservationOffering_200] id:", .id, "name:", .name, "\n")
 
   # can be references or contained inline, so use lists
   .observableProperty <- parseSwesObservableProperty(xml2::xml_find_all(x = .sosOffering,
@@ -165,7 +164,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   .responseFormat <- as.list(.responseFormat)
   if (sos@verboseOutput) cat("[parseSosObservationOffering_200] responseFormat:", toString(.responseFormat), "\n")
 
-  .resultTimeXml <- xml2::xml_child(x = .sosOffering, search = sosResultTimeName, ns = namespaces)
+  .resultTimeXml <- xml2::xml_child(x = .sosOffering, search = sos200ResultTimeName, ns = namespaces)
   if (!is.na(.resultTimeXml)) {
     .resultTime <- parseTimeGeometricPrimitiveFromParent(obj = .resultTimeXml,
                                                          format = sosTimeFormat(sos))
@@ -176,7 +175,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
     .resultTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
   }
 
-  .phenomenonTimeXml <- xml2::xml_child(x = .sosOffering, search = sosPhenomenonTimeName, ns = namespaces)
+  .phenomenonTimeXml <- xml2::xml_child(x = .sosOffering, search = sos200PhenomenonTimeName, ns = namespaces)
   if (!is.na(.resultTimeXml)) {
     .phenomenonTime <- parseTimeGeometricPrimitiveFromParent(obj = .phenomenonTimeXml,
                                                              format = sosTimeFormat(sos))
@@ -188,7 +187,8 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   }
 
   .env <- xml2::xml_find_first(x = .sosOffering,
-                               xpath = paste0(sos200ObservedAreaName, "/", gmlEnvelopeName))
+                               xpath = paste0(sos200ObservedAreaName, "/", gmlEnvelopeName),
+                               ns = namespaces)
   if (!is.na(.env)) {
     .observedArea <- list(
       srsName = xml2::xml_attr(x = .env, attr = "srsName"),
@@ -213,7 +213,8 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   }
 
   .ob <- new("SosObservationOffering_2.0.0",
-             id = .id, name = .name,
+             id = .id,
+             name = .name,
              resultTime = .resultTime,
              phenomenonTime = .phenomenonTime,
              procedure = .procedure,
