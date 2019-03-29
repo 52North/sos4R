@@ -26,20 +26,17 @@
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
+context("Parsing -> GetDataAvailability -> v1.0.0")
 library(webmockr)
 library(httr)
 library(stringr)
 
-# todo move to common test function file
-parseXmlSnippet <- function(obj) {
-  .doc <- xmlParseDoc(obj, asText = TRUE, options = NOERROR)
-  .docRoot <- xmlRoot(.doc)
-  return(.docRoot)
+if(!exists("parseXmlSnippet", mode="function")) {
+  source("../util.R")
 }
 
 webmockr::enable("httr")
 webmockr::httr_mock()
-context("Parsing -> GetDataAvailability -> v1.0.0")
 
 test_that("parseGetDataAvailabilityResponse() returns an empty list if an empty response is received", {
   webmockr::stub_registry_clear()

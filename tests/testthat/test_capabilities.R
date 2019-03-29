@@ -26,13 +26,11 @@
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-parseXmlSnippet <- function(obj) {
-    .doc <- xmlParseDoc(obj, asText = TRUE, options = NOERROR)
-    .docRoot <- xmlRoot(.doc)
-    return(.docRoot)
+context("parsing: composite phenomenon")
+if(!exists("parseXmlSnippet", mode="function")) {
+  source("../util.R")
 }
 
-context("parsing: composite phenomenon")
 
 .compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml" 
 xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink"
