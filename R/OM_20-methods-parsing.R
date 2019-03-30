@@ -30,7 +30,7 @@
 #
 # Function extracts om:OM_Observation elements from sos:observationData elements.
 #
-parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
+parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
 
   obj <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = SosAllNamespaces())
 
@@ -76,7 +76,7 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
         #  should return only one featureOfInterest
         if(length(foiList) > 0){
           .featureOfInterest <- foiList[[1]]
-          featureCache[[.featureOfInterestIdentifier]] <<- .featureOfInterest
+          featureCache[[.featureOfInterestIdentifier]] <- .featureOfInterest
         }
       }
     }

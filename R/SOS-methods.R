@@ -548,6 +548,7 @@ setMethod(f = "getObservationById",
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) .filename <- paste(observationId,
                                           format(Sys.time(), sosDefaultFilenameTimeFormat),
+                                          ".xml",
                                           sep = "_")
       if (verbose) cat("[.getObservationById_1.0.0] Generating file name:", .filename, "\n")
     }
@@ -565,7 +566,8 @@ setMethod(f = "getObservationById",
 
   .response = sosRequest(sos = sos,
                          request = .go,
-                         verbose = verbose, inspect = inspect)
+                         verbose = verbose,
+                         inspect = inspect)
   if (inspect) cat("[.getObservationById_1.0.0] RESPONSE:\n", toString(.response), "\n")
 
   if (!is.null(.filename)) {
@@ -648,8 +650,9 @@ setMethod(f = "getObservationById",
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) .filename <- paste(.cleanupFileName(offeringId),
-                                           format(Sys.time(),
-                                                  sosDefaultFilenameTimeFormat), sep = "_")
+                                           format(Sys.time(), sosDefaultFilenameTimeFormat),
+                                           ".xml",
+                                           sep = "_")
       if (verbose) cat("[.getObservation_1.0.0] Generated file name:", .filename, "\n")
     }
   }
@@ -667,7 +670,6 @@ setMethod(f = "getObservationById",
                          request = .go,
                          verbose = verbose,
                          inspect = inspect)
-
   if (verbose) cat("[sos4R] Received response (object size:", object.size(.response), "bytes), parsing ...\n")
 
   if (inherits(.response, "xml_document")) {
@@ -684,10 +686,6 @@ setMethod(f = "getObservationById",
 
     if (.isExceptionReport(.response)) {
       return(.handleExceptionReport(sos, .response))
-    }
-
-    if (!is.na(responseFormat) && isTRUE(grep(pattern = "text/xml", x = responseFormat) != 1)) {
-      warning("Got XML string, but request did not require text/xml (or subtype).")
     }
 
     .parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
@@ -749,8 +747,8 @@ setMethod(f = "getObservationById",
 
     return(.obs)
   }
-  else {# response is NOT an XML string:
-    if (verbose) cat("[.getObservation_1.0.0] Did NOT get XML string as response, trying to parse with", responseFormat, "\n")
+  else {# response is NOT an XML document:
+    if (verbose) cat("[.getObservation_1.0.0] Did NOT get XML document as response, trying to parse with", responseFormat, "\n")
 
     if (is.na(responseFormat) || is.null(responseFormat)) {
       if (verbose) cat("[.getObservation_1.0.0] responseFormat is ",

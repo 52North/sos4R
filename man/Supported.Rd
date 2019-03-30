@@ -19,7 +19,7 @@ These functions can be used to access the supported parameters for a range of se
 }
 
 \usage{
-SosSupportedOperations()
+SosSupportedOperations(version = sos100_version)
 SosSupportedComparisonOperators()
 SosSupportedBindings()
 SosSupportedGeometryOperands()
@@ -29,6 +29,10 @@ SosSupportedResultModels()
 SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
 SosSupportedServiceVersions()
+}
+
+\arguments{
+  \item{version}{The SOS specification version.}
 }
 
 \details{

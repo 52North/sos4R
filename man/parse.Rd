@@ -30,7 +30,6 @@
 \alias{parsePosition}
 \alias{parseResult}
 \alias{parseSamplingPoint}
-\alias{parseSamplingTime}
 \alias{parseSensorML}
 \alias{parseSosCapabilities}
 \alias{parseSosFilter_Capabilities}
@@ -90,7 +89,7 @@ parseCSV(obj, verbose = FALSE)
 parseNoParsing(obj)
 parseCategoryObservation(obj, sos, verbose = FALSE)
 parseComplexObservation(obj, sos, verbose = FALSE)
-parseComponent(obj, sos, verbose = FALSE)
+parseComponent(obj, verbose = FALSE)
 parseCompositePhenomenon(obj, verbose = FALSE)
 parseCountObservation(obj, sos, verbose = FALSE)
 parseDataArray(obj, sos, verbose = FALSE)
@@ -107,16 +106,15 @@ parseObservationCollection(obj, sos, verbose)
 parseOM(obj, sos, verbose = FALSE)
 parseOwsException(obj)
 parseOwsExceptionReport(obj, verbose = FALSE)
-parseOwsOperation(obj)
+parseOwsOperation(obj, namespaces = SosAllNamespaces())
 parseOwsRange(obj)
-parseOwsServiceIdentification(obj)
+parseOwsServiceIdentification(obj, namespaces = SosAllNamespaces())
 parseOwsServiceProvider(obj)
 parsePhenomenonProperty(obj, verbose = FALSE)
 parsePoint(obj, sos)
 parsePosition(obj, sos)
 parseResult(obj, sos, verbose = FALSE)
 parseSamplingPoint(obj, sos)
-parseSamplingTime(obj, format, verbose = FALSE)
 parseSensorML(obj, sos, verbose = FALSE)
 parseSosCapabilities(obj, sos)
 parseSosFilter_Capabilities(obj, sos)
@@ -136,6 +134,7 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
   \item{obj}{The object to decode, normally objects of either \verb{xml_document}.}
   \item{sos}{An object of class \link{SOS-class}, which may be utilized/required by some parsing functions to access other parsing functions or encoding information.}
   \item{verbose}{A boolean value indication whether information is printed out to the console during the process - potentially a lot of output!}
+  \item{namespaces}{A vector of namespace prefixes and definitions to use.}
   \item{format}{A character string defining the time format to be used in \code{strptime}.}
   \item{values}{The values to be parsed in \code{parseValues(...)}.}
   \item{fields}{Field information  in \code{parseValues(...)}, a named list.}
@@ -173,7 +172,7 @@ Some of the functions are placeholders for future implementations!
 
 \examples{
 # parsing a XML string to an exception report object
-er.doc <- xmlParseDoc(paste0("<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\"",
+er.doc <- xml2::read_xml(paste0("<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\"",
   " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\"",
   " xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\">",
   "<ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\">",

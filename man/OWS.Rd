@@ -112,11 +112,11 @@ OwsGetCapabilities(service, acceptVersions, sections = sosDefaultGetCapSections,
 OwsOperation(name, DCPs, parameters = list(NA), constraints = list(NA),
              metadata = list(NA))
 OwsOperationsMetadata(operations, parameters = list(NA), constraints = list(NA), 
-                      extendedCapabilities = xmlNode(NA))
+                      extendedCapabilities = xml2::xml_missing())
 OwsRange(minimumValue = as.character(NA), maximumValue = as.character(NA), 
          rangeClosure = as.character(NA), spacing = as.character(NA))
 OwsServiceProvider(providerName, providerSite = as.character(NA), 
-                   serviceContact = xmlNode(NA))
+                   serviceContact = xml2::xml_missing())
 OwsServiceIdentification(serviceType, serviceTypeVersion, profile = c(NA), title, 
                          abstract = c(NA), keywords = c(NA), fees = as.character(NA),
                          accessConstraints = c(NA))

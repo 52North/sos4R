@@ -191,116 +191,50 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   if (verbose)
     cat("[.getFeatureOfInterest_2.0.0] REQUEST:\n\n", toString(.gfoi), "\n")
 
-  .responseString = sosRequest(sos = sos, request = .gfoi,
-                               verbose = verbose, inspect = inspect)
+  .response = sosRequest(sos = sos,
+                         request = .gfoi,
+                         verbose = verbose,
+                         inspect = inspect)
 
-  if (verbose) cat("[sos4R] Received response (size:", object.size(.responseString),
-      "bytes), parsing ...\n")
+  if (verbose) cat("[sos4R] Received response (size:", object.size(.response), "bytes), parsing ...\n")
 
-  # responseFormat starts with text/xml OR the response string is XML content,
-  # for example an exeption (which is xml even if request wants something else)
-  .contentType <- NA_character_
-  .contentType <- attributes(.responseString)[["Content-Type"]]
-
-  if (verbose) cat("[.getFeatureOfInterest_2.0.0] Content-Type:", .contentType, "\n")
-
-  if (nchar(.responseString) < 1) {
-    warning(paste("Response string has length ", nchar(.responseString),
-                  ". Please re-check query parameters."))
+  if (!is.null(.filename)) {
+    xml2::write_xml(x = .response, file = .filename)
+    if (verbose) cat("[.getFeatureOfInterest_2.0.0] Saved original document:", .filename, "\n")
   }
 
-  if (isXMLString(str = .responseString)) {
-    if (verbose) cat("[.getFeatureOfInterest_2.0.0] Got XML string as response, content type: '",
-                     toString(.contentType), "'.\n")
-
-    .hasSubtype <- FALSE
-    .contentSubtype <- NA
-    if (length(.contentType) < 1) {
-      if (verbose) cat("[.getFeatureOfInterest_2.0.0] No content type!",
-                      "Falling back to '", mimeTypeXML, "'\n")
-      .contentType <- mimeTypeXML
-    }
-    else if (length(.contentType) > 1) {
-      # check if subtype is present or take just the first
-      .subtypeIdx <- which(names(.contentType) == "subtype")
-      if (length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
-        .hasSubtype <- TRUE
-        .contentSubtype <- .contentType[[.subtypeIdx]]
-        if (verbose) cat("[.getFeatureOfInterest_2.0.0] Found mime subtype: ",
-                        toString(.contentSubtype), "'\n")
-      }
-      else if (verbose) cat(
-        "[.getFeatureOfInterest_2.0.0] More than one content type, ",
-        "no subtype detected : '",
-        toString(.contentType),
-        "'\n\tUsing the first one: '",
-        .contentType[[1]], "'\n")
-      .contentType <- .contentType[[1]]
-    }
-
-    .response <- .internalXmlRead(x = .responseString)
-    if (inspect) {
-      cat("[.getFeatureOfInterest_2.0.0] RESPONSE DOC:\n")
-      print(.response)
-    }
-    # select the parser and file ending based on the mime type FIRST
-    .fileEnding <- ".xml"
-    if (.contentType == mimeTypeXML) {
-      if (verbose) cat("[.getFeatureOfInterest_2.0.0] Got pure XML according to mime type.",
-                       "Trying to parse with default parser, see SosParsingFunctions().\n")
-      .parserName <- mimeTypeXML
-    }
-    else {
-      # fall back, or more of a default: the function name
-      .parserName <- sosGetFeatureOfInterestName
-    }
-
-    if (!is.null(.filename)) {
-      .filename <- paste(.filename, .fileEnding, sep = "")
-      xml2::write_xml(x = .response, file = .filename)
-
-      if (verbose) cat("[.getFeatureOfInterest_2.0.0] Saved original document:",
-                       .filename, "\n")
-    }
-
-    if (.isExceptionReport(.response)) {
-      return(.handleExceptionReport(sos, .response))
-    }
-
-    .parsingFunction <- sosParsers(sos)[[.parserName]]
-
-    if (verbose) {
-      cat("[.getFeatureOfInterest_2.0.0] Parsing with function ")
-      print(.parsingFunction)
-    }
-
-    .obs <- .parsingFunction(obj = .response, sos = sos,
-                             verbose = verbose)
-
-    .msg <- paste("[sos4R] Finished getFeatureOfInterest to", sos@url, "\n")
-
-    if (!is.null(.filename)) {
-      .msg <- paste(.msg,
-                    "[sos4R] Original document saved:", .filename, "\n")
-
-      .oldAttrs <- attributes(.obs)
-      .newAttrs <- list(.filename)
-      names(.newAttrs) <- list(sosAttributeFileName)
-      if (verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
-                      toString(.newAttrs), "(names",
-                      toString(names(.newAttrs)), ")\n")
-
-      attributes(.obs) <- c(.oldAttrs, .newAttrs)
-    }
-    cat(.msg)
-
-    # RETURN ###
-    return(.obs)
+  if (.isExceptionReport(.response)) {
+    return(.handleExceptionReport(sos, .response))
   }
-}
 
-.isEmptyResponse <- function(response = "") {
-  gsub(pattern = "\t|\r|\n", x = response, replacement = "") == sos200_emptyGetObservationResponseString
+  .parsingFunction <- sosParsers(sos)[[sosGetFeatureOfInterestName]]
+
+  if (verbose) {
+    cat("[.getFeatureOfInterest_2.0.0] Parsing with function ")
+    print(.parsingFunction)
+  }
+
+  .obs <- .parsingFunction(obj = .response, sos = sos,
+                           verbose = verbose)
+
+  .msg <- paste("[sos4R] Finished getFeatureOfInterest to", sos@url, "\n")
+
+  if (!is.null(.filename)) {
+    .msg <- paste(.msg,
+                  "[sos4R] Original document saved:", .filename, "\n")
+
+    .oldAttrs <- attributes(.obs)
+    .newAttrs <- list(.filename)
+    names(.newAttrs) <- list(sosAttributeFileName)
+    if (verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
+                    toString(.newAttrs), "(names",
+                    toString(names(.newAttrs)), ")\n")
+
+    attributes(.obs) <- c(.oldAttrs, .newAttrs)
+  }
+  cat(.msg)
+
+  return(.obs)
 }
 
 #
@@ -326,14 +260,13 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     else if (is.logical(saveOriginal) && saveOriginal) {
       .filename <- paste(.cleanupFileName(offeringId),
                          format(Sys.time(), sosDefaultFilenameTimeFormat),
+                         ".xml",
                          sep = "_")
       if (verbose) cat("[.getObservation_2.0.0] Generated file name:", .filename, "\n")
     }
   }
 
-  if (verbose)
-    cat("[.getObservation_2.0.0] to ", sos@url, " with offering ",
-        offeringId, "\n")
+  if (verbose) cat("[.getObservation_2.0.0] to ", sos@url, " with offering ", offeringId, "\n")
 
   .go <- .createGetObservation_2.0.0(sos, offeringId, observedProperty,
                                      responseFormat, srsName, eventTime,	procedure, featureOfInterest,
@@ -342,109 +275,32 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                                      verbose, inspect,
                                      saveOriginal)
 
-  if (verbose)
-    cat("[.getObservation_2.0.0] REQUEST:\n\n", toString(.go), "\n")
+  if (verbose)cat("[.getObservation_2.0.0] REQUEST:\n\n", toString(.go), "\n")
 
-  .responseString = sosRequest(sos = sos,
+  .response = sosRequest(sos = sos,
                          request = .go,
-                         verbose = verbose, inspect = inspect)
+                         verbose = verbose,
+                         inspect = inspect)
 
-  if (verbose) cat("[.getObservation_2.0.0] Received response (size:",
-                   object.size(.responseString), "bytes), parsing ...\n")
+  if (verbose) cat("[.getObservation_2.0.0] Received response (size:", object.size(.response), "bytes), parsing ...\n")
 
-  # responseFormat starts with text/xml OR the response string is XML content,
-  # for example an exception (which is xml even if request wants something else
-  .contentType <- NA_character_
-  .contentType <- attributes(.responseString)[["Content-Type"]]
-
-  if (verbose) cat("[.getObservation_2.0.0] Content-Type:", .contentType, "\n")
-
-  if (nchar(.responseString) < 1) {
-    warning(paste("Response string has length ", nchar(.responseString),
-                  ". Please re-check query parameters."))
+  if (!is.null(.filename)) {
+    xml2::write_xml(x = .response, file = .filename)
+    if (verbose) cat("[.getObservation_2.0.0] Saved original document:", .filename, "\n")
   }
 
-  if (isXMLString(str = .responseString)) {
-    if (verbose) cat("[.getObservation_2.0.0] Got XML string as response, content type: '",
-                     toString(.contentType), "'.\n")
+  if (.isExceptionReport(.response)) {
+    return(.handleExceptionReport(sos, .response))
+  }
 
-    .hasSubtype <- FALSE
-    .contentSubtype <- NA
-    if (length(.contentType) < 1) {
-      if (verbose) cat("[.getObservation_2.0.0] No content type!",
-                      "Falling back to '", mimeTypeXML, "'\n")
-      .contentType <- mimeTypeXML
-    }
-    else if (length(.contentType) > 1) {
-      # check if subtype is present or take just the first
-      .subtypeIdx <- which(names(.contentType) == "subtype")
-      if (length(.subtypeIdx) > 0 && .subtypeIdx > 0) {
-        .hasSubtype <- TRUE
-        .contentSubtype <- .contentType[[.subtypeIdx]]
-        if (verbose) cat("[.getObservation_2.0.0] Found mime subtype: ",
-                        toString(.contentSubtype), "'\n")
-      }
-      else if (verbose) cat(
-        "[.getObservation_2.0.0] More than one content type, ",
-        "no subtype detected : '",
-        toString(.contentType),
-        "'\n\tUsing the first one: '",
-        .contentType[[1]], "'\n")
-      .contentType <- .contentType[[1]]
-    }
-
-    .response <- .internalXmlRead(x = .responseString)
-    if (inspect) {
-      cat("[.getObservation_2.0.0] RESPONSE DOC:\n")
-      print(.response)
-    }
-
-    # select the parser and file ending based on the mime type FIRST
-    .fileEnding <- ".xml"
-    if (.contentType == mimeTypeXML) {
-      if (.hasSubtype && .contentSubtype == mimeSubtypeOM) {
-        if (verbose)
-          cat("[.getObservation_2.0.0] Got OM according to mime type.\n")
-        .parserName <- mimeTypeOM
-      }
-      else {
-        if (verbose)
-          cat("[.getObservation_2.0.0] Got pure XML according to mime type.",
-              "Trying to parse with default parser, see SosParsingFunctions().\n")
-        .parserName <- mimeTypeXML
-      }
-    }
-    else if (.contentType == mimeTypeKML) {
-      if (verbose) cat("[.getObservation_2.0.0] Got KML according to mime type.\n")
-
-      .fileEnding <- ".kml"
-      .parserName <- mimeTypeKML
-    }
-    else {
-      # fall back, or more of a default: the function name
-      .parserName <- sosGetObservationName
-    }
-
-    if (!is.null(.filename)) {
-      .filename <- paste(.filename, .fileEnding, sep = "")
-      xml2::write_xml(x = .response, file = .filename)
-
-      if (verbose) {
-        cat("[.getObservation_2.0.0] Saved original document:",
-            .filename, "\n")
-      }
-    }
-
-    if (.isExceptionReport(.response)) {
-      return(.handleExceptionReport(sos, .response))
-    }
-
+  if (inherits(.response, "xml_document")) {
+    if (verbose) cat("[.getObservation_1.0.0] Got XML document as response.\n")
     if ( !is.na(responseFormat) &&
         isTRUE(grep(pattern = "text/xml", x = responseFormat) != 1)) {
       warning("Got XML string, but request did not require text/xml (or subtype).")
     }
 
-    .parsingFunction <- sosParsers(sos)[[.parserName]]
+    .parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
 
     if (verbose) {
       cat("[.getObservation_2.0.0] Parsing with function ")
@@ -507,34 +363,21 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     }
     cat(.msg)
 
-    # RETURN ###
     return(.obs)
   }
-  else if (.isEmptyResponse(.responseString)) {
+  else {# response is NOT an XML document:
     if (verbose)
-      cat("[.getObservation_2.0.0] Received empty observation response.", "\n")
-    return(list())
-  }
-  else { # response is NOT an XML string:
-    if (verbose)
-      cat("[.getObservation_2.0.0] Did NOT get XML string as response, trying to parse with",
+      cat("[.getObservation_2.0.0] Did NOT get XML document as response, trying to parse with",
           responseFormat, "\n")
-
-    if (is.na(responseFormat) || is.null(responseFormat)) {
-      if (verbose)
-        cat("[.getObservation_2.0.0] responseFormat is ",
-            responseFormat, " >>> returning response string...\n")
-      return(.responseString)
-    }
 
     if (mimeTypeCSV == responseFormat) {
       if (inspect) {
         cat("[.getObservation_2.0.0] CSV RESPONSE:\n")
-        print(.responseString)
+        print(.response)
       }
 
       .parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
-      .csv <- .parsingFunction(obj = .responseString, verbose = verbose)
+      .csv <- .parsingFunction(obj = .response, verbose = verbose)
 
       if (!is.null(.filename)) {
         .filename <- paste(file = .filename, ".csv", sep = "")
@@ -569,17 +412,16 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   # not xml nor csv nore otherwise handled
   if (inspect) {
     cat("[.getObservation_2.0.0] UNKNOWN RESPONSE FORMAT; Response string: \n'")
-    cat(.responseString, "'\n")
-    cat("[.getObservation_2.0.0] Content-Type: ", .contentType)
+    print(.response)
     warning("Unknown response format!")
   }
 
   if (!is.null(.filename)) {
-    save(.responseString, file = .filename)
+    save(.response, file = .filename)
     cat("[sos4R] Saved original document:", .filename)
   }
 
-  return(.responseString)
+  return(.response)
 }
 
 #
@@ -597,7 +439,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
                                  observedProperty = observedProperty,
                                  responseFormat =  responseFormat,
                                  srsName = srsName,
-                                 eventTime = .eventTime,
+                                 eventTime = eventTime,
                                  procedure = procedure,
                                  featureOfInterest = featureOfInterest,
                                  result = result,

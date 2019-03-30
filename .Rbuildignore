@@ -22,4 +22,4 @@ sos4R.Rproj
 README.md
 docker
 ^\.vscode$
-^cache/$
+^cache$

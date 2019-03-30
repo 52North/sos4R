@@ -232,7 +232,6 @@ parseSosObservationOffering_200 <- function(obj, sos) {
 
 }
 
-
 parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
   if (sos@verboseOutput) {
     cat("[parseGetObservationResponse] entering... \n")
@@ -242,11 +241,12 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
   .observationsXML <- xml2::xml_find_all(x = obj,
                                          xpath = "sos20:observationData",
                                          ns = SosAllNamespaces(version = sos200_version))
-  featureCache <<- list()
+  featureCache <- list()
   .observations <- sapply(.observationsXML,
                          parseObservation_2.0,
-                         sos = sos)
-  featureCache <<- list()
+                         sos = sos,
+                         featureCache = featureCache)
+
   return(.observations)
 }
 

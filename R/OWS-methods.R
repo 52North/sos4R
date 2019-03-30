@@ -113,7 +113,7 @@ OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
 
 OwsServiceProvider <- function(providerName,
                                providerSite = as.character(NA),
-                               serviceContact = xml2::xml_new_document()) {
+                               serviceContact = xml2::xml_missing()) {
   new("OwsServiceProvider", providerName = providerName,
       providerSite = providerSite, serviceContact = serviceContact)
 }
@@ -121,7 +121,7 @@ OwsServiceProvider <- function(providerName,
 OwsOperationsMetadata <- function(operations,
                                   parameters = list(NA),
                                   constraints = list(NA),
-                                  extendedCapabilities = xml2::xml_new_document()) {
+                                  extendedCapabilities = xml2::xml_missing()) {
   new("OwsOperationsMetadata", operations = operations,
       parameters = parameters, constraints = constraints,
       extendedCapabilities = extendedCapabilities)
