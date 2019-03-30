@@ -87,14 +87,30 @@ test_that("parse category field", {
   expect_equal(categoryField[["codeSpace"]], "test_unit_6")
 })
 
-test_that("parse data array (i.e. parse the values using encoding and fields", {
+test_that("parse data array finds all data", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
   dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray", ns = SosAllNamespaces())
 
-  dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos)
+  expect_warning(
+    dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos),
+    "test_unit_6"
+  )
 
-  expect_equal(collection@members[[1]]@id, "1234")
-  expect_true(is.na(collection@members[[2]]@id))
+  expect_s3_class(dataArray, "data.frame")
+  expect_named(dataArray, c("time", "longitude", "latitude", "DPM", "MS"))
+  expect_length(dataArray, 5)
+})
+
+test_that("parse data array has correct classes for fields", {
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray", ns = SosAllNamespaces())
+
+  expect_warning(
+    dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos),
+    "test_unit_6"
+  )
+
+  expect_equivalent(lapply(dataArray, class), list(c("POSIXct", "POSIXt"), "numeric", "numeric", "numeric", "factor"))
 })
 
 context("parsing: composite phenomenon")

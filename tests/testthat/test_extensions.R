@@ -7,6 +7,7 @@ test_that("replacing a parsing function (integration test)", {
     return("EXCEPTION!!!11")
   }
   myParsers <- SosParsingFunctions("ows:ExceptionReport" = myER)
+  cat("\n")
   exceptionParserSOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
                             parsers = myParsers,
                             binding = "POX", useDCPs = FALSE)

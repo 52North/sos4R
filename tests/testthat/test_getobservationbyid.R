@@ -43,7 +43,7 @@ test_that("POX (SOS 1.0.0)", {
                binding = "POX", useDCPs = FALSE)
   obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/1",
                             #verbose = TRUE,
-                            inspect = TRUE
+                            #inspect = TRUE
                             )
   data <- sosResult(obs)
   expect_s4_class(obs, "OmObservationCollection")

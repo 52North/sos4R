@@ -61,7 +61,7 @@ test_that("text, code, and locator are parsed from second exception", {
   expect_equal(exceptionReport@exceptions[[2]]@locator, "@home")
 })
 
-context("Exception handling: intgration test")
+context("Exception handling: integration test\n")
 
 test_that("wrong parameters return exception to user", {
   skip_on_cran()
