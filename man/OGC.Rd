@@ -15,6 +15,7 @@
 \alias{OgcBinaryTemporalOpOrNULL-class}
 \alias{OgcComparisonOps}
 \alias{OgcComparisonOps-class}
+\alias{OgcComparisonOpsOrXMLOrNULL-class}
 \alias{OgcContains-class}
 \alias{show,OgcContains-method}
 \alias{OgcIntersects-class}
@@ -51,7 +52,7 @@ The following classes are virtual, no objects may be created from them: \code{Og
 
 \usage{
 OgcBBOX(propertyName = sosDefaultSpatialOpPropertyName, envelope)
-OgcContains(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, 
+OgcContains(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL,
             envelope = NULL)
 OgcIntersects(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL,
               envelope = NULL)

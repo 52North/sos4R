@@ -41,6 +41,7 @@
 \alias{parseTimeInstantProperty}
 \alias{parseTimePeriod}
 \alias{parseTimePosition}
+\alias{parseTimeObject}
 \alias{parseTruthObservation}
 \alias{parseValues}
 \alias{parseObservationProperty}
@@ -126,6 +127,7 @@ parseTimeInstant(obj, format)
 parseTimeInstantProperty(obj, format)
 parseTimePeriod(obj, format)
 parseTimePosition(obj, format)
+parseTimeObject(obj, format, timeObjectMap = list(), verbose = FALSE)
 parseTruthObservation(obj, sos, verbose = FALSE)
 parseValues(values, fields, encoding, sos, verbose = FALSE)
 }
@@ -140,6 +142,7 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
   \item{fields}{Field information  in \code{parseValues(...)}, a named list.}
   \item{file}{Name of the file to be parsed in \code{sosParse(...)}.}
   \item{encoding}{Encoding information in \code{parseValues(...)}, an object of class \code{SweTextBlock}.}
+  \item{timeObjectMap}{A named list of time objects passed on during parsing (name is the id) to resolve in-document references.}
   \item{...}{Additional arguments that are parsed to \code{xmlParse(...)} in \code{sosParse(...)}.}
 }
 

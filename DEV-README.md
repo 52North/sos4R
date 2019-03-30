@@ -239,7 +239,9 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 
 - Run the [tests](#tests) locally
 - Run a check locally, e.g. `devtools::check(document = FALSE)` and fix errors, warnings, and notes
-- Check the CI status
+- Regenerate the website with `pkgdown::build_site()`
+- Merge all changes into the `dev` branch
+- Create a PR from `dev` to `master` and check the CI status
   - https://travis-ci.org/52North/sos4R
   - https://ci.appveyor.com/project/52North/sos4r
 - Update version and date in `man/sos4R-package.Rd`

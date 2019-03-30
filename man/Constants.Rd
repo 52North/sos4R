@@ -233,6 +233,32 @@
 
 \alias{SosAllNamespaces}
 
+\alias{gmlNamespace}
+\alias{omNamespace}
+\alias{omNamespacePrefix}
+\alias{ogcNamespace}
+\alias{owsAcceptFormatsName}
+\alias{owsAcceptLanguagesName}
+\alias{owsAcceptVersionsName}
+\alias{owsExceptionReportNameOnly}
+\alias{owsLanguageName}
+\alias{owsNamespace}
+\alias{owsOutputFormatName}
+\alias{owsSectionName}
+\alias{owsSectionsName}
+\alias{owsVersionName}
+\alias{sfNamespacePrefix}
+\alias{sfSampledFeatureName}
+\alias{sfTypeName}
+\alias{smlNamespace}
+\alias{sos100Namespace}
+\alias{sweLowerCornerName}
+\alias{sweNamespace}
+\alias{sweNamespacePrefix}
+\alias{sweUpperCornerName}
+\alias{xlinkNamespace}
+\alias{xsiNamespace}
+
 % Version 2.0.0
 
 \alias{sos200ContentsName}
@@ -261,6 +287,37 @@
 \alias{swesProcedureDescriptionFormatName}
 
 \alias{wmlMonitoringPointName}
+
+\alias{fesNamespace}
+\alias{gml32Namespace}
+\alias{om20Namespace}
+\alias{om20NamespacePrefix}
+\alias{saNamespace}
+\alias{saNamespacePrefix}
+\alias{samsNamespace}
+\alias{samsNamespacePrefix}
+\alias{samsSamplingFeatureName}
+\alias{sf20Namespace}
+\alias{sos200FeatureOfInterestTypeName}
+\alias{sos200Namespace}
+\alias{sos200NamespacePrefix}
+\alias{sos200ObservationOfferingListName}
+\alias{sos200ObservationOfferingName}
+\alias{sos200ObservationTypeName}
+\alias{sos200ObservedAreaName}
+\alias{sos200PhenomenonTimeName}
+\alias{sos200ResponseFormatName}
+\alias{sos200ResponseModeName}
+\alias{sos200ResultTimeName}
+\alias{sos200contentsName}
+\alias{sosGDAMemberName}
+\alias{sosGetDataAvailabilityName}
+\alias{sosGetDataAvailabilityResponse}
+\alias{sosObservationIdName}
+\alias{sosOfferingName}
+\alias{swesNamespace}
+\alias{swesNamespacePrefix}
+\alias{swesProcedureName}
 
 
 \title{Constants in sos4R}

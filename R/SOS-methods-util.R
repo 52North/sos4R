@@ -565,10 +565,3 @@ sosCheatSheet <- function() {
 
   return(.z)
 }
-
-#
-# XML parsing ----
-#
-isXMLString <- function(str) {
-  return(grepl("^<(.*)>$", str))
-}

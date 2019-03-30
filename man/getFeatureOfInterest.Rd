@@ -1,6 +1,7 @@
 \name{getFeatureOfInterest}
 
 \alias{getFeatureOfInterest}
+\alias{getFeatureOfInterest,SOS_2.0.0,ANY-method}
 \alias{getFeatureOfInterest,SOS_2.0.0,character-method}
 
 \title{

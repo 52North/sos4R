@@ -137,7 +137,7 @@ setClass("SosGetObservation_2.0.0",
            eventTime = "list",
            procedure = "character",
            featureOfInterest = "SosFeatureOfInterestOrNULL",
-           result = "ANY", # OgcComparisonOpsOrXMLOrNULL
+           result = "OgcComparisonOpsOrXMLOrNULL",
            resultModel = "character",
            responseMode = "character",
            BBOX = "character"),
@@ -153,11 +153,11 @@ setClass("SosGetObservation_2.0.0",
            # TODO implement validity function
 
            # service, version, offering, observedProperty, and responseFormat are mandatory
-           if(is.na(object@service))
+           if (is.na(object@service))
              return("service parameter must be given")
-           if(is.na(object@version))
+           if (is.na(object@version))
              return("version must be given")
-           if(is.na(object@offering))
+           if (is.na(object@offering))
              return("offering parameter must be given")
            # responseFormat is optional for GET
            #if(is.na(object@responseFormat))

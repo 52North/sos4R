@@ -17,6 +17,9 @@
 \alias{print,SosGetObservationById-method}
 \alias{toString,SosGetObservationById-method}
 
+\alias{SosGetObservation_2.0.0}
+\alias{SosGetObservation_2.0.0-class}
+
 \title{GetObservation and GetObservationById Request Objects}
 
 \description{Classes (and their construction functions) to request observations from a Sensor Observation Service.}
