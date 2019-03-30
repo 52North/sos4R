@@ -99,7 +99,6 @@ test_that("time accessor function", {
 
   # applying sosTime to GmlTimePeriod results in conversion
   expect_equal(sosTime(sosTime(mapserver)), sosTime(sosOfferings(mapserver), convert = TRUE))
-  skip("Test not implemented yet.")
 })
 
 test_that("offerings", {

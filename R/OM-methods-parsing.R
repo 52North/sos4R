@@ -38,7 +38,7 @@ parseOM <- function(obj, sos, verbose = FALSE) {
 
   .parsingFunction <- sosParsers(sos)[[.name]]
   if (!is.null(.parsingFunction)) {
-    if (verbose) cat("[parseOM] Matched name for parser is", .name, "\n") #, "with: "); print(.parsingFunction)
+    if (verbose) cat("[parseOM] Matched name for parser is", .name, "\n")
     .om <- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
     if (verbose) cat("[parseOM] Done parsing\n")
   }
@@ -212,8 +212,10 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
   }
 
   .resultList <- lapply(X = .members, FUN = parseOM, sos = sos, verbose = verbose)
-
-  names(.resultList) <- lapply(X = .resultList, FUN = class)
+  names(.resultList) <- lapply(X = .members, FUN = function(member) {
+    child <- xml2::xml_child(x = member)
+    xml2::xml_attr(child, attr = "id", default = xml2::xml_name(child))
+  })
 
   if (is.list(.resultList)) {
     .obsColl <- OmObservationCollection(members = .resultList,
@@ -226,7 +228,7 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
 
   if (verbose)
     cat("[parseObservationCollection] Done. Processed", length(.obsColl),
-        "elements:", names(sosResult(.obsColl)), "\n")
+        "elements:", names(.obsColl), "\n")
 
   return(.obsColl)
 }
@@ -239,7 +241,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
   .result <- NULL
 
   .children <- xml2::xml_children(x = obj)
-  if (verbose) cat("[parseResult]", length(.children), " non-text nodes, names:", names(.children), "\n")
+  if (verbose) cat("[parseResult]", length(.children), " non-text nodes, names:", xml2::xml_name(.children), "\n")
 
   # Check if remaining element is there
   if (length(.children) == 0) {
@@ -296,7 +298,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
     print(obj)
   }
 
-  if (verbose) cat("[parseResult] ... done.\n")
+  if (verbose) cat("[parseResult] Done\n")
 
   return(.result)
 }
@@ -396,15 +398,15 @@ parseTime <- function(obj, format, verbose = FALSE) {
   .timeObject <- NULL
 
   if (!is.na(.tiXML)) {
-    if (verbose) cat("[parseTime] time instant.\n")
+    if (verbose) cat("[parseTime] Found time instant\n")
     .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
   }
   else if (!is.na(.tpXML)) {
-    if (verbose) cat("[parseTime] time period.\n")
+    if (verbose) cat("[parseTime] Found time period\n")
     .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
   }
   else if (!is.na(.timeReference)) {
-    if (verbose) cat("[parseTime] referenced time.\n")
+    if (verbose) cat("[parseTime] Found referenced time\n")
     .timeObject <- GmlTimeInstantProperty(href = .timeReference)
     #if (is.null(.timeObject)) {
     #  stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
@@ -417,5 +419,6 @@ parseTime <- function(obj, format, verbose = FALSE) {
       time = as.POSIXct(x = NA)))
   }
 
+  if (verbose) cat("[parseTime] Done:", toString(.timeObject), "\n")
   return(.timeObject)
 }

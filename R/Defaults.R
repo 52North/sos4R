@@ -33,7 +33,7 @@
 #
 
 #
-#
+# defaults for SOS creation ----
 #
 sosDefaultServiceVersion <- sos100_version
 
@@ -152,7 +152,7 @@ names(.sosDefaultEncoders) <- list(
 #
 #
 .sosDefaultFieldConverters <- list(
-  sosConvertDouble,
+  sosConvertString,
   sosConvertTime,
   sosConvertTime,
   sosConvertTime,
