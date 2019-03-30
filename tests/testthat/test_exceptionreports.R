@@ -68,9 +68,9 @@ test_that("wrong parameters return exception to user", {
 
   sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
              binding = "POX", useDCPs = FALSE)
-  response <- getObservation(sos,
+  expect_warning(response <- getObservation(sos,
                              offering = sosOfferings(sos)[[1]],
-                             observedProperty = list("Bazinga!"))
+                             observedProperty = list("Bazinga!")), "OwsExceptionReport")
   expect_s4_class(response, "OwsExceptionReport")
   expect_length(response@exceptions, 1)
   expect_match(toString(response@exceptions), "InvalidParameterValue")

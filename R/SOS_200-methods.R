@@ -345,8 +345,9 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
   if (verbose)
     cat("[.getObservation_2.0.0] REQUEST:\n\n", toString(.go), "\n")
 
-  .responseString = sosRequest(sos = sos, request = .go,
-                               verbose = verbose, inspect = inspect)
+  .responseString = sosRequest(sos = sos,
+                         request = .go,
+                         verbose = verbose, inspect = inspect)
 
   if (verbose) cat("[.getObservation_2.0.0] Received response (size:",
                    object.size(.responseString), "bytes), parsing ...\n")
@@ -578,7 +579,6 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     cat("[sos4R] Saved original document:", .filename)
   }
 
-  # RETURN ##############
   return(.responseString)
 }
 

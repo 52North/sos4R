@@ -96,7 +96,9 @@
 
     if (verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
 
-    .response = httr::GET(url = .url)
+    .response = httr::GET(url = .url,
+                          httr::accept_xml())
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.\n")
   }
@@ -171,19 +173,10 @@
                             owsVersion = owsVersion, acceptLanguages = acceptLanguages)
   if (verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
 
-  .responseString = sosRequest(sos = sos, request = .gc,
-                               verbose = verbose, inspect = inspect)
-  if (verbose){
-    cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
-  }
-
-  tmpStoredXMLCaps = base::tempfile()
-
-  fileConn <- base::file(tmpStoredXMLCaps)
-  base::writeLines(.responseString, fileConn)
-  base::close(fileConn)
-
-  .response <- xml2::read_xml(x = tmpStoredXMLCaps)
+  .response = sosRequest(sos = sos,
+                         request = .gc,
+                         verbose = verbose,
+                         inspect = inspect)
   if (inspect) {
     cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
     print(.response)
