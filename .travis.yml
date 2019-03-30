@@ -2,7 +2,24 @@
 
 language: R
 
-sudo: false
+# need to install GDAL, see https://github.com/r-spatial/sf/blob/master/.travis.yml
+sudo: required
+dist: trusty
+latex: false
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+    packages:
+      - libproj-dev
+      - libgeos-dev
+      - libgdal-dev
+
+r:
+  - release
+  - devel
+  - oldrel
 
 cache:
   - packages
