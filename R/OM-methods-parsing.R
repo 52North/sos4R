@@ -66,11 +66,11 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
 
     .href <- xml2::xml_attr(x = obj, attr = "href", default = NA_character_)
     if (!is.na(.href)) {
-      warning(paste("[parseObservationProperty] Only reference to Observation was returned:", .href))
+      warning("Only reference was returned:", .href)
       .mResult <- OmObservationProperty(href = .href)
     }
     else {
-      warning("[parseObservationProperty] No observation found!")
+      warning("No observation found!")
       .mResult <- OmObservationProperty()
     }
   }
@@ -213,8 +213,13 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
 
   .resultList <- lapply(X = .members, FUN = parseOM, sos = sos, verbose = verbose)
   names(.resultList) <- lapply(X = .members, FUN = function(member) {
-    child <- xml2::xml_child(x = member)
-    xml2::xml_attr(child, attr = "id", default = xml2::xml_name(child))
+    children <- xml2::xml_children(member)
+    idOrName <- xml2::xml_attr(children, attr = "id", default = xml2::xml_name(children))
+    if (length(idOrName) < 1) {
+      xml2::xml_name(member)
+    } else {
+      idOrName
+    }
   })
 
   if (is.list(.resultList)) {

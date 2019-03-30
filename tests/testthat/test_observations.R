@@ -3,7 +3,7 @@ context("parsing: observation collection")
 testsos <- SOS_Test(name = "testobscoll")
 
 test_that("bounded by is parsed from collection", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
 
   expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
   expect_false(is.null(collection@boundedBy))
@@ -12,42 +12,63 @@ test_that("bounded by is parsed from collection", {
 })
 
 test_that("all members are parsed from collection", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
   expect_equal(length(collection), 2)
   expect_equal(length(collection@members), 2)
 })
 
 test_that("all collection members have the same result columns", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
   expect_equal(names(collection[[1]]@result), names(collection[[2]]@result))
 })
 
 test_that("name available for first observation, but not for second", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
   expect_named(collection@members, c("1234", "Observation"))
 })
 
 test_that("procedures are parsed from both members", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
   expect_equal(collection[[1]]@procedure, "urn:ogc:object:Sensor:MyOrg:12349")
   expect_equal(collection[[2]]@procedure, "urn:ogc:object:Sensor:MyOrg:12350")
 })
 
 test_that("all fields are parsed from both members", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
   expect_named(collection[[1]]@result, c("time", "longitude", "latitude", "DPM", "MS"))
   expect_named(collection[[2]]@result, c("time", "longitude", "latitude", "DPM", "MS"))
 })
 
+emptyCollection <- '<om:ObservationCollection id="oc_1553941031703" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink">
+<om:member xlink:href="urn:ogc:def:nil:OGC:inapplicable"/>
+</om:ObservationCollection>'
+
+testsos <- SOS_Test(name = "testobscoll")
+
+test_that("can handle empty observation collection", {
+  doc <- xml2::read_xml(x = emptyCollection)
+  expect_warning(
+    obs <- parseObservationCollection(obj = doc, sos = testsos),
+    "urn:ogc:def:nil:OGC:inapplicable"
+  )
+
+  expect_true(is.list(obs@members))
+  expect_s4_class(obs@members[[1]], "OmObservationProperty")
+  expect_named(obs@members, c("member"))
+  expect_null(obs@members[[1]]@obs)
+  expect_equal(obs@members[[1]]@href, "urn:ogc:def:nil:OGC:inapplicable")
+})
+
+
 context("parsing: DataArray")
 
 test_that("parse encoding", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   encodingXml <- xml2::xml_find_first(x = doc, xpath = "//swe:encoding", ns = SosAllNamespaces())
 
   encoding <- parseEncoding(obj = encodingXml, sos = testsos)
@@ -58,7 +79,7 @@ test_that("parse encoding", {
 })
 
 test_that("parse time field", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
 
   timeField <- parseField(obj = fieldsXml[[1]], sos = testsos)
@@ -67,7 +88,7 @@ test_that("parse time field", {
 })
 
 test_that("parse quantity field", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
 
   quantityField <- parseField(obj = fieldsXml[[2]], sos = testsos)
@@ -78,7 +99,7 @@ test_that("parse quantity field", {
 })
 
 test_that("parse category field", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
 
   categoryField <- parseField(obj = fieldsXml[[5]], sos = testsos)
@@ -88,7 +109,7 @@ test_that("parse category field", {
 })
 
 test_that("parse data array finds all data", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray", ns = SosAllNamespaces())
 
   expect_warning(
@@ -102,7 +123,7 @@ test_that("parse data array finds all data", {
 })
 
 test_that("parse data array has correct classes for fields", {
-  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml", options = SosDefaultParsingOptions())
+  doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray", ns = SosAllNamespaces())
 
   expect_warning(
