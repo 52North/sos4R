@@ -1,0 +1,100 @@
+---
+title: "sos4R: OGC SWE and SOS"
+author:
+  name: "Daniel Nüst"
+  affiliation: Institute for Geoinformatics, University of Münster, Germany.
+  email: daniel.nuest@uni-muenster.de
+  url: https://www.nordholmen.net
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+abstract: |
+  The sos4R package provides simple yet powerful access to OGC Sensor Observation Service instances.
+  The package supports both encapsulation and abstraction from the service interface for novice users as well as powerful request building for specialists.
+  sos4R is motivated by the idea to close the gap between the Sensor Web and tools for (geo-)statistical analyses.
+  It implements the core profile of the SOS specification and supports temporal, spatial, and thematical filtering of observations.
+  
+  This document introduces core concepts of OGC, SWE, and SOS standards.
+
+  The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
+vignette: >
+  %\VignetteIndexEntry{2. OGC concepts and standards (SWE, SOS)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+If you are familiar with the OGC SOS standard specification, know how to use content assist in your favourite R editor, and you do not need to extend the functionality of `sos4R`, then take a look at the "Quickstart" vignette and get started straightaway.
+
+## Related Specifications
+
+The Open Geospatial Consortium ([OGC](https://www.opengeospatial.org/)) is an organisation which provides standards for handling geospatial data on the internet, thereby ensuring interoperability.
+The Sensor Observation Service (SOS)} is such a standard and provides a well-defined interface for data warehousing of measurements and observations made by all kinds of sensors. 
+This vignette describes the classes, methods and functions provided by `sos4R` to request these observations from a SOS.
+
+Providing data via web services is more powerful than local file copies (with issues like being outdated, redundancy, \ldots).
+Flexible filtering of data on the service side reduces download size.
+That is why SOS operations can comprise flexible subsetting in temporal, spatial and thematical domain.
+For example `"Get measurements from sensor urn:mySensor:001 for the time period from 01/12/2010 to 31/12/2010 where the air temperature below zero degrees"`.
+
+In general, the SOS supports different methods of requesting data, so called bindings:
+(i) Key-value-pair (KVP) binding using HTTP GET as defined in the [OOSTethys best practice document](https://web.archive.org/web/20120616065001/http://www.oostethys.org/best-practices/best-practices-get) (this best-practice paper takes the place of a section in the specification that was left out by mistake; it is well established and (loosely) followed by several SOS implementations),
+(ii) XML, or plain old XML (POX) using HTTP POST as defined in the standard document with requests encoded in eXtensible Markup Language ([XML](http://www.w3.org/XML/)), and
+(iii) SOAP ([Simple Object Access Protocol](https://en.wikipedia.org/wiki/SOAP)).
+All bindings can return responses using different encodings, but most common are XML documents.
+
+Other OGC Standards that are referenced and used, by the SOS standard are as follows.
+
+- **Observations and Measurements (O\&M)** O\&M (Cox, 2007) defines the markup of sensor measurements results.
+An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result. Different versions are used in the different [SOS specifications](https://www.opengeospatial.org/standards/om).
+- **Sensor Model Language ([SensorML](https://www.opengeospatial.org/standards/sensorml))** (Botts, 2007) is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer).
+- **Geography Markup Language ([GML](https://www.opengeospatial.org/standards/gml))** (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots).
+- **SWE Common** defines data markup. Version 1 is contained in the SensorML specification (see above), version 2.0 is an independent specification.
+- **Filter Encoding ([FE](https://www.opengeospatial.org/standards/filter))** (Vretanos, 2005) defines operators and operands for filtering values.
+- **[OWS Common](https://www.opengeospatial.org/standards/common)** (OGC Web Services Common; Whiteside, 2007) models service related elements that are reusable across several service specifications, like exception handling.
+- **SWES** (SWE Service Model Implementation Standard) defines data types for common use across SWE services, e.g. for contents or sensor description management.
+
+## Terms and Definitions
+
+The OGC has a particular set of well-defined terms that might differ from usage of words in specific domains.
+The most important are as follows and are based on https://en.wikipedia.org/wiki/Sensor_Observation_Service.
+
+- **Feature of Interest (FOI)**: The FOI represents the geo-object, for which measurements are made by sensors.
+It is ordinarily used for the spatial referencing of measuring points, i.e. the geoobject has coordinates like latitude, longitude and height. The feature is project specific and can be anything from a point (e.g. the position of a measuring station) or a real-world object (e.g. the region that is observed).
+- **Observation**: The observation delivers a measurement (result) for a property (phenomenon) of an observed object (FOI). The actual value is created by a sensor or procedure. The phenomenon was measured at a specific time (sampling time) and the value was generated at a specific point in time (result time). These often coincide so in practice the sampling time is often used as the point in time of an obsrevation.
+- **Offering**: The offering is a logical collection of related observations (similar to a layer in mapping applications) which a service offers together.
+- **Phenomenon**: A phenomenon is a property (physical value) of a geographical object, e.g. air temperature, wind speed, concentration of a pollutant in the atmosphere, reflected radiation in a specific frequency band (colours).
+- **Procedure**: A procedure creates the measurement value of an observation. The source can be a reading from a sensor, simulation or a numerical process.
+
+A more extensive discussion is available in the the O\&M specification (Cox, 2007).
+The Annex B of that document contains the examples of applying some terms to specific domains, aerosol analysis and earth observations.
+
+A very good and extensive **introduction into the whole field of SWE**, including its history, and an analysis of the current state of the art and future developments is provided in Bröring (2011).
+
+## Supported Implementations
+
+`sos4R` supports the core profile of the SOS specification.
+But the possible markups for observations is extremely manifold due to the flexibility of the O\&M specification.
+Sadly, there is no common application profile for certain types of observations, like simple measurements.
+
+Therefore, the undocumented profile of the [52°North SOS implementation](http://52north.org/communities/sensorweb/sos/) was used as a guideline. It is not documented outside of the source code. Observations returned by instances of this implementation are most likely to be processed out of the box.
+
+In the author's experience, OOSThetys SOS implementations utilise the same or at least very similar profile, so responses of these service instances are probably parsed without further work as well.
+
+An incomplete list of **tested services} can be found in package documentation.
+Please share your experiences with other SOS implementations with the developers and users of `sos4R`.
+
+## References
+
+- Botts, M., 2007, OGC Implementation Specification 07-000: OpenGIS Sensor Model Language (SensorML)- Open Geospatial Consortium, Tech. Rep.
+- Bröring A., Echterhoff J., Jirka S., Simonis I., Everding T., Stasch C., Liang S., Lemmens R. New Generation Sensor Web Enablement. Sensors. 2011; 11(3):2652-2699.
+- Bröring, A., C. Stasch, and J. Echterhoff. "OGC Interface Standard 10-037: SOS 2.0 Interface Standard." Open Geospatial Consortium (2010).
+- Chambers, J.M., 2008, Software for Data Analysis, Programming with R. Springer, New York.
+- Cox, S., 2007, OGC Implementation Specification 07-022r1: Observations and Measurements - Part 1 - Observation schema. Open Geospatial Consortium. Tech. Rep.
+- Cox, S., 2007, OGC Implementation Specification 07-022r3: Observations and Measurements - Part 2 - Sampling Features. Open Geospatial Consortium. Tech. Rep.
+- Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, http://portal.opengeospatial.org/files/?artifact_id=26667, Open Geospatial Consortium, Tech. Rep.
+- Nüst, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography.
+- Pebesma, E., 2012, spacetime: Spatio-Temporal Data in R. Journal of Statistical Software, 51(7), 1-30. http://www.jstatsoft.org/v51/i07/.
+- Portele, C., 2003, OGC Implementation Specification 07-036: OpenGIS Geography Markup Language (GML) Encoding Standard, version: 3.00. Open Geospatial Consortium, Tech. Rep.
+- Vretanos, P.A., 2005, OGC Implementation Specification 04-095: OpenGIS Filter Encoding Implementation Specification. Open Geospatial Consortium, Tech. Rep.
+- Whiteside, A., Greenwood, J., 2008, OGC Implementation Specification 06-121r9: OGC Web Services Common Specification. Open Geospatial Consortium, Tech. Rep.

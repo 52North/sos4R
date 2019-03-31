@@ -1,6 +1,15 @@
-story files
+inst/doc
+# history files
 .Rhistory
 
 # Example code in package build process
 *-Ex.R
 .Rproj.user
+*.Rproj
+.RData
+
+revdep/
+
+cache/
+
+\.vscode/

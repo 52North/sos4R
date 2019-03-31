@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-09-08                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -37,42 +37,42 @@
 # 
 #
 setClass("SaSamplingPoint",
-		representation(sampledFeatures = "list",
-				position = "GmlPointProperty",
-				# optional:
-				relatedObservation = "list",
-				relatedSamplingFeature = "list",
-				surveyDetails = "ANY"),
-		prototype = list(sampledFeatures = list(NA), position = NULL),
-		contains = "GmlFeature",
-		validity = function(object) {
-			#print("Entering validation: SaSamplingPoint")
-			# TODO implement validity function
-			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observations must be OmObservationProperty
-			return(TRUE)
-		}
+         representation(sampledFeatures = "list",
+                        position = "GmlPointProperty",
+                        # optional:
+                        relatedObservation = "list",
+                        relatedSamplingFeature = "list",
+                        surveyDetails = "ANY"),
+         prototype = list(sampledFeatures = list(NA), position = NULL),
+         contains = "GmlFeature",
+         validity = function(object) {
+           #print("Entering validation: SaSamplingPoint")
+           # TODO implement validity function
+           # sampledFeatures list must contain > 0 gml:_Feature instances
+           # related observations must be OmObservationProperty
+           return(TRUE)
+         }
 )
 
 #
 #
 #
 setClass("SaSamplingSurface",
-		representation(sampledFeatures = "list",
-				shape = "ANY",
-				# optional:
-				relatedObservation = "list",
-				relatedSamplingFeature = "list",
-				surveyDetails = "ANY",
-				area = "ANY"),
-		prototype = list(sampledFeatures = list(NA), shape = NULL),
-		contains = "GmlFeature",
-		validity = function(object) {
-			#print("Entering validation: SaSamplingSurface")
-			# TODO implement validity function
-			# sampledFeatures list must contain > 0 gml:_Feature instances
-			# related observations must be of type OmObservationProperty
-			return(TRUE)
-		}
+         representation(sampledFeatures = "list",
+                        shape = "ANY",
+                        # optional:
+                        relatedObservation = "list",
+                        relatedSamplingFeature = "list",
+                        surveyDetails = "ANY",
+                        area = "ANY"),
+         prototype = list(sampledFeatures = list(NA), shape = NULL),
+         contains = "GmlFeature",
+         validity = function(object) {
+           #print("Entering validation: SaSamplingSurface")
+           # TODO implement validity function
+           # sampledFeatures list must contain > 0 gml:_Feature instances
+           # related observations must be of type OmObservationProperty
+           return(TRUE)
+         }
 )
 

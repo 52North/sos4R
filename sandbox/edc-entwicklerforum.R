@@ -31,7 +31,7 @@ library("sos4R")
 
 ##### Unterstuetzte und Standard-Features #######################################
 SosSupportedOperations() # jeweils eine entsprechende R Funktion
-SosSupportedConnectionMethods()
+SosSupportedBindings()
 
 SosSupportedResponseFormats()
 SosSupportedServiceVersions()
@@ -48,7 +48,7 @@ SosSupportedResultModels()
 SosSupportedSpatialOperators()
 SosSupportedTemporalOperators()
 
-SosDefaultConnectionMethod()
+SosDefaultBinding()
 # SosDataFieldConvertingFunctions()
 names(SosDataFieldConvertingFunctions())
 SosDefaults()
@@ -63,7 +63,7 @@ aqe <- SOS(url = "http://v-sos.uni-muenster.de:8080/SosAirQuality/sos")
 # sos "CTRL Space" in StatET
 sosUrl(aqe)
 sosVersion(aqe)
-sosMethod(aqe)
+sosBinding(aqe)
 
 # Standard R Funktionen werden oft unterstuetzt:
 print(aqe)
@@ -373,8 +373,8 @@ summary(aug2007.data[["Concentration.NO2."]])
 # Loesung 2: XML parsing
 # Nur um zu zeigen dass Erweitern mit Paket XML nicht so schlimm ist:
 definition <- getURL("http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration.NO2.")
-definition.xml <- xmlParse(definition)
-getNodeSet(doc = definition.xml, path = "//gml:description/text()")[[1]]
+definition.xml <- XML::xmlParse(file = definition)
+XML::getNodeSet(doc = definition.xml, path = "//gml:description/text()")[[1]]
 
 ##### Thematische Ausschnitte ##################################################
 

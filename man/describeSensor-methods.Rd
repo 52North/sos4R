@@ -6,6 +6,7 @@
 \alias{describeSensor-methods}
 \alias{describeSensor,SOS,character-method}
 \alias{describeSensor,SOS_1.0.0,character-method}
+\alias{describeSensor,SOS_2.0.0,character-method}
 
 \title{Method for a DescribeSensor Request to a SOS}
 

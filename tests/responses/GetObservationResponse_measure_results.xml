@@ -1,0 +1,2765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:GetObservationResponse xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/om/2.0 http://schemas.opengis.net/om/2.0/observation.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd">
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54939223">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54939223">
+					<gml:timePosition>2016-02-15T04:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54939223" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Manfort" xlink:title="Manfort" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">3.3684056</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941639">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941639">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941639" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stausee_Beyenburg_Ablaufpegel" xlink:title="Stausee Beyenburg" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">86.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943604">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943604">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943604" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wassertemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Laaken" xlink:title="Laaken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">5.3</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942664">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942664">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942664" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Grosse_Dhuenn-Talsperre_Entnahmeturm" xlink:title="Große Dhünn-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">171.6535</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942658">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942658">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942658" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schevelinger-Talsperre" xlink:title="Schevelinger-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">307.84778</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28552978">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28552978">
+					<gml:timePosition>2013-07-04T03:45:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28552978" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Lindscheid" xlink:title="Lindscheid" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">94.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_26210230">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_26210230">
+					<gml:timePosition>2013-07-04T23:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_26210230" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Gklw_Radevormwald" xlink:title="Gklw. Radevormwald" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">86.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_32707499">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_32707499">
+					<gml:timePosition>2014-03-05T16:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_32707499" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Ueberleitung_Neye-Bever" xlink:title="Überleitung Neye-Bever" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.14139999</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941183">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941183">
+					<gml:timePosition>2016-02-15T05:20:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941183" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Kluserbruecke" xlink:title="Kluserbrücke" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">20.491756</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54939988">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54939988">
+					<gml:timePosition>2016-02-15T04:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54939988" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Muellensiepen_Zulaufpegel" xlink:title="Müllensiepen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">30.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941533">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941533">
+					<gml:timePosition>2016-02-15T05:50:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941533" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Krebsoege" xlink:title="Krebsöge" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">132.39999</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941663">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941663">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941663" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Reinshagensbever" xlink:title="Reinshagensbever" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">151.25</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54939268">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54939268">
+					<gml:timePosition>2016-02-15T03:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54939268" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Holzwipper" xlink:title="Holzwipper" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.15612358</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942125">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942125">
+					<gml:timePosition>2016-02-15T07:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942125" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Grosse_Dhuenn-Talsperre_Entnahmeturm" xlink:title="Große Dhünn-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">55.98885</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941142">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941142">
+					<gml:timePosition>2016-02-15T05:50:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941142" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Loosenau_Ablaufpegel" xlink:title="Loosenau" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.16092931</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54939297">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54939297">
+					<gml:timePosition>2016-02-15T04:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54939297" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schmitzwipper" xlink:title="Schmitzwipper" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.35683182</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942670">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942670">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942670" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Ronsdorfer_Talsperre_Staumauer" xlink:title="Ronsdorfer Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">0.082838714</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941408">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941408">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941408" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stausee_Beyenburg_Ablaufpegel" xlink:title="Stausee Beyenburg" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">16.275</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18842689">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18842689">
+					<gml:timePosition>2013-09-16T08:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18842689" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wipperfliess" xlink:title="Wipperfließ" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">96.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943567">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943567">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943567" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="pH-Wert" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wupper-Talsperre_Ablauf" xlink:title="Wupper-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="-"
+				xsi:type="ns:MeasureType">7.39</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941514">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941514">
+					<gml:timePosition>2016-02-15T05:50:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941514" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Loosenau_Ablaufpegel" xlink:title="Loosenau" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">33.799999</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22171389">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22171389">
+					<gml:timePosition>2013-06-11T03:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22171389" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Burscheid" xlink:title="Burscheid" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">91.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28553007">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28553007">
+					<gml:timePosition>2013-07-04T03:45:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28553007" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Lindscheid" xlink:title="Lindscheid" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">13.9</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_26210278">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_26210278">
+					<gml:timePosition>2013-07-04T23:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_26210278" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Gklw_Radevormwald" xlink:title="Gklw. Radevormwald" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">16.1</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941611">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941611">
+					<gml:timePosition>2016-02-15T05:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941611" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="HKW_Barmen" xlink:title="HKW Barmen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">115.7</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18844967">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18844967">
+					<gml:timePosition>2013-09-16T09:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18844967" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Lingese-Talsperre" xlink:title="Lingese-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">99.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22561680">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22561680">
+					<gml:timePosition>2013-06-12T19:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22561680" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Klw_Buchenhofen" xlink:title="Klw. Buchenhofen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">64.300003</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942126">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942126">
+					<gml:timePosition>2016-02-15T07:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942126" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Brucher-Talsperre" xlink:title="Brucher-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">3.2699001</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943588">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943588">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943588" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Elektrische_Leitfaehigkeit" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Laaken" xlink:title="Laaken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="µS/cm"
+				xsi:type="ns:MeasureType">175.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941579">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941579">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941579" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stoecken" xlink:title="Stöcken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">15.54</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_26247764">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_26247764">
+					<gml:timePosition>2013-07-01T23:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_26247764" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Guettenhausen" xlink:title="Güttenhausen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">13.1</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942110">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942110">
+					<gml:timePosition>2016-02-15T06:50:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942110" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wipperfliess_Ablaufpegel" xlink:title="Wipperfließ" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.2238557</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943624">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943624">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943624" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wassertemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Opladen" xlink:title="Opladen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">6.7</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943572">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943572">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943572" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Sauerstoffgehalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wupper-Talsperre_Ablauf" xlink:title="Wupper-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">13.1</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_19025472">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_19025472">
+					<gml:timePosition>2013-09-16T10:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_19025472" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Ronsdorfer_Talsperre_Staumauer" xlink:title="Ronsdorfer Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">4.8000002</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941609">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941609">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941609" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Hueckeswagen" xlink:title="Hückeswagen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">87.739998</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943618">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943618">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943618" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Truebung" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Opladen" xlink:title="Opladen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="FNU"
+				xsi:type="ns:MeasureType">5.4</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941058">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941058">
+					<gml:timePosition>2016-02-15T05:50:05.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941058" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Krebsoege" xlink:title="Krebsöge" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">14.153428</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943668">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943668">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943668" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Truebung" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Rutenbeck" xlink:title="Rutenbeck" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="FNU"
+				xsi:type="ns:MeasureType">3.4</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941084">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941084">
+					<gml:timePosition>2016-02-15T05:50:05.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941084" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schlebusch" xlink:title="Schlebusch" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">3.1247718</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942127">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942127">
+					<gml:timePosition>2016-02-15T07:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942127" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Bever-Talsperre_Windenhaus" xlink:title="Bever-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">19.717787</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942663">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942663">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942663" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Lingese-Talsperre_Staumauer" xlink:title="Lingese-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">339.00116</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942123">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942123">
+					<gml:timePosition>2016-02-15T07:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942123" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wupper-Talsperre" xlink:title="Wupper-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">16.584797</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22560634">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22560634">
+					<gml:timePosition>2013-06-12T19:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22560634" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Barmen_Wupperverband_Hauptverwaltung" xlink:title="Barmen Wupperverband Hauptverwaltung" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">65.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943564">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943564">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943564" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Elektrische_Leitfaehigkeit" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wupper-Talsperre_Ablauf" xlink:title="Wupper-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="µS/cm"
+				xsi:type="ns:MeasureType">164.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54939883">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54939883">
+					<gml:timePosition>2016-02-15T04:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54939883" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Manfort" xlink:title="Manfort" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">49.099998</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943594">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943594">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943594" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Sauerstoffgehalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Laaken" xlink:title="Laaken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">12.3</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28529500">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28529500">
+					<gml:timePosition>2013-07-04T03:30:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28529500" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="RS-Herrmannsmuehle" xlink:title="RS-Herrmannsmühle" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">99.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941093">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941093">
+					<gml:timePosition>2016-02-15T05:50:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941093" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Papiermuehlenbach" xlink:title="Papiermühlenbach" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.13600001</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941045">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941045">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941045" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Reinshagensbever" xlink:title="Reinshagensbever" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">4.0273395</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943609">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943609">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943609" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Elektrische_Leitfaehigkeit" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Opladen" xlink:title="Opladen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="µS/cm"
+				xsi:type="ns:MeasureType">272.5</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942669">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942669">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942669" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Lingese-Talsperre_Staumauer" xlink:title="Lingese-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">2.1308475</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941130">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941130">
+					<gml:timePosition>2016-02-15T05:52:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941130" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Opladen" xlink:title="Opladen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">30.943476</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942089">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942089">
+					<gml:timePosition>2016-02-15T06:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942089" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Haecksbilstein" xlink:title="Häcksbilstein" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.75955844</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54938778">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54938778">
+					<gml:timePosition>2016-02-15T04:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54938778" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stausee_Beyenburg" xlink:title="Stausee Beyenburg" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">196.931</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941396">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941396">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941396" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Hueckeswagen" xlink:title="Hückeswagen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">12.159867</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943585">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943585">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943585" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wassertemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wupper-Talsperre_Ablauf" xlink:title="Wupper-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">5.5</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54929835">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54929835">
+					<gml:timePosition>2016-02-14T20:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54929835" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stauanlage_Dahlhausen" xlink:title="Stauanlage Dahlhausen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">0.082087003</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941521">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941521">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941521" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Laaken" xlink:title="Laaken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">147.8</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943591">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943591">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943591" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="pH-Wert" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Laaken" xlink:title="Laaken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="-"
+				xsi:type="ns:MeasureType">7.4</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941441">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941441">
+					<gml:timePosition>2016-02-15T05:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941441" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Vorsperre_Grosse_Dhuenn_Entnahmeturm" xlink:title="Vorsperre Große Dhünn" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">7.5219603</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942190">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942190">
+					<gml:timePosition>2016-02-15T06:50:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942190" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Papiermuehlenbach" xlink:title="Papiermühlenbach" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">3.7</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54929805">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54929805">
+					<gml:timePosition>2016-02-14T20:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54929805" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stauanlage_Dahlhausen" xlink:title="Stauanlage Dahlhausen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">217.69</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22560685">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22560685">
+					<gml:timePosition>2013-06-12T19:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22560685" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Barmen_Wupperverband_Hauptverwaltung" xlink:title="Barmen Wupperverband Hauptverwaltung" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">20.299999</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_29183710">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_29183710">
+					<gml:timePosition>2013-07-05T03:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_29183710" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Krebsoege" xlink:title="Krebsöge" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">15.8</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_53401294">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_53401294">
+					<gml:timePosition>2015-12-15T02:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_53401294" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Hangbergermuehle_Doerpe-Vorsperre" xlink:title="Hangbergermühle (Dörpe-Vorsperre)" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.64999998</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18842710">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18842710">
+					<gml:timePosition>2013-09-16T08:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18842710" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wipperfliess" xlink:title="Wipperfließ" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">9.6999998</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_29188281">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_29188281">
+					<gml:timePosition>2013-07-05T03:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_29188281" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Neumuehle" xlink:title="Neumühle" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">92.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18844993">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18844993">
+					<gml:timePosition>2013-09-16T09:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18844993" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Lingese-Talsperre" xlink:title="Lingese-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">9.8999996</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943612">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943612">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943612" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="pH-Wert" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Opladen" xlink:title="Opladen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="-"
+				xsi:type="ns:MeasureType">7.58</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942662">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942662">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942662" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Ronsdorfer_Talsperre_Staumauer" xlink:title="Ronsdorfer Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">258.41699</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22561087">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22561087">
+					<gml:timePosition>2013-06-12T19:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22561087" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Bever-Talsperre" xlink:title="Bever-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">69.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943660">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943660">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943660" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="pH-Wert" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Rutenbeck" xlink:title="Rutenbeck" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="-"
+				xsi:type="ns:MeasureType">7.5</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22561753">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22561753">
+					<gml:timePosition>2013-06-12T19:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22561753" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Klw_Buchenhofen" xlink:title="Klw. Buchenhofen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">21.4</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941552">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941552">
+					<gml:timePosition>2016-02-15T05:20:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941552" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Kluserbruecke" xlink:title="Kluserbrücke" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">66.230003</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942668">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942668">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942668" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Eschbachtalsperre" xlink:title="Eschbachtalsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">1.0099446</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942675">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942675">
+					<gml:timePosition>2016-02-15T07:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942675" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Ueberleitung_Neye-Bever" xlink:title="Überleitung Neye-Bever" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">28.4</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22561253">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22561253">
+					<gml:timePosition>2013-06-12T19:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22561253" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Bever-Talsperre" xlink:title="Bever-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">19.6</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28640870">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28640870">
+					<gml:timePosition>2013-07-04T07:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28640870" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Loosenau" xlink:title="Loosenau" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">85.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_19025479">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_19025479">
+					<gml:timePosition>2013-09-16T10:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_19025479" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Ronsdorfer_Talsperre" xlink:title="Ronsdorfer Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">10.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18811070">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18811070">
+					<gml:timePosition>2013-09-15T12:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18811070" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Vorsperre_Grosse_Dhuenn" xlink:title="Vorsperre Grosse Dhünn" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">14.3</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28640909">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28640909">
+					<gml:timePosition>2013-07-04T07:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28640909" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Loosenau" xlink:title="Loosenau" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">16.1</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_26207219">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_26207219">
+					<gml:timePosition>2013-07-04T23:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_26207219" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Halbach-Talsperre" xlink:title="Halbach-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">16.700001</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_19025687">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_19025687">
+					<gml:timePosition>2013-09-16T10:30:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_19025687" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Suelzueberleitung" xlink:title="Sülzüberleitung" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">11.4</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28657348">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28657348">
+					<gml:timePosition>2013-07-04T23:52:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28657348" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schevelinger-Talsperre" xlink:title="Schevelinger-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">85.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18845026">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18845026">
+					<gml:timePosition>2013-09-16T09:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18845026" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Muellensiepen" xlink:title="Müllensiepen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">94.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941692">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941692">
+					<gml:timePosition>2016-02-15T05:52:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941692" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Opladen" xlink:title="Opladen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">127.274</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942120">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942120">
+					<gml:timePosition>2016-02-15T07:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942120" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schevelinger-Talsperre" xlink:title="Schevelinger-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">0.32189298</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_22171458">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_22171458">
+					<gml:timePosition>2013-06-11T03:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_22171458" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Burscheid" xlink:title="Burscheid" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">10.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942660">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942660">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942660" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Eschbachtalsperre" xlink:title="Eschbachtalsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">243.015</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28827584">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28827584">
+					<gml:timePosition>2013-07-04T23:52:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28827584" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schevelinger-Talsperre" xlink:title="Schevelinger-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">15.5</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943665">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943665">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943665" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Sauerstoffgehalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Rutenbeck" xlink:title="Rutenbeck" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">11.8</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941071">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941071">
+					<gml:timePosition>2016-02-15T05:40:05.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941071" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Unterburg-Wupper" xlink:title="Unterburg-Wupper" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">24.639269</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943671">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943671">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943671" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wassertemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Rutenbeck" xlink:title="Rutenbeck" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">6.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54940006">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54940006">
+					<gml:timePosition>2016-02-15T04:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54940006" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schmitzwipper" xlink:title="Schmitzwipper" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">12.7</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942666">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942666">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942666" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wupper-Talsperre" xlink:title="Wupper-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">247.86681</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942159">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942159">
+					<gml:timePosition>2016-02-15T06:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942159" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Haecksbilstein" xlink:title="Häcksbilstein" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">29.120001</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_29183250">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_29183250">
+					<gml:timePosition>2013-07-05T03:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_29183250" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Krebsoege" xlink:title="Krebsöge" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">86.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_29188324">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_29188324">
+					<gml:timePosition>2013-07-05T03:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_29188324" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Neumuehle" xlink:title="Neumühle" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">15.3</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18811045">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18811045">
+					<gml:timePosition>2013-09-15T12:22:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18811045" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Luftfeuchte" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Vorsperre_Grosse_Dhuenn" xlink:title="Vorsperre Grosse Dhünn" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">67.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_18845046">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_18845046">
+					<gml:timePosition>2013-09-16T09:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_18845046" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Muellensiepen" xlink:title="Müllensiepen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">11.5</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942166">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942166">
+					<gml:timePosition>2016-02-15T06:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942166" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Unterburg-Wupper" xlink:title="Unterburg-Wupper" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">162.60001</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54939932">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54939932">
+					<gml:timePosition>2016-02-15T03:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54939932" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Holzwipper" xlink:title="Holzwipper" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">21.299999</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_28529555">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_28529555">
+					<gml:timePosition>2013-07-04T03:30:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_28529555" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Lufttemperatur" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="RS-Herrmannsmuehle" xlink:title="RS-Herrmannsmühle" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="°C"
+				xsi:type="ns:MeasureType">14.1</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54939513">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54939513">
+					<gml:timePosition>2016-02-15T04:07:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54939513" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Muellensiepen_Zulaufpegel" xlink:title="Müllensiepen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.25687277</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942178">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942178">
+					<gml:timePosition>2016-02-15T06:50:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942178" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Schlebusch" xlink:title="Schlebusch" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">34.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943615">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943615">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943615" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Sauerstoffgehalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Opladen" xlink:title="Opladen" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="%"
+				xsi:type="ns:MeasureType">11.8</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942667">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942667">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942667" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Neyetalsperre" xlink:title="Neyetalsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">5.3099537</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943600">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943600">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943600" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Truebung" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Laaken" xlink:title="Laaken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="FNU"
+				xsi:type="ns:MeasureType">1.8</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942659">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942659">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942659" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Neyetalsperre" xlink:title="Neyetalsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">302.62689</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941422">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941422">
+					<gml:timePosition>2016-02-15T05:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941422" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Vorsperre_Grosse_Dhuenn_Entnahmeturm" xlink:title="Vorsperre Große Dhünn" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">177.11423</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54943656">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54943656">
+					<gml:timePosition>2016-02-15T09:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54943656" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Elektrische_Leitfaehigkeit" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Rutenbeck" xlink:title="Rutenbeck" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="µS/cm"
+				xsi:type="ns:MeasureType">311.0</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942665">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942665">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942665" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Brucher-Talsperre" xlink:title="Brucher-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">369.52826</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941617">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941617">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941617" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Unterburg-Eschbach" xlink:title="Unterburg-Eschbach" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">15.299999</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54942661">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54942661">
+					<gml:timePosition>2016-02-15T08:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54942661" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherfuellstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Bever-Talsperre_Windenhaus" xlink:title="Bever-Talsperre" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="mNN"
+				xsi:type="ns:MeasureType">293.3956</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941155">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941155">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941155" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Laaken" xlink:title="Laaken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">15.065</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_53401590">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_53401590">
+					<gml:timePosition>2015-12-15T02:37:30.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_53401590" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Hangbergermuehle_Doerpe-Vorsperre" xlink:title="Hangbergermühle (Dörpe-Vorsperre)" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">35.400002</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941210">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941210">
+					<gml:timePosition>2016-02-15T05:40:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941210" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Abfluss" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stoecken" xlink:title="Stöcken" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m³/s"
+				xsi:type="ns:MeasureType">0.1805976</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54938795">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54938795">
+					<gml:timePosition>2016-02-15T04:00:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54938795" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Speicherinhalt" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Stausee_Beyenburg" xlink:title="Stausee Beyenburg" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="Mio.m³"
+				xsi:type="ns:MeasureType">0.44827127</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+	<sos:observationData>
+		<om:OM_Observation xmlns:xlink="http://www.w3.org/1999/xlink"
+			xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2"
+			gml:id="o_54941635">
+			<om:type
+				xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement" />
+			<om:phenomenonTime>
+				<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2"
+					gml:id="phenomenonTime_54941635">
+					<gml:timePosition>2016-02-15T05:46:00.000Z</gml:timePosition>
+				</gml:TimeInstant>
+			</om:phenomenonTime>
+			<om:resultTime xlink:href="#phenomenonTime_54941635" />
+			<om:procedure xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Einzelwert" />
+			<om:observedProperty xlink:href="Wasserstand" />
+			<om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink"
+				xlink:href="Wipperfliess_Ablaufpegel" xlink:title="Wipperfließ" />
+			<om:result xmlns:ns="http://www.opengis.net/gml/3.2"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="cm"
+				xsi:type="ns:MeasureType">11.22</om:result>
+		</om:OM_Observation>
+	</sos:observationData>
+</sos:GetObservationResponse>

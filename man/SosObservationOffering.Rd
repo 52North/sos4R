@@ -14,6 +14,18 @@
 \alias{sosResultModels,SosObservationOffering-method}
 \alias{sosId,SosObservationOffering-method}
 
+% Version 2.0.0
+\alias{SosObservationOffering_2.0.0}
+\alias{SosObservationOffering_2.0.0-class}
+\alias{show,SosObservationOffering_2.0.0-method}
+\alias{summary.SosObservationOffering_2.0.0}
+\alias{print.summary.SosObservationOffering_2.0.0}
+\alias{print,SosObservationOffering_2.0.0-method}
+\alias{toString,SosObservationOffering_2.0.0-method}
+\alias{sosName,SosObservationOffering_2.0.0-method}
+\alias{sosResultModels,SosObservationOffering_2.0.0-method}
+\alias{sosId,SosObservationOffering_2.0.0-method}
+
 \title{Classes and Related Functions for "SosObservationOffering"}
 
 \description{\code{SosObservationOffering}s collect all metadata about a specific offerign in a Sensor Observation Service.}
@@ -23,10 +35,11 @@ Objects can be created by calls to the construction functions of the form \code{
 }
 
 \usage{
-SosObservationOffering(id, name = as.character(NA), time, procedure, 
-	observedProperty, featureOfInterest, responseFormat, 
-	intendedApplication = as.character(NA), resultModel = as.character(NA), 
-	responseMode = as.character(NA), boundedBy = list())
+SosObservationOffering(id, name = as.character(NA), time, procedure, observedProperty,
+                       featureOfInterest, responseFormat, 
+                       intendedApplication = as.character(NA), 
+                       resultModel = as.character(NA), 
+                       responseMode = as.character(NA), boundedBy = list())
 }
 
 \section{Slots}{

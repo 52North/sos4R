@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2011-02-11                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -31,47 +31,47 @@
 #
 #
 as.SensorML.SpatialPointsDataFrame = function(from) {
-	.coords <- sosCoordinates(from, handleNames = TRUE)
-	.coordsNames <- names(.coords)
-	
-	if(all(dim(.coords) > 0, any(.coordsNames == "y"),
-			any(.coordsNames == "x"))) {
-		.crds <- .coords[,c("x", "y")]
-		.crs <- sosGetCRS(from)
-		
-		if(is.null(.crs)) {
-			warning("[as.SensorML.SpatialPointsDataFrame] No CRS from sensor ",
-					"description (using sosGetCRS(...), using default.")
-			.crs <- sosGetCRS(sosDefaultReferenceFrameSensorDescription)
-		}
-		
-		.notCoordCols <- !colnames(.coords)%in%c("x", "y")
-		.otherData <- data.frame(.coords[,.notCoordCols])
-		colnames(.otherData) <- colnames(.coords)[.notCoordCols]
-	
-		.sp <- SpatialPointsDataFrame(coords = .crds,
-				data = .otherData,
-				proj4string = .crs)
-		
-		return(.sp)
-	}
-	else {
-		warning(paste0("Cannot coerce SensorML to SpatialPointsDataFrame ",
-						" because no coordinates found for object. Check that ",
-						" sosCoordinates(obj) returns a matrix with colum ",
-						"names 'x' and 'y'."))
-		return(SpatialPointsDataFrame(data.frame(0,0),
-						data = data.frame(NA_character_)))
-	}
+  .coords <- sosCoordinates(from, handleNames = TRUE)
+  .coordsNames <- names(.coords)
+  
+  if(all(dim(.coords) > 0, any(.coordsNames == "y"),
+         any(.coordsNames == "x"))) {
+    .crds <- .coords[,c("x", "y")]
+    .crs <- sosGetCRS(from)
+    
+    if(is.null(.crs)) {
+      warning("[as.SensorML.SpatialPointsDataFrame] No CRS from sensor ",
+              "description (using sosGetCRS(...), using default.")
+      .crs <- sosGetCRS(sosDefaultReferenceFrameSensorDescription)
+    }
+    
+    .notCoordCols <- !colnames(.coords)%in%c("x", "y")
+    .otherData <- data.frame(.coords[,.notCoordCols])
+    colnames(.otherData) <- colnames(.coords)[.notCoordCols]
+    
+    .sp <- SpatialPointsDataFrame(coords = .crds,
+                                  data = .otherData,
+                                  proj4string = .crs)
+    
+    return(.sp)
+  }
+  else {
+    warning(paste0("Cannot coerce SensorML to SpatialPointsDataFrame ",
+                   " because no coordinates found for object. Check that ",
+                   " sosCoordinates(obj) returns a matrix with colum ",
+                   "names 'x' and 'y'."))
+    return(SpatialPointsDataFrame(data.frame(0,0),
+                                  data = data.frame(NA_character_)))
+  }
 }
 setAs("SensorML", "SpatialPointsDataFrame", 
-		function(from) {
-			as.SensorML.SpatialPointsDataFrame(from)
-		}
+      function(from) {
+        as.SensorML.SpatialPointsDataFrame(from)
+      }
 )
 setAs("SensorML", "Spatial", 
-		function(from) {
-			as.SensorML.SpatialPointsDataFrame(from)
-		}
+      function(from) {
+        as.SensorML.SpatialPointsDataFrame(from)
+      }
 )
 

@@ -9,6 +9,7 @@
 \alias{show,SosGetObservation-method}
 \alias{toString,SosGetObservation-method}
 \alias{print,SosGetObservation-method}
+
 \alias{GetObservationById}
 \alias{SosGetObservationById}
 \alias{SosGetObservationById-class}
@@ -16,19 +17,23 @@
 \alias{print,SosGetObservationById-method}
 \alias{toString,SosGetObservationById-method}
 
+\alias{SosGetObservation_2.0.0}
+\alias{SosGetObservation_2.0.0-class}
+
 \title{GetObservation and GetObservationById Request Objects}
 
 \description{Classes (and their construction functions) to request observations from a Sensor Observation Service.}
 
 \usage{
-SosGetObservation(service, version, offering, observedProperty, responseFormat, 
-	srsName = as.character(NA), eventTime = list(NA), 
-	procedure = as.character(NA), featureOfInterest = NULL, result = NULL, 
-	resultModel = as.character(NA), responseMode = as.character(NA), 
-	BBOX = as.character(NA))
-SosGetObservationById(service, version, observationId, responseFormat, 
-	srsName = as.character(NA), resultModel = as.character(NA), 
-	responseMode = as.character(NA))
+SosGetObservation(service, version, offering, observedProperty, responseFormat,
+                  srsName = as.character(NA), eventTime = list(),
+                  procedure = as.character(NA), featureOfInterest = NULL,
+                  result = NULL, resultModel = as.character(NA),
+                  responseMode = as.character(NA), BBOX = as.character(NA),
+                  valueReferenceTemporalFilter = as.character(NA))
+SosGetObservationById(service, version, observationId, responseFormat,
+                      srsName = as.character(NA), resultModel = as.character(NA),
+                      responseMode = as.character(NA))
 }
 
 \section{Objects from the Class}{
@@ -51,6 +56,7 @@ Objects can be created by calls to the construction functions of the form \code{
     \item{\code{result}:}{Object of class \code{"ANY"}, provides a place to put in OGC filter expressions based on property values. This instructs the SOS to only return observations where the result matches this expression.}
     \item{\code{service}:}{Object of class \code{"character"}, service type identifier.}
     \item{\code{srsName}:}{Object of class \code{"character"}, defines the spatial reference system that should be used for any geometries that are returned in the response. This must be one of the advertised values in the offering specified in gml:srsName elements.}
+    \item{\code{valueReferenceTemporalFilter}:}{Object of class \code{"character"}, the property name used in a temporal filter for SOS 2.0 KVP reuests.}
     \item{\code{version}:}{Object of class \code{"character"}, specification version for operation.}
   }
 }
@@ -78,6 +84,7 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
   \item{resultModel}{The \verb{resultModel} element of the request, e.g. \samp{om:Measurement}, which is an identifier of the result model to be used for the requested data. The resultModel values supported by a service are listed in the contents section of the service metadata, identified as QName values.}
   \item{responseMode}{The \verb{responseMode} element of the request, e.g. \samp{inline}, which allows the client to request the form of the response.}
   \item{BBOX}{A bounding box to be used only with \verb{KVP} encoding in request via \verb{HTTP GET}, in the format \samp{minlon,minlat,maxlon,maxlat,srsURI?}, with the spatial reference system being optional. This element is ignored for \verb{POST} requests, use the parameter \code{featureOfInterest} instead, see \code{\link{SosBindings}}.}
+    \item{valueReferenceTemporalFilter}{The property name used in a temporal filter for SOS 2.0 KVP reuests, ignore for SOS 1.0.0.}
 }
 
 \section{Methods}{
@@ -109,20 +116,22 @@ See OGC 06-009r6 section 10.1, or the XSD schema file at \url{http://schemas.ope
 showClass("SosGetObservation")
 showClass("SosGetObservationById")
 
-observationRequest <- SosGetObservation(service = "SOS", version = "1.0.0",
-	offering = "temperatures",
-	observedProperty = list("urn:property:AirTemperature"),
-	responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
-print(observationRequest)
+responseFormat <- "text/xml;subtype=&quot;om/1.0.0&quot;"
 
-observationByIdRequest <- SosGetObservationById(service = "SOS",
-	version = "1.0.0", observationId = "o_12345",
-	responseFormat = "text/xml;subtype=&quot;om/1.0.0&quot;")
-print(observationByIdRequest)
+obsReq <- SosGetObservation(service = "SOS", version = "1.0.0",
+                            offering = "temperatures",
+                            observedProperty = list("urn:property:AirTemperature"),
+                            responseFormat = responseFormat)
+print(obsReq)
+
+obsByIdReq <- SosGetObservationById(service = "SOS", version = "1.0.0",
+                                    observationId = "o_12345",
+                                    responseFormat = responseFormat)
+print(obsByIdReq)
 
 \dontrun{
 sos <- SOS("http://mysos.net/sos")
-encodeXML(observationByIdRequest, sos = sos)
+encodeXML(obsByIdReq, sos = sos)
 }
 
 }

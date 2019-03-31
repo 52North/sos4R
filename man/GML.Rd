@@ -125,29 +125,31 @@ Objects can be created by calling the according construction functions. e.g. in 
 
 \usage{
 GmlDirectPosition(pos, srsName = as.character(NA), srsDimension = NA_integer_,
-	axisLabels = as.character(NA), uomLabels = as.character(NA))
+                  axisLabels = as.character(NA), uomLabels = as.character(NA))
 GmlDirectPositionLatLon(lat, lon, srsName = as.character(NA), 
-	srsDimension = NA_integer_, axisLabels = as.character(NA), 
-	uomLabels = as.character(NA))
+                        srsDimension = NA_integer_, 
+                        axisLabels = as.character(NA), 
+                        uomLabels = as.character(NA))
 GmlEnvelope(lowerCorner, upperCorner, srsName = as.character(NA), 
-	srsDimension = NA_integer_, axisLabels = as.character(NA), 
-	uomLabels = as.character(NA))
+            srsDimension = NA_integer_, axisLabels = as.character(NA), 
+            uomLabels = as.character(NA))
 GmlFeatureCollection(featureMembers, id = as.character(NA))
 GmlPoint(pos, id = as.character(NA), srsName = as.character(NA), 
-	srsDimension = NA_integer_, axisLabels = as.character(NA), 
-	uomLabels = as.character(NA))
+         srsDimension = NA_integer_, axisLabels = as.character(NA), 
+         uomLabels = as.character(NA))
 GmlPointProperty(href = as.character(NA), point = NULL)
 GmlFeatureProperty(href = as.character(NA), feature = NULL)
 GmlTimeInstant(timePosition, id = as.character(NA), relatedTimes = list(NA), 
-	frame = as.character(NA))
+               frame = as.character(NA))
 GmlTimeInstantProperty(href = as.character(NA), time = NULL)
 GmlTimeInterval(interval, unit, radix = NA, factor = NA)
 GmlTimePeriod(begin = NULL, beginPosition = NULL, end = NULL, 
-	endPosition = NULL, duration = as.character(NA), timeInterval = NULL, 
-	id = as.character(NA), relatedTimes = list(NA), frame = as.character(NA))
+              endPosition = NULL, duration = as.character(NA), 
+              timeInterval = NULL, id = as.character(NA), 
+              relatedTimes = list(NA), frame = as.character(NA))
 GmlTimePosition(time, frame = as.character(NA), 
-	calendarEraName = as.character(NA), 
-	indeterminatePosition = as.character(NA))
+                calendarEraName = as.character(NA), 
+                indeterminatePosition = as.character(NA))
 GmlMeasure(value, uom)
 }
 
@@ -288,7 +290,7 @@ No objects may be created from the following virtual classes: \code{GmlFeature},
 The \verb{"...OrNULL"} classes are used to model optional slots.
 }
 
-\references{GML specification at \url{http://www.opengeospatial.org/standards/gml}.}
+\references{GML specification at \url{https://www.opengeospatial.org/standards/gml}.}
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
@@ -327,7 +329,8 @@ pos1 <- GmlDirectPosition(pos = "7.0 52.0")
 show(pos1)
 
 # create envelope
-env1 <- GmlEnvelope(upperCorner = pos1, lowerCorner = GmlDirectPosition("6.0 51.0"))
+env1 <- GmlEnvelope(upperCorner = pos1, 
+                    lowerCorner = GmlDirectPosition("6.0 51.0"))
 print(env1)
 
 # wrap elements in feature collection
@@ -358,13 +361,13 @@ GmlTimeInstantProperty(href = "http://link.to/timeInstant")
 # create different variants of time periods
 # one hour with time positions
 GmlTimePeriod(beginPosition = timePos1, 
-	endPosition = GmlTimePosition(time = timePos1@time+3600))
+              endPosition = GmlTimePosition(time = timePos1@time+3600))
 
 # one week backwards from now
-aWeekAgo <- GmlTimeInstantProperty(time = GmlTimeInstant(
-	time = GmlTimePosition(time = Sys.time()-(3600*24*7))))
-now <- GmlTimeInstantProperty(time = GmlTimeInstant(
-	time = GmlTimePosition(time = Sys.time())))
+timePos <- GmlTimePosition(time = Sys.time()-(3600*24*7))
+aWeekAgo <- GmlTimeInstantProperty(time = GmlTimeInstant(time = timePos))
+timePos <- GmlTimePosition(time = Sys.time())
+now <- GmlTimeInstantProperty(time = GmlTimeInstant(time = timePos))
 GmlTimePeriod(begin = aWeekAgo, end = now)
 
 }

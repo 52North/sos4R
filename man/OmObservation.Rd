@@ -9,6 +9,7 @@
 \alias{show,OmObservation-method}
 \alias{print,OmObservation-method}
 \alias{print,OmObservationProperty-method}
+\alias{sosCoordinates,OmObservationProperty-method}
 \alias{toString,OmObservation-method}
 \alias{toString,OmObservationProperty-method}
 \alias{OmObservationProperty-class}
@@ -48,9 +49,9 @@ The following classes are virtual, no objects may be created from them: \code{Om
 }
 
 \usage{
-OmObservation(samplingTime, procedure, observedProperty, featureOfInterest, 
-	result, metadata = NA, resultTime = NULL, resultQuality = NA, 
-	parameter = NA)
+OmObservation(samplingTime, procedure, observedProperty, featureOfInterest,
+              result, metadata = NA, resultTime = NULL, resultQuality = NA,
+              parameter = NA)
 OmObservationProperty(href = as.character(NA), obs = NULL)
 }
 

@@ -8,6 +8,9 @@
 \alias{getCapabilities,SOS_1.0.0-method}
 \alias{getCapabilities,SOS_1.0.0,verbose,inspect-method}
 
+\alias{getCapabilities,SOS_2.0.0-method}
+\alias{getCapabilities,SOS_2.0.0,verbose,inspect-method}
+
 \title{Request Capabilities from a SOS}
 
 \description{

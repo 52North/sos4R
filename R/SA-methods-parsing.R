@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-09-15                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -31,11 +31,13 @@
 #
 #
 parseSamplingPoint <- function(obj, sos) {
-	.sampledFeatures <- list(obj[saSampledFeatureName])
-	.position <- parsePosition(obj[[saPositionName]], sos = sos)
-	.id <-xmlGetAttr(node = obj, name = "id", default = NA_character_)
-	
-	.sp <- SaSamplingPoint(sampledFeatures = .sampledFeatures,
-			position = .position, id = .id)
-	return(.sp)
+  sampledFeatures <- as.list(xml2::xml_text(
+    xml2::xml_find_first(x = obj, xpath = gmlNameName, ns = SosAllNamespaces()))
+  )
+  positionXml <- xml2::xml_child(x = obj, search = saPositionName, ns = SosAllNamespaces())
+  position <- parsePosition(positionXml, sos = sos)
+  id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
+
+  sp <- SaSamplingPoint(sampledFeatures = sampledFeatures, position = position, id = id)
+  return(sp)
 }

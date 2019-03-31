@@ -1,9 +1,9 @@
 import("methods")
-import("XML")
-importFrom("RCurl", "getURL", "postForm", "getCurlHandle")
 importFrom("graphics", "plot")
 importFrom("utils", "object.size", "str", "write.csv")
 import("sp")
+import("httr")
+import("xml2")
 
 exportPattern("^[[:alpha:]]+")
 # export all who start with a letter (i.e. not .) except 'print.' or 'toString.'
@@ -19,9 +19,9 @@ exportMethods(
     "getCapabilities",
     "getObservationById",
     "getObservation",
-	"plot",
-	"print",
-    "saveXML",
+    "getFeatureOfInterest",
+    "plot",
+	  "print",
     "show",
     "sosAbstract",
     "sosCapabilitiesDocumentOriginal",
@@ -40,7 +40,7 @@ exportMethods(
     "sosFeaturesOfInterest",
     "sosGetCRS",
     "sosId",
-    "sosMethod",
+    "sosBinding",
     "sosName",
     "sosObservedProperties",
     "sosOfferingIds",
@@ -102,6 +102,8 @@ exportClasses(
      "OmMeasurement",
      "OmObservation",
      "OmObservationOrNULL",
+     "OmOM_Observation",
+     "OmOM_ObservationOrNULL",
      "OmObservationProperty",
      "OwsCapabilities",
      "OwsCapabilities_1.1.0",
@@ -127,6 +129,7 @@ exportClasses(
      "SensorML",
      "SOS",
      "SOS_1.0.0",
+     "SOS_2.0.0",
      "SosCapabilities_1.0.0",
      "SosContents",
      "SosContentsOrNULL",
@@ -134,7 +137,6 @@ exportClasses(
      "SosGetObservation",
      "SosGetObservationById",
      "SosEventTime",
-     "SosEventTimeLatest",
      "SosFeatureOfInterest",
      "SosFeatureOfInterestOrNULL",
      "SosFilter_Capabilities",
@@ -146,13 +148,15 @@ exportClasses(
      "SwePhenomenonProperty",
      "SwePhenomenonPropertyOrNULL",
      "SweTextBlock",
+     "SweTextEncoding",
      "TM_After",
      "TM_Before",
      "TM_During",
      "TM_Equals",
      "GmlDirectPositionOrNULL",
      "GmlFeatureOrGmlFeaturePropertyOrNULL",
-     "GmlPointOrNULL"
+     "GmlPointOrNULL",
+     "SamsShape"
 )
 
 S3method(as.data.frame, OmMeasurement)
@@ -171,10 +175,13 @@ S3method(print, summary.OmObservationCollection)
 S3method(print, summary.OwsRange)
 S3method(print, summary.SOS)
 S3method(print, summary.SosObservationOffering)
+S3method(print, summary.SosObservationOffering_2.0.0)
 S3method(summary, GmlTimePeriod)
 S3method(summary, OmObservation)
 S3method(summary, OmObservationCollection)
 S3method(summary, OwsRange)
 S3method(summary, SOS)
+S3method(summary, SOS_versioned)
 S3method(summary, SosObservationOffering)
+S3method(summary, SosObservationOffering_2.0.0)
 

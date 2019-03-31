@@ -32,6 +32,13 @@
 \alias{print.summary.OmObservationCollection}
 \alias{summary.OmObservationCollection}
 
+\alias{sosObservableProperties, OmObservation-method}
+\alias{sosObservableProperties, OmObservationCollection-method}
+\alias{sosObservableProperties, SOS-method}
+\alias{sosObservableProperties, SosObservationOffering_2.0.0-method}
+\alias{sosObservableProperties, SweCompositePhenomenon-method}
+\alias{sosObservableProperties, SwePhenomenonProperty-method}
+\alias{sosObservableProperties, list-method}
 
 \title{Class "OmObservationCollection"}
 

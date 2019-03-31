@@ -1,0 +1,38 @@
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - devdocs
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    devdocs:
+      text: Developer Docs
+      href: DEV-README.html
+    articles:
+      text: Articles
+      menu:
+      - text: 'sos4R: Accessing Sensor Observation Services from R -- Quickstart'
+        href: articles/sos4R-vignette-01-quickstart.html
+      - text: 'sos4R: OGC SWE and SOS'
+        href: articles/sos4R-vignette-02-ogc-sos.html
+      - text: 'sos4R: SOS Operations'
+        href: articles/sos4R-vignette-03-sos-operations.html
+      - text: 'sos4R: Extending package functions and advanced configuration'
+        href: articles/sos4R-vignette-04-extensions.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/52North/sos4R

@@ -8,7 +8,6 @@
 \alias{encodeKVP,OgcBinaryTemporalOp,SOS-method}
 \alias{encodeKVP,SosEventTime,SOS-method}
 \alias{encodeKVP,SosEventTime,ANY-method}
-\alias{encodeKVP,SosEventTimeLatest,SOS-method}
 \alias{encodeKVP,POSIXt,SOS-method}
 
 \title{Encode Classes as KVP}
@@ -28,6 +27,6 @@ These methods convert a given object to a key-value-pair representation to be us
 
 }
 
-\seealso{\code{\link{SosBindings}}, \url{http://en.wikipedia.org/wiki/Key_Value_Pair}}
+\seealso{\code{\link{SosBindings}}, \url{https://en.wikipedia.org/wiki/Key_Value_Pair}}
 
 \keyword{methods}

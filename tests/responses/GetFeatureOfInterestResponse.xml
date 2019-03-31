@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:GetFeatureOfInterestResponse xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wml2="http://www.opengis.net/waterml/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:sf="http://www.opengis.net/sampling/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sams="http://www.opengis.net/samplingSpatial/2.0" xsi:schemaLocation="http://www.opengis.net/waterml/2.0 http://schemas.opengis.net/waterml/2.0/timeseries.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetFeatureOfInterest.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd http://www.opengis.net/samplingSpatial/2.0 http://schemas.opengis.net/samplingSpatial/2.0/spatialSamplingFeature.xsd http://www.opengis.net/sampling/2.0 http://schemas.opengis.net/sampling/2.0/samplingFeature.xsd">
+  <sos:featureMember>
+    <wml2:MonitoringPoint gml:id="mp_21E2618DF121904D703DD65F07DB863E0306E9FD">
+      <gml:identifier codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">Panzer-Talsperre_Absperrbauwerk</gml:identifier>
+      <gml:name codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">Panzer-Talsperre</gml:name>
+      <gml:name codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">Absperrbauwerk</gml:name>
+      <sf:sampledFeature xlink:href="urn:ogc:def:nil:OGC:unknown"/>
+      <sams:shape>
+        <ns:Point xmlns:ns="http://www.opengis.net/gml/3.2" ns:id="point_mp_21E2618DF121904D703DD65F07DB863E0306E9FD">
+          <ns:pos srsName="http://www.opengis.net/def/crs/EPSG/0/31466">5672482.187 2589224.651</ns:pos>
+        </ns:Point>
+      </sams:shape>
+    </wml2:MonitoringPoint>
+  </sos:featureMember>
+</sos:GetFeatureOfInterestResponse>

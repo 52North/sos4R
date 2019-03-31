@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -31,71 +31,93 @@
 #
 #
 setClass("SwePhenomenon",
-		representation(id = "character", name = "character",
-				# optional:
-				description = "character"),
-		prototype = list(id = as.character(NA), name = as.character(NA)),
-		validity = function(object) {
-			#print("Entering validation: SwePhenomenon")
-			# TODO implement validity function
-			# one of parameters has to be set
-			return(TRUE)
-		}
+         representation(id = "character", name = "character",
+                        # optional:
+                        description = "character"),
+         prototype = list(id = as.character(NA), name = as.character(NA)),
+         validity = function(object) {
+           #print("Entering validation: SwePhenomenon")
+           # TODO implement validity function
+           # one of parameters has to be set
+           return(TRUE)
+         }
 )
 setClassUnion(name = "SwePhenomenonOrNULL",
-		members = c("SwePhenomenon", "NULL"))
+              members = c("SwePhenomenon", "NULL"))
 
 #
 #
 #
 setClass("SwePhenomenonProperty",
-		representation(href = "character", phenomenon = "SwePhenomenonOrNULL"),
-		prototype = list(href = as.character(NA), phenomenon = NULL),
-		validity = function(object) {
-			#print("Entering validation: SwePhenomenonProperty")
-			# TODO implement validity function
-			# one of parameters has to be set, phenomenon has to be SwePhenomenon if set
-			return(TRUE)
-		}
+         representation(href = "character", phenomenon = "SwePhenomenonOrNULL"),
+         prototype = list(href = as.character(NA), phenomenon = NULL),
+         validity = function(object) {
+           #print("Entering validation: SwePhenomenonProperty")
+           # TODO implement validity function
+           # one of parameters has to be set, phenomenon has to be SwePhenomenon if set
+           return(TRUE)
+         }
 )
 setClassUnion(name = "SwePhenomenonPropertyOrNULL",
-		members = c("SwePhenomenonProperty", "NULL"))
+              members = c("SwePhenomenonProperty", "NULL"))
 
 #
 # 52N SOS only supports/returns CompositePhenomenon, the intermediate
 # CompoundPhenomenon is intentionally left out for brevity
 #
 setClass("SweCompositePhenomenon",
-		representation(dimension = "integer", components = "list",
-				# optional: 
-				base = "SwePhenomenonPropertyOrNULL"),
-		prototype = list(dimension = NA_integer_, components = list(NA)),
-		contains = "SwePhenomenon",
-		validity = function(object) {
-			#print("Entering validation: SweCompositePhenomenon")
-			# TODO implement validity function
-			# components needs to be a list of SwePhenomenonProperty instances
-			return(TRUE)
-		}
+         representation(dimension = "integer", components = "list",
+                        # optional: 
+                        base = "SwePhenomenonPropertyOrNULL"),
+         prototype = list(dimension = NA_integer_, components = list(NA)),
+         contains = "SwePhenomenon",
+         validity = function(object) {
+           #print("Entering validation: SweCompositePhenomenon")
+           # TODO implement validity function
+           # components needs to be a list of SwePhenomenonProperty instances
+           return(TRUE)
+         }
 )
 
 #
 #
 #
 setClass("SweTextBlock",
-		representation(tokenSeparator = "character",
-				blockSeparator = "character",
-				decimalSeparator = "character",
-				#optional:
-				id = "character"),
-		prototype = list(tokenSeparator = NA_character_,
-				blockSeparator = NA_character_,
-				decimalSeparator = NA_character_),
-		validity = function(object) {
-			#print("Entering validation: SweTextBlock")
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(tokenSeparator = "character",
+                        blockSeparator = "character",
+                        decimalSeparator = "character",
+                        #optional:
+                        id = "character"),
+         prototype = list(tokenSeparator = NA_character_,
+                          blockSeparator = NA_character_,
+                          decimalSeparator = NA_character_),
+         validity = function(object) {
+           #print("Entering validation: SweTextBlock")
+           # TODO implement validity function
+           return(TRUE)
+         }
+)
+
+
+# SWE 2.0
+
+#
+#
+#
+setClass("SweTextEncoding",
+         representation(tokenSeparator = "character",
+                        blockSeparator = "character",
+                        #optional:
+                        decimalSeparator = "character",
+                        id = "character"),
+         prototype = list(tokenSeparator = NA_character_,
+                          blockSeparator = NA_character_,
+                          decimalSeparator = NA_character_),
+         validity = function(object) {
+           #print("Entering validation: SweTextEncoding")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 
 

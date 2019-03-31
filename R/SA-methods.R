@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-09-09                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -31,21 +31,21 @@
 # construction methods
 #
 SaSamplingPoint <- function(sampledFeatures, position,
-		relatedObservation = list(NA), relatedSamplingFeature = list(NA),
-		surveyDetails = NA, id = NA_character_) {
-	new("SaSamplingPoint", sampledFeatures = sampledFeatures,
-			position = position, relatedObservation = relatedObservation,
-			surveyDetails = surveyDetails, id = id)
+                            relatedObservation = list(NA), relatedSamplingFeature = list(NA),
+                            surveyDetails = NA, id = NA_character_) {
+  new("SaSamplingPoint", sampledFeatures = sampledFeatures,
+      position = position, relatedObservation = relatedObservation,
+      surveyDetails = surveyDetails, id = id)
 }
 
 #
 #
 #
 SaSamplingSurface <- function(sampledFeatures, shape,
-		relatedObservation = list(NA), relatedSamplingFeature = list(NA),
-		surveyDetails = NA, position = NA) {
-	new("SaSamplingSurface", sampledFeatures = sampledFeatures,
-			shape = shape, relatedObservation = relatedObservation,
-			relatedSamplingFeature = relatedSamplingFeature, 
-			surveyDetails = surveyDetails, position = position)
+                              relatedObservation = list(NA), relatedSamplingFeature = list(NA),
+                              surveyDetails = NA, position = NA) {
+  new("SaSamplingSurface", sampledFeatures = sampledFeatures,
+      shape = shape, relatedObservation = relatedObservation,
+      relatedSamplingFeature = relatedSamplingFeature, 
+      surveyDetails = surveyDetails, position = position)
 }

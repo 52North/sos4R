@@ -1,10 +1,10 @@
 \name{Defaults}
 
-
 \alias{sosDefault}
 \alias{Defaults}
 \alias{sosDefaultCharacterEncoding}
-\alias{SosDefaultConnectionMethod}
+\alias{SosDefaultBinding}
+\alias{SosDefaultDCPs}
 \alias{sosDefaultDescribeSensorOutputFormat}
 \alias{sosDefaultGetCapAcceptFormats}
 \alias{sosDefaultGetCapOwsVersion}
@@ -13,6 +13,7 @@
 \alias{sosDefaultSpatialOpPropertyName}
 \alias{sosDefaultTempOpPropertyName}
 \alias{sosDefaultTemporalOperator}
+\alias{sosDefaultTemporalValueReference}
 \alias{sosDefaultTimeFormat}
 \alias{sosDefaultFilenameTimeFormat}
 \alias{sosDefaultColumnNameFeatureIdentifier}
@@ -21,14 +22,19 @@
 \alias{sosDefaultColumnNameSRS}
 \alias{sosDefaultColorPalette}
 \alias{sosDefaultReferenceFrameSensorDescription}
+\alias{sosDefaultServiceVersion}
 
 \alias{SosParsingFunctions}
 \alias{SosEncodingFunctions}
 \alias{SosDisabledParsers}
 \alias{SosDataFieldConvertingFunctions}
 \alias{SosExampleServices}
-\alias{SosDefaults}
 \alias{SosResetParsingFunctions}
+
+\alias{SosDefaults}
+\alias{SosDefaults2}
+\alias{SosDefaultParsingOptions}
+
 
 \title{Default Parameter Settings and Handling Functions}
 
@@ -37,7 +43,7 @@ These values are default parameters and handling functions for connections and r
 }
 
 \usage{
-SosDefaultConnectionMethod()
+SosDefaultBinding()
 
 SosParsingFunctions(..., include = character(0), exclude = character(0))
 SosEncodingFunctions(..., include = character(0), exclude = character(0))
@@ -50,6 +56,10 @@ SosExampleServices()
 SosDefaults()
 
 SosResetParsingFunctions(sos)
+
+SosDefaultDCPs()
+
+SosDefaultParsingOptions()
 }
 
 \arguments{
@@ -79,7 +89,7 @@ The function \code{SosResetParsingFunctions} can be used to replace the included
 	\item{sosDefaultGetCapOwsVersion}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetCapOwsVersion}}} % "1.1.0"
 	\item{sosDefaultGetObsResponseFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetObsResponseFormat}}} % SosSupportedResponseFormats()[1]
 	\item{sosDefaultTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTimeFormat}}} % "%Y-%m-%dT%H:%M:%OS"
-	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} % 
+	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} %
 	\item{sosDefaultTempOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTempOpPropertyName}}} % "om:samplingTime"
 	\item{sosDefaultTemporalOperator}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTemporalOperator}}} % SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 	\item{sosDefaultSpatialOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultSpatialOpPropertyName}}} % "urn:ogc:data:location"
@@ -106,11 +116,11 @@ show(sosDefaultSpatialOpPropertyName)
 show(sosDefaultTempOpPropertyName)
 show(sosDefaultTemporalOperator)
 show(sosDefaultTimeFormat)
-SosDefaultConnectionMethod()
+SosDefaultBinding()
 
 \dontrun{
 # usage of defaults in construction method for SOS class
-sos <- SOS("http://mysos.com/sos", method = SosDefaultConnectionMethod(),
+sos <- SOS("http://mysos.com/sos", binding = SosDefaultBinding(),
 		timeFormat = sosDefaultTimeFormat)
 }
 
@@ -123,7 +133,7 @@ myER <- function(xml) {
 }
 SosParsingFunctions("ExceptionReport" = myER)
 
-# use inclusion and exclusion, important: even the just added function needs to 
+# use inclusion and exclusion, important: even the just added function needs to
 # be included manually!
 SosParsingFunctions("ExceptionReport" = myER,
 	include = c("GetObservation", "DescribeSensor", "ExceptionReport"))
@@ -138,11 +148,11 @@ myEncoding <- function(object, v) {
 sos = SOS(url = "http://mysos.com/sos",
 		encoders = SosEncodingFunctions("POST" = myPostEncoding))
 
-# Use custom converting function and connection method. This mechanism works the 
+# Use custom converting function and connection method. This mechanism works the
 # same for encoders and decoders.
 myConverters <- SosDataFieldConvertingFunctions(
 	"myNumericUnit" = sosConvertDouble,
-mySos <- SOS(sos.url, method = "GET", dataFieldConverters = myConverters)
+mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)
 
 # inspecting XML using dummy parsing function
@@ -160,6 +170,9 @@ SosDefaults()
 \dontrun{
 sos <- SosResetParsingFunctions(sos)
 }
+
+# parsing options used by xml2
+SosDefaultParsingOptions()
 
 }
 

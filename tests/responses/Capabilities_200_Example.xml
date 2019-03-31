@@ -1,0 +1,1041 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:Capabilities xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fes="http://www.opengis.net/fes/2.0" xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetCapabilities.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title>Wupperverband SOS</ows:Title>
+    <ows:Abstract>Wupperverband Sensor Observation Service - Data Access for the Wupper Catchment Area</ows:Abstract>
+    <ows:Keywords>
+      <ows:Keyword>Gewässergüte</ows:Keyword>
+      <ows:Keyword>Hydrologie</ows:Keyword>
+      <ows:Keyword>Meteorologie</ows:Keyword>
+    </ows:Keywords>
+    <ows:ServiceType>OGC:SOS</ows:ServiceType>
+    <ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/categoryObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/countObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/geometryObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/measurement</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/samplingCurve</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/samplingPoint</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/samplingSurface</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/spatialSampling</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/textObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/truthObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/daRetrieval</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/foiRetrieval</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/kvp-core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/obsByIdRetrieval</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/soap</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS_application-profile_hydrology/1.0/req/hydrosos</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/general-encoding-rules</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/text-encoding-rules</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-block-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-record-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-simple-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-simple-encodings</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-block-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-record-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-simple-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-simple-encodings</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/uml-measurement-timeries-tvp-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/uml-timeseries-tvp-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-measurement-timeseries-tvp</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-timeseries-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-timeseries-tvp-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-xml-rules</ows:Profile>
+    <ows:Fees>NONE</ows:Fees>
+    <ows:AccessConstraints>http://fluggs.wupperverband.de/fluggs-cms-bilder-dokumente/Downloads/Nutzungsbedingungen_Dienste_Wupperverband.pdf</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>Wupperverband</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://www.wupperverband.de"/>
+    <ows:ServiceContact>
+      <ows:IndividualName>TBA</ows:IndividualName>
+      <ows:PositionName>TBA</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+49(0)202/583-0</ows:Voice>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Untere Lichtenplatzer Str. 100</ows:DeliveryPoint>
+          <ows:City>Wuppertal</ows:City>
+          <ows:AdministrativeArea>North Rhine-Westphalia</ows:AdministrativeArea>
+          <ows:PostalCode>42289</ows:PostalCode>
+          <ows:Country>Germany</ows:Country>
+          <ows:ElectronicMailAddress>sensorweb@wupperverband.de</ows:ElectronicMailAddress>
+        </ows:Address>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="DescribeSensor">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos2/sos/kvp?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos2/sos/soap">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>2m_Tiefe</ows:Value>
+          <ows:Value>Einzelwert</ows:Value>
+          <ows:Value>LANUV</ows:Value>
+          <ows:Value>Oberflaeche</ows:Value>
+          <ows:Value>Stundensumme</ows:Value>
+          <ows:Value>Tagesmittelwert</ows:Value>
+          <ows:Value>Tagesmittelwert_um_17-00_Uhr</ows:Value>
+          <ows:Value>Tagessumme</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedureDescriptionFormat">
+        <ows:AllowedValues>
+          <ows:Value>http://www.opengis.net/sensorML/1.0.1</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml/2.0/observationProcess</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="validTime">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos2/sos/kvp?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos2/sos/soap">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptFormats">
+        <ows:AllowedValues>
+          <ows:Value>application/xml</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptVersions">
+        <ows:AllowedValues>
+          <ows:Value>2.0.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="Sections">
+        <ows:AllowedValues>
+          <ows:Value>All</ows:Value>
+          <ows:Value>Contents</ows:Value>
+          <ows:Value>FilterCapabilities</ows:Value>
+          <ows:Value>OperationsMetadata</ows:Value>
+          <ows:Value>ServiceIdentification</ows:Value>
+          <ows:Value>ServiceProvider</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="updateSequence">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetDataAvailability">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos2/sos/kvp?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos2/sos/soap">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>Barmen_Wupperverband_Hauptverwaltung</ows:Value>
+          <ows:Value>Bever-Talsperre</ows:Value>
+          <ows:Value>Bever-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Beyenburg</ows:Value>
+          <ows:Value>Brucher-Talsperre</ows:Value>
+          <ows:Value>Brucher-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Burscheid</ows:Value>
+          <ows:Value>Eschbachtalsperre</ows:Value>
+          <ows:Value>Eschbachtalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Gklw_Hueckeswagen</ows:Value>
+          <ows:Value>Gklw_Kohlfurth</ows:Value>
+          <ows:Value>Gklw_Marienheide</ows:Value>
+          <ows:Value>Gklw_Radevormwald</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Entnahmeturm</ows:Value>
+          <ows:Value>Guettenhausen</ows:Value>
+          <ows:Value>HKW_Barmen</ows:Value>
+          <ows:Value>Haecksbilstein</ows:Value>
+          <ows:Value>Halbach-Talsperre</ows:Value>
+          <ows:Value>Hangbergermuehle</ows:Value>
+          <ows:Value>Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Holzwipper</ows:Value>
+          <ows:Value>Hueckeswagen</ows:Value>
+          <ows:Value>Kluserbruecke</ows:Value>
+          <ows:Value>Klw_Buchenhofen</ows:Value>
+          <ows:Value>Klw_Schwelm</ows:Value>
+          <ows:Value>Krebsoege</ows:Value>
+          <ows:Value>Laaken</ows:Value>
+          <ows:Value>Lindscheid</ows:Value>
+          <ows:Value>Lingese-Talsperre</ows:Value>
+          <ows:Value>Lingese-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Loosenau</ows:Value>
+          <ows:Value>Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Manfort</ows:Value>
+          <ows:Value>Muellensiepen</ows:Value>
+          <ows:Value>Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Neumuehle</ows:Value>
+          <ows:Value>Neyetalsperre</ows:Value>
+          <ows:Value>Neyetalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Opladen</ows:Value>
+          <ows:Value>Panzer-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Papiermuehlenbach</ows:Value>
+          <ows:Value>RS-Falkenberg</ows:Value>
+          <ows:Value>RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>RS-Jacobsmuehle</ows:Value>
+          <ows:Value>Reinshagensbever</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Rutenbeck</ows:Value>
+          <ows:Value>Schevelinger-Talsperre</ows:Value>
+          <ows:Value>Schevelinger-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Schlebusch</ows:Value>
+          <ows:Value>Schmitzwipper</ows:Value>
+          <ows:Value>Sengbachtalsperre</ows:Value>
+          <ows:Value>Stauanlage_Dahlhausen</ows:Value>
+          <ows:Value>Stauanlage_Dahlhausen_Niederschlagsmessung</ows:Value>
+          <ows:Value>Stausee_Beyenburg</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Absperrbauwerk</ows:Value>
+          <ows:Value>Stoecken</ows:Value>
+          <ows:Value>Suelzueberleitung</ows:Value>
+          <ows:Value>Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Unterburg-Eschbach</ows:Value>
+          <ows:Value>Unterburg-Wupper</ows:Value>
+          <ows:Value>Unterpilghausen</ows:Value>
+          <ows:Value>Vorsperre_Grosse_Dhuenn</ows:Value>
+          <ows:Value>Vorsperre_Grosse_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Wipperfliess</ows:Value>
+          <ows:Value>Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Wupper-Talsperre</ows:Value>
+          <ows:Value>Wupper-Talsperre_Ablauf</ows:Value>
+          <ows:Value>Wupper-Talsperre_Absperrbauwerk</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>Abfluss</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit</ows:Value>
+          <ows:Value>Luftfeuchte</ows:Value>
+          <ows:Value>Lufttemperatur</ows:Value>
+          <ows:Value>Niederschlagshoehe</ows:Value>
+          <ows:Value>Sauerstoffgehalt</ows:Value>
+          <ows:Value>Speicherfuellstand</ows:Value>
+          <ows:Value>Speicherinhalt</ows:Value>
+          <ows:Value>Truebung</ows:Value>
+          <ows:Value>Wasserstand</ows:Value>
+          <ows:Value>Wassertemperatur</ows:Value>
+          <ows:Value>pH-Wert</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>2m_Tiefe</ows:Value>
+          <ows:Value>Einzelwert</ows:Value>
+          <ows:Value>LANUV</ows:Value>
+          <ows:Value>Oberflaeche</ows:Value>
+          <ows:Value>Stundensumme</ows:Value>
+          <ows:Value>Tagesmittelwert</ows:Value>
+          <ows:Value>Tagesmittelwert_um_17-00_Uhr</ows:Value>
+          <ows:Value>Tagessumme</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeatureOfInterest">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos2/sos/kvp?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos2/sos/soap">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>Barmen_Wupperverband_Hauptverwaltung</ows:Value>
+          <ows:Value>Bever-Talsperre</ows:Value>
+          <ows:Value>Bever-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Beyenburg</ows:Value>
+          <ows:Value>Brucher-Talsperre</ows:Value>
+          <ows:Value>Brucher-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Burscheid</ows:Value>
+          <ows:Value>Eschbachtalsperre</ows:Value>
+          <ows:Value>Eschbachtalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Gklw_Hueckeswagen</ows:Value>
+          <ows:Value>Gklw_Kohlfurth</ows:Value>
+          <ows:Value>Gklw_Marienheide</ows:Value>
+          <ows:Value>Gklw_Radevormwald</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Entnahmeturm</ows:Value>
+          <ows:Value>Guettenhausen</ows:Value>
+          <ows:Value>HKW_Barmen</ows:Value>
+          <ows:Value>Haecksbilstein</ows:Value>
+          <ows:Value>Halbach-Talsperre</ows:Value>
+          <ows:Value>Hangbergermuehle</ows:Value>
+          <ows:Value>Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Holzwipper</ows:Value>
+          <ows:Value>Hueckeswagen</ows:Value>
+          <ows:Value>Kluserbruecke</ows:Value>
+          <ows:Value>Klw_Buchenhofen</ows:Value>
+          <ows:Value>Klw_Schwelm</ows:Value>
+          <ows:Value>Krebsoege</ows:Value>
+          <ows:Value>Laaken</ows:Value>
+          <ows:Value>Lindscheid</ows:Value>
+          <ows:Value>Lingese-Talsperre</ows:Value>
+          <ows:Value>Lingese-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Loosenau</ows:Value>
+          <ows:Value>Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Manfort</ows:Value>
+          <ows:Value>Muellensiepen</ows:Value>
+          <ows:Value>Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Neumuehle</ows:Value>
+          <ows:Value>Neyetalsperre</ows:Value>
+          <ows:Value>Neyetalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Opladen</ows:Value>
+          <ows:Value>Panzer-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Papiermuehlenbach</ows:Value>
+          <ows:Value>RS-Falkenberg</ows:Value>
+          <ows:Value>RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>RS-Jacobsmuehle</ows:Value>
+          <ows:Value>Reinshagensbever</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Rutenbeck</ows:Value>
+          <ows:Value>Schevelinger-Talsperre</ows:Value>
+          <ows:Value>Schevelinger-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Schlebusch</ows:Value>
+          <ows:Value>Schmitzwipper</ows:Value>
+          <ows:Value>Sengbachtalsperre</ows:Value>
+          <ows:Value>Stauanlage_Dahlhausen</ows:Value>
+          <ows:Value>Stauanlage_Dahlhausen_Niederschlagsmessung</ows:Value>
+          <ows:Value>Stausee_Beyenburg</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Absperrbauwerk</ows:Value>
+          <ows:Value>Stoecken</ows:Value>
+          <ows:Value>Suelzueberleitung</ows:Value>
+          <ows:Value>Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Unterburg-Eschbach</ows:Value>
+          <ows:Value>Unterburg-Wupper</ows:Value>
+          <ows:Value>Unterpilghausen</ows:Value>
+          <ows:Value>Vorsperre_Grosse_Dhuenn</ows:Value>
+          <ows:Value>Vorsperre_Grosse_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Wipperfliess</ows:Value>
+          <ows:Value>Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Wupper-Talsperre</ows:Value>
+          <ows:Value>Wupper-Talsperre_Ablauf</ows:Value>
+          <ows:Value>Wupper-Talsperre_Absperrbauwerk</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>Abfluss</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit</ows:Value>
+          <ows:Value>Luftfeuchte</ows:Value>
+          <ows:Value>Lufttemperatur</ows:Value>
+          <ows:Value>Niederschlagshoehe</ows:Value>
+          <ows:Value>Sauerstoffgehalt</ows:Value>
+          <ows:Value>Speicherfuellstand</ows:Value>
+          <ows:Value>Speicherinhalt</ows:Value>
+          <ows:Value>Truebung</ows:Value>
+          <ows:Value>Wasserstand</ows:Value>
+          <ows:Value>Wassertemperatur</ows:Value>
+          <ows:Value>pH-Wert</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>2m_Tiefe</ows:Value>
+          <ows:Value>Einzelwert</ows:Value>
+          <ows:Value>LANUV</ows:Value>
+          <ows:Value>Oberflaeche</ows:Value>
+          <ows:Value>Stundensumme</ows:Value>
+          <ows:Value>Tagesmittelwert</ows:Value>
+          <ows:Value>Tagesmittelwert_um_17-00_Uhr</ows:Value>
+          <ows:Value>Tagessumme</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="spatialFilter">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>5655950.0 2569725.188</ows:MinimumValue>
+            <ows:MaximumValue>5684704.996 2610202.779</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetObservation">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://fluggs.wupperverband.de/sos2/sos/kvp?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos2/sos/soap">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>Barmen_Wupperverband_Hauptverwaltung</ows:Value>
+          <ows:Value>Bever-Talsperre</ows:Value>
+          <ows:Value>Bever-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Bever-Talsperre_Windenhaus</ows:Value>
+          <ows:Value>Beyenburg</ows:Value>
+          <ows:Value>Brucher-Talsperre</ows:Value>
+          <ows:Value>Brucher-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Burscheid</ows:Value>
+          <ows:Value>Eschbachtalsperre</ows:Value>
+          <ows:Value>Eschbachtalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Gklw_Hueckeswagen</ows:Value>
+          <ows:Value>Gklw_Kohlfurth</ows:Value>
+          <ows:Value>Gklw_Marienheide</ows:Value>
+          <ows:Value>Gklw_Radevormwald</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Grosse_Dhuenn-Talsperre_Entnahmeturm</ows:Value>
+          <ows:Value>Guettenhausen</ows:Value>
+          <ows:Value>HKW_Barmen</ows:Value>
+          <ows:Value>Haecksbilstein</ows:Value>
+          <ows:Value>Halbach-Talsperre</ows:Value>
+          <ows:Value>Hangbergermuehle</ows:Value>
+          <ows:Value>Hangbergermuehle_Doerpe-Vorsperre</ows:Value>
+          <ows:Value>Holzwipper</ows:Value>
+          <ows:Value>Hueckeswagen</ows:Value>
+          <ows:Value>Kluserbruecke</ows:Value>
+          <ows:Value>Klw_Buchenhofen</ows:Value>
+          <ows:Value>Klw_Schwelm</ows:Value>
+          <ows:Value>Krebsoege</ows:Value>
+          <ows:Value>Laaken</ows:Value>
+          <ows:Value>Lindscheid</ows:Value>
+          <ows:Value>Lingese-Talsperre</ows:Value>
+          <ows:Value>Lingese-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Lingese-Talsperre_Staumauer</ows:Value>
+          <ows:Value>Loosenau</ows:Value>
+          <ows:Value>Loosenau_Ablaufpegel</ows:Value>
+          <ows:Value>Manfort</ows:Value>
+          <ows:Value>Muellensiepen</ows:Value>
+          <ows:Value>Muellensiepen_Zulaufpegel</ows:Value>
+          <ows:Value>Neumuehle</ows:Value>
+          <ows:Value>Neyetalsperre</ows:Value>
+          <ows:Value>Neyetalsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Opladen</ows:Value>
+          <ows:Value>Panzer-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Papiermuehlenbach</ows:Value>
+          <ows:Value>RS-Falkenberg</ows:Value>
+          <ows:Value>RS-Herrmannsmuehle</ows:Value>
+          <ows:Value>RS-Jacobsmuehle</ows:Value>
+          <ows:Value>Reinshagensbever</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Ronsdorfer_Talsperre_Staumauer</ows:Value>
+          <ows:Value>Rutenbeck</ows:Value>
+          <ows:Value>Schevelinger-Talsperre</ows:Value>
+          <ows:Value>Schevelinger-Talsperre_Absperrbauwerk</ows:Value>
+          <ows:Value>Schlebusch</ows:Value>
+          <ows:Value>Schmitzwipper</ows:Value>
+          <ows:Value>Sengbachtalsperre</ows:Value>
+          <ows:Value>Stauanlage_Dahlhausen</ows:Value>
+          <ows:Value>Stauanlage_Dahlhausen_Niederschlagsmessung</ows:Value>
+          <ows:Value>Stausee_Beyenburg</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Ablaufpegel</ows:Value>
+          <ows:Value>Stausee_Beyenburg_Absperrbauwerk</ows:Value>
+          <ows:Value>Stoecken</ows:Value>
+          <ows:Value>Suelzueberleitung</ows:Value>
+          <ows:Value>Ueberleitung_Neye-Bever</ows:Value>
+          <ows:Value>Unterburg-Eschbach</ows:Value>
+          <ows:Value>Unterburg-Wupper</ows:Value>
+          <ows:Value>Unterpilghausen</ows:Value>
+          <ows:Value>Vorsperre_Grosse_Dhuenn</ows:Value>
+          <ows:Value>Vorsperre_Grosse_Dhuenn_Entnahmeturm</ows:Value>
+          <ows:Value>Wipperfliess</ows:Value>
+          <ows:Value>Wipperfliess_Ablaufpegel</ows:Value>
+          <ows:Value>Wupper-Talsperre</ows:Value>
+          <ows:Value>Wupper-Talsperre_Ablauf</ows:Value>
+          <ows:Value>Wupper-Talsperre_Absperrbauwerk</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>Abfluss</ows:Value>
+          <ows:Value>Elektrische_Leitfaehigkeit</ows:Value>
+          <ows:Value>Luftfeuchte</ows:Value>
+          <ows:Value>Lufttemperatur</ows:Value>
+          <ows:Value>Niederschlagshoehe</ows:Value>
+          <ows:Value>Sauerstoffgehalt</ows:Value>
+          <ows:Value>Speicherfuellstand</ows:Value>
+          <ows:Value>Speicherinhalt</ows:Value>
+          <ows:Value>Truebung</ows:Value>
+          <ows:Value>Wasserstand</ows:Value>
+          <ows:Value>Wassertemperatur</ows:Value>
+          <ows:Value>pH-Wert</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AllowedValues>
+          <ows:Value>Zeitreihen_2m_Tiefe</ows:Value>
+          <ows:Value>Zeitreihen_Einzelwert</ows:Value>
+          <ows:Value>Zeitreihen_LANUV</ows:Value>
+          <ows:Value>Zeitreihen_Oberflaeche</ows:Value>
+          <ows:Value>Zeitreihen_Stundensumme</ows:Value>
+          <ows:Value>Zeitreihen_Tagesmittelwert</ows:Value>
+          <ows:Value>Zeitreihen_Tagesmittelwert_um_17-00_Uhr</ows:Value>
+          <ows:Value>Zeitreihen_Tagessumme</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>2m_Tiefe</ows:Value>
+          <ows:Value>Einzelwert</ows:Value>
+          <ows:Value>LANUV</ows:Value>
+          <ows:Value>Oberflaeche</ows:Value>
+          <ows:Value>Stundensumme</ows:Value>
+          <ows:Value>Tagesmittelwert</ows:Value>
+          <ows:Value>Tagesmittelwert_um_17-00_Uhr</ows:Value>
+          <ows:Value>Tagessumme</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="responseFormat">
+        <ows:AllowedValues>
+          <ows:Value>http://www.opengis.net/om/2.0</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml-dr/2.0</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml/2.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="spatialFilter">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>5655950.0 2569725.188</ows:MinimumValue>
+            <ows:MaximumValue>5684704.996 2610202.779</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="temporalFilter">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>1974-01-01T00:00:00.000Z</ows:MinimumValue>
+            <ows:MaximumValue>2111-01-01T00:00:00.000Z</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetObservationById">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://fluggs.wupperverband.de/sos2/sos/soap">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="observation">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Parameter name="service">
+      <ows:AllowedValues>
+        <ows:Value>SOS</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <ows:Parameter name="version">
+      <ows:AllowedValues>
+        <ows:Value>2.0.0</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+  </ows:OperationsMetadata>
+  <sos:filterCapabilities>
+    <fes:Filter_Capabilities>
+      <fes:Conformance>
+        <fes:Constraint name="ImplementsQuery">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsAdHocQuery">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsFunctions">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsResourceld">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinStandardFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsStandardFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinSpatialFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsSpatialFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinTemporalFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsTemporalFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsVersionNav">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsSorting">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsExtendedOperators">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinimumXPath">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsSchemaElementFunc">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+      </fes:Conformance>
+      <fes:Spatial_Capabilities>
+        <fes:GeometryOperands>
+          <fes:GeometryOperand name="ns:Envelope"/>
+        </fes:GeometryOperands>
+        <fes:SpatialOperators>
+          <fes:SpatialOperator name="BBOX">
+            <fes:GeometryOperands>
+              <fes:GeometryOperand name="ns:Envelope"/>
+            </fes:GeometryOperands>
+          </fes:SpatialOperator>
+        </fes:SpatialOperators>
+      </fes:Spatial_Capabilities>
+      <fes:Temporal_Capabilities>
+        <fes:TemporalOperands>
+          <fes:TemporalOperand name="ns:TimeInstant"/>
+          <fes:TemporalOperand name="ns:TimePeriod"/>
+        </fes:TemporalOperands>
+        <fes:TemporalOperators>
+          <fes:TemporalOperator name="Before">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="After">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="Begins">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="Ends">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="EndedBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="BegunBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="During">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="TEquals">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="TContains">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="TOverlaps">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="Meets">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="MetBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="OverlappedBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+        </fes:TemporalOperators>
+      </fes:Temporal_Capabilities>
+    </fes:Filter_Capabilities>
+  </sos:filterCapabilities>
+  <sos:contents>
+    <sos:Contents>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_2m_Tiefe</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur 2m_Tiefe</swes:name>
+          <swes:procedure>2m_Tiefe</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Wassertemperatur</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5660025.148 2582734.07</gml:lowerCorner>
+              <gml:upperCorner>5680164.901 2609217.395</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_1">
+              <gml:beginPosition>1974-01-01T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2021-06-19T00:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_1">
+              <gml:beginPosition>2013-01-15T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2021-06-19T00:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_Einzelwert</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur Einzelwert</swes:name>
+          <swes:procedure>Einzelwert</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Abfluss</swes:observableProperty>
+          <swes:observableProperty>Elektrische_Leitfaehigkeit</swes:observableProperty>
+          <swes:observableProperty>Luftfeuchte</swes:observableProperty>
+          <swes:observableProperty>Lufttemperatur</swes:observableProperty>
+          <swes:observableProperty>Sauerstoffgehalt</swes:observableProperty>
+          <swes:observableProperty>Speicherfuellstand</swes:observableProperty>
+          <swes:observableProperty>Speicherinhalt</swes:observableProperty>
+          <swes:observableProperty>Truebung</swes:observableProperty>
+          <swes:observableProperty>Wasserstand</swes:observableProperty>
+          <swes:observableProperty>Wassertemperatur</swes:observableProperty>
+          <swes:observableProperty>pH-Wert</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5655950.0 2569725.188</gml:lowerCorner>
+              <gml:upperCorner>5682357.0 2610202.779</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_2">
+              <gml:beginPosition>2004-01-01T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-09T13:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_2">
+              <gml:beginPosition>2013-06-11T03:37:30.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-09T13:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_LANUV</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur LANUV</swes:name>
+          <swes:procedure>LANUV</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Wasserstand</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5659928.636 2569725.188</gml:lowerCorner>
+              <gml:upperCorner>5659928.636 2569725.188</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_3">
+              <gml:beginPosition>2010-07-26T01:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-09T12:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_3">
+              <gml:beginPosition>2015-12-09T12:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-09T12:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_Oberflaeche</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur Oberflaeche</swes:name>
+          <swes:procedure>Oberflaeche</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Wassertemperatur</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5660025.148 2582734.07</gml:lowerCorner>
+              <gml:upperCorner>5680164.901 2609217.395</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_4">
+              <gml:beginPosition>1974-01-01T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2100-01-01T00:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_4">
+              <gml:beginPosition>2013-01-15T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2100-01-01T00:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_Stundensumme</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur Stundensumme</swes:name>
+          <swes:procedure>Stundensumme</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Niederschlagshoehe</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5659544.05 2574316.031</gml:lowerCorner>
+              <gml:upperCorner>5684704.996 2609172.838</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_5">
+              <gml:beginPosition>2005-12-09T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2013-09-16T11:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_5">
+              <gml:beginPosition>2013-03-28T01:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2013-09-16T11:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_Tagesmittelwert</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur Tagesmittelwert</swes:name>
+          <swes:procedure>Tagesmittelwert</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Speicherfuellstand</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5666654.0 2579365.0</gml:lowerCorner>
+              <gml:upperCorner>5666654.0 2579365.0</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_6">
+              <gml:beginPosition>2014-01-01T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-01-02T07:30:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_6">
+              <gml:beginPosition>2015-01-02T07:30:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-01-02T07:30:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_Tagesmittelwert_um_17-00_Uhr</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur Tagesmittelwert_um_17-00_Uhr</swes:name>
+          <swes:procedure>Tagesmittelwert_um_17-00_Uhr</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Wasserstand</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5659928.636 2569725.188</gml:lowerCorner>
+              <gml:upperCorner>5659928.636 2569725.188</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_7">
+              <gml:beginPosition>2010-12-31T16:30:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-08T16:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_7">
+              <gml:beginPosition>2015-12-08T16:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-08T16:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering>
+          <swes:identifier>Zeitreihen_Tagessumme</swes:identifier>
+          <swes:name>Zeitreihen für Prozedur Tagessumme</swes:name>
+          <swes:procedure>Tagessumme</swes:procedure>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>Niederschlagshoehe</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/31466">
+              <gml:lowerCorner>5660056.851 2582772.755</gml:lowerCorner>
+              <gml:upperCorner>5680180.0 2609172.838</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_8">
+              <gml:beginPosition>2014-01-01T00:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-09T08:00:10.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_8">
+              <gml:beginPosition>2015-12-09T08:00:10.000Z</gml:beginPosition>
+              <gml:endPosition>2015-12-09T08:00:10.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml-dr/2.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/waterml/2.0</sos:responseFormat>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+        </sos:ObservationOffering>
+      </swes:offering>
+    </sos:Contents>
+  </sos:contents>
+</sos:Capabilities>

@@ -11,6 +11,11 @@
 \alias{encodeRequestKVP,OwsGetCapabilities_1.1.0-method}
 \alias{encodeRequestKVP,OwsGetCapabilities_2.0.0-method}
 
+% Version 2.0.0
+\alias{encodeRequestKVP,SosGetFeatureOfInterest_2.0.0-method}
+\alias{encodeRequestKVP,SosGetObservation_2.0.0-method}
+
+
 
 \title{Methods for Encoding Requests to SOS in KVP Format}
 

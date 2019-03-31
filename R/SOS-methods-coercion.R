@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2011-02-09                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -31,36 +31,36 @@
 #
 #
 as.SosObservationOffering.SpatialPolygons = function(from) {
-	# create bounding polygon from offering bounding box
-	.bbox <- sosBoundedBy(from, bbox = TRUE)
-	.llat <- .bbox["coords.lat","min"]
-	.llon <- .bbox["coords.lon","min"]
-	.ulat <- .bbox["coords.lat","max"]
-	.ulon <- .bbox["coords.lon","max"]
-	
-	.crs <- sosGetCRS(from)
-	if(is.null(.crs)) {
-		warning(paste("Cannot coerce offering", sosId(from),
-						"to SpatialPolygons -- no CRS given."))
-		return(NULL)
-	}
-	
-	# beginning at lower left corner:
-	.poly <- Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
-					c(.llat, .ulat, .ulat, .llat, .llat)))
-	.spPoly <- SpatialPolygons(list(
-					Polygons(list(.poly), sosName(from))),
-			proj4string = .crs)
-	
-	return(.spPoly)
+  # create bounding polygon from offering bounding box
+  .bbox <- sosBoundedBy(from, bbox = TRUE)
+  .llat <- .bbox["coords.lat","min"]
+  .llon <- .bbox["coords.lon","min"]
+  .ulat <- .bbox["coords.lat","max"]
+  .ulon <- .bbox["coords.lon","max"]
+  
+  .crs <- sosGetCRS(from)
+  if(is.null(.crs)) {
+    warning(paste("Cannot coerce offering", sosId(from),
+                  "to SpatialPolygons -- no CRS given."))
+    return(NULL)
+  }
+  
+  # beginning at lower left corner:
+  .poly <- Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
+                         c(.llat, .ulat, .ulat, .llat, .llat)))
+  .spPoly <- SpatialPolygons(list(
+    Polygons(list(.poly), sosName(from))),
+    proj4string = .crs)
+  
+  return(.spPoly)
 }
 setAs("SosObservationOffering", "SpatialPolygons", 
-		function(from) {
-			as.SosObservationOffering.SpatialPolygons(from)
-		}
+      function(from) {
+        as.SosObservationOffering.SpatialPolygons(from)
+      }
 )
 setAs("SosObservationOffering", "Spatial", 
-		function(from) {
-			as.SosObservationOffering.SpatialPolygons(from)
-		}
+      function(from) {
+        as.SosObservationOffering.SpatialPolygons(from)
+      }
 )

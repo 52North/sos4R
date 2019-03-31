@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -31,23 +31,35 @@
 # construction methods
 #
 SwePhenomenon <- function(id, name, description = as.character(NA)) {
-	new("SwePhenomenon", id = id, name = name, description = description)
+  new("SwePhenomenon", id = id, name = name, description = description)
 }
 
 SweCompositePhenomenon <- function(id, name, description = as.character(NA),
-		dimension, components, base = NULL) {
-	new("SweCompositePhenomenon", id = id, name = name,
-			description = description, dimension = dimension,
-			components = components, base = base)	
+                                   dimension, components, base = NULL) {
+  new("SweCompositePhenomenon", id = id, name = name,
+      description = description, dimension = dimension,
+      components = components, base = base)	
 }
 
 SwePhenomenonProperty <- function(href = as.character(NA), phenomenon = NULL) {
-	new("SwePhenomenonProperty", href = href, phenomenon = phenomenon)
+  new("SwePhenomenonProperty", href = href, phenomenon = phenomenon)
 }
 
 SweTextBlock <- function(tokenSeparator, blockSeparator, decimalSeparator,
-		id = as.character(NA)) {
-	new("SweTextBlock", tokenSeparator = tokenSeparator,
-			blockSeparator = blockSeparator,
-			decimalSeparator = decimalSeparator, id = id)
+                         id = as.character(NA)) {
+  new("SweTextBlock", tokenSeparator = tokenSeparator,
+      blockSeparator = blockSeparator,
+      decimalSeparator = decimalSeparator, id = id)
 }
+
+
+# SWE 2.0
+
+SweTextEncoding <- function(tokenSeparator, blockSeparator, decimalSeparator = as.character(NA),
+                            id = as.character(NA)) {
+  new("SweTextEncoding", tokenSeparator = tokenSeparator,
+      blockSeparator = blockSeparator,
+      decimalSeparator = decimalSeparator, id = id)
+}
+
+

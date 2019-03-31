@@ -2,7 +2,7 @@
 
 \alias{SosSupported}
 \alias{SosSupportedComparisonOperators}
-\alias{SosSupportedConnectionMethods}
+\alias{SosSupportedBindings}
 \alias{SosSupportedGeometryOperands}
 \alias{SosSupportedResponseFormats}
 \alias{SosSupportedResponseModes}
@@ -19,9 +19,9 @@ These functions can be used to access the supported parameters for a range of se
 }
 
 \usage{
-SosSupportedOperations()
+SosSupportedOperations(version = sos100_version)
 SosSupportedComparisonOperators()
-SosSupportedConnectionMethods()
+SosSupportedBindings()
 SosSupportedGeometryOperands()
 SosSupportedResponseFormats()
 SosSupportedResponseModes()
@@ -31,10 +31,14 @@ SosSupportedTemporalOperators()
 SosSupportedServiceVersions()
 }
 
+\arguments{
+  \item{version}{The SOS specification version.}
+}
+
 \details{
 \strong{Supported features}, like connection methods and supported response modes, are accessible by functions starting with "SosSupported". See the examples section for a complete list of these functions.
 
-It is encouraged to rather use these methods than manually set character values for compatibility with future versions, e.g. \code{SosSupportedConnectionMethods()[[1]]} instead of directly writing \code{"GET"}.
+It is encouraged to rather use these methods than manually set character values for compatibility with future versions, e.g. \code{SosSupportedBindings()[[1]]} instead of directly writing \code{"GET"}.
 }
 
 \value{A list of supported values for the respective parameter.}
@@ -53,9 +57,9 @@ It is encouraged to rather use these methods than manually set character values 
 SosSupportedOperations()
 
 # HTTP connection methods supported by this sos4R implementation
-SosSupportedConnectionMethods()
-myConnectionType <- SosSupportedConnectionMethods()[[1]]
-myConnectionType
+SosSupportedBindings()
+myBinding <- SosSupportedBindings()[[1]]
+myBinding
 
 # Formats, modes and models that can be processed by this implementation
 SosSupportedResponseFormats()

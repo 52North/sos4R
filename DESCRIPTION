@@ -1,12 +1,39 @@
 Package: sos4R
 Type: Package
 Title: An R Client for the OGC Sensor Observation Service
-Version: 0.2-12
-Authors@R: person(given = "Daniel", family = "Nuest", role = c("cre",
-        "aut"), email = "daniel.nuest@uni-muenster.de")
-Depends: R (>= 2.15.0), methods, XML, RCurl (>= 1.4-1), sp, graphics
-Suggests: spacetime (>= 0.2-0), gstat, maps, maptools, mapdata,
-        cshapes, xts, xtable
+Version: 0.3.0
+Authors@R: c(person(given = "Daniel", family = "Nuest", role = c("cre", "aut"),
+	email = "daniel.nuest@uni-muenster.de", comment = c(ORCID = "0000-0002-0024-5046")),
+	person("Edzer", "Pebesma", role = "ctb", comment = c(ORCID = "0000-0001-8049-7069")),
+	person("Ben", "Graeler", role = "ctb", comment = c(ORCID = "0000-0001-5443-4304")),
+	person("Benjamin", "Pross", role = "ctb"),
+	person("Eike Hinderk", "Jürrens", role = "ctb"))
+Author: Daniel Nuest [cre, aut] (<https://orcid.org/0000-0002-0024-5046>),
+  Edzer Pebesma [ctb] (<https://orcid.org/0000-0001-8049-7069>),
+  Ben Graeler [ctb] (<https://orcid.org/0000-0001-5443-4304>),
+  Benjamin Pross [ctb],
+  Eike Hinderk Jürrens [ctb]
+Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
+Depends: R (>= 3.5.0)
+Imports:
+    httr,
+    methods,
+    sp,
+    stringr,
+    xml2,
+Suggests:
+    spacetime,
+    gstat,
+    maps,
+    maptools,
+    mapdata,
+    cshapes,
+    xtable,
+    xts,
+    testthat,
+    rgdal,
+    knitr,
+    rmarkdown
 Description: A client for Sensor Observation Services (SOS) as
         specified by the Open Geospatial Consortium (OGC). The package allows
         users to retrieve metadata from SOS web services and to
@@ -14,20 +41,38 @@ Description: A client for Sensor Observation Services (SOS) as
         data based on the available sensors, phenomena, observations etc.
         using thematic, temporal, and spatial filtering.
 License: GPL-2
-URL: http://www.nordholmen.net/sos4r,
-        http://www.52north.org/geostatistics
+URL: https://github.com/52North/sos4R
 Encoding: UTF-8
 LazyLoad: TRUE
 ByteCompile: TRUE
-Collate: Constants.R Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R
-        Class-SA.R Class-OGC.R Class-SOS.R Class-SML.R
-        Generic-methods.R OWS-methods.R OWS-methods-parsing.R
-        SOS-methods-parsing.R OM-methods.R OM-methods-coercion.R
-        OM-methods-parsing.R SA-methods.R GML-methods.R SWE-methods.R
-        SML-methods.R GML-methods-parsing.R SA-methods-parsing.R
-        SWE-methods-parsing.R OGC-methods.R SOS-methods-accessor.R
-        PrintShowStructureSummmary-methods.R SOS-methods-util.R
-        SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
-        SML-methods-util.R SML-methods-coercion.R Defaults.R
-Author: Daniel Nuest [cre, aut]
-Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
+BugReports: https://github.com/52North/sos4R/issues
+Collate:
+	Constants.R
+	R-Helper.R
+	Class-XML.R
+	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
+	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
+	Generic-methods.R
+	OWS-methods.R OWS-methods-parsing.R
+	SOS-methods-parsing.R
+	OM-methods.R OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R
+	SA-methods.R
+	GML-methods.R
+	SWE-methods.R
+	SML-methods.R
+	GML-methods-parsing.R
+	SA-methods-parsing.R
+	SWE-methods-parsing.R
+	OGC-methods.R
+	SOS-methods-accessor.R
+	PrintShowStructureSummmary-methods.R
+	SOS-methods-util.R
+	SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
+	SML-methods-util.R SML-methods-coercion.R
+	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_methods-gda.R
+	WML_200-methods-parsing.R WML_200-methods.R
+	SAMS-methods-parsing.R
+	Defaults.R
+	Development.R
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr

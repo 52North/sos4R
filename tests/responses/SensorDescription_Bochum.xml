@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sml:SensorML xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.1" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd">
+	<sml:member>
+		<sml:System xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:sos="http://www.opengis.net/sos/2.0">
+			<gml:description>A test sensor in Bochum</gml:description>
+			<sml:keywords>
+				<sml:KeywordList>
+					<sml:keyword>Hochschule Bochum</sml:keyword>
+					<sml:keyword>http://www.52north.org/test/observableProperty/6</sml:keyword>
+					<sml:keyword>http://www.52north.org/test/offering/6</sml:keyword>
+					<sml:keyword>http://www.52north.org/test/featureOfInterest/6</sml:keyword>
+					<sml:keyword>http://www.52north.org/test/procedure/6</sml:keyword>
+					<sml:keyword>Hochschule Bochum - Bochum University of Applied Sciences (http://www.hochschule-bochum.de/en/)</sml:keyword>
+				</sml:KeywordList>
+			</sml:keywords>
+			<sml:identification>
+				<sml:IdentifierList>
+					<sml:identifier name="uniqueID">
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+							<sml:value>http://www.52north.org/test/procedure/6</sml:value>
+						</sml:Term>
+					</sml:identifier>
+					<sml:identifier name="longName">
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+							<sml:value>Hochschule Bochum - Bochum University of Applied Sciences (http://www.hochschule-bochum.de/en/)</sml:value>
+						</sml:Term>
+					</sml:identifier>
+					<sml:identifier name="shortName">
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+							<sml:value>Hochschule Bochum</sml:value>
+						</sml:Term>
+					</sml:identifier>
+				</sml:IdentifierList>
+			</sml:identification>
+			<sml:validTime>
+				<gml:TimePeriod>
+					<gml:beginPosition>2014-09-19T10:56:44.256Z</gml:beginPosition>
+					<gml:endPosition indeterminatePosition="unknown"/>
+				</gml:TimePeriod>
+			</sml:validTime>
+			<sml:capabilities name="featuresOfInterest">
+				<swe:SimpleDataRecord>
+					<swe:field name="featureOfInterestID">
+						<swe:Text>
+							<swe:value>http://www.52north.org/test/featureOfInterest/6</swe:value>
+						</swe:Text>
+					</swe:field>
+				</swe:SimpleDataRecord>
+			</sml:capabilities>
+			<sml:capabilities name="observedBBOX">
+				<swe:DataRecord>
+					<swe:field name="observedBBOX">
+						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="4326">
+							<swe:lowerCorner>
+								<swe:Vector>
+									<swe:coordinate name="easting">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree"/>
+											<swe:value>7.270806</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="northing">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree"/>
+											<swe:value>51.447722</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:lowerCorner>
+							<swe:upperCorner>
+								<swe:Vector>
+									<swe:coordinate name="easting">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree"/>
+											<swe:value>7.370806</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="northing">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree"/>
+											<swe:value>51.557722</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:upperCorner>
+						</swe:Envelope>
+					</swe:field>
+				</swe:DataRecord>
+			</sml:capabilities>
+			<sml:capabilities name="offerings">
+				<swe:SimpleDataRecord>
+					<swe:field name="Offering for sensor 6">
+						<swe:Text definition="http://www.opengis.net/def/offering/identifier">
+							<gml:name codeSpace="eng">Offering for sensor 6</gml:name>
+							<swe:value>http://www.52north.org/test/offering/6</swe:value>
+						</swe:Text>
+					</swe:field>
+				</swe:SimpleDataRecord>
+			</sml:capabilities>
+			<sml:contact>
+				<sml:ContactList>
+					<sml:member>
+						<sml:ResponsibleParty>
+							<sml:individualName>Jürrens, Eike Hinderk</sml:individualName>
+							<sml:organizationName>52North</sml:organizationName>
+							<sml:positionName>Service Maintainer</sml:positionName>
+							<sml:contactInfo>
+								<sml:phone>
+									<sml:voice>+49(0)251/396 371-0</sml:voice>
+								</sml:phone>
+								<sml:address>
+									<sml:deliveryPoint>Martin-Luther-King-Weg 24</sml:deliveryPoint>
+									<sml:city>Münster</sml:city>
+									<sml:postalCode>48155</sml:postalCode>
+									<sml:country>Germany</sml:country>
+									<sml:electronicMailAddress>e.h.juerrens@52north.org</sml:electronicMailAddress>
+								</sml:address>
+								<sml:onlineResource xlink:href="http://52north.org/swe"/>
+							</sml:contactInfo>
+						</sml:ResponsibleParty>
+					</sml:member>
+				</sml:ContactList>
+			</sml:contact>
+			<sml:position name="sensorPosition">
+				<swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG::4326">
+					<swe:location>
+						<swe:Vector>
+							<swe:coordinate name="northing">
+								<swe:Quantity axisID="y">
+									<swe:uom code="degree"/>
+									<swe:value>51.447722</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="easting">
+								<swe:Quantity axisID="x">
+									<swe:uom code="degree"/>
+									<swe:value>7.270806</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="altitude">
+								<swe:Quantity axisID="z">
+									<swe:uom code="m"/>
+									<swe:value>52.0</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:location>
+				</swe:Position>
+			</sml:position>
+			<sml:inputs>
+				<sml:InputList>
+					<sml:input name="test_observable_property_6">
+						<swe:ObservableProperty definition="http://www.52north.org/test/observableProperty/6"/>
+					</sml:input>
+				</sml:InputList>
+			</sml:inputs>
+			<sml:outputs>
+				<sml:OutputList>
+					<sml:output name="test_observable_property_6">
+						<swe:Category definition="http://www.52north.org/test/observableProperty/6">
+							<swe:codeSpace xlink:href="test_unit_6"/>
+						</swe:Category>
+					</sml:output>
+				</sml:OutputList>
+			</sml:outputs>
+		</sml:System>
+	</sml:member>
+</sml:SensorML>

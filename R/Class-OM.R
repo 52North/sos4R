@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -31,14 +31,14 @@
 #
 #
 setClass("OmObservationCollection",
-		representation(members = "list", boundedBy = "list"),
-		prototype = list(members = list()),
-		validity = function(object) {
-			#print("Entering validation: OmObservationCollection")
-			# TODO implement validity function
-			# members must be OmObservation or OmMeasurement
-			return(TRUE)
-		}
+         representation(members = "list", boundedBy = "list"),
+         prototype = list(members = list()),
+         validity = function(object) {
+           #print("Entering validation: OmObservationCollection")
+           # TODO implement validity function
+           # members must be OmObservation or OmMeasurement
+           return(TRUE)
+         }
 )
 
 #
@@ -46,56 +46,55 @@ setClass("OmObservationCollection",
 # removed in this class, as is om:featureOfInterest where gml:_Feature is used.
 #
 setClass("OmObservation",
-		representation(
-				samplingTime = "GmlTimeObjectOrNULL",	
-				procedure = "ANY",
-				observedProperty = "SwePhenomenonPropertyOrNULL",
-				featureOfInterest = "GmlFeatureOrGmlFeaturePropertyOrNULL",
-				result = "ANY",
-				# optional:
-				metadata = "ANY",
-				resultTime = "GmlTimeObjectOrNULL",
-				resultQuality = "ANY",
-				parameter = "ANY"),
-		prototype = list(samplingTime = NULL, procedure = as.character(NA),
-				observedProperty = NULL, featureOfInterest = NULL,
-				result = NULL),
-		validity = function(object) {
-			#print("Entering validation: OmObservation")
-			# TODO implement validity function
-			# result time should be GmlTimeObject
-			return(TRUE)
-		}
+         representation(
+           samplingTime = "GmlTimeObjectOrNULL",
+           procedure = "ANY",
+           observedProperty = "SwePhenomenonPropertyOrNULL",
+           featureOfInterest = "GmlFeatureOrGmlFeaturePropertyOrNULL",
+           result = "ANY",
+           # optional:
+           metadata = "ANY",
+           resultTime = "GmlTimeObjectOrNULL",
+           resultQuality = "ANY",
+           parameter = "ANY"),
+         prototype = list(samplingTime = NULL, procedure = as.character(NA),
+                          observedProperty = NULL, featureOfInterest = NULL,
+                          result = NULL),
+         validity = function(object) {
+           #print("Entering validation: OmObservation")
+           # TODO implement validity function
+           # result time should be GmlTimeObject
+           return(TRUE)
+         }
 )
 setClassUnion(name = "OmObservationOrNULL",
-		members = c("OmObservation", "NULL"))
+              members = c("OmObservation", "NULL"))
 
 #
 #
 #
 setClass("OmObservationProperty",
-		representation(href = "character",	
-				obs = "OmObservationOrNULL"),
-		#prototype = list(),
-		validity = function(object) {
-			#print("Entering validation: OmObservationProperty")
-			# TODO implement validity function
-			# one of parameters has to be set
-			return(TRUE)
-		}
+         representation(href = "character",
+                        obs = "OmObservationOrNULL"),
+         #prototype = list(),
+         validity = function(object) {
+           #print("Entering validation: OmObservationProperty")
+           # TODO implement validity function
+           # one of parameters has to be set
+           return(TRUE)
+         }
 )
 
 #
 #
 #
 setClass("OmMeasurement",
-		representation(result = "GmlMeasure"),
-		contains = "OmObservation",
-		validity = function(object) {
-			#print("Entering validation: OmMeasurement")
-			print(object)
-			# TODO implement validity function
-			return(TRUE)
-		}
+         representation(result = "GmlMeasure"),
+         contains = "OmObservation",
+         validity = function(object) {
+           #print("Entering validation: OmMeasurement")
+           # TODO implement validity function
+           return(TRUE)
+         }
 )
 

@@ -1,0 +1,1041 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:Capabilities xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd">
+	<ows:ServiceIdentification>
+		<ows:Title>IOOS 52N SOS</ows:Title>
+		<ows:Abstract>IOOS 52North Sensor Observation Service</ows:Abstract>
+		<ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
+		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+		<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+		<ows:Fees>NONE</ows:Fees>
+		<ows:AccessConstraints>NONE</ows:AccessConstraints>
+	</ows:ServiceIdentification>
+	<ows:ServiceProvider>
+		<ows:ProviderName>IOOS</ows:ProviderName>
+		<ows:ProviderSite xlink:href="http://www.ioos.noaa.gov/"/>
+		<ows:ServiceContact>
+			<ows:IndividualName>TBA</ows:IndividualName>
+			<ows:PositionName>TBA</ows:PositionName>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>1-301-427-2420</ows:Voice>
+				</ows:Phone>
+				<ows:Address>
+					<ows:DeliveryPoint>1100 Wayne Ave., Suite 1225</ows:DeliveryPoint>
+					<ows:City>Silver Spring</ows:City>
+					<ows:AdministrativeArea>MA</ows:AdministrativeArea>
+					<ows:PostalCode>20910</ows:PostalCode>
+					<ows:Country>USA</ows:Country>
+					<ows:ElectronicMailAddress>noaa.ioos.webmaster@noaa.gov</ows:ElectronicMailAddress>
+				</ows:Address>
+			</ows:ContactInfo>
+		</ows:ServiceContact>
+	</ows:ServiceProvider>
+	<ows:OperationsMetadata>
+		<ows:Operation name="DescribeSensor">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/kvp?">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/x-kvp</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/xml</ows:Value>
+								<ows:Value>text/xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/soap">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/soap+xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="outputFormat">
+				<ows:AllowedValues>
+					<ows:Value>text/xml; subtype="sensorML/1.0.1/profiles/ioos_sos/1.0"</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/kvp?">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/x-kvp</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/json">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/json</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/xml</ows:Value>
+								<ows:Value>text/xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/soap">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/soap+xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="Sections">
+				<ows:AllowedValues>
+					<ows:Value>All</ows:Value>
+					<ows:Value>Contents</ows:Value>
+					<ows:Value>Filter_Capabilities</ows:Value>
+					<ows:Value>OperationsMetadata</ows:Value>
+					<ows:Value>ServiceIdentification</ows:Value>
+					<ows:Value>ServiceProvider</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="GetFeatureOfInterest">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/xml</ows:Value>
+								<ows:Value>text/xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/soap">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/soap+xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="GetObservation">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/kvp?">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/x-kvp</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/xml</ows:Value>
+								<ows:Value>text/xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/soap">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/soap+xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="GetObservationById">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/xml</ows:Value>
+								<ows:Value>text/xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/soap">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/soap+xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Parameter name="service">
+			<ows:AllowedValues>
+				<ows:Value>SOS</ows:Value>
+			</ows:AllowedValues>
+		</ows:Parameter>
+		<ows:Parameter name="version">
+			<ows:AllowedValues>
+				<ows:Value>1.0.0</ows:Value>
+				<ows:Value>2.0.0</ows:Value>
+			</ows:AllowedValues>
+		</ows:Parameter>
+		<ows:ExtendedCapabilities>
+			<gml:metaDataProperty xlink:title="ioosTemplateVersion" xlink:href="https://github.com/ioos/sos-guidelines/tree/master/template/milestone1.0">
+				<gml:version>1.0</gml:version>
+			</gml:metaDataProperty>
+			<gml:metaDataProperty xlink:title="softwareVersion">
+				<gml:version>1.0.0-SNAPSHOT</gml:version>
+			</gml:metaDataProperty>
+		</ows:ExtendedCapabilities>
+	</ows:OperationsMetadata>
+	<sos:Filter_Capabilities>
+		<ogc:Spatial_Capabilities>
+			<ogc:GeometryOperands>
+				<ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+			</ogc:GeometryOperands>
+			<ogc:SpatialOperators>
+				<ogc:SpatialOperator name="Overlaps">
+					<ogc:GeometryOperands>
+						<ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+						<ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+						<ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+					</ogc:GeometryOperands>
+				</ogc:SpatialOperator>
+				<ogc:SpatialOperator name="Intersects">
+					<ogc:GeometryOperands>
+						<ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+						<ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+						<ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+					</ogc:GeometryOperands>
+				</ogc:SpatialOperator>
+				<ogc:SpatialOperator name="Contains">
+					<ogc:GeometryOperands>
+						<ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+						<ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+						<ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+					</ogc:GeometryOperands>
+				</ogc:SpatialOperator>
+				<ogc:SpatialOperator name="BBOX">
+					<ogc:GeometryOperands>
+						<ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+					</ogc:GeometryOperands>
+				</ogc:SpatialOperator>
+			</ogc:SpatialOperators>
+		</ogc:Spatial_Capabilities>
+		<ogc:Temporal_Capabilities>
+			<ogc:TemporalOperands>
+				<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+				<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+			</ogc:TemporalOperands>
+			<ogc:TemporalOperators>
+				<ogc:TemporalOperator name="TM_Before">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_After">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_Begins">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_Ends">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_EndedBy">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_BegunBy">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_During">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_Equals">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_Contains">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_Overlaps">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_Meets">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_MetBy">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+				<ogc:TemporalOperator name="TM_OverlappedBy">
+					<ogc:TemporalOperands>
+						<ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+						<ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+					</ogc:TemporalOperands>
+				</ogc:TemporalOperator>
+			</ogc:TemporalOperators>
+		</ogc:Temporal_Capabilities>
+		<ogc:Scalar_Capabilities>
+			<ogc:ComparisonOperators>
+				<ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+			</ogc:ComparisonOperators>
+		</ogc:Scalar_Capabilities>
+		<ogc:Id_Capabilities>
+			<ogc:FID/>
+			<ogc:EID/>
+		</ogc:Id_Capabilities>
+	</sos:Filter_Capabilities>
+	<sos:Contents>
+		<sos:ObservationOfferingList>
+			<sos:ObservationOffering gml:id="urn_ioos_network_test_all">
+				<gml:name>urn:ioos:network:test:all</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>-171.37044143566763 -44.71596347896505</gml:lowerCorner>
+						<gml:upperCorner>142.92375463033034 67.972129750194</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:network:test:all"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height0.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_0">
+				<gml:name>urn:ioos:station:test:0</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>104.38960367480121 -38.35504757321909</gml:lowerCorner>
+						<gml:upperCorner>104.38960367480121 -38.35504757321909</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:0"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:0(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_1">
+				<gml:name>urn:ioos:station:test:1</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>-124.022009853685 -44.71596347896505</gml:lowerCorner>
+						<gml:upperCorner>-124.022009853685 -44.71596347896505</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:1"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:1(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_2">
+				<gml:name>urn:ioos:station:test:2</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>-62.74773722568682 -24.85710327681126</gml:lowerCorner>
+						<gml:upperCorner>-62.74773722568682 -24.85710327681126</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:2"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:2(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_3">
+				<gml:name>urn:ioos:station:test:3</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>-20.231374844727668 12.676433191941854</gml:lowerCorner>
+						<gml:upperCorner>-20.231374844727668 12.676433191941854</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:3"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:3(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_4">
+				<gml:name>urn:ioos:station:test:4</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>31.037822063735803 -24.30306090472577</gml:lowerCorner>
+						<gml:upperCorner>31.037822063735803 -24.30306090472577</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:4"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:4(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_5">
+				<gml:name>urn:ioos:station:test:5</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>-35.058272754151915 1.0048240904620371</gml:lowerCorner>
+						<gml:upperCorner>-35.058272754151915 1.0048240904620371</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:5"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:5(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_6">
+				<gml:name>urn:ioos:station:test:6</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>12.382028538337124 67.972129750194</gml:lowerCorner>
+						<gml:upperCorner>12.382028538337124 67.972129750194</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:6"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:6(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_7">
+				<gml:name>urn:ioos:station:test:7</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>-171.37044143566763 50.01396560832809</gml:lowerCorner>
+						<gml:upperCorner>-171.37044143566763 50.01396560832809</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:7"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:7(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_8">
+				<gml:name>urn:ioos:station:test:8</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>142.92375463033034 16.202513703603415</gml:lowerCorner>
+						<gml:upperCorner>142.92375463033034 16.202513703603415</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:8"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:8(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+			<sos:ObservationOffering gml:id="urn_ioos_station_test_9">
+				<gml:name>urn:ioos:station:test:9</gml:name>
+				<gml:boundedBy>
+					<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+						<gml:lowerCorner>-159.9032724482563 28.462094375366817</gml:lowerCorner>
+						<gml:upperCorner>-159.9032724482563 28.462094375366817</gml:upperCorner>
+					</gml:Envelope>
+				</gml:boundedBy>
+				<sos:time>
+					<gml:TimePeriod xsi:type="gml:TimePeriodType">
+						<gml:beginPosition>2015-01-12T23:00:00.000Z</gml:beginPosition>
+						<gml:endPosition>2015-01-13T18:00:00.000Z</gml:endPosition>
+					</gml:TimePeriod>
+				</sos:time>
+				<sos:procedure xlink:href="urn:ioos:station:test:9"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/air_temperature"/>
+				<sos:observedProperty xlink:href="http://mmisw.org/ont/cf/parameter/sea_water_temperature"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-10.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-15.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-20.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-25.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-30.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-35.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-40.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-45.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-5.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-50.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-55.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-60.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-65.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-70.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-75.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-80.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-85.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-90.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height-95.0m)"/>
+				<sos:featureOfInterest xlink:href="urn:ioos:station:test:9(height0.0m)"/>
+				<sos:responseFormat>application/json</sos:responseFormat>
+				<sos:responseFormat>application/x-netcdf</sos:responseFormat>
+				<sos:responseFormat>application/zip; subtype=x-netcdf</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0"</sos:responseFormat>
+				<sos:responseFormat>text/xml; subtype="om/1.0.0/profiles/ioos_sos/1.0"</sos:responseFormat>
+				<sos:responseMode>inline</sos:responseMode>
+				<sos:responseMode>resultTemplate</sos:responseMode>
+			</sos:ObservationOffering>
+		</sos:ObservationOfferingList>
+	</sos:Contents>
+</sos:Capabilities>
