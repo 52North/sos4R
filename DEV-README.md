@@ -251,7 +251,7 @@ A new release shall be uploaded to CRAN after testing and under the following pr
   - `devtools::check_win_release()` and `devtools::devtools::check_win_devel()` for testing Windows using CRAN infrastructure
   - `rhub::check_for_cran(email = <...>)` for testing for CRAN submissions using RHub infrastructure
   - `rhub::check(email = <...>)` for running checks on different operating systems
-- Regenerate the website with `pkgdown::build_site()`
+- Regenerate the website with `pkgdown::build_site()` and re-knit `README.Rmd`, commit changes
 - Push changes to `dev` branch
 - Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again

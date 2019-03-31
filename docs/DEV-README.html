@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9048</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -397,44 +397,45 @@
 <a href="#releases" class="anchor"></a>Releases</h2>
 <p>A new release shall be uploaded to CRAN after testing and under the following procedure:</p>
 <ul>
-<li>Run the <a href="#tests">tests</a>
-</li>
-<li>Check the CI status
+<li>Run the <a href="#tests">tests</a> locally and resolve all problems</li>
+<li>Run a check locally, e.g. <code><a href="https://www.rdocumentation.org/packages/devtools/topics/check">devtools::check(document = FALSE)</a></code> and fix errors, warnings, and notes</li>
+<li>Update NEWS file based on latest commits</li>
+<li>Create a PR from <code>dev</code> to <code>master</code> and check the CI status, fix all problems
 <ul>
 <li><a href="https://travis-ci.org/52North/sos4R" class="uri">https://travis-ci.org/52North/sos4R</a></li>
-<li><a href="https://ci.appveyor.com/project/nuest/sos4r" class="uri">https://ci.appveyor.com/project/nuest/sos4r</a></li>
+<li><a href="https://ci.appveyor.com/project/52North/sos4r" class="uri">https://ci.appveyor.com/project/52North/sos4r</a></li>
 </ul>
 </li>
 <li>Update version and date in <code>man/sos4R-package.Rd</code>
 </li>
 <li>Update version in <code>DESCRIPTION</code>
 </li>
-<li>Create a git tag with the version number using the letter <code>v</code> followed by the version number (see above, must match <code>DESCRIPTION</code>), e.g. <code>v1.2.3</code>
-</li>
-<li>Update NEWS file based on latest commits</li>
-<li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again</li>
-<li>Run checks
+<li>Run <strong>checks</strong> again and fix all problems
 <ul>
 <li>In the parent directory of the project: <code>R CMD build sos4R; R CMD check --as-cran sos4R_&lt;version number&gt;.tar.gz</code> should have no errors, warnings, or notes</li>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/revdepcheck/topics/revdep_check">revdepcheck::revdep_check()</a></code> for checking reverse dependencies</li>
 <li>
-<code><a href="https://www.rdocumentation.org/packages/devtools/topics/devtools-deprecated">devtools::build_win()</a></code> for testing Windows using CRAN infrastructure</li>
+<code><a href="https://www.rdocumentation.org/packages/devtools/topics/check_win">devtools::check_win_release()</a></code> and <code>devtools::devtools::check_win_devel()</code> for testing Windows using CRAN infrastructure</li>
 <li>
 <code>rhub::check_for_cran(email = &lt;...&gt;)</code> for testing for CRAN submissions using RHub infrastructure</li>
 <li>
-<code><a href="https://www.rdocumentation.org/packages/rhub/topics/check">rhub::check()</a></code> for running checks on different operating systems</li>
+<code>rhub::check(email = &lt;...&gt;)</code> for running checks on different operating systems</li>
 </ul>
 </li>
-<li>When available on CRAN
-<ul>
-<li>Notice on 52N mailing list(s)</li>
-<li>Publication on blog</li>
-</ul>
-</li>
+<li>Regenerate the website with <code><a href="https://pkgdown.r-lib.org/reference/build_site.html">pkgdown::build_site()</a></code> and re-knit <code>README.Rmd</code>, commit changes</li>
+<li>Push changes to <code>dev</code> branch</li>
+<li>Create a git tag with the version number using the letter <code>v</code> followed by the version number (see above, must match <code>DESCRIPTION</code>), e.g. <code>v1.2.3</code>, and push it to the main repository</li>
+<li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again</li>
+<li>Merge the PR</li>
 </ul>
 <p>You can then do the actual release with</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/release">release</a></span>()</a></code></pre></div>
+<p>When available on CRAN:</p>
+<ul>
+<li>Email on 52N mailing list(s)</li>
+<li>Tweet</li>
+</ul>
 </div>
 </div>
 

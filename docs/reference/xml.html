@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Request Capabilities from a SOS — getCapabilities-methods • sos4R</title>
+<title>Classes to model S3 classes of package <code>xml2</code> — xml_document-class • sos4R</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Request Capabilities from a SOS — getCapabilities-methods" />
+<meta property="og:title" content="Classes to model S3 classes of package <code>xml2</code> — xml_document-class" />
 
-<meta property="og:description" content="This method request the metadata description of a given Sensor Observation Service, the Capabilities document." />
+<meta property="og:description" content="Currently the main classes of the XML handling package xml2 are only S3 classes and thus cannot be used in slots for S4 classes. To remedy this, classes can be registered with setOldClass(..). This is done within this package, but should really be part of xml2, see https://github.com/r-lib/xml2/issues/248" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,36 +126,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Request Capabilities from a SOS</h1>
+    <h1>Classes to model S3 classes of package <code>xml2</code></h1>
     
-    <div class="hidden name"><code>getCapabilities-methods.Rd</code></div>
+    <div class="hidden name"><code>xml.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This method request the metadata description of a given Sensor Observation Service, the Capabilities document.</p>
+    <p>Currently the main classes of the XML handling package <code>xml2</code> are only S3 classes and thus cannot be used in slots for S4 classes. To remedy this, classes can be registered with <code>setOldClass(..)</code>. This is done within this package, but should really be part of <code>xml2</code>, see https://github.com/r-lib/xml2/issues/248</p>
     
     </div>
 
         
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-    <dl class='dl-horizontal'>
-	<dt><code>signature(sos = "SOS")</code></dt><dd><p>Request capabilities description from a SOS.</p></dd>
-	<dt><code>signature(inspect = "logical")</code></dt><dd><p>Print out the sent and received documents to console.</p></dd>
-	<dt><code>signature(verbose = "logical")</code></dt><dd><p>Extensive debugging information printed to console.</p></dd>
-</dl>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#methods">Methods</a></li>
-          </ul>
+                </ul>
 
+    <h2>Author</h2>
+    <p>Daniel Nuest</p>
   </div>
 </div>
 

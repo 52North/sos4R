@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9048</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>SosSupportedOperations</span>()
+    <pre class="usage"><span class='fu'>SosSupportedOperations</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>sos100_version</span>)
 <span class='fu'>SosSupportedComparisonOperators</span>()
 <span class='fu'>SosSupportedBindings</span>()
 <span class='fu'>SosSupportedGeometryOperands</span>()
@@ -147,7 +147,16 @@
 <span class='fu'>SosSupportedSpatialOperators</span>()
 <span class='fu'>SosSupportedTemporalOperators</span>()
 <span class='fu'>SosSupportedServiceVersions</span>()</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>version</th>
+      <td><p>The SOS specification version.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><strong>Supported features</strong>, like connection methods and supported response modes, are accessible by functions starting with "SosSupported". See the examples section for a complete list of these functions.</p>
@@ -214,6 +223,7 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
 
