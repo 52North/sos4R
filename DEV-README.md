@@ -256,14 +256,10 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 - Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again
 - Merge the PR
-
-You can then do the actual release with
-
-```r
-devtools::release()
-```
-
-When available on CRAN:
-
-- Email on 52N mailing list(s)
-- Tweet
+- Create a release on GitHub based on the new tag, named just as the version tag
+- Update your local `master` to upstream's `master` branch and then you can then do the actual release with `devtools::release()`
+- Checkout the `dev` branch
+- Update the version in `DESCRIPTION` to a new development version, e.g. from `0.3.0` to `0.4.0.9000`
+- When available on CRAN:
+  - Email on 52N mailing list(s)
+  - Tweet
