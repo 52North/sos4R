@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -142,7 +142,7 @@ setClass("SosObservationOffering",
 setClass("SosContents",
          representation(observationOfferings = "list"),
          prototype = list(observationOfferings = list(NA),
-                          xml = xml2::xml_new_document()),
+                          xml = xml2::xml_missing()),
          contains = c("OwsContents"),
          validity = function(object) {
            #print("Entering validation: SosContents")

@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -697,8 +697,8 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='no'>aWeekAgo</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
 <span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())
 <span class='no'>now</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
-<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-03-21 14:50:36 ]
-#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-03-28 14:50:36 ] ] </div><div class='input'>
+<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-03-24 08:03:59 ]
+#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-03-31 09:03:59 ] ] </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

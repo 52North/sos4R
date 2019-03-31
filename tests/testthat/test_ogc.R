@@ -19,6 +19,6 @@ test_that("bbox", {
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
   expect_match(encodedString, paste0(sosDefaultSpatialOpPropertyName, "</ogc:PropertyName>"))
-  expect_match(encodedString, "300 4000</gml:pos></gml:upperCorner></gml:Envelope></ogc:BBOX>")
+  expect_match(encodedString, "300 4000</gml:upperCorner></gml:Envelope></ogc:BBOX>")
 })
 

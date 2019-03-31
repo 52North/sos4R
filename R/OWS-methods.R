@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -113,7 +113,7 @@ OwsServiceIdentification <- function(serviceType, serviceTypeVersion,
 
 OwsServiceProvider <- function(providerName,
                                providerSite = as.character(NA),
-                               serviceContact = xml2::xml_new_document()) {
+                               serviceContact = xml2::xml_missing()) {
   new("OwsServiceProvider", providerName = providerName,
       providerSite = providerSite, serviceContact = serviceContact)
 }
@@ -121,7 +121,7 @@ OwsServiceProvider <- function(providerName,
 OwsOperationsMetadata <- function(operations,
                                   parameters = list(NA),
                                   constraints = list(NA),
-                                  extendedCapabilities = xml2::xml_new_document()) {
+                                  extendedCapabilities = xml2::xml_missing()) {
   new("OwsOperationsMetadata", operations = operations,
       parameters = parameters, constraints = constraints,
       extendedCapabilities = extendedCapabilities)

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,12 +23,12 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2013-08-28                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
 #
-#
+# SOS ----
 #
 setClass("SOS",
          representation(version = "character",
@@ -40,7 +40,8 @@ setClass("SOS",
          contains = c("VIRTUAL"))
 
 #
-# SOS class for local testing, i.e. without an URL and default verbose output
+# SOS_Test ----
+# class for local testing, i.e. without an URL and default verbose output
 #
 setClass("SOS_Test",
          representation(name = "character", binding = "character"),
@@ -89,7 +90,7 @@ SOS_Test <- function(name = "test",
 
 
 #
-#
+# SosFeatureOfInterest ----
 #
 setClass("SosFeatureOfInterest",
          representation(
@@ -109,7 +110,8 @@ setClassUnion(name = "SosFeatureOfInterestOrNULL",
               members = c("SosFeatureOfInterest", "NULL"))
 
 
-################################################################################
+#
+# SosDescribeSensor ----
 # See OGC 06-009r6
 #
 setClass("SosDescribeSensor",
@@ -128,13 +130,11 @@ setClass("SosDescribeSensor",
          }
 )
 
-
-################################################################################
+#
+# SosGetObservation ----
 # See SOS specification, OGC 06-009r6, section 8.4
 # Includes extensions for SOS 2.0
-setClassUnion(name = "ANYorNULL",
-              members = c("ANY", "NULL"))
-
+#
 setClass("SosGetObservation",
          representation(
            offering = "character",
@@ -144,7 +144,7 @@ setClass("SosGetObservation",
            eventTime = "list",
            procedure = "character",
            featureOfInterest = "SosFeatureOfInterestOrNULL",
-           result = "ANYorNULL", # handled in validation below
+           result = "OgcComparisonOpsOrXMLOrNULL",
            resultModel = "character",
            responseMode = "character",
            BBOX = "character",
@@ -176,7 +176,6 @@ setClass("SosGetObservation",
 
            # if version is there, it hast to be in a certain format, see ows common
            # srsName, offering, procedure, observedProperty are anyURIs
-           cat(toString(object@eventTime), "\n")
            if (length(object@eventTime) > 0)
              if (!all(sapply(object@eventTime, inherits, what = "SosEventTime")))
                return("all elements of the eventTime list must extend SosEventTime")

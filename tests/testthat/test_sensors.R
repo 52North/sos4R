@@ -28,7 +28,7 @@ test_that("output format is encoded correctly for KVP", {
 
     ds <- SosDescribeSensor(service = testsos@name, version = testsos@version, procedure = sosProcedures(testsos)[[1]],
                             outputFormat = of)
-    url <- encodeRequestKVP(ds, testsos) # fowards to .sosEncodeRequestKVPDescribeSensor_1.0.0
+    url <- encodeRequestKVP(ds, testsos)
     expect_match(toString(url), "text/xml;%20subtype%3D\"sensorML/1.0.1/profiles/ioos_sos/1.0\"")
 
     # test different quotation variants and spaces
@@ -87,7 +87,7 @@ test_that("sp bbox can be created from boundedBy", {
   expect_match(toString(sp::bbox(sosBoundedBy(sml))), "7.270806, 7.370806, 51.447722, 51.557722")
 })
 
-context("DescribeSensor: integration tests")
+context("DescribeSensor: integration tests\n")
 
 test_that("sensor description can be requested", {
   skip_on_cran()

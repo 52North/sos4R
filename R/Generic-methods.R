@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 - 2018 by 52 North                                        #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -24,7 +24,7 @@
 # Authors: Daniel Nuest (daniel.nuest@uni-muenster.de)                         #
 #          Eike Hinderk Jürrens (e.h.juerrens@52north.org)                     #
 # Created: 2010-09-20                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 

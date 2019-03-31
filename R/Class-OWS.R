@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -298,7 +298,7 @@ setClass("OwsCapabilities_1.1.0",
 # languages elements are represented by character only!
 #
 setClass("OwsCapabilities_2.0.0",
-         representation(languages = "ANY"),
+         representation(languages = "xml_document"),
          prototype = list("GetCapabilities",
                           languages = xml2::xml_missing(),
                           owsVersion = "2.0.0"),

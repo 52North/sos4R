@@ -38,6 +38,7 @@
 \alias{sosDataFieldConverters}
 \alias{sosDataFieldConverters-methods}
 \alias{sosDataFieldConverters,SOS-method}
+\alias{sosDataFieldConverters,SOS_Test-method}
 
 \alias{sosTime}
 \alias{sosTime-methods}
@@ -85,6 +86,7 @@
 \alias{sosParsers}
 \alias{sosParsers-methods}
 \alias{sosParsers,SOS-method}
+\alias{sosParsers,SOS_Test-method}
 
 \alias{sosProcedures}
 \alias{sosProcedures-methods}
@@ -227,10 +229,16 @@
 \alias{SOS_Test}
 \alias{SOS_Test-class}
 
-% Version 2.0.0 - specific
+% Version 2.0.0
 \alias{sosName,SosGetFeatureOfInterest_2.0.0-method}
 \alias{sosProcedures,SosObservationOffering_2.0.0-method}
 \alias{sosResponseFormats,SosObservationOffering_2.0.0-method}
+\alias{SOS_2.0.0-class}
+\alias{print,SOS_2.0.0-method}
+\alias{show,SOS_2.0.0-method}
+\alias{sosBinding,SOS_2.0.0-method}
+\alias{sosUrl,SOS_2.0.0-method}
+\alias{toString,SOS_2.0.0-method}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -259,6 +267,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{addtionalKVPs}:}{A nam of class \code{"list"}: Named list of key-value-pairs to be appended to an KVP request.}
   }
 }
+
 \section{Methods}{
   \describe{
     \item{sosAbstract}{\code{signature(obj = "SOS")}: ... }
@@ -298,6 +307,23 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosVersion}{\code{signature(sos = "SOS")}: ... }
     \item{sosTime}{\code{signature(obj = "SOS")}: Accessor function for the event time period from the GetObservation operations metadata.}
     \item{sosFilter_Capabilities}{\code{signature(sos = "SOS")}: Accessor function for the filter capabilities of a SOS object.}
+    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetDataAvailability_1.0.0", verbose = "logical")}: ... }
+    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetFeatureOfInterest_2.0.0", verbose = "logical")}: ... }
+    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetObservation", verbose = "logical")}: ... }
+    \item{describeSensor}{\code{signature(sos = "SOS_2.0.0", procedure = "character")}: ... }
+    \item{getCapabilities}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{getDataAvailability}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{getFeatureOfInterest}{\code{signature(sos = "SOS_2.0.0", featureOfInterest = "ANY")}: ... }
+    \item{getFeatureOfInterest}{\code{signature(sos = "SOS_2.0.0", featureOfInterest = "character")}: ... }
+    \item{getObservationById}{\code{signature(sos = "SOS_2.0.0", observationId = "character")}: ... }
+    \item{getObservation}{\code{signature(sos = "SOS_2.0.0", offering = "character")}: ... }
+    \item{getObservation}{\code{signature(sos = "SOS_2.0.0", offering = "SosObservationOffering_2.0.0")}: ... }
+    \item{print}{\code{signature(x = "SOS_2.0.0")}: ... }
+    \item{show}{\code{signature(object = "SOS_2.0.0")}: ... }
+    \item{sosBinding}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{sosRequest}{\code{signature(sos = "SOS_2.0.0", request = "OwsServiceOperation", verbose = "logical", inspect = "logical")}: ... }
+    \item{sosUrl}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{toString}{\code{signature(x = "SOS_2.0.0")}: ... }
 	 }
 }
 
@@ -356,6 +382,7 @@ The document is available for download at \url{https://www.opengeospatial.org/st
 
 \examples{
 showClass("SOS")
+showClass("SOS_2.0.0")
 
 \dontrun{
 # create a SOS connection

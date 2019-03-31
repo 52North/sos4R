@@ -64,7 +64,7 @@ test_that("with event time", {
                               offering = "off",
                               observedProperty = list("p1", "p2"),
                               responseFormat = "fmt",
-                              eventTime = sosCreateTime(sos = mySOS,
+                              eventTime = sosCreateTime(sos = testsos,
                                                         time = "2017-12-19::2017-12-20"))
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
@@ -80,7 +80,7 @@ test_that("with event time", {
   expect_match(encodedString, "</ogc:TM_During></sos:eventTime>")
 })
 
-context("GetObservation: integration tests")
+context("GetObservation: integration tests\n")
 
 test_that("KVP", {
   skip_on_cran()

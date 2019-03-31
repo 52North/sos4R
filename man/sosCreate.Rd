@@ -54,10 +54,10 @@ sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
 }
 
 \arguments{
-  \item{lowLat}{Minimum latitude for bounding box and boundinb box matrix.}
-  \item{lowLon}{Minimum longitude for bounding box and boundinb box matrix.}
-  \item{uppLat}{Maximum latitude for bounding box and boundinb box matrix.}
-  \item{uppLon}{Maximum longitude for bounding box and boundinb box matrix.}
+  \item{lowLat}{Minimum latitude for bounding box and bounding box matrix.}
+  \item{lowLon}{Minimum longitude for bounding box and bounding box matrix.}
+  \item{uppLat}{Maximum latitude for bounding box and bounding box matrix.}
+  \item{uppLon}{Maximum longitude for bounding box and bounding box matrix.}
   \item{srsName}{Name of the spatial reference system for bounding box, e.g. \samp{"urn:ogc:def:crs:EPSG:4326"}.}
   \item{srsDimension}{Dimensions of the spatial reference system, e.g. \samp{2}.}
   \item{axisLabels}{Labels of the axes of a bounding box as an ordered character vector.}

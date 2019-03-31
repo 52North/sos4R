@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -86,16 +86,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -277,6 +277,23 @@
     <dt>sosVersion</dt><dd><p><code>signature(sos = "SOS")</code>: ...</p></dd>
     <dt>sosTime</dt><dd><p><code>signature(obj = "SOS")</code>: Accessor function for the event time period from the GetObservation operations metadata.</p></dd>
     <dt>sosFilter_Capabilities</dt><dd><p><code>signature(sos = "SOS")</code>: Accessor function for the filter capabilities of a SOS object.</p></dd>
+    <dt>checkRequest</dt><dd><p><code>signature(service = "SOS_2.0.0", operation = "SosGetDataAvailability_1.0.0", verbose = "logical")</code>: ...</p></dd>
+    <dt>checkRequest</dt><dd><p><code>signature(service = "SOS_2.0.0", operation = "SosGetFeatureOfInterest_2.0.0", verbose = "logical")</code>: ...</p></dd>
+    <dt>checkRequest</dt><dd><p><code>signature(service = "SOS_2.0.0", operation = "SosGetObservation", verbose = "logical")</code>: ...</p></dd>
+    <dt>describeSensor</dt><dd><p><code>signature(sos = "SOS_2.0.0", procedure = "character")</code>: ...</p></dd>
+    <dt>getCapabilities</dt><dd><p><code>signature(sos = "SOS_2.0.0")</code>: ...</p></dd>
+    <dt>getDataAvailability</dt><dd><p><code>signature(sos = "SOS_2.0.0")</code>: ...</p></dd>
+    <dt>getFeatureOfInterest</dt><dd><p><code>signature(sos = "SOS_2.0.0", featureOfInterest = "ANY")</code>: ...</p></dd>
+    <dt>getFeatureOfInterest</dt><dd><p><code>signature(sos = "SOS_2.0.0", featureOfInterest = "character")</code>: ...</p></dd>
+    <dt>getObservationById</dt><dd><p><code>signature(sos = "SOS_2.0.0", observationId = "character")</code>: ...</p></dd>
+    <dt>getObservation</dt><dd><p><code>signature(sos = "SOS_2.0.0", offering = "character")</code>: ...</p></dd>
+    <dt>getObservation</dt><dd><p><code>signature(sos = "SOS_2.0.0", offering = "SosObservationOffering_2.0.0")</code>: ...</p></dd>
+    <dt>print</dt><dd><p><code>signature(x = "SOS_2.0.0")</code>: ...</p></dd>
+    <dt>show</dt><dd><p><code>signature(object = "SOS_2.0.0")</code>: ...</p></dd>
+    <dt>sosBinding</dt><dd><p><code>signature(sos = "SOS_2.0.0")</code>: ...</p></dd>
+    <dt>sosRequest</dt><dd><p><code>signature(sos = "SOS_2.0.0", request = "OwsServiceOperation", verbose = "logical", inspect = "logical")</code>: ...</p></dd>
+    <dt>sosUrl</dt><dd><p><code>signature(sos = "SOS_2.0.0")</code>: ...</p></dd>
+    <dt>toString</dt><dd><p><code>signature(x = "SOS_2.0.0")</code>: ...</p></dd>
 	 </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -314,7 +331,26 @@
 #&gt; Name:            dcpFilter      additionalKVPs
 #&gt; Class:                list                list
 #&gt; 
-#&gt; Known Subclasses: "SOS_Test", "SOS_1.0.0", "SOS_2.0.0"</div><div class='input'>
+#&gt; Known Subclasses: "SOS_Test", "SOS_1.0.0", "SOS_2.0.0"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"SOS_2.0.0"</span>)</div><div class='output co'>#&gt; Class "SOS_2.0.0" [package "sos4R"]
+#&gt; 
+#&gt; Slots:
+#&gt;                                                                   
+#&gt; Name:                  url             binding             version
+#&gt; Class:           character           character           character
+#&gt;                                                                   
+#&gt; Name:         capabilities             parsers            encoders
+#&gt; Class:     OwsCapabilities                list                list
+#&gt;                                                                   
+#&gt; Name:  dataFieldConverters          timeFormat       verboseOutput
+#&gt; Class:                list           character             logical
+#&gt;                                                                   
+#&gt; Name:    switchCoordinates             useDCPs           dcpFilter
+#&gt; Class:             logical             logical                list
+#&gt;                           
+#&gt; Name:       additionalKVPs
+#&gt; Class:                list
+#&gt; 
+#&gt; Extends: "SOS", "SOS_versioned"</div><div class='input'>
 </div># NOT RUN {
 # create a SOS connection
 mysos <- SOS(url = "http://mysos.org/sos")

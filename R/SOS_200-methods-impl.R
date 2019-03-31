@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2013-08-28                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -96,7 +96,9 @@
 
     if (verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
 
-    .response = httr::GET(url = .url)
+    .response = httr::GET(url = .url,
+                          httr::accept_xml())
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.\n")
   }
@@ -133,16 +135,13 @@
     .requestString <- toString(.encodedRequest)
 
     # using 'POST' for application/xml encoded requests
-    if (verbose) cat("[.sosRequest_2.0.0] Do request...")
+    if (verbose) cat("[.sosRequest_2.0.0] Do request...\n")
 
     .response <- httr::POST(url = .dcp,
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-
-    httr::stop_for_status(.response, "sending POST request")
-
-    .response <- httr::content(x = .response, as = "text", encoding = sosDefaultCharacterEncoding)
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -152,7 +151,6 @@
       print(.encodedRequest)
     }
 
-    # TODO add SOAP request method
     stop("[sos4R] ERROR: SOAP is not implemented for SOS 2.0.0.\n")
   }
   else {
@@ -160,18 +158,7 @@
                SosSupportedBindings(), "but is", sos@binding))
   }
 
-  if (verbose) {
-    cat("[.sosRequest_2.0.0] RESPONSE:\n")
-    print(.response)
-    if (is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
-  }
-
-  if (length(.response) > 0 &
-     regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
-    stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response, "\n\n"))
-  }
-
-  return(.response)
+  return(.content)
 }
 
 .getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
@@ -186,19 +173,10 @@
                             owsVersion = owsVersion, acceptLanguages = acceptLanguages)
   if (verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
 
-  .responseString = sosRequest(sos = sos, request = .gc,
-                               verbose = verbose, inspect = inspect)
-  if (verbose){
-    cat("[.getCapabilities_2.0.0] RESPONSE:\n", .responseString , "\n")
-  }
-
-  tmpStoredXMLCaps = base::tempfile()
-
-  fileConn <- base::file(tmpStoredXMLCaps)
-  base::writeLines(.responseString, fileConn)
-  base::close(fileConn)
-
-  .response <- xml2::read_xml(x = tmpStoredXMLCaps)
+  .response = sosRequest(sos = sos,
+                         request = .gc,
+                         verbose = verbose,
+                         inspect = inspect)
   if (inspect) {
     cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
     print(.response)

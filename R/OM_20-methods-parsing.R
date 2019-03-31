@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,14 +23,14 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
 #
 # Function extracts om:OM_Observation elements from sos:observationData elements.
 #
-parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
+parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
 
   obj <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = SosAllNamespaces())
 
@@ -76,7 +76,7 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE) {
         #  should return only one featureOfInterest
         if(length(foiList) > 0){
           .featureOfInterest <- foiList[[1]]
-          featureCache[[.featureOfInterestIdentifier]] <<- .featureOfInterest
+          featureCache[[.featureOfInterestIdentifier]] <- .featureOfInterest
         }
       }
     }

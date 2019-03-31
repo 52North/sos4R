@@ -65,7 +65,7 @@ This functions should not be called directly, but instead using the function des
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9042</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -88,16 +88,16 @@ This functions should not be called directly, but instead using the function des
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
-      <a href="../articles/02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
   </ul>
 </li>
@@ -220,8 +220,10 @@ This functions should not be called directly, but instead using the function des
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>describeSensorRequest</span>)</div><div class='output co'>#&gt; Object of class SosDescribeSensor:  service:  SOS , version:  1.0.0 , outputFormat:  text/xml 
 #&gt; Procedure:  urn:procedure:42 </div><div class='input'>
 <span class='co'># encode the request in XML</span>
-<span class='fu'><a href='encodeRequestXML-methods.html'>encodeRequestXML</a></span>(<span class='no'>describeSensorRequest</span>)</div><div class='output co'>#&gt; <span class='error'>Error in encodeRequestXML(describeSensorRequest): argument "sos" is missing, with no default</span></div><div class='input'>
-</div></pre>
+<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>()
+<span class='fu'><a href='encodeRequestXML-methods.html'>encodeRequestXML</a></span>(<span class='no'>describeSensorRequest</span>, <span class='no'>sos</span>)</div><div class='output co'>#&gt; {xml_document}
+#&gt; &lt;DescribeSensor service="SOS" outputFormat="text/xml" version="1.0.0" xmlns="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+#&gt; [1] &lt;procedure&gt;urn:procedure:42&lt;/procedure&gt;</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/toString'>toString</a></span>(<span class='fu'><a href='encodeRequestXML-methods.html'>encodeRequestXML</a></span>(<span class='no'>describeSensorRequest</span>, <span class='no'>sos</span>))</div><div class='output co'>#&gt; [1] "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;DescribeSensor xmlns=\"http://www.opengis.net/sos/1.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" service=\"SOS\" outputFormat=\"text/xml\" version=\"1.0.0\"&gt;\n  &lt;procedure&gt;urn:procedure:42&lt;/procedure&gt;\n&lt;/DescribeSensor&gt;\n"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

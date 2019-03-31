@@ -46,11 +46,6 @@
                 </swe:Quantity>
               </swe:field>
               <swe:field name="MS">
-                <swe:Quantity definition="urn:ogc:def:property:OGC:ChemicalPresenceInAirMS">
-                  <swe:uom code="ppm"/>
-                </swe:Quantity>
-              </swe:field>
-              <swe:field>
                 <swe:Category definition="http://www.52north.org/test/observableProperty/6">
                   <swe:codeSpace xlink:href="test_unit_6"/>
                 </swe:Category>
@@ -60,10 +55,7 @@
           <swe:encoding>
             <swe:TextBlock tokenSeparator="," decimalSeparator="." blockSeparator="@@"/>
           </swe:encoding>
-          <swe:values> 2005-08-05T12:21:13Z,-77.8912,38.512,20,0@@
-            2005-08-05T12:22:08Z,-77.8912,38.512,30,0@@ 2005-08-05T12:22:54Z,-77.8912,38.512,0,0@@
-            2005-08-05T12:23:03Z,-77.8912,38.512,10,10@@ 2005-08-05T12:23:59Z,-77.8912,38.512,10,0
-          </swe:values>
+          <swe:values> 2005-08-05T12:21:13Z,-77.8912,38.512,20,0@@2005-08-05T12:22:08Z,-77.8912,38.512,30,0@@ 2005-08-05T12:22:54Z,-77.8912,38.512,0,0@@2005-08-05T12:23:03Z,-77.8912,38.512,10,10@@ 2005-08-05T12:23:59Z,-77.8912,38.512,10,0</swe:values>
         </swe:DataArray>
       </om:result>
     </om:Observation>
@@ -73,8 +65,8 @@
       <gml:name>urn:MyOrg:observation:1234abcdf</gml:name>
       <om:samplingTime>
         <gml:TimePeriod>
-          <gml:beginPosition> 2005-08-05T12:23:03Z </gml:beginPosition>
-          <gml:endPosition> 2005-08-05T12:23:59Z </gml:endPosition>
+          <gml:beginPosition>2005-08-05T12:23:03Z</gml:beginPosition>
+          <gml:endPosition>2005-08-05T12:23:59Z</gml:endPosition>
         </gml:TimePeriod>
       </om:samplingTime>
       <om:procedure xlink:href="urn:ogc:object:Sensor:MyOrg:12350"/>
@@ -91,8 +83,7 @@
           <swe:encoding>
             <swe:TextBlock tokenSeparator="," decimalSeparator="." blockSeparator="@@"/>
           </swe:encoding>
-          <swe:values> 2005-08-05T12:23:03Z,-77.8912,38.512,10,10@@
-            2005-08-05T12:23:59Z,-77.8912,38.512,10,0 </swe:values>
+          <swe:values>2005-08-05T12:23:03Z,-77.8912,38.512,10,22@@2005-08-05T12:23:59Z,-77.8912,38.512,10,33</swe:values>
         </swe:DataArray>
       </om:result>
     </om:Observation>

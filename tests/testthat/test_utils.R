@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2013 by 52°North                                               #
+# Copyright (C) 2019 by 52°North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,23 +23,22 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2013-03-06                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
 context("utils")
 
 test_that(".sosFilterDCPs works", {
-	dcps <- c("Post" = "http://url/with/endpoint/one",
-			"Post" = "url.to/endpoint/two",
-			"Get" = "some.thing.com/different/")
+	dcps <- c("ows:Post" = "http://url/with/endpoint/one",
+			"ows:Post" = "url.to/endpoint/two",
+			"ows:Get" = "some.thing.com/different/")
 
-	expect_equals(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), 3)
-	expect_equivalent(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]], "url.to/endpoint/two")
-	expect_equal(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
-	             c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two"))
-	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
-	                  "http://url/with/endpoint/one")
+	expect_equal(length(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = "*")), 3)
+	expect_equivalent(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]], "url.to/endpoint/two")
+	expect_equal(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+	             c("ows:Post" = "http://url/with/endpoint/one", "ows:Post" = "url.to/endpoint/two"))
+	expect_equivalent(sos4R:::.sosFilterDCPs(dcps, list("POX" = "/one")), "http://url/with/endpoint/one")
 })
 
 test_that("addional KVPs are concatenated correctly", {

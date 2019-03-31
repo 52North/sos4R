@@ -573,22 +573,22 @@ The returned data of all GetObservation operations is an XML document of type om
 
 The most straightforward (and most simple to use) methods to query certain observations are to request one (or several) specific **observed property** (phenomenon) or **procedure** (sensor).
 Note that the procedures and observed properties have to match the given offering, which the do not in the second case.
-In the first case, there is no temporal filter, so the code is not executed here.
+In the next two cases, there is no temporal filter, so the code is not executed here because these request would potentially retrieve a lot of data, since there is no temporal (or thematical/spatial) limitation.
 
 ```{r getObsPropPhen1, eval=FALSE}
 myObservationData.procedure.1 <- getObservation(sos = mySOS,
-	offering = myOffering,
-	procedure = sosProcedures(myOffering)[[1]])
+	offering = myOffering)
 ```
 
-```{r getObsPropPhen2}
+```{r getObsPropPhen2, eval=FALSE}
 getObservation(sos = mySOS,
 	offering = myOffering,
 	procedure = sosProcedures(myOffering),
+	#procedure = sosProcedures(myOffering)[[1]],
 	observedProperty = as.list(names(sosObservedProperties(mySOS)[3:4])))
 ```
 
-These request would potentially retrieve a lot of data, since there is no temporal (or thematical/spatial) limitation.
+
 The following example requests data for about one day of temperature data and stores it in the object `myObservationData`.
 This feature is described extensively in section [Temporal Filtering](#temporal-filtering).
 

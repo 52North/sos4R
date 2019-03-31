@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -305,6 +305,7 @@ SosGetObservationById <- function(
     if (verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
     .response = httr::GET(url = .url)
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_1.0.0] ... done.\n")
   }
@@ -339,14 +340,13 @@ SosGetObservationById <- function(
     .requestString <- toString(.encodedRequest)
 
     # using 'POST' for application/xml content
-    if (verbose) cat("[.sosRequest_1.0.0] Do request...")
+    if (verbose) cat("[.sosRequest_1.0.0] Do request...\n")
 
     .response <- httr::POST(url = .dcp,
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-
-    httr::stop_for_status(.response, "sending POST request")
+    .content <- .processResponse(.response, verbose)
 
     if (verbose) cat("[.sosRequest_1.0.0] ... done.")
   }
@@ -365,16 +365,8 @@ SosGetObservationById <- function(
 
   if (verbose) {
     cat("[.sosRequest_1.0.0] RESPONSE:\n")
-    print(.response)
-    if (is.raw(.response)) cat("raw as char: ", rawToChar(.response), "\n")
+    print(.content)
   }
-
-  if (length(.response) > 0 &
-     regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", .response) > 0) {
-    stop(paste("[sos4R] ERROR: Got HTML response!:\n", .response, "\n\n"))
-  }
-
-  .content = httr::content(x = .response, encoding = sosDefaultCharacterEncoding)
 
   return(.content)
 }
@@ -556,6 +548,7 @@ setMethod(f = "getObservationById",
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) .filename <- paste(observationId,
                                           format(Sys.time(), sosDefaultFilenameTimeFormat),
+                                          ".xml",
                                           sep = "_")
       if (verbose) cat("[.getObservationById_1.0.0] Generating file name:", .filename, "\n")
     }
@@ -573,7 +566,8 @@ setMethod(f = "getObservationById",
 
   .response = sosRequest(sos = sos,
                          request = .go,
-                         verbose = verbose, inspect = inspect)
+                         verbose = verbose,
+                         inspect = inspect)
   if (inspect) cat("[.getObservationById_1.0.0] RESPONSE:\n", toString(.response), "\n")
 
   if (!is.null(.filename)) {
@@ -656,8 +650,9 @@ setMethod(f = "getObservationById",
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) .filename <- paste(.cleanupFileName(offeringId),
-                                           format(Sys.time(),
-                                                  sosDefaultFilenameTimeFormat), sep = "_")
+                                           format(Sys.time(), sosDefaultFilenameTimeFormat),
+                                           ".xml",
+                                           sep = "_")
       if (verbose) cat("[.getObservation_1.0.0] Generated file name:", .filename, "\n")
     }
   }
@@ -675,7 +670,6 @@ setMethod(f = "getObservationById",
                          request = .go,
                          verbose = verbose,
                          inspect = inspect)
-
   if (verbose) cat("[sos4R] Received response (object size:", object.size(.response), "bytes), parsing ...\n")
 
   if (inherits(.response, "xml_document")) {
@@ -692,10 +686,6 @@ setMethod(f = "getObservationById",
 
     if (.isExceptionReport(.response)) {
       return(.handleExceptionReport(sos, .response))
-    }
-
-    if (!is.na(responseFormat) && isTRUE(grep(pattern = "text/xml", x = responseFormat) != 1)) {
-      warning("Got XML string, but request did not require text/xml (or subtype).")
     }
 
     .parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
@@ -757,8 +747,8 @@ setMethod(f = "getObservationById",
 
     return(.obs)
   }
-  else {# response is NOT an XML string:
-    if (verbose) cat("[.getObservation_1.0.0] Did NOT get XML string as response, trying to parse with", responseFormat, "\n")
+  else {# response is NOT an XML document:
+    if (verbose) cat("[.getObservation_1.0.0] Did NOT get XML document as response, trying to parse with", responseFormat, "\n")
 
     if (is.na(responseFormat) || is.null(responseFormat)) {
       if (verbose) cat("[.getObservation_1.0.0] responseFormat is ",
@@ -806,7 +796,6 @@ setMethod(f = "getObservationById",
   # not xml nor csv nore otherwise handled
   if (inspect) {
     cat("[.getObservation_1.0.0] UNKNOWN RESPONSE FORMAT; Response:\n'", .response, "'\n")
-    #cat("[.getObservation_1.0.0] Content-Type: ", .contentType)
     warning("Unknown response format!")
   }
 
@@ -1490,3 +1479,43 @@ setMethod(f = "checkRequest",
             return(TRUE)
           }
 )
+
+#
+# util functions for getting content from response ----
+#
+.processResponse <- function(response, verbose) {
+  contentType <- httr::http_type(response)
+
+  if (!httr::has_content(response)) {
+    stop("Response has no content: ", toString(response),
+         " | headers: ", paste(names(httr::headers(response)),
+                               httr::headers(response),
+                               sep = ": ",
+                               collapse = "; "))
+  }
+
+  if (verbose) cat("[.processResponse] Response status: ", httr::status_code(response),
+                   " | type: ", contentType, "\n")
+
+  if (httr::status_code(response) == 405)
+    warning("Response is HTTP 405 - Method Not Allowed: Please check if endpoint and binding match.")
+
+  httr::stop_for_status(response, "sending request to SOS")
+
+  if (contentType == "text/plain") {
+    text <- httr::content(response)
+    if (length(text) > 0 &
+        regexpr("(<html>|<HTML>|<!DOCTYPE HTML|<!DOCTYPE html)", text) > 0) {
+      stop(paste("[sos4R] ERROR: Got HTML response!:\n", text, "\n\n"))
+    }
+
+    xml <- xml2::read_xml(text)
+    return(xml)
+  }
+  else if (contentType == "application/xml") {
+    xml <- httr::content(x = response, encoding = sosDefaultCharacterEncoding)
+    return(xml)
+  }
+
+  stop("Unsupported content type in response")
+}

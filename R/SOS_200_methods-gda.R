@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2018 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -226,7 +226,6 @@ setMethod(f = "sosName", signature = signature(obj = "SosGetDataAvailability_1.0
             return(sosGetDataAvailabilityName)
           })
 
-
 parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseGetDataAvailabilityResponse]")
 
@@ -238,15 +237,14 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   .gdaMembers <- xml2::xml_find_all(x = obj, xpath = sosGDAMemberName, ns = SosAllNamespaces())
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), "element(s).\n")
-  .phenTimeCache <<- list()
-  .parsedGDAMembers <- lapply(.gdaMembers, .parseGDAMember, sos, verbose)
-  .phenTimeCache <<- list()
+  phenTimeCache <- list()
+  .parsedGDAMembers <- lapply(.gdaMembers, .parseGDAMember, sos, phenTimeCache, verbose)
   if (verbose) cat("[parseGetDataAvailabilityResponse] Done. Processed", length(.parsedGDAMembers),
                    "elements")
   return(.parsedGDAMembers)
 }
 
-.parseGDAMember <- function(gdaMember, sos, verbose = FALSE) {
+.parseGDAMember <- function(gdaMember, sos, phenTimeCache, verbose = FALSE) {
   if (verbose) cat("[parseGDAMember]")
   #
   # procedure
@@ -260,7 +258,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   #
   # phenomenon time
   .phenTime <- NULL
-  .ptNode <- xml2::xml_find_all(x = obj, xpath = sosPhenomenonTimeName, ns = SosAllNamespaces())
+  .ptNode <- xml2::xml_find_all(x = gdaMember, xpath = sosPhenomenonTimeName, ns = SosAllNamespaces())
   # Case A: Encoded
   if (!.nodeFound(.ptNode)) {
     stop(paste0("[parseGDAMember] ", sosPhenomenonTimeName, " not found!"))
@@ -270,18 +268,18 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (.isHrefAttributeAvailable(.ptNode)) {
     .ptNodeHref <- xml2::xml_attr(x = .ptNode, attr = "href")
     if(verbose) cat(paste0("[parseGDAMember] trying to get referenced phenomenon time via '", .ptNodeHref, "'."))
-    .phenTime <- .phenTimeCache[[stringr::str_sub(.ptNodeHref, start = 2)]]
+    .phenTime <- phenTimeCache[[stringr::str_sub(.ptNodeHref, start = 2)]]
     if (is.null(.phenTime)) {
       stop(paste0("[parseGDAMember] XML document invalid. Time reference '", .ptNodeHref ,"' not in document."))
     }
   }
   # Case B: in-document reference -> cache
   else {
-    .phenTime <- parseTimePeriod(xml2::xml_find_first(x = obj,
+    .phenTime <- parseTimePeriod(xml2::xml_find_first(x = gdaMember,
                                                       xpath = gmlTimePeriodName,
                                                       ns = SosAllNamespaces()),
                                  format = sosDefaultTimeFormat)
-    .phenTimeCache[[.phenTime@id]] <<- .phenTime
+    phenTimeCache[[.phenTime@id]] <- .phenTime
   }
   if (is.null(.phenTime)) {
     stop("[parseGDAMember] could NOT parse phenomenon time.")

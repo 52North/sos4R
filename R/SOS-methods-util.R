@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2010 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-09-21                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -142,9 +142,6 @@ setMethod(f = "sosCreateTime",
   if (length(.times) > 1)
     .end <- .times[[2]]
   else .end <- NULL
-
-  #	print(.start); print(.end);	print(nchar(.start)); print(nchar(.end));
-  #	str(.start); print(.end);
 
   if (is.null(.start) && is.null(.end)) {
     warning("Both start and endtime are null based on given time. Returning empty list!")
@@ -317,16 +314,16 @@ setMethod(f = "sosCapabilitiesUrl",
 #
 .isExceptionReport <- function(obj) {
   if (inherits(obj, "xml_document")) {
-    if (owsExceptionReportName == xml2::xml_name(x = xml2::xml_root(x = obj),
-                                                 ns = SosAllNamespaces()))
-      return(TRUE)
-    else
-      return(FALSE)
+    name <- xml2::xml_name(x = xml2::xml_root(x = obj)) # intentionally without namespaces
+    return(owsExceptionReportNameOnly == name)
+  }
+  else if (is.character(obj) && startsWith(obj, "<?xml")) {
+    return(grepl(obj, "ExceptionReport"))
   }
   else if (is.list(obj)) {
     return(!is.null(obj[["exceptions"]]))
   }
-  stop("Unsupported input for functin .isExceptionReport")
+  stop("Unsupported input for function .isExceptionReport")
 }
 
 .handleExceptionReport <- function(sos, obj) {
@@ -567,11 +564,4 @@ sosCheatSheet <- function() {
   class(.z) <- "vignette"
 
   return(.z)
-}
-
-#
-# XML parsing ----
-#
-isXMLString <- function(str) {
-  return(grepl("^<(.*)>$", str))
 }

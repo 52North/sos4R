@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -64,13 +64,19 @@ sosObservationIdName <- paste0(sos100NamespacePrefix, ":ObservationId")
 #
 sos200_version <- "2.0.0"
 sos200NamespacePrefix <- "sos20"
-sos200ContentsName <- "contents"
-sos200FilterCapabilitiesName = "filterCapabilities"
-sos200_emptyGetObservationResponseString <-
-  paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-         "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",
-         "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
-         "xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetObservation.xsd\"/>")
+sos200contentsName <- paste0(sos200NamespacePrefix, ":contents")
+sos200ContentsName <- paste0(sos200NamespacePrefix, ":Contents")
+sos200ObservationOfferingListName <- paste0(sos200NamespacePrefix, ":ObservationOfferingList")
+sos200ObservationOfferingName <- paste0(sos200NamespacePrefix, ":ObservationOffering")
+sos200FeatureOfInterestTypeName <- paste0(sos200NamespacePrefix, ":featureOfInterestType")
+sos200ObservationTypeName <- paste0(sos200NamespacePrefix, ":observationType")
+sos200ResponseFormatName <- paste0(sos200NamespacePrefix, ":responseFormat")
+sos200ResponseModeName <- paste0(sos200NamespacePrefix, ":responseMode")
+sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
+sos200FilterCapabilitiesName = paste0(sos200NamespacePrefix, ":filterCapabilities")
+sos200ResultTimeName <- paste0(sos200NamespacePrefix, ":resultTime")
+sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
+
 #
 # Core Operations Profile ----
 #
@@ -101,9 +107,13 @@ sosGetDataAvailabilityName <- "GetDataAvailability"
 sosGetDataAvailabilityResponse <- "GetDataAvailabilityResponse"
 sosGDAMemberName <- "dataAvailabilityMember"
 
-SosSupportedOperations <- function() {
-  .supported <- c(sosGetCapabilitiesName, sosDescribeSensorName,
-                  sosGetObservationName ,sosGetObservationByIdName)
+SosSupportedOperations <- function(version = sos100_version) {
+  if (version == sos100_version) {
+    .supported <- c(sosGetCapabilitiesName,
+                    sosDescribeSensorName,
+                    sosGetObservationName,
+                    sosGetObservationByIdName)
+  }
   return(.supported)
 }
 
@@ -190,7 +200,8 @@ sf20Namespace <- "http://www.opengis.net/sampling/2.0"
 swesNamespace <- "http://www.opengis.net/swes/2.0"
 om20Namespace <- "http://www.opengis.net/om/2.0"
 
-sos200Namespace = "http://www.opengis.net/sos/2.0"
+sos200Namespace <- "http://www.opengis.net/sos/2.0"
+fesNamespace <- "http://www.opengis.net/fes/2.0"
 
 SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
@@ -206,17 +217,20 @@ SosAllNamespaces <- function(version = sos100_version) {
               sa = saNamespace)
     return(.all[unique(names(.all))])
     } else if (version == sos200_version) {
-      .all <- c(sams = samsNamespace,
+      .all <- c(sos20 = sos200Namespace,
+                ows = owsNamespace,
+                sams = samsNamespace,
                 sf = sf20Namespace,
                 swes = swesNamespace,
                 om = om20Namespace,
                 xsi = xsiNamespace,
                 xlink = xlinkNamespace,
                 sml = smlNamespace,
-                gml = gml32Namespace)
+                gml = gml32Namespace,
+                fes = fesNamespace)
       return(.all[unique(names(.all))])
   } else {
-    stop("Unsupported version", version)
+    stop("Unsupported version ", version)
   }
 }
 
@@ -490,7 +504,8 @@ owsMaximumValueName <- paste0(owsNamespacePrefix, ":MaximumValue")
 owsSpacingName <- paste0(owsNamespacePrefix, ":Spacing")
 owsConstraintName <- paste0(owsNamespacePrefix, ":Constraint")
 owsMetadataName <- paste0(owsNamespacePrefix, ":Metadata")
-owsExceptionReportName <- paste0(owsNamespacePrefix, ":ExceptionReport")
+owsExceptionReportNameOnly <- "ExceptionReport"
+owsExceptionReportName <- paste0(owsNamespacePrefix, ":", owsExceptionReportNameOnly)
 owsExceptionName <- paste0(owsNamespacePrefix, ":Exception")
 owsExceptionTextName <- paste0(owsNamespacePrefix, ":ExceptionText")
 owsProfileName <- paste0(owsNamespacePrefix, ":Profile")

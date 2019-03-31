@@ -42,16 +42,6 @@ context("encoding GML: temporal")
 
 testsos <- SOS_Test(name = "testgml")
 
-test_that("time instant", {
-  env <- GmlTimeInstant(timePosition = GmlTimePosition())
-  encoded <- encodeXML(obj = env, sos = testsos)
-  encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
-
-  expect_match(encodedString, '<gml:Envelope')
-  expect_match(encodedString, '1 2</gml:pos></gml:lowerCorner>')
-  expect_match(encodedString, '8 9</gml:pos></gml:upperCorner>')
-})
-
 test_that("time position minimal", {
   tpos <- GmlTimePosition(time = as.POSIXct("2019-01-01"))
 
@@ -74,6 +64,15 @@ test_that("time position all", {
   expect_match(encodedString, 'calendarEraName="the_era"')
   expect_match(encodedString, 'indeterminatePosition="yes"')
   expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition>')
+})
+
+test_that("time instant", {
+  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
+  encoded <- encodeXML(obj = instant, sos = testsos)
+  encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
+
+  expect_match(encodedString, '<gml:TimeInstant')
+  expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition></gml:TimeInstant>')
 })
 
 test_that("time period", {
