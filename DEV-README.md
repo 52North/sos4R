@@ -237,24 +237,25 @@ Add tests.
 
 A new release shall be uploaded to CRAN after testing and under the following procedure:
 
-- Run the [tests](#tests) locally
+- Run the [tests](#tests) locally and resolve all problems
 - Run a check locally, e.g. `devtools::check(document = FALSE)` and fix errors, warnings, and notes
-- Regenerate the website with `pkgdown::build_site()`
-- Merge all changes into the `dev` branch
-- Create a PR from `dev` to `master` and check the CI status
+- Update NEWS file based on latest commits
+- Create a PR from `dev` to `master` and check the CI status, fix all problems
   - https://travis-ci.org/52North/sos4R
   - https://ci.appveyor.com/project/52North/sos4r
 - Update version and date in `man/sos4R-package.Rd`
 - Update version in `DESCRIPTION`
-- Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`
-- Update NEWS file based on latest commits
-- Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again
-- Run **checks**
+- Run **checks** again and fix all problems
   - In the parent directory of the project: `R CMD build sos4R; R CMD check --as-cran sos4R_<version number>.tar.gz` should have no errors, warnings, or notes
   - `revdepcheck::revdep_check()` for checking reverse dependencies
-  - `devtools::build_win()` for testing Windows using CRAN infrastructure
+  - `devtools::check_win_release()` and `devtools::devtools::check_win_devel()` for testing Windows using CRAN infrastructure
   - `rhub::check_for_cran(email = <...>)` for testing for CRAN submissions using RHub infrastructure
-  - `rhub::check()` for running checks on different operating systems
+  - `rhub::check(email = <...>)` for running checks on different operating systems
+- Regenerate the website with `pkgdown::build_site()`
+- Push changes to `dev` branch
+- Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
+- Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again
+- Merge the PR
 
 You can then do the actual release with
 

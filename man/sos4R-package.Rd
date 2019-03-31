@@ -18,12 +18,12 @@
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
-	Version: \tab 0.3\cr
-	Date: \tab 2012-11-19\cr
+	Version: \tab 0.3.0\cr
+	Date: \tab 2019-03-30\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr
-	Imports: \tab xml2, httr, sp\cr
+	Imports: \tab xml2, httr, sp, stringr, methods\cr
 	}
 }
 
@@ -35,7 +35,7 @@ Daniel Nuest <daniel.nuest@uni-muenster.de>
 Na, A., Priest, M. (Eds.), 2007. Sensor Observation Service. OpenGIS Implementation Standard, Version 1.0, OGC 06-009r6
 }
 
-\seealso{See also the package vignette, \code{vignette(sos4R)}.}
+\seealso{See also the package vignette.}
 
 \note{
 The development of this software was gratefully supported by the 52North Student Innovation Prize for Geoinformatics 2010.

@@ -298,7 +298,7 @@ setClass("OwsCapabilities_1.1.0",
 # languages elements are represented by character only!
 #
 setClass("OwsCapabilities_2.0.0",
-         representation(languages = "ANY"),
+         representation(languages = "xml_document"),
          prototype = list("GetCapabilities",
                           languages = xml2::xml_missing(),
                           owsVersion = "2.0.0"),
