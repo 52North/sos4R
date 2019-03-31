@@ -1,4 +1,4 @@
-# sos4R 0.3.0.90xx
+# sos4R 0.3.0
 
 - Switch from `XML` to `xml2`
 - Added a `NEWS.md` in Markdown format to track changes to the package (moved content from `inst/NEWS` and `inst/CHANGES`)
