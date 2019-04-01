@@ -93,12 +93,12 @@ setMethod(f = "phenomena",
   stopifnot(!is.null(.properties))
   stopifnot(is.list(.properties))
   if (length(unlist(.properties)) == 0) {
-    phens <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
+    .phens <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
   } else {
     .properties <- unique(sort(as.vector(unlist(.properties))))
-    phens <- data.frame("phenomenon" = .properties, stringsAsFactors = FALSE)
+    .phens <- data.frame("phenomenon" = .properties, stringsAsFactors = FALSE)
   }
-  return(phens)
+  return(.phens)
 }
 
 #
@@ -199,25 +199,92 @@ setMethod(f = "phenomena",
   return(los)
 }
 
-siteList <- function(sos,
-                     empty=FALSE, # filter
-                     timeInterval=NA_character_,  # filter
-                     includePhenomena=FALSE, # meta data
-                     includeTemporalBBox=FALSE, # meta data
-                     phenomena=list()) { # filter
-  stopifnot(inherits(sos, "SOS_2.0.0"))
-  stopifnot(is.logical(empty))
-  stopifnot(is.character(timeInterval))
-  stopifnot(is.logical(includePhenomena))
-  stopifnot(is.logical(includeTemporalBBox))
+#
+# siteList - generic method ----
+#
+if (!isGeneric("siteList")) {
+  setGeneric(name = "siteList",
+             signature = signature("sos",
+                                   "empty",
+                                   "timeInterval",
+                                   "includePhenomena",
+                                   "includeTemporalBBox",
+                                   "phenomena"),
+             def = function(sos,
+                            empty=FALSE,                 # filter
+                            timeInterval=NA_character_,  # filter
+                            includePhenomena=FALSE,      # meta data
+                            includeTemporalBBox=FALSE,   # meta data
+                            phenomena=list()) {          # filter
+               standardGeneric("siteList")
+             })
+}
 
-  phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+#
+# siteList - call with sos parameter only ----
+#
+setMethod(f = "siteList",
+          signature = signature(sos = "SOS_2.0.0"),
+          def = function(sos,
+                         empty,
+                         timeInterval,
+                         includePhenomena,
+                         includeTemporalBBox,
+                         phenomena) {
+            stopifnot(inherits(sos, "SOS_2.0.0"))
+            stopifnot(is.logical(empty))
+            stopifnot(is.character(timeInterval))
+            stopifnot(is.logical(includePhenomena))
+            stopifnot(is.logical(includeTemporalBBox))
 
-  if (includeTemporalBBox && !includePhenomena) {
-    includePhenomena <- TRUE
-    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+            .phenomenaSet <- FALSE
+            .timeIntervalSet <- FALSE
+
+            # validate input only if given
+            if (.isPhenomenaSet(phenomena)) {
+              phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+              .phenomenaSet <- TRUE
+            }
+
+            if (includeTemporalBBox && !includePhenomena) {
+              includePhenomena <- TRUE
+              warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+            }
+
+            if (empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
+              return(.simpleStationList(sos))
+            }
+          })
+
+.isTimeIntervalSet <- function(timeInterval) {
+  return(!is.null(timeInterval) &&
+           !is.na(timeInterval) &&
+           is.character(timeInterval) &&
+           length(timeInterval) > 0)
+}
+
+.isPhenomenaSet <- function(phenomena) {
+  return(!is.null(phenomena) &&
+           !is.na(phenomena) &&
+           is.list(phenomena) &&
+           length(phenomena) > 0)
+}
+
+.simpleStationList <- function(sos) {
+  .features <- getFeatureOfInterest(sos)
+  stopifnot(!is.null(.features))
+  stopifnot(is.list(.features))
+  if (length(unlist(.features)) == 0) {
+    .sites <- data.frame("siteID" = character(0), stringsAsFactors = FALSE)
+  } else {
+    .features <- sosFeaturesOfInterest(.features)
+    .unlistedfeatures <- unlist(.features)
+    .featurevector <- as.vector(.unlistedfeatures)
+    .sortedfeatures <- sort(.featurevector)
+    .features <- unique(.sortedfeatures)
+    .sites <- data.frame("siteID" = .features, stringsAsFactors = FALSE)
   }
-
+  return(.sites)
 }
 
 # sites ####

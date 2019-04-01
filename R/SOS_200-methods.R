@@ -160,6 +160,10 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
           }
 )
 
+.isEmptyGetFeatureOfInterestResponse <- function(response = "") {
+  gsub(pattern = "\t|\r|\n", x = response, replacement = "") == sos200_emptyGetFeatureOfInterestResponseString
+}
+
 #
 #
 #
@@ -210,8 +214,12 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     warning(paste("Response string has length ", nchar(.responseString),
                   ". Please re-check query parameters."))
   }
-
-  if(isXMLString(.responseString)) {
+  if (.isEmptyGetFeatureOfInterestResponse(.responseString)) {
+    if(verbose)
+      cat("[.getFeatureOfInterest_2.0.0] Received empty feature response.", "\n")
+    return(list())
+  }
+  else if(isXMLString(.responseString)) {
     if(verbose) {
       cat("[.getFeatureOfInterest_2.0.0] Got XML string as response",
           "(based on isXMLString()).\n")
@@ -284,7 +292,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       print(.parsingFunction)
     }
 
-    .obs <- .parsingFunction(obj = .response, sos = sos,
+    .features <- .parsingFunction(obj = .response, sos = sos,
                              verbose = verbose)
 
     .msg <- paste("[sos4R] Finished getFeatureOfInterest to", sos@url, "\n")
@@ -293,19 +301,19 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
       .msg <- paste(.msg,
                     "[sos4R] Original document saved:", .filename, "\n")
 
-      .oldAttrs <- attributes(.obs)
+      .oldAttrs <- attributes(.features)
       .newAttrs <- list(.filename)
       names(.newAttrs) <- list(sosAttributeFileName)
       if(verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
                       toString(.newAttrs), "(names",
                       toString(names(.newAttrs)), ")\n")
 
-      attributes(.obs) <- c(.oldAttrs, .newAttrs)
+      attributes(.features) <- c(.oldAttrs, .newAttrs)
     }
     cat(.msg)
 
     # RETURN ###
-    return(.obs)
+    return(.features)
   }
 }
 

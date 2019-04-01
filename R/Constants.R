@@ -22,6 +22,7 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+#         Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2010-06-18                                                          #
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
@@ -72,6 +73,11 @@ sos200_emptyGetDataAvailabilityResponseString <-
          " xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:swe=\"http://www.opengis.net/swe/2.0\"",
          " xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"",
          " xsi:schemaLocation=\"http://www.opengis.net/sosgda/1.0 http://waterml2.org/schemas/gda/1.0/gda.xsd\"/>")
+sos200_emptyGetFeatureOfInterestResponseString <-
+  paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+         "<sos:GetFeatureOfInterestResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",
+         "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
+         "xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetFeatureOfInterest.xsd\"/>")
 #
 # Core Operations Profile ----
 #

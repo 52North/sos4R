@@ -312,7 +312,7 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
 
 parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
 
-  if(sos@verboseOutput) {
+  if (verbose) {
     cat("[parseGetFeatureOfInterestResponse] entering... \n")
     print(obj)
   }
@@ -320,7 +320,7 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
   .featureXML <- .filterXmlChildren(
     node = obj,
     xmlTagName = "featureMember")
-  .foi = sapply(.featureXML, .parseFeatureMember,
+  .foi <- sapply(.featureXML, .parseFeatureMember,
                 sos = sos)
   return(.foi)
 }
