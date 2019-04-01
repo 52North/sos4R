@@ -14,7 +14,7 @@ Author: Daniel Nuest [cre, aut] (<https://orcid.org/0000-0002-0024-5046>),
   Benjamin Pross [ctb],
   Eike Hinderk Juerrens [ctb]
 Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 3.4.4)
+Depends: R (>= 3.4.0)
 Imports:
     httr,
     methods,
