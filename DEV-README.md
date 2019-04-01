@@ -239,12 +239,14 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 
 - Run the [tests](#tests) locally and resolve all problems
 - Run a check locally, e.g. `devtools::check(document = FALSE)` and fix errors, warnings, and notes
-- Update NEWS file based on latest commits
+- Update NEWS file based on latest commits, add missing changes/updates/notable things
 - Create a PR from `dev` to `master` and check the CI status, fix all problems
   - https://travis-ci.org/52North/sos4R
   - https://ci.appveyor.com/project/52North/sos4r
+  - If there are problems with the `devel` release of R, you can use a local Docker container to run the checks while fixing them (from the path of the parten folder of `sos4R`): `docker run --rm -it -v $(pwd)/sos4R:/home/sos4R rocker/geospatial:devel bash`, switch to `/home`, then run the commands below (`R CMD build` & `check`)
 - Update version and date in `man/sos4R-package.Rd`
 - Update version in `DESCRIPTION`
+- Update version number in `NEWS.md`
 - Run **checks** again and fix all problems
   - In the parent directory of the project: `R CMD build sos4R; R CMD check --as-cran sos4R_<version number>.tar.gz` should have no errors, warnings, or notes
   - `revdepcheck::revdep_check()` for checking reverse dependencies
@@ -253,17 +255,16 @@ A new release shall be uploaded to CRAN after testing and under the following pr
   - `rhub::check(email = <...>)` for running checks on different operating systems
 - Regenerate the website with `pkgdown::build_site()` and re-knit `README.Rmd`, commit changes
 - Push changes to `dev` branch
-- Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again
 - Merge the PR
-
-You can then do the actual release with
-
-```r
-devtools::release()
-```
-
-When available on CRAN:
-
-- Email on 52N mailing list(s)
-- Tweet
+- Update your local `master` to upstream's `master` branch
+- Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
+- Create a release on GitHub based on the new tag, named just as the version tag
+-_ Do the actual release_ with `devtools::release()` (which will ask you again if you did many of the steps before)
+- Wait for the good news
+- When available on CRAN:
+  - Checkout the `dev` branch
+  - Merge `upstream/master`
+  - Update the version in `DESCRIPTION` to a new development version, e.g. from `0.3.0` to `0.4.0.9000`
+  - Email on 52N mailing list(s) (coordinate with 52N staff)
+  - Tweet
