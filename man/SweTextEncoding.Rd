@@ -13,7 +13,6 @@ Representation of a text encoding defined in the OGC SWE Common specification. I
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("SweTextEncoding", ...)}.
-%%  ~~ describe objects here ~~
 }
 \section{Slots}{
   \describe{

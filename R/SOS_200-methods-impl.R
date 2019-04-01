@@ -63,9 +63,10 @@
 
       .dcp <- sosGetDCP(sos, sosName(request), owsGetName)
 
-      if (is.null(.dcp) || is.na(.dcp)) {
+      if (all(is.null(.dcp)) || all(is.na(.dcp))) {
         .dcp <- sos@url
-        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request.\n")
+        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using",
+                         .dcp, "\n")
       }
 
       .dcp <- .sosFilterDCPs(dcp = .dcp,
@@ -112,7 +113,8 @@
 
     if (sos@useDCPs) {
       .dcp <- sosGetDCP(sos, sosName(request), owsPostName) #sos@url as fallback
-      if (is.null(.dcp) || is.na(.dcp)) {
+
+      if (all(is.null(.dcp)) || all(is.na(.dcp))) {
         .dcp <- sos@url
         if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
       }
