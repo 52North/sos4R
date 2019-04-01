@@ -16,7 +16,6 @@ A monitoring point is the feature of interest defined for WaterML observations, 
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("MonitoringPoint", ...)}.
-%%  ~~ describe objects here ~~
 }
 \section{Slots}{
   \describe{

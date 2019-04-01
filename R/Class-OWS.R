@@ -299,8 +299,7 @@ setClass("OwsCapabilities_1.1.0",
 #
 setClass("OwsCapabilities_2.0.0",
          representation(languages = "xml_document"),
-         prototype = list("GetCapabilities",
-                          languages = xml2::xml_missing(),
+         prototype = list(languages = xml2::xml_missing(),
                           owsVersion = "2.0.0"),
          contains = "OwsCapabilities_1.1.0",
          validity = function(object) {
@@ -341,15 +340,16 @@ setClass("OwsExceptionReport",
 #
 #
 setClass("OwsException",
-         representation(exceptionCode = "character", exceptionText = "vector",
+         representation(exceptionCode = "character",
+                        exceptionText = "vector",
                         locator = "character"),
-         prototype = list(code = as.character(NA)),
+         prototype = list(exceptionCode = as.character(NA)),
          validity = function(object) {
            #print("Entering validation: OwsException")
            # TODO implement validity function
 
            # version needs to be there
-           if(is.na(object@exceptionCode))
+           if (is.na(object@exceptionCode))
              return("exceptionCode parameter must be given")
 
            return(TRUE)

@@ -50,8 +50,8 @@ Objects can be created by calls of the form \code{new("TM_After", ...)}.
 
 \section{Slots}{
   \describe{
-    \item{\code{time}:}{Object of class \code{"GmlTimeInstant"} ~~ }
-    \item{\code{propertyName}:}{Object of class \code{"character"} ~~ }
+    \item{\code{time}:}{Object of class \code{"GmlTimeInstant"}}
+    \item{\code{propertyName}:}{Object of class \code{"character"}}
   }
 }
 
