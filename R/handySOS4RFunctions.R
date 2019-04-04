@@ -258,7 +258,8 @@ setMethod(f = "siteList",
             if (!empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
               return(.simpleStationWithDataList(sos))
             }
-          })
+          }
+)
 
 .isTimeIntervalSet <- function(timeInterval) {
   return(!is.null(timeInterval) &&
@@ -341,25 +342,52 @@ setMethod(f = "siteList",
 # sites(sos, phenomena=[List of phenomena])
 # → SpatialPointsDataFrame[phen_1=df[beginTime, endTime], …, phen_n=df[beginTime, endTime]] + coords
 
-sites <- function(sos,
-                  empty=FALSE,
-                  timeInterval=NA_character_,
-                  includePhenomena=FALSE,
-                  includeTemporalBBox=FALSE,
-                  phenomena=list()) {
-  stopifnot(inherits(sos, "SOS_2.0.0"))
-  stopifnot(is.logical(empty))
-  stopifnot(is.character(timeInterval))
-  stopifnot(is.logical(includePhenomena))
-  stopifnot(is.logical(includeTemporalBBox))
-
-  phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-
-  if (includeTemporalBBox && !includePhenomena) {
-    includePhenomena <- TRUE
-    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-  }
+#
+# sites - generic method ----
+#
+if (!isGeneric("sites")) {
+  setGeneric(name = "sites",
+             signature = signature("sos",
+                                   "empty",
+                                   "timeInterval",
+                                   "includePhenomena",
+                                   "includeTemporalBBox",
+                                   "phenomena"),
+             def = function(sos,
+                            empty=FALSE,                 # filter
+                            timeInterval=NA_character_,  # filter
+                            includePhenomena=FALSE,      # meta data
+                            includeTemporalBBox=FALSE,   # meta data
+                            phenomena=list()) {          # filter
+               standardGeneric("sites")
+             })
 }
+
+#
+# sites - call with sos parameter only ----
+#
+setMethod(f = "sites",
+          signature = signature(sos = "SOS_2.0.0"),
+          def = function(sos,
+                         empty,
+                         timeInterval,
+                         includePhenomena,
+                         includeTemporalBBox,
+                         phenomena) {
+            stopifnot(inherits(sos, "SOS_2.0.0"))
+            stopifnot(is.logical(empty))
+            stopifnot(is.character(timeInterval))
+            stopifnot(is.logical(includePhenomena))
+            stopifnot(is.logical(includeTemporalBBox))
+
+            phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+
+            if (includeTemporalBBox && !includePhenomena) {
+              includePhenomena <- TRUE
+              warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+            }
+          }
+)
 
 # getData ####
 # use Units package!
