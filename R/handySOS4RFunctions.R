@@ -254,6 +254,10 @@ setMethod(f = "siteList",
             if (empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
               return(.simpleStationList(sos))
             }
+
+            if (!empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
+              return(.simpleStationWithDataList(sos))
+            }
           })
 
 .isTimeIntervalSet <- function(timeInterval) {
@@ -283,6 +287,29 @@ setMethod(f = "siteList",
     .sortedfeatures <- sort(.featurevector)
     .features <- unique(.sortedfeatures)
     .sites <- data.frame("siteID" = .features, stringsAsFactors = FALSE)
+  }
+  return(.sites)
+}
+
+.simpleStationWithDataList <- function(sos) {
+  .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  stopifnot(!is.null(.dams))
+  stopifnot(is.list(.dams))
+  if (length(.dams) == 0) {
+    .sites <- data.frame("siteID" = character(0),
+                             stringsAsFactors = FALSE)
+  }
+  else {
+    .sites <- data.frame("siteID" = character(0),
+                             stringsAsFactors = FALSE)
+    for (.dam in .dams) {
+      # check if siteID aka observed property is in data.frame
+      if (!(.dam@featureOfInterest %in% .sites[, 1])) {
+        # if not -> append at the end
+        .sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,
+                                                   stringsAsFactors = FALSE))
+      }
+    }
   }
   return(.sites)
 }

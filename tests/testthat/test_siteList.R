@@ -33,6 +33,14 @@ webmockr::enable("httr")
 webmockr::httr_mock()
 context("convenience layer -> siteList()")
 
+.checkEmptySitesDataFrame <- function(sitesDataFrame) {
+  expect_false(is.null(sitesDataFrame))
+  expect_true(is.data.frame(sitesDataFrame))
+  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
+  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
+  expect_equal(nrow(sitesDataFrame), 0, info = "number of unique sites")
+}
+
 test_that("KVP::siteList(sos, empty = TRUE) returns an empty list of sites as one column data.frame if the SOS is empty", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena-empty?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -58,11 +66,7 @@ test_that("KVP::siteList(sos, empty = TRUE) returns an empty list of sites as on
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena-empty", binding = "KVP")
   sitesDataFrame <- siteList(sos, empty = TRUE)
 
-  expect_false(is.null(sitesDataFrame))
-  expect_true(is.data.frame(sitesDataFrame))
-  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
-  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
-  expect_equal(nrow(sitesDataFrame), 0, info = "number of unique sites")
+  .checkEmptySitesDataFrame(sitesDataFrame)
 })
 
 test_that("KVP::siteList(sos, empty = TRUE) returns the current list of sites as one column data.frame", {
@@ -101,3 +105,75 @@ test_that("KVP::siteList(sos, empty = TRUE) returns the current list of sites as
   expect_equal("wwu-ws-kli-hsb",      sitesDataFrame[ 4, 1])
 })
 
+.checkSitesDataFrame <- function(sitesDataFrame) {
+  expect_false(is.null(sitesDataFrame))
+  expect_true(is.data.frame(sitesDataFrame))
+  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
+  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
+  expect_equal(nrow(sitesDataFrame), 4, info = "number of unique sites")
+  # check all values
+  expect_equal("elv-ws2500",          sitesDataFrame[ 1, 1])
+  expect_equal("wwu-ws-kli-hsb",      sitesDataFrame[ 2, 1])
+  expect_equal("elv-ws2500-internal", sitesDataFrame[ 3, 1])
+  expect_equal("vaisala-wxt520",      sitesDataFrame[ 4, 1])
+}
+
+test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns a list of stations as one column data.frame that contain data", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+
+  sitesDataFrame <- siteList(sos, empty = FALSE)
+  .checkSitesDataFrame(sitesDataFrame)
+
+  sitesDataFrame <- siteList(sos)
+  .checkSitesDataFrame(sitesDataFrame)
+})
+
+test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns an empty list of stations as one column data.frame if GDA response is empty", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com_empty.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+
+  sitesDataFrame <- siteList(sos, empty = FALSE)
+  .checkEmptySitesDataFrame(sitesDataFrame)
+
+  sitesDataFrame <- siteList(sos)
+  .checkEmptySitesDataFrame(sitesDataFrame)
+})
