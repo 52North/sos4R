@@ -77,10 +77,10 @@ setMethod(f = "phenomena",
             stopifnot(is.logical(includeTemporalBBox))
             stopifnot(is.logical(includeSiteId))
             if (!includeTemporalBBox && !includeSiteId) {
-              return(.simplePhenomenaList(sos))
+              return(.listPhenomena(sos))
             }
             else if (includeTemporalBBox && !includeSiteId) {
-              return(.phenomenaWithTemporalBBox(sos))
+              return(.listPhenomenaWithTemporalBBox(sos))
             }
           })
 #
@@ -88,7 +88,7 @@ setMethod(f = "phenomena",
 #
 # see: https://github.com/52North/sos4R/issues/81
 #
-.simplePhenomenaList <- function(sos) {
+.listPhenomena <- function(sos) {
   .properties <- sosObservableProperties(sos)
   stopifnot(!is.null(.properties))
   stopifnot(is.list(.properties))
@@ -118,7 +118,7 @@ setMethod(f = "phenomena",
 #   </gda:phenomenonTime>
 # </gda:dataAvailabilityMember>
 #
-.phenomenaWithTemporalBBox <- function(sos) {
+.listPhenomenaWithTemporalBBox <- function(sos) {
   .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
   stopifnot(!is.null(.dams))
   stopifnot(is.list(.dams))
@@ -252,11 +252,11 @@ setMethod(f = "siteList",
             }
 
             if (empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
-              return(.simpleStationList(sos))
+              return(.listSites(sos))
             }
 
             if (!empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
-              return(.simpleStationWithDataList(sos))
+              return(.listSitesWithData(sos))
             }
           }
 )
@@ -275,7 +275,7 @@ setMethod(f = "siteList",
            length(phenomena) > 0)
 }
 
-.simpleStationList <- function(sos) {
+.listSites <- function(sos) {
   .features <- getFeatureOfInterest(sos)
   stopifnot(!is.null(.features))
   stopifnot(is.list(.features))
@@ -292,7 +292,7 @@ setMethod(f = "siteList",
   return(.sites)
 }
 
-.simpleStationWithDataList <- function(sos) {
+.listSitesWithData <- function(sos) {
   .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
   stopifnot(!is.null(.dams))
   stopifnot(is.list(.dams))
