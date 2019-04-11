@@ -73,6 +73,6 @@ test_that("wrong parameters return exception to user", {
                              observedProperty = list("Bazinga!")), "OwsExceptionReport")
   expect_s4_class(response, "OwsExceptionReport")
   expect_length(response@exceptions, 1)
-  expect_match(toString(response@exceptions), "InvalidParameterValue")
-  expect_match(toString(response@exceptions), "Bazinga!")
+  expect_equal(response@exceptions[[1]]@exceptionCode, "InvalidParameterValue")
+  expect_match(response@exceptions[[1]]@exceptionText, "Bazinga!")
 })
