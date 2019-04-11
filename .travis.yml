@@ -19,6 +19,7 @@ addons:
 r:
   - release
   - devel
+  - oldrel
 
 cache:
   - packages

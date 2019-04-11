@@ -95,10 +95,10 @@
       <h1>sos4R: Accessing Sensor Observation Services from R – Quickstart</h1>
                         <h4 class="author">Daniel Nüst</h4>
             <address class="author_afil">
-      Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de">daniel.nuest@uni-muenster.de</a>
+      Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2019-03-31</h4>
+            <h4 class="date">2019-04-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-01-quickstart.Rmd"><code>vignettes/sos4R-vignette-01-quickstart.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-01-quickstart.Rmd</code></div>
@@ -119,7 +119,7 @@
 <p>The <code>sos4R</code> package provides classes and methods for retrieving data from an Open Geospatial Consortium (<a href="http://opengeospatial.org/">OGC</a>) Sensor Observation Service in version 1.0.0 (Na, 2007) and 2.0 (Bröring, 2010). The goal of this package is to provide easy access with a low entry threshold for everyone to information available via SOSs. The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possiblities for advanced users. The output is a standard <code>data.frame</code> with attributed columns for the rich metadata provided by the SOS API. This package uses S4 classes and methods style (Chambers, 1998).</p>
 <p>The package was born out of perceiving a missing link between the Sensor Web community (known as <a href="https://www.opengeospatial.org/projects/groups/sensorwebdwg">Sensor Web Enablement (SWE) Initiative</a> in the OGC realm) and the community of (geo-)statisticians (Nüst, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it. <code>sos4R</code> can help enabling this.</p>
 <p>The project is part of the <a href="https://52north.org/research/rd-communities/geostatistics/">geostatistics community</a> of the <a href="https://52north.org/">52°North Initiative for Geospatial Open Source Software</a>. <code>sos4R</code> is available on <a href="https://cran.r-project.org/">CRAN</a>.</p>
-<p>On the package home page, <a href="https://52north.github.io/sos4R" class="uri">https://52north.github.io/sos4R</a>, you can stay updated with the developments and find example code and services.</p>
+<p>On the package home page, <a href="https://52north.github.io/sos4R">https://52north.github.io/sos4R</a>, you can stay updated with the developments and find example code and services.</p>
 <p>This software is released under a <a href="https://www.gnu.org/licenses/gpl-2.0.html">GPL 2 license</a> and contributions are very welcome—please see the file <code>DEV-README.md</code> in the <a href="https://github.com/52North/sos4R">package code repository</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"sos4R"</span>)</a></code></pre></div>
 </div>
@@ -340,9 +340,9 @@
 <a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt;   http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&amp;version=1.0.0&amp;request=GetObservation&amp;offering=ws2500&amp;observedProperty=AirTemperature&amp;responseFormat=text%2Fxml%3Bsubtype%3D%22om%2F1.0.0%22&amp;eventTime=2017-12-19T00%3A00%3A00%2F2017-12-20T00%3A00%3A00&amp;procedure=ws2500 </span></a>
 <a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; [.getObservation_1.0.0] RESPONSE DOC:</span></a>
 <a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt; {xml_document}</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; &lt;ObservationCollection id="oc_1554015848320" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; &lt;ObservationCollection id="oc_1554981993621" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;</span></a>
 <a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; [1] &lt;gml:boundedBy&gt;\n  &lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326 ...</span></a>
-<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1554015848320"&gt;\n    &lt;om:sa ...</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1554981993621"&gt;\n    &lt;om:sa ...</span></a>
 <a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp </span></a>
 <a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt;  --&gt; received 1 observation(s) having 72 result values [ 72 ].</span></a></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/getObservation-methods.html">getObservation</a></span>(<span class="dt">sos =</span> mySOS, <span class="dt">offering =</span> off<span class="fl">.1</span>,</a>
@@ -416,9 +416,9 @@
 <a class="sourceLine" id="cb15-69" data-line-number="69"><span class="co">#&gt; [.sosRequest_1.0.0] ... done.</span></a>
 <a class="sourceLine" id="cb15-70" data-line-number="70"><span class="co">#&gt; [.sosRequest_1.0.0] RESPONSE:</span></a>
 <a class="sourceLine" id="cb15-71" data-line-number="71"><span class="co">#&gt; {xml_document}</span></a>
-<a class="sourceLine" id="cb15-72" data-line-number="72"><span class="co">#&gt; &lt;ObservationCollection id="oc_1554015848422" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;</span></a>
+<a class="sourceLine" id="cb15-72" data-line-number="72"><span class="co">#&gt; &lt;ObservationCollection id="oc_1554981993708" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;</span></a>
 <a class="sourceLine" id="cb15-73" data-line-number="73"><span class="co">#&gt; [1] &lt;gml:boundedBy&gt;\n  &lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326 ...</span></a>
-<a class="sourceLine" id="cb15-74" data-line-number="74"><span class="co">#&gt; [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1554015848422"&gt;\n    &lt;om:sa ...</span></a>
+<a class="sourceLine" id="cb15-74" data-line-number="74"><span class="co">#&gt; [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1554981993708"&gt;\n    &lt;om:sa ...</span></a>
 <a class="sourceLine" id="cb15-75" data-line-number="75"><span class="co">#&gt; [sos4R] Received response (object size: 784 bytes), parsing ...</span></a>
 <a class="sourceLine" id="cb15-76" data-line-number="76"><span class="co">#&gt; [.getObservation_1.0.0] Got XML document as response.</span></a>
 <a class="sourceLine" id="cb15-77" data-line-number="77"><span class="co">#&gt; [.getObservation_1.0.0] Parsing with function function(obj, sos, verbose = FALSE) {</span></a>
@@ -439,7 +439,7 @@
 <a class="sourceLine" id="cb15-92" data-line-number="92"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb15-93" data-line-number="93"><span class="co">#&gt;   return(.om)</span></a>
 <a class="sourceLine" id="cb15-94" data-line-number="94"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb15-95" data-line-number="95"><span class="co">#&gt; &lt;bytecode: 0x4f5f418&gt;</span></a>
+<a class="sourceLine" id="cb15-95" data-line-number="95"><span class="co">#&gt; &lt;bytecode: 0x48ccb28&gt;</span></a>
 <a class="sourceLine" id="cb15-96" data-line-number="96"><span class="co">#&gt; &lt;environment: namespace:sos4R&gt;</span></a>
 <a class="sourceLine" id="cb15-97" data-line-number="97"><span class="co">#&gt; [parseOM] Matched name for parser is om:ObservationCollection </span></a>
 <a class="sourceLine" id="cb15-98" data-line-number="98"><span class="co">#&gt; [parseObservationCollection] with  1 element(s).</span></a>
@@ -447,7 +447,7 @@
 <a class="sourceLine" id="cb15-100" data-line-number="100"><span class="co">#&gt; [parseOM] Matched name for parser is om:member </span></a>
 <a class="sourceLine" id="cb15-101" data-line-number="101"><span class="co">#&gt; [parseObservationProperty] Parsing child of member: om:Observation </span></a>
 <a class="sourceLine" id="cb15-102" data-line-number="102"><span class="co">#&gt; [parseOM] Matched name for parser is om:Observation </span></a>
-<a class="sourceLine" id="cb15-103" data-line-number="103"><span class="co">#&gt; [parseObservation] o_1554015848422 </span></a>
+<a class="sourceLine" id="cb15-103" data-line-number="103"><span class="co">#&gt; [parseObservation] o_1554981993708 </span></a>
 <a class="sourceLine" id="cb15-104" data-line-number="104"><span class="co">#&gt; [parsePhenomenonProperty] with reference AthmosphericPressure </span></a>
 <a class="sourceLine" id="cb15-105" data-line-number="105"><span class="co">#&gt; [parseTime] Entering</span></a>
 <a class="sourceLine" id="cb15-106" data-line-number="106"><span class="co">#&gt; [parseTime] Found time period</span></a>
@@ -478,14 +478,14 @@
 <a class="sourceLine" id="cb15-131" data-line-number="131"><span class="co">#&gt;   .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))</span></a>
 <a class="sourceLine" id="cb15-132" data-line-number="132"><span class="co">#&gt;   return(.t)</span></a>
 <a class="sourceLine" id="cb15-133" data-line-number="133"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb15-134" data-line-number="134"><span class="co">#&gt; &lt;bytecode: 0x5674ef0&gt;</span></a>
+<a class="sourceLine" id="cb15-134" data-line-number="134"><span class="co">#&gt; &lt;bytecode: 0x4ff0b18&gt;</span></a>
 <a class="sourceLine" id="cb15-135" data-line-number="135"><span class="co">#&gt; &lt;environment: namespace:sos4R&gt;</span></a>
 <a class="sourceLine" id="cb15-136" data-line-number="136"><span class="co">#&gt; [parseValues] Using converter function:</span></a>
 <a class="sourceLine" id="cb15-137" data-line-number="137"><span class="co">#&gt; function(x, sos) {</span></a>
 <a class="sourceLine" id="cb15-138" data-line-number="138"><span class="co">#&gt;   .t &lt;- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))</span></a>
 <a class="sourceLine" id="cb15-139" data-line-number="139"><span class="co">#&gt;   return(.t)</span></a>
 <a class="sourceLine" id="cb15-140" data-line-number="140"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb15-141" data-line-number="141"><span class="co">#&gt; &lt;bytecode: 0x5674ef0&gt;</span></a>
+<a class="sourceLine" id="cb15-141" data-line-number="141"><span class="co">#&gt; &lt;bytecode: 0x4ff0b18&gt;</span></a>
 <a class="sourceLine" id="cb15-142" data-line-number="142"><span class="co">#&gt; &lt;environment: namespace:sos4R&gt;</span></a>
 <a class="sourceLine" id="cb15-143" data-line-number="143"><span class="co">#&gt; [parseValues] Binding additional data.frame for phenomenonTime -- value range 2018-01-01 00:30:00, 2018-01-03 00:00:00 </span></a>
 <a class="sourceLine" id="cb15-144" data-line-number="144"><span class="co">#&gt; [parseValues] Added column name: phenomenonTime </span></a>
@@ -505,7 +505,7 @@
 <a class="sourceLine" id="cb15-158" data-line-number="158"><span class="co">#&gt; function(x, sos) {</span></a>
 <a class="sourceLine" id="cb15-159" data-line-number="159"><span class="co">#&gt;   return(as.double(x = x))</span></a>
 <a class="sourceLine" id="cb15-160" data-line-number="160"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb15-161" data-line-number="161"><span class="co">#&gt; &lt;bytecode: 0x589b140&gt;</span></a>
+<a class="sourceLine" id="cb15-161" data-line-number="161"><span class="co">#&gt; &lt;bytecode: 0x511e408&gt;</span></a>
 <a class="sourceLine" id="cb15-162" data-line-number="162"><span class="co">#&gt; &lt;environment: namespace:sos4R&gt;</span></a>
 <a class="sourceLine" id="cb15-163" data-line-number="163"><span class="co">#&gt; [parseValues] Binding additional data.frame for AthmosphericPressure -- value range 989, 1003 </span></a>
 <a class="sourceLine" id="cb15-164" data-line-number="164"><span class="co">#&gt; [parseValues] Added column name: AthmosphericPressure </span></a>
@@ -531,7 +531,7 @@
 <a class="sourceLine" id="cb15-184" data-line-number="184"><span class="co">#&gt; [parseTime] Done: GmlTimePosition [ time: 2018-01-01 01:00:00 ] </span></a>
 <a class="sourceLine" id="cb15-185" data-line-number="185"><span class="co">#&gt; [parseOM] Done parsing</span></a>
 <a class="sourceLine" id="cb15-186" data-line-number="186"><span class="co">#&gt; [parseOM] Done parsing</span></a>
-<a class="sourceLine" id="cb15-187" data-line-number="187"><span class="co">#&gt; [parseObservationCollection] Done. Processed 1 elements: ws2500_AthmosphericPressure_sf_69E2F0373FC28DEFA5683411F18021EB65D5C584 </span></a>
+<a class="sourceLine" id="cb15-187" data-line-number="187"><span class="co">#&gt; [parseObservationCollection] Done. Processed 1 elements: ws2500_AthmosphericPressure_sf_21A803C8BC38FE2BC326A03A8A4A54ED1BF44072 </span></a>
 <a class="sourceLine" id="cb15-188" data-line-number="188"><span class="co">#&gt; [parseOM] Done parsing</span></a>
 <a class="sourceLine" id="cb15-189" data-line-number="189"><span class="co">#&gt; [.getObservationById_1.0.0] Got OmObservationCollection ... calculating length with sosResult()[.getObservationById_1.0.0] result:  list(phenomenonTime = c(1514763000, 1514763900, 1514764800, 1514766600, 1514767500, 1514768400, 1514770200, 1514771100, 1514772000, 1514773800, 1514774700, 1514775600, 1514777400, 1514778300, 1514779200, 1514781000, 1514781900, 1514783700, 1514784600, 1514785500, 1514786400, 1514788200, 1514789100, 1514790000, 1514791800, 1514792700, 1514793600, 1514795400, 1514796300, 1514797200, 1514799000, 1514799900, 1514800800, 1514802600, 1514803500, 1514804400, 1514806200, 1514807100, 1514808000, 1514809800, </span></a>
 <a class="sourceLine" id="cb15-190" data-line-number="190"><span class="co">#&gt; 1514810700, 1514811600, 1514813400, 1514814300, 1514815200, 1514817000, 1514817900, 1514818800, 1514820600, 1514821500, 1514822400, 1514824200, 1514825100, 1514826000, 1514827800, 1514828700, 1514829600, 1514831400, 1514832300, 1514833200, 1514835000, 1514835900, 1514836800, 1514838600, 1514839500, 1514840400, 1514842200, 1514843100, 1514844000, 1514845800, 1514846700, 1514847600, 1514849400, 1514850300, 1514851200, 1514853000, 1514853900, 1514854800, 1514856600, 1514857500, 1514858400, 1514860200, </span></a>
@@ -552,7 +552,7 @@
 <div id="support" class="section level2">
 <h2 class="hasAnchor">
 <a href="#support" class="anchor"></a>Support</h2>
-<p>Feel free to ask <strong>questions</strong> about using the software or <strong>report a bug</strong> at the project issue tracker: <a href="https://github.com/52North/sos4R/issues" class="uri">https://github.com/52North/sos4R/issues</a>. There you can also find existing bug reports and planned features.</p>
+<p>Feel free to ask <strong>questions</strong> about using the software or <strong>report a bug</strong> at the project issue tracker: <a href="https://github.com/52North/sos4R/issues">https://github.com/52North/sos4R/issues</a>. There you can also find existing bug reports and planned features.</p>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">
@@ -571,7 +571,7 @@
 <li>Botts, M., 2007, OGC Implementation Specification 07-000: OpenGIS Sensor Model Language (SensorML)- Open Geospatial Consortium, Tech. Rep.</li>
 <li>Bröring, A., C. Stasch, and J. Echterhoff. “OGC Interface Standard 10-037: SOS 2.0 Interface Standard.” Open Geospatial Consortium (2010).</li>
 <li>Chambers, J.M., 2008, Software for Data Analysis, Programming with R. Springer, New York.</li>
-<li>Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, <a href="http://portal.opengeospatial.org/files/?artifact_id=26667" class="uri">http://portal.opengeospatial.org/files/?artifact_id=26667</a>, Open Geospatial Consortium, Tech. Rep.</li>
+<li>Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, <a href="http://portal.opengeospatial.org/files/?artifact_id=26667">http://portal.opengeospatial.org/files/?artifact_id=26667</a>, Open Geospatial Consortium, Tech. Rep.</li>
 <li>Nüst, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography, doi: <a href="https://doi.org/10.1007/978-3-642-19789-5_12">10.1007/978-3-642-19789-5_12</a>.</li>
 </ul>
 </div>
