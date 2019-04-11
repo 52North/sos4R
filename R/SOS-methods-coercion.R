@@ -37,29 +37,29 @@ as.SosObservationOffering.SpatialPolygons = function(from) {
   .llon <- .bbox["coords.lon","min"]
   .ulat <- .bbox["coords.lat","max"]
   .ulon <- .bbox["coords.lon","max"]
-  
+
   .crs <- sosGetCRS(from)
   if(is.null(.crs)) {
     warning(paste("Cannot coerce offering", sosId(from),
                   "to SpatialPolygons -- no CRS given."))
     return(NULL)
   }
-  
+
   # beginning at lower left corner:
-  .poly <- Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
+  .poly <- sp::Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
                          c(.llat, .ulat, .ulat, .llat, .llat)))
-  .spPoly <- SpatialPolygons(list(
-    Polygons(list(.poly), sosName(from))),
+  .spPoly <- sp::SpatialPolygons(list(
+    sp::Polygons(list(.poly), sosName(from))),
     proj4string = .crs)
-  
+
   return(.spPoly)
 }
-setAs("SosObservationOffering", "SpatialPolygons", 
+setAs("SosObservationOffering", "SpatialPolygons",
       function(from) {
         as.SosObservationOffering.SpatialPolygons(from)
       }
 )
-setAs("SosObservationOffering", "Spatial", 
+setAs("SosObservationOffering", "Spatial",
       function(from) {
         as.SosObservationOffering.SpatialPolygons(from)
       }

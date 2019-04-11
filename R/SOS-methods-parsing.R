@@ -78,7 +78,7 @@ parseSosObservationOffering <- function(obj, sos) {
   .timeXml <- xml2::xml_child(x = obj, search = sosTimeName, ns = SosAllNamespaces())
   if (!is.na(.timeXml)) {
     .time <- parseTimeGeometricPrimitiveFromParent(obj = .timeXml,
-                                                   format = sosTimeFormat(sos))
+                                                   sos = sos)
     if (sos@verboseOutput) cat("[parseSosObservationOffering] time: ", toString(.time), "\n")
   }
   else {

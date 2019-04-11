@@ -278,7 +278,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
     .phenTime <- parseTimePeriod(xml2::xml_find_first(x = gdaMember,
                                                       xpath = gmlTimePeriodName,
                                                       ns = SosAllNamespaces()),
-                                 format = sosDefaultTimeFormat)
+                                 sos = sos)
     phenTimeCache[[.phenTime@id]] <- .phenTime
   }
   if (is.null(.phenTime)) {

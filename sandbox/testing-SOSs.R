@@ -279,7 +279,7 @@ plot(temp2009AR)
 
 # data is apparently not period enough...
 stl(tempSeries2009)
-#Fehler in stl(tempSept) : 
+#Fehler in stl(tempSept) :
 #  Zeitreihe ist nicht periodisch oder umfasst weniger als zwei Perioden
 
 
@@ -310,9 +310,9 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 		version = "0.0.31", verboseOutput = TRUE)
 # --> Capabilities are shown when opening the link above in a browser, but it
 # has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
-# 
+#
 # --> Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  1 exceptions (code @ locator : text):
-#	MissingParamterValue @ service : No input parameters 
+#	MissingParamterValue @ service : No input parameters
 
 ################################################################################
 # others:
@@ -335,7 +335,7 @@ oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
 ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos")
 
 sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
-# takes forever...		
+# takes forever...
 
 ################################################################################
 # some french sos, 52N, but just one week of data....
@@ -363,7 +363,7 @@ var02 <- SOS(":82/cgi-bin/mapserv?map=/tmp/umn/umn_sos.map",
 # no getcapabilities possible:
 # 1. url already contains a "?", so if "GET" the error is --- msEvalRegex(): Regular expression error. String failed expression test.
 #	-> fixed that case, but then the same error as with "POST"...
-# 2. error with "POST" gives HTML page --- Unable to access file. (/tmp/umn/umn_sos.map) 
+# 2. error with "POST" gives HTML page --- Unable to access file. (/tmp/umn/umn_sos.map)
 
 var03.converters <- SosDataFieldConvertingFunctions(
 		"urn:terrestris:foss4g:temperature" = sosConvertDouble,
@@ -488,7 +488,7 @@ ist.obs <- getObservation(sos = ist.get, verbose = TRUE,
 		observedProperty = list("urn:ogc:def:parameter:x-ist::meteo:air:temperature"),
 		eventTime = ist.timeperiod)
 # names of observed properties in capabilities do not match available names:
-#Parameter "observedProperty" sent with invalid value: 
+#Parameter "observedProperty" sent with invalid value:
 #	['urn:ogc:def:property:x-ist::urn:ogc:def:parameter:x-ist::meteo:air:humidity']
 # - available options: ['urn:ogc:def:parameter:x-ist::lake:water:height',
 #	'urn:ogc:def:parameter:x-ist::meteo:air:humidity',
@@ -548,7 +548,7 @@ stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 		cat("[stccmopParseResult]\n")
 		print(obj)
 	}
-	
+
 	.val <- xml2::xml_text(x = obj)
 	return(.val)
 }
@@ -659,8 +659,8 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 		eventTime = time)
 #[.sosRequest_1.0.0] response:
 #raw(0)
-#raw as char:   
-#Error in if (regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) { : 
+#raw as char:
+#Error in if (regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) { :
 #  argument is of length zero
 
 # Same request pasted in to basic test client gives result!
@@ -674,7 +674,7 @@ getObservation(ctiget, cti.off.cuas, verbose = TRUE,
 #Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 #1 exception(s) (code @ locator : text):
 #		InvalidRequest @ REQUEST :
-#		The GET request GetObservation is not supported by this SOS. 
+#		The GET request GetObservation is not supported by this SOS.
 
 #
 #
@@ -701,7 +701,7 @@ weatherflow <- SOS(url = "http://www.weatherflow.com/sos/sos.pl")
 wavcis <- SOS(url = "http://www.wavcis.lsu.edu/SOS/server.asp")
 
 
-# Sensor Data Bus 
+# Sensor Data Bus
 # http://www.sensordatabus.org/Pages/SOS.aspx
 # http://ogc.codeplex.com/
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
@@ -758,7 +758,7 @@ sadco.url <- "http://ict4eo.meraka.csir.co.za/sadcosos/sos.py"
 sadco <- SOS(url = sadco.url, verboseOutput = TRUE)
 # problem: missing elements in one ObservationOffering so the object cannot be
 # created:
-#Error in validObject(.Object) : 
+#Error in validObject(.Object) :
 #		invalid class "SosObservationOffering" object: invalid object for slot "procedure" in class "SosObservationOffering": got class "list", should be or extend class "character"
 #In addition: Warning messages:
 #		1: In FUN(X[[1L]], ...) :
@@ -803,7 +803,7 @@ getObservation(sadco, offering = sosOfferings(sadco)[[2]],
 #Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 #1 exception(s) (code @ locator : text):
 #		1 @ service :
-#		
+#
 #		Parameter "offering" is mandatory with multiplicity 1
 #
 # but there is an offering in the request!
@@ -821,8 +821,6 @@ sosOfferings(iia)
 
 # check out offering "SEA CRUISE 2003"
 seacruise <- sosOfferings(iia)["SEA CRUISE 2003"]
-
-# TODO plot it, use spacetime classes
 
 
 ################################################################################
@@ -845,7 +843,7 @@ sosObservedProperties(fluggs)
 
 ################################################################################
 # TODO try out new CO-OPS SOSs
-# 
+#
 #CO-OPS has expanded its SOS services with an addition of the following 7 new services.
 #
 #One Minute Water Level Data
@@ -875,8 +873,8 @@ sosObservedProperties(ioos_testing)[["network-All"]]
 unique(unlist(sosObservedProperties(ioos_testing)))
 
 ################################################################################
-# TODO check out SOS from Sandre, French National Service for Water Data and 
-#                         Common Repositories Management 
+# TODO check out SOS from Sandre, French National Service for Water Data and
+#                         Common Repositories Management
 #                         http://sandre.eaufrance.fr/
 #
 # WaterML response format!
@@ -981,7 +979,7 @@ obs <- getObservation(sos = sandre, verbose = TRUE,
 		offering = myOffering, inspect = TRUE,
 		eventTime = myTime)
 #######
-# Error in match.names(clabs, names(xi)) : 
+# Error in match.names(clabs, names(xi)) :
 #  names do not match previous names
 # FIXME
 
@@ -1091,15 +1089,15 @@ property_temp='00060'
 
 # GetObservation - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional)
 #
-# observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 
-# - corresponds to: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH 
+# observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400
+# - corresponds to: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH
 # beginPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to earliest record)
 # endPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to most recent record)
 # Interval: Today, ThisWeek Future plan to implement ISO-8601 Duration option
 # offering: UNIT (defaults to UNIT)
 #
 # Gage height observation by feature ID and begin time:
-# 	http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=2013-01-25 
+# 	http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=2013-01-25
 nwis <- SOS(url = "http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos",
 						binding = "KVP",
 						parsers = SosParsingFunctions( # disable parsing of getobs responses
@@ -1145,10 +1143,10 @@ sosGetDCP(four, "GetCapabilities")
 
 sosCapabilitiesDocumentOriginal(four, verbose = TRUE)
 # FIXME
-#Fehler in .postForm(curl, .opts, .params, style) : 
+#Fehler in .postForm(curl, .opts, .params, style) :
 #		Unhandled case for the value of curl_easy_setopt (R type = 19, option 10002)
 
-# 
+#
 four_offerings <- sosOfferings(four.test)
 fout_off_no6 <- four_offerings[["test_offering_6"]]
 observ <- getObservation(sos = four.test, offering = sosOfferings(four)[[1]],

@@ -183,9 +183,22 @@ samplingTimeInstantXml <- '<om:samplingTime xmlns:om="http://www.opengis.net/om/
 
 test_that("time instant", {
   doc <- xml2::read_xml(x = samplingTimeInstantXml)
-  samplingTime <- parseTime(obj = doc, format = testsos@timeFormat)
+  samplingTime <- parseTime(obj = doc, sos = testsos)
   expect_equal(strftime(samplingTime@timePosition@time, format = "%Y%d"), "200505")
-  expect_s3_class(sosTime(samplingTime), "POSIXlt")
+  expect_s3_class(sosTime(samplingTime), "POSIXt")
+})
+
+test_that("warning on non-matching time format", {
+  doc <- xml2::read_xml(x = '<om:samplingTime xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml">
+    <gml:TimeInstant>
+      <gml:timePosition>2005-08T12:13Z</gml:timePosition>
+    </gml:TimeInstant>
+  </om:samplingTime>')
+  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), "Error converting")
+  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), sosTimeFormat(testsos))
+  expect_true(is.na(sosTime(samplingTime)))
+  expect_s3_class(sosTime(samplingTime), "POSIXt")
+  expect_s4_class(samplingTime, "GmlTimeObjectOrNULL")
 })
 
 samplingTimePeriodXml <- '<om:samplingTime xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml">
@@ -197,7 +210,7 @@ samplingTimePeriodXml <- '<om:samplingTime xmlns:om="http://www.opengis.net/om/1
 
 test_that("time period", {
   doc <- xml2::read_xml(x = samplingTimePeriodXml)
-  samplingTime <- parseTime(obj = doc, format = testsos@timeFormat)
+  samplingTime <- parseTime(obj = doc, sos = testsos)
   expect_equal(samplingTime@id, "phenomenonTime_1")
   expect_s4_class(samplingTime@beginPosition, "GmlTimePosition")
   expect_s4_class(samplingTime@endPosition, "GmlTimePosition")
@@ -207,7 +220,7 @@ samplingTimeReferenceXml <- '<om:samplingTime xmlns:om="http://www.opengis.net/o
 
 test_that("time reference", {
   doc <- xml2::read_xml(x = samplingTimeReferenceXml)
-  samplingTime <- parseTime(obj = doc, format = testsos@timeFormat)
+  samplingTime <- parseTime(obj = doc, sos = testsos)
   expect_equal(samplingTime@href, "#abc")
 })
 
@@ -253,7 +266,7 @@ observationXml <- '<om:Observation gml:id="o_1553776324284" xmlns:om="http://www
 </ns:field>
 <ns:field name="http://www.52north.org/test/observableProperty/6">
 <ns:Quantity definition="http://www.52north.org/test/observableProperty/6">
-<ns:uom code="test_unit_6"/>
+<ns:uom code="ppm"/>
 </ns:Quantity>
 </ns:field>
 </swe:DataRecord>
@@ -268,10 +281,23 @@ observationXml <- '<om:Observation gml:id="o_1553776324284" xmlns:om="http://www
 
 test_that("coordinates from observation", {
   doc <- xml2::read_xml(x = observationXml)
-  expect_warning(obs <- parseObservation(obj = doc, sos = testsos))
+  obs <- parseObservation(obj = doc, sos = testsos)
   coords <- sosCoordinates(obs)
 
   expect_equal(coords$lat, 51.447722)
   expect_equal(coords$lon, 7.270806)
   expect_equal(as.character(coords$SRS), "urn:ogc:def:crs:EPSG::4326")
+})
+
+test_that("warning if time cannot be parsed", {
+  badTimestamps <- stringr::str_replace_all(string = observationXml,
+                                            pattern = "2012-11-19T13:02:00.000Z",
+                                            replacement =  "2012-11-1913:02:00.000Z")
+  badTimestamps <- stringr::str_replace_all(string = badTimestamps,
+                                            pattern = "2012-11-19T13:09",
+                                            replacement =  "11-19T13:09")
+  doc <- xml2::read_xml(x = badTimestamps)
+  expect_warning(obs <- parseObservation(obj = doc, sos = testsos), "Error converting string")
+  data <- sosResult(obs)
+  expect_equal(which(is.na(data$phenomenonTime)), c(2,length(data$phenomenonTime)))
 })

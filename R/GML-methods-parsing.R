@@ -78,10 +78,10 @@ parsePoint <- function(obj, sos) {
 #
 # time parsing ----
 #
-parseTimeInstant <- function(obj, format) {
+parseTimeInstant <- function(obj, sos) {
   .timePosXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePositionName,
                                       ns = SosAllNamespaces())
-  .timePos <- parseTimePosition(obj = .timePosXML, format = format)
+  .timePos <- parseTimePosition(obj = .timePosXML, sos = sos)
 
   # optionals
   .id = xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
@@ -97,7 +97,7 @@ parseTimeInstant <- function(obj, format) {
   return(.ti)
 }
 
-parseTimeInstantProperty <- function(obj, format) {
+parseTimeInstantProperty <- function(obj, sos) {
   .timeProp <- NULL
 
   # check if reference or inline phenomenon
@@ -106,15 +106,15 @@ parseTimeInstantProperty <- function(obj, format) {
     .timeProp <- GmlTimeInstantProperty(href = .href)
   }
   else {
-    .time <- parseTimeInstant(obj = xml2::xml_child(x = obj), format = format)
+    .time <- parseTimeInstant(obj = xml2::xml_child(x = obj), sos = sos)
     .timeProp <- GmlTimeInstantProperty(time = .time)
   }
 
   return(.timeProp)
 }
 
-parseTimePosition <- function(obj, format) {
-  .time <- strptime(xml2::xml_text(x = obj), format)
+parseTimePosition <- function(obj, sos) {
+  .time <- sosConvertTime(xml2::xml_text(x = obj), sos = sos)
 
   # optional:
   .frame <- xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
@@ -127,7 +127,7 @@ parseTimePosition <- function(obj, format) {
   return(.timePosition)
 }
 
-parseTimePeriod <- function(obj, format) {
+parseTimePeriod <- function(obj, sos) {
   .timeObject <- NULL
 
   # optionals
@@ -147,8 +147,9 @@ parseTimePeriod <- function(obj, format) {
     .begin <- parseTimeInstantProperty(obj = xml2::xml_child(x = obj,
                                                              search = gmlBeginName,
                                                              ns = SosAllNamespaces()),
-                                       format = format)
-    .end <- parseTimeInstantProperty(xml2::xml_child(x = obj, search = gmlEndName, ns = SosAllNamespaces()), format = format)
+                                       sos = sos)
+    .end <- parseTimeInstantProperty(xml2::xml_child(x = obj, search = gmlEndName, ns = SosAllNamespaces()),
+                                     sos = sos)
 
     .timeObject <- GmlTimePeriod(begin = .begin, end = .end, duration = .duration,
                                  timeInterval = .timeInterval, id = .id,
@@ -159,10 +160,10 @@ parseTimePeriod <- function(obj, format) {
            || !is.na(xml2::xml_child(x = obj, search = gmlEndPositionName))) {
     .beginPosition <- parseTimePosition(
       obj = xml2::xml_child(x = obj, search = gmlBeginPositionName),
-      format = format)
+      sos = sos)
     .endPosition <- parseTimePosition(
       obj = xml2::xml_child(x = obj, search = gmlEndPositionName),
-      format = format)
+      sos = sos)
 
     .timeObject <- GmlTimePeriod(beginPosition = .beginPosition,
                                  endPosition = .endPosition, duration = .duration,
@@ -176,15 +177,15 @@ parseTimePeriod <- function(obj, format) {
 #
 #
 #
-parseTimeGeometricPrimitiveFromParent <- function(obj, format) {
+parseTimeGeometricPrimitiveFromParent <- function(obj, sos) {
   .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
   .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
   .timeObject <- NULL
   if (!is.na(.tiXML)) {
-    .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
+    .timeObject <- parseTimeInstant(obj = .tiXML, sos = sos)
   }
   else if (!is.na(.tpXML)) {
-    .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
+    .timeObject <- parseTimePeriod(obj = .tpXML, sos = sos)
   }
   else {
     #		warning(paste("Could not create time from given samplingTime,",

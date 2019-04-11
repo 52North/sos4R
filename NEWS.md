@@ -1,4 +1,8 @@
-# sos4R 0.3.0.90xx
+# sos4R 0.4.0.9000
+
+- Give warnings if time cannot be parsed with the format provided in the SOS object
+
+# sos4R 0.3.0
 
 - Switch from `XML` to `xml2`
 - Added a `NEWS.md` in Markdown format to track changes to the package (moved content from `inst/NEWS` and `inst/CHANGES`)

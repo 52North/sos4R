@@ -95,7 +95,7 @@ test_that("time accessor function", {
   expect_true(is.list(offeringTimeConv))
   expect_true(is.list(offeringTimeConv[["Water"]]))
   expect_named(offeringTimeConv[["Water"]], c("begin", "end"))
-  expect_s3_class(offeringTimeConv[["Water"]][["begin"]], "POSIXlt")
+  expect_s3_class(offeringTimeConv[["Water"]][["begin"]], "POSIXt")
 
   # applying sosTime to GmlTimePeriod results in conversion
   expect_equal(sosTime(sosTime(mapserver)), sosTime(sosOfferings(mapserver), convert = TRUE))

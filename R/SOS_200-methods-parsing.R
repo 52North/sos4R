@@ -167,7 +167,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   .resultTimeXml <- xml2::xml_child(x = .sosOffering, search = sos200ResultTimeName, ns = namespaces)
   if (!is.na(.resultTimeXml)) {
     .resultTime <- parseTimeGeometricPrimitiveFromParent(obj = .resultTimeXml,
-                                                         format = sosTimeFormat(sos))
+                                                         sos = sos)
     if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(.resultTime), "\n")
   }
   else {
@@ -178,7 +178,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   .phenomenonTimeXml <- xml2::xml_child(x = .sosOffering, search = sos200PhenomenonTimeName, ns = namespaces)
   if (!is.na(.resultTimeXml)) {
     .phenomenonTime <- parseTimeGeometricPrimitiveFromParent(obj = .phenomenonTimeXml,
-                                                             format = sosTimeFormat(sos))
+                                                             sos = sos)
     if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(.resultTime), "\n")
   }
   else {

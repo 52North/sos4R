@@ -842,7 +842,7 @@ setMethod(f = "sosCoordinates",
           signature = signature(obj = "SosObservationOffering"),
           def = function(obj) {
             .off.spatial <- as(obj, "Spatial")
-            .coords <- coordinates(.off.spatial)
+            .coords <- sp::coordinates(.off.spatial)
             return(.coords)
           })
 setMethod(f = "sosCoordinates",

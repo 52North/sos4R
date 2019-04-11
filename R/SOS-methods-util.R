@@ -31,8 +31,12 @@
 # conversion methods ----
 #
 sosConvertTime <- function(x, sos) {
-  .t <- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
-  return(.t)
+  format <- sosTimeFormat(sos = sos)
+  t <- as.POSIXct(x = strptime(x = x, format = format))
+  if (is.na(t))
+    warning("Error converting string '", x, "' with format '", format, "'! Returning 'NA'")
+
+  return(t)
 }
 
 sosConvertDouble <- function(x, sos) {
@@ -55,9 +59,7 @@ setMethod(f = "sosCreateTimeInstant",
           signature = signature(sos = "SOS", time = "POSIXt"),
           definition = function(sos, time, frame, calendarEraName,
                          indeterminatePosition) {
-            #			.time <- format(time, sosTimeFormat(sos))
             .timePos <- GmlTimePosition(
-              #					time = strptime(.time, sosTimeFormat(sos)),
               time = time,
               frame = frame, calendarEraName = calendarEraName,
               indeterminatePosition = indeterminatePosition)
@@ -404,7 +406,7 @@ setMethod(f = "sosGetCRS",
 
             .crs <- NULL
             tryCatch({
-              .crs <- CRS(.initString)
+              .crs <- sp::CRS(.initString)
             }, error = function(err) {
               warning("[sosGetCRS] error was detected, probably the ",
                       "EPSG code ", .epsg, " is not recognized ",

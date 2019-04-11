@@ -51,9 +51,9 @@ parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
 
   if(!is.na(xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()))) {
     .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()),
-                 format = sosTimeFormat(sos = sos),
-                 timeObjectMap = timeObjectMap,
-                 verbose = verbose)
+                           sos = sos,
+                           timeObjectMap = timeObjectMap,
+                           verbose = verbose)
     .phenomenonTime <- .pt[[1]]
     timeObjectMap <- .pt[[2]]
   } else {
@@ -91,9 +91,9 @@ parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
   .result <- .resultParsingFunction(xml2::xml_child(x = obj, search = omResultName, ns = SosAllNamespaces()), sos, verbose)
 
   # optional elements
-  if(!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
+  if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
     .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
-                           format = sosTimeFormat(sos = sos),
+                           sos = sos,
                            timeObjectMap = timeObjectMap,
                            verbose = verbose)
     .resultTime <- .pt[[1]]
@@ -122,7 +122,7 @@ parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
 #
 # create according GmlTimeObject from om:samplingTime/om:resultTime/om:phenomenonTime
 #
-parseTimeObject <- function(obj, format, timeObjectMap = list(), verbose = FALSE) {
+parseTimeObject <- function(obj, sos, timeObjectMap = list(), verbose = FALSE) {
   if (verbose) cat("[parseTimeObject]\n")
 
   .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
@@ -132,12 +132,12 @@ parseTimeObject <- function(obj, format, timeObjectMap = list(), verbose = FALSE
 
   if (!is.na(.tiXML)) {
     if (verbose) cat("[parseTimeObject] time instant.\n")
-    .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
+    .timeObject <- parseTimeInstant(obj = .tiXML, sos = sos)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
   else if (!is.na(.tpXML)) {
     if (verbose) cat("[parseTimeObject] time period.\n")
-    .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
+    .timeObject <- parseTimePeriod(obj = .tpXML, sos = sos)
     timeObjectMap[[.timeObject@id]] <- .timeObject
   }
   else if (!is.na(.timeReference)) {

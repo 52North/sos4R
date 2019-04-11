@@ -88,7 +88,7 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
                                       search = omSamplingTimeName,
                                       ns = SosAllNamespaces())
   .samplingTime <- parseTime(obj = .samplingTimeXml,
-                             format = sosTimeFormat(sos),
+                             sos = sos,
                              verbose = verbose)
 
   # 52N SOS only returns om:Measurements (!) with procedure ids and observed
@@ -137,7 +137,8 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
     .samplingTime <- parseTime(obj = xml2::xml_child(x = obj,
                                                      search = omSamplingTimeName,
                                                      ns = SosAllNamespaces()),
-                               format = sosTimeFormat(sos = sos), verbose = verbose)
+                               sos = sos,
+                               verbose = verbose)
   } else {
     warning("om:samplingTime is mandatory in om:Observation, but is missing!")
     .samplingTime <- NULL
@@ -158,7 +159,8 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
   # optional elements
   if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
     .resultTime <- parseTime(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
-                             format = sosTimeFormat(sos = sos), verbose = verbose)
+                             sos = sos,
+                             verbose = verbose)
   }
   else {
     .resultTime <- NULL
@@ -394,7 +396,7 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
 # (not exchangeable)
 # handles time instant, time period, and time reference
 #
-parseTime <- function(obj, format, verbose = FALSE) {
+parseTime <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseTime] Entering\n")
 
   .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName, ns = SosAllNamespaces())
@@ -404,11 +406,11 @@ parseTime <- function(obj, format, verbose = FALSE) {
 
   if (!is.na(.tiXML)) {
     if (verbose) cat("[parseTime] Found time instant\n")
-    .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
+    .timeObject <- parseTimeInstant(obj = .tiXML, sos = sos)
   }
   else if (!is.na(.tpXML)) {
     if (verbose) cat("[parseTime] Found time period\n")
-    .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
+    .timeObject <- parseTimePeriod(obj = .tpXML, sos = sos)
   }
   else if (!is.na(.timeReference)) {
     if (verbose) cat("[parseTime] Found referenced time\n")

@@ -33,26 +33,26 @@
 as.SensorML.SpatialPointsDataFrame = function(from) {
   .coords <- sosCoordinates(from, handleNames = TRUE)
   .coordsNames <- names(.coords)
-  
+
   if(all(dim(.coords) > 0, any(.coordsNames == "y"),
          any(.coordsNames == "x"))) {
     .crds <- .coords[,c("x", "y")]
     .crs <- sosGetCRS(from)
-    
+
     if(is.null(.crs)) {
       warning("[as.SensorML.SpatialPointsDataFrame] No CRS from sensor ",
               "description (using sosGetCRS(...), using default.")
       .crs <- sosGetCRS(sosDefaultReferenceFrameSensorDescription)
     }
-    
+
     .notCoordCols <- !colnames(.coords)%in%c("x", "y")
     .otherData <- data.frame(.coords[,.notCoordCols])
     colnames(.otherData) <- colnames(.coords)[.notCoordCols]
-    
-    .sp <- SpatialPointsDataFrame(coords = .crds,
+
+    .sp <- sp::SpatialPointsDataFrame(coords = .crds,
                                   data = .otherData,
                                   proj4string = .crs)
-    
+
     return(.sp)
   }
   else {
@@ -60,16 +60,16 @@ as.SensorML.SpatialPointsDataFrame = function(from) {
                    " because no coordinates found for object. Check that ",
                    " sosCoordinates(obj) returns a matrix with colum ",
                    "names 'x' and 'y'."))
-    return(SpatialPointsDataFrame(data.frame(0,0),
+    return(sp::SpatialPointsDataFrame(data.frame(0,0),
                                   data = data.frame(NA_character_)))
   }
 }
-setAs("SensorML", "SpatialPointsDataFrame", 
+setAs("SensorML", "SpatialPointsDataFrame",
       function(from) {
         as.SensorML.SpatialPointsDataFrame(from)
       }
 )
-setAs("SensorML", "Spatial", 
+setAs("SensorML", "Spatial",
       function(from) {
         as.SensorML.SpatialPointsDataFrame(from)
       }
