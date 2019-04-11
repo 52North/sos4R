@@ -17,3 +17,16 @@ test_that("replacing a parsing function (integration test)", {
                                       observedProperty = list("Bazinga!"))
   expect_equal(erroneousResponse, "EXCEPTION!!!11")
 })
+
+test_that("disabling all parsing functions (integration test)", {
+  skip_on_cran()
+
+  disabledParserSOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+                           parsers = SosDisabledParsers(),
+                           binding = "POX", useDCPs = FALSE)
+  unparsed <- getObservation(disabledParserSOS,
+                             offering = sosOfferings(disabledParserSOS)[[1]],
+                             observedProperty = list("Bazinga!"))
+  expect_s3_class(unparsed, c("xml_document", "xml_node"))
+})
+
