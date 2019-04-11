@@ -381,7 +381,7 @@
 <pre><code>docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d sos4r-rstudio-dev:2019-02-27</code></pre>
 <p>You can start and stop the container by its name <code>sos4r-dev</code>.</p>
 <ol>
-<li><p>Point your browser to <a href="http://localhost:8787/" class="uri">http://localhost:8787/</a>.</p></li>
+<li><p>Point your browser to <a href="http://localhost:8787/">http://localhost:8787/</a>.</p></li>
 <li><p>Login with <strong>Username</strong> <code>rstudio</code> and <strong>Password</strong> <code>r</code>.<br> If the password is not secure enough, please delete the container via <code>docker stop sos4r-dev; docker rm sos4r-dev</code> and re-run the above <code>docker run ...</code> with a different value for <code>PASSWORD</code>.</p></li>
 <li><p>Open the sos4R project via menu <code>File</code> → <code>Open Project</code> → open folder <code>sos4R</code> → select <code>sos4R.Rproj</code>.</p></li>
 <li><p>Start developing.</p></li>
@@ -416,17 +416,16 @@
 <li>
 <code><a href="https://www.rdocumentation.org/packages/revdepcheck/topics/revdep_check">revdepcheck::revdep_check()</a></code> for checking reverse dependencies</li>
 <li>
-<code><a href="https://www.rdocumentation.org/packages/devtools/topics/check_win">devtools::check_win_release()</a></code> and <code>devtools::devtools::check_win_devel()</code> for testing Windows using CRAN infrastructure</li>
+<code><a href="https://www.rdocumentation.org/packages/devtools/topics/check_win">devtools::check_win_release()</a></code> and <code><a href="https://www.rdocumentation.org/packages/devtools/topics/check_win">devtools::check_win_devel()</a></code> for testing Windows using CRAN infrastructure</li>
 <li>
 <code>rhub::check_for_cran(email = &lt;...&gt;)</code> for testing for CRAN submissions using RHub infrastructure</li>
-<li>
-<code>rhub::check(email = &lt;...&gt;)</code> for running checks on different operating systems</li>
+<li>(optional) <code>rhub::check(email = &lt;...&gt;)</code> for running checks on different operating systems</li>
 </ul>
 </li>
 <li>Regenerate the website with <code><a href="https://pkgdown.r-lib.org/reference/build_site.html">pkgdown::build_site()</a></code> and re-knit <code>README.Rmd</code>, commit changes</li>
 <li>Push changes to <code>dev</code> branch</li>
 <li>Create a git tag with the version number using the letter <code>v</code> followed by the version number (see above, must match <code>DESCRIPTION</code>), e.g. <code>v1.2.3</code>, and push it to the main repository</li>
-<li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again</li>
+<li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again, make necessary changes</li>
 <li>Merge the PR</li>
 </ul>
 <p>You can then do the actual release with</p>
