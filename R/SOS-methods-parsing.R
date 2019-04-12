@@ -485,11 +485,13 @@ setMethod(f = "parseFile",
           }
 )
 
-#
-# parse commma seperated values ----
-#
 parseCSV <- function(obj, verbose = FALSE) {
   if (verbose) cat("[parseCSV] Processing CSV...\n")
+
+  if (inherits(x = obj, what = "data.frame")) {
+    if (verbose) cat("[parseCSV] Already a data.frame, returning object\n")
+    return(obj)
+  }
 
   .lines <- strsplit(x = obj, split = "\n")[[1]]
   .data <- do.call(what = "strsplit", args = list(.lines, split = ","))

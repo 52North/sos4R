@@ -124,3 +124,17 @@ test_that("POX", {
   expect_equal(dim(result), c(71, 2))
   expect_named(result, c("phenomenonTime", "AirTemperature"))
 })
+
+test_that("CSV parsing works", {
+  skip_on_cran()
+
+  ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
+              timeFormat = "%Y-%m-%dT%H:%M:%SZ")
+  ioos.off <- sosOfferings(ioos)
+  obs <- getObservation(ioos, offering = sosName(ioos.off[[100]]),
+                             responseFormat = "text/csv",
+                             observedProperty = sosObservedProperties(ioos.off[[100]])[1])
+  obs
+  expect_s3_class(obs, "data.frame")
+  expect_equal(dim(obs), c(1, 7))
+})

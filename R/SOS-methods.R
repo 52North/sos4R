@@ -1514,9 +1514,13 @@ setMethod(f = "checkRequest",
     xml <- xml2::read_xml(text)
     return(xml)
   }
-  else if (contentType == "application/xml") {
+  else if (contentType == "application/xml" || contentType == "text/xml") {
     xml <- httr::content(x = response, encoding = sosDefaultCharacterEncoding)
     return(xml)
+  }
+  else if (contentType == "text/csv") {
+    tibble <- httr::content(x = response, encoding = sosDefaultCharacterEncoding)
+    return(tibble)
   }
 
   stop("Unsupported content type in response")
