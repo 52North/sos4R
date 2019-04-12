@@ -47,9 +47,14 @@ test_that("addional KVPs are concatenated correctly", {
   expect_equal(.encodeAdditionalKVPs(actual), expected)
 })
 
-
 test_that("can get CRS from URN", {
   obj <- sosGetCRS("urn:ogc:def:crs:EPSG::4326")
+  expect_s4_class(obj, "CRS")
+  expect_match(obj@projargs, "init=epsg:4326")
+})
+
+test_that("can get CRS from lowercase URN", {
+  obj <- sosGetCRS("urn:ogc:def:crs:epsg::4326")
   expect_s4_class(obj, "CRS")
   expect_match(obj@projargs, "init=epsg:4326")
 })

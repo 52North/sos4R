@@ -382,12 +382,16 @@ setMethod(f = "sosGetCRS",
 
             .epsg <- NA
             # URN
-            if (grepl(pattern = "urn:ogc:def:crs", x = obj)) {
-              .epsg <- sub(pattern = "(.*)EPSG:[0-9]*(:?)", replacement = "", x = obj)[[1]]
+            if (grepl(pattern = "urn:ogc", x = obj)) {
+              .epsg <- sub(pattern = "(.*)epsg:[0-9]*(:?)",
+                           replacement = "",
+                           x = tolower(obj))[[1]]
             }
             # URL
             if (grepl(pattern = "opengis.net", x = obj)) {
-              .epsg <- sub(pattern = "(.*)EPSG/[0-9]*(/?)", replacement = "", x = obj)[[1]]
+              .epsg <- sub(pattern = "(.*)epsg/[0-9]*(/?)",
+                           replacement = "",
+                           x = tolower(obj))[[1]]
             }
 
             if (is.na(.epsg)) {
