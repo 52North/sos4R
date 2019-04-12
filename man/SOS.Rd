@@ -341,8 +341,6 @@ SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version,
          timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
          switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
          additionalKVPs = list(), ...)
-
-# accessor methods ...
 }
 
 \arguments{
@@ -376,18 +374,26 @@ The document is available for download at \url{https://www.opengeospatial.org/st
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\section{Warning }{}
-
 \seealso{See also creation function \code{\link{SOS}} and the package vignette for general description of use.}
 
 \examples{
 showClass("SOS")
 showClass("SOS_2.0.0")
 
-\dontrun{
 # create a SOS connection
-mysos <- SOS(url = "http://mysos.org/sos")
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             binding = "KVP")
 
+# create the URL to a GET request for GetCapabilities
+sosCapabilitiesUrl(mySOS)
+
+# access details of the SOS connection and it's metadata
+sosContents(mySOS)
+sosTime(mySOS)
+sosFeaturesOfInterest(mySOS)
+sosBinding(mySOS)
+
+\dontrun{
 # create a SOS connetion with a specific connection method and time format
 mysos <- SOS(url = "http://mysos.org/sos",
     binding = "KVP", timeFormat = "%Y-%m-%d")
@@ -401,9 +407,6 @@ sosExceptionCodeMeaning(ex@exceptionCode)
 # create a CRS object from a URN CRS string
 sosGetCRS("urn:ogc:def:crs:EPSG:4217")
 
-# create the URL to a GET request for GetCapabilities
-sosCapabilitiesUrl(mysos)
-
 # create a SOS for a specific binding at a specific endpoint
 SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
 		useDCPs = FALSE)
@@ -413,8 +416,6 @@ SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
 SOS(url = "http://localhost:8080/52n-sos/sos/service",
 		dcpFilter = list("POX" = "/pox"))
 }
-
-
 
 }
 

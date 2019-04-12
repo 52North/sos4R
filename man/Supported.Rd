@@ -43,12 +43,7 @@ It is encouraged to rather use these methods than manually set character values 
 
 \value{A list of supported values for the respective parameter.}
 
-%\references{}
-
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
-
-%\note{}
-%\section{Warning }{}
 
 \seealso{See \code{\link{Defaults}} for default values of parameters.}
 
