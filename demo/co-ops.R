@@ -21,16 +21,14 @@ library("sos4R")
 #
 
 ################################################################################
-ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS")
+ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS",
+               binding = "KVP")
 ioosdif_off <- sosOfferings(ioosdif)
-sosName(ioosdif_off)
-
 length(ioosdif_off)
 # 771
 
-# 
+#
 sosResponseFormats(ioosdif)
-# TODO test with tab seperated values
 
 #sosObservedProperties(ioosdif_off)
 unique(unlist(sosObservedProperties(ioosdif_off)))
