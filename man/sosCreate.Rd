@@ -121,11 +121,11 @@ period <- sosCreateTimePeriod(sos = SOS_Test(),
 		begin = as.POSIXct("2010/01/01"), end = as.POSIXct("2010/01/07"))
 eventTime <- sosCreateEventTimeList(period)
 
-sosCreateTime(sos = mySOS, time = "2007-07-07 07:00::2008-08-08 08:00")
-sosCreateTime(sos = mySOS, time = "2007-07-07 07:00/2010-10-10 10:00")
+sosCreateTime(sos = SOS_Test(), time = "2007-07-07 07:00::2008-08-08 08:00")
+sosCreateTime(sos = SOS_Test(), time = "2007-07-07 07:00/2010-10-10 10:00")
 
-sosCreateTime(sos = mySOS, time = "::2007-08-05")
-sosCreateTime(sos = mySOS, time = "2007-08-05/")
+sosCreateTime(sos = SOS_Test(), time = "::2007-08-05")
+sosCreateTime(sos = SOS_Test(), time = "2007-08-05/")
 
 }
 
