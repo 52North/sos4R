@@ -152,13 +152,24 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># by identifier</span>
-<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='no'>...</span>)
-<span class='no'>os.offerings</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>sosOfferings</a></span>(<span class='no'>sos</span>)
-<span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'>getObservationById</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>sos</span>, <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"o_3508493"</span>)
+<span class='co'># request observations</span>
+<span class='no'>mySOSpox</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"POX"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='co'># TODO</span>
+<span class='no'>myOffering</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>sosOfferings</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='st'>"ws2500"</span>]]
+<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateTimePeriod</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
+                <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2015/11/01"</span>),
+                <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2015/11/02"</span>))
+<span class='no'>eventTime</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateEventTimeList</a></span>(<span class='no'>period</span>)
 
+<span class='no'>nov2015</span> <span class='kw'>&lt;-</span> <span class='fu'>getObservation</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOSpox</span>,
+                          <span class='kw'>offering</span> <span class='kw'>=</span> <span class='no'>myOffering</span>,
+                          <span class='kw'>eventTime</span> <span class='kw'>=</span> <span class='no'>eventTime</span>)
+
+<span class='co'># request observation by identifier and get the data</span>
+<span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'>getObservationById</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOSpox</span>,
+                            <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"http://www.52north.org/test/observation/1"</span>)
+<span class='fu'><a href='OmObservation.html'>sosResult</a></span>(<span class='no'>obsId</span>, <span class='kw'>coordinates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

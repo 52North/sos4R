@@ -266,7 +266,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xe503618&gt;
+#&gt; &lt;environment: 0xa21b988&gt;
 #&gt; 
 #&gt; $GetCapabilities
 #&gt; function (obj, sos) 
@@ -1051,6 +1051,11 @@
 #&gt; {
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCSV] Processing CSV...\n")
+#&gt;     if (inherits(x = obj, what = "data.frame")) {
+#&gt;         if (verbose) 
+#&gt;             cat("[parseCSV] Already a data.frame, returning object\n")
+#&gt;         return(obj)
+#&gt;     }
 #&gt;     .lines &lt;- strsplit(x = obj, split = "\n")[[1]]
 #&gt;     .data &lt;- do.call(what = "strsplit", args = list(.lines, split = ","))
 #&gt;     .names &lt;- .data[[1]]
@@ -1270,7 +1275,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xe503618&gt;
+#&gt; &lt;environment: 0xa21b988&gt;
 #&gt; </div><div class='input'><span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))</div><div class='output co'>#&gt; $GetCapabilities
 #&gt; function (obj, sos) 
 #&gt; {
@@ -1944,6 +1949,11 @@
 #&gt; {
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCSV] Processing CSV...\n")
+#&gt;     if (inherits(x = obj, what = "data.frame")) {
+#&gt;         if (verbose) 
+#&gt;             cat("[parseCSV] Already a data.frame, returning object\n")
+#&gt;         return(obj)
+#&gt;     }
 #&gt;     .lines &lt;- strsplit(x = obj, split = "\n")[[1]]
 #&gt;     .data &lt;- do.call(what = "strsplit", args = list(.lines, split = ","))
 #&gt;     .names &lt;- .data[[1]]

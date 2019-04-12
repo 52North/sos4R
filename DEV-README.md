@@ -258,12 +258,11 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again, make necessary changes
 - Merge the PR
 - Update your local `master` to upstream's `master` branch
-- Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
-- Create a release on GitHub based on the new tag, named just as the version tag
 -_ Do the actual release_ with `devtools::release()` (which will ask you again if you did many of the steps before)
 - Wait for the good news, check where the package is in the queue with `foghorn::cran_incoming(pkg = "sos4R")`
 - When available on CRAN:
   - Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
+  - Create a release on GitHub based on the new tag, named just as the version tag
   - Checkout the `dev` branch
   - Merge `upstream/master`
   - Update the version in `DESCRIPTION` to a new development version, e.g. from `0.3.0` to `0.4.0.9000`
