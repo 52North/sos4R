@@ -1,19 +1,31 @@
 Package: sos4R
 Type: Package
-Title: An R Client for the OGC Sensor Observation Service
+Title: Client for OGC Sensor Observation Services
 Version: 0.3.0
-Authors@R: c(person(given = "Daniel", family = "Nuest", role = c("cre", "aut"),
-	email = "daniel.nuest@uni-muenster.de", comment = c(ORCID = "0000-0002-0024-5046")),
-	person("Edzer", "Pebesma", role = "ctb", comment = c(ORCID = "0000-0001-8049-7069")),
-	person("Ben", "Graeler", role = "ctb", comment = c(ORCID = "0000-0001-5443-4304")),
-	person("Benjamin", "Pross", role = "ctb"),
-	person("Eike Hinderk", "Juerrens", role = "ctb"))
-Author: Daniel Nuest [cre, aut] (<https://orcid.org/0000-0002-0024-5046>),
-  Edzer Pebesma [ctb] (<https://orcid.org/0000-0001-8049-7069>),
-  Ben Graeler [ctb] (<https://orcid.org/0000-0001-5443-4304>),
-  Benjamin Pross [ctb],
-  Eike Hinderk Juerrens [ctb]
-Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
+Date: 2019-04-13
+Authors@R:
+  c(person(given = "Daniel",
+           family = "Nuest",
+           role = c("cre", "aut"),
+           email = "daniel.nuest@uni-muenster.de",
+           comment = c(ORCID = "0000-0002-0024-5046")),
+	  person(given = "Edzer",
+	         family = "Pebesma",
+	         role = "ctb",
+	         comment = c(ORCID = "0000-0001-8049-7069")),
+	  person(given = "Ben",
+	         family = "Graeler",
+	         role = "ctb",
+	         comment = c(ORCID = "0000-0001-5443-4304")),
+	  person(given = "Benjamin",
+	         family = "Pross",
+	         role = "ctb"),
+	  person(given = "Eike Hinderk",
+	         family = "Juerrens",
+	         role = "ctb"),
+	  person(given = "52°North Initiative for Geospatial Open Source Software GmbH",
+	         email = "info@52north.org",
+	         role = "cph"))
 Depends: R (>= 3.4.0)
 Imports:
     httr,
@@ -22,6 +34,7 @@ Imports:
     stringr,
     xml2,
 Suggests:
+    readr,
     spacetime,
     gstat,
     maps,
@@ -34,10 +47,11 @@ Suggests:
     rgdal,
     knitr,
     rmarkdown
-Description: A client for Sensor Observation Services (SOS) as
-        specified by the Open Geospatial Consortium (OGC). The package allows
-        users to retrieve metadata from SOS web services and to
-        interactively create requests for near real-time observation
+Description: A client for Sensor Observation Services (SOS, see 
+        <https://www.opengeospatial.org/standards/sos>) as specified by the 
+        Open Geospatial Consortium (OGC). With the package users can
+        retrieve (meta)data from SOS instances and interactively 
+        create requests for near real-time observation
         data based on the available sensors, phenomena, observations etc.
         using thematic, temporal, and spatial filtering.
 License: GPL-2

@@ -116,15 +116,15 @@ test_that("sensor description can be saved to file during request", {
                binding = "POX", dcpFilter = list("POX" = "/pox"))
 
   tempfile <- tempfile(fileext = ".xml")
-  mySensor <- describeSensor(sos = mySOS,
+  expect_output(
+    mySensor <- describeSensor(sos = mySOS,
                              procedure = sosProcedures(obj = mySOS)[[1]][[1]],
                              outputFormat = 'text/xml; subtype="sensorML/1.0.1"',
-                             saveOriginal = tempfile
-                             #inspect = TRUE
-  )
+                             saveOriginal = tempfile),
+    paste0("document saved:(.*)", tempfile))
 
-  sensorXmlFromFile <- xml2::read_xml(tempfile)
   expect_true(file.exists(tempfile))
+  sensorXmlFromFile <- xml2::read_xml(tempfile)
   expect_equal(xml2::xml_name(sensorXmlFromFile), "SensorML")
   file.remove(tempfile)
   expect_false(file.exists(tempfile))

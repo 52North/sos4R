@@ -82,8 +82,6 @@ sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{}
-
 \seealso{These methods create object of the following classes: \code{\link{GmlTimeInstant-class}}, \code{\link{GmlTimePeriod-class}}, \code{\link{SosEventTime-class}}, \code{\link{SosFeatureOfInterest-class}}, \code{\link{OgcBBOX-class}}, \code{\link{matrix-class}}.}
 
 \section{Methods}{
@@ -96,7 +94,6 @@ sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
 }
 
 \examples{
-
 # create a feature of interest based on identifiers
 foiIDs <- list("urn:ogc:object:feature:1", "urn:ogc:object:feature:2")
 foiObj <- sosCreateFeatureOfInterest(objectIDs = foiIDs[1:2])
@@ -117,20 +114,18 @@ bbox <- sosCreateBBOX(lowLat = 50.0, lowLon = 7.0, uppLat = 53.0, uppLon = 10.0,
 foiBBox2 <- sosCreateFeatureOfInterest(spatialOps = bbox)
 print(foiBBox2)
 
-\dontrun{
-last.period <- sosCreateTimePeriod(sos = mySOS,
+last.period <- sosCreateTimePeriod(sos = SOS_Test(),
 	begin = (Sys.time() - 3600 * 24 * 7), end = Sys.time())
 
-period <- sosCreateTimePeriod(sos = mySOS,
+period <- sosCreateTimePeriod(sos = SOS_Test(),
 		begin = as.POSIXct("2010/01/01"), end = as.POSIXct("2010/01/07"))
 eventTime <- sosCreateEventTimeList(period)
 
-sosCreateTime(sos = mySOS, time = "2007-07-07 07:00::2008-08-08 08:00")
-sosCreateTime(sos = mySOS, time = "2007-07-07 07:00/2010-10-10 10:00")
+sosCreateTime(sos = SOS_Test(), time = "2007-07-07 07:00::2008-08-08 08:00")
+sosCreateTime(sos = SOS_Test(), time = "2007-07-07 07:00/2010-10-10 10:00")
 
-sosCreateTime(sos = mySOS, time = "::2007-08-05")
-sosCreateTime(sos = mySOS, time = "2007-08-05/")
-}
+sosCreateTime(sos = SOS_Test(), time = "::2007-08-05")
+sosCreateTime(sos = SOS_Test(), time = "2007-08-05/")
 
 }
 

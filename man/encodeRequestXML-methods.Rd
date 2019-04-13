@@ -29,8 +29,6 @@ These methods encode objects representing requests to a Sensor Observation Servi
 	}
 }
 
-%\details{}
-
 \references{Annex A (normative) \dQuote{SOS Schema} in Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortium Inc., OGC 06-009r6, Version: 1.0.}
 
 \seealso{\code{\link{SosBindings}}, \code{\link{encodeXML}}}

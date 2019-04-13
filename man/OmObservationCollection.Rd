@@ -68,8 +68,6 @@ Objects can be created by calls to the construction function of the form \code{O
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{}
-
 \seealso{
 \code{\linkS4class{OmObservation}} or \code{\linkS4class{OmMeasurement}}.
 }

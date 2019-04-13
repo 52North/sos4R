@@ -485,11 +485,13 @@ setMethod(f = "parseFile",
           }
 )
 
-#
-# parse commma seperated values ----
-#
 parseCSV <- function(obj, verbose = FALSE) {
-  if (verbose) cat("[parseCSV] Processing CSV...\n")
+  if (verbose) cat("[parseCSV] Parsing CSV...\n")
+
+  if (inherits(x = obj, what = "data.frame")) {
+    if (verbose) cat("[parseCSV] Already a data.frame, returning object\n")
+    return(obj)
+  }
 
   .lines <- strsplit(x = obj, split = "\n")[[1]]
   .data <- do.call(what = "strsplit", args = list(.lines, split = ","))
@@ -506,11 +508,6 @@ parseCSV <- function(obj, verbose = FALSE) {
   .rows <- length(.data)
   if (verbose) cat("[parseCSV] Got", .rows, "lines of data.\n")
 
-  if (.rows == 1) {
-    warnings(paste("Received just one line of data: ", .data, "\n"))
-    return(.data[[1]])
-  }
-
   .df <- NULL
   for (.r in seq(2,.rows)) {
     if (verbose) cat("[parseCSV] Processing row in CSV:", .data[[.r]], "\n")
@@ -524,8 +521,6 @@ parseCSV <- function(obj, verbose = FALSE) {
       names(.df) <- .names[[i]]
       .row.df <- cbind(.row.df, .df)
     }
-    #		print(paste("row", .r))
-    #		print(.row.df)
 
     if (is.null(.df))
       .df <- .row.df

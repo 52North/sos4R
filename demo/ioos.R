@@ -24,11 +24,12 @@ sosResponseFormats(ioos)
 #############
 # first test:
 # !!! use sosName() of offering
-getObservation(ioos, offering = sosName(ioos.off[[100]]), # verbose = TRUE
+obs.test <- getObservation(ioos, offering = sosName(ioos.off[[100]]),
 		responseFormat = "text/csv",
 		observedProperty = sosObservedProperties(ioos.off[[100]])[1])
+obs.test
 
-off.coords <- sosCoordinates(ioos.off)
+#off.coords <- sosCoordinates(ioos.off)
 off.names <- sosName(ioos.off)
 
 # Plot offerings:
@@ -51,9 +52,6 @@ length(ioos.procedures); length(ioos.off)
 # get data:
 
 # offerings in pacific?
-# TODO all also the ones starting with 51, 41, 32, ...
-
-# TODO get all TAO/TRITON Array sensors: http://www.pmel.noaa.gov/tao/index.shtml
 # Terminology: http://www.pmel.noaa.gov/tao/jsdisplay/help/help_terminology_f.html
 # Data display: http://www.pmel.noaa.gov/tao/jsdisplay/
 # Create similar plot: http://www.pmel.noaa.gov/cgi-tao/cover.cgi?P1=uwnd&P2=20110304-March-6-2011&P3=month&P4=off&script=jsdisplay/scripts/lat-lon-5day-jsd.csh
@@ -70,9 +68,9 @@ phenomenon <- list("http://mmisw.org/ont/cf/parameter/sea_water_temperature")
 # use lapply to call getObservation for every offering with "...:wmo:52..."
 # possible alternative: use "all" offering:
 #sosName(ioos.off[[1]])
-obs.wmo52 <- lapply(X = sosName(offerings.wmo52), FUN = getObservation, #verbose = TRUE, 
-		sos = ioos, observedProperty = phenomenon, 
-		eventTime = last48hrs, 
+obs.wmo52 <- lapply(X = sosName(offerings.wmo52), FUN = getObservation, #verbose = TRUE,
+		sos = ioos, observedProperty = phenomenon,
+		eventTime = last48hrs,
 		responseFormat = "text/csv")
 length(obs.wmo52)
 obs.wmo52[[1]]
@@ -94,7 +92,7 @@ dim(obs.wmo52.all)
 hist(obs.wmo52.all[["sea_water_temperature (C)"]])
 colnames(obs.wmo52.all)
 
-# coordinates seem wrong and there are NA values in the 
+# coordinates seem wrong and there are NA values in the
 # data.frame, must be removed
 obs.wmo52.all <- obs.wmo52.all[complete.cases(obs.wmo52.all),]
 
@@ -109,24 +107,12 @@ plot(spdf, add = TRUE)
 
 
 ################################################################################
-# most recent observation:
-obs.csv <- getObservation(ioos, offering = sosName(ioos.off[[100]]),
-		responseFormat = "text/csv",
-		observedProperty = sosObservedProperties(ioos.off[[100]])[2])
-obs.csv
-summary(obs.csv)
-
-
-################################################################################
 # describe sensor:
 # requires SensorML 1.0.0
-ioos.get <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
-		binding = SosSupportedBindings()[["KVP"]],
-		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
-describeSensorOp <- sosOperation(ioos.get, sosDescribeSensorName)
+describeSensorOp <- sosOperation(ioos, sosDescribeSensorName)
 describeSensor.outputFormat <- describeSensorOp@parameters[["outputFormat"]][[1]]
 ioos.procedures <- unique(unlist(sosProcedures(ioos.get)))
-ioos.sensor.1.1 <- describeSensor(sos = ioos.get, procedure = ioos.procedures[[1]][[1]],
+ioos.sensor.1.1 <- describeSensor(sos = ioos, procedure = ioos.procedures[[1]][[1]],
 		outputFormat = describeSensor.outputFormat, verbose = TRUE)
 ioos.sensor.1.1
 ioos.sensor.1.1@xml
@@ -141,13 +127,14 @@ begin <- end - 3600 * 24 * 30
 .offeringId <- sosId(.offering)
 obs.001 <- getObservation(sos = ioos,
 		offering = sosName(.offering), # "urn:ioos:network:noaa.nws.ndbc:all"
-		procedure = sosProcedures(ioos.post.off[[1]])[690:700],
-		observedProperty = sosObservedProperties(ioos.post.off[[1]])[6:7],
+		procedure = sosProcedures(ioos.off[[1]])[690:700],
+		observedProperty = sosObservedProperties(ioos.off[[1]])[6:7],
 		responseFormat = "text/csv",
 		eventTime = sosCreateEventTimeList(
-				sosCreateTimePeriod(sos = ioos.post, begin = begin, end = end)),
+				sosCreateTimePeriod(sos = ioos, begin = begin, end = end)),
 		inspect = TRUE, verbose = TRUE)
 
+plot(x = obs.001$date_time, y = obs.001$`sea_floor_depth_below_sea_surface (m)`)
 
 ################################################################################
 # KML
@@ -155,21 +142,8 @@ kml <- getObservation(ioos, offering = "urn:ioos:network:noaa.nws.ndbc:all",
 #		verbose = TRUE,
 #		saveOriginal = TRUE,
 		responseFormat = "application/vnd.google-earth.kml+xml",
-		observedProperty = list(
-				"http://mmisw.org/ont/cf/parameter/air_temperature"))
+		observedProperty = list("http://mmisw.org/ont/cf/parameter/air_temperature"))
 kml
-
-# TODO do sth. with the KML, e.g. export using examples from Spatial-Analyst?
-# TODO use plotKML to create an output?
-
-
-################################################################################
-# GET
-ioos.get <- SOS(url = "http://sdf.ndbc.noaa.gov/sos/server.php",
-		binding = SosSupportedBindings()[["KVP"]],
-		timeFormat = "%Y-%m-%dT%H:%M:%SZ")
-#		parsers = SosParsingFunctions("GetObservation" = parseNoParsing)
-
 
 ###################################
 # Demo finished, try another one! #

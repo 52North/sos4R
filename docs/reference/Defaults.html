@@ -266,7 +266,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xe503618&gt;
+#&gt; &lt;environment: 0xa70fa50&gt;
 #&gt; 
 #&gt; $GetCapabilities
 #&gt; function (obj, sos) 
@@ -1050,7 +1050,12 @@
 #&gt; function (obj, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCSV] Processing CSV...\n")
+#&gt;         cat("[parseCSV] Parsing CSV...\n")
+#&gt;     if (inherits(x = obj, what = "data.frame")) {
+#&gt;         if (verbose) 
+#&gt;             cat("[parseCSV] Already a data.frame, returning object\n")
+#&gt;         return(obj)
+#&gt;     }
 #&gt;     .lines &lt;- strsplit(x = obj, split = "\n")[[1]]
 #&gt;     .data &lt;- do.call(what = "strsplit", args = list(.lines, split = ","))
 #&gt;     .names &lt;- .data[[1]]
@@ -1063,11 +1068,6 @@
 #&gt;     .rows &lt;- length(.data)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCSV] Got", .rows, "lines of data.\n")
-#&gt;     if (.rows == 1) {
-#&gt;         warnings(paste("Received just one line of data: ", .data, 
-#&gt;             "\n"))
-#&gt;         return(.data[[1]])
-#&gt;     }
 #&gt;     .df &lt;- NULL
 #&gt;     for (.r in seq(2, .rows)) {
 #&gt;         if (verbose) 
@@ -1270,7 +1270,7 @@
 #&gt; {
 #&gt;     return("EXCEPTION!!!11")
 #&gt; }
-#&gt; &lt;environment: 0xe503618&gt;
+#&gt; &lt;environment: 0xa70fa50&gt;
 #&gt; </div><div class='input'><span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))</div><div class='output co'>#&gt; $GetCapabilities
 #&gt; function (obj, sos) 
 #&gt; {
@@ -1943,7 +1943,12 @@
 #&gt; function (obj, verbose = FALSE) 
 #&gt; {
 #&gt;     if (verbose) 
-#&gt;         cat("[parseCSV] Processing CSV...\n")
+#&gt;         cat("[parseCSV] Parsing CSV...\n")
+#&gt;     if (inherits(x = obj, what = "data.frame")) {
+#&gt;         if (verbose) 
+#&gt;             cat("[parseCSV] Already a data.frame, returning object\n")
+#&gt;         return(obj)
+#&gt;     }
 #&gt;     .lines &lt;- strsplit(x = obj, split = "\n")[[1]]
 #&gt;     .data &lt;- do.call(what = "strsplit", args = list(.lines, split = ","))
 #&gt;     .names &lt;- .data[[1]]
@@ -1956,11 +1961,6 @@
 #&gt;     .rows &lt;- length(.data)
 #&gt;     if (verbose) 
 #&gt;         cat("[parseCSV] Got", .rows, "lines of data.\n")
-#&gt;     if (.rows == 1) {
-#&gt;         warnings(paste("Received just one line of data: ", .data, 
-#&gt;             "\n"))
-#&gt;         return(.data[[1]])
-#&gt;     }
 #&gt;     .df &lt;- NULL
 #&gt;     for (.r in seq(2, .rows)) {
 #&gt;         if (verbose) 

@@ -52,9 +52,6 @@ Specifies the feature for which observations are requested. This can either be r
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-
 \seealso{
 See also \code{\linkS4class{SosGetObservation}}, and the convenience creation function \code{\link{sosCreateFeatureOfInterest-methods}}.
 }

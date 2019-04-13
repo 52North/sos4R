@@ -58,9 +58,6 @@ The SosContents section extends the generic ows:Contents elements. It contains t
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-
 \seealso{\code{\linkS4class{SosObservationOffering}}, \code{\linkS4class{OwsContents}}
 }
 

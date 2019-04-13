@@ -265,8 +265,7 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># create a feature of interest based on identifiers</span>
+    <pre class="examples"><div class='input'><span class='co'># create a feature of interest based on identifiers</span>
 <span class='no'>foiIDs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"urn:ogc:object:feature:1"</span>, <span class='st'>"urn:ogc:object:feature:2"</span>)
 <span class='no'>foiObj</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateFeatureOfInterest</span>(<span class='kw'>objectIDs</span> <span class='kw'>=</span> <span class='no'>foiIDs</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>foiObj</span>)</div><div class='output co'>#&gt; Object of class SosFeatureOfInterest;
@@ -293,20 +292,29 @@
 #&gt; 	spatialOps: Object of class OgcBBOX; propertyName: bboxName; envelope: Object of class GmlEnvelope; srsName: urn:ogc:def:crs:EPSG:6.8:4326, srsDimension: 2, srsDimension: lat,lon, uomLabels: deg,deg;
 #&gt; 	lowerCorner: Object of class GmlDirectPosition; pos: 50 7; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA;
 #&gt; 	upperCorner: Object of class GmlDirectPosition; pos: 53 10; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA </div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='no'>last.period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
+<span class='no'>last.period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(),
         <span class='kw'>begin</span> <span class='kw'>=</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>() - <span class='fl'>3600</span> * <span class='fl'>24</span> * <span class='fl'>7</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())
 
-<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
+<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(),
                 <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010/01/01"</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010/01/07"</span>))
 <span class='no'>eventTime</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateEventTimeList</span>(<span class='no'>period</span>)
 
-<span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-07-07 07:00::2008-08-08 08:00"</span>)
-<span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-07-07 07:00/2010-10-10 10:00"</span>)
-
-<span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"::2007-08-05"</span>)
-<span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-08-05/"</span>)
-<span class='co'># }</span><div class='input'>
+<span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(), <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-07-07 07:00::2008-08-08 08:00"</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; Object of class SosEventTime:
+#&gt; 	TM_During: GmlTimePeriod: [ GmlTimePosition [ time: 2007-07-07 07:00:00 ]
+#&gt; 	--&gt; GmlTimePosition [ time: 2008-08-08 08:00:00 ] ] 
+#&gt; </div><div class='input'><span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(), <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-07-07 07:00/2010-10-10 10:00"</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; Object of class SosEventTime:
+#&gt; 	TM_During: GmlTimePeriod: [ GmlTimePosition [ time: 2007-07-07 07:00:00 ]
+#&gt; 	--&gt; GmlTimePosition [ time: 2010-10-10 10:00:00 ] ] 
+#&gt; </div><div class='input'>
+<span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(), <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"::2007-08-05"</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; Object of class SosEventTime:
+#&gt; 	TM_Before: GmlTimePosition [ time: 2007-08-05 ] 
+#&gt; </div><div class='input'><span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(), <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-08-05/"</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; Object of class SosEventTime:
+#&gt; 	TM_After: GmlTimePosition [ time: 2007-08-05 ] 
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
