@@ -1519,6 +1519,9 @@ setMethod(f = "checkRequest",
     return(xml)
   }
   else if (contentType == "text/csv") {
+    if (!requireNamespace("readr", quietly = TRUE))
+      stop("package readr required to handle text/csv format, please install")
+
     tibble <- httr::content(x = response, encoding = sosDefaultCharacterEncoding)
     return(tibble)
   }
