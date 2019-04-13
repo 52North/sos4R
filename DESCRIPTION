@@ -1,6 +1,6 @@
 Package: sos4R
 Type: Package
-Title: Client for accessing observations and sensor metadata from OGC Sensor Observation Services (<https://www.opengeospatial.org/standards/sos>)
+Title: Client for OGC Sensor Observation Services
 Version: 0.3.0
 Date: 2019-04-13
 Authors@R:
@@ -47,10 +47,11 @@ Suggests:
     rgdal,
     knitr,
     rmarkdown
-Description: A client for Sensor Observation Services (SOS) as
-        specified by the Open Geospatial Consortium (OGC). The package allows
-        users to retrieve metadata from SOS web services and to
-        interactively create requests for near real-time observation
+Description: A client for Sensor Observation Services (SOS, see 
+        <https://www.opengeospatial.org/standards/sos>) as specified by the 
+        Open Geospatial Consortium (OGC). With the package users can
+        retrieve (meta)data from SOS instances and interactively 
+        create requests for near real-time observation
         data based on the available sensors, phenomena, observations etc.
         using thematic, temporal, and spatial filtering.
 License: GPL-2
