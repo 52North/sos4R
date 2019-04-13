@@ -98,7 +98,7 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2019-04-12</h4>
+            <h4 class="date">2019-04-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-04-extensions.Rmd"><code>vignettes/sos4R-vignette-04-extensions.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-04-extensions.Rmd</code></div>
@@ -441,9 +441,9 @@
 ## [3] &lt;sos:responseFormat&gt;text/xml;subtype="om/1.0.0"&lt;/sos:responseFormat&gt;
 ## [.getObservation_1.0.0] RESPONSE DOC:
 ## {xml_document}
-## &lt;ObservationCollection id="oc_1555091018494" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
+## &lt;ObservationCollection id="oc_1555162614708" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
 ## [1] &lt;gml:boundedBy&gt;\n  &lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326 ...
-## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1555091018494"&gt;\n    &lt;om:sa ...</code></pre>
+## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1555162614708"&gt;\n    &lt;om:sa ...</code></pre>
 <pre><code>## Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  test_unit_1  with the definition  http://www.52north.org/test/observableProperty/1 ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</code></pre>
 <pre><code>## [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox 
 ##  --&gt; received 1 observation(s) having 12 result values [ 12 ].</code></pre>
@@ -465,19 +465,19 @@
 <p>Then retrieve the data with the correct type.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data))</a></code></pre></div>
 <pre><code>##                        phenomenonTime
-## o_1555091018734.1 2012-11-19 13:00:00
-## o_1555091018734.2 2012-11-19 13:01:00
-## o_1555091018734.3 2012-11-19 13:02:00
-## o_1555091018734.4 2012-11-19 13:03:00
-## o_1555091018734.5 2012-11-19 13:04:00
-## o_1555091018734.6 2012-11-19 13:05:00
+## o_1555162614958.1 2012-11-19 13:00:00
+## o_1555162614958.2 2012-11-19 13:01:00
+## o_1555162614958.3 2012-11-19 13:02:00
+## o_1555162614958.4 2012-11-19 13:03:00
+## o_1555162614958.5 2012-11-19 13:04:00
+## o_1555162614958.6 2012-11-19 13:05:00
 ##                   http://www.52north.org/test/observableProperty/1
-## o_1555091018734.1                                              1.0
-## o_1555091018734.2                                              1.1
-## o_1555091018734.3                                              1.2
-## o_1555091018734.4                                              1.3
-## o_1555091018734.5                                              1.4
-## o_1555091018734.6                                              1.5</code></pre>
+## o_1555162614958.1                                              1.0
+## o_1555162614958.2                                              1.1
+## o_1555162614958.3                                              1.2
+## o_1555162614958.4                                              1.3
+## o_1555162614958.5                                              1.4
+## o_1555162614958.6                                              1.5</code></pre>
 <p>The metadata of the observed property is also accessible.</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attributes">attributes</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data)[[<span class="dv">1</span>]])</a></code></pre></div>
 <pre><code>## $class
