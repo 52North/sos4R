@@ -382,15 +382,24 @@ setMethod(f = "sosGetCRS",
           definition = function(obj, verbose = FALSE) {
             if (verbose) cat("[sosGetCRS] from '", obj, "'\n", sep = "")
 
-            # get the position of EPSG code
-            .split <- strsplit(as.character(obj), split = ":")
-            .idx <- which(toupper(.split[[1]]) == "EPSG")
-            if (length(.idx) == 0) {
-              # possibly versioned, try one index higher?
-              warning(paste("Could not create CRS from the given object:", obj))
-              return(NULL)
+            .epsg <- NA
+            # URN
+            if (grepl(pattern = "urn:ogc", x = obj)) {
+              .epsg <- sub(pattern = "(.*)epsg:[0-9]*(:?)",
+                           replacement = "",
+                           x = tolower(obj))[[1]]
             }
-            .epsg <- .split[[1]][[length(.split[[1]])]]
+            # URL
+            if (grepl(pattern = "opengis.net", x = obj)) {
+              .epsg <- sub(pattern = "(.*)epsg/[0-9]*(/?)",
+                           replacement = "",
+                           x = tolower(obj))[[1]]
+            }
+
+            if (is.na(.epsg)) {
+              warning("Could not create CRS from string ", obj)
+              return(NA)
+            }
 
             .initString <- paste("+init=epsg", .epsg, sep = ":")
 

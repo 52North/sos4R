@@ -107,9 +107,6 @@ The \verb{...OrNULL} classes are used to model optional slots.
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-
 \seealso{See Also as \code{\link{OmMeasurement-class}}.}
 
 \examples{
@@ -117,7 +114,6 @@ showClass("OmObservation")
 showClass("OmObservationProperty")
 showClass("OmObservationOrNULL")
 
-# TBD examples for construction methods
 OmObservationProperty(href = "http://link.to/myObservation")
 
 # get result from an observation

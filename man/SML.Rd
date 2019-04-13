@@ -60,20 +60,28 @@ Houbie, F., Skivee F., Robin A., Jirka S., Broering, A., Nuest D. (2009): OGC(R)
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-%\seealso{}
+\seealso{\code{\link{DescribeSensor}}}
 
 \examples{
 showClass("SensorML")
 
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             binding = "KVP")
+mySensor <- describeSensor(sos = mySOS,
+		procedure = sosProcedures(mySOS)[[1]],
+		outputFormat = 'text/xml; subtype="sensorML/1.0.1"', # space is needed!
+		)
+class(mySensor)
+print(mySensor)
+
+sosId(mySensor)
+sosName(mySensor)
+sosBoundedBy(mySensor)
+sosCoordinates(mySensor)
+sosGetCRS(mySensor)
+
 \dontrun{
-weathersos <- SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
-proc1 <- sosProcedures(weathersos)[[1]][[1]]
-proc1.descr <- describeSensor(weathersos, proc1, verbose = TRUE)
-plot(proc1.descr)
-class(proc1.descr)
-print(proc1.descr
+plot(mySensor)
 }
 
 }

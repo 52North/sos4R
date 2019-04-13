@@ -19,11 +19,11 @@ Additional section in the service metadata document of a Sensor Observation Serv
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("SosFilter_Capabilities", ...)}.
 
-\code{SosFilter_CapabilitiesOrNULL} is virtual class: No objects may be created from it.	 
+\code{SosFilter_CapabilitiesOrNULL} is virtual class: No objects may be created from it.
 }
 
 \usage{
-SosFilter_Capabilities(spatial = list(NA_character_), temporal = list(NA_character_), 
+SosFilter_Capabilities(spatial = list(NA_character_), temporal = list(NA_character_),
                        scalar = list(NA_character_), id = list(NA_character_))
 }
 
@@ -62,9 +62,6 @@ See section 8.2.3.1, \dQuote{FilterCapabilities Section}, the SOS specification:
 }
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
-
-%\note{  }
-%\section{Warning }{}
 
 \seealso{\code{\linkS4class{SosCapabilities}}}
 

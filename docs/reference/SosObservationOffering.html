@@ -256,8 +256,41 @@
 #&gt; Class:                 character                 character
 #&gt;                                 
 #&gt; Name:                  boundedBy
-#&gt; Class:                      list</div><div class='input'># TBD examples for construction functions
-</div></pre>
+#&gt; Class:                      list</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"SosObservationOffering_2.0.0"</span>)</div><div class='output co'>#&gt; Class "SosObservationOffering_2.0.0" [package "sos4R"]
+#&gt; 
+#&gt; Slots:
+#&gt;                                                             
+#&gt; Name:                          id                       name
+#&gt; Class:                  character                  character
+#&gt;                                                             
+#&gt; Name:                  resultTime             phenomenonTime
+#&gt; Class:  GmlTimeGeometricPrimitive  GmlTimeGeometricPrimitive
+#&gt;                                                             
+#&gt; Name:                   procedure         observableProperty
+#&gt; Class:                  character                       list
+#&gt;                                                             
+#&gt; Name:       featureOfInterestType            observationType
+#&gt; Class:                       list                       list
+#&gt;                                                             
+#&gt; Name:                observedArea procedureDescriptionFormat
+#&gt; Class:                       list                       list
+#&gt;                                  
+#&gt; Name:              responseFormat
+#&gt; Class:                       list</div><div class='input'>
+<span class='co'># explore offerings of an SOS</span>
+<span class='no'>mySOS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)</div><div class='output co'>#&gt; [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp </div><div class='input'><span class='no'>offering1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>sosOfferings</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='fl'>1</span>]]
+
+<span class='fu'><a href='SOS.html'>sosId</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; [1] "ws2500"</div><div class='input'><span class='fu'><a href='SOS.html'>sosName</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='fu'><a href='SOS.html'>sosTime</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ GmlTimePosition [ time: 2015-05-18 08:35:00 ]
+#&gt; 	--&gt; GmlTimePosition [ time: 2018-01-06 05:45:00 ] ] </div><div class='input'><span class='fu'><a href='SOS.html'>sosBoundedBy</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; $srsName
+#&gt; [1] "urn:ogc:def:crs:EPSG::4326"
+#&gt; 
+#&gt; $lowerCorner
+#&gt; [1] "51.934814453125 7.652428150177"
+#&gt; 
+#&gt; $upperCorner
+#&gt; [1] "51.934814453125 7.652428150177"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

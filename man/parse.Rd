@@ -160,15 +160,12 @@ Not all parsing function that have a \code{SOS} object or \code{verbose} in thei
 
 \value{An objects of a specific class depending on the parsing method and the passed object, possibly even lists or named character vectors.}
 
-%\references{}
-
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
 \section{Warning }{
 Functions might result in error if parsed an object of the wrong type, because that is normally not checked.
 
 Some of the functions are placeholders for future implementations!
-
 }
 
 \seealso{\code{\link{SosParsingFunctions}}, \code{\link{sosParsers-methods}}}

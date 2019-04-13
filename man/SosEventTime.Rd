@@ -63,25 +63,21 @@ It is recommended to use the creation functions as shown in the examples.
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-
 \seealso{See also \code{\link{SosGetObservation-class}}, \code{\link{sosCreateEventTimeList-methods}}.}
 
 \examples{
 showClass("SosEventTime")
 
-\dontrun{
 # create SosEventTime for all times after the given time stamp
 timePos <- GmlTimePosition(as.POSIXct("2010-01-01 12:00"))
 tOps <- TM_After(time = GmlTimeInstant(timePosition = timePos))
 time1 <- SosEventTime(tOps)
 
-# encode it as XML and KVP
-encodeXML(time1)
-encodeKVP(time1)
-}
+# encode it as XML
+encodeXML(time1, sos = SOS_Test())
 
+# encode it as KVP
+encodeKVP(time1, sos = SOS_Test())
 }
 
 \keyword{classes}

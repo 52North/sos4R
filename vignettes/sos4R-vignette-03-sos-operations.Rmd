@@ -53,6 +53,7 @@ SosSupportedResponseFormats()
 ```
 
 The response format `"text/csv"` is not standard conform, but used by services as a well established alternative to XML encodings.
+The package `readr` must be installed to parse responses in this format.
 
 ```{r supported02}
 SosSupportedResponseModes()

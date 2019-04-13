@@ -130,8 +130,6 @@ Schemas: \url{http://schemas.opengis.net/filter/1.1.0/}
 
 \section{Warning }{The encoding functions of these classes are not completely implemented yet.}
 
-%\seealso{}
-
 \examples{
 showClass("OgcBBOX")
 showClass("OgcBinarySpatialOp")
@@ -142,8 +140,6 @@ showClass("OgcContains")
 showClass("OgcOverlaps")
 showClass("OgcSpatialOps")
 showClass("OgcSpatialOpsOrNULL")
-
-# TBD examples for construction functions
 }
 
 \keyword{classes}
