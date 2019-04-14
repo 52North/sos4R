@@ -264,7 +264,8 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 - Wait for the good news, check where the package is in the queue with `foghorn::cran_incoming(pkg = "sos4R")`
 - When available on CRAN:
   - Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository
-  - Create a release on GitHub based on the new tag, named just as the version tag
+  - Create a release on GitHub based on the new tag, named just as the version tag, see the file `CRAN-RELEASE` for the precise commit
+  - Remove the file `CRAN-RELEASE`
   - Checkout the `dev` branch
   - Merge `upstream/master`
   - Update the version in `DESCRIPTION` to a new development version, e.g. from `0.3.0` to `0.4.0.9000`
