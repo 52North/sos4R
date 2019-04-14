@@ -28,7 +28,6 @@
 \alias{SosEncodingFunctions}
 \alias{SosDisabledParsers}
 \alias{SosDataFieldConvertingFunctions}
-\alias{SosExampleServices}
 \alias{SosResetParsingFunctions}
 
 \alias{SosDefaults}
@@ -50,8 +49,6 @@ SosEncodingFunctions(..., include = character(0), exclude = character(0))
 SosDataFieldConvertingFunctions(..., include = character(0), exclude = character(0))
 
 SosDisabledParsers()
-
-SosExampleServices()
 
 SosDefaults()
 

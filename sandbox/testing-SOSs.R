@@ -1048,10 +1048,7 @@ gwl.converters <- SosDataFieldConvertingFunctions(
 	"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
 	"http://www.opengis.net/def/property/OGC/0/    /FeatureOfInterest" = sosConvertString)
 
-myopts <- curlOptions(ssl.verifyhost=FALSE, ssl.verifypeer=FALSE, followlocation=TRUE)
-handle <- getCurlHandle( .opts= myopts)
-
-gwl <- SOS(url = "https://geier.gns.cri.nz/ngmp-sos/sos" , dataFieldConverters = gwl.converters, curlHandle=handle)
+gwl <- SOS(url = "https://geier.gns.cri.nz/ngmp-sos/sos" , dataFieldConverters = gwl.converters)
 
 sosOfferings(gwl)
 sosObservedProperties(gwl)

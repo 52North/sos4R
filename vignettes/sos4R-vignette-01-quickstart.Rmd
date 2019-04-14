@@ -81,21 +81,13 @@ demo(package = "sos4R")
 demo("airquality")
 ```
 
-- **ades**: SOS with French groundwater level data - **under construction**.
-- **airquality] The Air Quality SOS by ifgi provides [EEA AirBase**:(http://www.eea.europa.eu/themes/air/airbase) data for Germany (and other countries). It is used for this demo about **spatio-temporal interpolation with inverse distance weighting** of NO2 observation in Germany using the packages `gstat` and `spacetime`.
-- **austria**: SOSs by Research Studios Austria - **under construction**.
 - **ioos**: Example using SOS by the Integrated Ocean Observing System which provides data in different formats (KML, CSV)
-- **marinemeta**: SOS by Marine Metadata Interoperability Initiative - **under construction**.
-- **oceanwatch**: SOS by NOAA/SWFSC/ERD - **under construction**.
+- **oceanwatch**: SOS by NOAA Center for Operational Oceanographic Products and Services (CO-OPS) - _under construction_.
 - **pegel**: Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.
-- **southesk**: SOSs from South Esk Testbed by CSIRO, focuses on **data consolidation/fusion** and **plotting**. It also contains an example for partially changing the encoding by overriding a specific `encodeXML` function.
-- **weathersos**: Time series analysis demo with weather data by ifgi, includes examples for **DescribeSensor** and data extraction from and plotting of **SensorML sensor descriptions**.
 
-There also is an incomplete **list of services** that have been tested or are currently evaluated on the project homepage.
-If you find or can provide new SOS with data useful to others, please do not hesitate to open an issue so that it can be included.
-
-Additionally, a set of SOS URLs are available via the function `SosExampleServices()`.
-Please note that the author of this document does not control these services and does not guarantee for any factors like correctness of data or availability.
+There also is an incomplete **list of services** that have been tested or are currently evaluated on in a vignette.
+If you find or can provide new SOS with data useful to others, please do not hesitate to [open an issue](https://github.com/52North/sos4R/issues) to have it added.
+Please note that the `sos4R` team of this document does not control these services and does not guarantee for any factors like correctness of data or availability.
 
 ### Creating a SOS connection
 

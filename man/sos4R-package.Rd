@@ -51,11 +51,8 @@ The most extensive documenation is contained in the \strong{package vignette}.
 
 \dontrun{
 
-# Take a SOS from the example list
-sos.url = SosExampleServices()[[1]]
-
 # Open the connection
-sos = SOS(url = SOS)
+sos = SOS(url = "<the service endpoint>")
 
 # List offerings, procedures and observedProperties
 names(sosOfferings(sos))
@@ -97,9 +94,6 @@ sosDataFieldConverters(mySos)
 
 # get the cheat sheet
 sosCheatSheet()
-
-# view the NEWS file
-news(package = "sos4R")
 }
 
 }

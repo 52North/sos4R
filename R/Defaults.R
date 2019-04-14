@@ -37,22 +37,6 @@
 #
 sosDefaultServiceVersion <- sos100_version
 
-#
-# A short list of some example services, no guarantee about compatibility with
-# sos4R or quality of data, accessible using accessor/getter function.
-#
-.sosExampleServices <- list(
-  "https://sdf.ndbc.noaa.gov/sos/server.php",
-  "www.pegelonline.wsv.de/webservices/gis/sos"
-)
-names(.sosExampleServices) <- list(
-  "NOAA National Data Buoy Center",
-  "WSV PegelOnline"
-)
-SosExampleServices <- function() {
-  return(.sosExampleServices)
-}
-
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
 .createDefaultParsers <- function() {
