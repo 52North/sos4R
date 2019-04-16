@@ -1,4 +1,4 @@
-# https://github.com/52North/sos4R/issues/33
+# https://github.com/52North/sos4R/issues/33 ----
 
 mySOS <- SOS(url = "http://sos.irceline.be/sos")
 procs <- unique(unlist(sosProcedures(mySOS)))
@@ -7,7 +7,7 @@ S
 
 # > FIXED in dev version
 
-# https://github.com/52North/sos4R/issues/37
+# https://github.com/52North/sos4R/issues/37 ----
 
 testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox", dcpFilter = list("POX" = "/pox"))
 testsosoffering <- sosOfferings(testsos)[[1]]
@@ -15,7 +15,7 @@ obs <- getObservation(sos = testsos, offering = testsosoffering, observedPropert
 sosResult(obs)
 
 
-# https://github.com/52North/sos4R/issues/53
+# https://github.com/52North/sos4R/issues/53 ----
 
 CEH <- SOS("http://192.171.139.63/observations/service",
            binding = "KVP",
@@ -41,7 +41,7 @@ do.call(rbind, lapply(jan1992, function(obj) {
 })
 )
 
-# https://github.com/52North/sos4R/issues/49
+# https://github.com/52North/sos4R/issues/49 ----
 
 irceline <- SOS(url = "http://geo.irceline.be/sos/service",
                 verboseOutput = TRUE,

@@ -156,8 +156,7 @@ Please consider using this extensively as a history to be able to resolve proble
 It is also recommended to run related tests again after (even minor) changes in the code.
 
 * `testing.R` contains tests done during the development of certain functions and is a very good opportunity to (re-)check functionality and keep a history of functionality that is working (at some point in time at least...).
-* `testing-SOSs.R` contains tests of connections to different types of SOS and different SOS instances.
-* `packaging.R` contains the functions for creating package documentation and should be used as the spot to collect useful functions and workflows around future documentation and the packaging process.
+* `testing-SOSs(-2.0).R` contains tests of connections to different types of SOS and different SOS instances.
 
 ### Naming of functions, defaults, and constants
 

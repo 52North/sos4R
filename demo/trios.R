@@ -7,11 +7,13 @@ myConverters <- SosDataFieldConvertingFunctions(
 
 triosSOS <- SOS(url = "http://hspeed.trios.de:8888/52n-sos-webapp/service/kvp",
                 inspect = T, version = "1.0.0",
-                verboseOutput = T, useDCPs = FALSE,
+                #verboseOutput = T,
+                useDCPs = FALSE,
                 binding = "KVP", dcpFilter = list("/KVP"),
                 dataFieldConverters = myConverters)
 
 trios.off <- sosOfferings(triosSOS)
+names(trios.off)
 
 SN.off <- sosOfferings(triosSOS)[[1]]
 trios_time <- sosCreateTimePeriod(
@@ -27,4 +29,14 @@ obs_SN <- getObservation(
   eventTime = sosCreateEventTimeList(trios_time),
   inspect = TRUE
 )
-summary(sosResult(obs_SN))
+
+for (i in c(1:length(obs_SN))) {
+  print(summary(obs_SN[[i]]))
+}
+
+data_1 <- sosResult(obs_SN[[1]])
+
+plot(main = paste0(sosProcedures(obs_SN[[1]]), "\nmeasuring\n", sosObservedProperties(obs_SN[[1]])),
+     x = data_1$phenomenonTime,
+     y = data_1$`http://www.nexosproject.eu/dictionary/definitions.html#XX1_590.460`,
+     pch = 20)
