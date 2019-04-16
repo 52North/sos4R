@@ -32,11 +32,6 @@
 # (https://stat.ethz.ch/pipermail/r-help/2010-July/245480.html)
 #
 
-#
-# defaults for SOS creation ----
-#
-sosDefaultServiceVersion <- sos100_version
-
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
 .createDefaultParsers <- function() {
@@ -480,17 +475,17 @@ SosDefaultDCPs <- function() {
 .sosDefaultParsingOptions <- c(
   #"NOERROR",
   "RECOVER"
-  )
+)
 SosDefaultParsingOptions <- function() {
   return(.sosDefaultParsingOptions)
 }
 
 .getDcpDefaultPattern <- function(dcp) {
   pattern <- switch(dcp,
-    "GET" = "application/x-kvp",
-    "POST" = "application/xml",
-    "KVP" = "application/x-kvp",
-    "POX" = "application/xml",
-    "*"
+                    "GET" = "application/x-kvp",
+                    "POST" = "application/xml",
+                    "KVP" = "application/x-kvp",
+                    "POX" = "application/xml",
+                    "*"
   )
 }

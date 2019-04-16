@@ -143,7 +143,7 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
   \item{file}{Name of the file to be parsed in \code{sosParse(...)}.}
   \item{encoding}{Encoding information in \code{parseValues(...)}, an object of class \code{SweTextBlock}.}
   \item{timeObjectMap}{A named list of time objects passed on during parsing (name is the id) to resolve in-document references.}
-  \item{...}{Additional arguments that are parsed to \code{xmlParse(...)} in \code{sosParse(...)}.}
+  \item{...}{Additional arguments that are parsed to \code{xml2::read_xml(..)}.}
 }
 
 \details{

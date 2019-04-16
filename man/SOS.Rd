@@ -328,7 +328,7 @@ Object from the class can be used in calls to function for metadata retrieval of
 }
 
 \usage{
-SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
+SOS(url, binding = SosDefaultBinding(), version = sos100_version,
 	parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
 	dataFieldConverters = SosDataFieldConvertingFunctions(),
 	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,

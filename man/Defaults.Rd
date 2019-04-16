@@ -22,7 +22,6 @@
 \alias{sosDefaultColumnNameSRS}
 \alias{sosDefaultColorPalette}
 \alias{sosDefaultReferenceFrameSensorDescription}
-\alias{sosDefaultServiceVersion}
 
 \alias{SosParsingFunctions}
 \alias{SosEncodingFunctions}
