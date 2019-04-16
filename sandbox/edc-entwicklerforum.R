@@ -2,7 +2,6 @@
 # Muenster, 17. - 18.02.2011
 # 
 # Author: Daniel Nuest
-# sos4R Webseite (downloads, news): http://www.nordholmen.net/sos4r
 ################################################################################
 
 # SOS ##########################################################################
@@ -538,5 +537,5 @@ vignette("sos4R")
 sosCheatSheet()
 # Mailingliste: http://52north.org/resources/mailing-list-and-forums/
 # Forum:		http://geostatistics.forum.52north.org/
-# Webseite:		http://www.nordholmen.net/sos4r
+# Webseite:		https://github.com/52North/sos4R
 # Kontakt:		d.nuest@52north.org

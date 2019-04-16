@@ -24,7 +24,7 @@
 # Author: - Ben Graler (b.graeler@52north.org)                                 #
 #         - Eike Hinderk Jürrens (e.h.juerrens@52north.org)                    #
 # Created: 2019-01-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 ## handy top level sos functions

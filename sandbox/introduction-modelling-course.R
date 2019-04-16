@@ -56,7 +56,7 @@ cities <- read.csv(paste(getwd(), "/cities.csv", sep = ""))
 # --> Vorteile vom SOS ausnutzen: Wohldefiniertes Markup, Queries
 
 # Was ist sos4R?
-# - Webseite (downloads, news): http://www.nordholmen.net/sos4r
+# - Webseite (code, news): https://github.com/52North/sos4R
 # - Funktionalitaet
 # 	- Core Profile (plug GetObservationById)
 #		- GetCapabilities
@@ -68,16 +68,7 @@ cities <- read.csv(paste(getwd(), "/cities.csv", sep = ""))
 ##### Installation #############################################################
 # Dependencies installieren (werden nicht aufgeloest wenn von Datei installiert 
 # wird):
-install.packages("RCurl")
-install.packages("XML")
-
-# Package herunterladen
-pkgName = "sos4R_0.1-08.tar.gz"
-download.file(url = paste(
-				"http://www.nordholmen.net/sos4r/download/", pkgName, sep =""),
-		destfile = pkgName)
-# Package installieren
-install.packages(paste(getwd(), "/", pkgName, sep = ""))
+install.packages("sos4R")
 
 # Package laden
 library("sos4R")

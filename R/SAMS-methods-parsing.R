@@ -24,8 +24,8 @@
 # Author: Benjamin Pross (b.pross@52north.org),                                #
 #         Jürrens, Eike Hinderk (e.h.juerrens@52north.org)                     #
 # Created: 2016-01-27                                                          #
-# Project: sos4R - visit the project web page,                                 #
-#      http://52north.org/communities/sensorweb/clients/sos4R/                 #
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
 ################################################################################
 
 #
