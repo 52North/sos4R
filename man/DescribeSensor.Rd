@@ -63,9 +63,6 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{}
-%\section{Warning }{}
-
 \seealso{See Also \code{\link{SensorML}} and \link{describeSensor}.}
 
 \examples{
@@ -77,8 +74,17 @@ describeSensorRequest <- SosDescribeSensor(service = "SOS", version = "1.0.0",
 print(describeSensorRequest)
 
 # encode the request in XML
-encodeRequestXML(describeSensorRequest)
+sos <- SOS_Test()
+encodeRequestXML(describeSensorRequest, sos)
+toString(encodeRequestXML(describeSensorRequest, sos))
 
+# request a sensor description
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             binding = "KVP")
+mySensor <- describeSensor(sos = mySOS,
+		procedure = sosProcedures(mySOS)[[1]],
+		outputFormat = 'text/xml; subtype="sensorML/1.0.1"', # space is needed!
+		)
 }
 
 \keyword{classes}

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-06-18                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -39,27 +39,27 @@ setClass("SOS_1.0.0",
          contains = c("SOS"),
          validity = function(object) {
            #print("Entering validation: SOS")
-           
+
            if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
              return(paste("Binding has to be one of",
                           toString(SosSupportedBindings()),
                           "- given:", object@binding))
            }
-           
+
            if(object@version != sos100_version)
              return(paste0("Version must be 1.0.0 but is", object@version))
-           
+
            # url has to match an URL pattern
            .urlPattern = "(?:https?://(?:(?:(?:(?:(?:[a-zA-Z\\d](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:(?:[a-zA-Z\\d]|-)*[a-zA-Z\\d])?))|(?:(?:\\d+)(?:\\.(?:\\d+)){3}))(?::(?:\\d+))?)(?:/(?:(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*)(?:/(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))*)(?:\\?(?:(?:(?:[a-zA-Z\\d$\\-_.+!*'(),]|(?:%[a-fA-F\\d]{2}))|[;:@&=])*))?)?)"
            .result = regexpr(.urlPattern, object@url)
            if (.result == -1)
              return("url not matching URL-pattern (http://www.example.com)")
-           
+
            # test for complete match removed, does not work yet
            #.urlLength = nchar(object@url)
            #if (.urlLength == attr(.result, "match.length"))
            #	return("url not completely matching URL-pattern")
-           
+
            return(TRUE)
          }
 )
@@ -110,11 +110,16 @@ setClass("SosCapabilities_1.0.0",
 # resultModel is QName, intendedApplication is xs:token, and so forth.
 #
 setClass("SosObservationOffering",
-         representation(id = "character", name = "character",
-                        time = "GmlTimeGeometricPrimitive", procedure = "character",
-                        observedProperty = "list", featureOfInterest = "list",
-                        responseFormat = "character", intendedApplication = "character",
-                        resultModel = "character", responseMode = "character",
+         representation(id = "character",
+                        name = "character",
+                        time = "GmlTimeGeometricPrimitive",
+                        procedure = "character",
+                        observedProperty = "list",
+                        featureOfInterest = "list",
+                        responseFormat = "character",
+                        intendedApplication = "character",
+                        resultModel = "character",
+                        responseMode = "character",
                         boundedBy = "list"),
          prototype = list(id = as.character(NA), time = NULL,
                           procedure = as.character(NA), observedProperty = list(NA),
@@ -123,10 +128,10 @@ setClass("SosObservationOffering",
          validity = function(object) {
            #print("Entering validation: ObservationOffering")
            # TODO implement validity function
-           
+
            # time is required
            # procedure, observedProperty, featureOfInterest, responseFormat are all "one or more"
-           
+
            return(TRUE)
          }
 )
@@ -136,7 +141,8 @@ setClass("SosObservationOffering",
 #
 setClass("SosContents",
          representation(observationOfferings = "list"),
-         prototype = list(observationOfferings = list(NA), xml = xmlNode(NA)),
+         prototype = list(observationOfferings = list(NA),
+                          xml = xml2::xml_missing()),
          contains = c("OwsContents"),
          validity = function(object) {
            #print("Entering validation: SosContents")
@@ -175,32 +181,6 @@ setMethod("show", "SosEventTime", function(object) .print.SosEventTime(object))
 setMethod("toString", "SosEventTime", function(x, ...) .toString.SosEventTime(x, ...))
 
 #
-# SosEventTimeLatest ----
-#
-# class needed for the non-standard request for latest value
-#
-setClass("SosEventTimeLatest",
-         representation(temporalOps = "character"),
-         prototype = list(temporalOps = as.character(NA)),
-         validity = function(object) {
-           #print("Entering validation: SosEventTimeLatest")
-           # TODO implement validity function
-           return(TRUE)
-         }
-)
-
-
-.toString.SosEventTimeLatest <- function(x, ...) {
-  paste("Object of class SosEventTimeLatest; temporalOps value:",
-        x@temporalOps)
-}
-
-.print.SosEventTimeLatest <- function(x, ...) {
-  cat(.toString.SosEventTimeLatest(x, ...), "\n")
-  invisible(x)
-}
-
-#
 # SosFeatureOfInterest ----
 #
 setClass("SosFeatureOfInterest",
@@ -222,88 +202,6 @@ setClass("SosFeatureOfInterest",
 setClassUnion(name = "SosFeatureOfInterestOrNULL",
               members = c("SosFeatureOfInterest", "NULL"))
 
-
-################################################################################
-# See OGC 06-009r6
-#
-setClass("SosDescribeSensor",
-         representation(procedure = "character", outputFormat = "character"),
-         prototype = list(service = as.character(NA), version = as.character(NA),
-                          procedure = as.character(NA), outputFormat = as.character(NA)),
-         contains = "OwsServiceOperation",
-         validity = function(object) {
-           #print("Entering validation: sosDescribeSensor")
-           # TODO implement validity function
-           # check format of version, sensorid and outputformat?!
-           if(length(object@procedure) > 1)
-             return("can only request one procedure at a time!")
-           
-           return(TRUE)
-         }
-)
-
-
-################################################################################
-# See SOS specification, OGC 06-009r6, section 8.4
-#
-setClass("SosGetObservation",
-         representation(
-           offering = "character",
-           observedProperty = "list",
-           responseFormat = "character",
-           srsName = "character",
-           eventTime = "list", 
-           procedure = "character", 
-           featureOfInterest = "SosFeatureOfInterestOrNULL", 
-           result = "ANY", # OgcComparisonOpsOrXMLOrNULL
-           resultModel = "character",
-           responseMode = "character",
-           BBOX = "character"),
-         prototype = list(
-           service = as.character(NA),
-           version = as.character(NA),
-           offering = as.character(NA),
-           observedProperty = list(NA),
-           responseFormat = as.character(NA)),
-         contains = "OwsServiceOperation",
-         validity = function(object) {
-           #print("Entering validation: SosGetObservation")
-           # TODO implement validity function
-           
-           # service, version, offering, observedProperty, and responseFormat are mandatory
-           if(is.na(object@service))
-             return("service parameter must be given")
-           if(is.na(object@version))
-             return("version must be given")
-           if(is.na(object@offering))
-             return("offering parameter must be given")
-           # responseFormat is optional for GET
-           #if(is.na(object@responseFormat))
-           #	return("responseFormat parameter must be given")
-           if(length(object@observedProperty) < 1)
-             return("at least one observedProperty is mandatory")
-           
-           # if version is there, it hast to be in a certain format, see ows common
-           # srsName, offering, procedure, observedProperty are anyURIs
-           # eventTime is a list of ogc:temporalOps
-           # featureOfInterest is null or a SosFeatureOfInterest element
-           
-           # result is null or an ogc:comparisonOps element
-           cls <- class(slot(object, "result"))
-           #			print(paste("class of result slot: ", cls))
-           if ( !any(cls %in% c("OgcComparisonOps", "XMLNode", "NULL",
-                                "XMLAbstractNode", "XMLInternalNode"))) {
-             return("'response' argument does not have allowed class!")
-           }
-           
-           # responseFormat must be MIME content type
-           # resultModel must be a QName
-           # responseMode must be one of inline, out-of-band, attached, or resultTemplate
-           return(TRUE)
-         }
-)
-
-
 ################################################################################
 # See SOS specification, OGC 06-009r6, section 10.1
 #
@@ -321,7 +219,7 @@ setClass("SosGetObservationById",
          validity = function(object) {
            #print("Entering validation: SosGetObservationById")
            # TODO implement validity function
-           
+
            # service, version, observationId, and responseFormat are mandatory
            if(is.na(object@service))
              return("service parameter must be given")
@@ -331,7 +229,7 @@ setClass("SosGetObservationById",
              return("observationId parameter must be given")
            if(is.na(object@responseFormat))
              return("responseFormat parameter must be given")
-           
+
            # if version is there, it hast to be in a certain format, see ows common
            # responseFormat must be MIME content type
            # resultModel must be a QName

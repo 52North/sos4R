@@ -101,23 +101,23 @@ The following classes are virtual and no objects may be created from it: \code{O
 
 \usage{
 OwsCapabilities(version, updateSequence = NA, owsVersion = sosDefaultGetCapOwsVersion,
-                identification = NULL, provider = NULL, operations = NULL, 
+                identification = NULL, provider = NULL, operations = NULL,
                 contents = NULL, languages = NULL)
 OwsException(exceptionCode, exceptionText = c(), locator = as.character(NA))
 OwsExceptionReport(version, lang = as.character(NA), exceptions = list(NA))
-OwsGetCapabilities(service, acceptVersions, sections = sosDefaultGetCapSections, 
-                   acceptFormats = sosDefaultGetCapAcceptFormats, 
-                   updateSequence = c(as.character(NA)), 
+OwsGetCapabilities(service, acceptVersions, sections = sosDefaultGetCapSections,
+                   acceptFormats = sosDefaultGetCapAcceptFormats,
+                   updateSequence = c(as.character(NA)),
                    owsVersion = sosDefaultGetCapOwsVersion, acceptLanguages = c(NA))
 OwsOperation(name, DCPs, parameters = list(NA), constraints = list(NA),
              metadata = list(NA))
-OwsOperationsMetadata(operations, parameters = list(NA), constraints = list(NA), 
-                      extendedCapabilities = xmlNode(NA))
-OwsRange(minimumValue = as.character(NA), maximumValue = as.character(NA), 
+OwsOperationsMetadata(operations, parameters = list(NA), constraints = list(NA),
+                      extendedCapabilities = xml2::xml_missing())
+OwsRange(minimumValue = as.character(NA), maximumValue = as.character(NA),
          rangeClosure = as.character(NA), spacing = as.character(NA))
-OwsServiceProvider(providerName, providerSite = as.character(NA), 
-                   serviceContact = xmlNode(NA))
-OwsServiceIdentification(serviceType, serviceTypeVersion, profile = c(NA), title, 
+OwsServiceProvider(providerName, providerSite = as.character(NA),
+                   serviceContact = xml2::xml_missing())
+OwsServiceIdentification(serviceType, serviceTypeVersion, profile = c(NA), title,
                          abstract = c(NA), keywords = c(NA), fees = as.character(NA),
                          accessConstraints = c(NA))
 }
@@ -269,10 +269,6 @@ Whiteside A., Greenwood, J. (Eds.), OGC Web Services Common Standard, Open Geosp
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-%\seealso{}
-
 \examples{
 showClass("OwsCapabilities_1.1.0")
 showClass("OwsCapabilities_2.0.0")
@@ -292,9 +288,6 @@ showClass("OwsServiceIdentificationOrNULL")
 showClass("OwsServiceOperation")
 showClass("OwsServiceProvider")
 showClass("OwsServiceProviderOrNULL")
-
-# TBD examples for construction functions
-
 }
 
 \keyword{classes}
