@@ -26,9 +26,7 @@
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
-library(webmockr)
-library(httr)
-library(stringr)
+
 webmockr::enable("httr")
 webmockr::httr_mock()
 context("convenience layer -> phenomena()")
@@ -108,3 +106,6 @@ test_that("KVP::phenomena() returns an empty list of phenomena as one column dat
   expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "correct column name")
   expect_equal(nrow(dataFrameOfPhenomena), 0, info = "number of unique phenomena")
 })
+
+webmockr::disable("httr")
+
