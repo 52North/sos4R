@@ -31,7 +31,7 @@
 # construction functions ----
 #
 SOS <- function(url, binding = SosDefaultBinding(),
-                version = sosDefaultServiceVersion,
+                version = sos100_version,
                 parsers = SosParsingFunctions(),
                 encoders = SosEncodingFunctions(),
                 dataFieldConverters = SosDataFieldConvertingFunctions(),
@@ -73,8 +73,7 @@ SOS <- function(url, binding = SosDefaultBinding(),
     cat("[sos4R] Created SOS for URL", url, "\n")
     return(.sos)
   }
-
-  if (version == sos200_version) {
+  else if (version == sos200_version) {
     .sos <- new("SOS_2.0.0",
                 url = url,
                 binding = binding,
@@ -154,13 +153,17 @@ SosObservationOffering <- function(id,
                                    resultModel = as.character(NA),
                                    responseMode = as.character(NA),
                                    boundedBy = list()) {
-  new("SosObservationOffering", id = id, name = name,
-      time = time, procedure = procedure,
+  new("SosObservationOffering",
+      id = id,
+      name = name,
+      time = time,
+      procedure = procedure,
       observedProperty = observedProperty,
       featureOfInterest = featureOfInterest,
       responseFormat = responseFormat,
       intendedApplication = intendedApplication,
-      resultModel = resultModel, responseMode = responseMode,
+      resultModel = resultModel,
+      responseMode = responseMode,
       boundedBy = boundedBy)
 }
 

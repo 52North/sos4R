@@ -190,21 +190,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
                                xpath = paste0(sos200ObservedAreaName, "/", gmlEnvelopeName),
                                ns = namespaces)
   if (!is.na(.env)) {
-    .observedArea <- list(
-      srsName = xml2::xml_attr(x = .env, attr = "srsName"),
-      lowerCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlLowerCornerName)),
-      upperCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlUpperCornerName))
-    )
-
-    if (sosSwitchCoordinates(sos)) {
-      warning("Switching coordinates in envelope of ObservationOffering!")
-      .origLC <- strsplit(x = .observedArea[["lowerCorner"]], split = " ")
-      .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
-      .origUC <- strsplit(x = .observedArea[["upperCorner"]], split = " ")
-      .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .observedArea <- list(srsName = xml2::xml_attr(x = .env, attr = "srsName"),
-                            lowerCorner = .lC, upperCorner = .uC)
-    }
+    .observedArea <- parseEnvelope(obj = .env, sos = sos, verbose = sos@verboseOutput, namespaces = namespaces)
 
     if (sos@verboseOutput) cat("[parseSosObservationOffering_200] boundedBy:", toString(.observedArea), "\n")
   }
