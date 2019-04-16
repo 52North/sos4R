@@ -529,10 +529,8 @@ setMethod(f = "sosGetCRS",
 }
 
 .sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
-
   if (length(pattern) == 0) {
-    if (verbose)
-      cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
+    if (verbose) cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
     return(dcp)
   }
 
@@ -542,9 +540,11 @@ setMethod(f = "sosGetCRS",
 
   .idx <- grep(pattern = pattern, x = dcp)
   .filtered <- dcp[.idx]
-  if (verbose)
-    cat("[.sosFilterDCPs] Filtered from\n\t", toString(dcp), "\n\tto\n\t",
-        toString(.filtered), "\n")
+  if (verbose) cat("[.sosFilterDCPs] Filtered from\n\t",
+                   toString(dcp), "\n\tto\n\t", toString(.filtered), "\n")
+
+  if (length(.filtered) != 1) warnings("DCP filtering did not lead to unique result: ",
+                                       toString(.filtered))
 
   return(.filtered)
 }

@@ -125,3 +125,67 @@ niwa@capabilities <- parseSosCapabilities200(obj = xml2::read_xml("../responses/
 test_that("provider is parsed correctly", {
   expect_equal(sosServiceProvider(niwa)@providerName, "NIWA")
 })
+
+
+context("parsing: OwsOperation 2.0.0 with Content-Type")
+
+operationXml200 <- '<ows:Operation name="DescribeSensor" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/kvp?">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/x-kvp</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/xml</ows:Value>
+								<ows:Value>text/xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+					<ows:Post xlink:href="http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/soap">
+						<ows:Constraint name="Content-Type">
+							<ows:AllowedValues>
+								<ows:Value>application/soap+xml</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Post>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="outputFormat">
+				<ows:AllowedValues>
+					<ows:Value>text/xml; subtype="sensorML/1.0.1/profiles/ioos_sos/1.0"</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>'
+
+test_that("name", {
+  doc <- xml2::read_xml(x = operationXml200)
+  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  expect_equal(sosName(operation), "DescribeSensor")
+})
+
+test_that("DCP", {
+  doc <- xml2::read_xml(x = operationXml200)
+  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  expect_length(operation@DCPs, 4)
+  expect_named(operation@DCPs, c("ows:Get", "ows:Post", "ows:Post", "ows:Post"))
+  expect_equal(operation@DCPs[[3]], list("ows:Post", "text/xml", "http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox"))
+})
+
+test_that("parameter names", {
+  doc <- xml2::read_xml(x = operationXml200)
+  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  expect_named(operation@parameters, c("outputFormat"))
+})
+
+test_that("parameter values", {
+  doc <- xml2::read_xml(x = operationXml200)
+  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  expect_length(operation@parameters[["outputFormat"]], 1)
+  expect_equal(operation@parameters[["outputFormat"]], list('text/xml; subtype="sensorML/1.0.1/profiles/ioos_sos/1.0"'))
+})

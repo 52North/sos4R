@@ -31,20 +31,55 @@
 # parsing an ows:Operation ----
 #
 parseOwsOperation <- function(obj, namespaces = SosAllNamespaces()) {
-  .name <- xml2::xml_attr(x = obj, attr = "name")
+  name <- xml2::xml_attr(x = obj, attr = "name")
 
-  .dcpsXML <- xml2::xml_find_all(x = obj, xpath = owsDCPName, ns = namespaces)
-  .dcps <- list()
-  for (.dcp in .dcpsXML) {
-    .http <- xml2::xml_child(x = .dcp, search = owsHTTPName, ns = namespaces)
-    .endpoints <- xml2::xml_find_all(x = .http, xpath = paste0(owsGetName, "|", owsPostName), ns = namespaces)
+  dcpsXML <- xml2::xml_find_all(x = obj, xpath = owsDCPName, ns = namespaces)
+  dcps <- list()
+  for (dcp in dcpsXML) {
+    http <- xml2::xml_child(x = dcp, search = owsHTTPName, ns = namespaces)
+    endpoints <- xml2::xml_find_all(x = http, xpath = paste0(owsGetName, "|", owsPostName), ns = namespaces)
 
-    for (.ep in .endpoints) {
-      .newEndpoint <- list(xml2::xml_attr(x = .ep, attr = "xlink:href", ns = namespaces))
-      names(.newEndpoint) <- xml2::xml_name(x = .ep, ns = namespaces)
-      .dcps <- c(.dcps, .newEndpoint)
+    for (ep in endpoints) {
+      #.newEndpoint <- list(xml2::xml_attr(x = .ep, attr = "xlink:href", ns = namespaces))
+      #names(.newEndpoint) <- xml2::xml_name(x = .ep, ns = namespaces)
+      #.dcps <- c(.dcps, .newEndpoint)
+
+      httpMethod <- xml2::xml_name(x = ep, ns = namespaces)
+      href <- xml2::xml_attr(x = ep, attr = "xlink:href", ns = namespaces)
+
+      constraints <- xml2::xml_find_all(x = ep, xpath = owsConstraintName, ns = namespaces)
+      if (!length(constraints)) {
+        contentTypes <- list(NA)
+      }
+      else {
+        contentTypes <- list()
+
+        for (constraint in constraints) {
+          if (xml2::xml_attr(x = constraint, attr = "name") == owsContentTypeConstraintName) {
+
+            allowedValuesXml <- xml2::xml_find_all(x = constraint,
+                                                   xpath = paste0(owsAllowedValuesName, "/", owsValueName),
+                                                   ns = namespaces)
+            if (length(allowedValuesXml) > 0) {
+              contentTypes <- c(contentTypes, xml2::xml_text(allowedValuesXml))
+            }
+          }
+        }
+
+        if (!length(contentTypes)) contentTypes <- list(NA)
+      }
+
+      for (contentType in contentTypes) {
+        dcp <- list()
+        dcp[[owsDcpHttpMethodIndex]] <- httpMethod
+        dcp[[owsDcpContentTypeIndex]] <- contentType
+        dcp[[owsDcpUrlIndex]] <- href
+        dcps[[length(dcps) + 1]] <- dcp
+      }
     }
   }
+
+  names(dcps) <- sapply(X = dcps, FUN = function(x) {x[[owsDcpHttpMethodIndex]]})
 
   .parametersXML <- xml2::xml_find_all(x = obj, xpath = owsParameterName, ns = namespaces)
   .parameters = list()
@@ -81,80 +116,20 @@ parseOwsOperation <- function(obj, namespaces = SosAllNamespaces()) {
     names(.parameters) <- .names
   }
 
-  if (any(sapply(names(obj), "==", owsConstraintName)))
-    warning("constraint elements are NOT processed!")
-  .constraints = list(NA)
+  if (length(xml2::xml_find_all(x = obj, xpath = owsConstraintName)))
+    warning("operation level constraint elements are NOT processed!")
+  constraints = list(NA)
 
-  if (any(sapply(names(obj), "==", owsMetadataName)))
-    warning("metadata elements are NOT processed!")
-  .metadata = list(NA)
+  if (length(xml2::xml_find_all(x = obj, xpath = owsMetadataName)))
+    warning("operation level metadata elements are NOT processed!")
+  metadata = list(NA)
 
-  .op <- OwsOperation(name = .name,
-                      DCPs = .dcps,
+  .op <- OwsOperation(name = name,
+                      DCPs = dcps,
                       parameters = .parameters,
-                      constraints = .constraints,
-                      metadata = .metadata)
+                      constraints = constraints,
+                      metadata = metadata)
   return(.op)
-}
-
-.parseDCPs <- function(obj) {
-  .dcpsXML <- .filterXmlChildren(obj, owsDCPName)
-  .dcps <- list()
-  for(.dcp in .dcpsXML) {
-    .http <- .dcp[[owsHTTPName]]
-    .endpoints <- c(
-      .filterXmlChildren(.http, owsGetName),
-      .filterXmlChildren(.http, owsPostName))
-
-    for(.endpoint in .endpoints) {
-      .httpMethod <- xmlName(.endpoint)
-      .href <- xmlGetAttr(.endpoint, "href")
-      .contentTypes <- .getContentTypes(.endpoint)
-
-      for (.contentType in .contentTypes) {
-        .dcps[[length(.dcps) + 1]] <- list(.httpMethod, .contentType, .href)
-      }
-    }
-  }
-  return(.dcps)
-}
-
-#
-# getting content types from operation constraints ----
-#
-# <ows:Get xlink:href="http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?">
-#  <ows:Constraint name="Content-Type">
-#   <ows:AllowedValues>
-#    <ows:Value>application/x-kvp</ows:Value>
-#   </ows:AllowedValues>
-#  </ows:Constraint>
-# </ows:Get>
-#
-# If constraint is not available, use NA as content type
-#
-.getContentTypes <- function(endpointXml) {
-  .constraints <- .filterXmlChildren(endpointXml, owsConstraintName)
-  if (!length(.constraints)) {
-    return(list(NA))
-  }
-  .contentTypeConstraintFound <- FALSE
-  .contentTypes <- list()
-  for (.constraint in .constraints) {
-    if (xmlGetAttr(.constraint, "name") == owsContentTypeConstraintName) {
-      .allowedValues <- .filterXmlChildren(.constraint, owsAllowedValuesName)
-      for (.allowedValue in .allowedValues) {
-        .values <- .filterXmlChildren(.allowedValue, owsValueName)
-        for (.value in .values) {
-          .contentTypeConstraintFound <- TRUE
-          .contentTypes <- c(.contentTypes, xmlValue(.value))
-        }
-      }
-    }
-  }
-  if (!.contentTypeConstraintFound) {
-    return(list(NA))
-  }
-  return(.contentTypes)
 }
 
 #

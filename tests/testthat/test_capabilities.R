@@ -29,7 +29,7 @@
 
 context("capabilities: composite phenomenon")
 
-compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml" 
+compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml"
 xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink"
 gml:id="WaterQuality" dimension="4">
 <gml:name>WaterQuality</gml:name>
@@ -59,8 +59,8 @@ test_that("composite phenomenon components are parsed from snippet", {
     expect_that(.phen@components[[2]]@href, equals("urn:ogc:def:property:OGC-SWE:2:ID"))
 })
 
-compositePhenOffering <- '<sos:ObservationOffering gml:id="Water" 
-xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml" 
+compositePhenOffering <- '<sos:ObservationOffering gml:id="Water"
+xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml"
 xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink">
     <sos:observedProperty>
         <swe:CompositePhenomenon gml:id="WaterQuality" dimension="4">
@@ -289,7 +289,9 @@ test_that("DCP", {
   doc <- xml2::read_xml(x = operationXml)
   operation <- parseOwsOperation(obj = doc)
   expect_named(operation@DCPs, c("ows:Get", "ows:Post"))
-  expect_equal(operation@DCPs[[2]], "http://sos/POST")
+  expect_equal(operation@DCPs[[2]][[owsDcpUrlIndex]], "http://sos/POST")
+  expect_equal(operation@DCPs[[2]][[owsDcpContentTypeIndex]], NA)
+  expect_equal(operation@DCPs[[2]][[owsDcpHttpMethodIndex]], "ows:Post")
 })
 
 test_that("parameter names", {

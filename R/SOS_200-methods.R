@@ -114,14 +114,14 @@ setMethod(f = "getObservation",
                          resultModel, responseMode, BBOX, verbose, inspect,
                          saveOriginal) {
             if (verbose)	cat("[getObservation] Requesting offering", offering,
-                            "by name.\n")
+                             "by name.\n")
 
             .off <- sosOfferings(sos)[[offering]]
 
             if (length(observedProperty) == 0) {
               .obsProps <- sosObservableProperties(.off)
               if (verbose) cat("[getObservation] Got observation(s) from offering because none given:",
-                              toString(.obsProps), "\n")
+                               toString(.obsProps), "\n")
             }
             else {
               .obsProps <- observedProperty
