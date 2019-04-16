@@ -343,8 +343,9 @@ if (!isGeneric("sosBoundedBy"))
 setMethod(f = "sosBoundedBy",
           signature = signature(obj = "SosObservationOffering"),
           definition = function(obj, bbox = FALSE) {
-    return(.boundedBy(obj, bbox))
-  })
+            boundedBy <- .boundedBy(obj, bbox)
+            return(boundedBy)
+          })
 setMethod(f = "sosBoundedBy",
           signature = signature(obj = "list"),
           definition = function(obj, bbox = FALSE) {
@@ -354,17 +355,18 @@ setMethod(f = "sosBoundedBy",
 setMethod(f = "sosBoundedBy",
           signature = signature(obj = "OmObservationCollection"),
           definition = function(obj, bbox = FALSE) {
-            return(.boundedBy(obj, bbox))
+            boundedBy <- .boundedBy(obj, bbox)
+            return(boundedBy)
           })
 .boundedBy <- function(obj, bbox) {
-  .bb <- NA
+  bb <- NA
 
-  if(bbox) {
+  if (bbox) {
     .lC <- strsplit(x = obj@boundedBy[["lowerCorner"]], split = " ")[[1]]
     .uC <- strsplit(x = obj@boundedBy[["upperCorner"]], split = " ")[[1]]
 
     warning <- FALSE
-    if((length(.lC) < 2)) {
+    if ((length(.lC) < 2)) {
       min1 <- 0
       min2 <- 0
       warning <- TRUE
@@ -373,7 +375,7 @@ setMethod(f = "sosBoundedBy",
       min1 <- as.double(.lC[[1]])
       min2 <- as.double(.lC[[2]])
     }
-    if((length(.uC) < 2)) {
+    if ((length(.uC) < 2)) {
       max1 <- 0
       max2 <- 0
       warning <- TRUE
@@ -383,17 +385,18 @@ setMethod(f = "sosBoundedBy",
       max2 <- as.double(.uC[[2]])
     }
 
-    if(warning) warning(paste("No valid bounding box found for", sosId(obj)))
+    if (warning) warning(paste("No valid bounding box found for", sosId(obj)))
 
-    .bb <- matrix(c(min2, min1, max2, max1), ncol = 2,
-                  dimnames = list(c("coords.lon", "coords.lat"),
+    bb <- matrix(c(min2, min1, max2, max1),
+                 ncol = 2,
+                 dimnames = list(c("coords.lon", "coords.lat"),
                                   c("min", "max")))
   }
   else {
-    .bb <- obj@boundedBy
+    bb <- obj@boundedBy
   }
 
-  return(.bb)
+  return(bb)
 }
 
 if (!isGeneric("sosOfferings"))

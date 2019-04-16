@@ -114,12 +114,14 @@ parseTimeInstantProperty <- function(obj, sos) {
 }
 
 parseTimePosition <- function(obj, sos) {
-  .time <- sosConvertTime(xml2::xml_text(x = obj), sos = sos)
+  .indeterminatePosition <- xml2::xml_attr(x = obj, attr = "indeterminatePosition", default = NA_character_)
+  if (is.na(.indeterminatePosition))
+    .time <- sosConvertTime(xml2::xml_text(x = obj), sos = sos)
+  else .time <- as.POSIXct(NA)
 
   # optional:
   .frame <- xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
   .calendarEraName <- xml2::xml_attr(x = obj, attr = "calendarEraName", default = NA_character_)
-  .indeterminatePosition <- xml2::xml_attr(x = obj, attr = "indeterminatePosition", default = NA_character_)
 
   .timePosition <- GmlTimePosition(time = .time, frame = .frame,
                                    calendarEraName = .calendarEraName,
@@ -234,7 +236,7 @@ parseFeatureCollection <- function(obj, sos) {
 }
 
 #
-#
+# value parsing ----
 #
 parseMeasure <- function(obj) {
   .value <- as.numeric(xml2::xml_text(x = obj))
@@ -243,3 +245,32 @@ parseMeasure <- function(obj) {
   return(.result)
 }
 
+
+#
+# spatial parsing ----
+#
+parseEnvelope <- function(obj, sos, namespaces = xml2::xml_ns(obj), verbose = FALSE) {
+  env <- list(
+    srsName = xml2::xml_attr(x = obj, attr = "srsName"),
+    lowerCorner = xml2::xml_text(x = xml2::xml_child(x = obj,
+                                                     search = gmlLowerCornerName,
+                                                     ns = namespaces)),
+    upperCorner = xml2::xml_text(x = xml2::xml_child(x = obj,
+                                                     search = gmlUpperCornerName,
+                                                     ns = namespaces))
+  )
+
+  if (verbose) cat("[parseObservationCollection] Parsed envelope:", toString(env), "\n")
+
+  if (sosSwitchCoordinates(sos)) {
+    warning("Switching coordinates in envelope!")
+    .origLC <- strsplit(x = env[["lowerCorner"]], split = " ")
+    .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
+    .origUC <- strsplit(x = env[["upperCorner"]], split = " ")
+    .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
+    env <- list(srsName = xml2::xml_attr(x = obj, attr = "srsName"),
+                lowerCorner = .lC, upperCorner = .uC)
+  }
+
+  return(env)
+}

@@ -92,3 +92,81 @@ test_that("time interval", {
 
   expect_match(encodedString, '<gml:timeInterval unit="hr" radix="17" factor="2">everyother</gml:timeInterval>')
 })
+
+context("parsing: GML")
+
+periodXml <- '<gml:TimePeriod xmlns:gml="http://www.opengis.net/gml">
+  <gml:beginPosition>2006-01-01T00:10:00Z</gml:beginPosition>
+  <gml:endPosition>2007-01-01T00:10:00Z</gml:endPosition>
+</gml:TimePeriod>'
+
+test_that("indetermindate end position in TimePeriod", {
+  period <- parseTimePeriod(obj = xml2::read_xml(periodXml), sos = testsos)
+
+  expect_s4_class(period, "GmlTimePeriod")
+  expect_equal(period@begin, NULL)
+  expect_equal(period@end, NULL)
+  expect_s4_class(period@beginPosition, "GmlTimePosition")
+  expect_s4_class(period@endPosition, "GmlTimePosition")
+  expect_s3_class(period@beginPosition@time, "POSIXt")
+  expect_s3_class(period@endPosition@time, "POSIXt")
+  expect_equal(period@beginPosition@time, sosConvertTime("2006-01-01T00:10:00Z", testsos))
+  expect_equal(period@endPosition@time, sosConvertTime("2007-01-01T00:10:00Z", testsos))
+})
+
+indeterminatePeriodXml <- '<gml:TimePeriod xmlns:gml="http://www.opengis.net/gml">
+  <gml:beginPosition>2006-01-01T00:10:00Z</gml:beginPosition>
+  <gml:endPosition indeterminatePosition="now"/>
+</gml:TimePeriod>'
+
+test_that("indeterminate end position in TimePeriod", {
+  period <- parseTimePeriod(obj = xml2::read_xml(indeterminatePeriodXml), sos = testsos)
+
+  expect_s4_class(period, "GmlTimePeriod")
+  expect_equal(period@begin, NULL)
+  expect_equal(period@end, NULL)
+  expect_s4_class(period@beginPosition, "GmlTimePosition")
+  expect_s4_class(period@endPosition, "GmlTimePosition")
+  expect_true(is.na(period@endPosition@time))
+  expect_equal(period@endPosition@indeterminatePosition, "now")
+})
+
+test_that("accessor function translates indeterminate time 'now' to current time", {
+  period <- parseTimePeriod(obj = xml2::read_xml(indeterminatePeriodXml), sos = testsos)
+
+  time <- sosTime(period)
+  expect_s3_class(time$begin, "POSIXt")
+  expect_s3_class(time$end, "POSIXt")
+
+  expect_equal(toString(time$begin), toString(sosConvertTime(x = "2006-01-01T00:10:00Z", sos = testsos)))
+  diff <- time$end - Sys.time()
+  expect_equal(attr(diff, "units"), "secs")
+  expect_true(abs(diff) < 1)
+})
+
+envelopeXml <- '<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326" xmlns:gml="http://www.opengis.net/gml">
+    <gml:lowerCorner>-55 -178.343</gml:lowerCorner>
+    <gml:upperCorner>71.758 180</gml:upperCorner>
+  </gml:Envelope>'
+
+test_that("boundedBy", {
+  env <- parseEnvelope(obj = xml2::read_xml(envelopeXml), sos = testsos)
+
+  expect_true(is.list(env))
+  expect_named(env, c("srsName", "lowerCorner", "upperCorner"))
+  expect_equal(env$srsName, "http://www.opengis.net/def/crs/EPSG/0/4326")
+  expect_equal(env$lowerCorner, "-55 -178.343")
+  expect_equal(env$upperCorner, "71.758 180")
+})
+
+test_that("boundedBy with coordinate switing", {
+  switchsos <- SOS_Test(name = "testswitchgml", switchCoordinates = TRUE)
+  expect_warning(env <- parseEnvelope(obj = xml2::read_xml(envelopeXml), sos = switchsos),
+                 "Switching coordinates in envelope")
+
+  expect_true(is.list(env))
+  expect_named(env, c("srsName", "lowerCorner", "upperCorner"))
+  expect_equal(env$srsName, "http://www.opengis.net/def/crs/EPSG/0/4326")
+  expect_equal(env$lowerCorner, "-178.343 -55")
+  expect_equal(env$upperCorner, "180 71.758")
+})

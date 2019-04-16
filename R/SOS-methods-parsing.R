@@ -51,9 +51,9 @@ parseSosObservationOffering <- function(obj, sos) {
                                               xpath = sosFeatureOfInterestName,
                                               ns = SosAllNamespaces())
   .featureOfInterest <- lapply(X = .featureOfInterestXml,
-                              FUN = xml2::xml_attr,
-                              attr = "xlink:href",
-                              ns = SosAllNamespaces())
+                               FUN = xml2::xml_attr,
+                               attr = "xlink:href",
+                               ns = SosAllNamespaces())
   if (sos@verboseOutput) cat("[parseSosObservationOffering] featureOfInterest:", toString(.featureOfInterest), "\n")
 
   .procedureXml <- xml2::xml_find_all(x = obj,
@@ -71,8 +71,8 @@ parseSosObservationOffering <- function(obj, sos) {
   if (sos@verboseOutput) cat("[parseSosObservationOffering] responseFormat:", toString(.responseFormat), "\n")
 
   .responseMode <- xml2::xml_text(xml2::xml_find_all(x = obj,
-                                                       xpath = sosResponseModeName,
-                                                       ns = SosAllNamespaces()))
+                                                     xpath = sosResponseModeName,
+                                                     ns = SosAllNamespaces()))
   if (sos@verboseOutput) cat("[parseSosObservationOffering] responseMode:", toString(.responseMode), "\n")
 
   .timeXml <- xml2::xml_child(x = obj, search = sosTimeName, ns = SosAllNamespaces())
@@ -92,34 +92,20 @@ parseSosObservationOffering <- function(obj, sos) {
   if (sos@verboseOutput) cat("[parseSosObservationOffering] resultModel:", toString(.resultModel), "\n")
 
   .intendedApplication <- xml2::xml_text(xml2::xml_find_all(x = obj,
-                                                    xpath = sosIntendedApplicationName,
-                                                    ns = SosAllNamespaces()))
+                                                            xpath = sosIntendedApplicationName,
+                                                            ns = SosAllNamespaces()))
   if (sos@verboseOutput) cat("[parseSosObservationOffering] intendedApplication:", toString(.intendedApplication), "\n")
 
   .env <- xml2::xml_find_first(x = obj,
                                xpath = paste0(gmlBoundedByName, "/", gmlEnvelopeName),
                                ns = SosAllNamespaces())
   if (!is.na(.env)) {
-    .boundedBy <- list(
-      srsName = xml2::xml_attr(x = .env, attr = "srsName"),
-      lowerCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlLowerCornerName)),
-      upperCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlUpperCornerName))
-      )
+    boundedBy <- parseEnvelope(obj = .env, sos = sos, verbose = sos@verboseOutput, namespaces = SosAllNamespaces())
 
-    if (sosSwitchCoordinates(sos)) {
-      warning("Switching coordinates in envelope of ObservationOffering!")
-      .origLC <- strsplit(x = .boundedBy[["lowerCorner"]], split = " ")
-      .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
-      .origUC <- strsplit(x = .boundedBy[["upperCorner"]], split = " ")
-      .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .boundedBy <- list(srsName = xml2::xml_attr(x = .env, attr = "srsName"),
-                         lowerCorner = .lC, upperCorner = .uC)
-    }
-
-    if (sos@verboseOutput) cat("[parseSosObservationOffering] boundedBy:", toString(.boundedBy), "\n")
+    if (sos@verboseOutput) cat("[parseSosObservationOffering] boundedBy:", toString(boundedBy), "\n")
   }
   else {
-    .boundedBy <- list()
+    boundedBy <- list()
   }
 
   .ob <- SosObservationOffering(id = .id,
@@ -132,7 +118,7 @@ parseSosObservationOffering <- function(obj, sos) {
                                 intendedApplication = .intendedApplication,
                                 resultModel = .resultModel,
                                 responseMode = .responseMode,
-                                boundedBy = .boundedBy)
+                                boundedBy = boundedBy)
 
   if (sos@verboseOutput)
     cat("[parseSosObservationOffering] done: ", toString(.ob), "\n")
@@ -395,16 +381,16 @@ parseSosFilter_Capabilities <- function(obj, sos) {
     }
 
     .scalar.compXML <- xml2::xml_child(x = .scalarXML,
-                                          search = ogcComparisonOperatorsName,
-                                          ns = SosAllNamespaces())
+                                       search = ogcComparisonOperatorsName,
+                                       ns = SosAllNamespaces())
     if (!is.na(.scalar.compXML)) {
       .scalar.comp <- xml2::xml_text(xml2::xml_children(x = .scalar.compXML))
       .scalar <- c(.scalar, .scalar.comp)
     }
 
     .scalar.arithmXML <- xml2::xml_child(x = .scalarXML,
-                                       search = ogcArithmeticOperatorsName,
-                                       ns = SosAllNamespaces())
+                                         search = ogcArithmeticOperatorsName,
+                                         ns = SosAllNamespaces())
     if (!is.na(.scalar.arithmXML)) {
       .scalar.arithm <- xml2::xml_text(.scalar.arithmXML)
       .scalar <- c(.scalar, .scalar.arithm)
@@ -454,8 +440,8 @@ setMethod(f = "parseFile",
               .opName <- sosDescribeSensorName
             }
             else if (.name == omObservationCollectionName ||
-                    .name == omObservationName ||
-                    .name == omMeasurementName)  {
+                     .name == omObservationName ||
+                     .name == omMeasurementName)  {
               .opName <- sosGetObservationName
             }
             else if (.name == owsExceptionReportName) {
@@ -485,6 +471,9 @@ setMethod(f = "parseFile",
           }
 )
 
+#
+# parse comma seperated values ----
+#
 parseCSV <- function(obj, verbose = FALSE) {
   if (verbose) cat("[parseCSV] Parsing CSV...\n")
 
@@ -535,7 +524,7 @@ parseCSV <- function(obj, verbose = FALSE) {
 
 
 #
-# parse KML ----
+# parse Keyhole Markup Language ----
 #
 parseKML <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseKML] Processing KML... returning raw object!\n")

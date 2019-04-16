@@ -191,26 +191,11 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
 
   .env <- xml2::xml_child(x = obj, search = paste0(gmlBoundedByName, "/", gmlEnvelopeName))
   if (!is.na(.env)) {
-    .boundedBy <- list(
-      srsName = xml2::xml_attr(x = .env, attr = "srsName", ns = SosAllNamespaces()),
-      lowerCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlLowerCornerName, ns = SosAllNamespaces())),
-      upperCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlUpperCornerName, ns = SosAllNamespaces())))
-
-    if (verbose) cat("[parseObservationCollection] Parsed envelope:", toString(.boundedBy), "\n")
-
-    if (sosSwitchCoordinates(sos)) {
-      warning("Switching coordinates in envelope of ObservationCollection!")
-      .origLC <- strsplit(x = .boundedBy[["lowerCorner"]], split = " ")
-      .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
-      .origUC <- strsplit(x = .boundedBy[["upperCorner"]], split = " ")
-      .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .boundedBy <- list(srsName = xml2::xml_attr(x = .env, attr = "srsName"),
-                         lowerCorner = .lC, upperCorner = .uC)
-    }
+    boundedBy <- parseEnvelope(obj = .env, sos = sos, verbose = verbose, namespaces = SosAllNamespaces())
   }
   else {
     if (verbose) cat("[parseObservationCollection] Empty envelope!\n")
-    .boundedBy <- list()
+    boundedBy <- list()
   }
 
   .resultList <- lapply(X = .members, FUN = parseOM, sos = sos, verbose = verbose)
@@ -226,11 +211,11 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
 
   if (is.list(.resultList)) {
     .obsColl <- OmObservationCollection(members = .resultList,
-                                        boundedBy = .boundedBy)
+                                        boundedBy = boundedBy)
   }
   else {
     .obsColl <- OmObservationCollection(members = list(.resultList),
-                                        boundedBy = .boundedBy)
+                                        boundedBy = boundedBy)
   }
 
   if (verbose)
