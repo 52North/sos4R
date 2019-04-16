@@ -33,7 +33,7 @@
 sosConvertTime <- function(x, sos) {
   format <- sosTimeFormat(sos = sos)
   t <- as.POSIXct(x = strptime(x = x, format = format))
-  if (is.na(t))
+  if (any(is.na(t)))
     warning("Error converting string '", x, "' with format '", format, "'! Returning 'NA'")
 
   return(t)
@@ -58,7 +58,7 @@ sosConvertLogical <- function(x, sos) {
 setMethod(f = "sosCreateTimeInstant",
           signature = signature(sos = "SOS", time = "POSIXt"),
           definition = function(sos, time, frame, calendarEraName,
-                         indeterminatePosition) {
+                                indeterminatePosition) {
             .timePos <- GmlTimePosition(
               time = time,
               frame = frame, calendarEraName = calendarEraName,
@@ -71,7 +71,7 @@ setMethod(f = "sosCreateTimeInstant",
 setMethod(f = "sosCreateTimePeriod",
           signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
           definition = function(sos, begin, end, frame, calendarEraName,
-                         indeterminatePosition, duration, timeInterval) {
+                                indeterminatePosition, duration, timeInterval) {
             .beginPos <- GmlTimePosition(
               time = begin,
               frame = frame, calendarEraName = calendarEraName,
@@ -84,7 +84,7 @@ setMethod(f = "sosCreateTimePeriod",
             )
             .tp <- GmlTimePeriod(beginPosition = .beginPos,
                                  endPosition = .endPos,
-                                  duration = duration,
+                                 duration = duration,
                                  timeInterval = timeInterval)
             return(.tp)
           }

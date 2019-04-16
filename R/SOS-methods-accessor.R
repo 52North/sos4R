@@ -334,7 +334,7 @@ setMethod(f = "sosObservableProperties", signature = signature(
 setMethod(f = "sosObservableProperties", signature = signature(obj = "SwePhenomenonProperty"),
           definition = function(obj) {
             return(obj@href)
-            })
+          })
 
 if (!isGeneric("sosBoundedBy"))
   setGeneric(name = "sosBoundedBy", def = function(obj, ...) {
@@ -685,18 +685,18 @@ setMethod(f = "sosTime", signature = signature(obj = "SOS"),
             return(times)
           })
 setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering"),
-  def = function(obj, convert = FALSE) {
-    if (!convert)
-      return(obj@time)
+          def = function(obj, convert = FALSE) {
+            if (!convert)
+              return(obj@time)
 
-    .time <- obj@time
-    if (is(.time, "GmlTimePeriod")) {
-      return(sosTime(.time))
-    }
+            .time <- obj@time
+            if (is(.time, "GmlTimePeriod")) {
+              return(sosTime(.time))
+            }
 
-    warning("Could not convert time to R objects.")
-    return(obj@time)
-  })
+            warning("Could not convert time to R objects.")
+            return(obj@time)
+          })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
           def = function(obj, ...) {
             .start <- NA
@@ -719,10 +719,16 @@ setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePosition"),
           def = function(obj, ...) {
             .time <- obj@time
+            if (!is.na(obj@indeterminatePosition) && obj@indeterminatePosition == "now") {
+              .time <- Sys.time()
+            }
+
             .newAttrs <- list("frame" = obj@frame,
                               "calendarEraName" = obj@calendarEraName,
                               "indeterminatePosition" = obj@indeterminatePosition)
             attributes(.time) <- c(attributes(.time), .newAttrs)
+
+
             return(.time)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimeInstantProperty"),
