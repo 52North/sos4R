@@ -21,8 +21,6 @@ test_that("procedure for POX", {
 })
 
 test_that("output format is encoded correctly for KVP", {
-    skip("TO BE FIXED")
-
     describeSensorOp <- sosOperation(testsos, sosDescribeSensorName)
     of <- describeSensorOp@parameters[["outputFormat"]][[1]]
 
@@ -30,8 +28,8 @@ test_that("output format is encoded correctly for KVP", {
                             outputFormat = of)
     url <- encodeRequestKVP(ds, testsos) # fowards to .sosEncodeRequestKVPDescribeSensor_1.0.0
     expect_match(toString(url), "text%2Fxml%3B%20subtype%3D%22sensorML%2F1.0.1%2Fprofiles%2Fioos_sos%2F1.0%22")
-    
-    # test different quotation variants and spaces
+
+    # test different quotation and escaping variants, and spaces
     ds <- SosDescribeSensor(service = testsos@name, version = testsos@version, procedure = sosProcedures(testsos)[[1]],
                             outputFormat = 'text/xml;subtype="sensorML/1.0.1"')
     url <- encodeRequestKVP(ds, testsos)
@@ -46,7 +44,6 @@ test_that("output format is encoded correctly for KVP", {
                         outputFormat = "text/xml; subtype=\"sensorML/1.0.1\"")
     url <- encodeRequestKVP(ds, testsos)
     expect_match(toString(url), "text%2Fxml%3B%20subtype%3D%22sensorML%2F1.0.1%22")
-
 })
 
 context("parsing: sensor description")

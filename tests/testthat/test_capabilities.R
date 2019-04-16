@@ -227,8 +227,6 @@ test_that("can extract bbox from bounds of offering", {
   box <- sosBoundedBy(offering, bbox = TRUE)
   expect_equal(toString(box), "-44.7159634789651, -171.370441435668, 67.972129750194, 142.92375463033")
 })
-testsos <- SOS_Test(name = "testcaps",version=sos200_version)
-sos200Caps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_200_Example.xml"), testsos)
 
 testsos <- SOS_Test(name = "testcaps",version = sos100_version) #, verboseOutput = TRUE)
 axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_100_Example.xml"), testsos)
@@ -247,9 +245,6 @@ test_that("range", {
   expect_equal(range@minimumValue, "2005-12-03T00:00:00.000+01:00")
   expect_equal(range@maximumValue, "2015-12-13T00:00:00.000+01:00")
 })
- 
-testsos <- SOS_Test(name = "testcaps",version=sos100_version)
-axiomCaps <- parseSosCapabilities(xmlParseDoc("../responses/Capabilities_100_Example.xml"), testsos)
 
 operationXml <- '<ows:Operation name="GetCapabilities" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
       <ows:DCP>

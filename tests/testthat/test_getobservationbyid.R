@@ -21,8 +21,10 @@ test_that("KVP (SOS 2.0.0 - not implemented)", {
 
   expect_warning(
     mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp",
-               binding = "KVP", useDCPs = FALSE,
-               version = sos200_version)
+               binding = "KVP",
+               useDCPs = FALSE,
+               version = sos200_version),
+    "Mandatory element"
   )
   expect_error(
     getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/1"),
@@ -44,7 +46,7 @@ test_that("POX (SOS 1.0.0)", {
   obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/1",
                             #verbose = TRUE,
                             #inspect = TRUE
-                            )
+  )
   data <- sosResult(obs)
   expect_s4_class(obs, "OmObservationCollection")
   expect_length(obs, 1)
