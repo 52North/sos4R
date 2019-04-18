@@ -89,14 +89,14 @@ setMethod(f = "phenomena",
 # see: https://github.com/52North/sos4R/issues/81
 #
 .listPhenomena <- function(sos) {
-  .properties <- sosObservableProperties(sos)
-  stopifnot(!is.null(.properties))
-  stopifnot(is.list(.properties))
-  if (length(unlist(.properties)) == 0) {
+  .phenomena <- sosObservableProperties(sos)
+  stopifnot(!is.null(.phenomena))
+  stopifnot(is.list(.phenomena))
+  if (length(unlist(.phenomena)) == 0) {
     .phens <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
   } else {
-    .properties <- unique(sort(as.vector(unlist(.properties))))
-    .phens <- data.frame("phenomenon" = .properties, stringsAsFactors = FALSE)
+    .phenomena <- unique(sort(as.vector(unlist(.phenomena))))
+    .phens <- data.frame("phenomenon" = .phenomena, stringsAsFactors = FALSE)
   }
   return(.phens)
 }
@@ -282,12 +282,7 @@ setMethod(f = "siteList",
   if (length(unlist(.features)) == 0) {
     .sites <- data.frame("siteID" = character(0), stringsAsFactors = FALSE)
   } else {
-    .features <- sosFeaturesOfInterest(.features)
-    .unlistedfeatures <- unlist(.features)
-    .featurevector <- as.vector(.unlistedfeatures)
-    .sortedfeatures <- sort(.featurevector)
-    .features <- unique(.sortedfeatures)
-    .sites <- data.frame("siteID" = .features, stringsAsFactors = FALSE)
+    .sites <- data.frame("siteID" = unique(sort(as.vector(unlist(sosFeaturesOfInterest(.features))))), stringsAsFactors = FALSE)
   }
   return(.sites)
 }

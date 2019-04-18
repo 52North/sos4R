@@ -28,7 +28,7 @@
 ################################################################################
 
 #
-# construction methods
+# construction methods ----
 #
 GmlTimeInstant <- function(timePosition, id = as.character(NA),
                            relatedTimes = list(NA), frame = as.character(NA)) {
@@ -113,9 +113,12 @@ GmlMeasure <- function(value, uom) {
 }
 
 
-################################################################################
-# encoding methods
-
+#
+# Encoding methods ----
+#
+#
+# encodeXML(GmlTimeInstantProperty, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlTimeInstantProperty", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -124,7 +127,9 @@ setMethod(f = "encodeXML",
             stop("Function encodeXML for GmlTimeInstantProperty not implemented yet!")
           }
 )
-
+#
+# encodeXML(GmlTimeInstant, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlTimeInstant", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -141,7 +146,9 @@ setMethod(f = "encodeXML",
             return(ti)
           }
 )
-
+#
+# encodeXML(GmlTimePosition, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlTimePosition", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -169,7 +176,9 @@ setMethod(f = "encodeXML",
             return(tpos)
           }
 )
-
+#
+# encodeXML(GmlTimePeriod, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlTimePeriod", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -234,7 +243,9 @@ setMethod(f = "encodeXML",
             return(tperiod)
           }
 )
-
+#
+# encodeXML(GmlEnvelope, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlEnvelope", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -273,7 +284,9 @@ setMethod(f = "encodeXML",
             return(env)
           }
 )
-
+#
+# encodeXML(GmlDirectPosition, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlDirectPosition", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -305,7 +318,9 @@ setMethod(f = "encodeXML",
             return(pos)
           }
 )
-
+#
+# encodeXML(GmlPoint, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlPoint", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -322,7 +337,9 @@ setMethod(f = "encodeXML",
             return(point)
           }
 )
-
+#
+# encodeXML(GmlLineString, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlLineString", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -331,7 +348,9 @@ setMethod(f = "encodeXML",
             warning("Encoding for GmlLineString NOT IMPLEMENTED!")
           }
 )
-
+#
+# encodeXML(GmlPolygon, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlPolygon", sos = "SOS"),
           definition = function(obj, sos, verbose) {
@@ -340,7 +359,9 @@ setMethod(f = "encodeXML",
             warning("Encoding for GmlPolygon NOT IMPLEMENTED!")
           }
 )
-
+#
+# encodeXML(GmlPointProperty, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "GmlPointProperty", sos = "SOS"),
           definition = function(obj, sos, verbose) {
