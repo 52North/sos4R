@@ -177,3 +177,5 @@ test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns an empty l
   sitesDataFrame <- siteList(sos)
   .checkEmptySitesDataFrame(sitesDataFrame)
 })
+
+webmockr::disable("httr")

@@ -63,8 +63,17 @@ sosObservationIdName <- paste0(sos100NamespacePrefix, ":ObservationId")
 # SOS v2.0 ----
 #
 sos200_version <- "2.0.0"
-sos200ContentsName <- "contents"
-sos200FilterCapabilitiesName = "filterCapabilities"
+sos200NamespacePrefix <- "sos20"
+sos200contentsName <- paste0(sos200NamespacePrefix, ":contents")
+sos200ContentsName <- paste0(sos200NamespacePrefix, ":Contents")
+sos200ObservationOfferingName <- paste0(sos200NamespacePrefix, ":ObservationOffering")
+sos200FilterCapabilitiesName <- paste0(sos200NamespacePrefix, ":filterCapabilities")
+sos200FeatureOfInterestTypeName <- paste0(sos200NamespacePrefix, ":featureOfInterestType")
+sos200ObservationTypeName <- paste0(sos200NamespacePrefix, ":observationType")
+sos200ResponseFormatName <- paste0(sos200NamespacePrefix, ":responseFormat")
+sos200ResultTimeName <- paste0(sos200NamespacePrefix, ":resultTime")
+sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
+sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
 sos200_emptyGetObservationResponseString <-
   paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
          "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",

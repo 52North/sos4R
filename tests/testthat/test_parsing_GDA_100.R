@@ -108,3 +108,5 @@ test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of D
   expect_equal(.dam@phenomenonTime@beginPosition@time, strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::start")
   expect_equal(.dam@phenomenonTime@endPosition@time, strptime("2019-03-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::end")
 })
+
+webmockr::disable("httr")
