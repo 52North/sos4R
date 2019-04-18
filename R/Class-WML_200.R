@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2016 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,8 +23,8 @@
 #                                                                              #
 # Author: Benjamin Pross (b.pross@52north.org)                                 #
 # Created: 2016-01-27                                                          #
-# Project: sos4R - visit the project web page,                                 #
-#      http://52north.org/communities/sensorweb/clients/sos4R/                 #
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
 ################################################################################
 
 #

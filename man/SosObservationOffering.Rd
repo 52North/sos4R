@@ -36,9 +36,9 @@ Objects can be created by calls to the construction functions of the form \code{
 
 \usage{
 SosObservationOffering(id, name = as.character(NA), time, procedure, observedProperty,
-                       featureOfInterest, responseFormat, 
-                       intendedApplication = as.character(NA), 
-                       resultModel = as.character(NA), 
+                       featureOfInterest, responseFormat,
+                       intendedApplication = as.character(NA),
+                       resultModel = as.character(NA),
                        responseMode = as.character(NA), boundedBy = list())
 }
 
@@ -90,14 +90,21 @@ See section 6.3, \dQuote{Observation Offerings}, of the SOS specification: Na, A
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-
 \seealso{\code{\linkS4class{SosContents}}, \code{\linkS4class{SosCapabilities}}}
 
 \examples{
 showClass("SosObservationOffering")
-# TBD examples for construction functions
+showClass("SosObservationOffering_2.0.0")
+
+# explore offerings of an SOS
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             binding = "KVP")
+offering1 <- sosOfferings(mySOS)[[1]]
+
+sosId(offering1)
+sosName(offering1)
+sosTime(offering1)
+sosBoundedBy(offering1)
 }
 
 \keyword{classes}

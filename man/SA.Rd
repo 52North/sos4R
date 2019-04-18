@@ -76,16 +76,12 @@ SaSamplingPoint(sampledFeatures, position, relatedObservation = list(NA),
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-%\seealso{}
-
 \examples{
 showClass("SaSamplingPoint")
 
 # create sampling point
 SaSamplingPoint(sampledFeatures = list("feature1", "feature2"),
                 position = GmlPointProperty(href = "http://link.to/point"))
-
 }
+
 \keyword{classes}

@@ -1,5 +1,5 @@
 #
-# Load latest version of sos4R----
+# Load dev version of sos4R ----
 #
 devtools::load_all()
 #

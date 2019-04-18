@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2018 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2018-11-23                                                          #
-# Project: sos4R - visit project web page https://52north.org/geostatistics    #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 #
@@ -128,11 +128,14 @@ paste("Object of class DataAvailabilityMember:",
       "\n  Features Of Interest : ", paste0(x@featureOfInterest),
       "\n  Phenomenon Time      : ", toString(x@phenomenonTime))
 }
-setMethod("toString", "DataAvailabilityMember", function(x, ...) .toString.DataAvailabilityMember(x, ...))
-setMethod("show", "DataAvailabilityMember", function(object) .toString.DataAvailabilityMember(object))
-setMethod("print", "DataAvailabilityMember", function(x, ...) {
+.print.DataAvailabilityMember <- function(x, ...) {
   cat(.toString.DataAvailabilityMember(x, ...), "\n")
-  invisible(x)})
+  invisible(x)
+}
+setMethod("toString", "DataAvailabilityMember", function(x, ...) .toString.DataAvailabilityMember(x, ...))
+setMethod("print", "DataAvailabilityMember", function(x, ...) .print.DataAvailabilityMember(x, ...))
+setMethod("show", "DataAvailabilityMember", function(object) .print.DataAvailabilityMember(object))
+
 #
 # convience constructor
 #

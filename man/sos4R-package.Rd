@@ -5,9 +5,8 @@
 \alias{sos4R-package}
 \alias{sos4R}
 
-\alias{sosChanges}
 \alias{sosCheatSheet}
-\alias{sosNews}
+\alias{release_questions}
 
 \title{A client for the OGC Sensor Observation Service}
 
@@ -19,12 +18,12 @@
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
-	Version: \tab 0.3\cr
-	Date: \tab 2012-11-19\cr
+	Version: \tab 0.3.0\cr
+	Date: \tab 2019-03-30\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr
-	Depends: \tab XML, httr, sp\cr
+	Imports: \tab xml2, httr, sp, stringr, methods\cr
 	}
 }
 
@@ -36,14 +35,14 @@ Daniel Nuest <daniel.nuest@uni-muenster.de>
 Na, A., Priest, M. (Eds.), 2007. Sensor Observation Service. OpenGIS Implementation Standard, Version 1.0, OGC 06-009r6
 }
 
-\seealso{See also the package vignette, \code{vignette(sos4R)}.}
+\seealso{See also the package vignette.}
 
 \note{
 The development of this software was gratefully supported by the 52North Student Innovation Prize for Geoinformatics 2010.
 
 To stay updated on all matters around \pkg{sos4R} go to the development blog at \url{http://www.nordholmen.net/sos4r/}.
 
-If you want to ask questions about using the software, please go to the 52North forum for the geostatistics community (\url{http://geostatistics.forum.52north.org/}), or consider subscribing to the mailing list (\url{http://list.52north.org/mailman/listinfo}).
+If you want to ask questions about using the software, please go to the to the issue tracker at \url{https://github.com/52North/sos4R/issues}.
 
 The most extensive documenation is contained in the \strong{package vignette}.
 }
@@ -52,11 +51,8 @@ The most extensive documenation is contained in the \strong{package vignette}.
 
 \dontrun{
 
-# Take a SOS from the example list
-sos.url = SosExampleServices()[[1]]
-
 # Open the connection
-sos = SOS(url = SOS)
+sos = SOS(url = "<the service endpoint>")
 
 # List offerings, procedures and observedProperties
 names(sosOfferings(sos))
@@ -98,12 +94,6 @@ sosDataFieldConverters(mySos)
 
 # get the cheat sheet
 sosCheatSheet()
-
-# view the NEWS file
-sosNews()
-# DEPRECATED: the changes document
-#sosChanges()
-
 }
 
 }

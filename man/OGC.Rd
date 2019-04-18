@@ -15,6 +15,7 @@
 \alias{OgcBinaryTemporalOpOrNULL-class}
 \alias{OgcComparisonOps}
 \alias{OgcComparisonOps-class}
+\alias{OgcComparisonOpsOrXMLOrNULL-class}
 \alias{OgcContains-class}
 \alias{show,OgcContains-method}
 \alias{OgcIntersects-class}
@@ -51,7 +52,7 @@ The following classes are virtual, no objects may be created from them: \code{Og
 
 \usage{
 OgcBBOX(propertyName = sosDefaultSpatialOpPropertyName, envelope)
-OgcContains(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL, 
+OgcContains(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL,
             envelope = NULL)
 OgcIntersects(propertyName = sosDefaultSpatialOpPropertyName, geometry = NULL,
               envelope = NULL)
@@ -129,8 +130,6 @@ Schemas: \url{http://schemas.opengis.net/filter/1.1.0/}
 
 \section{Warning }{The encoding functions of these classes are not completely implemented yet.}
 
-%\seealso{}
-
 \examples{
 showClass("OgcBBOX")
 showClass("OgcBinarySpatialOp")
@@ -141,8 +140,6 @@ showClass("OgcContains")
 showClass("OgcOverlaps")
 showClass("OgcSpatialOps")
 showClass("OgcSpatialOpsOrNULL")
-
-# TBD examples for construction functions
 }
 
 \keyword{classes}

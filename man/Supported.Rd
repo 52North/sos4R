@@ -19,7 +19,7 @@ These functions can be used to access the supported parameters for a range of se
 }
 
 \usage{
-SosSupportedOperations()
+SosSupportedOperations(version = sos100_version)
 SosSupportedComparisonOperators()
 SosSupportedBindings()
 SosSupportedGeometryOperands()
@@ -31,6 +31,10 @@ SosSupportedTemporalOperators()
 SosSupportedServiceVersions()
 }
 
+\arguments{
+  \item{version}{The SOS specification version.}
+}
+
 \details{
 \strong{Supported features}, like connection methods and supported response modes, are accessible by functions starting with "SosSupported". See the examples section for a complete list of these functions.
 
@@ -39,12 +43,7 @@ It is encouraged to rather use these methods than manually set character values 
 
 \value{A list of supported values for the respective parameter.}
 
-%\references{}
-
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
-
-%\note{}
-%\section{Warning }{}
 
 \seealso{See \code{\link{Defaults}} for default values of parameters.}
 

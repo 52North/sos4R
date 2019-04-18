@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2013 by 52°North                                               #
+# Copyright (C) 2019 by 52°North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,29 +23,50 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2013-03-06                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
+
 context("utils")
 
 test_that(".sosFilterDCPs works", {
-	dcps <- c("Post" = "http://url/with/endpoint/one",
-			"Post" = "url.to/endpoint/two",
-			"Get" = "some.thing.com/different/")
+	dcps <- c("ows:Post" = "http://url/with/endpoint/one",
+			"ows:Post" = "url.to/endpoint/two",
+			"ows:Get" = "some.thing.com/different/")
 
-	expect_that(length(.sosFilterDCPs(dcp = dcps, pattern = "*")), equals(3))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]],
-			is_equivalent_to("url.to/endpoint/two"))
-	expect_that(.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
-			equals(c("Post" = "http://url/with/endpoint/one", "Post" = "url.to/endpoint/two")))
-	expect_equivalent(.sosFilterDCPs(dcps, list("POX" = "/one")),
-			"http://url/with/endpoint/one")
+	expect_equal(length(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = "*")), 3)
+	expect_equivalent(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint"))[[2]], "url.to/endpoint/two")
+	expect_equal(sos4R:::.sosFilterDCPs(dcp = dcps, pattern = list("POX" = "/endpoint")),
+	             c("ows:Post" = "http://url/with/endpoint/one", "ows:Post" = "url.to/endpoint/two"))
+	expect_equivalent(sos4R:::.sosFilterDCPs(dcps, list("POX" = "/one")), "http://url/with/endpoint/one")
 })
 
 test_that("addional KVPs are concatenated correctly", {
-			expected <- "this=is&working=correctly"
-			actual <- list("this" = "is", "working" = "correctly")
+  expected <- "this=is&working=correctly"
+  actual <- list("this" = "is", "working" = "correctly")
+  expect_equal(.encodeAdditionalKVPs(actual), expected)
+})
 
-			expect_that(.encodeAdditionalKVPs(actual), equals(expected))
+test_that("can get CRS from URN", {
+  obj <- sosGetCRS("urn:ogc:def:crs:EPSG::4326")
+  expect_s4_class(obj, "CRS")
+  expect_match(obj@projargs, "init=epsg:4326")
+})
 
-		})
+test_that("can get CRS from lowercase URN", {
+  obj <- sosGetCRS("urn:ogc:def:crs:epsg::4326")
+  expect_s4_class(obj, "CRS")
+  expect_match(obj@projargs, "init=epsg:4326")
+})
+
+test_that("can get CRS from URN with version", {
+  obj <- sosGetCRS("urn:ogc:def:crs:EPSG:99:4326")
+  expect_s4_class(obj, "CRS")
+  expect_match(obj@projargs, "init=epsg:4326")
+})
+
+test_that("can get CRS from URL", {
+  obj <- sosGetCRS("http://www.opengis.net/def/crs/EPSG/0/4326")
+  expect_s4_class(obj, "CRS")
+  expect_match(obj@projargs, "init=epsg:4326")
+})

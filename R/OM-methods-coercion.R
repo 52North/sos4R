@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Created: 2010-10-19                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -69,10 +69,10 @@ setAs(from = "OmObservationCollection", to = "list",
 as.SpatialPointsDataFrame.OmObservationCollection = function(x, ...) {
   .result <- sosResult(x, coordinates = TRUE)
   .crs <- sosGetCRS(x)
-  
+
   if(length(.crs) > 1)
     stop("Spatial Reference System is not unambiguous, cannot convert.")
-  
+
   .spdf <- .resultDataFrameToSpatialPointsDataFrame(result = .result,
                                                     crs = .crs)
   return(.spdf)
@@ -89,7 +89,7 @@ setAs(from = "OmObservationCollection", to = "SpatialPointsDataFrame",
 as.SpatialPointsDataFrame.OmObservation = function(x, ...) {
   .crs <- sosGetCRS(x)
   .result <- sosResult(x, coordinates = TRUE)
-  
+
   .spdf <- .resultDataFrameToSpatialPointsDataFrame(result = .result,
                                                     crs = .crs)
   return(.spdf)
@@ -106,7 +106,7 @@ setAs(from = "OmObservation", to = "SpatialPointsDataFrame",
 as.SpatialPointsDataFrame.OmMeasurement = function(x, ...) {
   .crs <- sosGetCRS(x)
   .result <- sosResult(x, coordinates = TRUE)
-  
+
   .spdf <- .resultDataFrameToSpatialPointsDataFrame(result = .result,
                                                     crs = .crs)
   return(.spdf)
@@ -123,12 +123,12 @@ setAs(from = "OmObservation", to = "SpatialPointsDataFrame",
   # TODO fix column order, which is x~y according to ?coordinates
   .coordCols <- match(c(sosDefaultColumnNameLat, sosDefaultColumnNameLon),
                       colnames(result))
-  
-  .spdf <- SpatialPointsDataFrame(
+
+  .spdf <- sp::SpatialPointsDataFrame(
     coords = result[, .coordCols],
     data = result[, -.coordCols],
     proj4string = crs)
-  
+
   return(.spdf)
 }
 

@@ -81,7 +81,7 @@
 \alias{ogcTempOpTTMOverlappedBy}
 \alias{ogcTemporalCapabilitiesName}
 \alias{ogcTemporalOperandsName}
-\alias{ogcTemporalOperandName} 
+\alias{ogcTemporalOperandName}
 \alias{ogcTemporalOperatorsName}
 \alias{ogcTemporalOperatorName}
 \alias{omMeasurementName}
@@ -143,7 +143,7 @@
 \alias{saSampledFeatureName}
 \alias{saSamplingTimeName}
 \alias{sosService}
-\alias{sosNamespacePrefix}
+\alias{sos100NamespacePrefix}
 \alias{sosGetCapabilitiesName}
 \alias{sosDescribeSensorName}
 \alias{sosGetObservationName}
@@ -166,7 +166,6 @@
 \alias{sosFilterCapabilitiesName}
 \alias{sosCapabilitiesName}
 \alias{sosEventTimeName}
-\alias{sosEventTimeLatestValue}
 \alias{sosObjectIDName}
 \alias{sosResultName}
 \alias{sweCompositePhenomenonName}
@@ -193,13 +192,11 @@
 \alias{sweLocationName}
 \alias{swePositionName}
 \alias{sweVectorName}
-\alias{xmlInternalDocumentName}
 \alias{xmlTextNodeName}
 \alias{OwsExceptionsData}
 \alias{ogcComparisonOperatorsName}
 \alias{ogcTempOpTMOverlappedBy}
 \alias{owsNamespacePrefix}
-\alias{owsNamespaceContext}
 \alias{sosDescribeFeatureTypeName}
 \alias{sosDescribeObservationTypeName}
 \alias{sosDescribeResultModelName}
@@ -207,7 +204,7 @@
 \alias{sosGetResultName}
 \alias{sosInsertObservationName}
 \alias{sosRegisterSensorName}
-  
+
 \alias{mimeTypeCSV}
 \alias{mimeTypeOM}
 \alias{mimeTypeSML}
@@ -234,6 +231,34 @@
 \alias{sosKVPParamNameResponseMode}
 \alias{sosKVPParamNameBBOX}
 
+\alias{SosAllNamespaces}
+
+\alias{gmlNamespace}
+\alias{omNamespace}
+\alias{omNamespacePrefix}
+\alias{ogcNamespace}
+\alias{owsAcceptFormatsName}
+\alias{owsAcceptLanguagesName}
+\alias{owsAcceptVersionsName}
+\alias{owsExceptionReportNameOnly}
+\alias{owsLanguageName}
+\alias{owsNamespace}
+\alias{owsOutputFormatName}
+\alias{owsSectionName}
+\alias{owsSectionsName}
+\alias{owsVersionName}
+\alias{sfNamespacePrefix}
+\alias{sfSampledFeatureName}
+\alias{sfTypeName}
+\alias{smlNamespace}
+\alias{sos100Namespace}
+\alias{sweLowerCornerName}
+\alias{sweNamespace}
+\alias{sweNamespacePrefix}
+\alias{sweUpperCornerName}
+\alias{xlinkNamespace}
+\alias{xsiNamespace}
+
 % Version 2.0.0
 
 \alias{sos200ContentsName}
@@ -254,14 +279,45 @@
 \alias{sosPhenomenonTimeName}
 \alias{sosResultTimeName}
 
-\alias{sweTextEncodingName} 
-\alias{swesIdentifierName} 
+\alias{sweTextEncodingName}
+\alias{swesIdentifierName}
 \alias{swesNameName}
-\alias{swesObservablePropertyName} 
+\alias{swesObservablePropertyName}
 \alias{swesOfferingName}
 \alias{swesProcedureDescriptionFormatName}
 
 \alias{wmlMonitoringPointName}
+
+\alias{fesNamespace}
+\alias{gml32Namespace}
+\alias{om20Namespace}
+\alias{om20NamespacePrefix}
+\alias{saNamespace}
+\alias{saNamespacePrefix}
+\alias{samsNamespace}
+\alias{samsNamespacePrefix}
+\alias{samsSamplingFeatureName}
+\alias{sf20Namespace}
+\alias{sos200FeatureOfInterestTypeName}
+\alias{sos200Namespace}
+\alias{sos200NamespacePrefix}
+\alias{sos200ObservationOfferingListName}
+\alias{sos200ObservationOfferingName}
+\alias{sos200ObservationTypeName}
+\alias{sos200ObservedAreaName}
+\alias{sos200PhenomenonTimeName}
+\alias{sos200ResponseFormatName}
+\alias{sos200ResponseModeName}
+\alias{sos200ResultTimeName}
+\alias{sos200contentsName}
+\alias{sosGDAMemberName}
+\alias{sosGetDataAvailabilityName}
+\alias{sosGetDataAvailabilityResponse}
+\alias{sosObservationIdName}
+\alias{sosOfferingName}
+\alias{swesNamespace}
+\alias{swesNamespacePrefix}
+\alias{swesProcedureName}
 
 
 \title{Constants in sos4R}
@@ -277,7 +333,7 @@ Constants for names of XML elements start with a lowercase character string of t
 
 Examples: code{gmlEnvelopeName}, \code{ogcGeometryOperandLineStringName}, \code{ogcTempOpTMEqualsName}.
 
-The \code{OwsExceptionsData()} function provides access to the fixed exception codes, meanings and respective HTTP codes and messages. 
+The \code{OwsExceptionsData()} function provides access to the fixed exception codes, meanings and respective HTTP codes and messages.
 
 The \strong{mime types} are used for automatic detection of the best fitting parser.
 }
@@ -290,12 +346,15 @@ Whiteside A. (Ed.), OGC Web Services Common Specification, Open Geospatial Conso
 \examples{
 
 # example constants
-sosNamespacePrefix
+sos100NamespacePrefix
 gmlNameName
 sweUomName
 
 # Data frame holding OWS exception code information
 OwsExceptionsData()
+
+# Get all namespaces
+SosAllNamespaces()
 }
 
 \keyword{constants}

@@ -1,9 +1,9 @@
 import("methods")
-import("XML")
-import("httr")
 importFrom("graphics", "plot")
 importFrom("utils", "object.size", "str", "write.csv")
 import("sp")
+import("httr")
+import("xml2")
 
 exportPattern("^[[:alpha:]]+")
 # export all who start with a letter (i.e. not .) except 'print.' or 'toString.'
@@ -20,9 +20,8 @@ exportMethods(
     "getObservationById",
     "getObservation",
     "getFeatureOfInterest",
-	"plot",
-	"print",
-    "saveXML",
+    "plot",
+	  "print",
     "show",
     "sosAbstract",
     "sosCapabilitiesDocumentOriginal",
@@ -136,10 +135,8 @@ exportClasses(
      "SosContentsOrNULL",
      "SosDescribeSensor",
      "SosGetObservation",
-     "SosGetObservation_2.0.0",
      "SosGetObservationById",
      "SosEventTime",
-     "SosEventTimeLatest",
      "SosFeatureOfInterest",
      "SosFeatureOfInterestOrNULL",
      "SosFilter_Capabilities",
@@ -183,6 +180,7 @@ S3method(summary, GmlTimePeriod)
 S3method(summary, OmObservation)
 S3method(summary, OmObservationCollection)
 S3method(summary, OwsRange)
+S3method(summary, SOS)
 S3method(summary, SOS_versioned)
 S3method(summary, SosObservationOffering)
 S3method(summary, SosObservationOffering_2.0.0)

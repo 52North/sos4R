@@ -23,12 +23,10 @@
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2019-03-20                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
-library(webmockr)
-library(httr)
-library(stringr)
+
 webmockr::enable("httr")
 webmockr::httr_mock()
 context("convenience layer -> phenomena()")
@@ -104,7 +102,7 @@ test_that("KVP::phenomena(sos) returns an empty list of phenomena as one column 
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena-empty", binding = "KVP")
   dataFrameOfPhenomena <- phenomena(sos)
 
-  expect_false(is.null(dataFrameOfPhenomena))
+  expect_true(!is.null(dataFrameOfPhenomena))
   expect_true(is.data.frame(dataFrameOfPhenomena))
   expect_equal(length(colnames(dataFrameOfPhenomena)), 1, info = "number of columns in phenomena data.frame")
   expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "correct column name")
@@ -183,3 +181,5 @@ test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns the current l
   expect_equal(strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 2, 2], info = "timeBegin")
   expect_equal(strptime("2019-05-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 2, 3], info = "timeEnd")
 })
+
+webmockr::disable("httr")

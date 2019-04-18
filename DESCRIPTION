@@ -1,40 +1,58 @@
 Package: sos4R
 Type: Package
-Title: An R Client for the OGC Sensor Observation Service
-Version: 0.3.0.9002
-Authors@R: c(person(given = "Daniel", family = "Nuest", role = c("cre", "aut"),
-	email = "daniel.nuest@uni-muenster.de", comment = c(ORCID = "0000-0002-0024-5046")),
-	person("Edzer", "Pebesma", role = "ctb", comment = c(ORCID = "0000-0001-8049-7069")),
-	person("Ben", "Graeler", role = "ctb", comment = c(ORCID = "0000-0001-5443-4304")),
-	person("Benjamin", "Pross", role = "ctb"),
-	person(given = "Eike Hinderk", family = "Jürrens", role = "ctb", email = "e.h.juerrens@52north.org"))
-Author: Daniel Nuest [cre, aut] (<https://orcid.org/0000-0002-0024-5046>),
-  Edzer Pebesma [ctb] (<https://orcid.org/0000-0001-8049-7069>),
-  Ben Graeler [ctb] (<https://orcid.org/0000-0001-5443-4304>),
-  Eike Hinderk Jürrens [ctb]
-Maintainer: Daniel Nuest <daniel.nuest@uni-muenster.de>
-Depends: R (>= 2.15.0)
+Title: Client for OGC Sensor Observation Services
+Version: 0.4.0.9000
+Date: 2019-04-13
+Authors@R:
+  c(person(given = "Daniel",
+           family = "Nuest",
+           role = c("cre", "aut"),
+           email = "daniel.nuest@uni-muenster.de",
+           comment = c(ORCID = "0000-0002-0024-5046")),
+	  person(given = "Edzer",
+	         family = "Pebesma",
+	         role = "ctb",
+	         comment = c(ORCID = "0000-0001-8049-7069")),
+	  person(given = "Ben",
+	         family = "Graeler",
+	         role = "ctb",
+	         comment = c(ORCID = "0000-0001-5443-4304")),
+	  person(given = "Benjamin",
+	         family = "Pross",
+	         role = "ctb"),
+	  person(given = "Eike Hinderk",
+	         family = "Juerrens",
+	         role = "ctb"),
+	  person(given = "52°North Initiative for Geospatial Open Source Software GmbH",
+	         email = "info@52north.org",
+	         role = "cph"))
+Depends: R (>= 3.4.0)
 Imports:
-	XML (>= 3.95),
-	sp,
-	httr,
-	stringr
+    httr,
+    methods,
+    sp,
+    stringr,
+    xml2,
 Suggests:
-	spacetime (>= 1.0),
-	gstat,
-	maps,
-	maptools,
-	mapdata,
-	cshapes,
-	xts,
-	xtable,
-	rgdal,
-	testthat,
-	webmockr
-Description: A client for Sensor Observation Services (SOS) as
-        specified by the Open Geospatial Consortium (OGC). The package allows
-        users to retrieve metadata from SOS web services and to
-        interactively create requests for near real-time observation
+    readr,
+    spacetime,
+    gstat,
+    maps,
+    maptools,
+    mapdata,
+    cshapes,
+    xtable,
+    xts,
+    testthat,
+    rgdal,
+    knitr,
+    rmarkdown,
+	  webmockr
+Description: A client for Sensor Observation Services (SOS, see 
+        <https://www.opengeospatial.org/standards/sos>) as specified by the 
+        Open Geospatial Consortium (OGC). With the package users can
+        retrieve (meta)data from SOS instances and interactively 
+        create requests for near real-time observation
         data based on the available sensors, phenomena, observations etc.
         using thematic, temporal, and spatial filtering.
 License: GPL-2
@@ -46,6 +64,7 @@ BugReports: https://github.com/52North/sos4R/issues
 Collate:
 	Constants.R
 	R-Helper.R
+	Class-XML.R
 	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
 	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
 	Generic-methods.R
@@ -71,3 +90,4 @@ Collate:
 	SAMS-methods-parsing.R
 	Defaults.R
 	handySOS4RFunctions.R
+	Development.R

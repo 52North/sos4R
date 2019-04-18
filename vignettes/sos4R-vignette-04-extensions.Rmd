@@ -1,0 +1,368 @@
+---
+title: "sos4R: Extending package functions and advanced configuration"
+author:
+  name: "Daniel Nüst"
+  affiliation: Institute for Geoinformatics, University of Münster, Germany.
+  email: daniel.nuest@uni-muenster.de
+  url: https://www.nordholmen.net
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+abstract: |
+  The sos4R package provides simple yet powerful access to OGC Sensor Observation Service instances. The package supports both encapsulation and abstraction from the service interface for novice users as well as powerful request building for specialists.
+  sos4R is motivated by the idea to close the gap between the Sensor Web and tools for (geo-)statistical analyses.
+
+  This document shows how to do advanced configurations, such as adding data parsing functions or implementing & registering functions for encoding and decoding.
+
+  The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
+vignette: >
+  %\VignetteIndexEntry{4. Extending sos4R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r library_testsos}
+library("sos4R")
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox",
+             binding = "POX", dcpFilter = list("POX" = "/pox"))
+```
+
+## Changing Handling Functions
+
+The flexibility of the specifications that model the markup requests and responses, especially the observation encoding, is too high to handle all possible cases within `sos4R`. Thus an equally flexible mechanism for users to adopt the steps of encoding and decoding documents to their needs is needed.
+
+The process of data download comprises
+
+1. building the request,
+1. encoding the request, 
+1. sending encoded request and receiving response,
+1. decoding the responses, and
+1. applying the correct R data type to the respective data values.
+
+This can be seen as a fixed, ordered workflow a user has to follow where each step build upon the input of the previous.
+To ensure flexibility within these steps of the workflow but also to maximize reusability of existing functionality, a mechanism to exchange the functions that are used in these steps is provided.
+
+Step 1, the building of requests, is the assembly of the request parameters passed to the `sos4R` functions into an R object.
+It is documented in section [GetObservation](#getobservation).
+Step 3, the sending receiving of documents to respectively from a service, does not need to be changed directly but the user, who only can configure the _binding_.
+
+The remainder of this document explains how to configure steps 2 (encoding), 4 (decoding) and 5 (data parsing) of the process.
+
+## Include and Exclude Own Functions
+
+The functions used in the exchangeable steps are organized in lists.
+To base your own list of functions on the existing ones, thereby not having to start from scratch, you can combine the default list of functions with your own.
+Use the following functions:
+
+To add your own function, simply add it as a named argument.
+You can add as many as you like in the `...` parameter.
+If a function with that identifier already exists in the default list it will be replaced by your function.
+For further adjustments you can explicitly include and exclude functions by identifier.
+Please be aware that inclusion is applied first, then exclusion.
+It is also important that you also have to include that functions you just added manually!
+
+Examples of function list generation with parsing functions:
+
+```{r function_inclusion_1}
+parsers <- SosParsingFunctions(
+	"ExceptionReport" = function() {
+		return("Got Exception!")
+	},
+	include = c("GetObservation", "ExceptionReport"))
+print(names(parsers))
+
+```
+
+```{r function_inclusion_2}
+parsers <- SosParsingFunctions(
+		"ExceptionReport" = function() {
+			return("Got Exception!")
+		},
+		include = c("GetCapabilities"))
+print(names(parsers))
+```
+
+The following snipped shows how to remove a large part of parsers using `exclude` and then prints the names of the remaining ones.
+
+```{r}
+parsers <- SosParsingFunctions(
+		exclude = names(SosParsingFunctions())[5:29])
+print(names(parsers))
+```
+
+## Encoders
+
+The current list of a connection's encoders can be accessed with
+
+```{r encoders_access, eval=FALSE}
+sosEncoders(mySOS)
+```
+
+A complete list of the existing encoders names:
+
+```{r encoders_names}
+names(sosEncoders(mySOS))
+```
+
+Here the idea of organizing the encoding functions becomes clear:
+One base encoding function is given, which is a generic method that must exist for alle elements that need to be encoded.
+
+```{r encoders_own, eval=FALSE}
+myPostEncoding <- function(object, sos, verbose) {
+	return(str(object))
+}
+# Connection will not be established because of mising objects
+mySOS2 = SOS(sosUrl(mySOS),
+	encoders = SosEncodingFunctions("POST" = myPostEncoding))
+```
+
+Encoding functions can be overriden for many specific objects.
+The signature of the encoding function consists of the object, `obj`, a SOS object, `sos`, and the optional `verbose` parameter.
+
+```{r encoders_show}
+showMethods("encodeXML")
+showMethods("encodeKVP")
+```
+
+
+A useful example can be overriding the encoding method for time classes (`POSIXt`) as presented below -- see the demo `southesk` for the application of this code.
+
+```{r encoders_override, echo=TRUE, eval=FALSE}
+setMethod(f = "encodeXML",
+  signature = signature(obj = "POSIXt", sos = "SOS"),
+    def = function(obj, sos, verbose) {
+      if(verbose) cat("Using my own time encoding... ")
+
+      # time zone hack to fix that the time format option
+      # %z does not work on windows machines:
+      .time <- obj + 11 * 60 * 60 # add 11 hours
+      formatted <- strftime(x = .time,
+        format = sosTimeFormat(sos))
+      formatted <- paste(formatted,
+        "+11:00", sep = "")	# append 11:00
+
+      if(verbose) cat("Formatted ", toString(obj),
+        " to ", formatted, "\n")
+      return(formatted)
+    }
+)
+```
+
+All later calls for encoding any classes with time will then reference this newly defined method. Be aware that this changes the encoding **globally**, in contrast to converters and parsers which can be changed for every **instance** of class `SOS`.
+
+## Decoders
+
+The terms parsing and decoding are used as synonyms for the process of processing an XML document to create an R object.
+XML documents are made out of hierarchical elements.
+That is why the decoding functions are organized in a listed, whose names are the XML elements' names it parses.
+
+The current list of a connection's parsers can be accessed with the following function.
+
+```{r, echo=TRUE, eval=FALSE}
+sosParsers(mySOS)
+```
+
+A complete list of the elements with existing encoders is shown below.
+These are not only names of XML elements, but also [MIME types](https://en.wikipedia.org/wiki/Internet_media_type).
+Here the idea of organizing the encoding functions becomes clear: For every XML element or document type that must be parsed there is a function given in the list.
+
+```{r}
+names(sosParsers(mySOS))
+```
+
+Parser selection can also be based on the **mimeType** of the returned document.
+Please be aware that this also can be a problem if you want to exchange a parse by **operation name**, which is done **after** switching the function based on the mime type.
+In other words, the exchange by operation name only works if the response type is as expected.
+
+If you want to _replace only selected parsers_ use the include parameter as described above.
+You can also base your own parsing functions on a variety of existing parsing functions.
+For example you can replace the base function for `om:ObservationCollection`, element name `ObservationCollection`, but still use the parsing function for `om:Observation` within your own function if you include it in the parser list.
+The existing parsing functions are all named in the pattern `parse<ElementName>()`.
+Please be aware that some parsers require a parameter `sos` of class `SOS` upon which they might rely for example for formatting information, and some also have `verbose` (type `logical`).
+In case of "unused arguments" errors, please try different signatures.
+
+```{r parsers_load_or_download}
+# Create own parsing function:
+myER <- function(xml, sos, verbose) {
+	return("EXCEPTION!!!11")
+}
+myParsers <- SosParsingFunctions("ows:ExceptionReport" = myER)
+exceptionParserSOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox",
+                          parsers = myParsers,
+                          binding = "POX", useDCPs = FALSE)
+# Triggers exception:
+erroneousResponse <- getObservation(exceptionParserSOS,
+                                    #verbose = TRUE,
+                                    offering = sosOfferings(exceptionParserSOS)[[1]],
+                                    observedProperty = list("Bazinga!"))
+print(erroneousResponse)
+```
+
+To disable all parsing, you can use the function `SosDisabledParsers()`.
+This effectively just "passes through"" all received data because the list returned by the function only contains the top-most parsing functions for SOS operations and exception reports.
+
+```{r parsers_disabled, eval=FALSE}
+SosDisabledParsers()
+```
+
+```{r parsers_disabled_names}
+names(SosDisabledParsers())
+```
+
+This is also the recommended way to start if you want to set-up your own parsers (given you have responses in XML) and an alternative to debugging if you want to inspect responses directly.
+
+The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class `xml_document`:
+
+```{r reponse_passthrough}
+disabledParserSOS <- SOS(sosUrl(mySOS),
+                         parsers = SosDisabledParsers(),
+                         binding = sosBinding(mySOS),
+                         dcpFilter = mySOS@dcpFilter)
+unparsed <- getObservation(disabledParserSOS,
+                           offering = sosOfferings(disabledParserSOS)[[1]],
+                           observedProperty = list("Bazinga!"))
+class(unparsed)
+# (Using XML functions here for accesing the root of a
+# document and the name of an element.)
+unparsed
+```
+
+
+## Data Converters
+
+A list of named functions to be used by the parsing methods to convert data values to the correct R type, which are mostly based on the unit of [measurement](https://en.wikipedia.org/wiki/Units_of_measurement) code.
+
+The conversion functions always take two parameters: `x` is the object to be converted, `sos` is the service where the request was received from.
+
+The available functions are basically wrappers for coercion functions, for example `as.double()`.
+The only method exploiting the second argument is the one for conversion of time stamps which uses the time format saved with the object of class `SOS` in a call to `strptime`.
+
+```{r converters0}
+value <- 2.0
+value.string <- sosConvertString(x = value, sos = mySOS)
+print(class(value.string))
+
+value <- "2.0"
+value.double <- sosConvertDouble(x = value, sos = mySOS)
+print(class(value.double))
+
+value <- "1"
+value.logical <- sosConvertLogical(x = value, sos = mySOS)
+print(class(value.logical))
+
+value <- "2010-01-01T12:00:00.000"
+value.time <- sosConvertTime(x = value, sos = mySOS)
+print(class(value.time))
+```
+
+The full list of currently supported units can be seen below.
+It mostly contains common numerical units which are converted to type `double`.
+
+```{r converters1}
+names(SosDataFieldConvertingFunctions())
+```
+
+The current list of a SOS connection's converters can be accessed with
+
+```{r converters2, eval=FALSE}
+sosDataFieldConverters(mySOS)
+```
+
+The following connection shows a typical workflow of connecting to a new SOS for the first time, what the errors for missing converters look like, and how to add them to the SOS connection.
+
+```{r converters3a}
+testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox", binding = "POX", dcpFilter = list("POX" = "/pox"))
+testsosoffering <- sosOfferings(testsos)[["http___www.52north.org_test_offering_1"]]
+testsosobsprop <- sosObservedProperties(testsosoffering)[1]
+getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop)
+```
+
+Looking at the raw response data gives us a hint at a suitable type.
+
+```{r converters3c}
+getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop,
+               inspect = TRUE)
+```
+
+Converters may be matched by XML properties `swe:Quantity[@definition]` or `swe:uom[@code]`.
+
+```{r converters3d}
+testconverters <- SosDataFieldConvertingFunctions(
+  # one of the following would suffice
+  "test_unit_1" = sosConvertDouble,
+	"http://www.52north.org/test/observableProperty/1" = sosConvertDouble
+  )
+
+testsos <- SOS("http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox", binding = "POX", dcpFilter = list("POX" = "/pox"),
+               dataFieldConverters = testconverters)
+testsosoffering <- sosOfferings(testsos)[["http___www.52north.org_test_offering_1"]]
+data <- getObservation(sos = testsos, offering = testsosoffering, observedProperty = testsosobsprop)
+```
+
+Then retrieve the data with the correct type.
+
+```{r converters3e}
+head(sosResult(data))
+```
+
+The metadata of the observed property is also accessible.
+
+```{r converters3f}
+attributes(sosResult(data)[[1]])
+```
+
+Warnings may also include messages if no converter is available for a unit of measurement, for example:
+
+```
+In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+				No converter for the unit of measurement  S/m  with the definition  http://mmisw.org/ont/cf/parameter/conductivity ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().
+In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
+				No converter found! Skipping field Conductivity
+No converter found! Skipping field http://mmisw.org/ont/cf/parameter/conductivity
+No converter found! Skipping field S/m
+```
+
+This shows warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field).
+The next example creates conversion functions for these fields and repeats the operation.
+
+```{r converters4}
+myConverters <- SosDataFieldConvertingFunctions(
+	"S/m" = sosConvertDouble,
+	"http://mmisw.org/ont/cf/parameter/sea_water_salinity"
+			= sosConvertDouble)
+```
+
+## Exception Handling
+
+When working with `sos4R`, two kinds of errors must be handled: service exceptions and errors within the package.
+The former can occur when a request is invalid or a service encounters internal exceptions.
+The latter can mean a bug or illegal settings within the package.
+
+To understand both types of errorenous states, this sections explains the contents of the exception reports returned by the service and the functionalities to investigate the inner workings of the package.
+
+### OWS Service Exceptions
+
+The service exceptions returned by a SOS are described in OGC Web Services Common (Whiteside, 2007) clause 8. The classes to handle the returned exceptions in sos4R are `OwsExceptionReport`, which contains a list of exception reports,  and `OwsException`, which contains slots for the parameters exception text(s), exception code, and locator. These are defined as follows and can be implementation specific.
+
+- **ExceptionText** Text describing specific exception represented by the exceptionCode
+- **exceptionCode** Code representing type of this exception
+- **locator** Indicator of location in the client's operation request where this exception was encountered
+
+The standard exception codes and meanings are accessible by calling the following function.
+
+```{r exceptionData}
+library("knitr")
+knitr::kable(OwsExceptionsData())
+```
+
+```{r exceptionWarning1}
+response <- try(getObservationById(sos = mySOS,
+                                   observationId = ""))
+```
+
+The exception is also stored in the `response` object.
+
+```{r exceptionWarning2d}
+response
+```

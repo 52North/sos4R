@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2016 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,13 +23,13 @@
 #                                                                              #
 # Author: Benjamin Pross (b.pross@52north.org)                                 #
 # Created: 2016-01-27                                                          #
-# Project: sos4R - visit the project web page,                                 #
-#      http://52north.org/communities/sensorweb/clients/sos4R/                 #
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
 ################################################################################
 
 #
 # Classes are based on Observations & Measurements - Part X - Spatial Sampling Features
-# 
+#
 # http://www.opengeospatial.org/standards/om
 #
 
@@ -63,17 +63,6 @@ setMethod("show", "SamsShape", function(object) .print.SamsShape(object))
 #
 # SamsSamplingFeature ----
 #
-# <sams:SF_SpatialSamplingFeature gml:id="ssf_88204F34D0B94590AA1EDE21577C9B5D907F4BAD">
-#   <gml:identifier codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">foi-1</gml:identifier>
-#   <gml:name codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">foi one</gml:name>
-#   <sf:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint"/>
-#   <sf:sampledFeature xlink:href="http://www.52north.org/test/featureOfInterest/world"/>
-#   <sams:shape>
-#     <ns:Point xmlns:ns="http://www.opengis.net/gml/3.2" ns:id="gml-id-p1">
-#       <ns:pos srsName="http://www.opengis.net/def/crs/EPSG/0/4326">51.883906 7.727958</ns:pos>
-#     </ns:Point>
-#   </sams:shape>
-# </sams:SF_SpatialSamplingFeature>
 # TODO change type of identifier, name to something that preservers codespace and value
 setClass("SamsSamplingFeature",
          slots = c(

@@ -670,98 +670,98 @@
       </fes:Conformance>
       <fes:Spatial_Capabilities>
         <fes:GeometryOperands>
-          <fes:GeometryOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:Envelope"/>
+          <fes:GeometryOperand name="ns:Envelope"/>
         </fes:GeometryOperands>
         <fes:SpatialOperators>
           <fes:SpatialOperator name="BBOX">
             <fes:GeometryOperands>
-              <fes:GeometryOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:Envelope"/>
+              <fes:GeometryOperand name="ns:Envelope"/>
             </fes:GeometryOperands>
           </fes:SpatialOperator>
         </fes:SpatialOperators>
       </fes:Spatial_Capabilities>
       <fes:Temporal_Capabilities>
         <fes:TemporalOperands>
-          <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-          <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+          <fes:TemporalOperand name="ns:TimeInstant"/>
+          <fes:TemporalOperand name="ns:TimePeriod"/>
         </fes:TemporalOperands>
         <fes:TemporalOperators>
           <fes:TemporalOperator name="Before">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="After">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="Begins">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="Ends">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="EndedBy">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="BegunBy">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="During">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="TEquals">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="TContains">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="TOverlaps">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="Meets">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="MetBy">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
           <fes:TemporalOperator name="OverlappedBy">
             <fes:TemporalOperands>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
-              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+              <fes:TemporalOperand name="ns:TimeInstant"/>
+              <fes:TemporalOperand name="ns:TimePeriod"/>
             </fes:TemporalOperands>
           </fes:TemporalOperator>
         </fes:TemporalOperators>
@@ -771,7 +771,7 @@
   <sos:contents>
     <sos:Contents>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_2m_Tiefe</swes:identifier>
           <swes:name>Zeitreihen für Prozedur 2m_Tiefe</swes:name>
           <swes:procedure>2m_Tiefe</swes:procedure>
@@ -803,7 +803,7 @@
         </sos:ObservationOffering>
       </swes:offering>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_Einzelwert</swes:identifier>
           <swes:name>Zeitreihen für Prozedur Einzelwert</swes:name>
           <swes:procedure>Einzelwert</swes:procedure>
@@ -845,7 +845,7 @@
         </sos:ObservationOffering>
       </swes:offering>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_LANUV</swes:identifier>
           <swes:name>Zeitreihen für Prozedur LANUV</swes:name>
           <swes:procedure>LANUV</swes:procedure>
@@ -877,7 +877,7 @@
         </sos:ObservationOffering>
       </swes:offering>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_Oberflaeche</swes:identifier>
           <swes:name>Zeitreihen für Prozedur Oberflaeche</swes:name>
           <swes:procedure>Oberflaeche</swes:procedure>
@@ -909,7 +909,7 @@
         </sos:ObservationOffering>
       </swes:offering>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_Stundensumme</swes:identifier>
           <swes:name>Zeitreihen für Prozedur Stundensumme</swes:name>
           <swes:procedure>Stundensumme</swes:procedure>
@@ -941,7 +941,7 @@
         </sos:ObservationOffering>
       </swes:offering>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_Tagesmittelwert</swes:identifier>
           <swes:name>Zeitreihen für Prozedur Tagesmittelwert</swes:name>
           <swes:procedure>Tagesmittelwert</swes:procedure>
@@ -973,7 +973,7 @@
         </sos:ObservationOffering>
       </swes:offering>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_Tagesmittelwert_um_17-00_Uhr</swes:identifier>
           <swes:name>Zeitreihen für Prozedur Tagesmittelwert_um_17-00_Uhr</swes:name>
           <swes:procedure>Tagesmittelwert_um_17-00_Uhr</swes:procedure>
@@ -1005,7 +1005,7 @@
         </sos:ObservationOffering>
       </swes:offering>
       <swes:offering>
-        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+        <sos:ObservationOffering>
           <swes:identifier>Zeitreihen_Tagessumme</swes:identifier>
           <swes:name>Zeitreihen für Prozedur Tagessumme</swes:name>
           <swes:procedure>Tagessumme</swes:procedure>

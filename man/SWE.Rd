@@ -44,7 +44,7 @@ The following classes are virtual, no objects may be created from them: \code{Sw
 }
 
 \usage{
-SweCompositePhenomenon(id, name, description = as.character(NA), dimension, 
+SweCompositePhenomenon(id, name, description = as.character(NA), dimension,
                        components, base = NULL)
 SwePhenomenon(id, name, description = as.character(NA))
 SwePhenomenonProperty(href = as.character(NA), phenomenon = NULL)
@@ -105,7 +105,7 @@ Arguments of the construction functions are as follows.
 }
 
 \details{
-The \verb{...OrNULL} classes are used to model optional slots. 
+The \verb{...OrNULL} classes are used to model optional slots.
 }
 
 \value{The construction functions return an object of the respective class.}
@@ -114,20 +114,12 @@ The \verb{...OrNULL} classes are used to model optional slots.
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-%\seealso{}
-
 \examples{
 showClass("SweCompositePhenomenon")
 showClass("SwePhenomenon")
 showClass("SwePhenomenonProperty")
 showClass("SwePhenomenonPropertyOrNULL")
 showClass("SweTextBlock")
-
-
-# TBD examples for construction functions
-
 }
 
 \keyword{classes}
