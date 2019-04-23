@@ -31,10 +31,6 @@ library(webmockr)
 library(httr)
 library(stringr)
 
-if(!exists("parseXmlSnippet", mode="function")) {
-  source("../util.R")
-}
-
 webmockr::enable("httr")
 webmockr::httr_mock()
 
@@ -51,7 +47,7 @@ test_that("parseGetDataAvailabilityResponse() returns an empty list if an empty 
     )
 
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
-  .doc <- parseXmlSnippet(readr::read_file("../responses/GetDataAvailability_100_Example.com_empty.xml"))
+  .doc <- xml2::read_xml(readr::read_file("../responses/GetDataAvailability_100_Example.com_empty.xml"))
   .dams <- parseGetDataAvailabilityResponse(obj = .doc, sos)
 
   expect_false(is.null(.dams))
@@ -72,7 +68,7 @@ test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of D
     )
 
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
-  .doc <- parseXmlSnippet(readr::read_file("../responses/GetDataAvailability_100_Example.com_single.xml"))
+  .doc <- xml2::read_xml(readr::read_file("../responses/GetDataAvailability_100_Example.com_single.xml"))
   .dams <- parseGetDataAvailabilityResponse(obj = .doc, sos)
 
   expect_false(is.null(.dams))
