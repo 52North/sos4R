@@ -1492,10 +1492,46 @@ setMethod(f = "checkRequest",
 )
 
 #
+# helper functions for workaround for https://github.com/ropensci/webmockr/issues/39
+#
+# return true if Content-Type header is found
+.isContentTypeFromHeaderSet <- function(contentTypes) {
+  return( !is.null(contentTypes) &&
+            !is.na(contentTypes) &&
+            all(!is.null(contentTypes)) &&
+            all(!is.na(contentTypes)) &&
+            length(contentTypes) == 1)
+}
+
+
+#
+# compare httr::http_type and httr::headers[["(C|c)ontent-(T|t)type"]] and use value from
+# headers if not matching
+#
+.verifyContentType <- function(contentType, contentTypesFromHeader) {
+  if (pmatch(contentType, contentTypesFromHeader, nomatch = -1) == 1) {
+    return(contentType)
+  }
+  return(contentTypesFromHeader)
+}
+
+#
 # util functions for getting content from response ----
 #
 .processResponse <- function(response, verbose) {
+
   contentType <- httr::http_type(response)
+
+  #
+  # workaround for https://github.com/ropensci/webmockr/issues/39
+  #
+  contentTypesFromHeader <- unique(c(httr::headers(response)[["content-type"]], httr::headers(response)[["Content-Type"]]))
+  if (.isContentTypeFromHeaderSet(contentTypesFromHeader)) {
+    contentType <- .verifyContentType(contentType, contentTypesFromHeader)
+  }
+  #
+  # end of workaround
+  #
 
   if (!httr::has_content(response)) {
     stop("Response has no content: ", toString(response),
@@ -1535,5 +1571,5 @@ setMethod(f = "checkRequest",
     return(tibble)
   }
 
-  stop("Unsupported content type in response")
+  stop(paste0("Unsupported content type in response: '", contentType, "'."))
 }
