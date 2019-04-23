@@ -107,7 +107,6 @@ sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
 #
 sosGetDataAvailabilityName <- "GetDataAvailability"
 sosGetDataAvailabilityResponse <- "GetDataAvailabilityResponse"
-sosGDAMemberName <- "dataAvailabilityMember"
 
 SosSupportedOperations <- function(version = sos100_version) {
   if (version == sos100_version) {
@@ -207,6 +206,8 @@ om20Namespace <- "http://www.opengis.net/om/2.0"
 sos200Namespace <- "http://www.opengis.net/sos/2.0"
 fesNamespace <- "http://www.opengis.net/fes/2.0"
 
+gdaNamespace <- "http://www.opengis.net/sosgda/1.0"
+
 SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
     .all <- c(sos = sos100Namespace,
@@ -231,7 +232,8 @@ SosAllNamespaces <- function(version = sos100_version) {
                 xlink = xlinkNamespace,
                 sml = smlNamespace,
                 gml = gml32Namespace,
-                fes = fesNamespace)
+                fes = fesNamespace,
+                gda = gdaNamespace)
       return(.all[unique(names(.all))])
   } else {
     stop("Unsupported version ", version)
@@ -574,6 +576,16 @@ kmlName <- "kml"
 OwsExceptionsData <- function() {
   return(.owsStandardExceptions)
 }
+
+#
+# GDA ----
+#
+gdaPrefix <- "gda"
+gdaDataAvailabilityMemberName <- paste0(gdaPrefix, ":dataAvailabilityMember")
+gdaProcedureName <- paste0(gdaPrefix, ":procedure")
+gdaObservedPropertyName <- paste0(gdaPrefix, ":observedProperty")
+gdaFeatureOfInterestName <- paste0(gdaPrefix, ":featureOfInterest")
+gdaPhenomenonTimeName <- paste0(gdaPrefix, ":phenomenonTime")
 
 #
 # others ----

@@ -234,7 +234,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
                 sos@version, "'"))
   }
 
-  .gdaMembers <- xml2::xml_find_all(x = obj, xpath = sosGDAMemberName, ns = SosAllNamespaces())
+  .gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = SosAllNamespaces(sos200_version))
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), "element(s).\n")
   phenTimeCache <- list()
@@ -248,20 +248,20 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseGDAMember]")
   #
   # procedure
-  .procedure <- .parseGDAReferencedElement(gdaMember, sos, sosProcedureName, verbose)
+  .procedure <- .parseGDAReferencedElement(gdaMember, sos, gdaProcedureName, verbose)
   #
   # observed property
-  .observedProperty <- .parseGDAReferencedElement(gdaMember, sos, sosObservedPropertyName, verbose)
+  .observedProperty <- .parseGDAReferencedElement(gdaMember, sos, gdaObservedPropertyName, verbose)
   #
   # feature of interest
-  .featureOfInterest <- .parseGDAReferencedElement(gdaMember, sos, sosFeatureOfInterestName, verbose)
+  .featureOfInterest <- .parseGDAReferencedElement(gdaMember, sos, gdaFeatureOfInterestName, verbose)
   #
   # phenomenon time
   .phenTime <- NULL
-  .ptNode <- xml2::xml_find_all(x = gdaMember, xpath = sosPhenomenonTimeName, ns = SosAllNamespaces())
+  .ptNode <- xml2::xml_find_all(x = gdaMember, xpath = gdaPhenomenonTimeName, ns = SosAllNamespaces(sos200_version))
   # Case A: Encoded
   if (!.nodeFound(.ptNode)) {
-    stop(paste0("[parseGDAMember] ", sosPhenomenonTimeName, " not found!"))
+    stop(paste0("[parseGDAMember] ", gdaPhenomenonTimeName, " not found!"))
   }
   .ptNode <- .ptNode[[1]]
   # href is an in-document reference starting with "#" and than the GML:id of the referenced element
@@ -276,8 +276,8 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   # Case B: in-document reference -> cache
   else {
     .phenTime <- parseTimePeriod(xml2::xml_find_first(x = gdaMember,
-                                                      xpath = gmlTimePeriodName,
-                                                      ns = SosAllNamespaces()),
+                                                      xpath = paste0(".//", gmlTimePeriodName),
+                                                      ns = SosAllNamespaces(sos200_version)),
                                  sos = sos)
     phenTimeCache[[.phenTime@id]] <- .phenTime
   }
@@ -295,13 +295,13 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (is.null(.node)) return(FALSE)
   .nodeAttributes <- xml2::xml_attrs(x = .node)
 
-  if (is.null(.nodeAttributes)) return(FALSE)
+  if (is.null(.nodeAttributes) || length(.nodeAttributes) == 0) return(FALSE)
   .href <- .nodeAttributes[["href"]]
-  return(!is.null(.href) && is.character(.href) && length(.href) > 0)
+  return(!is.null(.href) && is.character(.href) && length(.href) > 0 && startsWith(.href, "#"))
 }
 
 .parseGDAReferencedElement <- function(gdaMember, sos, elementName, verbose = FALSE) {
-  .nodes <- xml2::xml_find_all(x = gdaMember, xpath = elementName, ns = SosAllNamespaces())
+  .nodes <- xml2::xml_find_all(x = gdaMember, xpath = elementName, ns = SosAllNamespaces(sos200_version))
   if (is.na(.nodes) || length(.nodes) != 1) {
     stop(paste0("[parseGDAMember] no element found for '", elementName, "'."))
   }
