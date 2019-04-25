@@ -31,7 +31,8 @@ webmockr::enable("httr")
 webmockr::httr_mock()
 context("convenience layer -> phenomena()")
 
-test_that("KVP::phenomena() returns the current list of phenomena as one column data.frame", {
+test_that("KVP::phenomena(sos) returns the current list of phenomena as one column data.frame", {
+  webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
     webmockr::wi_th(
       headers = list("Accept" = "application/xml")
@@ -45,7 +46,7 @@ test_that("KVP::phenomena() returns the current list of phenomena as one column 
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
   dataFrameOfPhenomena <- phenomena(sos)
 
-  expect_true(!is.null(dataFrameOfPhenomena))
+  expect_false(is.null(dataFrameOfPhenomena))
   expect_true(is.data.frame(dataFrameOfPhenomena))
   expect_equal(length(colnames(dataFrameOfPhenomena)), 1, info = "number of columns in phenomena data.frame")
   expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "correct column name")
@@ -86,7 +87,8 @@ test_that("KVP::phenomena() returns the current list of phenomena as one column 
   expect_equal("WindSpeedMperSec",      dataFrameOfPhenomena[33, 1])
 })
 
-test_that("KVP::phenomena() returns an empty list of phenomena as one column data.frame if the SOS is empty", {
+test_that("KVP::phenomena(sos) returns an empty list of phenomena as one column data.frame if the SOS is empty", {
+  webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena-empty?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
     webmockr::wi_th(
       headers = list("Accept" = "application/xml")
@@ -107,5 +109,77 @@ test_that("KVP::phenomena() returns an empty list of phenomena as one column dat
   expect_equal(nrow(dataFrameOfPhenomena), 0, info = "number of unique phenomena")
 })
 
-webmockr::disable("httr")
+test_that("KVP::phenomena(sos, includeTemporalBBox) returns an empty list of phenomena as three column data.frame if the SOS is empty", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena-empty?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com_empty.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com_empty.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
 
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena-empty", binding = "KVP", verboseOutput = FALSE)
+  dataFrameOfPhenomena <- phenomena(sos, includeTemporalBBox = TRUE)
+
+  expect_false(is.null(dataFrameOfPhenomena))
+  expect_true(is.data.frame(dataFrameOfPhenomena))
+  expect_equal(length(colnames(dataFrameOfPhenomena)), 3, info = "number of columns in phenomena data.frame")
+  expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "correct column name")
+  expect_equal(colnames(dataFrameOfPhenomena)[[2]], "timeBegin", info = "correct column name")
+  expect_equal(colnames(dataFrameOfPhenomena)[[3]], "timeEnd", info = "correct column name")
+  expect_equal(nrow(dataFrameOfPhenomena), 0, info = "number of unique phenomena")
+})
+
+test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns the current list of phenomena as three column data.frame", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com_merge.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+  dataFrameOfPhenomena <- phenomena(sos, includeTemporalBBox = TRUE)
+
+  expect_true(!is.null(dataFrameOfPhenomena))
+  expect_true(is.data.frame(dataFrameOfPhenomena))
+  expect_equal(length(colnames(dataFrameOfPhenomena)), 3, info = "number of columns in phenomena data.frame")
+  expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "column #1 name")
+  expect_equal(colnames(dataFrameOfPhenomena)[[2]], "timeBegin", info = "column #2 name")
+  expect_equal(colnames(dataFrameOfPhenomena)[[3]], "timeEnd", info = "column #3 name")
+  expect_equal(nrow(dataFrameOfPhenomena), 2, info = "number of unique phenomena")
+  # check all values
+  expect_equal("WindDirection", dataFrameOfPhenomena[ 1, 1], info = "phenomenon")
+  expect_equal(strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 1, 2], info = "timeBegin")
+  expect_equal(strptime("2019-04-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 1, 3], info = "timeEnd")
+  expect_equal("WindDirectionTest", dataFrameOfPhenomena[ 2, 1], info = "phenomenon")
+  expect_equal(strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 2, 2], info = "timeBegin")
+  expect_equal(strptime("2019-05-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 2, 3], info = "timeEnd")
+})
+
+webmockr::disable("httr")

@@ -69,7 +69,6 @@ setMethod(f = "describeSensor",
 #
 # getObservationById ----
 #
-#
 setMethod(f = "getObservationById",
           signature = signature(sos = "SOS_2.0.0", observationId = "character"),
           def = function(sos, observationId, responseFormat, srsName,
@@ -363,6 +362,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     }
     cat(.msg)
 
+    # RETURN ###
     return(.obs)
   }
   else {# response is NOT an XML document:

@@ -33,7 +33,7 @@
 # ~ us.1.1 ####
 # What phenomena are available from a SOS?
 #   phenomena(sos)
-# → list[siteID]
+# → list[phenomenonId]
 # GetCapabilities::Contents
 #
 # ~ us.1.2 ####
@@ -53,7 +53,7 @@
 #
 # phenomena - generic method ----
 #
-if (!isGeneric("phenomena"))
+if (!isGeneric("phenomena")) {
   setGeneric(name = "phenomena",
              signature = signature("sos",
                                    "includeTemporalBBox",
@@ -63,6 +63,7 @@ if (!isGeneric("phenomena"))
                             includeSiteId = FALSE) {
                standardGeneric("phenomena")
              })
+}
 
 #
 # phenomena - call with sos parameter only ----
@@ -76,29 +77,83 @@ setMethod(f = "phenomena",
             stopifnot(is.logical(includeTemporalBBox))
             stopifnot(is.logical(includeSiteId))
             if (!includeTemporalBBox && !includeSiteId) {
-              return(.simplePhenomenaList(sos))
+              return(.listPhenomena(sos))
+            }
+            else if (includeTemporalBBox && !includeSiteId) {
+              return(.listPhenomenaWithTemporalBBox(sos))
             }
           })
-
-
-#
-# .simplePhenomenaList ----
 #
 # phenomena(sos) → data.frame[phenomenon] using GetCapabilities::Contents
 #
 # see: https://github.com/52North/sos4R/issues/81
 #
-.simplePhenomenaList <- function(sos) {
-  .properties <- sosObservableProperties(sos)
-  stopifnot(!is.null(.properties))
-  stopifnot(is.list(.properties))
-  if (length(unlist(.properties)) == 0) {
-    phens <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
+.listPhenomena <- function(sos) {
+  .phenomena <- sosObservableProperties(sos)
+  stopifnot(!is.null(.phenomena))
+  stopifnot(is.list(.phenomena))
+  if (length(unlist(.phenomena)) == 0) {
+    .phens <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
   } else {
-    .properties <- unique(sort(as.vector(unlist(.properties))))
-    phens <- data.frame("phenomenon" = .properties, stringsAsFactors = FALSE)
+    .phenomena <- unique(sort(as.vector(unlist(.phenomena))))
+    .phens <- data.frame("phenomenon" = .phenomena, stringsAsFactors = FALSE)
   }
-  return(phens)
+  return(.phens)
+}
+
+#
+# phenomena(sos, includeTemporalBBox=TRUE) → data.frame[phenomenon, timeBegin, timeEnd]
+#
+# see: https://github.com/52North/sos4R/issues/82
+#
+# <gda:dataAvailabilityMember gml:id="dam_1">
+#   <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+#   <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+#   <gda:featureOfInterest xlink:href="elv-ws2500" xlink:title="ELV WS2500"/>
+#   <gda:phenomenonTime>
+#     <gml:TimePeriod gml:id="tp_1">
+#       <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
+#       <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
+#     </gml:TimePeriod>
+#   </gda:phenomenonTime>
+# </gda:dataAvailabilityMember>
+#
+.listPhenomenaWithTemporalBBox <- function(sos) {
+  .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  stopifnot(!is.null(.dams))
+  stopifnot(is.list(.dams))
+  if (length(.dams) == 0) {
+    .phenomena <- data.frame("phenomenon" = character(0),
+                          "timeBegin" = double(0),
+                          "timeEnd" = double(0),
+                        stringsAsFactors = FALSE)
+  }
+  else {
+    .phenomena <- data.frame("phenomenon" = character(0),
+                        "timeBegin" = double(0),
+                        "timeEnd" = double(0),
+                        stringsAsFactors = FALSE)
+    for (.dam in .dams) {
+      # check if phenomenon aka observed property is in data.frame
+      if (.dam@observedProperty %in% .phenomena[, 1]) {
+        # if yes -> merge times
+        if (.dam@phenomenonTime@beginPosition@time < .phenomena[.phenomena$phenomenon == .dam@observedProperty, 2]) {
+          .phenomena[.phenomena$phenomenon == .dam@observedProperty, 2] <- list(.dam@phenomenonTime@beginPosition@time)
+        }
+        if (.dam@phenomenonTime@endPosition@time > .phenomena[.phenomena$phenomenon == .dam@observedProperty, 3]) {
+          .phenomena[.phenomena$phenomenon == .dam@observedProperty, 3] <- list(.dam@phenomenonTime@endPosition@time)
+        }
+      }
+      else {
+        # if not -> append at the end
+        .phenomena <- rbind(.phenomena, data.frame("phenomenon" = .dam@observedProperty,
+                                         "timeBegin" = .dam@phenomenonTime@beginPosition@time,
+                                         "timeEnd" = .dam@phenomenonTime@endPosition@time,
+                                         stringsAsFactors = FALSE))
+      }
+    }
+  }
+  return(.phenomena)
 }
 
 # siteList ####
@@ -144,25 +199,115 @@ setMethod(f = "phenomena",
   return(los)
 }
 
-siteList <- function(sos,
-                     empty=FALSE, # filter
-                     timeInterval=NA_character_,  # filter
-                     includePhenomena=FALSE, # meta data
-                     includeTemporalBBox=FALSE, # meta data
-                     phenomena=list()) { # filter
-  stopifnot(inherits(sos, "SOS_2.0.0"))
-  stopifnot(is.logical(empty))
-  stopifnot(is.character(timeInterval))
-  stopifnot(is.logical(includePhenomena))
-  stopifnot(is.logical(includeTemporalBBox))
+#
+# siteList - generic method ----
+#
+if (!isGeneric("siteList")) {
+  setGeneric(name = "siteList",
+             signature = signature("sos",
+                                   "empty",
+                                   "timeInterval",
+                                   "includePhenomena",
+                                   "includeTemporalBBox",
+                                   "phenomena"),
+             def = function(sos,
+                            empty=FALSE,                 # filter
+                            timeInterval=NA_character_,  # filter
+                            includePhenomena=FALSE,      # meta data
+                            includeTemporalBBox=FALSE,   # meta data
+                            phenomena=list()) {          # filter
+               standardGeneric("siteList")
+             })
+}
 
-  phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+#
+# siteList - call with sos parameter only ----
+#
+setMethod(f = "siteList",
+          signature = signature(sos = "SOS_2.0.0"),
+          def = function(sos,
+                         empty,
+                         timeInterval,
+                         includePhenomena,
+                         includeTemporalBBox,
+                         phenomena) {
+            stopifnot(inherits(sos, "SOS_2.0.0"))
+            stopifnot(is.logical(empty))
+            stopifnot(is.character(timeInterval))
+            stopifnot(is.logical(includePhenomena))
+            stopifnot(is.logical(includeTemporalBBox))
 
-  if (includeTemporalBBox && !includePhenomena) {
-    includePhenomena <- TRUE
-    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+            .phenomenaSet <- FALSE
+            .timeIntervalSet <- FALSE
+
+            # validate input only if given
+            if (.isPhenomenaSet(phenomena)) {
+              phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+              .phenomenaSet <- TRUE
+            }
+
+            if (includeTemporalBBox && !includePhenomena) {
+              includePhenomena <- TRUE
+              warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+            }
+
+            if (empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
+              return(.listSites(sos))
+            }
+
+            if (!empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
+              return(.listSitesWithData(sos))
+            }
+          }
+)
+
+.isTimeIntervalSet <- function(timeInterval) {
+  return(!is.null(timeInterval) &&
+           !is.na(timeInterval) &&
+           is.character(timeInterval) &&
+           length(timeInterval) > 0)
+}
+
+.isPhenomenaSet <- function(phenomena) {
+  return(!is.null(phenomena) &&
+           !is.na(phenomena) &&
+           is.list(phenomena) &&
+           length(phenomena) > 0)
+}
+
+.listSites <- function(sos) {
+  .features <- getFeatureOfInterest(sos)
+  stopifnot(!is.null(.features))
+  stopifnot(is.list(.features))
+  if (length(unlist(.features)) == 0) {
+    .sites <- data.frame("siteID" = character(0), stringsAsFactors = FALSE)
+  } else {
+    .sites <- data.frame("siteID" = unique(sort(as.vector(unlist(sosFeaturesOfInterest(.features))))), stringsAsFactors = FALSE)
   }
+  return(.sites)
+}
 
+.listSitesWithData <- function(sos) {
+  .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  stopifnot(!is.null(.dams))
+  stopifnot(is.list(.dams))
+  if (length(.dams) == 0) {
+    .sites <- data.frame("siteID" = character(0),
+                             stringsAsFactors = FALSE)
+  }
+  else {
+    .sites <- data.frame("siteID" = character(0),
+                             stringsAsFactors = FALSE)
+    for (.dam in .dams) {
+      # check if siteID aka observed property is in data.frame
+      if (!(.dam@featureOfInterest %in% .sites[, 1])) {
+        # if not -> append at the end
+        .sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,
+                                                   stringsAsFactors = FALSE))
+      }
+    }
+  }
+  return(.sites)
 }
 
 # sites ####
@@ -192,25 +337,52 @@ siteList <- function(sos,
 # sites(sos, phenomena=[List of phenomena])
 # → SpatialPointsDataFrame[phen_1=df[beginTime, endTime], …, phen_n=df[beginTime, endTime]] + coords
 
-sites <- function(sos,
-                  empty=FALSE,
-                  timeInterval=NA_character_,
-                  includePhenomena=FALSE,
-                  includeTemporalBBox=FALSE,
-                  phenomena=list()) {
-  stopifnot(inherits(sos, "SOS_2.0.0"))
-  stopifnot(is.logical(empty))
-  stopifnot(is.character(timeInterval))
-  stopifnot(is.logical(includePhenomena))
-  stopifnot(is.logical(includeTemporalBBox))
-
-  phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-
-  if (includeTemporalBBox && !includePhenomena) {
-    includePhenomena <- TRUE
-    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-  }
+#
+# sites - generic method ----
+#
+if (!isGeneric("sites")) {
+  setGeneric(name = "sites",
+             signature = signature("sos",
+                                   "empty",
+                                   "timeInterval",
+                                   "includePhenomena",
+                                   "includeTemporalBBox",
+                                   "phenomena"),
+             def = function(sos,
+                            empty=FALSE,                 # filter
+                            timeInterval=NA_character_,  # filter
+                            includePhenomena=FALSE,      # meta data
+                            includeTemporalBBox=FALSE,   # meta data
+                            phenomena=list()) {          # filter
+               standardGeneric("sites")
+             })
 }
+
+#
+# sites - call with sos parameter only ----
+#
+setMethod(f = "sites",
+          signature = signature(sos = "SOS_2.0.0"),
+          def = function(sos,
+                         empty,
+                         timeInterval,
+                         includePhenomena,
+                         includeTemporalBBox,
+                         phenomena) {
+            stopifnot(inherits(sos, "SOS_2.0.0"))
+            stopifnot(is.logical(empty))
+            stopifnot(is.character(timeInterval))
+            stopifnot(is.logical(includePhenomena))
+            stopifnot(is.logical(includeTemporalBBox))
+
+            phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+
+            if (includeTemporalBBox && !includePhenomena) {
+              includePhenomena <- TRUE
+              warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+            }
+          }
+)
 
 # getData ####
 # use Units package!

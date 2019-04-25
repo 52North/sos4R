@@ -33,6 +33,13 @@
 parseSosCapabilities200 <- function(obj, sos) {
   if (sos@verboseOutput) cat("[parseSosCapabilities200] entered... \n")
 
+  if ( !inherits(obj, c("xml_node", "xml_document", "xml_nodeset"))) {
+    obj <- xml2::read_xml(obj)
+    if ( !inherits(obj, c("xml_node", "xml_document", "xml_nodeset"))) {
+      stop("invalid input received!")
+    }
+  }
+
   .caps.root <- xml2::xml_root(x = obj)
   namespaces <- SosAllNamespaces(version = sos200_version)
 
@@ -211,7 +218,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
              procedureDescriptionFormat = .procedureDescriptionFormat,
              observedArea = .observedArea)
 
-  if (sos@verboseOutput)
+  if(sos@verboseOutput)
     cat("[parseSosObservationOffering] done: ", toString(.ob), "\n")
 
   return(.ob)

@@ -22,11 +22,11 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+#         Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
-
 #
 # SOS ----
 #
@@ -66,17 +66,19 @@ sos200_version <- "2.0.0"
 sos200NamespacePrefix <- "sos20"
 sos200contentsName <- paste0(sos200NamespacePrefix, ":contents")
 sos200ContentsName <- paste0(sos200NamespacePrefix, ":Contents")
-sos200ObservationOfferingListName <- paste0(sos200NamespacePrefix, ":ObservationOfferingList")
 sos200ObservationOfferingName <- paste0(sos200NamespacePrefix, ":ObservationOffering")
+sos200FilterCapabilitiesName <- paste0(sos200NamespacePrefix, ":filterCapabilities")
 sos200FeatureOfInterestTypeName <- paste0(sos200NamespacePrefix, ":featureOfInterestType")
 sos200ObservationTypeName <- paste0(sos200NamespacePrefix, ":observationType")
 sos200ResponseFormatName <- paste0(sos200NamespacePrefix, ":responseFormat")
-sos200ResponseModeName <- paste0(sos200NamespacePrefix, ":responseMode")
-sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
-sos200FilterCapabilitiesName = paste0(sos200NamespacePrefix, ":filterCapabilities")
 sos200ResultTimeName <- paste0(sos200NamespacePrefix, ":resultTime")
 sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
-
+sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
+sos200_emptyGetObservationResponseString <-
+  paste0("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+         "<sos:GetObservationResponse xmlns:sos=\"http://www.opengis.net/sos/2.0\" ",
+         "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
+         "xsi:schemaLocation=\"http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetObservation.xsd\"/>")
 #
 # Core Operations Profile ----
 #
@@ -104,8 +106,6 @@ sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
 # Hydrology Profile ----
 #
 sosGetDataAvailabilityName <- "GetDataAvailability"
-sosGetDataAvailabilityResponse <- "GetDataAvailabilityResponse"
-sosGDAMemberName <- "dataAvailabilityMember"
 
 SosSupportedOperations <- function(version = sos100_version) {
   if (version == sos100_version) {
@@ -137,7 +137,9 @@ sosKVPParamNameBBOX <- "BBOX"
 #
 # not exported SOS ----
 #
+.sosConnectionMethodGet_Deprecated <- "GET"
 .sosBindingKVP <- "KVP"
+.sosConnectionMethodPost_Deprecated <- "POST"
 .sosBindingPOX <- "POX"
 .sosBindingSOAP <- "SOAP"
 
@@ -203,6 +205,8 @@ om20Namespace <- "http://www.opengis.net/om/2.0"
 sos200Namespace <- "http://www.opengis.net/sos/2.0"
 fesNamespace <- "http://www.opengis.net/fes/2.0"
 
+gdaNamespace <- "http://www.opengis.net/sosgda/1.0"
+
 SosAllNamespaces <- function(version = sos100_version) {
   if (version == sos100_version) {
     .all <- c(sos = sos100Namespace,
@@ -227,7 +231,8 @@ SosAllNamespaces <- function(version = sos100_version) {
                 xlink = xlinkNamespace,
                 sml = smlNamespace,
                 gml = gml32Namespace,
-                fes = fesNamespace)
+                fes = fesNamespace,
+                gda = gdaNamespace)
       return(.all[unique(names(.all))])
   } else {
     stop("Unsupported version ", version)
@@ -570,6 +575,17 @@ kmlName <- "kml"
 OwsExceptionsData <- function() {
   return(.owsStandardExceptions)
 }
+
+#
+# GDA ----
+#
+gdaPrefix <- "gda"
+gdaDataAvailabilityMemberName <- paste0(gdaPrefix, ":dataAvailabilityMember")
+gdaProcedureName <- paste0(gdaPrefix, ":procedure")
+gdaObservedPropertyName <- paste0(gdaPrefix, ":observedProperty")
+gdaFeatureOfInterestName <- paste0(gdaPrefix, ":featureOfInterest")
+gdaPhenomenonTimeName <- paste0(gdaPrefix, ":phenomenonTime")
+gdaGetDataAvailabilityResponse <- paste0(gdaPrefix, ":GetDataAvailabilityResponse")
 
 #
 # others ----
