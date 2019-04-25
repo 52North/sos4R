@@ -306,6 +306,7 @@ setMethod(f = "siteList",
                                                    stringsAsFactors = FALSE))
       }
     }
+    .sites <- data.frame("siteID" = .sites[order(.sites$siteID),], stringsAsFactors = FALSE)
   }
   return(.sites)
 }

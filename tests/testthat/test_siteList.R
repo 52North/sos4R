@@ -69,6 +69,20 @@ test_that("KVP::siteList(sos, empty = TRUE) returns an empty list of sites as on
   .checkEmptySitesDataFrame(sitesDataFrame)
 })
 
+
+.checkSitesDataFrame <- function(sitesDataFrame) {
+  expect_false(is.null(sitesDataFrame))
+  expect_true(is.data.frame(sitesDataFrame))
+  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
+  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
+  expect_equal(nrow(sitesDataFrame), 4, info = "number of unique sites")
+  # check all values
+  expect_equal("elv-ws2500",          sitesDataFrame[ 1, 1])
+  expect_equal("elv-ws2500-internal", sitesDataFrame[ 2, 1])
+  expect_equal("vaisala-wxt520",      sitesDataFrame[ 3, 1])
+  expect_equal("wwu-ws-kli-hsb",      sitesDataFrame[ 4, 1])
+}
+
 test_that("KVP::siteList(sos, empty = TRUE) returns the current list of sites as one column data.frame", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -93,30 +107,8 @@ test_that("KVP::siteList(sos, empty = TRUE) returns the current list of sites as
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
   sitesDataFrame <- siteList(sos, empty = TRUE)
 
-  expect_false(is.null(sitesDataFrame))
-  expect_true(is.data.frame(sitesDataFrame))
-  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
-  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
-  expect_equal(nrow(sitesDataFrame), 4, info = "number of unique sites")
-  # check all values
-  expect_equal("elv-ws2500",          sitesDataFrame[ 1, 1])
-  expect_equal("elv-ws2500-internal", sitesDataFrame[ 2, 1])
-  expect_equal("vaisala-wxt520",      sitesDataFrame[ 3, 1])
-  expect_equal("wwu-ws-kli-hsb",      sitesDataFrame[ 4, 1])
+  .checkSitesDataFrame(sitesDataFrame)
 })
-
-.checkSitesDataFrame <- function(sitesDataFrame) {
-  expect_false(is.null(sitesDataFrame))
-  expect_true(is.data.frame(sitesDataFrame))
-  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
-  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
-  expect_equal(nrow(sitesDataFrame), 4, info = "number of unique sites")
-  # check all values
-  expect_equal("elv-ws2500",          sitesDataFrame[ 1, 1])
-  expect_equal("wwu-ws-kli-hsb",      sitesDataFrame[ 2, 1])
-  expect_equal("elv-ws2500-internal", sitesDataFrame[ 3, 1])
-  expect_equal("vaisala-wxt520",      sitesDataFrame[ 4, 1])
-}
 
 test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns a list of stations as one column data.frame that contain data", {
   webmockr::stub_registry_clear()
