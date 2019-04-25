@@ -847,15 +847,13 @@ if (!isGeneric("sosCoordinates"))
   setGeneric(name = "sosCoordinates", def = function(obj, ...) {
     standardGeneric("sosCoordinates")
   })
-setMethod(f = "sosCoordinates",
-          signature = signature(obj = "SosObservationOffering"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "SosObservationOffering"),
           def = function(obj) {
             .off.spatial <- as(obj, "Spatial")
             .coords <- sp::coordinates(.off.spatial)
             return(.coords)
           })
-setMethod(f = "sosCoordinates",
-          signature = signature(obj = "OmObservationCollection"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "OmObservationCollection"),
           def = function(obj) {
             .coords <- sosCoordinates(obj = obj@members)
             return(.coords)
@@ -875,15 +873,13 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "OmOM_Observation"),
             .coords <- sosCoordinates(obj = obj@featureOfInterest)
             return(.coords)
           })
-setMethod(f = "sosCoordinates",
-          signature = signature(obj = "GmlFeatureCollection"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "GmlFeatureCollection"),
           def = function(obj) {
             .list <- lapply(obj@featureMembers, sosCoordinates)
             .coords <- do.call(rbind, .list)
             return(.coords)
           })
-setMethod(f = "sosCoordinates",
-          signature = signature(obj = "GmlFeatureProperty"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "GmlFeatureProperty"),
           def = function(obj) {
             if(!is.null(obj@feature)) {
               .coords <- sosCoordinates(obj = obj@feature)
@@ -922,8 +918,7 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "GmlPoint"),
             .coords <- sosCoordinates(obj = obj@pos)
             return(.coords)
           })
-setMethod(f = "sosCoordinates",
-          signature = signature(obj = "GmlDirectPosition"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "GmlDirectPosition"),
           def = function(obj) {
             .coordinateDoubles <- as.double(strsplit(x = obj@pos, split = " ")[[1]])
             .coords <- as.data.frame(list(.coordinateDoubles[[1]],
@@ -933,8 +928,7 @@ setMethod(f = "sosCoordinates",
                                 sosDefaultColumnNameSRS)
             return(.coords)
           })
-setMethod(f = "sosCoordinates",
-          signature = signature(obj = "list"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "list"),
           def = function(obj, sos = NULL, verbose = FALSE) {
             if(is.null(sos))
               .list <- lapply(obj, sosCoordinates)
