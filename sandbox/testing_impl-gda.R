@@ -2,6 +2,7 @@
 # Load dev version of sos4R ----
 #
 devtools::load_all()
+webmockr::disable()
 #
 # VARIABLES----
 #
@@ -39,6 +40,8 @@ sos <- SOS(url = .sos, version = .version, verboseOutput = .verbose, binding = .
 #
 # GetCapabilities::Contents----
 #
+phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = FALSE)
+
 myContents <- sosContents(sos)
 #
 # GetFeatureOfInterest----

@@ -206,7 +206,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     return(.handleExceptionReport(sos, .response))
   }
 
-  .parsingFunction <- sosParsers(sos)[[sosGetFeatureOfInterestName]]
+  .parsingFunction <- sosParsers(sos)[[sosGetFeatureOfInterestResponseName]]
 
   if (verbose) {
     cat("[.getFeatureOfInterest_2.0.0] Parsing with function ")
