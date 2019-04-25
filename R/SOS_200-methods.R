@@ -213,7 +213,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     print(.parsingFunction)
   }
 
-  .obs <- .parsingFunction(obj = .response, sos = sos,
+  .features <- .parsingFunction(obj = .response, sos = sos,
                            verbose = verbose)
 
   .msg <- paste("[sos4R] Finished getFeatureOfInterest to", sos@url, "\n")
@@ -222,18 +222,18 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
     .msg <- paste(.msg,
                   "[sos4R] Original document saved:", .filename, "\n")
 
-    .oldAttrs <- attributes(.obs)
+    .oldAttrs <- attributes(.features)
     .newAttrs <- list(.filename)
     names(.newAttrs) <- list(sosAttributeFileName)
     if (verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
                     toString(.newAttrs), "(names",
                     toString(names(.newAttrs)), ")\n")
 
-    attributes(.obs) <- c(.oldAttrs, .newAttrs)
+    attributes(.features) <- c(.oldAttrs, .newAttrs)
   }
   cat(.msg)
 
-  return(.obs)
+  return(.features)
 }
 
 #

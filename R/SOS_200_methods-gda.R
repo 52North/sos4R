@@ -60,7 +60,7 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  .response = sosRequest(sos = sos,
+  .response <- sosRequest(sos = sos,
                          request = .gda,
                          verbose = verbose,
                          inspect = inspect)
