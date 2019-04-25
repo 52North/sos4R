@@ -224,6 +224,19 @@ test_that("time reference", {
   expect_equal(samplingTime@href, "#abc")
 })
 
+test_that("warning if time cannot be parsed", {
+  badTimestamps <- stringr::str_replace_all(string = observationXml,
+                                            pattern = "2012-11-19T13:02:00.000Z",
+                                            replacement =  "2012-11-1913:02:00.000Z")
+  badTimestamps <- stringr::str_replace_all(string = badTimestamps,
+                                            pattern = "2012-11-19T13:09",
+                                            replacement =  "11-19T13:09")
+  doc <- xml2::read_xml(x = badTimestamps)
+  expect_warning(obs <- parseObservation(obj = doc, sos = testsos), "Error converting string")
+  data <- sosResult(obs)
+  expect_equal(which(is.na(data$phenomenonTime)), c(2,length(data$phenomenonTime)))
+})
+
 observationXml <- '<om:Observation gml:id="o_1553776324284" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1">
       <om:samplingTime>
 <gml:TimePeriod gml:id="phenomenonTime_172">
@@ -287,17 +300,4 @@ test_that("coordinates from observation", {
   expect_equal(coords$lat, 51.447722)
   expect_equal(coords$lon, 7.270806)
   expect_equal(as.character(coords$SRS), "urn:ogc:def:crs:EPSG::4326")
-})
-
-test_that("warning if time cannot be parsed", {
-  badTimestamps <- stringr::str_replace_all(string = observationXml,
-                                            pattern = "2012-11-19T13:02:00.000Z",
-                                            replacement =  "2012-11-1913:02:00.000Z")
-  badTimestamps <- stringr::str_replace_all(string = badTimestamps,
-                                            pattern = "2012-11-19T13:09",
-                                            replacement =  "11-19T13:09")
-  doc <- xml2::read_xml(x = badTimestamps)
-  expect_warning(obs <- parseObservation(obj = doc, sos = testsos), "Error converting string")
-  data <- sosResult(obs)
-  expect_equal(which(is.na(data$phenomenonTime)), c(2,length(data$phenomenonTime)))
 })
