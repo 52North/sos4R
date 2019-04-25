@@ -212,7 +212,6 @@
 \alias{mimeSubtypeOM}
 
 \alias{smlSensorMLName}
-\alias{sosAttributeFileName}
 
 \alias{sos100_version}
 \alias{sos200_version}

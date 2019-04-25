@@ -587,4 +587,3 @@ gdaGetDataAvailabilityResponse <- paste0(gdaPrefix, ":GetDataAvailabilityRespons
 xmlTextNodeName <- "text"
 
 .sosCheatSheetDocumentName <- "sos4r_cheat-sheet.pdf"
-sosAttributeFileName <- "savedAsFile"

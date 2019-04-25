@@ -504,17 +504,6 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
     .parsingFunction <- sosParsers(sos)[[sosDescribeSensorName]]
     .sml <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
 
-    if (!is.null(.filename)) {
-      .oldAttrs <- attributes(.sml)
-      .newAttrs <- list(.filename)
-      names(.newAttrs) <- list(sosAttributeFileName)
-      if (verbose) cat("[.describeSensor_1.0.0] Appending new attributes",
-                      toString(.newAttrs), "(names",
-                      toString(names(.newAttrs)), ")\n")
-
-      attributes(.sml) <- c(.oldAttrs, .newAttrs)
-    }
-
     return(.sml)
   }
 }
@@ -603,25 +592,8 @@ setMethod(f = "getObservationById",
       print(.obs)
     }
 
-    if (!is.null(.filename)) {
-      .oldAttrs <- attributes(.obs)
-      .newAttrs <- list(.filename)
-      names(.newAttrs) <- list(sosAttributeFileName)
-      if (verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
-                      toString(.newAttrs), "(names",
-                      toString(names(.newAttrs)), ")\n")
-
-      attributes(.obs) <- c(.oldAttrs, .newAttrs)
-    }
-
     return(.obs)
   }
-
-  if (verbose) {
-    cat("[.getObservationById_1.0.0] returning raw response string.\n")
-  }
-
-  return(.response)
 }
 
 #
@@ -738,23 +710,9 @@ setMethod(f = "getObservationById",
       .countInfo <- paste(.sum, "result values [", toString(.resultLength), "].")
     }
 
-    .msg <- paste("[sos4R] Finished getObservation to", sos@url,
-                  "\n\t--> received", length(.obs), "observation(s) having",
-                  .countInfo , "\n")
-    if (!is.null(.filename)) {
-      .msg <- paste(.msg,
-                    "[sos4R] Original document saved:", .filename, "\n")
-
-      .oldAttrs <- attributes(.obs)
-      .newAttrs <- list(.filename)
-      names(.newAttrs) <- list(sosAttributeFileName)
-      if (verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
-                      toString(.newAttrs), "(names",
-                      toString(names(.newAttrs)), ")\n")
-
-      attributes(.obs) <- c(.oldAttrs, .newAttrs)
-    }
-    cat(.msg)
+    cat("[sos4R] Finished getObservation to", sos@url,
+        "\n\t--> received", length(.obs), "observation(s) having", .countInfo , "\n")
+    if (!is.null(.filename)) cat("[sos4R] Original document saved:", .filename, "\n")
 
     return(.obs)
   }
@@ -781,27 +739,12 @@ setMethod(f = "getObservationById",
         write.csv(.csv, .filename)
       }
 
-      .msg <- paste("[sos4R] Finished getObservation to", sos@url, "\n\t",
-                    "--> received observations with dimensions",
-                    toString(dim(.csv)), "\n")
-      if (!is.null(.filename)) {
-        .msg <- paste(.msg, "[sos4R] Original document saved:", .filename, "\n")
-
-        .oldAttrs <- attributes(.csv)
-        .newAttrs <- list(.filename)
-        names(.newAttrs) <- list(sosAttributeFileName)
-        if (verbose) cat("[.getObservation_1.0.0] Appending new attributes",
-                        toString(.newAttrs), "(names",
-                        toString(names(.newAttrs)), ")\n")
-
-        attributes(.csv) <- c(.oldAttrs, .newAttrs)
-      }
-      cat(.msg)
+      cat("[sos4R] Finished getObservation to", sos@url, "\n\t",
+          "--> received observations with dimensions", toString(dim(.csv)), "\n")
+      if (!is.null(.filename)) cat("[sos4R] Original document saved:", .filename, "\n")
 
       return(.csv)
-    } # grep(pattern = mimeTypeCSV...
-
-    # TODO Add other non-XML encodings here.
+    }
   } # else
 
   # not xml nor csv nore otherwise handled

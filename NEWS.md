@@ -1,6 +1,7 @@
 # sos4R 0.4.0.9000
 
 - Give warnings if time cannot be parsed with the format provided in the SOS object
+- Do not save file name as attribute of returned object anymore (adds complexity, not documented/widely used)
 
 # sos4R 0.3.0
 
