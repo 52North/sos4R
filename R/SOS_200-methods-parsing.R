@@ -178,7 +178,6 @@ parseSosObservationOffering_200 <- function(obj, sos) {
     if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(.resultTime), "\n")
   }
   else {
-    warning("Mandatory element 'result time' missing in offering", .id)
     .resultTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
   }
 
@@ -189,7 +188,6 @@ parseSosObservationOffering_200 <- function(obj, sos) {
     if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(.resultTime), "\n")
   }
   else {
-    warning("Mandatory element 'phenomenon time' missing in offering", .id)
     .phenomenonTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
   }
 
@@ -218,7 +216,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
              procedureDescriptionFormat = .procedureDescriptionFormat,
              observedArea = .observedArea)
 
-  if(sos@verboseOutput)
+  if (sos@verboseOutput)
     cat("[parseSosObservationOffering] done: ", toString(.ob), "\n")
 
   return(.ob)
