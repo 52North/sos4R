@@ -80,7 +80,7 @@
     sosGetFeatureOfInterestResponseName,
     sosGetObservationByIdName,
     owsExceptionReportName,
-    sosGetDataAvailabilityResponse,
+    sosGetDataAvailabilityName,
     #
     omMeasurementName,
     omMemberName,
