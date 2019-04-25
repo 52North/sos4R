@@ -34,7 +34,7 @@ parseOM <- function(obj, sos, verbose = FALSE) {
   .om <- NULL
 
   # switch submethods based on name (needs prefix)
-  .name <- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+  .name <- xml2::xml_name(x = obj, ns = SosAllNamespaces(sos@version))
 
   .parsingFunction <- sosParsers(sos)[[.name]]
   if (!is.null(.parsingFunction)) {

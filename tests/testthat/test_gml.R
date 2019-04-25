@@ -159,7 +159,7 @@ test_that("boundedBy", {
   expect_equal(env$upperCorner, "71.758 180")
 })
 
-test_that("boundedBy with coordinate switing", {
+test_that("boundedBy with coordinate swichting", {
   switchsos <- SOS_Test(name = "testswitchgml", switchCoordinates = TRUE)
   expect_warning(env <- parseEnvelope(obj = xml2::read_xml(envelopeXml), sos = switchsos),
                  "Switching coordinates in envelope")
@@ -170,3 +170,45 @@ test_that("boundedBy with coordinate switing", {
   expect_equal(env$lowerCorner, "-178.343 -55")
   expect_equal(env$upperCorner, "180 71.758")
 })
+
+
+testthat::context("GML 3.2 -> parsePoint")
+library(webmockr)
+library(httr)
+library(stringr)
+webmockr::enable("httr")
+webmockr::httr_mock()
+point1 <- '<gml32:Point xmlns:gml32="http://www.opengis.net/gml/3.2" gml32:id="Point_ssf_033EE116F7D14A5A9735B651830F38A438CEFF1F">
+              <gml32:pos srsName="http://www.opengis.net/def/crs/EPSG/0/4326">51.9347763061523 7.65237522125244</gml32:pos>
+           </gml32:Point>'
+
+
+test_that("gml:Point with gml:pos string", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+
+  point <- parsePoint(obj = xml2::xml_root(xml2::read_xml(x = point1)), sos = sos)
+
+  expect_true(isS4(point))
+  expect_true(inherits(x = point, "GmlPoint"))
+  expect_true(isS4(point@pos))
+  expect_true(inherits(x = point@pos, "GmlDirectPosition"))
+  expect_false(is.na(point@pos@srsName))
+  expect_equal("http://www.opengis.net/def/crs/EPSG/0/4326", point@pos@srsName)
+  expect_false(is.na(point@pos@pos))
+  expect_equal("51.9347763061523 7.65237522125244", point@pos@pos)
+  expect_false(is.na(point@id))
+  expect_equal("Point_ssf_033EE116F7D14A5A9735B651830F38A438CEFF1F", point@id)
+})
+
+webmockr::disable("httr")

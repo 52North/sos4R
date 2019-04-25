@@ -32,8 +32,10 @@
 # parseSamsShape ----
 #
 parseSamsShape <- function(obj, sos) {
-  namespaces <- SosAllNamespaces(version = sos200_version)
-  .point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = namespaces), sos = sos)
+  .point <- parsePoint(xml2::xml_child(x = obj,
+                                       search = gmlPointName,
+                                       ns = SosAllNamespaces(version = sos@version)),
+                       sos = sos)
 
   SamsShape(point = .point)
 }
@@ -42,10 +44,10 @@ parseSamsShape <- function(obj, sos) {
 # parseSams200SamplingFeature ----
 #
 parseSams200SamplingFeature <- function(obj, sos) {
-  namespaces <- SosAllNamespaces(version = sos200_version)
+  namespaces <- SosAllNamespaces(version = sos@version)
   .gmlid <- xml2::xml_attr(x = obj, attr = "id")
 
-  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName)) #, ns = namespaces))
+  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName, ns = namespaces))
   .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = namespaces))
   .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfTypeName, ns = namespaces),
                           attr = "href")
