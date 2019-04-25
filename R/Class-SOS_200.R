@@ -92,7 +92,8 @@ setClass("SosCapabilities_2.0.0",
 # represented by character strings.
 # TODO: FeatureRelationship
 setClass("SosObservationOffering_2.0.0",
-         representation(id = "character", name = "character",
+         representation(id = "character",
+                        name = "character",
                         resultTime = "GmlTimeGeometricPrimitive",
                         phenomenonTime = "GmlTimeGeometricPrimitive",
                         procedure = "character",
@@ -110,7 +111,7 @@ setClass("SosObservationOffering_2.0.0",
                           observableProperty = list(NA),
                           featureOfInterestType = list(NA),
                           observationType = list(NA),
-                          observedArea=NULL,
+                          observedArea = NULL,
                           procedureDescriptionFormat = list(NA),
                           responseFormat = list(NA)),
          validity = function(object) {

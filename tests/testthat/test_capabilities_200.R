@@ -1,8 +1,6 @@
 context("parsing: SOS Capabilities 2.0.0")
 
-testsos <- SOS_Test(name = "testcaps", version = sos200_version
-                    #, verboseOutput = TRUE
-                    )
+testsos <- SOS_Test(name = "testcaps", version = sos200_version)
 xmlDoc <- xml2::read_xml(x = "../responses/Capabilities_200_Example.xml", options = SosDefaultParsingOptions())
 sos200Caps <- parseSosCapabilities(obj = xmlDoc, sos = testsos)
 testsos@capabilities <- sos200Caps
@@ -103,17 +101,21 @@ xsi:schemaLocation="http://www.opengis.net/swes/2.0 http://schemas.opengis.net/s
 </swes:offering>'
 
 test_that("offering is parsed correctly", {
-  obs <- parseSosObservationOffering_200(obj = xml2::read_xml(x = swes_offering), sos = testsos)
-  expect_equal(obs@id, "ws2500")
-  expect_equal(obs@name, NA_character_)
-  expect_length(sosObservableProperties(obs), 10)
-  expect_length(sosProcedures(obs), 1)
-  expect_length(sosResponseFormats(obs), 5)
-  expect_equal(sosResponseFormats(obs)[[4]], "http://www.opengis.net/waterml-dr/2.0")
-  expect_length(obs@featureOfInterestType, 2)
-  expect_equal(obs@observationType[[1]], "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement")
-  expect_match(toString(obs@resultTime), "--> GmlTimePosition \\[ time: 2015-12-02")
-  expect_match(toString(obs@phenomenonTime), "--> GmlTimePosition \\[ time: 2015-12-02")
+  offering <- parseSosObservationOffering_200(obj = xml2::read_xml(x = swes_offering), sos = testsos)
+  expect_equal(offering@id, "ws2500")
+  expect_equal(offering@name, NA_character_)
+  expect_length(sosObservableProperties(offering), 10)
+  expect_length(sosProcedures(offering), 1)
+  expect_length(sosResponseFormats(offering), 5)
+  expect_equal(sosResponseFormats(offering)[[4]], "http://www.opengis.net/waterml-dr/2.0")
+  expect_length(offering@featureOfInterestType, 2)
+  expect_equal(offering@observationType[[1]], "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement")
+  expect_match(toString(offering@resultTime), "--> GmlTimePosition \\[ time: 2015-12-02")
+  expect_match(toString(offering@phenomenonTime), "--> GmlTimePosition \\[ time: 2015-12-02")
+  expect_length(sosBoundedBy(offering), 3)
+  expect_named(sosBoundedBy(offering), c("srsName", "lowerCorner", "upperCorner"))
+  expect_equal(sosBoundedBy(offering)$lowerCorner, "51.934814453125 7.652428150177")
+  expect_equal(sosBoundedBy(offering)$srsName, "http://www.opengis.net/def/crs/EPSG/0/4326")
 })
 
 context("capabilities: NIWA 2.0 SOS")

@@ -347,6 +347,12 @@ setMethod(f = "sosBoundedBy",
             return(boundedBy)
           })
 setMethod(f = "sosBoundedBy",
+          signature = signature(obj = "SosObservationOffering_2.0.0"),
+          definition = function(obj, bbox = FALSE) {
+            boundedBy <- .boundedBy(obj, bbox)
+            return(boundedBy)
+          })
+setMethod(f = "sosBoundedBy",
           signature = signature(obj = "list"),
           definition = function(obj, bbox = FALSE) {
             .bb <- lapply(obj, sosBoundedBy, bbox = bbox)
@@ -361,9 +367,15 @@ setMethod(f = "sosBoundedBy",
 .boundedBy <- function(obj, bbox) {
   bb <- NA
 
+  if (methods::.hasSlot(object = obj, name = "observedArea"))
+    bounds <- obj@observedArea
+  else if (methods::.hasSlot(object = obj, name = "boundedBy"))
+    bounds <- obj@boundedBy
+  else stop("No supported slots to extract bounds from found!")
+
   if (bbox) {
-    .lC <- strsplit(x = obj@boundedBy[["lowerCorner"]], split = " ")[[1]]
-    .uC <- strsplit(x = obj@boundedBy[["upperCorner"]], split = " ")[[1]]
+    .lC <- strsplit(x = bounds[["lowerCorner"]], split = " ")[[1]]
+    .uC <- strsplit(x = bounds[["upperCorner"]], split = " ")[[1]]
 
     warning <- FALSE
     if ((length(.lC) < 2)) {
@@ -393,7 +405,7 @@ setMethod(f = "sosBoundedBy",
                                   c("min", "max")))
   }
   else {
-    bb <- obj@boundedBy
+    bb <- bounds
   }
 
   return(bb)
