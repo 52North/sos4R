@@ -201,10 +201,7 @@ setClass("SosGetFeatureOfInterest_2.0.0",
            featureOfInterest = as.character(NA)),
          contains = "OwsServiceOperation",
          validity = function(object) {
-           #print("Entering validation: SosGetObservation")
-           # TODO implement validity function
-
-           # service, version, offering, observedProperty, and identifier are mandatory
+           # service, version are mandatory
            if (is.na(object@service))
              return("service parameter must be given")
            if (is.na(object@version))

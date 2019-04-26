@@ -82,6 +82,12 @@ setMethod(f = "phenomena",
             else if (includeTemporalBBox && !includeSiteId) {
               return(.listPhenomenaWithTemporalBBox(sos))
             }
+            else if (!includeTemporalBBox && includeSiteId) {
+              stop("return(.listPhenomenaWithSiteIds(sos)) not implemented")
+            }
+            else if (includeTemporalBBox && includeSiteId) {
+              stop("return(.listPhenomenaWithTemporalBBoxAndSiteIds(sos)) not implemented")
+            }
           })
 #
 # phenomena(sos) → data.frame[phenomenon] using GetCapabilities::Contents
@@ -245,6 +251,10 @@ setMethod(f = "siteList",
               phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
               .phenomenaSet <- TRUE
             }
+            if (.isTimeIntervalSet(timeInterval)) {
+              .timeInterval <- .validateISO8601String(timeInterval)
+              .timeIntervalSet <- TRUE
+            }
 
             if (includeTemporalBBox && !includePhenomena) {
               includePhenomena <- TRUE
@@ -266,6 +276,10 @@ setMethod(f = "siteList",
            !is.na(timeInterval) &&
            is.character(timeInterval) &&
            length(timeInterval) > 0)
+}
+
+.validateISO8601String <- function(timeInterval) {
+  stop(".validateISO8601String NOT YET IMPLEMENTED")
 }
 
 .isPhenomenaSet <- function(phenomena) {
@@ -306,6 +320,7 @@ setMethod(f = "siteList",
                                                    stringsAsFactors = FALSE))
       }
     }
+    .sites <- data.frame("siteID" = .sites[order(.sites$siteID),], stringsAsFactors = FALSE)
   }
   return(.sites)
 }
@@ -375,14 +390,120 @@ setMethod(f = "sites",
             stopifnot(is.logical(includePhenomena))
             stopifnot(is.logical(includeTemporalBBox))
 
-            phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+            .phenomenaSet <- FALSE
+            .timeIntervalSet <- FALSE
+
+            # TODO reduce duplicate code @see siteListe method
+            # validate input only if given
+            if (.isPhenomenaSet(phenomena)) {
+              phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+              .phenomenaSet <- TRUE
+            }
+            if (.isTimeIntervalSet(timeInterval)) {
+              .timeInterval <- .validateISO8601String(timeInterval)
+              .timeIntervalSet <- TRUE
+            }
 
             if (includeTemporalBBox && !includePhenomena) {
               includePhenomena <- TRUE
               warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
             }
+
+            # print(paste0("empty               : ", empty))
+            # print(paste0(".phenomenaSet       : ", .phenomenaSet))
+            # print(paste0(".timeIntervalSet    : ", .timeIntervalSet))
+            # print(paste0("includePhenomena    : ", includePhenomena))
+            # print(paste0("includeTemporalBBox : ", includeTemporalBBox))
+
+            if (empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
+              return(.listStationsAsSPDF(sos))
+            }
+
+            if (!empty && !.phenomenaSet && !.timeIntervalSet && includePhenomena && !includeTemporalBBox) {
+              return(.listStationsWithPhenomenaAsSPDF(sos))
+            }
+            stop("NOT YET IMPLEMENTED")
           }
 )
+#
+# sites(sos, empty = TRUE) → sp::SPDF[siteID]
+#
+# See: https://github.com/52North/sos4R/issues/87
+#
+# Used SOS operations/requests
+#  - GetFeatureOfInterest without parameter
+#
+.listStationsAsSPDF <- function(sos) {
+  # get all stations
+  .sites <- getFeatureOfInterest(sos)
+  if (is.null(.sites) || !is.list(.sites) || length(.sites) < 1) {
+    stop("Continue implementation here: handySOS4Rfunctions.R:442: return empty dataframe")
+  }
+  stop("Continue implementation here: handySOS4Rfunctions.R:444: return filled dataframe")
+}
+#
+# sites(sos, includePhenomena=TRUE, includeTemporalBBox=FALSE) → sp::SPDF[siteID, phen_1=logical, …, phen_n=logical]
+#
+# See: https://github.com/52North/sos4R/issues/92
+#
+# Used SOS operations/requests
+# - GetDataAvailability v1.0
+# - GetFeatureOfInterest w/feature list
+#
+.listStationsWithPhenomenaAsSPDF <- function(sos) {
+  # get all phenomena
+  .phenomena <- as.list(.listPhenomena(sos)[, 1])
+  if (is.null(.phenomena) || !is.list(.phenomena) || length(.phenomena) < 1) {
+    return(.listStationsAsSPDF(sos))
+  }
+  # get all stations
+  .sites <- getFeatureOfInterest(sos)
+  if (is.null(.sites) || !is.list(.sites) || length(.sites) < 1) {
+    return(.listStationsAsSPDF(sos))
+  }
+  # get data availability
+  .dams <- getDataAvailability(sos)
+  if (is.null(.dams) || is.na(.dams) || !is.list(.dams)) {
+    .dams <- list()
+  }
+  # set-up base dataframe
+  nrows <- length(.sites)
+  .sitesDataFrame <- st_sf(geometry = st_sfc(lapply(1:nrows, function(x) st_geometrycollection())))
+  # set values for phenomena at stations
+  # for each station
+  for (.site in .sites) {
+    # add siteID
+    .siteRow <- c(setNames(c(.site@feature@identifier, use.names = TRUE), "siteID"))
+    # add phenomena
+    # for each phenomenon
+    for (.phenomenon in .phenomena) {
+      .damFound <- FALSE
+      # for each dam
+      for (.dam in .dams) {
+        # is phenomenon available at the station
+        if (.dam@featureOfInterest == .site@feature@identifier && .dam@observedProperty == .phenomenon) {
+          # .damFound := TRUE
+          # if yes -> set value to TRUE
+          .damFound <- TRUE
+          .siteRow <- c(.siteRow, setNames(c(TRUE, use.names = TRUE), .phenomenon), use.names = TRUE)
+        }
+      }
+      # if dam not found
+      if (!.damFound) {
+        # apppend false to list for phen
+        .siteRow <- c(.siteRow, setNames(c(FALSE, use.names = TRUE), .phenomenon), use.names = TRUE)
+      }
+    }
+    # add geometry
+    .siteRow <- c(.siteRow, setNames(c("geometry", use.names = TRUE), as(.site@feature@shape@point), "SpatialPoints"), use.names = TRUE)
+    print("bla")
+    # append new row at dataframe
+    #.sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,
+    #                                   stringsAsFactors = FALSE))
+      # row := siteID, phen_1=logical, …, phen_n=logical
+  }
+  # set projection for .sitesDataFrame
+}
 
 # getData ####
 # use Units package!

@@ -50,8 +50,9 @@ parsePosition <- function(obj, sos) {
 
 parsePoint <- function(obj, sos) {
   point <- NA
-  pos <- xml2::xml_child(x = obj, search = gmlPosName)
+  pos <- xml2::xml_child(x = obj, search = gmlPosName, ns = SosAllNamespaces(sos@version))
   posString <- xml2::xml_text(x = pos)
+  id <- xml2::xml_attr(x = obj, attr = "id")
 
   if (sosSwitchCoordinates(sos)) {
     warning("Switching coordinates in Point!")
@@ -70,7 +71,7 @@ parsePoint <- function(obj, sos) {
                            srsDimension = as.integer(srsDimension),
                            axisLabels = axisLabels,
                            uomLabels = uomLabels)
-  point <- GmlPoint(pos = pos)
+  point <- GmlPoint(id = id, pos = pos)
 
   return(point)
 }

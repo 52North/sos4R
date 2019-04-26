@@ -60,7 +60,7 @@
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  .response = sosRequest(sos = sos,
+  .response <- sosRequest(sos = sos,
                          request = .gda,
                          verbose = verbose,
                          inspect = inspect)
@@ -237,14 +237,15 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   .gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = sos@namespaces)
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), "element(s).\n")
-  phenTimeCache <- list()
-  .parsedGDAMembers <- lapply(.gdaMembers, .parseGDAMember, sos, phenTimeCache, verbose)
+  .phenTimeCache <<- list()
+  .parsedGDAMembers <- lapply(.gdaMembers, .parseGDAMember, sos, verbose)
+  .phenTimeCache <<- list()
   if (verbose) cat("[parseGetDataAvailabilityResponse] Done. Processed", length(.parsedGDAMembers),
                    "elements")
   return(.parsedGDAMembers)
 }
 
-.parseGDAMember <- function(gdaMember, sos, phenTimeCache, verbose = FALSE) {
+.parseGDAMember <- function(gdaMember, sos, verbose = FALSE) {
   if (verbose) cat("[parseGDAMember]")
   #
   # procedure
@@ -268,7 +269,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (.isHrefAttributeAvailable(.ptNode)) {
     .ptNodeHref <- xml2::xml_attr(x = .ptNode, attr = "href")
     if(verbose) cat(paste0("[parseGDAMember] trying to get referenced phenomenon time via '", .ptNodeHref, "'."))
-    .phenTime <- phenTimeCache[[stringr::str_sub(.ptNodeHref, start = 2)]]
+    .phenTime <- .phenTimeCache[[stringr::str_sub(.ptNodeHref, start = 2)]]
     if (is.null(.phenTime)) {
       stop(paste0("[parseGDAMember] XML document invalid. Time reference '", .ptNodeHref ,"' not in document."))
     }
@@ -279,7 +280,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
                                                       xpath = paste0(".//", gmlTimePeriodName),
                                                       ns = sos@namespaces),
                                  sos = sos)
-    phenTimeCache[[.phenTime@id]] <- .phenTime
+    .phenTimeCache[[.phenTime@id]] <<- .phenTime
   }
   if (is.null(.phenTime)) {
     stop("[parseGDAMember] could NOT parse phenomenon time.")

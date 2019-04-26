@@ -914,8 +914,7 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "OmOM_Observation"),
             .coords <- sosCoordinates(obj = obj@featureOfInterest)
             return(.coords)
           })
-setMethod(f = "sosCoordinates",
-          signature = signature(obj = "GmlFeatureCollection"),
+setMethod(f = "sosCoordinates", signature = signature(obj = "GmlFeatureCollection"),
           def = function(obj) {
             .list <- lapply(obj@featureMembers, sosCoordinates)
             .coords <- do.call(rbind, .list)
