@@ -168,7 +168,7 @@ setMethod(f = "checkRequest",
           signature = signature(service = "SOS",
                                 operation = "OwsGetCapabilities_1.1.0",
                                 verbose = "logical"),
-          def = function(service, operation, verbose) {
+          definition = function(service, operation, verbose) {
 
             # TODO implement checkRequest for OwsGetCapabilities
 
@@ -178,7 +178,7 @@ setMethod(f = "checkRequest",
           signature = signature(service = "SOS",
                                 operation = "OwsGetCapabilities_2.0.0",
                                 verbose = "logical"),
-          def = function(service, operation, verbose) {
+          definition = function(service, operation, verbose) {
 
             # TODO implement checkRequest for OwsGetCapabilities
 
@@ -236,7 +236,7 @@ setMethod(f = "checkRequest",
 # kvp encoding ----
 #
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
-          def = function(obj, sos, verbose = FALSE) {
+          definition = function(obj, sos, verbose = FALSE) {
             .sosEncodeRequestKVPGetCapabilities(obj, verbose)
           })
 
@@ -318,10 +318,10 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
-            return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
+            return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj = obj, sos = sos))
           }
 )
-.sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
+.sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
   xml2::xml_set_attrs(x = xmlDoc,
                       value = c(xmlns = sos100Namespace,
@@ -329,7 +329,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
                                 service = obj@service,
                                 "xmlns:ows" = owsNamespace,
                                 "xmlns:ogc" = ogcNamespace),
-                      ns = SosAllNamespaces())
+                      ns = sos@namespaces)
 
   # optional:
   if (!is.na(obj@acceptVersions)) {
@@ -369,10 +369,10 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
-            return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
+            return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj = obj, sos = sos))
           }
 )
-.sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
+.sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
   xml2::xml_set_attrs(x = xmlDoc,
                       value = c(xmlns = sos200Namespace,
@@ -380,7 +380,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
                                 service = obj@service,
                                 "xmlns:ows" = owsNamespace,
                                 "xmlns:ogc" = ogcNamespace),
-                      ns = SosAllNamespaces())
+                      ns = sos@namespaces)
 
   # optional:
   if (!is.na(obj@acceptVersions)) {

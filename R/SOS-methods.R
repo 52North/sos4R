@@ -41,6 +41,7 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 useDCPs = TRUE,
                 dcpFilter = SosDefaultDCPs(),
                 additionalKVPs = list(),
+                namespaces = SosAllNamespaces(version = version),
                 ...) {
   if (version == sos100_version) {
     .sos <- new("SOS_1.0.0",
@@ -59,9 +60,10 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 switchCoordinates = switchCoordinates,
                 useDCPs = useDCPs,
                 dcpFilter = dcpFilter,
-                additionalKVPs = additionalKVPs)
+                additionalKVPs = additionalKVPs,
+                namespaces = namespaces)
 
-    .caps <- getCapabilities(sos = .sos, verbose = verboseOutput, ...)
+    .caps <- sos4R::getCapabilities(sos = .sos, verbose = verboseOutput, ...)
     if (!is(.caps, "OwsCapabilities")) {
       stop("ERROR: Did not receive a Capabilities response!")
     }
@@ -90,9 +92,10 @@ SOS <- function(url, binding = SosDefaultBinding(),
                 switchCoordinates = switchCoordinates,
                 useDCPs = useDCPs,
                 dcpFilter = dcpFilter,
-                additionalKVPs = additionalKVPs)
+                additionalKVPs = additionalKVPs,
+                namespaces = namespaces)
 
-    .caps <- getCapabilities(sos = .sos, verbose = verboseOutput, ...)
+    .caps <- sos4R::getCapabilities(sos = .sos, verbose = verboseOutput, ...)
     if (!is(.caps, "OwsCapabilities")) {
       stop("ERROR: Did not receive a Capabilities response!")
     }
@@ -230,7 +233,8 @@ SosGetObservationById <- function(
   service,
   version,
   observationId,
-  responseFormat,
+  # next four only for SOS 1.0.0
+  responseFormat = as.character(NA),
   srsName = as.character(NA),
   resultModel = as.character(NA),
   responseMode = as.character(NA)) {
@@ -279,8 +283,7 @@ SosGetObservationById <- function(
 
       if (is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
         .dcp <- list("Get", "application/x-kvp", sos@url)
-        if (verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using ",
-                         .dcp, "\n")
+        if (verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using ", toString(.dcp), "\n")
       }
 
       if (is.list(.dcp) && length(.dcp) && is.list(.dcp[[1]])) {
@@ -331,7 +334,7 @@ SosGetObservationById <- function(
 
       if (is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
         .dcp <- list("Post", "application/xml", sos@url)
-        if (verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
+        if (verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", toString(.dcp), "\n")
       }
       else {
         if (verbose) cat("[.sosRequest_1.0.0] Got DCPs from capabilites:", toString(.dcp), "\n")
@@ -562,7 +565,7 @@ setMethod(f = "getObservationById",
                                resultModel = resultModel,
                                responseMode = responseMode)
 
-  if (verbose) cat("[.getObservationById_1.0.0] REQUEST:\n", toString(.go), "\n")
+  if (inspect) cat("[.getObservationById_1.0.0] REQUEST:\n", toString(.go), "\n")
 
   .response = sosRequest(sos = sos,
                          request = .go,
@@ -580,8 +583,7 @@ setMethod(f = "getObservationById",
   }
   else {
     .parsingFunction <- sosParsers(sos)[[sosGetObservationByIdName]]
-    .obs <- .parsingFunction(obj = .response, sos = sos,
-                             verbose = verbose)
+    .obs <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
 
     # remove list if only one element
     if (is.list(.obs) && length(.obs) == 1)
@@ -1018,8 +1020,16 @@ setMethod(f = "encodeRequestKVP", signature = signature(obj = "SosGetObservation
 }
 
 setMethod(f = "encodeRequestKVP", signature = signature(obj = "SosGetObservationById"),
-          definition = function(obj, sos, verbose = TRUE) {
-            stop("KVP encoding of operation 'GetObservationById' not supported!")
+          definition = function(obj, sos, verbose = FALSE) {
+            if (sos@version == sos100_version) {
+              stop("KVP encoding of operation 'GetObservationById' not supported!")
+            } else if (sos@version == sos200_version) {
+              return(.sosEncodeRequestKVPGetObservationById_2.0.0(obj = obj,
+                                                                  sos = sos,
+                                                                  verbose = verbose))
+            } else {
+              stop("Version not supported!")
+            }
           }
 )
 
@@ -1138,6 +1148,10 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation
               return(.sosEncodeRequestXMLGetObservationById_1.0.0(obj = obj,
                                                                   sos = sos))
             }
+            if (sos@version == sos200_version) {
+              return(.sosEncodeRequestXMLGetObservationById_2.0.0(obj = obj,
+                                                                  sos = sos))
+            }
             else {
               stop("Version not supported!")
             }
@@ -1148,7 +1162,7 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation
   xml2::xml_set_attrs(x = xmlDoc,
                       value = c(xmlns = sos100Namespace,
                                 service = obj@service,
-                                version = sos@version,
+                                version = obj@version,
                                 "xmlns:xsi" = xsiNamespace,
                                 "xmlns:sos" = sos100Namespace))
 
@@ -1171,7 +1185,6 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation
 
   return(xmlDoc)
 }
-
 
 setMethod(f = "encodeRequestXML", signature = signature(obj = "SosDescribeSensor"),
           definition = function(obj, sos, verbose = FALSE) {
@@ -1198,7 +1211,7 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosDescribeSensor
                                 service = obj@service,
                                 outputFormat = obj@outputFormat,
                                 version = sos@version),
-                      ns = SosAllNamespaces())
+                      ns = sos@namespaces)
 
   xml2::xml_add_child(xmlDoc, "procedure", obj@procedure)
   return(xmlDoc)

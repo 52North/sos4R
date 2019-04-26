@@ -234,7 +234,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
                 sos@version, "'"))
   }
 
-  .gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = SosAllNamespaces(sos200_version))
+  .gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = sos@namespaces)
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(.gdaMembers), "element(s).\n")
   phenTimeCache <- list()
@@ -258,7 +258,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   #
   # phenomenon time
   .phenTime <- NULL
-  .ptNode <- xml2::xml_find_all(x = gdaMember, xpath = gdaPhenomenonTimeName, ns = SosAllNamespaces(sos200_version))
+  .ptNode <- xml2::xml_find_all(x = gdaMember, xpath = gdaPhenomenonTimeName, ns = sos@namespaces)
   # Case A: Encoded
   if (!.nodeFound(.ptNode)) {
     stop(paste0("[parseGDAMember] ", gdaPhenomenonTimeName, " not found!"))
@@ -277,7 +277,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   else {
     .phenTime <- parseTimePeriod(xml2::xml_find_first(x = gdaMember,
                                                       xpath = paste0(".//", gmlTimePeriodName),
-                                                      ns = SosAllNamespaces(sos200_version)),
+                                                      ns = sos@namespaces),
                                  sos = sos)
     phenTimeCache[[.phenTime@id]] <- .phenTime
   }
@@ -301,7 +301,7 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
 }
 
 .parseGDAReferencedElement <- function(gdaMember, sos, elementName, verbose = FALSE) {
-  .nodes <- xml2::xml_find_all(x = gdaMember, xpath = elementName, ns = SosAllNamespaces(sos200_version))
+  .nodes <- xml2::xml_find_all(x = gdaMember, xpath = elementName, ns = sos@namespaces)
   if (is.na(.nodes) || length(.nodes) != 1) {
     stop(paste0("[parseGDAMember] no element found for '", elementName, "'."))
   }

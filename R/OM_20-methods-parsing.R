@@ -28,79 +28,89 @@
 ################################################################################
 
 #
-# Function extracts om:OM_Observation elements from sos:observationData elements.
+# Function parses om:OM_Observation elements from sos:observationData and sos:observation elements.
 #
-parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
+parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE, retrieveFOI = TRUE) {
+  if (verbose) cat("[parseObservation_2.0] Parsing", xml2::xml_name(obj), "\n")
 
-  obj <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = SosAllNamespaces())
+  observationXml <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = sos@namespaces)
 
-  .id <- xml2::xml_attr(x = obj, attr = "id",
-                    default = NA_character_)
-  if(verbose) cat("[parseObservation]", .id, "\n")
-
-  #TODO adjust the following OM 1.0 parsing functionality
+  id <- xml2::xml_attr(x = observationXml, attr = "id", default = NA_character_)
+  if (verbose) cat("[parseObservation_2.0]", id, "\n")
 
   # 52N SOS only returns om:Observation with procedure ids xlink:href
-  .procedure <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = omProcedureName, ns = SosAllNamespaces()), attr = "href",
+  procedure <- xml2::xml_attr(x = xml2::xml_child(x = observationXml, search = omProcedureName, ns = sos@namespaces), attr = "href",
                            default = NA_character_)
 
-  .observedProperty <- parsePhenomenonProperty(xml2::xml_child(x = obj, search = omObservedPropertyName, ns = SosAllNamespaces()),
-                                               verbose = verbose)
+  observedProperty <- parsePhenomenonProperty(xml2::xml_child(x = observationXml, search = omObservedPropertyName, ns = sos@namespaces),
+                                              verbose = verbose)
 
   timeObjectMap <- list()
 
-  if(!is.na(xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()))) {
-    .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = om20PhenomenonTimeName, ns = SosAllNamespaces()),
-                           sos = sos,
-                           timeObjectMap = timeObjectMap,
-                           verbose = verbose)
-    .phenomenonTime <- .pt[[1]]
-    timeObjectMap <- .pt[[2]]
+  phenomenonTimeXml <- xml2::xml_child(x = observationXml, search = om20PhenomenonTimeName, ns = sos@namespaces)
+  if (!is.na(phenomenonTimeXml)) {
+    pt <- parseTimeObject(obj = phenomenonTimeXml,
+                          sos = sos,
+                          timeObjectMap = timeObjectMap,
+                          verbose = verbose)
+    phenomenonTime <- pt[[1]]
+    timeObjectMap <- pt[[2]]
   } else {
     warning("om:phenomenonTime is mandatory in om:Observation, but is missing!")
-    .phenomenonTime <- NULL
+    phenomenonTime <- NULL
   }
 
-  if(!is.na(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()))) {
-    .featureOfInterest <- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()),
-                                   sos = sos, verbose = verbose)
-    if(!is.null(.featureOfInterest@href)){
-      if(verbose) cat("[trying to get referenced featureOfInterest]\n")
+  featureOfInterestXml <- xml2::xml_child(x = observationXml, search = omFeatureOfInterestName, ns = sos@namespaces)
+  if (!is.na(featureOfInterestXml)) {
+    featureOfInterest <- parseFOI(obj = featureOfInterestXml,
+                                  sos = sos,
+                                  verbose = verbose)
+    if (!is.null(featureOfInterest@href)) {
+      if (verbose) cat("[parseObservation_2.0] resolving referenced featureOfInterest\n")
 
-      .featureOfInterestIdentifier <- .featureOfInterest@href
       # TODO what about in-document references
-      .featureOfInterest <- featureCache[[.featureOfInterestIdentifier]]
-      if (is.null(.featureOfInterest)) {
-        foiList <- getFeatureOfInterest(sos = sos, featureOfInterest = .featureOfInterestIdentifier)
-        # getFeatureOfInterest returns a list, but a request including a featureOfInterest id
-        #  should return only one featureOfInterest
-        if(length(foiList) > 0){
-          .featureOfInterest <- foiList[[1]]
-          featureCache[[.featureOfInterestIdentifier]] <- .featureOfInterest
+      cachedFeature <- featureCache[[featureOfInterest@href]]
+      if (is.null(cachedFeature)) {
+        if (retrieveFOI) {
+          if (verbose) cat("[parseObservation_2.0] referenced featureOfInterest is not cached, retrieving... \n")
+          foiList <- sos4R::getFeatureOfInterest(sos = sos, featureOfInterest = featureOfInterest@href, verbose = verbose)
+          # getFeatureOfInterest returns a list, but a request including a featureOfInterest id
+          # should return only one featureOfInterest
+          if (length(foiList) == 1) {
+            featureOfInterest <- foiList[[1]]
+            featureCache[[featureOfInterest@href]] <- featureOfInterest
+            if (verbose) cat("[parseObservation_2.0] Retrieved FOI: ", toString(featureOfInterest), "\n")
+          } else {
+            stop("Retrieved multiple FOIs for ", featureOfInterest@href, " - cannot resolve FOI for observation.")
+          }
+        } else {
+          if (verbose) cat("[parseObservation_2.0] Retrieval of FOI disabled.\n")
         }
       }
     }
-
   } else {
     warning("om:featureOfInterest is mandatory in om:Observation, but is missing!")
-    .featureOfInterest <- NULL
+    featureOfInterest <- NULL
   }
 
   # result parser is exchangeable
-  .resultParsingFunction <- sosParsers(sos)[[omResultName]]
-  .result <- .resultParsingFunction(xml2::xml_child(x = obj, search = omResultName, ns = SosAllNamespaces()), sos, verbose)
+  resultParsingFunction <- sosParsers(sos)[[omResultName]]
+  result <- resultParsingFunction(xml2::xml_child(x = observationXml, search = omResultName, ns = sos@namespaces),
+                                  sos = sos,
+                                  verbose = verbose)
 
   # optional elements
-  if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
-    .pt <- parseTimeObject(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
-                           sos = sos,
-                           timeObjectMap = timeObjectMap,
-                           verbose = verbose)
-    .resultTime <- .pt[[1]]
-    timeObjectMap <- .pt[[2]]
+  resultTimeXml <- xml2::xml_child(x = observationXml, search = omResultTimeName, ns = sos@namespaces)
+  if (!is.na(resultTimeXml)) {
+    pt <- parseTimeObject(obj = resultTimeXml,
+                          sos = sos,
+                          timeObjectMap = timeObjectMap,
+                          verbose = verbose)
+    resultTime <- pt[[1]]
+    timeObjectMap <- pt[[2]]
   }
   else {
-    .resultTime <- NULL
+    resultTime <- NULL
   }
 
   # TODO optionals elements for OmObservation
@@ -109,14 +119,14 @@ parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
   #.parameter
   #.metadata
 
-  .obs <- OmOM_Observation(phenomenonTime = .phenomenonTime,
-                           resultTime = .resultTime,
-                           procedure = .procedure,
-                           observedProperty = .observedProperty,
-                           featureOfInterest = .featureOfInterest,
-                           result = .result)
+  obs <- OmOM_Observation(phenomenonTime = phenomenonTime,
+                           resultTime = resultTime,
+                           procedure = procedure,
+                           observedProperty = observedProperty,
+                           featureOfInterest = featureOfInterest,
+                           result = result)
 
-  return(.obs)
+  return(obs)
 }
 
 #
@@ -125,34 +135,34 @@ parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE) {
 parseTimeObject <- function(obj, sos, timeObjectMap = list(), verbose = FALSE) {
   if (verbose) cat("[parseTimeObject]\n")
 
-  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
-  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
-  .timeReference <- xml2::xml_attr(x = obj, attr = "href")
-  .timeObject <- NULL
+  tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
+  tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
+  timeReference <- xml2::xml_attr(x = obj, attr = "href")
+  timeObject <- NULL
 
-  if (!is.na(.tiXML)) {
+  if (!is.na(tiXML)) {
     if (verbose) cat("[parseTimeObject] time instant.\n")
-    .timeObject <- parseTimeInstant(obj = .tiXML, sos = sos)
-    timeObjectMap[[.timeObject@id]] <- .timeObject
+    timeObject <- parseTimeInstant(obj = tiXML, sos = sos)
+    timeObjectMap[[timeObject@id]] <- timeObject
   }
-  else if (!is.na(.tpXML)) {
+  else if (!is.na(tpXML)) {
     if (verbose) cat("[parseTimeObject] time period.\n")
-    .timeObject <- parseTimePeriod(obj = .tpXML, sos = sos)
-    timeObjectMap[[.timeObject@id]] <- .timeObject
+    timeObject <- parseTimePeriod(obj = tpXML, sos = sos)
+    timeObjectMap[[timeObject@id]] <- timeObject
   }
-  else if (!is.na(.timeReference)) {
+  else if (!is.na(timeReference)) {
     if (verbose) cat("[parseTimeObject] referenced time.\n")
-    .timeObject <- timeObjectMap[[substring(.timeReference, 2)]]
-    if (is.null(.timeObject)) {
-      stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
+    timeObject <- timeObjectMap[[substring(timeReference, 2)]]
+    if (is.null(timeObject)) {
+      stop(paste0("XML document invalid. Time reference '", timeReference ,"' not in document."))
     }
   }
   else {
     warning("Could not create GmlTimeObject from given O&M time object.
             Require gml:TimeInstant or gml:TimePeriod as children.")
-    .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
+    timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
       time = as.POSIXct(x = NA)))
   }
 
-  return(list(.timeObject, timeObjectMap))
+  return(list(timeObject, timeObjectMap))
 }

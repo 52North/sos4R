@@ -32,11 +32,17 @@
 #
 setClass("SOS",
          representation(version = "character",
-                        capabilities = "OwsCapabilities", parsers = "list",
-                        encoders = "list", dataFieldConverters = "list",
-                        timeFormat = "character", verboseOutput = "logical",
-                        switchCoordinates = "logical", useDCPs = "logical",
-                        dcpFilter = "list", additionalKVPs = "list"),
+                        capabilities = "OwsCapabilities",
+                        parsers = "list",
+                        encoders = "list",
+                        dataFieldConverters = "list",
+                        timeFormat = "character",
+                        verboseOutput = "logical",
+                        switchCoordinates = "logical",
+                        useDCPs = "logical",
+                        dcpFilter = "list",
+                        additionalKVPs = "list",
+                        namespaces = "character"),
          contains = c("VIRTUAL"))
 
 #
@@ -67,6 +73,7 @@ SOS_Test <- function(name = "test",
                      useDCPs = TRUE,
                      dcpFilter = SosDefaultDCPs(),
                      additionalKVPs = list(),
+                     namespaces = SosAllNamespaces(version = version),
                      ...) {
 
   .sos <- new("SOS_Test",
@@ -84,9 +91,10 @@ SOS_Test <- function(name = "test",
               switchCoordinates = switchCoordinates,
               useDCPs = useDCPs,
               dcpFilter = dcpFilter,
-              additionalKVPs = additionalKVPs)
+              additionalKVPs = additionalKVPs,
+              namespaces = namespaces)
 
-  if(verboseOutput) cat("[SOS] Created new SOS_Test:\n", toString(.sos), "\n")
+  if (verboseOutput) cat("[SOS] Created new SOS_Test:\n", toString(.sos), "\n")
   return(.sos)
 }
 
@@ -125,7 +133,7 @@ setClass("SosDescribeSensor",
            #print("Entering validation: sosDescribeSensor")
            # TODO implement validity function
            # check format of version, sensorid and outputformat?!
-           if(length(object@procedure) > 1)
+           if (length(object@procedure) > 1)
              return("can only request one procedure at a time!")
 
            return(TRUE)
@@ -164,16 +172,16 @@ setClass("SosGetObservation",
            # TODO implement validity function
 
            # service, version, offering, observedProperty, and responseFormat are mandatory
-           if(is.na(object@service))
+           if (is.na(object@service))
              return("service parameter must be given")
-           if(is.na(object@version))
+           if (is.na(object@version))
              return("version must be given")
-           if(is.na(object@offering))
+           if (is.na(object@offering))
              return("offering parameter must be given")
            # responseFormat is optional for GET
            #if(is.na(object@responseFormat))
            #	return("responseFormat parameter must be given")
-           if(length(object@observedProperty) < 1)
+           if (length(object@observedProperty) < 1)
              return("at least one observedProperty is mandatory")
 
            # if version is there, it hast to be in a certain format, see ows common

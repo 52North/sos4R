@@ -69,7 +69,7 @@ context("parsing: DataArray")
 
 test_that("parse encoding", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  encodingXml <- xml2::xml_find_first(x = doc, xpath = "//swe:encoding", ns = SosAllNamespaces())
+  encodingXml <- xml2::xml_find_first(x = doc, xpath = "//swe:encoding")
 
   encoding <- parseEncoding(obj = encodingXml, sos = testsos)
   expect_s4_class(encoding, "SweTextBlock")
@@ -80,7 +80,7 @@ test_that("parse encoding", {
 
 test_that("parse time field", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
+  fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field")
 
   timeField <- parseField(obj = fieldsXml[[1]], sos = testsos)
   expect_equal(timeField[["name"]], "time")
@@ -89,7 +89,7 @@ test_that("parse time field", {
 
 test_that("parse quantity field", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
+  fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field")
 
   quantityField <- parseField(obj = fieldsXml[[2]], sos = testsos)
 
@@ -100,7 +100,7 @@ test_that("parse quantity field", {
 
 test_that("parse category field", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field", ns = SosAllNamespaces())
+  fieldsXml <- xml2::xml_find_all(x = doc, xpath = "//swe:field")
 
   categoryField <- parseField(obj = fieldsXml[[5]], sos = testsos)
   expect_equal(categoryField[["name"]], "MS")
@@ -110,7 +110,7 @@ test_that("parse category field", {
 
 test_that("parse data array finds all data", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray", ns = SosAllNamespaces())
+  dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray")
 
   expect_warning(
     dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos),
@@ -124,7 +124,7 @@ test_that("parse data array finds all data", {
 
 test_that("parse data array has correct classes for fields", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray", ns = SosAllNamespaces())
+  dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray")
 
   expect_warning(
     dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos),
@@ -150,25 +150,25 @@ testsos@capabilities <- axiomCaps
 
 test_that("composite phenomenon name is parsed from snippet", {
   doc <- xml2::read_xml(x = compositePhenomenon)
-  phen <- parseCompositePhenomenon(obj = doc) #, verbose = TRUE)
+  phen <- parseCompositePhenomenon(obj = doc, sos = testsos)
   expect_equal(phen@name, "WaterQuality")
 })
 
 test_that("composite phenomenon id is parsed from snippet", {
   doc <- xml2::read_xml(x = compositePhenomenon)
-  phen <- parseCompositePhenomenon(obj = doc)
+  phen <- parseCompositePhenomenon(obj = doc, sos = testsos)
   expect_equal(phen@id, "WaterQuality")
 })
 
 test_that("composite phenomenon dimension is parsed from snippet", {
   doc <- xml2::read_xml(x = compositePhenomenon)
-  phen <- parseCompositePhenomenon(obj = doc)
+  phen <- parseCompositePhenomenon(obj = doc, sos = testsos)
   expect_equal(phen@dimension, 4)
 })
 
 test_that("composite phenomenon components are parsed from snippet", {
   doc <- xml2::read_xml(x = compositePhenomenon)
-  phen <- parseCompositePhenomenon(obj = doc)
+  phen <- parseCompositePhenomenon(obj = doc, sos = testsos)
   expect_equal(length(phen@components), 2)
   expect_equal(phen@components[[2]]@href, "urn:ogc:def:property:OGC-SWE:2:ID")
 })
@@ -222,19 +222,6 @@ test_that("time reference", {
   doc <- xml2::read_xml(x = samplingTimeReferenceXml)
   samplingTime <- parseTime(obj = doc, sos = testsos)
   expect_equal(samplingTime@href, "#abc")
-})
-
-test_that("warning if time cannot be parsed", {
-  badTimestamps <- stringr::str_replace_all(string = observationXml,
-                                            pattern = "2012-11-19T13:02:00.000Z",
-                                            replacement =  "2012-11-1913:02:00.000Z")
-  badTimestamps <- stringr::str_replace_all(string = badTimestamps,
-                                            pattern = "2012-11-19T13:09",
-                                            replacement =  "11-19T13:09")
-  doc <- xml2::read_xml(x = badTimestamps)
-  expect_warning(obs <- parseObservation(obj = doc, sos = testsos), "Error converting string")
-  data <- sosResult(obs)
-  expect_equal(which(is.na(data$phenomenonTime)), c(2,length(data$phenomenonTime)))
 })
 
 observationXml <- '<om:Observation gml:id="o_1553776324284" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1">
@@ -292,7 +279,26 @@ observationXml <- '<om:Observation gml:id="o_1553776324284" xmlns:om="http://www
 </om:result>
 </om:Observation>'
 
-test_that("coordinates from observation", {
+test_that("warning if time cannot be parsed", {
+  badTimestamps <- stringr::str_replace_all(string = observationXml,
+                                            pattern = "2012-11-19T13:02:00.000Z",
+                                            replacement =  "2012-11-1913:02:00.000Z")
+  badTimestamps <- stringr::str_replace_all(string = badTimestamps,
+                                            pattern = "2012-11-19T13:09",
+                                            replacement =  "11-19T13:09")
+  doc <- xml2::read_xml(x = badTimestamps)
+  expect_warning(obs <- parseObservation(obj = doc, sos = testsos), "Error converting string")
+  data <- sosResult(obs)
+  expect_equal(which(is.na(data$phenomenonTime)), c(2,length(data$phenomenonTime)))
+})
+
+test_that("correct class is returned", {
+  doc <- xml2::read_xml(x = observationXml)
+  obs <- parseObservation(obj = doc, sos = testsos)
+  expect_s4_class(obs, "OmObservation")
+})
+
+test_that("coordinates are parsed from observation", {
   doc <- xml2::read_xml(x = observationXml)
   obs <- parseObservation(obj = doc, sos = testsos)
   coords <- sosCoordinates(obs)
@@ -300,4 +306,43 @@ test_that("coordinates from observation", {
   expect_equal(coords$lat, 51.447722)
   expect_equal(coords$lon, 7.270806)
   expect_equal(as.character(coords$SRS), "urn:ogc:def:crs:EPSG::4326")
+})
+
+test_that("result parsed from observation", {
+  doc <- xml2::read_xml(x = observationXml)
+  obs <- parseObservation(obj = doc, sos = testsos)
+  result <- sosResult(obs)
+
+  expect_equal(dim(result), c(9, 2))
+  expect_equal(result[7,2], 2.7)
+  expect_named(result, c("phenomenonTime", "http://www.52north.org/test/observableProperty/6"))
+  expect_s3_class(result[,1], "POSIXt")
+})
+
+test_that("observation metadata is in result", {
+  doc <- xml2::read_xml(x = observationXml)
+  obs <- parseObservation(obj = doc, sos = testsos)
+  result <- sosResult(obs)
+
+  expect_named(attributes(result[,2]), c("name", "definition", "unit of measurement"))
+  expect_equivalent(sosUOM(result), c("ppm"))
+  expect_named(sosUOM(result), c("http://www.52north.org/test/observableProperty/6"))
+})
+
+test_that("feature ID parsed from observation", {
+  doc <- xml2::read_xml(x = observationXml)
+  obs <- parseObservation(obj = doc, sos = testsos)
+  fid <- sosFeatureIds(obs)
+
+  expect_length(fid, 1)
+  expect_equal(fid, "sf_8D0EA55680FEC1646E1A01C441D7220F9BD9F57C")
+})
+
+test_that("observed property parsed from observation", {
+  doc <- xml2::read_xml(x = observationXml)
+  obs <- parseObservation(obj = doc, sos = testsos)
+  obsProps <- sosObservedProperties(obs)
+
+  expect_length(obsProps, 1)
+  expect_equal(obsProps, "http://www.52north.org/test/observableProperty/6")
 })

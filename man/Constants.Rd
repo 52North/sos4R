@@ -353,7 +353,7 @@ sweUomName
 OwsExceptionsData()
 
 # Get all namespaces
-SosAllNamespaces()
+SosAllNamespaces("1.0.0")
 }
 
 \keyword{constants}

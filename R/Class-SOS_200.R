@@ -32,7 +32,8 @@
 # SOS_2.0.0 ----
 #
 setClass("SOS_2.0.0",
-         representation(url = "character", binding = "character"),
+         representation(url = "character",
+                        binding = "character"),
          prototype = list(
            url = as.character(NA),
            binding = as.character(NA),
@@ -41,13 +42,13 @@ setClass("SOS_2.0.0",
          validity = function(object) {
            #print("Entering validation: SOS")
 
-           if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+           if (!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
              return(paste("Binding has to be one of",
                           toString(SosSupportedBindings()),
                           "- given:", object@binding))
            }
 
-           if(object@version != sos200_version)
+           if (object@version != sos200_version)
              return(paste0("Version must be 2.0.0 but is", object@version))
 
            # url has to match an URL pattern
@@ -204,11 +205,11 @@ setClass("SosGetFeatureOfInterest_2.0.0",
            # TODO implement validity function
 
            # service, version, offering, observedProperty, and identifier are mandatory
-           if(is.na(object@service))
+           if (is.na(object@service))
              return("service parameter must be given")
-           if(is.na(object@version))
+           if (is.na(object@version))
              return("version must be given")
-           if(is.na(object@featureOfInterest))
+           if (any(is.na(object@featureOfInterest)))
              return("featureOfInterest parameter must be given")
 
            return(TRUE)

@@ -53,8 +53,8 @@ test_that("KVP::siteList(sos, empty = TRUE) returns an empty list of sites as on
       headers = list("Content-Type" = "application/xml")
     )
 
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest') %>%
-    wi_th(
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest') %>%
+    webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
     webmockr::to_return(
@@ -80,8 +80,8 @@ test_that("KVP::siteList(sos, empty = TRUE) returns the current list of sites as
       body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest') %>%
-    wi_th(
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest') %>%
+    webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
     webmockr::to_return(
@@ -129,8 +129,8 @@ test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns a list of 
       body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
-    wi_th(
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
     webmockr::to_return(
@@ -159,8 +159,8 @@ test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns an empty l
       body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
-    wi_th(
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
     webmockr::to_return(

@@ -32,9 +32,9 @@
 #
 parseSamplingPoint <- function(obj, sos) {
   sampledFeatures <- as.list(xml2::xml_text(
-    xml2::xml_find_first(x = obj, xpath = gmlNameName, ns = SosAllNamespaces()))
+    xml2::xml_find_first(x = obj, xpath = gmlNameName, ns = sos@namespaces))
   )
-  positionXml <- xml2::xml_child(x = obj, search = saPositionName, ns = SosAllNamespaces())
+  positionXml <- xml2::xml_child(x = obj, search = saPositionName, ns = sos@namespaces)
   position <- parsePosition(positionXml, sos = sos)
   id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
 

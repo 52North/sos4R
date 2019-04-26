@@ -57,11 +57,11 @@ SensorML <- function(xml, coords = data.frame(), id = NA_character_,
 parseSensorML <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseSensorML] Starting... \n")
 
-  .id <- .smlIdentifier(obj, "uniqueID", verbose = verbose)
-  .shortName <- .smlIdentifier(obj, "shortName", verbose = verbose)
+  .id <- .smlIdentifier(obj, "uniqueID", sos = sos, verbose = verbose)
+  .shortName <- .smlIdentifier(obj, "shortName", sos = sos, verbose = verbose)
   .descrNode <- xml2::xml_find_first(x = obj,
                                      xpath = .smlXPathDescription,
-                                     ns = SosAllNamespaces())
+                                     ns = sos@namespaces)
   .description <- xml2::xml_text(x = .descrNode)
 
   if (verbose) cat("[parseSensorML] Got ID", .id,
@@ -72,17 +72,19 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseSensorML] Parsing boundedBy from", .smlXPathObservedBBox, "\n")
   .observedBBox <- xml2::xml_find_first(x = obj,
                                         xpath = .smlXPathObservedBBox,
-                                        ns = SosAllNamespaces())
+                                        ns = sos@namespaces)
   if (!is.na(.observedBBox)) {
-    .referenceFrame <- xml2::xml_attr(x = .observedBBox, attr = "referenceFrame", ns = SosAllNamespaces())
+    .referenceFrame <- xml2::xml_attr(x = .observedBBox, attr = "referenceFrame", ns = sos@namespaces)
     .llVector <- parseSweVector(xml2::xml_child(x = .observedBBox,
                                              search = paste0(sweUpperCornerName, "/", sweVectorName),
-                                             ns = SosAllNamespaces()),
-                             sos = sos, verbose = verbose)
+                                             ns = sos@namespaces),
+                             sos = sos,
+                             verbose = verbose)
     .uuVector <- parseSweVector(xml2::xml_child(x = .observedBBox,
                                              search = paste0(sweLowerCornerName, "/", sweVectorName),
-                                             ns = SosAllNamespaces()),
-                             sos = sos, verbose = verbose)
+                                             ns = sos@namespaces),
+                             sos = sos,
+                             verbose = verbose)
     .bb <- matrix(c(.llVector[["x"]][["value"]],
                     .llVector[["y"]][["value"]],
                     .uuVector[["x"]][["value"]],
@@ -105,7 +107,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseSensorML] Parsing coordinates from", .smlXPathPosition, "\n")
   .xmlPosition <- xml2::xml_find_first(x = obj,
                                        xpath = .smlXPathPosition,
-                                       ns = SosAllNamespaces())
+                                       ns = sos@namespaces)
   if (!is.na(.xmlPosition)) {
     .position <- parseSwePosition(.xmlPosition,
                                   sos = sos,
@@ -160,7 +162,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 #
 #
 #
-.smlIdentifier <- function(doc, identifierName, verbose = FALSE) {
+.smlIdentifier <- function(doc, identifierName, sos, verbose = FALSE) {
   .xpath <- gsub(pattern = .xPathToken,
                  replacement = identifierName,
                  x = .smlXPathIdentifier)
@@ -168,7 +170,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[.smlIdentifier] Accessing path ", .xpath, "\n")
   .identifierText <- xml2::xml_text(xml2::xml_find_first(x = doc,
                                                          xpath = .xpath,
-                                                         ns = SosAllNamespaces()))
+                                                         ns = sos@namespaces))
   if (verbose) cat("[.smlIdentifier] Parsed", identifierName, ":", .identifierText, "\n")
 
   return(.identifierText)

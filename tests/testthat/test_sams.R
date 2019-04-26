@@ -12,7 +12,7 @@ sams1 <- '<sams:SF_SpatialSamplingFeature gml:id="ssf_88204F34D0B94590AA1EDE2157
   </sams:shape>
 </sams:SF_SpatialSamplingFeature>'
 
-testsos <- SOS_Test(name = "testsams")
+testsos <- SOS_Test(name = "testsams", version = sos200_version)
 
 test_that("id is parsed", {
   sams.doc <- xml2::xml_root(x = xml2::read_xml(x = sams1))

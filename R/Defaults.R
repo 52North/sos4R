@@ -44,6 +44,7 @@
     parseOM,
     parseOwsExceptionReport,
     parseGetDataAvailabilityResponse,
+    parseGetObservationByIdResponse,
     #
     parseMeasurement,
     parseObservationProperty,
@@ -81,6 +82,7 @@
     sosGetObservationByIdName,
     owsExceptionReportName,
     sosGetDataAvailabilityName,
+    sos200GetObservationByIdResponseName,
     #
     omMeasurementName,
     omMemberName,
@@ -356,7 +358,8 @@ SosParsingFunctions <- function (..., include = character(0),
 # This works for all but capabilities, as these need to be requested on creating
 # a new SOS instance.
 #
-parseNoParsing <- function(obj) {
+parseNoParsing <- function(obj, sos) {
+  # sos parameter is not used!
   return(obj)
 }
 .sosDisabledParsers <- list(

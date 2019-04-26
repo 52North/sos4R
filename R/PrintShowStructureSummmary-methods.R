@@ -411,7 +411,7 @@
               ", version: ",
               x@version,
               "\nObsvervation ID: ",
-              x@observationId,
+              toString(x@observationId),
               "\nResponseFormat(s): ",
               x@responseFormat,
               ", responseMode(s): ",

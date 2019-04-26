@@ -1,4 +1,3 @@
-
 context("GetObservation")
 
 test_that("creation of request fails if eventTime contains objects of wrong class", {
