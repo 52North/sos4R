@@ -69,11 +69,16 @@ sos200ContentsName <- paste0(sos200NamespacePrefix, ":Contents")
 sos200ObservationOfferingName <- paste0(sos200NamespacePrefix, ":ObservationOffering")
 sos200FilterCapabilitiesName <- paste0(sos200NamespacePrefix, ":filterCapabilities")
 sos200FeatureOfInterestTypeName <- paste0(sos200NamespacePrefix, ":featureOfInterestType")
+sos200FeatureOfInterestName <- paste0(sos200NamespacePrefix, ":featureOfInterest")
 sos200ObservationTypeName <- paste0(sos200NamespacePrefix, ":observationType")
 sos200ResponseFormatName <- paste0(sos200NamespacePrefix, ":responseFormat")
 sos200ResultTimeName <- paste0(sos200NamespacePrefix, ":resultTime")
 sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
 sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
+sos200ObservationName <- paste0(sos200NamespacePrefix, ":observation")
+sos200ObservationDataName <- paste0(sos200NamespacePrefix, ":observationData")
+
+sos200GetObservationByIdResponseName <- paste0(sos200NamespacePrefix, ":GetObservationByIdResponse")
 
 #
 # Core Operations Profile ----
@@ -201,7 +206,7 @@ fesNamespace <- "http://www.opengis.net/fes/2.0"
 
 gdaNamespace <- "http://www.opengis.net/sosgda/1.0"
 
-SosAllNamespaces <- function(version = sos100_version) {
+SosAllNamespaces <- function(version) {
   if (version == sos100_version) {
     .all <- c(sos = sos100Namespace,
               xsi = xsiNamespace,
@@ -260,11 +265,12 @@ omComplexObservationName <- paste0(omNamespacePrefix, ":ComplexObservation")
 #
 # O&M 2.0 ----
 #
-om20NamespacePrefix <- "om20"
+om20NamespacePrefix <- "om"
 om20OM_Observation <- paste0(om20NamespacePrefix, ":OM_Observation")
 om20ResultTypeAttributeName <- paste0(om20NamespacePrefix, ":type")
 om20ResultMeasureTypeName <- paste0(om20NamespacePrefix, ":MeasureType")
 om20PhenomenonTimeName <- paste0(om20NamespacePrefix, ":phenomenonTime")
+om20UomAttributeName <- paste0(om20NamespacePrefix, ":uom")
 
 #
 # SA ----
@@ -529,6 +535,12 @@ owsContentTypeConstraintName <- "Content-Type"
 kmlName <- "kml"
 
 #
+# XSI ----
+#
+xsiNamespacePrefix = "xsi"
+xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
+
+#
 # OWS exception details ----
 #
 .owsCodes = c(
@@ -587,4 +599,3 @@ gdaGetDataAvailabilityResponse <- paste0(gdaPrefix, ":GetDataAvailabilityRespons
 xmlTextNodeName <- "text"
 
 .sosCheatSheetDocumentName <- "sos4r_cheat-sheet.pdf"
-sosAttributeFileName <- "savedAsFile"

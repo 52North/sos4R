@@ -5,13 +5,12 @@ axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_
 testsos@capabilities <- axiomCaps
 
 test_that("output format for POX", {
-    describeSensorOp <- sosOperation(testsos, sosDescribeSensorName)
-    of <- describeSensorOp@parameters[["outputFormat"]][[1]]
-    ds <- SosDescribeSensor(service = testsos@name, version = testsos@version, procedure = NA_character_, outputFormat = of)
-    expect_equal(ds@outputFormat, "text/xml; subtype=\"sensorML/1.0.1/profiles/ioos_sos/1.0\"")
-
-    xml <- encodeRequestXML(obj = ds, sos = testsos)
-    expect_match(toString(xml), "text/xml; subtype=&quot;sensorML/1.0.1/profiles/ioos_sos/1.0&quot;")
+  describeSensorOp <- sosOperation(testsos, sosDescribeSensorName)
+  of <- describeSensorOp@parameters[["outputFormat"]][[1]]
+  ds <- SosDescribeSensor(service = testsos@name, version = testsos@version, procedure = NA_character_, outputFormat = of)
+  expect_equal(ds@outputFormat, "text/xml; subtype=\"sensorML/1.0.1/profiles/ioos_sos/1.0\"")
+  xml <- encodeRequestXML(obj = ds, sos = testsos)
+  expect_match(toString(xml), "text/xml; subtype=&quot;sensorML/1.0.1/profiles/ioos_sos/1.0&quot;")
 })
 
 test_that("procedure for POX", {

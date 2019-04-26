@@ -334,7 +334,7 @@ setMethod(f = "sosCapabilitiesUrl",
 .handleExceptionReport <- function(sos, obj) {
   if (sos@verboseOutput) warning("Received ExceptionReport!")
   .parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
-  .er <- .parsingFunction(obj)
+  .er <- .parsingFunction(obj, sos = sos)
   if (any(class(.er) == "OwsExceptionReport"))
     warning(toString(.er))
   return(.er)

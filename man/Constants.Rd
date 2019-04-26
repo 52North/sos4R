@@ -212,7 +212,6 @@
 \alias{mimeSubtypeOM}
 
 \alias{smlSensorMLName}
-\alias{sosAttributeFileName}
 
 \alias{sos100_version}
 \alias{sos200_version}
@@ -354,7 +353,7 @@ sweUomName
 OwsExceptionsData()
 
 # Get all namespaces
-SosAllNamespaces()
+SosAllNamespaces("1.0.0")
 }
 
 \keyword{constants}

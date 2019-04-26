@@ -31,12 +31,12 @@
 # parse gml:pos from wml2:MonitoringPoint
 #
 parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
-  .sampledFeatures <- xml2::xml_find_all(x = obj, xpath = saSampledFeatureName, ns = SosAllNamespaces())
+  .sampledFeatures <- xml2::xml_find_all(x = obj, xpath = saSampledFeatureName, ns = sos@namespaces)
   .id <-xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
 
-  .names <- xml2::xml_find_all(x = obj, xpath = gmlNameName, ns = SosAllNamespaces())
-  .identifier <- xml2::xml_find_all(x = obj, xpath = gmlIdentifierName, ns = SosAllNamespaces())
-  .shape <- parseSamsShape(xml2::xml_find_all(x = obj, xpath = samsShapeName, ns = SosAllNamespaces()), sos)
+  .names <- xml2::xml_find_all(x = obj, xpath = gmlNameName, ns = sos@namespaces)
+  .identifier <- xml2::xml_find_all(x = obj, xpath = gmlIdentifierName, ns = sos@namespaces)
+  .shape <- parseSamsShape(xml2::xml_find_all(x = obj, xpath = samsShapeName, ns = sos@namespaces), sos)
 
   .mp <- MonitoringPoint(.sampledFeatures, .id, .identifier, .names, .shape)
 

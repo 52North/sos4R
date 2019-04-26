@@ -31,8 +31,11 @@
 # main request method ----
 #
 .sosRequest_2.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
+  if (inspect) cat("[.sosRequest_2.0.0] REQUEST:\n", toString(request), "\n")
+
   # check the request for consistency with service description
-  .checkResult <- checkRequest(service = sos, operation = request,
+  .checkResult <- checkRequest(service = sos,
+                               operation = request,
                                verbose = verbose)
   if (!.checkResult) {
     warning("Check returned FALSE! Turn on verbose option for possible details.",
@@ -65,8 +68,7 @@
 
       if (is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
         .dcp <- list("Get", "application/x-kvp", sos@url)
-        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using ",
-                         .dcp, "\n")
+        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using ", toString(.dcp), "\n")
       }
 
       if (is.list(.dcp) && length(.dcp) && is.list(.dcp[[1]])) {
@@ -78,7 +80,7 @@
 
       if (verbose) cat("[.sosRequest_2.0.0] Using DCP:", toString(.dcp), "\n")
     }
-    else if (verbose) cat("[.sosRequest_2.0.0] Not using DCP from capabilities, but use ", .dcp, "\n")
+    else if (verbose) cat("[.sosRequest_2.0.0] Not using DCP from capabilities, but use ", toString(.dcp), "\n")
 
     if (isTRUE(grep(pattern = "[\\?]", x = .dcp[[owsDcpUrlIndex]]) > 0)) {
       if (verbose) cat("Given url already contains a '?', appending arguments!\n")
@@ -119,7 +121,7 @@
       .dcp <- sosGetDCP(sos, sosName(request), owsPostName) #sos@url as fallback
       if (is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
         .dcp <- list("Post", "application/xml", sos@url)
-        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
+        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", toString(.dcp), "\n")
       }
       else if (verbose) cat("[.sosRequest_2.0.0] Got DCPs from capabilites:", toString(.dcp), "\n")
 
@@ -161,6 +163,7 @@
                SosSupportedBindings(), "but is", sos@binding))
   }
 
+  if (inspect) cat("[.sosRequest_2.0.0] RESPONSE:\n", toString(.content), "\n")
   return(.content)
 }
 
@@ -197,3 +200,35 @@
     return(.caps)
   }
 }
+
+.sosEncodeRequestXMLGetObservationById_2.0.0 <- function(obj, sos) {
+  xmlDoc <- xml2::xml_new_root(sosGetObservationByIdName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos200Namespace,
+                                service = obj@service,
+                                version = obj@version,
+                                "xmlns:xsi" = xsiNamespace,
+                                "xmlns:sos20" = sos200Namespace))
+
+  for (i in 1:length(obj@observationId)) {
+    xml2::xml_add_child(xmlDoc, sos200ObservationName, obj@observationId[[i]])
+  }
+
+  return(xmlDoc)
+}
+
+.sosEncodeRequestKVPGetObservationById_2.0.0 <- function(obj, sos, verbose) {
+  requestBase <- paste(
+    paste("service", .kvpEscapeSpecialCharacters(x = obj@service), sep = "="),
+    paste("version", .kvpEscapeSpecialCharacters(x = obj@version), sep = "="),
+    paste("request", .kvpEscapeSpecialCharacters(x = sosGetObservationByIdName), sep = "="),
+    sep = "&")
+
+  escapedIds <-  sapply(X = obj@observationId, FUN = .kvpEscapeSpecialCharacters)
+  observation <- paste("observation", paste(escapedIds, collapse = ","), sep = "=")
+  kvpString <- paste(requestBase, observation, sep = "&")
+
+  if (verbose) cat("[.sosEncodeRequestKVPGetObservationById_2.0.0] ", kvpString)
+  return(kvpString)
+}
+

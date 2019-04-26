@@ -7,7 +7,7 @@ testsos@capabilities <- sos200Caps
 
 test_that("identification snippet", {
   ident <- parseOwsServiceIdentification(obj = xml2::xml_child(xmlDoc, owsServiceIdentificationName),
-                                         namespaces = SosAllNamespaces(sos200_version))
+                                         sos = testsos)
   expect_match(sosTitle(ident), "Wupperverband SOS")
   expect_match(sosAbstract(ident), "Wupperverband(.*)Catchment Area")
 })
@@ -167,13 +167,13 @@ operationXml200 <- '<ows:Operation name="DescribeSensor" xmlns:sos="http://www.o
 
 test_that("name", {
   doc <- xml2::read_xml(x = operationXml200)
-  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_equal(sosName(operation), "DescribeSensor")
 })
 
 test_that("DCP", {
   doc <- xml2::read_xml(x = operationXml200)
-  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_length(operation@DCPs, 4)
   expect_named(operation@DCPs, c("ows:Get", "ows:Post", "ows:Post", "ows:Post"))
   expect_equal(operation@DCPs[[3]], list("ows:Post", "text/xml", "http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox"))
@@ -181,13 +181,13 @@ test_that("DCP", {
 
 test_that("parameter names", {
   doc <- xml2::read_xml(x = operationXml200)
-  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_named(operation@parameters, c("outputFormat"))
 })
 
 test_that("parameter values", {
   doc <- xml2::read_xml(x = operationXml200)
-  operation <- parseOwsOperation(obj = doc, namespaces = SosAllNamespaces(version = sos200_version))
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_length(operation@parameters[["outputFormat"]], 1)
   expect_equal(operation@parameters[["outputFormat"]], list('text/xml; subtype="sensorML/1.0.1/profiles/ioos_sos/1.0"'))
 })
