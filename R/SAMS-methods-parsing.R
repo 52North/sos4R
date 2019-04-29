@@ -32,29 +32,29 @@
 # parseSamsShape ----
 #
 parseSamsShape <- function(obj, sos) {
-  .point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = sos@namespaces),
+  point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = sos@namespaces),
                        sos = sos)
 
-  SamsShape(point = .point)
+  SamsShape(point = point)
 }
 
 #
 # parseSams200SamplingFeature ----
 #
 parseSams200SamplingFeature <- function(obj, sos) {
-  .gmlid <- xml2::xml_attr(x = obj, attr = "id")
+  gmlid <- xml2::xml_attr(x = obj, attr = "id")
 
-  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName))
-  .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = sos@namespaces))
-  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samTypeName, ns = sos@namespaces),
+  identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName, ns = sos@namespaces))
+  name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = sos@namespaces))
+  type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samTypeName, ns = sos@namespaces),
                           attr = "href")
-  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samSampledFeatureName, ns = sos@namespaces),
+  sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samSampledFeatureName, ns = sos@namespaces),
                                     attr = "href")
-  .shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = sos@namespaces), sos = sos)
-  SamsSamplingFeature(id = .gmlid,
-                      identifier = .identifier,
-                      name = .name,
-                      type = .type,
-                      sampledFeature = .sampledFeature,
-                      shape = .shape)
+  shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = sos@namespaces), sos = sos)
+  SamsSamplingFeature(id = gmlid,
+                      identifier = identifier,
+                      name = name,
+                      type = type,
+                      sampledFeature = sampledFeature,
+                      shape = shape)
 }
