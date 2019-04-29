@@ -4,6 +4,7 @@
 - Do not save file name as attribute of returned object anymore (adds complexity, not documented/widely used)
 - Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX)
 - Manage namespaces as part of the SOS object (allows user manipulation via `sos@namespaces`)
+- Accessor functions return lists only if the content is complex: `sosName()`, `sosObservedProperties()`, `sosProcedures()` `sosFeatureIds()`, `sosUOM()` now return character vectors if applied to collections or lists
 
 # sos4R 0.3.0
 

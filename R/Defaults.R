@@ -84,7 +84,7 @@
     sosGetObservationByIdName,
     owsExceptionReportName,
     #
-    sosGetDataAvailabilityName,
+    gdaGetDataAvailabilityResponseName,
     sos200GetObservationByIdResponseName,
     sos200GetObservationResponseName,
     #

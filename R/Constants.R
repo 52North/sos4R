@@ -597,7 +597,7 @@ gdaProcedureName <- paste0(gdaPrefix, ":procedure")
 gdaObservedPropertyName <- paste0(gdaPrefix, ":observedProperty")
 gdaFeatureOfInterestName <- paste0(gdaPrefix, ":featureOfInterest")
 gdaPhenomenonTimeName <- paste0(gdaPrefix, ":phenomenonTime")
-gdaGetDataAvailabilityResponse <- paste0(gdaPrefix, ":GetDataAvailabilityResponse")
+gdaGetDataAvailabilityResponseName <- paste0(gdaPrefix, ":GetDataAvailabilityResponse")
 
 #
 # others ----

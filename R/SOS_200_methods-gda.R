@@ -38,61 +38,61 @@
                                        verbose,
                                        inspect,
                                        saveOriginal) {
-  .filename <- NULL
+  filename <- NULL
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
-      .filename <- saveOriginal
+      filename <- saveOriginal
       if (verbose) cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) {
-        .filename <- tempfile(pattern = format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
+        filename <- tempfile(pattern = format(Sys.time(), sosDefaultFilenameTimeFormat), fileext = ".xml")
       }
-      if (verbose) cat("[.getDataAvailability_1.0.0] Generated file name:", .filename, "\n")
+      if (verbose) cat("[.getDataAvailability_1.0.0] Generated file name:", filename, "\n")
     }
   }
-  .gda <- SosGetDataAvailability_1.0.0(service = sosService,
-                                       version = sos@version,
-                                       observedProperties = observedProperties,
-                                       procedures = procedures,
-                                       featuresOfInterest = featuresOfInterest,
-                                       offerings = offerings)
+  gda <- SosGetDataAvailability_1.0.0(service = sosService,
+                                      version = sos@version,
+                                      observedProperties = observedProperties,
+                                      procedures = procedures,
+                                      featuresOfInterest = featuresOfInterest,
+                                      offerings = offerings)
 
   if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
 
-  .response <- sosRequest(sos = sos,
-                         request = .gda,
+  response <- sosRequest(sos = sos,
+                         request = gda,
                          verbose = verbose,
                          inspect = inspect)
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(.response),
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(response),
                    "bytes), parsing ...\n")
 
   if (inspect) {
     cat("[.getDataAvailability_1.0.0] Response XML document:\n")
-    print(.response)
+    print(response)
   }
 
-  if (!is.null(.filename)) {
-    xml2::write_xml(x = .response, file = .filename)
-    if (verbose) cat("[.getDataAvailability_1.0.0] Saved original document:", .filename, "\n")
+  if (!is.null(filename)) {
+    xml2::write_xml(x = response, file = filename)
+    if (verbose) cat("[.getDataAvailability_1.0.0] Saved original document:", filename, "\n")
   }
 
-  if (.isExceptionReport(.response)) {
-    return(.handleExceptionReport(sos, .response))
+  if (.isExceptionReport(response)) {
+    return(.handleExceptionReport(sos, response))
   }
 
-  .parsingFunction <- sosParsers(sos)[[mimeTypeXML]]
+  parsingFunction <- sosParsers(sos)[[gdaGetDataAvailabilityResponseName]]
 
   if (verbose) {
     cat("[.getDataAvailability_1.0.0] Parsing with function ")
-    print(.parsingFunction)
+    print(parsingFunction)
   }
 
-  .dams <- .parsingFunction(obj = .response, sos = sos, verbose = verbose)
-  if (verbose) cat("[.getDataAvailability_1.0.0] Received and parsed", length(.dams),
+  dataAvailability <- parsingFunction(obj = response, sos = sos, verbose = verbose)
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received and parsed", length(dataAvailability),
                     "data availability members.\n")
-  return (.dams)
+  return (dataAvailability)
 }
 
 
@@ -103,7 +103,7 @@
 #
 setMethod(f = "getDataAvailability",
           signature = signature(sos = "SOS_2.0.0"),
-          def = function(sos,
+          definition = function(sos,
                          procedures,
                          observedProperties,
                          featuresOfInterest,
@@ -140,7 +140,7 @@ setMethod(f = "checkRequest",
           signature = signature(service = "SOS_2.0.0",
                                 operation = "SosGetDataAvailability_1.0.0",
                                 verbose = "logical"),
-          def = function(service, operation, verbose) {
+          definition = function(service, operation, verbose) {
             # check if operation is for SOS and operation is GetDataAvailability
             if (!(operation@service == sosService &&
                   operation@request == sosGetDataAvailabilityName)) {

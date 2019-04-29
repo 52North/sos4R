@@ -26,7 +26,7 @@
 # Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
 #                                                                              #
 ################################################################################
-context("Parsing -> GetDataAvailability -> v1.0.0")
+context("GetDataAvailability: parsing")
 library(webmockr)
 library(httr)
 library(stringr)
@@ -109,7 +109,15 @@ test_that("accessing feature ID from dataAvailabilityMember elements works", {
   sos <- SOS_Test(name = "gda", version = sos200_version)
   dams <- parseGetDataAvailabilityResponse(obj = xml2::read_xml("../responses/GetDataAvailability_100_timerefs.xml"), sos = sos)
 
-  expect_equal(sosFeatureIds(dams), list("elv-ws2500", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "elv-ws2500"))
+  expect_equal(sosFeatureIds(dams), c("elv-ws2500", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "elv-ws2500"))
+  expect_equal(sosFeaturesOfInterest(dams), list("elv-ws2500", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "elv-ws2500"))
+})
+
+test_that("accessing observed properties from dataAvailabilityMember elements works", {
+  sos <- SOS_Test(name = "gda", version = sos200_version)
+  dams <- parseGetDataAvailabilityResponse(obj = xml2::read_xml("../responses/GetDataAvailability_100_timerefs.xml"), sos = sos)
+
+  expect_equal(sosObservedProperties(dams), c("WindDirection", "WindDirection", "WindMaxGust", "Humidity", "Humidity"))
 })
 
 test_that("accessing time from dataAvailabilityMember elements works", {
@@ -118,6 +126,13 @@ test_that("accessing time from dataAvailabilityMember elements works", {
 
   expect_equivalent(sosTime(dams[[1]]), list(begin = sosConvertTime("2019-03-01T00:30:00.000Z", sos = sos),
                                         end = sosConvertTime("2019-03-28T23:45:00.000Z", sos = sos)))
+})
+
+test_that("accessing procedures from dataAvailabilityMember elements works", {
+  sos <- SOS_Test(name = "gda", version = sos200_version)
+  dams <- parseGetDataAvailabilityResponse(obj = xml2::read_xml("../responses/GetDataAvailability_100_timerefs.xml"), sos = sos)
+
+  expect_equal(unique(sosProcedures(dams)), c("ws2500", "wwu-ws-kli-hsb"))
 })
 
 test_that("parseGetDataAvailabilityResponse() can handle in-document references to time stamps", {
@@ -139,3 +154,40 @@ test_that("parseGetDataAvailabilityResponse() can handle in-document references 
 })
 
 webmockr::disable("httr")
+
+test_that("there is an error if GDA with SOS 1.0.0 is attempted", {
+  mySOS <- SOS_Test(name = "gda_100", version = sos100_version)
+  expect_error(getDataAvailability(sos = mySOS), "unable to find an inherited method")
+})
+
+context("GetDataAvailability: integration tests\n")
+
+test_that("KVP (2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP", useDCPs = FALSE,
+               version = sos200_version)
+
+  dataAvailability <- getDataAvailability(sos = mySOS)
+
+  expect_length(dataAvailability, 44)
+  expect_equal(sapply(dataAvailability, class), rep("DataAvailabilityMember", length(dataAvailability)))
+  expect_equal(unique(sosProcedures(dataAvailability)), c("wxt520", "ws2500-internal", "ws2500", "wwu-ws-kli-hsb"))
+})
+
+test_that("POX (2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox",
+               binding = "POX",
+               useDCPs = FALSE,
+               version = sos200_version)
+
+  skip("GDA for POX not implemented yet.")
+  dataAvailability <- getDataAvailability(sos = mySOS)
+
+  expect_length(dataAvailability, 44)
+  expect_equal(sapply(dataAvailability, class), rep("DataAvailabilityMember", length(dataAvailability)))
+  expect_equal(unique(sosProcedures(dataAvailability)), c("wxt520", "ws2500-internal", "ws2500", "wwu-ws-kli-hsb"))
+})
