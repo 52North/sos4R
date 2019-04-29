@@ -576,6 +576,11 @@ setMethod(f = "sosFeatureIds",
           definition = function(obj) {
             return(obj@id)
           })
+setMethod(f = "sosFeatureIds",
+          signature = signature(obj = "DataAvailabilityMember"),
+          definition = function(obj) {
+            return(obj@featureOfInterest)
+          })
 
 if (!isGeneric("sosOperation"))
   setGeneric(name = "sosOperation", def = function(sos, operationName) {
@@ -778,6 +783,10 @@ setMethod(f = "sosTime", signature = signature(obj = "OmOM_Observation"),
             times <- list(resultTime = sosTime(obj@resultTime),
                           phenomenonTime = sosTime(obj@phenomenonTime))
             return(times)
+          })
+setMethod(f = "sosTime", signature = signature(obj = "DataAvailabilityMember"),
+          def = function(obj, ...) {
+            return(sosTime(obj@phenomenonTime))
           })
 
 if (!isGeneric("sosTimeFormat"))

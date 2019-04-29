@@ -47,12 +47,12 @@ test_that("parseGetDataAvailabilityResponse() returns an empty list if an empty 
     )
 
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
-  .doc <- xml2::read_xml(readr::read_file("../responses/GetDataAvailability_100_Example.com_empty.xml"))
-  .dams <- parseGetDataAvailabilityResponse(obj = .doc, sos)
+  doc <- xml2::read_xml("../responses/GetDataAvailability_100_Example.com_empty.xml")
+  dams <- parseGetDataAvailabilityResponse(obj = doc, sos)
 
-  expect_false(is.null(.dams))
-  expect_true(is.list(.dams))
-  expect_true(length(.dams) == 0)
+  expect_false(is.null(dams))
+  expect_true(is.list(dams))
+  expect_length(dams, 0)
 })
 
 test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of DataAvailabilityMembers if a response is received", {
@@ -68,12 +68,12 @@ test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of D
     )
 
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
-  .doc <- xml2::read_xml(readr::read_file("../responses/GetDataAvailability_100_Example.com_single.xml"))
-  .dams <- parseGetDataAvailabilityResponse(obj = .doc, sos)
+  doc <- xml2::read_xml("../responses/GetDataAvailability_100_Example.com_single.xml")
+  dams <- parseGetDataAvailabilityResponse(obj = doc, sos)
 
-  expect_false(is.null(.dams))
-  expect_true(is.list(.dams))
-  expect_true(length(.dams) == 1)
+  expect_false(is.null(dams))
+  expect_true(is.list(dams))
+  expect_length(dams, 1)
 
   # <gda:dataAvailabilityMember gml:id="dam_1">
   #   <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
@@ -93,16 +93,49 @@ test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of D
   #     featureOfInterest = featureOfInterest,
   #     phenomenonTime = phenomenonTime)
 
-  .dam <- .dams[[1]]
+  dam <- dams[[1]]
 
-  expect_equal(.dam@procedure, "ws2500", info = "procedure")
-  expect_equal(.dam@observedProperty, "WindDirection", info = "observedProperty")
-  expect_equal(.dam@featureOfInterest, "elv-ws2500", info = "featureOfInterest")
-  expect_true(is.object(.dam@phenomenonTime))
-  expect_true(isS4(.dam@phenomenonTime))
-  expect_true(is(.dam@phenomenonTime,"GmlTimePeriod"))
-  expect_equal(.dam@phenomenonTime@beginPosition@time, strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::start")
-  expect_equal(.dam@phenomenonTime@endPosition@time, strptime("2019-03-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::end")
+  expect_equal(dam@procedure, "ws2500", info = "procedure")
+  expect_equal(dam@observedProperty, "WindDirection", info = "observedProperty")
+  expect_equal(dam@featureOfInterest, "elv-ws2500", info = "featureOfInterest")
+  expect_true(is.object(dam@phenomenonTime))
+  expect_true(isS4(dam@phenomenonTime))
+  expect_true(is(dam@phenomenonTime,"GmlTimePeriod"))
+  expect_equal(dam@phenomenonTime@beginPosition@time, strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::start")
+  expect_equal(dam@phenomenonTime@endPosition@time, strptime("2019-03-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::end")
+})
+
+test_that("accessing feature ID from dataAvailabilityMember elements works", {
+  sos <- SOS_Test(name = "gda", version = sos200_version)
+  dams <- parseGetDataAvailabilityResponse(obj = xml2::read_xml("../responses/GetDataAvailability_100_timerefs.xml"), sos = sos)
+
+  expect_equal(sosFeatureIds(dams), list("elv-ws2500", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "wwu-ws-kli-hsb", "elv-ws2500"))
+})
+
+test_that("accessing time from dataAvailabilityMember elements works", {
+  sos <- SOS_Test(name = "gda", version = sos200_version)
+  dams <- parseGetDataAvailabilityResponse(obj = xml2::read_xml("../responses/GetDataAvailability_100_timerefs.xml"), sos = sos)
+
+  expect_equivalent(sosTime(dams[[1]]), list(begin = sosConvertTime("2019-03-01T00:30:00.000Z", sos = sos),
+                                        end = sosConvertTime("2019-03-28T23:45:00.000Z", sos = sos)))
+})
+
+test_that("parseGetDataAvailabilityResponse() can handle in-document references to time stamps", {
+  sos <- SOS_Test(name = "gda", version = sos200_version)
+  dams <- parseGetDataAvailabilityResponse(obj = xml2::read_xml("../responses/GetDataAvailability_100_timerefs.xml"), sos = sos)
+
+  expect_length(dams, 5)
+
+  tp1 <- list(begin = sosConvertTime("2019-03-01T00:30:00.000Z", sos = sos),
+       end = sosConvertTime("2019-03-28T23:45:00.000Z", sos = sos))
+  tp2 <- list(begin = sosConvertTime("2019-03-01T00:10:00.000Z", sos = sos),
+              end = sosConvertTime("2019-03-28T23:50:00.000Z", sos = sos))
+
+  expect_equivalent(sosTime(dams[[1]]), tp1)
+  expect_equivalent(sosTime(dams[[2]]), tp2)
+  expect_equivalent(sosTime(dams[[3]]), tp2)
+  expect_equivalent(sosTime(dams[[4]]), tp2)
+  expect_equivalent(sosTime(dams[[5]]), tp1)
 })
 
 webmockr::disable("httr")
