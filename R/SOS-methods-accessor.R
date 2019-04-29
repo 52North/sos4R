@@ -1015,6 +1015,11 @@ setMethod(f = "sosId", signature = signature(obj = "GmlFeature"),
           definition = function(obj) {
             return(obj@id)
           })
+setMethod(f = "sosId", signature = signature(obj = "GmlFeatureProperty"),
+          definition = function(obj) {
+            if (!is.na(obj@href)) return(obj@href)
+            else return(sosId(obj@feature))
+          })
 setMethod(f = "sosId", signature = signature(obj = "SosObservationOffering"),
           definition = function(obj) {
             return(obj@id)
@@ -1062,7 +1067,11 @@ setMethod(f = "sosName", signature = signature(obj = "SosDescribeSensor"),
           })
 setMethod(f = "sosName", signature = signature(obj = "SosGetObservation"),
           definition = function(obj) {
-            return(sosDescribeSensorName)
+            return(sosGetObservationName)
+          })
+setMethod(f = "sosName", signature = signature(obj = "SosGetObservation_2.0.0"),
+          definition = function(obj) {
+            return(sosGetObservationName)
           })
 setMethod(f = "sosName", signature = signature(obj = "SosGetObservationById"),
           definition = function(obj) {
@@ -1075,6 +1084,16 @@ setMethod(f = "sosName", signature = signature(obj = "OwsGetCapabilities"),
 setMethod(f = "sosName", signature = signature(obj = "SamsSamplingFeature"),
           definition = function(obj) {
             return(obj@name)
+          })
+setMethod(f = "sosName", signature = signature(obj = "MonitoringPoint"),
+          definition = function(obj) {
+            return(obj@names)
+          })
+setMethod(f = "sosName", signature = signature(obj = "GmlFeatureProperty"),
+          definition = function(obj) {
+            if (!is.null(obj@feature))
+              return(sosName(obj@feature))
+            else return(obj@href)
           })
 
 if (!isGeneric("sosTitle"))

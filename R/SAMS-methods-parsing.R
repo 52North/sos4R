@@ -46,9 +46,9 @@ parseSams200SamplingFeature <- function(obj, sos) {
 
   .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName))
   .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = sos@namespaces))
-  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfTypeName, ns = sos@namespaces),
+  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samTypeName, ns = sos@namespaces),
                           attr = "href")
-  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfSampledFeatureName, ns = sos@namespaces),
+  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samSampledFeatureName, ns = sos@namespaces),
                                     attr = "href")
   .shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = sos@namespaces), sos = sos)
   SamsSamplingFeature(id = .gmlid,

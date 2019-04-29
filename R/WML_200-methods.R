@@ -30,6 +30,19 @@
 #
 # parse WaterML 2.0 MonitoringPoint
 #
-MonitoringPoint <- function(sampledFeatures, id, identifier, names, shape) {
-  new("MonitoringPoint", sampledFeatures = sampledFeatures, id = id, identifier= identifier, names = names, shape = shape)
+MonitoringPoint <- function(sampledFeatures,
+                            id,
+                            identifier,
+                            names,
+                            shape,
+                            verticalDatums = xml2::xml_missing(),
+                            timeZone = xml2::xml_missing()) {
+  new("MonitoringPoint",
+      sampledFeatures = sampledFeatures,
+      id = id,
+      identifier = identifier,
+      names = names,
+      shape = shape,
+      verticalDatums = verticalDatums,
+      timeZone = timeZone)
 }

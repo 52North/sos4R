@@ -261,28 +261,41 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
     print(obj)
   }
 
-  .featureXML <- xml2::xml_find_all(x = obj,
+  featureXML <- xml2::xml_find_all(x = obj,
                                     xpath = "sos20:featureMember",
                                     ns = sos@namespaces)
-  .foi = sapply(.featureXML, .parseFeatureMember, sos = sos)
-  return(.foi)
+  foi = sapply(X = featureXML,
+               FUN = .parseFeatureMember,
+               sos = sos,
+               verbose = verbose)
+  return(foi)
 }
 
-.parseFeatureMember <- function(obj, sos) {
-  .member <- xml2::xml_child(x = obj)
+.parseFeatureMember <- function(obj, sos, verbose = FALSE) {
+  href <- xml2::xml_attr(x = obj, attr = "xlink:href", ns = sos@namespaces)
+  if (!is.na(href)) {
+    if (verbose) cat("[.parseFeatureMember] Got references feature: ", href, "\n")
 
-  .name <- xml2::xml_name(x = .member, ns = sos@namespaces)
-
-  if (.name == wmlMonitoringPointName) {
-    .sp <- parseMonitoringPoint(.member, sos = sos)
-    .member.parsed <- GmlFeatureProperty(feature = .sp)
-  }
-  else if (.name == samsSamplingFeatureName) {
-    .sf <- parseSams200SamplingFeature(obj = .member, sos = sos)
-    .member.parsed <- GmlFeatureProperty(feature = .sf)
+        parsed <- GmlFeatureProperty(href = href)
   }
   else {
-    warning(paste("No handling for given sos:featureMember available: ", .name))
+    member <- xml2::xml_child(x = obj)
+    name <- xml2::xml_name(x = member, ns = sos@namespaces)
+
+    if (verbose) cat("[.parseFeatureMember] Parsing ", name, "\n")
+
+    if (name == wmlMonitoringPointName) {
+      sp <- parseMonitoringPoint(member, sos = sos)
+      parsed <- GmlFeatureProperty(feature = sp)
+    }
+    else if (name == samsSamplingFeatureName) {
+      sf <- parseSams200SamplingFeature(obj = member, sos = sos)
+      parsed <- GmlFeatureProperty(feature = sf)
+    }
+    else {
+      warning(paste("No handling for given sos:featureMember available: ", name))
+    }
   }
-  return(.member.parsed)
+
+  return(parsed)
 }

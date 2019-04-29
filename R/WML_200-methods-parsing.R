@@ -31,14 +31,27 @@
 # parse gml:pos from wml2:MonitoringPoint
 #
 parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
-  .sampledFeatures <- xml2::xml_find_all(x = obj, xpath = saSampledFeatureName, ns = sos@namespaces)
-  .id <-xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
+  sampledFeaturesXml <- xml2::xml_find_all(x = obj, xpath = samSampledFeatureName, ns = sos@namespaces)
+  sampledFeatures <- sapply(X = sampledFeaturesXml, FUN = function(feature) {
+    link <- xml2::xml_attr(x = feature, attr = "xlink:href", ns = sos@namespaces)
+    title <- xml2::xml_attr(x = feature, attr = "xlink:title", ns = sos@namespaces)
+    names(link) <- title
+    return(link)
+  })
+  id <- xml2::xml_attr(x = obj, attr = "gml:id", default = NA_character_, ns = sos@namespaces)
+  names <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = gmlNameName, ns = sos@namespaces))
+  identifier <- xml2::xml_text(xml2::xml_find_all(x = obj, xpath = gmlIdentifierName, ns = sos@namespaces))
+  shape <- parseSamsShape(obj = xml2::xml_find_all(x = obj, xpath = samsShapeName, ns = sos@namespaces), sos = sos)
+  verticalDatums <- xml2::xml_find_all(x = obj, xpath = wmlVerticalDatumName, ns = sos@namespaces)
+  timeZone <-   xml2::xml_find_first(x = obj, xpath = wmlTimeZoneName, ns = sos@namespaces)
 
-  .names <- xml2::xml_find_all(x = obj, xpath = gmlNameName, ns = sos@namespaces)
-  .identifier <- xml2::xml_find_all(x = obj, xpath = gmlIdentifierName, ns = sos@namespaces)
-  .shape <- parseSamsShape(xml2::xml_find_all(x = obj, xpath = samsShapeName, ns = sos@namespaces), sos)
+  mp <- MonitoringPoint(sampledFeatures = sampledFeatures,
+                        id = id,
+                        identifier = identifier,
+                        names = names,
+                        shape = shape,
+                        verticalDatums = verticalDatums,
+                        timeZone = timeZone)
 
-  .mp <- MonitoringPoint(.sampledFeatures, .id, .identifier, .names, .shape)
-
-  return(.mp)
+  return(mp)
 }

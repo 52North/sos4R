@@ -79,6 +79,7 @@ sos200ObservationName <- paste0(sos200NamespacePrefix, ":observation")
 sos200ObservationDataName <- paste0(sos200NamespacePrefix, ":observationData")
 
 sos200GetObservationByIdResponseName <- paste0(sos200NamespacePrefix, ":GetObservationByIdResponse")
+sos200GetObservationResponseName <- paste0(sos200NamespacePrefix, ":GetObservationResponse")
 
 #
 # Core Operations Profile ----
@@ -197,7 +198,7 @@ saNamespace <- "http://www.opengis.net/sampling/1.0"
 omNamespace <- "http://www.opengis.net/om/1.0"
 
 samsNamespace <- "http://www.opengis.net/samplingSpatial/2.0"
-sf20Namespace <- "http://www.opengis.net/sampling/2.0"
+samNamespace <- "http://www.opengis.net/sampling/2.0"
 swesNamespace <- "http://www.opengis.net/swes/2.0"
 om20Namespace <- "http://www.opengis.net/om/2.0"
 
@@ -223,7 +224,7 @@ SosAllNamespaces <- function(version) {
       .all <- c(sos20 = sos200Namespace,
                 ows = owsNamespace,
                 sams = samsNamespace,
-                sf = sf20Namespace,
+                sam = samNamespace,
                 swes = swesNamespace,
                 om = om20Namespace,
                 xsi = xsiNamespace,
@@ -231,7 +232,8 @@ SosAllNamespaces <- function(version) {
                 sml = smlNamespace,
                 gml = gml32Namespace,
                 fes = fesNamespace,
-                gda = gdaNamespace)
+                gda = gdaNamespace,
+                wml2 = wmlNamespace)
       return(.all[unique(names(.all))])
   } else {
     stop("Unsupported version ", version)
@@ -290,11 +292,11 @@ samsShapeName <- paste0(samsNamespacePrefix, ":shape")
 samsSamplingFeatureName <- paste0(samsNamespacePrefix, ":SF_SpatialSamplingFeature")
 
 #
-# SF ----
+# SAM ----
 #
-sfNamespacePrefix <- "sf"
-sfTypeName <- paste0(sfNamespacePrefix, ":type")
-sfSampledFeatureName <- paste0(sfNamespacePrefix, ":sampledFeature")
+samNamespacePrefix <- "sam"
+samTypeName <- paste0(samNamespacePrefix, ":type")
+samSampledFeatureName <- paste0(samNamespacePrefix, ":sampledFeature")
 
 #
 # GML ----
@@ -369,7 +371,11 @@ swesProcedureDescriptionFormatName = paste0(swesNamespacePrefix, ":procedureDesc
 #
 # WML 2.0 ----
 #
-wmlMonitoringPointName = "wml:MonitoringPoint"
+wmlNamespace <- "http://www.opengis.net/waterml/2.0"
+wmlNamespacePrefix = "wml2"
+wmlMonitoringPointName = paste0(wmlNamespacePrefix, ":MonitoringPoint")
+wmlVerticalDatumName = paste0(wmlNamespacePrefix, ":verticalDatum")
+wmlTimeZoneName = paste0(wmlNamespacePrefix, ":timeZone")
 
 #
 # OGC ----

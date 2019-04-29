@@ -67,16 +67,24 @@ responseXml <- '<sos:GetFeatureOfInterestResponse xmlns:xsi="http://www.w3.org/2
 		</sams:SF_SpatialSamplingFeature>
 	</sos:featureMember>
 	<sos:featureMember>
-		<sams:SF_SpatialSamplingFeature gml:id="st3">
-			<gml:identifier codeSpace="">http://www.my_namespace.org/fois/st3</gml:identifier>
-			<sam:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint"/>
-			<sam:sampledFeature xlink:href="http://wfs.example.org?request=getFeature&amp;featureid=Rhine_Sandbank_123"/>
-			<sams:shape>
-				<gml:Point gml:id="st3p">
-					<gml:pos srsName="http://www.opengis.net/def/crs/EPSG/0/4326">52.7167 9.76667</gml:pos>
-				</gml:Point>
-			</sams:shape>
-		</sams:SF_SpatialSamplingFeature>
+	  <!-- exmple from OGC 10-126r4, 10.13 Requirements Class: Monitoring Point -->
+		<wml2:MonitoringPoint gml:id="xsd-monitoring-point.example" xmlns:wml2="http://www.opengis.net/waterml/2.0">
+      <gml:description>Nile river at Deddington, South Esk catchment, Tasmania</gml:description>
+      <gml:name codeSpace="http://www.csiro.au/">Deddington</gml:name>
+      <sam:sampledFeature xlink:href="http://csiro.au/features/rivers/nile" xlink:title="Nile River" />
+      <sams:shape>
+        <gml:Point gml:id="location_deddington">
+          <gml:pos srsName="urn:ogc:def:crs:EPSG::4326">-41.814935 147.568517 </gml:pos>
+        </gml:Point>
+      </sams:shape>
+      <wml2:verticalDatum xlink:href="urn:ogc:def:crs:EPSG::5711" xlink:title="Australian height datum" />
+      <wml2:timeZone>
+        <wml2:TimeZone>
+          <wml2:zoneOffset>+11:00</wml2:zoneOffset>
+          <wml2:zoneAbbreviation>AEDT</wml2:zoneAbbreviation>
+        </wml2:TimeZone>
+      </wml2:timeZone>
+    </wml2:MonitoringPoint>
 	</sos:featureMember>
 </sos:GetFeatureOfInterestResponse>'
 
@@ -85,13 +93,10 @@ test_that("All feature members identified and parsed", {
 
   response <- parseGetFeatureOfInterestResponse(obj = xml2::read_xml(x = responseXml), sos = testsos)
 
-  getfoi <- SosGetFeatureOfInterest_2.0.0(service = "service", version = testsos@version,
-                                          featureOfInterest = "http://feature/1")
-  request <- encodeRequestKVP(obj = getfoi, sos = testsos)
-  expect_match(request, 'service=SOS')
-  expect_match(request, 'version=2.0.0')
-  expect_match(request, 'request=GetFeatureOfInterest')
-  expect_match(request, 'featureOfInterest=http%3A%2F%2Ffeature%2F1')
+  featureClasses <- sapply(response, function(member) {
+    return(class(member@feature))
+  })
+  expect_equal(featureClasses, c("SamsSamplingFeature", "SamsSamplingFeature", "MonitoringPoint"))
 })
 
 context("GetFeatureOfInterest: integration test\n")
@@ -134,12 +139,22 @@ test_that("All features (no filter) with KVP works", {
   sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service",
              version = sos200_version, binding = "KVP")
 
-  features <- getFeatureOfInterest(sos, verbose = .verbose, saveOriginal = .saveOriginal)
+  features <- getFeatureOfInterest(sos = sos, saveOriginal = TRUE)
 
-  expect_length(foi, 1)
-  expect_s4_class(foi[[1]], "GmlFeatureProperty")
-  expect_equal(sosName(foi[[1]]@feature), "con terra")
-  expect_equal(foi[[1]]@feature@identifier, "http://www.52north.org/test/featureOfInterest/1")
+  expect_length(features, 6)
+  featureClasses <- sapply(features, function(feature) {
+    return(class(feature))
+  })
+  expect_equal(featureClasses, rep("GmlFeatureProperty", 6))
+
+  expect_equal(features[[5]]@href, "http://www.52north.org/test/featureOfInterest/world")
+  expect_equal(features[[5]]@feature, NULL)
+
+  names <- sapply(features, function(feature) {
+    return(sosName(feature))
+  })
+  expect_equal(names[[1]], "ELV_WS_2500")
+  expect_equal(names[[5]], "http://www.52north.org/test/featureOfInterest/world")
 })
 
 
