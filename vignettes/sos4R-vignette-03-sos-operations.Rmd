@@ -288,13 +288,13 @@ data(worldHiresMapEnv)
 crs <- sosGetCRS(mySOS)[[1]]
 worldHigh <- pruneMap(
 		map(database = "worldHires",
-			region = c("Germany", "Austria", "Netherlands"),
+			region = c("Germany"),
 			plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
 # the plot:
 plot(worldHigh.lines, col = "grey50")
-plot(mySOS, add = TRUE, lwd = 3)
+plot(mySOS, add = TRUE, lwd = 10, col = "red")
 title(main = paste("Offerings by '", sosTitle(mySOS), "'", sep = ""),
 		sub = toString(names(sosOfferings(mySOS))))
 ```
