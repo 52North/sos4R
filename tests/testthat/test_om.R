@@ -67,7 +67,7 @@ test_that("coordinates are available with retrieved FOI", {
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = mySOS, featureCache = list())
 
   coords <- sosCoordinates(observation)
-  expect_named(coords, c("lat", "lon", "SRS"))
+  expect_named(coords, c("lon", "lat", "SRS"))
   expect_equal(coords[["lon"]], 7.727958)
 })
 

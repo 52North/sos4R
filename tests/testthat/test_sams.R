@@ -55,7 +55,7 @@ test_that("shape is parsed", {
   expect_s4_class(samsSF@shape, "SamsShape")
   expect_equal(sosCoordinates(samsSF), sosCoordinates(samsSF@shape))
   coords <- sosCoordinates(samsSF)
-  expect_named(coords, c("lat", "lon", "SRS"))
+  expect_named(coords, c("lon", "lat", "SRS"))
   expect_lte(coords$lat - 51.88391, 0.000000000001)
   expect_lte(coords$lon - 7.727958, 0.000000000001)
   expect_equal(as.character(coords$SRS), "http://www.opengis.net/def/crs/EPSG/0/4326")
