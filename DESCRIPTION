@@ -72,11 +72,10 @@ Collate:
 	SOS-methods-parsing.R
 	OM-methods.R OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R
 	SA-methods.R
-	GML-methods.R
+	GML-methods.R GML-methods-coercion.R
 	SWE-methods.R
 	SML-methods.R
 	GML-methods-parsing.R
-	SA-methods-parsing.R
 	SWE-methods-parsing.R
 	OGC-methods.R
 	SOS-methods-accessor.R
@@ -85,8 +84,8 @@ Collate:
 	SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
 	SML-methods-util.R SML-methods-coercion.R
 	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_methods-gda.R
-	WML_200-methods-parsing.R WML_200-methods.R
-	SAMS-methods-parsing.R
+	WML_200-methods.R
+	SAMS-methods.R
 	Defaults.R
 	handySOS4RFunctions.R
 	Development.R

@@ -21,23 +21,69 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
-# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2010-09-15                                                          #
+# Author: Benjamin Pross (b.pross@52north.org),                                #
+#         Jürrens, Eike Hinderk (e.h.juerrens@52north.org)                     #
+# Created: 2016-01-27                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
 #
+# parsing functions ----
 #
-#
-parseSamplingPoint <- function(obj, sos) {
-  sampledFeatures <- as.list(xml2::xml_text(
-    xml2::xml_find_first(x = obj, xpath = gmlNameName, ns = sos@namespaces))
-  )
-  positionXml <- xml2::xml_child(x = obj, search = saPositionName, ns = sos@namespaces)
-  position <- parsePosition(positionXml, sos = sos)
-  id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
+parseSamsShape <- function(obj, sos) {
+  point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = sos@namespaces),
+                       sos = sos)
 
-  sp <- SaSamplingPoint(sampledFeatures = sampledFeatures, position = position, id = id)
-  return(sp)
+  SamsShape(point = point)
 }
+
+parseSams200SamplingFeature <- function(obj, sos) {
+  gmlid <- xml2::xml_attr(x = obj, attr = "id")
+
+  identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName, ns = sos@namespaces))
+  name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = sos@namespaces))
+  type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samTypeName, ns = sos@namespaces),
+                          attr = "href")
+  sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samSampledFeatureName, ns = sos@namespaces),
+                                    attr = "href")
+  shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = sos@namespaces), sos = sos)
+  SamsSamplingFeature(id = gmlid,
+                      identifier = identifier,
+                      name = name,
+                      type = type,
+                      sampledFeature = sampledFeature,
+                      shape = shape)
+}
+
+#
+# coercion methods ----
+#
+as.SamsShape.SpatialPoints = function(from) {
+  as(from@point, "SpatialPoints")
+}
+setAs("SamsShape", "SpatialPoints",
+      function(from) {
+        as.SamsShape.SpatialPoints(from)
+      }
+)
+setAs("SamsShape", "Spatial",
+      function(from) {
+        as.SamsShape.SpatialPoints(from)
+      }
+)
+
+as.SamsSamplingFeature.SpatialPoints = function(from) {
+  as(from@shape, "SpatialPoints")
+}
+setAs("SamsSamplingFeature", "SpatialPoints",
+      function(from) {
+        as.SamsSamplingFeature.SpatialPoints(from)
+      }
+)
+setAs("SamsSamplingFeature", "Spatial",
+      function(from) {
+        as.SamsSamplingFeature.SpatialPoints(from)
+      }
+)
+

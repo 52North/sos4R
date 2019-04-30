@@ -29,12 +29,12 @@
 
 #
 # Classes are based on Observations & Measurements - Part 2 - Sampling Features
-# 
+#
 # http://www.opengeospatial.org/standards/om
 #
 
 #
-# 
+# SamplingPoint ----
 #
 setClass("SaSamplingPoint",
          representation(sampledFeatures = "list",
@@ -55,7 +55,7 @@ setClass("SaSamplingPoint",
 )
 
 #
-#
+# SamplingSurface ----
 #
 setClass("SaSamplingSurface",
          representation(sampledFeatures = "list",
@@ -75,4 +75,3 @@ setClass("SaSamplingSurface",
            return(TRUE)
          }
 )
-

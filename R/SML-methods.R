@@ -178,7 +178,7 @@ parseSensorML <- function(obj, sos, verbose = FALSE) {
 
 
 #
-#
+# plot via sp ----
 #
 plot.SensorML <- function(x, y, ...) {
   .sp <- as(x, "SpatialPointsDataFrame")
