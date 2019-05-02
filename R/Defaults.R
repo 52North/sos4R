@@ -43,8 +43,10 @@
     parseGetFeatureOfInterestResponse,
     parseOM,
     parseOwsExceptionReport,
+    #
     parseGetDataAvailabilityResponse,
     parseGetObservationByIdResponse,
+    parseGetObservationResponse,
     #
     parseMeasurement,
     parseObservationProperty,
@@ -81,8 +83,10 @@
     sosGetFeatureOfInterestResponseName,
     sosGetObservationByIdName,
     owsExceptionReportName,
-    sosGetDataAvailabilityName,
+    #
+    gdaGetDataAvailabilityResponseName,
     sos200GetObservationByIdResponseName,
+    sos200GetObservationResponseName,
     #
     omMeasurementName,
     omMemberName,

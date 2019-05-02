@@ -246,9 +246,9 @@
 \alias{owsSectionName}
 \alias{owsSectionsName}
 \alias{owsVersionName}
-\alias{sfNamespacePrefix}
-\alias{sfSampledFeatureName}
-\alias{sfTypeName}
+\alias{samNamespacePrefix}
+\alias{samSampledFeatureName}
+\alias{samTypeName}
 \alias{smlNamespace}
 \alias{sos100Namespace}
 \alias{sweLowerCornerName}
@@ -296,7 +296,7 @@
 \alias{samsNamespace}
 \alias{samsNamespacePrefix}
 \alias{samsSamplingFeatureName}
-\alias{sf20Namespace}
+\alias{samNamespace}
 \alias{sos200FeatureOfInterestTypeName}
 \alias{sos200Namespace}
 \alias{sos200NamespacePrefix}

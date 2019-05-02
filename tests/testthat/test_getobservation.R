@@ -139,3 +139,22 @@ test_that("CSV parsing works", {
   expect_s3_class(obs, "data.frame")
   expect_equal(dim(obs), c(1, 7))
 })
+
+test_that("KVP (SOS 2.0.0) request with offering object", {
+  sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", version = sos200_version, binding = "KVP")
+  obs <- getObservation(sos = sos,
+                        offering = sosOfferings(sos)[["wxt520"]],
+                        observedProperty = list("AirTemperature"),
+                        responseFormat = "http://www.opengis.net/om/2.0",
+                        eventTime = sosCreateTime(sos = sos,
+                                                  time =  "2018-04-22T17:45:15+02:00/2018-05-24T17:45:15+02:00"),
+                        )
+
+  expect_length(obs, 3)
+  expect_equal(sapply(obs, class), rep("OmOM_Observation", 3))
+  result <- sosResult(obs)
+  expect_s3_class(result, "data.frame")
+  expect_named(result, c("°C"))
+  expect_equal(dim(result), c(3,1))
+  expect_equal(sum(result$`°C`), 242.019)
+})

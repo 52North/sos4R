@@ -142,7 +142,8 @@ setClass("SosGetObservation_2.0.0",
            result = "OgcComparisonOpsOrXMLOrNULL",
            resultModel = "character",
            responseMode = "character",
-           BBOX = "character"),
+           BBOX = "character",
+           valueReferenceTemporalFilter = "character"),
          prototype = list(
            service = as.character(NA),
            version = as.character(NA),
@@ -164,7 +165,7 @@ setClass("SosGetObservation_2.0.0",
            # responseFormat is optional for GET
            #if(is.na(object@responseFormat))
            #	return("responseFormat parameter must be given")
-           if(length(object@observedProperty) < 1)
+           if (length(object@observedProperty) < 1)
              return("at least one observedProperty is mandatory")
 
            # if version is there, it has to be in a certain format, see ows common
@@ -174,9 +175,8 @@ setClass("SosGetObservation_2.0.0",
 
            # result is null or an ogc:comparisonOps element
            cls <- class(slot(object, "result"))
-           #			print(paste("class of result slot: ", cls))
            if ( !any(cls %in% c("OgcComparisonOps", "xml_document",
-                                "xml_node"))) {
+                                "xml_node", "NULL"))) {
              return("'response' argument does not have allowed class!")
            }
 
@@ -206,8 +206,6 @@ setClass("SosGetFeatureOfInterest_2.0.0",
              return("service parameter must be given")
            if (is.na(object@version))
              return("version must be given")
-           if (any(is.na(object@featureOfInterest)))
-             return("featureOfInterest parameter must be given")
 
            return(TRUE)
          }

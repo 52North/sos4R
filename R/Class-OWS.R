@@ -36,7 +36,8 @@ setClass("OwsServiceOperation",
            service = "character",	# service type identifier, e.g. "WMS"
            request = "character",	# operation name, e.g. "GetMap"
            version = "character"),	# version of the operation
-         prototype = list(service = as.character(NA), request= as.character(NA),
+         prototype = list(service = as.character(NA),
+                          request= as.character(NA),
                           version = as.character(NA)),
          contains = "VIRTUAL",
          validity = function(object) {
@@ -168,7 +169,8 @@ setClass("OwsOperation",
          representation(name = "character", DCPs = "list",
                         parameters = "list", constraints = "list",
                         metadata = "list"),
-         prototype = list(name = as.character(NA), DCPs = list(NA)),
+         prototype = list(name = as.character(NA),
+                          DCPs = list(NA)),
          validity = function(object) {
            #print("Entering validation: OwsOperation")
            # TODO implement validity function

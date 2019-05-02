@@ -145,7 +145,7 @@ The `GetObservation` operation is the main data download request of the SOS, and
 You can build a request using the information from the offerings, as they are extracted from the capabilities document when a new connection is created.
 
 ```{r offering}
-off.1 <- sosOfferings(mySOS)[[1]]
+off.1 <- sosOfferings(mySOS)[["wwu-ws-kli-hsb"]]
 summary(off.1)
 ```
 
@@ -168,7 +168,7 @@ obs.1 <- getObservation(sos = mySOS,
   offering = off.1,
   procedure = sosProcedures(off.1)[[1]],
 	observedProperty = sosObservedProperties(off.1)[1],
-	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-19::2017-12-20"))
+	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-01::2017-12-31"))
 ```
 
 You can then access the result data with the helper function `sosResult(..)`.
@@ -177,6 +177,36 @@ You can then access the result data with the helper function `sosResult(..)`.
 #sosResult(data)
 summary(sosResult(obs.1))
 ```
+
+## Spatial Data
+
+Classes with spatial information, i.e. coordinates, have coercion functions to matching `sp` classes and can therefore be easily rendered on a map, e.g. using [`leaflet`](https://rstudio.github.io/leaflet/).
+
+```{r leftlet}
+library("leaflet")
+
+obs.1.spatial <- as(obs.1, "Spatial")
+leaflet::leaflet(obs.1.spatial) %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers() %>%
+  addMiniMap()
+```
+
+Using the [`mapview`](https://r-spatial.github.io/mapview/) package you can quickly add plots into pop-up windows.
+
+```{r leftlet}
+library("mapview")
+
+plotfile <- tempfile(fileext = ".png")
+png(filename = plotfile)
+plot(x = obs.1.spatial$phenomenonTime, y = obs.1.spatial$AirTemperature,
+     pch = 20,
+     main = sosId(off.1), xlab = "Time", ylab = "Air Temperature")
+dev.off()
+
+mapview(obs.1.spatial, popup = popupImage(plotfile, embed = TRUE))
+```
+
 
 ## Inspect Requests and Verbose Printing
 
