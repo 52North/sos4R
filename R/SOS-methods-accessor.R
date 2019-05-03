@@ -1239,7 +1239,7 @@ setMethod(f = "sosUOM",
 #
 setMethod(f = "sosGetDCP",
           signature = c(sos = "SOS", operation = "character"),
-          definition = function(sos, operation, type = NA) {
+          definition = function(sos, operation, type, verbose) {
             .ops <- sosOperations(sos)
             if (is.null(.ops)) return(NULL)
 
@@ -1248,7 +1248,7 @@ setMethod(f = "sosGetDCP",
             if (!is.na(type)) {
               .filteredDcps <- list()
               for (.dcp in .dcps) {
-                message(paste0("DCP::type: '", .dcp[[owsDcpHttpMethodIndex]], "'"))
+                if (verbose) cat(paste0("DCP::type: '", .dcp[[owsDcpHttpMethodIndex]], "'"))
                 if (.dcp[[owsDcpHttpMethodIndex]] == type) {
                   .filteredDcps[[length(.filteredDcps) + 1]] <- .dcp
                 }

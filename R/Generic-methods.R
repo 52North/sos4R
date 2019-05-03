@@ -44,7 +44,9 @@ if (!isGeneric("sosRequest"))
 if (!isGeneric("getCapabilities"))
   setGeneric(name = "getCapabilities",
              signature = signature("sos", "verbose", "inspect"),
-             def = function(sos, verbose = sos@verboseOutput, inspect = FALSE,
+             def = function(sos,
+                            verbose = sos@verboseOutput,
+                            inspect = FALSE,
                             sections = sosDefaultGetCapSections,
                             acceptFormats = sosDefaultGetCapAcceptFormats,
                             updateSequence = c(as.character(NA)),
@@ -78,11 +80,14 @@ if (!isGeneric("getObservationById"))
              signature = signature("sos", "observationId", "responseFormat",
                                    "srsName", "resultModel", "responseMode", "verbose",
                                    "inspect", "saveOriginal"),
-             def = function(sos, observationId,
+             def = function(sos,
+                            observationId,
                             responseFormat = sosDefaultGetObsResponseFormat,
-                            srsName = as.character(NA), resultModel = as.character(NA),
+                            srsName = as.character(NA),
+                            resultModel = as.character(NA),
                             responseMode = as.character(NA),
-                            verbose = sos@verboseOutput, inspect = FALSE,
+                            verbose = sos@verboseOutput,
+                            inspect = FALSE,
                             saveOriginal = NULL) {
                standardGeneric("getObservationById")
              })
@@ -97,7 +102,8 @@ if (!isGeneric("getObservation"))
                                    "featureOfInterest", "result", "resultModel",
                                    "responseMode", "BBOX", "verbose", "inspect",
                                    "saveOriginal"),
-             def = function(sos, offering,
+             def = function(sos,
+                            offering,
                             observedProperty = sosObservedProperties(obj = offering),
                             responseFormat = sosDefaultGetObsResponseFormat,
                             # optional:
@@ -227,7 +233,7 @@ if (!isGeneric("parseFile"))
 #
 if (!isGeneric("sosGetDCP"))
   setGeneric(name = "sosGetDCP",
-             def = function(sos, operation, type = NA) {
+             def = function(sos, operation, type = NA, verbose = FALSE) {
                standardGeneric("sosGetDCP")
              })
 

@@ -290,13 +290,13 @@ setMethod(f = "sosCreateBBoxMatrix",
 setMethod(f = "sosCapabilitiesDocumentOriginal",
           signature = signature(sos = "SOS"),
           definition = function(sos, verbose = FALSE) {
-            .verbose <- sos@verboseOutput || verbose
-            .gc <- OwsGetCapabilities(service = sosService,
-                                      acceptVersions = c(sos@version))
-            .response = sosRequest(sos = sos,
-                                   request = .gc,
-                                   verbose = .verbose,
-                                   inspect = FALSE)
+            verbose <- sos@verboseOutput || verbose
+            gc <- OwsGetCapabilities(service = sosService,
+                                     acceptVersions = c(sos@version))
+            response = sosRequest(sos = sos,
+                                  request = gc,
+                                  verbose = verbose,
+                                  inspect = FALSE)
             return(.response)
           }
 )
@@ -304,10 +304,10 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 setMethod(f = "sosCapabilitiesUrl",
           signature = signature(sos = "SOS"),
           definition = function(sos) {
-            .gc <- OwsGetCapabilities(service = sosService,
-                                      acceptVersions = c(sos@version))
-            .request <- paste0(sosUrl(sos), "?", encodeRequestKVP(.gc, sos))
-            return(.request)
+            gc <- OwsGetCapabilities(service = sosService,
+                                     acceptVersions = c(sos@version))
+            request <- paste0(sosUrl(sos), "?", encodeRequestKVP(gc, sos))
+            return(request)
           }
 )
 

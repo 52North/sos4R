@@ -33,7 +33,7 @@
 .sosRequest_2.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
   if (inspect) cat("[.sosRequest_2.0.0] REQUEST:\n", toString(request), "\n")
 
-  .response = ""
+  response = ""
 
   # get encoding function for the respective method
   .encodingFunction <- sos@encoders[[sos@binding]]
@@ -94,15 +94,15 @@
 
     if (verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
 
-    .response = httr::GET(url = .url,
+    response = httr::GET(url = .url,
                           httr::accept_xml())
-    .content <- .processResponse(.response, verbose)
+    .content <- .processResponse(response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.\n")
   }
   else if (sos@binding == .sosBindingPOX) {
     if (inspect) {
-      cat("[.sosRequest_2.0.0] POST!\n[.sosRequest_2.0.0] REQUEST:\n")
+      cat("[.sosRequest_2.0.0] REQUEST:\n")
       print(.encodedRequest)
     }
 
@@ -133,11 +133,11 @@
     # using 'POST' for application/xml encoded requests
     if (verbose) cat("[.sosRequest_2.0.0] Do request...\n")
 
-    .response <- httr::POST(url = .dcp[[owsDcpUrlIndex]],
+    response <- httr::POST(url = .dcp[[owsDcpUrlIndex]],
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-    .content <- .processResponse(.response, verbose)
+    .content <- .processResponse(response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -173,21 +173,21 @@
                             owsVersion = owsVersion, acceptLanguages = acceptLanguages)
   if (verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
 
-  .response = sosRequest(sos = sos,
-                         request = .gc,
-                         verbose = verbose,
-                         inspect = inspect)
+  response = sosRequest(sos = sos,
+                        request = .gc,
+                        verbose = verbose,
+                        inspect = inspect)
   if (inspect) {
     cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
-    print(.response)
+    print(response)
   }
 
-  if (.isExceptionReport(.response)) {
-    return(.handleExceptionReport(sos, .response))
+  if (.isExceptionReport(response)) {
+    return(.handleExceptionReport(sos, response))
   }
   else {
     .parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
-    .caps <- .parsingFunction(obj = .response, sos = sos)
+    .caps <- .parsingFunction(obj = response, sos = sos)
     if (verbose) {
       cat("[.getCapabilities_2.0.0] DONE WITH PARSING!\n")
     }

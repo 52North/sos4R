@@ -272,7 +272,6 @@
 \alias{samsShapeName}
 
 \alias{sosGetFeatureOfInterestResponseName}
-\alias{sosGetObservationResponseName}
 \alias{sosObservationTypeName}
 \alias{sosObservedAreaName}
 \alias{sosPhenomenonTimeName}
@@ -312,6 +311,7 @@
 \alias{sosGDAMemberName}
 \alias{sosGetDataAvailabilityName}
 \alias{sosGetDataAvailabilityResponse}
+\alias{sosGetObservationResponseName}
 \alias{sosObservationIdName}
 \alias{sosOfferingName}
 \alias{swesNamespace}

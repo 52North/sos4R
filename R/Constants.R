@@ -105,6 +105,7 @@ sosDescribeFeatureTypeName <- "DescribeFeatureType"
 sosDescribeObservationTypeName <- "DescribeObservationType"
 sosDescribeResultModelName <- "DescribeResultModel"
 sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
+
 #
 # Hydrology Profile ----
 #
@@ -554,13 +555,13 @@ owsContentTypeConstraintName <- "Content-Type"
 #
 # XSI ----
 #
-xsiNamespacePrefix = "xsi"
+xsiNamespacePrefix <- "xsi"
 xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
 
 #
 # OWS exception details ----
 #
-.owsCodes = c(
+.owsCodes <- c(
   "OperationNotSupported",
   "MissingParameterValue",
   "InvalidParameterValue",
@@ -568,7 +569,7 @@ xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
   "InvalidUpdateSequence",
   "OptionNotSupported",
   "NoApplicableCode")
-.owsCodeMeanings = c(
+.owsCodeMeanings <- c(
   "Request is for an operation that is not supported by this server",
   "Operation request does not include a parameter value, and this server did not declare a default parameter value for that parameter",
   "Operation request contains an invalid parameter value",
@@ -576,7 +577,7 @@ xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
   "Value of (optional) updateSequence parameter in GetCapabilities operation request is greater than current value of service metadata updateSequence number",
   "Request is for an option that is not supported by this server",
   "No other exceptionCode specified by this service and server applies to this exception")
-.owsCodeLocators = c(
+.owsCodeLocators <- c(
   "Name of operation not supported",
   "Name of missing parameter",
   "Name of parameter with invalid value",
@@ -584,8 +585,8 @@ xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
   "None, omit 'locator' parameter",
   "Identifier of option not supported",
   "None, omit 'locator' parameter")
-.httpCode = c("501", "400", "400", "400", "400", "501", "3xx, 4xx, 5xx")
-.httpMessage = c("Not Implemented", "Bad request", "Bad request", "Bad request",
+.httpCode <- c("501", "400", "400", "400", "400", "501", "3xx, 4xx, 5xx")
+.httpMessage <- c("Not Implemented", "Bad request", "Bad request", "Bad request",
                  "Bad request", "Not implemented", "Internal Server Error")
 
 .owsStandardExceptions <- data.frame(

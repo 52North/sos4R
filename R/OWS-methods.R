@@ -186,12 +186,12 @@ OwsRange <- function(minimumValue = as.character(NA),
 # and http://www.degraeve.com/reference/urlencoding.php
 #
 # Special character  	Escaped encoding
-# :					 	%3A
-# / 					%2F
-# # 					%23
-# ? 					%3F
-# = 					%3D
-#   (space)             %20
+# :					 	        %3A
+# / 					        %2F
+# # 					        %23
+# ? 					        %3F
+# = 					        %3D
+# (space)             %20
 #
 .kvpEscapeSpecialCharacters <- function(x) {
   if (is.list(x) && length(x) == 1 && isS4(x[[1]])) {
