@@ -526,14 +526,3 @@ parseCSV <- function(obj, verbose = FALSE) {
 
   return(.df)
 }
-
-
-#
-# parse Keyhole Markup Language ----
-#
-parseKML <- function(obj, sos, verbose = FALSE) {
-  if (verbose) cat("[parseKML] Processing KML... returning raw object!\n")
-
-  return(obj)
-}
-

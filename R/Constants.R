@@ -155,14 +155,12 @@ mimeTypeCSV <- 'text/csv'
 mimeTypeXML <- 'text/xml'
 mimeTypeOM <- 'text/xml;subtype="om/1.0.0"'
 mimeTypeSML <- 'text/xml;subtype="sensorML/1.0.1"'
-mimeTypeKML <- 'application/vnd.google-earth.kml+xml'
 mimeSubtypeOM <- '"om/1.0.0"'
 
 .sosSupportedResponseFormats <- c(
   mimeTypeOM,
   mimeTypeSML,
-  mimeTypeCSV,
-  mimeTypeKML)
+  mimeTypeCSV)
 SosSupportedResponseFormats <- function() {
   return(.sosSupportedResponseFormats)
 }
@@ -534,11 +532,6 @@ owsDcpUrlIndex <- 3
 owsDcpContentTypeIndex <- 2
 owsDcpHttpMethodIndex <- 1
 owsContentTypeConstraintName <- "Content-Type"
-
-#
-# KML ----
-#
-kmlName <- "kml"
 
 #
 # XSI ----

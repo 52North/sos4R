@@ -160,15 +160,6 @@ obs.001 <- getObservation(sos = ioos,
 
 plot(x = obs.001$date_time, y = obs.001$`sea_floor_depth_below_sea_surface (m)`)
 
-################################################################################
-# KML
-kml <- getObservation(ioos, offering = "urn:ioos:network:noaa.nws.ndbc:all",
-#		verbose = TRUE,
-#		saveOriginal = TRUE,
-		responseFormat = "application/vnd.google-earth.kml+xml",
-		observedProperty = list("http://mmisw.org/ont/cf/parameter/air_temperature"))
-kml
-
 ###################################
 # Demo finished, try another one! #
 ###################################

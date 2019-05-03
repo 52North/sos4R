@@ -71,8 +71,6 @@
     #
     parseCSV,
     parseOM,
-    parseKML,
-    parseKML,
     parseOM)
 
   names(.defP) <- list(
@@ -111,8 +109,6 @@
     #
     mimeTypeCSV,
     mimeTypeOM,
-    mimeTypeKML,
-    kmlName,
     mimeTypeXML)
 
   return(.defP)
