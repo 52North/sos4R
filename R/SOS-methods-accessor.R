@@ -793,6 +793,12 @@ setMethod(f = "sosTime", signature = signature(obj = "DataAvailabilityMember"),
 definition = function(obj, ...) {
             return(sosTime(obj@phenomenonTime))
           })
+setMethod(f = "sosTime", signature = signature(obj = "SensorML"),
+          definition = function(obj, ...) {
+            if (!is.null(obj@validTime))
+              return(sosTime(obj@validTime))
+            else return(NULL)
+          })
 
 if (!isGeneric("sosTimeFormat"))
   setGeneric(name = "sosTimeFormat", def = function(sos) {

@@ -60,9 +60,12 @@ if (!isGeneric("describeSensor"))
   setGeneric(name = "describeSensor",
              signature = signature("sos", "procedure", "outputFormat", "verbose",
                                    "inspect", "saveOriginal"),
-             def = function(sos, procedure,
-                            outputFormat = sosDefaultDescribeSensorOutputFormat,
-                            verbose = sos@verboseOutput, inspect = FALSE,
+             def = function(sos,
+                            procedure,
+                            outputFormat = sosDefaultDescribeSensorOutputFormat, # mapped to procedureDescriptionFormat for SOS 2.0.0
+                            validTime = NULL, # SOS 2.0.0 only
+                            verbose = sos@verboseOutput,
+                            inspect = FALSE,
                             saveOriginal = NULL) {
                standardGeneric("describeSensor")
              })

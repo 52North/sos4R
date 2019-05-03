@@ -184,13 +184,17 @@ SosDescribeSensor <- function(
   service,
   version,
   procedure,
-  outputFormat) {
+  outputFormat = NA_character_,
+  procedureDescriptionFormat = NA_character_,
+  validTime = NULL) {
   new("SosDescribeSensor",
-      request = sosDescribeSensorName,
+      request = ifelse(version == sos100_version, sosDescribeSensorName, swesDescribeSensorName),
       service = service,
       version = version,
       procedure = procedure,
-      outputFormat = outputFormat)
+      outputFormat = outputFormat,
+      procedureDescriptionFormat = procedureDescriptionFormat,
+      validTime = validTime)
 }
 
 SosGetObservation <- function(
@@ -440,17 +444,37 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
           }
 )
 
-#
-#
-#
+
+setMethod(f = "describeSensor",
+          signature = signature(sos = "SOS_1.0.0", procedure  = "character"),
+          definition = function(sos, procedure, outputFormat, verbose, inspect, saveOriginal) {
+            .result <- .describeSensor_1.0.0(sos = sos, procedure = procedure,
+                                             outputFormat = outputFormat, verbose = verbose,
+                                             inspect = inspect, saveOriginal = saveOriginal)
+            return(.result)
+          }
+)
+
 .describeSensor_1.0.0 <- function(sos, procedure, outputFormat, verbose,
                                   inspect, saveOriginal) {
   if (verbose) cat("[.describeSensor_1.0.0] ", procedure, "@", sos@url, "\n")
 
+  # check inputs: procedure
+  procedures = unique(unlist(sosProcedures(sos)))
+  if (!any(procedure %in% procedures)) warning("Requested procedure(s) not listed in capablities, service might return error!")
+
+  # check inputs: output format is supported by sos
+  supportedFormats <- sosOperation(sos, sosDescribeSensorName)@parameters[["outputFormat"]];
+  format <- gsub(outputFormat, pattern = "\\&quot;", replacement = '"')
+
+  if (!(format %in% supportedFormats))
+    warning(paste("outputFormat has to be one of", paste(supportedFormats, sep = ", ",
+                                                         collapse = "', '"),
+                  "'. Requested format is '", outputFormat, "'."))
+
   # check if multiple sensors
   if (length(procedure) > 1) {
-    if (verbose) cat("[.describeSensor_1.0.0] multiple sensors: ", procedure,
-                    "\n")
+    if (verbose) cat("[.describeSensor_1.0.0] multiple sensors: ", procedure, "\n")
 
     .descriptions <- list()
     for (p in procedure) {
@@ -501,20 +525,6 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
   }
 }
 
-setMethod(f = "describeSensor",
-          signature = signature(sos = "SOS_1.0.0", procedure  = "character"),
-          definition = function(sos, procedure, outputFormat, verbose, inspect, saveOriginal) {
-            .result <- .describeSensor_1.0.0(sos = sos, procedure = procedure,
-                                             outputFormat = outputFormat, verbose = verbose,
-                                             inspect = inspect, saveOriginal = saveOriginal)
-            return(.result)
-          }
-)
-
-
-#
-#
-#
 setMethod(f = "getObservationById",
           signature = signature(sos = "SOS_1.0.0", observationId = "character"),
           definition = function(sos, observationId, responseFormat, srsName,
@@ -1171,16 +1181,19 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosDescribeSensor
             }
 
             if (sos@version == sos100_version) {
-              if (verbose) {
-                cat("[encodeRequestXML] encoding vor SOS 1.0.0\n")
-              }
+              if (verbose) cat("[encodeRequestXML] encoding for SOS 1.0.0\n")
               return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj = obj, sos = sos))
+            }
+            else if (sos@version == sos200_version) {
+              if (verbose) cat("[encodeRequestXML] encoding for SOS 1.0.0\n")
+              return(.sosEncodeRequestXMLDescribeSensor_2.0.0(obj = obj, sos = sos))
             }
             else {
               stop("[encodeRequestXML] Version not supported for operation DescribeSensor!")
             }
           }
 )
+
 .sosEncodeRequestXMLDescribeSensor_1.0.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosDescribeSensorName)
   xml2::xml_set_attrs(x = xmlDoc,
@@ -1203,13 +1216,7 @@ setMethod("encodeRequestSOAP", "SosDescribeSensor",
             if (verbose) {
               cat("ENCODE SOAP ", class(obj), "\n")
             }
-
-            if (sos@version == sos100_version) {
-              return(.sosEncodeRequestXMLDescribeSensor_1.0.0(obj, sos = sos))
-            }
-            else {
-              stop("Version not supported!")
-            }
+            stop("Method not implemented yet!")
           }
 )
 setMethod("encodeRequestSOAP", "SosGetObservation",

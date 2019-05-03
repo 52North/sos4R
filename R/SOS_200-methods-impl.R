@@ -195,6 +195,86 @@
   }
 }
 
+.describeSensor_2.0.0 <- function(sos, procedure,
+                                  procedureDescriptionFormat,
+                                  validTime,
+                                  verbose, inspect, saveOriginal) {
+  if (verbose) cat("[.describeSensor_2.0.0] ", procedure, "@", sos@url, "\n")
+
+  # check inputs: procedure
+  procedures = unique(unlist(sosProcedures(sos)))
+  if (!any(procedure %in% procedures)) warning("Requested procedure(s) not listed in capablities, service might return error!")
+
+  # check inputs: description format
+  supportedFormats <- sosOperation(sos, sosDescribeSensorName)@parameters[["procedureDescriptionFormat"]]
+  if (!(procedureDescriptionFormat %in% supportedFormats))
+    warning(paste("outputFormat has to be one of", paste(supportedFormats, sep = ", ",
+                                                         collapse = "', '"),
+                  "'. Requested format is '", procedureDescriptionFormat, "'."))
+
+  # check if multiple sensors
+  if (length(procedure) > 1) {
+    if (verbose) cat("[.describeSensor_2.0.0] multiple sensors: ", procedure, "\n")
+
+    descriptions <- list()
+    for (p in procedure) {
+      description <- .describeSensor_2.0.0(sos = sos,
+                                          procedure = p,
+                                          procedureDescriptionFormat = procedureDescriptionFormat,
+                                          validTime = validTime,
+                                          verbose = verbose,
+                                          inspect = inspect,
+                                          saveOriginal = saveOriginal)
+      descriptions <- c(descriptions, description)
+    }
+
+    return(descriptions)
+  }
+
+  # single procedure
+  ds <- SosDescribeSensor(service = sosService,
+                           version = sos@version,
+                           procedure = procedure,
+                           procedureDescriptionFormat = procedureDescriptionFormat,
+                           validTime = validTime)
+  if (verbose) cat("[.describeSensor_2.0.0] REQUEST:\n", toString(ds), "\n")
+
+  response = sosRequest(sos = sos,
+                        request = ds,
+                        verbose = verbose,
+                        inspect = inspect)
+
+  filename <- NULL
+  if (!is.null(saveOriginal)) {
+    if (is.character(saveOriginal)) {
+      filename <- saveOriginal
+      if (verbose) cat("Using saveOriginal parameter for file name:", filename, "\n")
+    }
+    else if (is.logical(saveOriginal)) {
+      if (saveOriginal) filename <- paste(cleanupFileName(procedure), ".xml", sep = "")
+      if (verbose) cat("Generated file name:", filename, "\n")
+    }
+
+    if (verbose) cat("[.describeSensor_2.0.0] Saving original document...", filename, "in", getwd(), "\n")
+
+    xml2::write_xml(x = response, file = filename)
+    cat("[sos4R] Original document saved:", filename, "\n")
+  }
+
+  if (.isExceptionReport(response)) {
+    return(.handleExceptionReport(sos, response))
+  }
+  else {
+    parsingFunction <- sosParsers(sos)[[swesDescribeSensorResponseName]]
+    sml <- parsingFunction(obj = response, sos = sos, verbose = verbose)
+
+    return(sml)
+  }
+}
+
+#
+# encoding functions XML ----
+#
 .sosEncodeRequestXMLGetObservationById_2.0.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetObservationByIdName)
   xml2::xml_set_attrs(x = xmlDoc,
@@ -211,7 +291,30 @@
   return(xmlDoc)
 }
 
-.sosEncodeRequestKVPGetObservationById_2.0.0 <- function(obj, sos, verbose) {
+.sosEncodeRequestXMLDescribeSensor_2.0.0 <- function(obj, sos) {
+  xmlDoc <- xml2::xml_new_root(swesDescribeSensorName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos@namespaces[[swesNamespacePrefix]],
+                                service = obj@service,
+                                version = obj@version,
+                                "xmlns:xsi" = xsiNamespace,
+                                "xmlns:swes" = sos@namespaces[[swesNamespacePrefix]]))
+
+  xml2::xml_add_child(xmlDoc, swesProcedureName, obj@procedure)
+  xml2::xml_add_child(xmlDoc, swesProcedureDescriptionFormatName, obj@procedureDescriptionFormat)
+
+  if (!is.null(obj@validTime)) {
+    validTime <- xml2::xml_add_child(xmlDoc, swesValidTimeName)
+    xml2::xml_add_child(validTime, encodeXML(obj = obj@validTime, sos = sos))
+  }
+
+  return(xmlDoc)
+}
+
+#
+# encoding functions KVP ----
+#
+.sosEncodeRequestKVPGetObservationById_2.0.0 <- function(obj, sos, verbose = FALSE) {
   requestBase <- paste(
     paste("service", .kvpEscapeSpecialCharacters(x = obj@service), sep = "="),
     paste("version", .kvpEscapeSpecialCharacters(x = obj@version), sep = "="),
@@ -226,3 +329,32 @@
   return(kvpString)
 }
 
+# defined in SWES 2.0, OGC 09-001
+.sosEncodeRequestKVPDescribeSensor_2.0.0 <- function(obj, sos, verbose = FALSE) {
+  requestBase <- .kvpBuildRequestBase(sos, sosDescribeSensorName)
+
+  # one mandatory:
+  procedure <- paste("procedure", .kvpEscapeSpecialCharacters(x = obj@procedure), sep = "=")
+  format <- paste("procedureDescriptionFormat",
+                  .kvpEscapeSpecialCharacters(x = gsub(obj@procedureDescriptionFormat,
+                                                       pattern = "&quot;",
+                                                       replacement = '"')),
+                  sep = "=")
+
+  kvpString <- paste(requestBase,
+                     procedure,
+                     format,
+                     sep = "&")
+
+  # zero or one (optional)
+  if (!is.null(obj@validTime)) {
+    kvpString <- paste0(kvpString, "&", "validTime=",
+                        .kvpEscapeSpecialCharacters(
+                          encodeKVP(obj = obj@validTime, sos = sos, verbose = verbose))
+                        )
+  }
+
+  if (verbose) cat("[.sosEncodeRequestKVPDescribeSensor_2.0.0] ", kvpString)
+
+  return(kvpString)
+}

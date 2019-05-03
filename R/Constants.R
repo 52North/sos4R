@@ -78,8 +78,8 @@ sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
 sos200ObservationName <- paste0(sos200NamespacePrefix, ":observation")
 sos200ObservationDataName <- paste0(sos200NamespacePrefix, ":observationData")
 
-sos200GetObservationByIdResponseName <- paste0(sos200NamespacePrefix, ":GetObservationByIdResponse")
-sos200GetObservationResponseName <- paste0(sos200NamespacePrefix, ":GetObservationResponse")
+sosGetObservationByIdResponseName <- "GetObservationByIdResponse"
+sosGetObservationResponseName <- "GetObservationResponse"
 
 #
 # Core Operations Profile ----
@@ -87,12 +87,13 @@ sos200GetObservationResponseName <- paste0(sos200NamespacePrefix, ":GetObservati
 sosGetCapabilitiesName <- "GetCapabilities"
 sosDescribeSensorName <- "DescribeSensor"
 sosGetObservationName <- "GetObservation"
-sosGetObservationResponseName <- "GetObservationResponse"
+
 #
 # Transaction Operations Profile ----
 #
 sosRegisterSensorName <- "RegisterSensor"
 sosInsertObservationName <- "InsertObservation"
+
 #
 # Enhanced Operations Profile ----
 #
@@ -237,6 +238,8 @@ SosAllNamespaces <- function(version) {
                 xsi = xsiNamespace,
                 xlink = xlinkNamespace,
                 sml = smlNamespace,
+                gml1 = gmlNamespace, # need old GML for within SensorML 1.0.1
+                swe = sweNamespace, # needed for Envelope within SensorML 1.0.1
                 gml = gml32Namespace,
                 fes = fesNamespace,
                 gda = gdaNamespace,
@@ -365,24 +368,30 @@ sweLowerCornerName <- paste0(sweNamespacePrefix, ":upperCorner")
 sweUpperCornerName <- paste0(sweNamespacePrefix, ":lowerCorner")
 
 #
-# SWE Service Model ----
+# SWE Service Model (SWES) ----
 #
-swesNamespacePrefix = "swes"
-swesOfferingName = paste0(swesNamespacePrefix, ":offering")
-swesIdentifierName = paste0(swesNamespacePrefix, ":identifier")
-swesNameName = paste0(swesNamespacePrefix, ":name")
-swesObservablePropertyName = paste0(swesNamespacePrefix, ":observableProperty")
-swesProcedureName = paste0(swesNamespacePrefix, ":procedure")
-swesProcedureDescriptionFormatName = paste0(swesNamespacePrefix, ":procedureDescriptionFormat")
+swesNamespacePrefix <- "swes"
+swesOfferingName <- paste0(swesNamespacePrefix, ":offering")
+swesIdentifierName <- paste0(swesNamespacePrefix, ":identifier")
+swesNameName <- paste0(swesNamespacePrefix, ":name")
+swesObservablePropertyName <- paste0(swesNamespacePrefix, ":observableProperty")
+swesProcedureName <- paste0(swesNamespacePrefix, ":procedure")
+swesProcedureDescriptionFormatName <- paste0(swesNamespacePrefix, ":procedureDescriptionFormat")
+swesDescriptionName <- paste0(swesNamespacePrefix, ":description")
+swesSensorDescriptionName <- paste0(swesNamespacePrefix, ":SensorDescription")
+swesValidTimeName <- paste0(swesNamespacePrefix, ":validTime")
+
+swesDescribeSensorName <- "DescribeSensor"
+swesDescribeSensorResponseName <- "DescribeSensorResponse"
 
 #
 # WML 2.0 ----
 #
 wmlNamespace <- "http://www.opengis.net/waterml/2.0"
-wmlNamespacePrefix = "wml2"
-wmlMonitoringPointName = paste0(wmlNamespacePrefix, ":MonitoringPoint")
-wmlVerticalDatumName = paste0(wmlNamespacePrefix, ":verticalDatum")
-wmlTimeZoneName = paste0(wmlNamespacePrefix, ":timeZone")
+wmlNamespacePrefix <- "wml2"
+wmlMonitoringPointName <- paste0(wmlNamespacePrefix, ":MonitoringPoint")
+wmlVerticalDatumName <- paste0(wmlNamespacePrefix, ":verticalDatum")
+wmlTimeZoneName <- paste0(wmlNamespacePrefix, ":timeZone")
 
 #
 # OGC ----

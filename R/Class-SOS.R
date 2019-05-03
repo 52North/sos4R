@@ -122,19 +122,52 @@ setClassUnion(name = "SosFeatureOfInterestOrNULL",
 
 #
 # SosDescribeSensor ----
-# See OGC 06-009r6
+# See OGC 06-009r6 for SOS 1.0.0
+# See OGC 12-006 for SOS 2.0.0, which references OGC OGC 09-001 section 11
 #
 setClass("SosDescribeSensor",
-         representation(procedure = "character", outputFormat = "character"),
-         prototype = list(service = as.character(NA), version = as.character(NA),
-                          procedure = as.character(NA), outputFormat = as.character(NA)),
+         representation(procedure = "character",
+                        outputFormat = "character",
+                        procedureDescriptionFormat = "character",
+                        validTime = "GmlTimeObjectOrNULL"),
+         prototype = list(service = as.character(NA),
+                          version = as.character(NA),
+                          procedure = as.character(NA),
+                          outputFormat = as.character(NA),
+                          # SOS 2.0.0:
+                          procedureDescriptionFormat = as.character(NA),
+                          # validTime can be time period or time instant
+                          validTime = NULL
+                          ),
          contains = "OwsServiceOperation",
          validity = function(object) {
            #print("Entering validation: sosDescribeSensor")
-           # TODO implement validity function
-           # check format of version, sensorid and outputformat?!
            if (length(object@procedure) > 1)
              return("can only request one procedure at a time!")
+
+           if (object@version == sos100_version) {
+             if (!is.na(object@procedureDescriptionFormat)) {
+               return("procedureDescriptionFormat option not supported for SOS 1.0.0")
+             }
+             if (is.na(object@outputFormat)) {
+               return("outputFormat missing")
+             }
+             if (!is.null(object@validTime)) {
+               return("validTime option not supported for SOS 1.0.0")
+             }
+           }
+
+           if (object@version == sos200_version) {
+             if (!is.na(object@outputFormat)) {
+               return("outputFormat option not supported for SOS 2.0.0")
+             }
+             if (is.na(object@procedureDescriptionFormat)) {
+               return("procedureDescriptionFormat missing")
+             }
+             cls <- class(object@validTime)
+             if ( !any(cls %in% c("GmlTimeInstant", "GmlTimePeriod", "NULL")))
+               return("'validTime' argument does not have allowed class!")
+           }
 
            return(TRUE)
          }

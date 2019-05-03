@@ -79,11 +79,11 @@ The function \code{SosResetParsingFunctions} can be used to replace the included
 \bold{The default parameter values are:}
 \describe{
 	\item{sosDefaultCharacterEncoding}{\verb{\Sexpr[results=verbatim,stage=render]{sosDefaultCharacterEncoding}}} % "UTF-8"
-	\item{sosDefaultDescribeSensorOutputFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultDescribeSensorOutputFormat}}} % SosSupportedResponseFormats()[2]
+	\item{sosDefaultDescribeSensorOutputFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultDescribeSensorOutputFormat}}}
 	\item{sosDefaultGetCapSections}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetCapSections}}} % c("All")
 	\item{sosDefaultGetCapAcceptFormats}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetCapAcceptFormats}}} % c("text/xml")
 	\item{sosDefaultGetCapOwsVersion}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetCapOwsVersion}}} % "1.1.0"
-	\item{sosDefaultGetObsResponseFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetObsResponseFormat}}} % SosSupportedResponseFormats()[1]
+	\item{sosDefaultGetObsResponseFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultGetObsResponseFormat}}}
 	\item{sosDefaultTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTimeFormat}}} % "%Y-%m-%dT%H:%M:%OS"
 	\item{sosDefaultFilenameTimeFormat}{\verb{\Sexpr[results=text,stage=render]{sosDefaultFilenameTimeFormat}}} %
 	\item{sosDefaultTempOpPropertyName}{\verb{\Sexpr[results=text,stage=render]{sosDefaultTempOpPropertyName}}} % "om:samplingTime"

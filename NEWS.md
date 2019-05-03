@@ -1,8 +1,8 @@
 # sos4R 0.4.0.9000
 
+- Add full support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)
 - Give warnings if time cannot be parsed with the format provided in the SOS object
 - Do not save file name as attribute of returned object anymore (adds complexity, not documented/widely used)
-- Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX)
 - Manage namespaces as part of the SOS object (allows user manipulation via `sos@namespaces`)
 - Accessor functions return lists only if the content is complex: `sosName()`, `sosObservedProperties()`, `sosProcedures()` `sosFeatureIds()`, `sosUOM()` now return character vectors if applied to collections or lists
 - Drop "Created SOS for URL" message after creation

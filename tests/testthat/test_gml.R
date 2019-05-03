@@ -38,7 +38,7 @@ test_that("envelope", {
   expect_match(encodedString, '8 9</gml:upperCorner>')
 })
 
-context("encoding GML: temporal")
+context("encoding GML: temporal classes to XML")
 
 testsos <- SOS_Test(name = "testgml")
 
@@ -75,6 +75,19 @@ test_that("time instant", {
   expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition></gml:TimeInstant>')
 })
 
+test_that("GML namespace of SOS is used", {
+  sos1 <- SOS_Test(version = sos100_version)
+  sos2 <- SOS_Test(version = sos200_version)
+  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
+
+  encoded1 <- encodeXML(obj = instant, sos = sos1)
+  encoded2 <- encodeXML(obj = instant, sos = sos2)
+
+  expect_match(toString(encoded1), paste0('xmlns:gml="', gmlNamespace))
+  expect_match(toString(encoded2), paste0('xmlns:gml="', gml32Namespace))
+})
+
+
 test_that("time period", {
   period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
   encoded <- encodeXML(obj = period, sos = testsos)
@@ -91,6 +104,20 @@ test_that("time interval", {
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
   expect_match(encodedString, '<gml:timeInterval unit="hr" radix="17" factor="2">everyother</gml:timeInterval>')
+})
+
+context("encoding GML: temporal classes to KVP")
+
+test_that("time instant", {
+  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
+  encodedString <- encodeKVP(obj = instant, sos = testsos)
+  expect_equal(encodedString, '2019-01-01T00:00:00')
+})
+
+test_that("time period", {
+  period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
+  encodedString <- encodeKVP(obj = period, sos = testsos)
+  expect_equal(encodedString, '2019-01-01T00:00:00::2019-02-03T00:00:00')
 })
 
 context("parsing: GML")

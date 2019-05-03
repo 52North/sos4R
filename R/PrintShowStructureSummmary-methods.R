@@ -357,7 +357,8 @@
               "\n\tname:", sosName(x),
               "\n\tdescription:", sosAbstract(x),
               "\n\tcoords:", toString(sosCoordinates(x)),
-              "\n\tboundedBy:", toString(sosBoundedBy(x)))
+              "\n\tboundedBy:", toString(sosBoundedBy(x)),
+              "\n\tvalidTime:", toString(sosTime(x)))
   return(.s)
 }
 
@@ -439,7 +440,11 @@
               ", outputFormat: ",
               x@outputFormat,
               "\nProcedure: ",
-              x@procedure)
+              x@procedure,
+              "\nprocedureDescriptionFormat: ",
+              x@procedureDescriptionFormat,
+              "\nvalidTime: ",
+              toString(x@validTime))
   return(.s)
 }
 

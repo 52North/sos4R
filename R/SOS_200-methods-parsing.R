@@ -299,3 +299,25 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
 
   return(parsed)
 }
+
+parseDescribeSensorResponse <- function(obj, sos, verbose = FALSE) {
+  if (verbose) {
+    cat("[parseDescribeSensorResponse] entering... \n")
+    print(obj)
+  }
+
+  smlXml <- xml2::xml_find_first(x = obj,
+                                 xpath = paste0("//", smlSensorMLName),
+                                 ns = sos@namespaces)
+  sml <- parseSensorML(obj = smlXml, sos = sos, verbose = verbose)
+
+  timePeriodXml <- xml2::xml_find_first(x = obj,
+                                        xpath = paste0(swesDescriptionName,
+                                                       "/", swesSensorDescriptionName,
+                                                       "/", swesValidTimeName,
+                                                       "/", gmlTimePeriodName),
+                                        ns = sos@namespaces)
+  sml@validTime <- parseTimePeriod(obj = timePeriodXml, sos = sos)
+  if (verbose) cat("[parseDescribeSensorResponse] Parsed validTime: ", toString(sml@validTime), "\n")
+  return(sml)
+}

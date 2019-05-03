@@ -59,9 +59,20 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0.0"),
 #
 setMethod(f = "describeSensor",
           signature = signature(sos = "SOS_2.0.0", procedure  = "character"),
-          def = function(sos, procedure, outputFormat, verbose, inspect,
-                         saveOriginal) {
-            stop("describeSensor for SOS_2.0.0 not implemented yet!")
+          definition = function(sos,
+                                procedure,
+                                outputFormat,
+                                validTime,
+                                verbose,
+                                inspect,
+                                saveOriginal) {
+            return(.describeSensor_2.0.0(sos = sos,
+                                         procedure = procedure,
+                                         procedureDescriptionFormat = outputFormat,
+                                         validTime = validTime,
+                                         verbose = verbose,
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal))
           }
 )
 
@@ -379,7 +390,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
       warning("Got XML string, but request did not require text/xml (or subtype).")
     }
 
-    parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
+    parsingFunction <- sosParsers(sos)[[sosGetObservationResponseName]]
 
     if (verbose) {
       cat("[.getObservation_2.0.0] Parsing with function ")
