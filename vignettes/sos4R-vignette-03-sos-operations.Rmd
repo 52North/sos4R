@@ -46,27 +46,31 @@ This section only lists the possibilities.
 Explanations follow in this document or can be found in the SOS specification.
 
 ```{r supported01}
-SosSupportedOperations()
+SosSupportedOperations(version = "1.0.0")
+SosSupportedOperations(version = "2.0.0")
 SosSupportedServiceVersions()
 SosSupportedBindings()
+```
+
+```{r supported02}
 SosSupportedResponseFormats()
 ```
 
 The response format `"text/csv"` is not standard conform, but used by services as a well established alternative to XML encodings.
 The package `readr` must be installed to parse responses in this format.
 
-```{r supported02}
+```{r supported03}
 SosSupportedResponseModes()
 SosSupportedResultModels()
 ```
 
 The output of the following calls are named lists (the name being the same as the value).
 
-```{r supported03}
+```{r supported04}
 SosSupportedSpatialOperators()
 ```
 
-```{r supported04}
+```{r supported05}
 toString(SosSupportedTemporalOperators())
 ```
 

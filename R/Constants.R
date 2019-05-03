@@ -116,6 +116,15 @@ SosSupportedOperations <- function(version = sos100_version) {
                     sosGetObservationName,
                     sosGetObservationByIdName)
   }
+  else if (version == sos200_version) {
+    .supported <- c(sosGetCapabilitiesName,
+                    sosDescribeSensorName,
+                    sosGetObservationName,
+                    sosGetObservationByIdName,
+                    sosGetDataAvailabilityName)
+  } else {
+    stop("Unsupported version", version)
+  }
   return(.supported)
 }
 
