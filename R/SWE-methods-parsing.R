@@ -164,7 +164,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 
     if (verbose) {
       cat("[parseValues] The new bound data frame (one variable the a temp id):\n")
-      str(.data)
+      utils::str(.data)
     }
 
     # add field information as attributes to the new column using human
@@ -193,7 +193,7 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
 
   if (verbose) {
     cat("[parseValues] returning final data frame:\n")
-    str(.data)
+    utils::str(.data)
   }
   return(.data)
 }

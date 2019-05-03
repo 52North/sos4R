@@ -65,7 +65,7 @@
                          verbose = verbose,
                          inspect = inspect)
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", object.size(response),
+  if (verbose) cat("[.getDataAvailability_1.0.0] Received response (size:", utils::object.size(response),
                    "bytes), parsing ...\n")
 
   if (inspect) {

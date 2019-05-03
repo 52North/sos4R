@@ -110,7 +110,7 @@ One base encoding function is given, which is a generic method that must exist f
 
 ```{r encoders_own, eval=FALSE}
 myPostEncoding <- function(object, sos, verbose) {
-	return(str(object))
+	return(utils::str(object))
 }
 # Connection will not be established because of mising objects
 mySOS2 = SOS(sosUrl(mySOS),

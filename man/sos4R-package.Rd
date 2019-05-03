@@ -75,7 +75,7 @@ observation <- getObservation(sos = sos,
 
 # Inspect result
 sosResult(observation)
-str(sosResult(observation))
+utils::str(sosResult(observation))
 
 # Inspect attributes of the data fields
 if(is.list(sosResult(observation))) {

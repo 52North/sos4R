@@ -588,9 +588,6 @@ setMethod(f = "getObservationById",
   }
 }
 
-#
-#
-#
 .createGetObservation_1.0.0 <- function(sos, offeringId, observedProperty,
                                         responseFormat, srsName, eventTime,	procedure, featureOfInterest,
                                         result, resultModel, responseMode, BBOX, verbose, inspect,
@@ -608,10 +605,6 @@ setMethod(f = "getObservationById",
   return(.go)
 }
 
-
-#
-#
-#
 .getObservation_1.0.0 <- function(sos, offeringId, observedProperty,
                                   responseFormat, srsName, eventTime,	procedure, featureOfInterest,
                                   result, resultModel, responseMode, BBOX, verbose, inspect,
@@ -645,7 +638,7 @@ setMethod(f = "getObservationById",
                          request = .go,
                          verbose = verbose,
                          inspect = inspect)
-  if (verbose) cat("[sos4R] Received response (object size:", object.size(.response), "bytes), parsing ...\n")
+  if (verbose) cat("[sos4R] Received response (object size:", utils::object.size(.response), "bytes), parsing ...\n")
 
   if (inherits(.response, "xml_document")) {
     if (verbose) cat("[.getObservation_1.0.0] Got XML document as response.\n")
@@ -728,7 +721,7 @@ setMethod(f = "getObservationById",
 
       if (!is.null(.filename)) {
         .filename <- paste(file = .filename, ".csv", sep = "")
-        write.csv(.csv, .filename)
+        utils::write.csv(.csv, .filename)
       }
 
       cat("[sos4R] Finished getObservation to", sos@url, "\n\t",
@@ -753,9 +746,6 @@ setMethod(f = "getObservationById",
   return(.response)
 }
 
-#
-#
-#
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_1.0.0",
                                 offering = "SosObservationOffering"),
@@ -783,9 +773,6 @@ setMethod(f = "getObservation",
           }
 )
 
-#
-#
-#
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_1.0.0",
                                 offering = "character"),
@@ -820,14 +807,16 @@ setMethod(f = "getObservation",
           }
 )
 
-#
 # see: http://www.oostethys.org/best-practices/best-practices-get
-#
 setMethod(f = "encodeRequestKVP", signature = signature(obj = "SosDescribeSensor"),
           definition = function(obj, sos, verbose = FALSE) {
 
             if (sos@version == sos100_version) {
               return(.sosEncodeRequestKVPDescribeSensor_1.0.0(obj = obj,
+                                                              sos = sos, verbose = verbose))
+            }
+            else if (sos@version == sos200_version) {
+              return(.sosEncodeRequestKVPDescribeSensor_2.0.0(obj = obj,
                                                               sos = sos, verbose = verbose))
             }
             else {
@@ -1023,9 +1012,6 @@ setMethod(f = "encodeRequestKVP", signature = signature(obj = "SosGetObservation
           }
 )
 
-#
-# encode as XML
-#
 setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation"),
           definition = function(obj, sos, verbose = FALSE) {
             if (verbose) {

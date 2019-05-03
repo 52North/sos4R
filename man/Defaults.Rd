@@ -138,7 +138,7 @@ SosParsingFunctions(exclude = c("GetObservation", "DescribeSensor"))
 \dontrun{
 # Replace an encoding function
 myEncoding <- function(object, v) {
-	return(str(object))
+	return(utils::str(object))
 }
 
 sos = SOS(url = "http://mysos.com/sos",

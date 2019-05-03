@@ -103,7 +103,7 @@ names(obs.wmo52[[1]])
 
 obs.wmo52.all <- sosResult(obs.wmo52)
 summary(obs.wmo52.all)
-str(obs.wmo52.all)
+utils::str(obs.wmo52.all)
 # columns are all factors, convert!
 obs.wmo52.all[["sea_water_temperature (C)"]] <- as.numeric(obs.wmo52.all[["sea_water_temperature (C)"]])
 obs.wmo52.all[["latitude (degree)"]] <- as.numeric(obs.wmo52.all[["latitude (degree)"]])

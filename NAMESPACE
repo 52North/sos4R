@@ -1,6 +1,6 @@
 import("methods")
 importFrom("graphics", "plot")
-importFrom("utils", "object.size", "str", "write.csv")
+importFrom("utils", "object.size", "str", "write.csv", "URLencode")
 import("sp")
 import("httr")
 import("xml2")

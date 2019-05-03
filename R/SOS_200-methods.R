@@ -119,7 +119,7 @@ setMethod(f = "getObservationById",
               return(.handleExceptionReport(sos, response))
             }
             else {
-              parsingFunction <- sosParsers(sos)[[sosGetObservationByIdName]]
+              parsingFunction <- sosParsers(sos)[[sosGetObservationByIdResponseName]]
               obs <- parsingFunction(obj = response,
                                      sos = sos,
                                      verbose = verbose)
@@ -278,7 +278,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
                          verbose = verbose,
                          inspect = inspect)
 
-  if (verbose) cat("[sos4R] Received response (size:", object.size(.response), "bytes), parsing ...\n")
+  if (verbose) cat("[sos4R] Received response (size:", utils::object.size(.response), "bytes), parsing ...\n")
 
   if (!is.null(.filename)) {
     xml2::write_xml(x = .response, file = .filename)
@@ -447,7 +447,7 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 
       if (!is.null(.filename)) {
         .filename <- paste(file = .filename, ".csv", sep = "")
-        write.csv(.csv, .filename)
+        utils::write.csv(.csv, .filename)
       }
 
       cat("[sos4R] Finished getObservation to", sos@url, "\n\t",

@@ -63,7 +63,6 @@ tPeriod <- sosCreateEventTimeList(
 				sos = pegelsos,
 				begin = Sys.time() - (3600 * 24 * tPeriod.days),
 				end = Sys.time()))
-#tPeriod # str(tPeriod)
 #encodeXML(tPeriod[[1]], pegelsos)
 
 # three procedures, but only getting 1 element with one procedure...
