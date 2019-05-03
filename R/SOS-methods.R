@@ -251,14 +251,6 @@ SosGetObservationById <- function(
 # main internal request method ----
 #
 .sosRequest_1.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
-  # check the request for consistency with service description
-  .checkResult <- checkRequest(service = sos, operation = request,
-                               verbose = verbose)
-  if (!.checkResult) {
-    warning("Check returned FALSE! Turn on verbose option for possible details.",
-            immediate. = TRUE)
-  }
-
   # get encoding function for the respective method
   .encodingFunction <- sos@encoders[[sos@binding]]
   if (verbose) {
@@ -1053,6 +1045,7 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation
             }
           }
 )
+
 .sosEncodeRequestXMLGetObservation_1.0.0 <- function(obj, sos, verbose = FALSE) {
   xmlDoc <- xml2::xml_new_root(sosGetObservationName)
   xml2::xml_set_attrs(x = xmlDoc,
@@ -1155,6 +1148,7 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation
             }
           }
 )
+
 .sosEncodeRequestXMLGetObservationById_1.0.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetObservationByIdName)
   xml2::xml_set_attrs(x = xmlDoc,
@@ -1340,108 +1334,6 @@ setMethod(f = "encodeKVP",
             if (verbose) cat("Formatted ", obj, " to ", formatted, "\n")
 
             return(formatted)
-          }
-)
-
-#
-# check functions for requests ----
-#
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS", operation = "SosDescribeSensor",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            if (verbose) {
-              cat("[checkRequest] Checking DescribeSensor... \n")
-              cat(toString(operation), "\n")
-            }
-
-            # check if operation is for SOS and operation is DescribeSensor
-            if (!(operation@service == sosService &&
-                 operation@request == sosDescribeSensorName)) {
-              stop("Wrong input for Method checkReuqest! Require classes 'SOS' as service and ''SosDescribeSensor' as operation.")
-              return(FALSE)
-            }
-
-            # check if sensor is in listed in procedures
-            .procedures = unique(unlist(sosProcedures(service)))
-            .dsOperation <- sosOperation(service, sosDescribeSensorName)
-
-            .procContained <- FALSE
-            for (x in .procedures) {
-              if (x == operation@procedure)
-                .procContained <- TRUE
-            }
-            if (!.procContained)
-              warning("Requested procedure ist not listed in capablities, service might return error!")
-
-
-            # check if output format is supported by sos
-            .oFSupported <- FALSE
-            .supportedFormats <- .dsOperation@parameters[["outputFormat"]];
-            .format <- gsub(operation@outputFormat, pattern = "\\&quot;",
-                            replacement = '"')
-
-            if (!any(sapply(.supportedFormats, "==", .format), na.rm = TRUE)) {
-              warning(paste("Outputformat has to be one of",
-                            paste(.supportedFormats, sep = ", ",
-                                  collapse = "', '"), "'. Received format is '", .format, "'."))
-            }
-            else {
-              .oFSupported <- TRUE
-            }
-
-            # check if binding is supported
-            .bindingSupported <- any(sapply(SosSupportedBindings(),
-                                            "==", service@binding))
-            if (!.bindingSupported)
-              warning("Requested method type ist not listed in capablities for this operation, service might return error!")
-
-            if (verbose) {
-              cat("[checkRequest] Checks: procedure contained =",
-                  .procContained,
-                  ", output format supported =", .oFSupported,
-                  ", binding supported =", .bindingSupported, "\n")
-            }
-
-            return(.procContained && .oFSupported && .bindingSupported)
-          })
-
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS", operation = "SosGetObservation",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is DescribeSensor
-            if (!(operation@service == sosService &&
-                 operation@request == sosGetObservationName)) {
-              stop("Wrong input! Require classes 'SOS' as service and 'GetObservation' as operation.")
-              return(FALSE)
-            }
-
-            # TODO implement checkRequest for GetObservation
-
-            # check if given responseFormat is supported by the service
-
-            # check if temporal operator and operand are a valid combination according to filter capabilities
-
-            return(TRUE)
-          }
-)
-
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS",
-                                operation = "SosGetObservationById", verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is DescribeSensor
-            if (!(operation@service == sosService &&
-                 operation@request == sosGetObservationByIdName)) {
-              stop("Wrong input! Require classes 'SOS' as service and 'GetObservationById' as operation.")
-              return(FALSE)
-            }
-
-            # TODO implement checkRequest for GetObservationById
-            # see above!
-
-            return(TRUE)
           }
 )
 

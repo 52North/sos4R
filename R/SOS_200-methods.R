@@ -474,55 +474,6 @@ setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", f
 }
 
 #
-# checkRequest - GetObservation ----
-#
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0",
-                                operation = "SosGetObservation_2.0.0",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is GetObservation
-            if (!(operation@service == sosService &&
-                 operation@request == sosGetObservationName)) {
-              stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetObservation' as operation.")
-              return(FALSE)
-            }
-
-            # TODO implement checkRequest for GetObservation
-
-            # check if given responseFormat is supported by the service
-
-            # check if temporal operator and operand are a valid combination according to filter capabilities
-
-            return(TRUE)
-          }
-)
-#
-# checkRequest - GetFeatureOfInterest ----
-#
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0",
-                                operation = "SosGetFeatureOfInterest_2.0.0",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is DescribeSensor
-            if (!(operation@service == sosService &&
-                 operation@request == sosGetFeatureOfInterestName)) {
-              stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetFeatureOfInterest' as operation.")
-              return(FALSE)
-            }
-
-            # TODO implement checkRequest for GetObservation
-
-            # check if given responseFormat is supported by the service
-
-            # check if temporal operator and operand are a valid combination according to filter capabilities
-
-            return(TRUE)
-          }
-)
-
-#
 # encodeRequest - KVP - GetObservation ----
 #
 setMethod("encodeRequestKVP", "SosGetObservation_2.0.0",

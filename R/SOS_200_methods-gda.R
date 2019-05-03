@@ -134,31 +134,6 @@ setMethod(f = "getDataAvailability",
 )
 
 #
-# checkRequest - GetDataAvailability ----
-#
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0",
-                                operation = "SosGetDataAvailability_1.0.0",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is GetDataAvailability
-            if (!(operation@service == sosService &&
-                  operation@request == sosGetDataAvailabilityName)) {
-              stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetDataAvailability' as operation.")
-              return(FALSE)
-            }
-
-            # TODO implement checkRequest for GetDataAvailability
-            # all elements are optional
-            # TODO check feature identifier
-            # TODO check observed properties
-            # TODO check offerings
-            # TODO check procedures
-
-            return(TRUE)
-          }
-)
-#
 # encodeRequest - KVP - GetDataAvailability ----
 #
 setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",

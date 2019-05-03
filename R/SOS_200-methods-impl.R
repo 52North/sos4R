@@ -33,15 +33,6 @@
 .sosRequest_2.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
   if (inspect) cat("[.sosRequest_2.0.0] REQUEST:\n", toString(request), "\n")
 
-  # check the request for consistency with service description
-  .checkResult <- checkRequest(service = sos,
-                               operation = request,
-                               verbose = verbose)
-  if (!.checkResult) {
-    warning("Check returned FALSE! Turn on verbose option for possible details.",
-            immediate. = TRUE)
-  }
-
   .response = ""
 
   # get encoding function for the respective method
@@ -167,6 +158,9 @@
   return(.content)
 }
 
+#
+# operation functions ----
+#
 .getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
                                    acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
   if (verbose) {
