@@ -51,7 +51,6 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 
 \section{Methods}{
   \describe{
-    \item{checkRequest}{\code{signature(service = "SOS", operation = "DescribeSensor", verbose = "logical")}: Checks the contents of the request before sending it.}
     \item{encodeRequestKVP}{\code{signature(obj = "DescribeSensor")}: Encode the information in the request as key-value-pairs for HTTP GET connections, see \code{\link{encodeRequestKVP-methods}}.}
     \item{encodeRequestSOAP}{\code{signature(obj = "DescribeSensor")}: Encode the information in the request as XML for SOAP connections, see \code{\link{encodeRequestSOAP-methods}}.}
     \item{encodeRequestXML}{\code{signature(obj = "DescribeSensor")}: Encode the information in the request as XML for HTTP POST connections, see \code{\link{encodeRequestXML-methods}}.}

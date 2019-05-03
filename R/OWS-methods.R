@@ -159,40 +159,11 @@ OwsRange <- function(minimumValue = as.character(NA),
       rangeClosure = rangeClosure, spacing = spacing)
 }
 
-
-
-################################################################################
-# checking of operations before they are sent out
 #
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS",
-                                operation = "OwsGetCapabilities_1.1.0",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-
-            # TODO implement checkRequest for OwsGetCapabilities
-
-            return(TRUE)
-          })
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS",
-                                operation = "OwsGetCapabilities_2.0.0",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-
-            # TODO implement checkRequest for OwsGetCapabilities
-
-            return(TRUE)
-          })
-
-
-################################################################################
-# helper methods
+# KVP helper methods ----
 #
 
-#
 # to add (possible) multiple values in kvp
-#
 .kvpKeyAndValues <- function(key, values) {
   if (is(values, "vector")) {
     .values <- sapply(values, .kvpEscapeSpecialCharacters)
@@ -233,7 +204,7 @@ setMethod(f = "checkRequest",
 }
 
 #
-# kvp encoding ----
+# KVP encoding ----
 #
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
           definition = function(obj, sos, verbose = FALSE) {
@@ -309,8 +280,8 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
   return(.kvpString)
 }
 
-################################################################################
-# XML encoding
+#
+# XML encoding ----
 #
 setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
           function(obj, sos, verbose = FALSE) {
@@ -321,6 +292,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
             return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj = obj, sos = sos))
           }
 )
+
 .sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
   xml2::xml_set_attrs(x = xmlDoc,
@@ -360,9 +332,6 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
   return(xmlDoc)
 }
 
-#
-#
-#
 setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
           function(obj, sos, verbose = FALSE) {
             if (verbose) {
@@ -372,6 +341,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
             return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj = obj, sos = sos))
           }
 )
+
 .sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
   xml2::xml_set_attrs(x = xmlDoc,
@@ -418,9 +388,9 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
   return(xmlDoc)
 }
 
-
-################################################################################
-# SOAP encoding
+#
+# SOAP encoding ----
+#
 setMethod("encodeRequestSOAP", "OwsGetCapabilities",
           function(obj, sos, verbose = FALSE) {
             if (verbose) {

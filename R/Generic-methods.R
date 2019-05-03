@@ -149,15 +149,6 @@ if (!isGeneric("getDataAvailability")) {
 }
 
 #
-# checkRequest ----
-#
-if (!isGeneric("checkRequest"))
-  setGeneric(name = "checkRequest",
-             def = function(service, operation, verbose) {
-               standardGeneric("checkRequest")
-             })
-
-#
 # encodeRequestKVP ----
 #
 if (!isGeneric("encodeRequestKVP"))
