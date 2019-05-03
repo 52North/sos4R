@@ -198,8 +198,8 @@ test_that("boundedBy with coordinate swichting", {
   expect_equal(env$upperCorner, "180 71.758")
 })
 
-
 testthat::context("GML 3.2 -> parsePoint")
+
 library(webmockr)
 library(httr)
 library(stringr)
@@ -239,3 +239,18 @@ test_that("gml:Point with gml:pos string", {
 })
 
 webmockr::disable("httr")
+
+context("GML: accessors")
+
+test_that("featureOfInterest from GmlFeatureProperty", {
+  sos <- SOS_Test(name = "testgml")
+  propertyHref <- GmlFeatureProperty(href = "http://the_feature")
+  expect_equal(sosFeaturesOfInterest(propertyHref),  "http://the_feature")
+
+  pos <- GmlDirectPositionLatLon(lat = 1, lon = 2, srsName = "http://www.opengis.net/def/crs/EPSG/0/4326")
+  samplingPoint <- SaSamplingPoint(sampledFeatures = list("feature1"),
+                                   position = GmlPointProperty(point = GmlPoint(pos = pos)))
+  property <- GmlFeatureProperty(feature = samplingPoint)
+  expect_equal(sosFeaturesOfInterest(property),  samplingPoint)
+})
+
