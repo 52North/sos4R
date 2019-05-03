@@ -72,7 +72,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
 
     if (verboseOutput) cat("[SOS] Created new SOS:\n", toString(.sos), "\n")
 
-    cat("[sos4R] Created SOS for URL", url, "\n")
     return(.sos)
   }
   else if (version == sos200_version) {
@@ -104,7 +103,6 @@ SOS <- function(url, binding = SosDefaultBinding(),
 
     if (verboseOutput) cat("[SOS] Created new SOS:\n", toString(.sos), "\n")
 
-    cat("[sos4R] Created SOS for URL", url, "\n")
     return(.sos)
   }
 
