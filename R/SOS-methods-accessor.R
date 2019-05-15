@@ -725,12 +725,12 @@ if (!isGeneric("sosTime"))
     standardGeneric("sosTime")
   })
 setMethod(f = "sosTime", signature = signature(obj = "SOS"),
-definition = function(obj, convert = FALSE) {
+definition = function(obj, convert = TRUE) {
             times <- lapply(sosOfferings(obj), sosTime, convert = convert)
             return(times)
           })
 setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering"),
-definition = function(obj, convert = FALSE) {
+definition = function(obj, convert = TRUE) {
             if (!convert)
               return(obj@time)
 
@@ -790,11 +790,11 @@ definition = function(obj, ...) {
             return(sosTime(obj@timePosition))
           })
 setMethod(f = "sosTime", signature = signature(obj = "list"),
-definition = function(obj, convert = FALSE) {
+definition = function(obj, convert = TRUE) {
             return(lapply(X = obj, FUN = sosTime, convert = convert))
           })
 setMethod(f = "sosTime", signature = signature(obj = "OmOM_Observation"),
-definition = function(obj, convert = FALSE) {
+definition = function(obj, convert = TRUE) {
             times <- list(resultTime = sosTime(obj@resultTime),
                           phenomenonTime = sosTime(obj@phenomenonTime))
             return(times)

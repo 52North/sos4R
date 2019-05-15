@@ -282,7 +282,7 @@ SosGetObservationById <- function(
         dcp <- unlist(dcp)
       }
 
-      if (is.null(dcp) || is.na(dcp) || !length(dcp)) {
+      if (any(is.null(dcp)) || any(is.na(dcp)) || !length(dcp)) {
         dcp <- list("Get", "application/x-kvp", sos@url)
         if (verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using ", toString(dcp), "\n")
       }
@@ -333,7 +333,7 @@ SosGetObservationById <- function(
         dcp <- unlist(dcp)
       }
 
-      if (is.null(dcp) || is.na(dcp) || !length(dcp)) {
+      if (any(is.null(dcp)) || any(is.na(dcp)) || !length(dcp)) {
         dcp <- list("Post", "application/xml", sos@url)
         if (verbose) cat("[.sosRequest_1.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", toString(dcp), "\n")
       }

@@ -6,6 +6,7 @@
 - Manage namespaces as part of the SOS object (allows user manipulation via `sos@namespaces`)
 - Accessor functions return lists only if the content is complex: `sosName()`, `sosObservedProperties()`, `sosProcedures()` `sosFeatureIds()`, `sosUOM()` now return character vectors if applied to collections or lists
 - Add help page for coercion functions, see `` ?`coerce-sos4R` ``
+- `sosTime(..)` now always returns base R classes, i.e. a list with `begin` and `end` based on `POSIXct` (change default for `convert` parameter to `TRUE`).
 - Drop "Created SOS for URL" message after creation
 - Drop `checkRequest` methods, they were 90% "TODO" comments; actually existing checks preserved in functions where sensible
 - Drop support for KML (Keyhole Markup Language), because it is not a data format, the parsing was never implemented, and the only SOS using it provided it specifically for display in Google Earth

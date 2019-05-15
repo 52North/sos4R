@@ -143,43 +143,55 @@ test_that("CRS from boundedBy", {
   expect_match(sosGetCRS(mapserver)@projargs, "init=epsg:4326")
 })
 
-test_that("time accessor function", {
+test_that("time accessor function for SOS", {
   time <- sosTime(mapserver)
   expect_true(is.list(time))
-  expect_s4_class(time[["Water"]], "GmlTimePeriod")
-
-  offeringTime <- sosTime(sosOfferings(mapserver))
-  expect_true(is.list(offeringTime))
-  expect_s4_class(offeringTime[["Water"]], "GmlTimePeriod")
-  expect_match(toString(offeringTime[["Water"]]), "--> GmlTimePosition \\[ time: 2007-10-30 08")
-
-  offeringTimeConv <- sosTime(sosOfferings(mapserver), convert = TRUE)
-  expect_true(is.list(offeringTimeConv))
-  expect_true(is.list(offeringTimeConv[["Water"]]))
-  expect_named(offeringTimeConv[["Water"]], c("begin", "end"))
-  expect_s3_class(offeringTimeConv[["Water"]][["begin"]], "POSIXt")
-
-  # applying sosTime to GmlTimePeriod results in conversion
-  expect_equal(sosTime(sosTime(mapserver)), sosTime(sosOfferings(mapserver), convert = TRUE))
+  expect_named(time, "Water")
+  expect_s3_class(time[["Water"]]$begin, "POSIXt")
+  expect_s3_class(time[["Water"]]$end, "POSIXt")
 })
 
-test_that("offerings", {
+test_that("time accessor function for offerings", {
+  offeringTime <- sosTime(sosOfferings(mapserver))
+  expect_true(is.list(offeringTime))
+  expect_named(offeringTime, c("Water"))
+  expect_true(is.list(offeringTime[["Water"]]))
+  expect_named(offeringTime[["Water"]], c("begin", "end"))
+  expect_s3_class(offeringTime[["Water"]][["begin"]], "POSIXt")
+
+  offeringTimeUnconv <- sosTime(sosOfferings(mapserver), convert = FALSE)
+  expect_true(is.list(offeringTimeUnconv))
+  expect_s4_class(offeringTimeUnconv[["Water"]], "GmlTimePeriod")
+  expect_match(toString(offeringTimeUnconv$Water), "--> GmlTimePosition \\[ time: 2007-10-30 08")
+})
+
+test_that("with only one offering, time for SOS and offerings are equal", {
+  expect_equal(sosTime(mapserver), sosTime(sosOfferings(mapserver)))
+})
+
+test_that("offerings can be accessed", {
   offs <- sosOfferings(mapserver)
   expect_length(offs, 1)
   expect_named(offs, c("Water"))
   expect_equal(sosName(sosOfferings(mapserver)), c(Water = "Water"))
 })
 
-test_that("bounds of offering", {
+test_that("bounds of offerings can be accessed", {
   bounds <- sosBoundedBy(sosOfferings(mapserver))
   expect_true(is.list(bounds))
   expect_true(is.list(bounds[["Water"]]))
   expect_named(bounds[["Water"]], c("srsName", "lowerCorner", "upperCorner"))
 })
 
-test_that("time of offering", {
+test_that("time of single offering can be accessed", {
   offs <- sosOfferings(mapserver)
-  expect_s4_class(sosTime(offs)[[1]], "GmlTimePeriod")
+  expect_s3_class(sosTime(offs[[1]])[["begin"]], "POSIXt")
+  expect_s3_class(sosTime(offs[[1]])[["end"]], "POSIXt")
+})
+
+test_that("time of single offering can be accessed unconverted", {
+  offs <- sosOfferings(mapserver)
+  expect_s4_class(sosTime(offs[[1]], convert = FALSE), "GmlTimePeriod")
 })
 
 context("capabilities: Axiom")
