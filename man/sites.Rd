@@ -1,6 +1,8 @@
 \name{sites}
 \alias{sites}
 
+\alias{sites,SOS_2.0.0-method}
+
 \title{
 This function queries a SOS v2.0 for its sites and returns them as SpatialPointsDataFrame
 }

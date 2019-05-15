@@ -230,6 +230,7 @@
 
 % Version 2.0.0
 \alias{sosName,SosGetFeatureOfInterest_2.0.0-method}
+\alias{sosName,SosGetObservation_2.0.0-method}
 \alias{sosProcedures,SosObservationOffering_2.0.0-method}
 \alias{sosResponseFormats,SosObservationOffering_2.0.0-method}
 \alias{SOS_2.0.0-class}
@@ -314,29 +315,41 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{getObservationById}{\code{signature(sos = "SOS_2.0.0", observationId = "character")}: ... }
     \item{getObservation}{\code{signature(sos = "SOS_2.0.0", offering = "character")}: ... }
     \item{getObservation}{\code{signature(sos = "SOS_2.0.0", offering = "SosObservationOffering_2.0.0")}: ... }
-    \item{print}{\code{signature(x = "SOS_2.0.0")}: ... }
-    \item{show}{\code{signature(object = "SOS_2.0.0")}: ... }
     \item{sosBinding}{\code{signature(sos = "SOS_2.0.0")}: ... }
     \item{sosRequest}{\code{signature(sos = "SOS_2.0.0", request = "OwsServiceOperation", verbose = "logical", inspect = "logical")}: ... }
-    \item{sosUrl}{\code{signature(sos = "SOS_2.0.0")}: ... }
-    \item{toString}{\code{signature(x = "SOS_2.0.0")}: ... }
+    \item{sosUrl}{\code{signature(sos = "SOS_2.0.0")}: access the endpoint of the SOS object.}
 	 }
 }
 
 \usage{
-SOS(url, binding = SosDefaultBinding(), version = sos100_version,
-	parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
-	dataFieldConverters = SosDataFieldConvertingFunctions(),
-	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
-	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
-	additionalKVPs = list(), ...)
+SOS(url,
+    binding = SosDefaultBinding(),
+    version = sos100_version,
+    parsers = SosParsingFunctions(),
+    encoders = SosEncodingFunctions(),
+    dataFieldConverters = SosDataFieldConvertingFunctions(),
+    timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
+    switchCoordinates = FALSE,
+    useDCPs = TRUE,
+    dcpFilter = SosDefaultDCPs(),
+    additionalKVPs = list(),
+    namespaces = SosAllNamespaces(version = version),
+    ...)
 
-SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version,
-         parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
+SOS_Test(name = "test",
+         binding = SosDefaultBinding(),
+         version = sos100_version,
+         parsers = SosParsingFunctions(),
+         encoders = SosEncodingFunctions(),
          dataFieldConverters = SosDataFieldConvertingFunctions(),
-         timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
-         switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
-         additionalKVPs = list(), ...)
+         timeFormat = sosDefaultTimeFormat,
+         verboseOutput = FALSE,
+         switchCoordinates = FALSE,
+         useDCPs = TRUE,
+         dcpFilter = SosDefaultDCPs(),
+         additionalKVPs = list(),
+         namespaces = SosAllNamespaces(version = version),
+         ...)
 }
 
 \arguments{

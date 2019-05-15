@@ -18,6 +18,8 @@
 \alias{getDataAvailability}
 \alias{parseGetDataAvailabilityResponse}
 
+\alias{sosFeatureIds,DataAvailabilityMember-method}
+
 \title{Class and construction function for \code{"GetDataAvailability"} operation}
 \description{
 See SOS 2.0 Hydrology profile specification, OGC 14-004r1, section 7.4, requirement 12
@@ -49,11 +51,8 @@ Objects can be created by calls to construction functions:
 
 \section{Methods}{
   \describe{
-    \item{print}{\code{signature(x = "DataAvailabilityMember")}: ... }
-    \item{show}{\code{signature(object = "DataAvailabilityMember")}: ... }
-    \item{toString}{\code{signature(x = "DataAvailabilityMember")}: ... }
-    \item{encodeRequestKVP}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: ... }
-    \item{sosName}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: ... }
+    \item{encodeRequestKVP}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: encode object as URL request string.}
+    \item{sosName}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: access to a name (for human display) of the object.}
     \item{toString}{\code{signature(x = "SosGetDataAvailability_1.0.0")}: ... }
 	 }
 }

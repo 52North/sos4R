@@ -8,6 +8,9 @@
 \alias{xml_node}
 \alias{xml_node-class}
 
+\alias{xml_nodeset}
+\alias{xml_nodeset-class}
+
 \title{Classes to model S3 classes of package \code{xml2}}
 
 \description{

@@ -60,3 +60,10 @@ setClass("MonitoringPoint",
            return(TRUE)
          }
 )
+
+#
+# FoiOrNULL ----
+# Defining class after the last member is defined.
+#
+setClassUnion(name = "FoiOrNULL",
+              members = c("GmlFeatureOrGmlFeaturePropertyOrNULL", "MonitoringPoint", "NULL"))

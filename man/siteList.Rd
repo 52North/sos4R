@@ -1,11 +1,17 @@
 \name{siteList}
+
 \alias{siteList}
+
+\alias{siteList,SOS_2.0.0-method}
+
 \title{
 This function queries a SOS v2.0 for its sites and returns them as data.frame
 }
+
 \description{
 Information about the registered sites in a SOS can be queried using this function. This function allows for different levels of detail and returns a vector or data.frame.
 }
+
 \usage{
 siteList(sos, empty = FALSE, timeInterval = NA_character_,
          includePhenomena = FALSE, includeTemporalBBox = FALSE,

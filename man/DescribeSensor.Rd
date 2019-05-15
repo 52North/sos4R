@@ -10,10 +10,18 @@
 \alias{print,SosDescribeSensor-method}
 \alias{toString,SosDescribeSensor-method}
 
-\title{Class and Construction Function for "SosDescribeSensor"}
+\alias{describeSensor}
+\alias{describeSensor-methods}
+\alias{describeSensor,SOS,character-method}
+\alias{describeSensor,SOS_1.0.0,character-method}
+\alias{describeSensor,SOS_2.0.0,character-method}
+
+\title{Retrieve Sensor Descriptions from a SOS}
 
 \description{
 The DescribeSensor Operatiosn of a Sensor Observation Service can be used to retrieve metadata of procedures that are available from a SOS. This sensor description is normally encoded in \verb{SensorML}.
+
+The method \code{describeSensor(..)} sends a DescribeSensor request for a description of the given procedure to the given Sensor Observation Service instance. If the procedure is a vector, the method will send multiple requests and combine the results in a list.
 
 Please also consult the specification for details on possible contents of the request.
 
@@ -26,10 +34,18 @@ This functions should not be called directly, but instead using the function \co
 SosDescribeSensor(service, version, procedure, outputFormat)
 SosDescribeSensor(service, version, procedure, procedureDescriptionFormat)
 SosDescribeSensor(service, version, procedure, procedureDescriptionFormat, validTime)
+sosDescribeSensor(sos, procedure)
+}
+
+\section{Methods}{
+	\describe{
+		\item{\code{signature(sos = "SOS", procedure = "character")}}{Method requests a description of the given procedure(s) from the given SOS.}
+	}
 }
 
 \arguments{
   \item{service}{The service attribute of the request, e.g. \samp{SOS}.}
+  \item{sos}{The SOS connection to use.}
   \item{version}{The version attribute of the request, e.g. \samp{1.0.0}.}
   \item{procedure}{The value of the procedure elements in the request, e.g. \samp{urn:procedure:42}.}
   \item{outputFormat}{The value of the output format element in the request, e.g. \samp{text/xml;subtype="sensorML/1.0.1"}.}
