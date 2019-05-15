@@ -70,6 +70,7 @@ Collate:
 	SOS-methods-parsing.R
 	OM-methods.R OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R
 	SA-methods.R
+	GML-methods-util.R
 	GML-methods.R GML-methods-coercion.R
 	SWE-methods.R
 	SML-methods.R
