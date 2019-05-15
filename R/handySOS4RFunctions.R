@@ -289,6 +289,11 @@ setMethod(f = "siteList",
            length(phenomena) > 0)
 }
 
+#
+# siteList(sos, empty=TRUE) → data.frame[siteID]
+#
+# see: https://github.com/52North/sos4R/issues/86
+#
 .listSites <- function(sos) {
   .features <- getFeatureOfInterest(sos)
   stopifnot(!is.null(.features))
@@ -301,6 +306,11 @@ setMethod(f = "siteList",
   return(.sites)
 }
 
+#
+# siteList(sos) → data.frame[siteID]
+#
+# see: https://github.com/52North/sos4R/issues/84
+#
 .listSitesWithData <- function(sos) {
   .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
   stopifnot(!is.null(.dams))
