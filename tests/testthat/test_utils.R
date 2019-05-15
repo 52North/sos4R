@@ -70,3 +70,75 @@ test_that("can get CRS from URL", {
   expect_s4_class(obj, "CRS")
   expect_match(obj@projargs, "init=epsg:4326")
 })
+
+library("webmockr")
+webmockr::enable("httr")
+webmockr::httr_mock()
+
+test_that("can encode POSIXct for XML and KVP using SOS time format", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-utils?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  expect_warning(sos <- SOS(url = "http://example.com/sos-utils", binding = "KVP", version = sos200_version,
+             timeFormat = "%H-%M %m %Y"),
+             "Error converting string")
+
+  xmlTime <- encodeXML(as.POSIXct("2019-01-01 01:01:01"), sos = sos)
+  expect_equal(xmlTime, "01-01 01 2019")
+
+  kvpTime <- encodeKVP(as.POSIXct("2019-01-01 01:01:01"), sos = sos)
+  expect_equal(kvpTime, "01-01 01 2019")
+})
+
+test_that("can create time instant from POSIXct and encode as XML", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-utils?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(url = "http://example.com/sos-utils", binding = "KVP", version = sos200_version)
+  instant <- sosCreateTimeInstant(sos = sos, time = as.POSIXct("2019-01-01 01:01:01"))
+
+  expect_s4_class(instant, "GmlTimeObject")
+  xml <- encodeXML(instant, sos = sos)
+  expect_match(toString(xml), "2019-01-01T01:01:01</gml:timePosition>")
+})
+
+test_that("can create time period from POSIXct objects and encode as XML", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-utils?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(url = "http://example.com/sos-utils", binding = "KVP", version = sos200_version)
+  period <- sosCreateTimePeriod(sos = sos,
+                                 begin = as.POSIXct("2019-01-01 01:01:01"),
+                                 end = as.POSIXct("2019-01-01 02:02:02"))
+
+  expect_s4_class(period, "GmlTimeObject")
+  xml <- encodeXML(period, sos = sos)
+  expect_match(toString(xml), "2019-01-01T01:01:01</gml:beginPosition>")
+  expect_match(toString(xml), "2019-01-01T02:02:02</gml:endPosition>")
+})
+
+webmockr::disable("httr")

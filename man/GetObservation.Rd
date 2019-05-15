@@ -89,7 +89,6 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 
 \section{Methods}{
   \describe{
-    \item{checkRequest}{\code{signature(service = "SOS", operation = "SosGetObservationById", verbose = "logical")} or \code{signature(service = "SOS", operation = "GetObservation", verbose = "logical")}: Check the request for validity and for compliance with the metadata available in from the given SOS.}
     \item{encodeRequestKVP}{\code{signature(obj = "SosGetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to key-value pair format, see \code{\link{encodeKVP}}.}
     \item{encodeRequestXML}{\code{signature(obj = "SosGetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to XML format, see \code{\link{encodeXML}}.}
     \item{encodeRequestSOAP}{\code{signature(obj = "SosGetObservation")}: Transform the information to XML format for SOAP requests.}

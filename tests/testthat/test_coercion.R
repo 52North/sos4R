@@ -68,7 +68,7 @@ test_that("GML feature property coercion gives error if FeatureProperty or Point
   expect_error(as(prop2, "Spatial"), "cannot coerce reference property")
 
   prop1 <- GmlFeatureProperty(feature = SaSamplingPoint(sampledFeatures = list("feature1"),
-                                                       position = GmlPointProperty(href = "#point1")))
+                                                        position = GmlPointProperty(href = "#point1")))
   expect_error(as(prop1, "Spatial"), "cannot coerce reference property")
 })
 

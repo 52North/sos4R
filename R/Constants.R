@@ -78,8 +78,8 @@ sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
 sos200ObservationName <- paste0(sos200NamespacePrefix, ":observation")
 sos200ObservationDataName <- paste0(sos200NamespacePrefix, ":observationData")
 
-sos200GetObservationByIdResponseName <- paste0(sos200NamespacePrefix, ":GetObservationByIdResponse")
-sos200GetObservationResponseName <- paste0(sos200NamespacePrefix, ":GetObservationResponse")
+sosGetObservationByIdResponseName <- "GetObservationByIdResponse"
+sosGetObservationResponseName <- "GetObservationResponse"
 
 #
 # Core Operations Profile ----
@@ -87,12 +87,13 @@ sos200GetObservationResponseName <- paste0(sos200NamespacePrefix, ":GetObservati
 sosGetCapabilitiesName <- "GetCapabilities"
 sosDescribeSensorName <- "DescribeSensor"
 sosGetObservationName <- "GetObservation"
-sosGetObservationResponseName <- "GetObservationResponse"
+
 #
 # Transaction Operations Profile ----
 #
 sosRegisterSensorName <- "RegisterSensor"
 sosInsertObservationName <- "InsertObservation"
+
 #
 # Enhanced Operations Profile ----
 #
@@ -104,6 +105,7 @@ sosDescribeFeatureTypeName <- "DescribeFeatureType"
 sosDescribeObservationTypeName <- "DescribeObservationType"
 sosDescribeResultModelName <- "DescribeResultModel"
 sosGetFeatureOfInterestResponseName <- "GetFeatureOfInterestResponse"
+
 #
 # Hydrology Profile ----
 #
@@ -115,6 +117,15 @@ SosSupportedOperations <- function(version = sos100_version) {
                     sosDescribeSensorName,
                     sosGetObservationName,
                     sosGetObservationByIdName)
+  }
+  else if (version == sos200_version) {
+    .supported <- c(sosGetCapabilitiesName,
+                    sosDescribeSensorName,
+                    sosGetObservationName,
+                    sosGetObservationByIdName,
+                    sosGetDataAvailabilityName)
+  } else {
+    stop("Unsupported version", version)
   }
   return(.supported)
 }
@@ -155,14 +166,12 @@ mimeTypeCSV <- 'text/csv'
 mimeTypeXML <- 'text/xml'
 mimeTypeOM <- 'text/xml;subtype="om/1.0.0"'
 mimeTypeSML <- 'text/xml;subtype="sensorML/1.0.1"'
-mimeTypeKML <- 'application/vnd.google-earth.kml+xml'
 mimeSubtypeOM <- '"om/1.0.0"'
 
 .sosSupportedResponseFormats <- c(
   mimeTypeOM,
   mimeTypeSML,
-  mimeTypeCSV,
-  mimeTypeKML)
+  mimeTypeCSV)
 SosSupportedResponseFormats <- function() {
   return(.sosSupportedResponseFormats)
 }
@@ -230,6 +239,8 @@ SosAllNamespaces <- function(version) {
                 xsi = xsiNamespace,
                 xlink = xlinkNamespace,
                 sml = smlNamespace,
+                gml1 = gmlNamespace, # need old GML for within SensorML 1.0.1
+                swe = sweNamespace, # needed for Envelope within SensorML 1.0.1
                 gml = gml32Namespace,
                 fes = fesNamespace,
                 gda = gdaNamespace,
@@ -358,24 +369,30 @@ sweLowerCornerName <- paste0(sweNamespacePrefix, ":upperCorner")
 sweUpperCornerName <- paste0(sweNamespacePrefix, ":lowerCorner")
 
 #
-# SWE Service Model ----
+# SWE Service Model (SWES) ----
 #
-swesNamespacePrefix = "swes"
-swesOfferingName = paste0(swesNamespacePrefix, ":offering")
-swesIdentifierName = paste0(swesNamespacePrefix, ":identifier")
-swesNameName = paste0(swesNamespacePrefix, ":name")
-swesObservablePropertyName = paste0(swesNamespacePrefix, ":observableProperty")
-swesProcedureName = paste0(swesNamespacePrefix, ":procedure")
-swesProcedureDescriptionFormatName = paste0(swesNamespacePrefix, ":procedureDescriptionFormat")
+swesNamespacePrefix <- "swes"
+swesOfferingName <- paste0(swesNamespacePrefix, ":offering")
+swesIdentifierName <- paste0(swesNamespacePrefix, ":identifier")
+swesNameName <- paste0(swesNamespacePrefix, ":name")
+swesObservablePropertyName <- paste0(swesNamespacePrefix, ":observableProperty")
+swesProcedureName <- paste0(swesNamespacePrefix, ":procedure")
+swesProcedureDescriptionFormatName <- paste0(swesNamespacePrefix, ":procedureDescriptionFormat")
+swesDescriptionName <- paste0(swesNamespacePrefix, ":description")
+swesSensorDescriptionName <- paste0(swesNamespacePrefix, ":SensorDescription")
+swesValidTimeName <- paste0(swesNamespacePrefix, ":validTime")
+
+swesDescribeSensorName <- "DescribeSensor"
+swesDescribeSensorResponseName <- "DescribeSensorResponse"
 
 #
 # WML 2.0 ----
 #
 wmlNamespace <- "http://www.opengis.net/waterml/2.0"
-wmlNamespacePrefix = "wml2"
-wmlMonitoringPointName = paste0(wmlNamespacePrefix, ":MonitoringPoint")
-wmlVerticalDatumName = paste0(wmlNamespacePrefix, ":verticalDatum")
-wmlTimeZoneName = paste0(wmlNamespacePrefix, ":timeZone")
+wmlNamespacePrefix <- "wml2"
+wmlMonitoringPointName <- paste0(wmlNamespacePrefix, ":MonitoringPoint")
+wmlVerticalDatumName <- paste0(wmlNamespacePrefix, ":verticalDatum")
+wmlTimeZoneName <- paste0(wmlNamespacePrefix, ":timeZone")
 
 #
 # OGC ----
@@ -536,20 +553,15 @@ owsDcpHttpMethodIndex <- 1
 owsContentTypeConstraintName <- "Content-Type"
 
 #
-# KML ----
-#
-kmlName <- "kml"
-
-#
 # XSI ----
 #
-xsiNamespacePrefix = "xsi"
+xsiNamespacePrefix <- "xsi"
 xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
 
 #
 # OWS exception details ----
 #
-.owsCodes = c(
+.owsCodes <- c(
   "OperationNotSupported",
   "MissingParameterValue",
   "InvalidParameterValue",
@@ -557,7 +569,7 @@ xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
   "InvalidUpdateSequence",
   "OptionNotSupported",
   "NoApplicableCode")
-.owsCodeMeanings = c(
+.owsCodeMeanings <- c(
   "Request is for an operation that is not supported by this server",
   "Operation request does not include a parameter value, and this server did not declare a default parameter value for that parameter",
   "Operation request contains an invalid parameter value",
@@ -565,7 +577,7 @@ xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
   "Value of (optional) updateSequence parameter in GetCapabilities operation request is greater than current value of service metadata updateSequence number",
   "Request is for an option that is not supported by this server",
   "No other exceptionCode specified by this service and server applies to this exception")
-.owsCodeLocators = c(
+.owsCodeLocators <- c(
   "Name of operation not supported",
   "Name of missing parameter",
   "Name of parameter with invalid value",
@@ -573,8 +585,8 @@ xsiTypeName <- paste0(xsiNamespacePrefix, ":type")
   "None, omit 'locator' parameter",
   "Identifier of option not supported",
   "None, omit 'locator' parameter")
-.httpCode = c("501", "400", "400", "400", "400", "501", "3xx, 4xx, 5xx")
-.httpMessage = c("Not Implemented", "Bad request", "Bad request", "Bad request",
+.httpCode <- c("501", "400", "400", "400", "400", "501", "3xx, 4xx, 5xx")
+.httpMessage <- c("Not Implemented", "Bad request", "Bad request", "Bad request",
                  "Bad request", "Not implemented", "Internal Server Error")
 
 .owsStandardExceptions <- data.frame(

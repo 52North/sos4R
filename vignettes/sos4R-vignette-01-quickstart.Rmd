@@ -81,7 +81,7 @@ demo(package = "sos4R")
 demo("airquality")
 ```
 
-- **ioos**: Example using SOS by the Integrated Ocean Observing System which provides data in different formats (KML, CSV)
+- **ioos**: Example using SOS by the Integrated Ocean Observing System which provides data in different formats (CSV)
 - **oceanwatch**: SOS by NOAA Center for Operational Oceanographic Products and Services (CO-OPS) - _under construction_.
 - **pegel**: Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.
 

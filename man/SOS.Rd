@@ -307,9 +307,6 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosVersion}{\code{signature(sos = "SOS")}: ... }
     \item{sosTime}{\code{signature(obj = "SOS")}: Accessor function for the event time period from the GetObservation operations metadata.}
     \item{sosFilter_Capabilities}{\code{signature(sos = "SOS")}: Accessor function for the filter capabilities of a SOS object.}
-    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetDataAvailability_1.0.0", verbose = "logical")}: ... }
-    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetFeatureOfInterest_2.0.0", verbose = "logical")}: ... }
-    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetObservation", verbose = "logical")}: ... }
     \item{describeSensor}{\code{signature(sos = "SOS_2.0.0", procedure = "character")}: ... }
     \item{getCapabilities}{\code{signature(sos = "SOS_2.0.0")}: ... }
     \item{getDataAvailability}{\code{signature(sos = "SOS_2.0.0")}: ... }

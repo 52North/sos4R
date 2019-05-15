@@ -83,7 +83,7 @@ test_that("KVP (2.0.0)", {
   expect_named(result, c("test_unit_1"))
   expect_equal(result[1,1], 1)
   coords <- sosCoordinates(obs)
-  expect_named(coords, c("lat", "lon", "SRS"))
+  expect_named(coords, c("lon", "lat", "SRS"))
   expect_true((coords$lat - 51.88391) < 0.00000000001)
 })
 
@@ -133,9 +133,9 @@ test_that("file saving works (2.0.0)", {
 
   tempfile <- tempfile(fileext = ".xml")
   expect_output(
-      obs <- getObservationById(sos = mySOS,
-                                observationId = "http://www.52north.org/test/observation/1",
-                                saveOriginal = tempfile),
+    obs <- getObservationById(sos = mySOS,
+                              observationId = "http://www.52north.org/test/observation/1",
+                              saveOriginal = tempfile),
     paste0("document saved:(.*)", tempfile))
   expect_s4_class(obs, "OmOM_Observation")
 

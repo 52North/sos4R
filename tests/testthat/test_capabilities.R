@@ -100,7 +100,8 @@ mapserver@capabilities <- parsedCaps
 test_that("observed properties are parsed correctly from capabilities", {
   obs_prop <- sosObservedProperties(mapserver)
   expect_length(obs_prop, 1)
-  expect_equal(obs_prop[[1]], list("WaterQuality"))
+  expect_equal(obs_prop[[1]], c("WaterQuality"))
+  expect_named(obs_prop, c("Water"))
   # or should the components be listed?
   #expect_equal(obs_prop[[1]], "urn:ogc:def:property:OGC-SWE:1:STN_ID")
 })
@@ -119,8 +120,8 @@ test_that("offering id", {
 })
 
 test_that("procedures", {
-  expect_length(sosProcedures(mapserver)[[1]], 3)
-  expect_equal(sosProcedures(mapserver)[[1]][1], "urn:ogc:def:procedure:35")
+  expect_length(sosProcedures(mapserver), 3)
+  expect_equal(sosProcedures(mapserver)[1], c(Water = "urn:ogc:def:procedure:35"))
 })
 
 test_that("result models", {
@@ -166,7 +167,7 @@ test_that("offerings", {
   offs <- sosOfferings(mapserver)
   expect_length(offs, 1)
   expect_named(offs, c("Water"))
-  expect_equal(sosName(sosOfferings(mapserver)), list(Water = "Water"))
+  expect_equal(sosName(sosOfferings(mapserver)), c(Water = "Water"))
 })
 
 test_that("bounds of offering", {
@@ -512,7 +513,7 @@ testsos <- SOS_Test(name = "testgetcap10")
 test_that("default for POX", {
   obj <- OwsGetCapabilities(service = sosService,
                             acceptVersions = c(sosVersion(testsos)),
-                            )
+  )
   encoded <- encodeRequestXML(obj = obj, sos = testsos)
   expect_match(toString(encoded), '<GetCapabilities')
   expect_match(toString(encoded), 'service="SOS"')
@@ -523,7 +524,7 @@ test_that("update sequence in POX", {
   obj <- OwsGetCapabilities(service = sosService,
                             acceptVersions = c(sosVersion(testsos)),
                             updateSequence = "test_seq"
-                            )
+  )
   encoded <- encodeRequestXML(obj = obj, sos = testsos)
   expect_match(toString(encoded), 'updateSequence="test_seq"')
 })

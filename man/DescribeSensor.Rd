@@ -24,13 +24,17 @@ This functions should not be called directly, but instead using the function \co
 
 \usage{
 SosDescribeSensor(service, version, procedure, outputFormat)
+SosDescribeSensor(service, version, procedure, procedureDescriptionFormat)
+SosDescribeSensor(service, version, procedure, procedureDescriptionFormat, validTime)
 }
 
 \arguments{
   \item{service}{The service attribute of the request, e.g. \samp{SOS}.}
   \item{version}{The version attribute of the request, e.g. \samp{1.0.0}.}
   \item{procedure}{The value of the procedure elements in the request, e.g. \samp{urn:procedure:42}.}
-  \item{outputFormat}{The value of the output format element in the request, e.g. \samp{text/xml;subtype="sensorML/1.0.1"}}
+  \item{outputFormat}{The value of the output format element in the request, e.g. \samp{text/xml;subtype="sensorML/1.0.1"}.}
+  \item{procedureDescriptionFormat}{The desired description format for the procedure, e.g. \samp{http://www.opengis.net/sensorML/1.0.1}. For using facing function \code{describeSensor(..)} the value of \code{outputFormat} is used.}
+  \item{validTime}{An object of class \code{GmlTimeObject}, either a time instant or time period for which the returned description shall be valid; use functions \code{sosCreateTimePeriod(..)} and \code{sosCreateTimeInstant(..)} to create this parameter.}
 }
 
 \value{The value of the construction function is an object of class \link{SosDescribeSensor-class}}
@@ -39,6 +43,8 @@ SosDescribeSensor(service, version, procedure, outputFormat)
   \describe{
     \item{\code{procedure}:}{Object of class \code{"character"}, the identifier of the procedure.}
     \item{\code{outputFormat}:}{Object of class \code{"character"}, the requested output format.}
+    \item{\code{procedureDescriptionFormat}:}{Object of class \code{"character"}, the requested description format.}
+    \item{\code{validTime}:}{Object of class \code{"GmlTimeObject"}, the time instant or period for which the description shall be valid.}
     \item{\code{service}:}{Object of class \code{"character"}, the service type, e.g. \code{"SOS"}.}
     \item{\code{request}:}{Object of class \code{"character"}, the name of the request, \code{"DescribeSensor"}.}
     \item{\code{version}:}{Object of class \code{"character"}, the service version, e.g. \code{"1.0.0"}}
@@ -51,7 +57,6 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 
 \section{Methods}{
   \describe{
-    \item{checkRequest}{\code{signature(service = "SOS", operation = "DescribeSensor", verbose = "logical")}: Checks the contents of the request before sending it.}
     \item{encodeRequestKVP}{\code{signature(obj = "DescribeSensor")}: Encode the information in the request as key-value-pairs for HTTP GET connections, see \code{\link{encodeRequestKVP-methods}}.}
     \item{encodeRequestSOAP}{\code{signature(obj = "DescribeSensor")}: Encode the information in the request as XML for SOAP connections, see \code{\link{encodeRequestSOAP-methods}}.}
     \item{encodeRequestXML}{\code{signature(obj = "DescribeSensor")}: Encode the information in the request as XML for HTTP POST connections, see \code{\link{encodeRequestXML-methods}}.}

@@ -180,7 +180,7 @@ er.doc <- xml2::read_xml(paste0("<ows:ExceptionReport xmlns:ows=\"http://www.ope
   " of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>"))
 er.parsed <- parseOwsExceptionReport(er.doc)
 print(er.parsed)
-str(er.parsed)
+utils::str(er.parsed)
 
 \dontrun{
 # save and re-parse an observation from file
