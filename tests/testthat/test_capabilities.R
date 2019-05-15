@@ -566,3 +566,76 @@ test_that("accept language is set", {
   expect_match(encodedString, '<ows:Language>DE</ows:Language>')
   expect_match(encodedString, '<ows:Language>EN</ows:Language></ows:AcceptLanguages>')
 })
+
+context("GetCapabilities: integration tests\n")
+
+test_that("a SOS connection can be created (KVP 1.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_1.0.0")
+})
+
+test_that("a SOS connection can be created (POX 1.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+               binding = "POX",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_1.0.0")
+})
+
+test_that("a SOS connection can be created (KVP 2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               version = "2.0.0",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_2.0.0")
+})
+
+test_that("a SOS connection can be created (POX 2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+               binding = "POX",
+               version = "2.0.0",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_2.0.0")
+})
+
+test_that("the original Capabilities document can be retrieved (KVP 1.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               useDCPs = FALSE)
+
+  caps <- sosCapabilitiesDocumentOriginal(mySOS)
+
+  expect_s3_class(caps, "xml_document")
+  expect_equal(xml2::xml_name(caps), "Capabilities")
+  expect_equal(xml2::xml_attr(caps, "version"), "1.0.0")
+})
+
+test_that("the original Capabilities document can be retrieved (KVP 2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               version = "2.0.0",
+               useDCPs = FALSE)
+
+  caps <- sosCapabilitiesDocumentOriginal(mySOS)
+
+  expect_s3_class(caps, "xml_document")
+  expect_equal(xml2::xml_name(caps), "Capabilities")
+  expect_equal(xml2::xml_attr(caps, "version"), "2.0.0")
+})
