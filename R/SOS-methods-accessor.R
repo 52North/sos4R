@@ -599,7 +599,7 @@ setMethod(f = "sosFeatureIds",
 setMethod(f = "sosFeatureIds",
           signature = signature(obj = "SamsSamplingFeature"),
           definition = function(obj) {
-            return(obj@id)
+            return(obj@identifier)
           })
 setMethod(f = "sosFeatureIds",
           signature = signature(obj = "DataAvailabilityMember"),
