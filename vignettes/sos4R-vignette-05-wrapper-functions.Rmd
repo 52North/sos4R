@@ -1,0 +1,119 @@
+---
+title: "sos4R: Wrapper Functions for easier SOS access"
+author:
+  name: "Daniel Nüst"
+  affiliation: Institute for Geoinformatics, University of Münster, Germany.
+  email: daniel.nuest@uni-muenster.de
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{sos4R-vignette-99-services}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`sos4R` includes a collection of convenience functions which wrap the complex SOS interface with its specific terms (e.g. FOI, procedure).
+The wrapper function use more generic terms easily accessible for all users, especially without a strong knowledge of the OGC standards of the Sensor Web Enablement (see ["OGC SWE and SOS"](sos4R-vignette-02-ogc-sos.html) vignette for details).
+
+In general, these functions always return an object of class `data.frame`, even if the result is only a list, in which case the `data.frame` has one column.
+
+```{r setup}
+library("sos4R")
+
+sos <- SOS(url = "https://hydro-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+```
+
+## `phenomena()`
+
+The function `phenomena(..)` provides information about observed phenomena and time periods of data.
+
+```{r phenomena}
+phenomena <- phenomena(sos = sos)
+str(phenomena)
+```
+
+```{r phenomena_table}
+phenomena
+```
+
+The retrieved data can be extended to the time intervals and site identifier for which data is available.
+
+```{r phenomena_include_time}
+phenomena(sos = sos, includeTemporalBBox = TRUE)[1:5,]
+```
+
+```{r phenomena_include_time}
+phenomena(sos = sos, includeSiteId = TRUE)[1:5,]
+```
+
+```{r phenomena_include_all}
+phenomena(sos = sos, includeTemporalBBox = TRUE, includeSiteId = TRUE)[1:5,]
+```
+
+## `sites()`
+
+The function `sites(..)` provides information about sites where observations are made, including metadata about the sites (e.g. location).
+
+```{r sites}
+sites(sos = sos)
+```
+
+## `siteList()`
+
+The function `siteList(..)` provides information about observed phenomena at sites and the time periods when data is available.
+
+```{r siteList}
+siteList <- siteList(sos = sos)
+str(siteList)
+```
+
+You can extend the information returned with these parameters:
+
+- `empty` to also show sites without data
+- `includePhenomena` to add phenomena to the table (boolean)
+- `includeTemporalBBox` to also show the time when data is available (boolean)
+
+```{r siteList_empty}
+siteList(sos = sos, empty = TRUE)
+```
+
+```{r siteList_includes}
+siteList(sos = sos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+```
+
+You can recude the results with these parameters:
+
+- `phenomena` is a vector of phenomena which must be measured at the sites
+- `begin` and `end` define a time interval (date and time class objects) for which some data must be available (sites may have data outside the given interval)
+
+```{r siteList_phenomena_time}
+siteList(sos = sos, phenomena = phenomena[1:2], begin = as.POSIXct("2017-11-01"), end = as.POSIXct("2018-02-20"))
+```
+
+## `getData()`
+
+The function `getData(..)` retrieves the actual data and returns them in ready-to-use data structures from the [`spacetime`](https://cran.r-project.org/package=spacetime) package.
+
+The returned data can be limited by spatial and temporal filters.
+
+```{r getData_single}
+singleSite <- siteList$siteID[[1]]
+
+getData(sos = sos, phenomena = phenomena$phenomenon[[1]], sites = singleSite)
+```
+
+```{r getData_multiple}
+multipleSites <- siteList$siteID[4:6]
+# get data for all phenomena at three sites
+data <- getData(sos = sos, phenomena = phenomena, sites = singleSite)
+data
+```
