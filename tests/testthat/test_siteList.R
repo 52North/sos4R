@@ -183,3 +183,28 @@ test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns an empty l
 })
 
 webmockr::disable("httr")
+
+context("siteList: integration tests\n")
+
+test_that("siteList gives error if unsupported SOS version", {
+  skip_on_cran()
+
+  sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service",
+             version = sos100_version, useDCPs = FALSE)
+  expect_error(
+    siteList(sos = sos),
+    "unable to find an inherited method"
+    )
+})
+
+test_that("can retrieve site list from an online SOS 2.0.0 (KVP)", {
+  skip_on_cran()
+
+  sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             version = sos200_version, binding = "KVP", useDCPs = FALSE)
+  siteList <- siteList(sos = sos)
+
+  expect_s3_class(siteList, "data.frame")
+  expect_named(siteList, c("siteID"))
+  expect_length(siteList$siteID, 5)
+})

@@ -26,7 +26,7 @@
 #                                                                              #
 ################################################################################
 
-library(sos4R)
+library("sos4R")
 
 myConverters <- SosDataFieldConvertingFunctions(
   "http://www.nexosproject.eu/dictionary/definitions.html#Turb_NTU" = sosConvertDouble
