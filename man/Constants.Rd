@@ -212,7 +212,6 @@
 \alias{mimeSubtypeOM}
 
 \alias{smlSensorMLName}
-\alias{sosAttributeFileName}
 
 \alias{sos100_version}
 \alias{sos200_version}
@@ -247,9 +246,9 @@
 \alias{owsSectionName}
 \alias{owsSectionsName}
 \alias{owsVersionName}
-\alias{sfNamespacePrefix}
-\alias{sfSampledFeatureName}
-\alias{sfTypeName}
+\alias{samNamespacePrefix}
+\alias{samSampledFeatureName}
+\alias{samTypeName}
 \alias{smlNamespace}
 \alias{sos100Namespace}
 \alias{sweLowerCornerName}
@@ -273,7 +272,6 @@
 \alias{samsShapeName}
 
 \alias{sosGetFeatureOfInterestResponseName}
-\alias{sosGetObservationResponseName}
 \alias{sosObservationTypeName}
 \alias{sosObservedAreaName}
 \alias{sosPhenomenonTimeName}
@@ -297,7 +295,7 @@
 \alias{samsNamespace}
 \alias{samsNamespacePrefix}
 \alias{samsSamplingFeatureName}
-\alias{sf20Namespace}
+\alias{samNamespace}
 \alias{sos200FeatureOfInterestTypeName}
 \alias{sos200Namespace}
 \alias{sos200NamespacePrefix}
@@ -313,6 +311,7 @@
 \alias{sosGDAMemberName}
 \alias{sosGetDataAvailabilityName}
 \alias{sosGetDataAvailabilityResponse}
+\alias{sosGetObservationResponseName}
 \alias{sosObservationIdName}
 \alias{sosOfferingName}
 \alias{swesNamespace}
@@ -354,7 +353,7 @@ sweUomName
 OwsExceptionsData()
 
 # Get all namespaces
-SosAllNamespaces()
+SosAllNamespaces("1.0.0")
 }
 
 \keyword{constants}

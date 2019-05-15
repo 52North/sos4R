@@ -41,7 +41,7 @@ test_that("all coordinates", {
 
 test_that("coordinate names are the axisID", {
   doc <- xml2::xml_root(x = xml2::read_xml(x = positionString))
-  vector <- parseSweVector(obj = xml2::xml_find_first(doc, "//swe:Vector", ns = SosAllNamespaces()), sos = testsos)
+  vector <- parseSweVector(obj = xml2::xml_find_first(doc, "//swe:Vector"), sos = testsos)
   expect_length(vector, 3)
   expect_named(vector, c("y", "x", "z"))
 })

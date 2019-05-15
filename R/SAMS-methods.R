@@ -29,35 +29,61 @@
 ################################################################################
 
 #
-# parseSamsShape ----
+# parsing functions ----
 #
 parseSamsShape <- function(obj, sos) {
-  .point <- parsePoint(xml2::xml_child(x = obj,
-                                       search = gmlPointName,
-                                       ns = SosAllNamespaces(version = sos@version)),
+  point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = sos@namespaces),
                        sos = sos)
 
-  SamsShape(point = .point)
+  SamsShape(point = point)
 }
 
-#
-# parseSams200SamplingFeature ----
-#
 parseSams200SamplingFeature <- function(obj, sos) {
-  namespaces <- SosAllNamespaces(version = sos@version)
-  .gmlid <- xml2::xml_attr(x = obj, attr = "id")
+  gmlid <- xml2::xml_attr(x = obj, attr = "id")
 
-  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName, ns = namespaces))
-  .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = namespaces))
-  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfTypeName, ns = namespaces),
+  identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName, ns = sos@namespaces))
+  name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = sos@namespaces))
+  type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samTypeName, ns = sos@namespaces),
                           attr = "href")
-  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfSampledFeatureName, ns = namespaces),
+  sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = samSampledFeatureName, ns = sos@namespaces),
                                     attr = "href")
-  .shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = namespaces), sos = sos)
-  SamsSamplingFeature(id = .gmlid,
-                      identifier = .identifier,
-                      name = .name,
-                      type = .type,
-                      sampledFeature = .sampledFeature,
-                      shape = .shape)
+  shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = sos@namespaces), sos = sos)
+  SamsSamplingFeature(id = gmlid,
+                      identifier = identifier,
+                      name = name,
+                      type = type,
+                      sampledFeature = sampledFeature,
+                      shape = shape)
 }
+
+#
+# coercion methods ----
+#
+as.SamsShape.SpatialPoints = function(from) {
+  as(from@point, "SpatialPoints")
+}
+setAs("SamsShape", "SpatialPoints",
+      function(from) {
+        as.SamsShape.SpatialPoints(from)
+      }
+)
+setAs("SamsShape", "Spatial",
+      function(from) {
+        as.SamsShape.SpatialPoints(from)
+      }
+)
+
+as.SamsSamplingFeature.SpatialPoints = function(from) {
+  as(from@shape, "SpatialPoints")
+}
+setAs("SamsSamplingFeature", "SpatialPoints",
+      function(from) {
+        as.SamsSamplingFeature.SpatialPoints(from)
+      }
+)
+setAs("SamsSamplingFeature", "Spatial",
+      function(from) {
+        as.SamsSamplingFeature.SpatialPoints(from)
+      }
+)
+

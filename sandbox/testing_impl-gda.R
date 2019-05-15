@@ -42,33 +42,19 @@ sos <- SOS(url = .sos, version = .version, verboseOutput = .verbose, binding = .
 #
 phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = FALSE)
 
-myContents <- sosContents(sos)
-#
-# GetFeatureOfInterest----
-#
-myFeature <- getFeatureOfInterest(sos, featureOfInterest = .foi, verbose = .verbose, saveOriginal = .saveOriginal)
-myFeatures <- getFeatureOfInterest(sos, verbose = .verbose, saveOriginal = .saveOriginal)
 #
 # GetDataAvailability----
 #
 myGDA <- getDataAvailability(sos = sos, verbose = verbose, saveOriginal = saveOriginal)
 myGDA[1]
+
 #
 # Metadata exploration----
 #
 # cat("\nNames of offerings:\n")
 # print(names(sosOfferings(sos)))
 # print(sosProcedures(sos)[[.procedure]])
-#
-# GetObservation----
-#
-myGetObservation <- getObservation(sos = sos,
-                                   offering = sosOfferings(sos)[[.procedure]],
-                                   observedProperty = .observedProperty,
-                                   responseFormat = .responseFormat,
-                                   eventTime = sosCreateTime(sos = sos, time = .temporalFilter),
-                                   verbose = .verbose,
-                                   saveOriginal = .saveOriginal)
+
 
 # Playground----
 #

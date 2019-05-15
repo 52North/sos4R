@@ -28,4 +28,4 @@
 #
 # TO BE REMOVED, see https://github.com/r-lib/xml2/issues/248 ----
 #
-methods::setOldClass(Classes = c("xml_node", "xml_document"))
+methods::setOldClass(Classes = c("xml_node", "xml_nodeset", "xml_document"))

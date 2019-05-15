@@ -46,27 +46,31 @@ This section only lists the possibilities.
 Explanations follow in this document or can be found in the SOS specification.
 
 ```{r supported01}
-SosSupportedOperations()
+SosSupportedOperations(version = "1.0.0")
+SosSupportedOperations(version = "2.0.0")
 SosSupportedServiceVersions()
 SosSupportedBindings()
+```
+
+```{r supported02}
 SosSupportedResponseFormats()
 ```
 
 The response format `"text/csv"` is not standard conform, but used by services as a well established alternative to XML encodings.
 The package `readr` must be installed to parse responses in this format.
 
-```{r supported02}
+```{r supported03}
 SosSupportedResponseModes()
 SosSupportedResultModels()
 ```
 
 The output of the following calls are named lists (the name being the same as the value).
 
-```{r supported03}
+```{r supported04}
 SosSupportedSpatialOperators()
 ```
 
-```{r supported04}
+```{r supported05}
 toString(SosSupportedTemporalOperators())
 ```
 
@@ -288,13 +292,13 @@ data(worldHiresMapEnv)
 crs <- sosGetCRS(mySOS)[[1]]
 worldHigh <- pruneMap(
 		map(database = "worldHires",
-			region = c("Germany", "Austria", "Netherlands"),
+			region = c("Germany"),
 			plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
 # the plot:
 plot(worldHigh.lines, col = "grey50")
-plot(mySOS, add = TRUE, lwd = 3)
+plot(mySOS, add = TRUE, lwd = 10, col = "red")
 title(main = paste("Offerings by '", sosTitle(mySOS), "'", sep = ""),
 		sub = toString(names(sosOfferings(mySOS))))
 ```
@@ -476,7 +480,7 @@ The **temporal extend** is modeled as an object of the respective class of the e
 
 ```{r metadataExtraction7a}
 myOffering.time <- sosTime(myOffering)
-str(myOffering.time)
+utils::str(myOffering.time)
 ```
 
 You can also access the actual timestamps, which is a bit cumbersome.
@@ -493,7 +497,7 @@ Please be aware that this might not work for temporal elements returned by all s
 
 ```{r metadataExtraction8}
 myOffering.time.converted <- sosTime(myOffering, convert = TRUE)
-str(myOffering.time.converted)
+utils::str(myOffering.time.converted)
 ```
 
 Furthermore the offering comprises **lists of procedures, **observed properties**, and **features of interest**.
@@ -608,7 +612,7 @@ The response `myObservationData` of this request is the base for the next sectio
 
 ```{r getObs1a}
 class(myObservationData)
-str(myObservationData, max.level = 2)
+utils::str(myObservationData, max.level = 2)
 ```
 
 #### Response Subsetting
@@ -725,7 +729,7 @@ If the name of the feature identifier attribute in the data table matches (which
 
 ```{r getObsSpatial3, eval=FALSE}
 myObservationData.data <- merge(x = myObservationData.result.2, y = myObservationData.coords)
-str(myObservationData.data, max.level = 2)
+utils::str(myObservationData.data, max.level = 2)
 ```
 
 And in that case, you can even save that step by specifying the attribute `coordinates` of the function `sosResult` which includes the merge of data values and coordinates as shown above.
@@ -942,7 +946,7 @@ coords <- sosCoordinates(obs.oneWeek[[1]])
 crs <- sosGetCRS(obs.oneWeek[[1]])
 spdf <- SpatialPointsDataFrame(coords = coords[,1:2],
 	data = data.frame(coords[,4]), proj4string = crs)
-str(spdf)
+utils::str(spdf)
 ```
 
 #### Spatial Reference Systems

@@ -52,7 +52,6 @@ Objects can be created by calls to construction functions:
     \item{print}{\code{signature(x = "DataAvailabilityMember")}: ... }
     \item{show}{\code{signature(object = "DataAvailabilityMember")}: ... }
     \item{toString}{\code{signature(x = "DataAvailabilityMember")}: ... }
-    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetDataAvailability_1.0.0", verbose = "logical")}: ... }
     \item{encodeRequestKVP}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: ... }
     \item{sosName}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: ... }
     \item{toString}{\code{signature(x = "SosGetDataAvailability_1.0.0")}: ... }

@@ -34,16 +34,23 @@
 
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
+# For SOS 1.0.0, the matching is done via operation name.
+# For SOS 2.0.0, the matching is done via root name of the response document.
 .createDefaultParsers <- function() {
   .defP <- list(
     parseSosCapabilities,
-    parseSensorML,
-    parseOM,
-    parseGetObservationResponse,
-    parseGetFeatureOfInterestResponse,
-    parseOM,
     parseOwsExceptionReport,
+    #
+    parseSensorML,
+    parseDescribeSensorResponse,
+    #
+    parseOM,
+    parseOM,
+    #
     parseGetDataAvailabilityResponse,
+    parseGetFeatureOfInterestResponse,
+    parseGetObservationByIdResponse,
+    parseGetObservationResponse,
     #
     parseMeasurement,
     parseObservationProperty,
@@ -68,19 +75,22 @@
     #
     parseCSV,
     parseOM,
-    parseKML,
-    parseKML,
     parseOM)
 
   names(.defP) <- list(
     sosGetCapabilitiesName,
-    sosDescribeSensorName,
-    sosGetObservationName,
-    sosGetObservationResponseName,
-    sosGetFeatureOfInterestResponseName,
-    sosGetObservationByIdName,
     owsExceptionReportName,
-    gdaGetDataAvailabilityResponse,
+    #
+    sosDescribeSensorName,
+    swesDescribeSensorResponseName,
+    #
+    sosGetObservationName,
+    sosGetObservationByIdName,
+    #
+    gdaGetDataAvailabilityResponseName,
+    sosGetFeatureOfInterestResponseName,
+    sosGetObservationByIdResponseName,
+    sosGetObservationResponseName,
     #
     omMeasurementName,
     omMemberName,
@@ -105,8 +115,6 @@
     #
     mimeTypeCSV,
     mimeTypeOM,
-    mimeTypeKML,
-    kmlName,
     mimeTypeXML)
 
   return(.defP)
@@ -356,7 +364,8 @@ SosParsingFunctions <- function (..., include = character(0),
 # This works for all but capabilities, as these need to be requested on creating
 # a new SOS instance.
 #
-parseNoParsing <- function(obj) {
+parseNoParsing <- function(obj, sos) {
+  # sos parameter is not used!
   return(obj)
 }
 .sosDisabledParsers <- list(

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swes:DescribeSensorResponse xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gml1="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swesDescribeSensor.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd">
+  <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+  <swes:description>
+    <swes:SensorDescription>
+      <swes:validTime>
+        <gml:TimePeriod gml:id="tp_85C45039AF8673303A0E433AD02948DD291E3269">
+          <gml:beginPosition>2015-05-18T13:42:42.393Z</gml:beginPosition>
+          <gml:endPosition indeterminatePosition="unknown"/>
+        </gml:TimePeriod>
+      </swes:validTime>
+      <swes:data>
+        <sml:SensorML xmlns:sml="http://www.opengis.net/sensorML/1.0.1" version="1.0.1">
+          <sml:member>
+            <sml:System>
+              <sml:keywords>
+                <sml:KeywordList>
+                  <sml:keyword>AirTemperature</sml:keyword>
+                  <sml:keyword>Sunshine</sml:keyword>
+                  <sml:keyword>ELV_WS_2500</sml:keyword>
+                  <sml:keyword>ws2500</sml:keyword>
+                  <sml:keyword>Humidity</sml:keyword>
+                  <sml:keyword>52n-elv-ws2500</sml:keyword>
+                  <sml:keyword>WindSpeed</sml:keyword>
+                  <sml:keyword>RainfallAccumulated</sml:keyword>
+                  <sml:keyword>ELV-WS2500</sml:keyword>
+                  <sml:keyword>Windchill</sml:keyword>
+                  <sml:keyword>Luminance</sml:keyword>
+                  <sml:keyword>WindDirection</sml:keyword>
+                  <sml:keyword>Dewpoint</sml:keyword>
+                  <sml:keyword>AthmosphericPressure</sml:keyword>
+                </sml:KeywordList>
+              </sml:keywords>
+              <sml:identification>
+                <sml:IdentifierList>
+                  <sml:identifier name="uniqueID">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+                      <sml:value>ws2500</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="longName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                      <sml:value>52n-elv-ws2500</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                  <sml:identifier name="shortName">
+                    <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                      <sml:value>52n-elv-ws2500</sml:value>
+                    </sml:Term>
+                  </sml:identifier>
+                </sml:IdentifierList>
+              </sml:identification>
+              <sml:classification>
+                <sml:ClassifierList>
+                  <sml:classifier name="intendedApplication">
+                    <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+                      <sml:value>RainfallAccumulated, WindDirection, Humidity, Windchill, AirTemperature, Dewpoint, Sunshine, Luminance, AthmosphericPressure, WindSpeed</sml:value>
+                    </sml:Term>
+                  </sml:classifier>
+                </sml:ClassifierList>
+              </sml:classification>
+              <sml:validTime>
+                <gml1:TimePeriod>
+                  <gml1:beginPosition>2015-05-18T13:42:42.393Z</gml1:beginPosition>
+                  <gml1:endPosition indeterminatePosition="unknown"/>
+                </gml1:TimePeriod>
+              </sml:validTime>
+              <sml:capabilities name="featuresOfInterest">
+                <swe:DataRecord>
+                  <swe:field name="featureOfInterestID">
+                    <swe:Text definition="http://www.opengis.net/def/featureOfInterest/identifier">
+                      <swe:value>ELV-WS2500</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </sml:capabilities>
+              <sml:capabilities name="collectingStatus">
+                <swe:DataRecord>
+                  <swe:field name="status">
+                    <swe:Boolean definition="urn:ogc:def:classifier:OGC:1.0:collectingStatus">
+                      <swe:value>true</swe:value>
+                    </swe:Boolean>
+                  </swe:field>
+                </swe:DataRecord>
+              </sml:capabilities>
+              <sml:capabilities name="observedBBOX">
+                <swe:DataRecord>
+                  <swe:field name="observedBBOX">
+                    <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="4326">
+                      <swe:lowerCorner>
+                        <swe:Vector>
+                          <swe:coordinate name="easting">
+                            <swe:Quantity axisID="x">
+                              <swe:uom code="degree"/>
+                              <swe:value>7.652428150177</swe:value>
+                            </swe:Quantity>
+                          </swe:coordinate>
+                          <swe:coordinate name="northing">
+                            <swe:Quantity axisID="y">
+                              <swe:uom code="degree"/>
+                              <swe:value>51.934814453125</swe:value>
+                            </swe:Quantity>
+                          </swe:coordinate>
+                        </swe:Vector>
+                      </swe:lowerCorner>
+                      <swe:upperCorner>
+                        <swe:Vector>
+                          <swe:coordinate name="easting">
+                            <swe:Quantity axisID="x">
+                              <swe:uom code="degree"/>
+                              <swe:value>7.652428150177002</swe:value>
+                            </swe:Quantity>
+                          </swe:coordinate>
+                          <swe:coordinate name="northing">
+                            <swe:Quantity axisID="y">
+                              <swe:uom code="degree"/>
+                              <swe:value>51.934814453125</swe:value>
+                            </swe:Quantity>
+                          </swe:coordinate>
+                        </swe:Vector>
+                      </swe:upperCorner>
+                    </swe:Envelope>
+                  </swe:field>
+                </swe:DataRecord>
+              </sml:capabilities>
+              <sml:capabilities name="offerings">
+                <swe:SimpleDataRecord>
+                  <swe:field name="field_0">
+                    <swe:Text definition="http://www.opengis.net/def/offering/identifier">
+                      <swe:value>ws2500</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:SimpleDataRecord>
+              </sml:capabilities>
+              <sml:contact>
+                <sml:ContactList>
+                  <sml:member xlink:role="Point of Contact">
+                    <sml:ResponsibleParty>
+                      <sml:individualName>Jürrens, Eike Hinderk</sml:individualName>
+                      <sml:organizationName>52North</sml:organizationName>
+                      <sml:positionName>Service Maintainer</sml:positionName>
+                      <sml:contactInfo>
+                        <sml:phone>
+                          <sml:voice>+49(0)251/396 371-33</sml:voice>
+                        </sml:phone>
+                        <sml:address>
+                          <sml:deliveryPoint>Martin-Luther-King-Weg 24</sml:deliveryPoint>
+                          <sml:city>Münster</sml:city>
+                          <sml:postalCode>48155</sml:postalCode>
+                          <sml:country>Germany</sml:country>
+                          <sml:electronicMailAddress>e.h.juerrens@52north.org</sml:electronicMailAddress>
+                        </sml:address>
+                        <sml:onlineResource xlink:href="http://52north.org/"/>
+                      </sml:contactInfo>
+                    </sml:ResponsibleParty>
+                  </sml:member>
+                </sml:ContactList>
+              </sml:contact>
+              <sml:position name="sensorPosition">
+                <swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG::4326">
+                  <swe:location>
+                    <swe:Vector>
+                      <swe:coordinate name="northing">
+                        <swe:Quantity axisID="y">
+                          <swe:uom code="degree"/>
+                          <swe:value>51.934814453125</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="easting">
+                        <swe:Quantity axisID="x">
+                          <swe:uom code="degree"/>
+                          <swe:value>7.652428150177002</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                      <swe:coordinate name="altitude">
+                        <swe:Quantity axisID="z">
+                          <swe:uom code="UNIT_NOT_SET"/>
+                          <swe:value>-INF</swe:value>
+                        </swe:Quantity>
+                      </swe:coordinate>
+                    </swe:Vector>
+                  </swe:location>
+                </swe:Position>
+              </sml:position>
+              <sml:inputs>
+                <sml:InputList>
+                  <sml:input name="RainfallAccumulated">
+                    <swe:ObservableProperty definition="RainfallAccumulated"/>
+                  </sml:input>
+                  <sml:input name="WindDirection">
+                    <swe:ObservableProperty definition="WindDirection"/>
+                  </sml:input>
+                  <sml:input name="Humidity">
+                    <swe:ObservableProperty definition="Humidity"/>
+                  </sml:input>
+                  <sml:input name="Windchill">
+                    <swe:ObservableProperty definition="Windchill"/>
+                  </sml:input>
+                  <sml:input name="AirTemperature">
+                    <swe:ObservableProperty definition="AirTemperature"/>
+                  </sml:input>
+                  <sml:input name="Dewpoint">
+                    <swe:ObservableProperty definition="Dewpoint"/>
+                  </sml:input>
+                  <sml:input name="Sunshine">
+                    <swe:ObservableProperty definition="Sunshine"/>
+                  </sml:input>
+                  <sml:input name="Luminance">
+                    <swe:ObservableProperty definition="Luminance"/>
+                  </sml:input>
+                  <sml:input name="AthmosphericPressure">
+                    <swe:ObservableProperty definition="AthmosphericPressure"/>
+                  </sml:input>
+                  <sml:input name="WindSpeed">
+                    <swe:ObservableProperty definition="WindSpeed"/>
+                  </sml:input>
+                </sml:InputList>
+              </sml:inputs>
+              <sml:outputs>
+                <sml:OutputList>
+                  <sml:output name="RainfallAccumulated">
+                    <swe:Quantity definition="RainfallAccumulated">
+                      <swe:uom code="l_m^2"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="WindDirection">
+                    <swe:Quantity definition="WindDirection">
+                      <swe:uom code="deg"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="Humidity">
+                    <swe:Quantity definition="Humidity">
+                      <swe:uom code="%"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="Windchill">
+                    <swe:Quantity definition="Windchill">
+                      <swe:uom code="degC"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="AirTemperature">
+                    <swe:Quantity definition="AirTemperature">
+                      <swe:uom code="degC"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="Dewpoint">
+                    <swe:Quantity definition="Dewpoint">
+                      <swe:uom code="degC"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="Luminance">
+                    <swe:Quantity definition="Luminance">
+                      <swe:uom code="klux"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="AthmosphericPressure">
+                    <swe:Quantity definition="AthmosphericPressure">
+                      <swe:uom code="hPa"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="WindSpeed">
+                    <swe:Quantity definition="WindSpeed">
+                      <swe:uom code="km_h"/>
+                    </swe:Quantity>
+                  </sml:output>
+                  <sml:output name="Sunshine">
+                    <swe:Count definition="Sunshine"/>
+                  </sml:output>
+                </sml:OutputList>
+              </sml:outputs>
+            </sml:System>
+          </sml:member>
+        </sml:SensorML>
+      </swes:data>
+    </swes:SensorDescription>
+  </swes:description>
+</swes:DescribeSensorResponse>

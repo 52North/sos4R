@@ -29,18 +29,34 @@
 
 #
 # Classes are based on WaterML 2.0
-# 
+#
 # http://www.opengeospatial.org/standards/waterml
 #
 
+#
+# MonitoringPoint ----
+# http://schemas.opengis.net/waterml/2.0/monitoringPoint.xsd
+#
 setClass("MonitoringPoint",
-         representation(sampledFeatures = "list", id = "character", 
-                        identifier = "list", names = "list",
-                        shape = "SamsShape"),
-         prototype = list(sampledFeatures = list(NA), shape = NULL),
+         representation(sampledFeatures = "character",
+                        id = "character",
+                        identifier = "character",
+                        names = "character",
+                        shape = "SamsShape",
+                        verticalDatums = "ANY",
+                        timeZone = "ANY"),
+         prototype = list(sampledFeatures = c(NA_character_), shape = NULL),
          contains = "GmlFeature",
          validity = function(object) {
            #print("Entering validation: MonitoringPoint")
+
+           if ( !class(slot(object, "verticalDatums")) %in% c("xml_nodeset", "xml_missing")) {
+             return("'verticalDatums' must be an XML node set or missing.")
+           }
+           if ( !class(slot(object, "timeZone")) %in% c("xml_node", "xml_missing")) {
+             return("'verticalDatums' must be an XML node or missing.")
+           }
+
            return(TRUE)
          }
 )

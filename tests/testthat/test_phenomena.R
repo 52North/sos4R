@@ -120,8 +120,8 @@ test_that("KVP::phenomena(sos, includeTemporalBBox) returns an empty list of phe
       body = readr::read_file("../responses/Capabilities_200_Example.com_empty.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
-    wi_th(
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
     webmockr::to_return(
@@ -153,8 +153,8 @@ test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns the current l
       body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
-    wi_th(
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
     webmockr::to_return(

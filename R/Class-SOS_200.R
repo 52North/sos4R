@@ -32,7 +32,8 @@
 # SOS_2.0.0 ----
 #
 setClass("SOS_2.0.0",
-         representation(url = "character", binding = "character"),
+         representation(url = "character",
+                        binding = "character"),
          prototype = list(
            url = as.character(NA),
            binding = as.character(NA),
@@ -41,13 +42,13 @@ setClass("SOS_2.0.0",
          validity = function(object) {
            #print("Entering validation: SOS")
 
-           if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+           if (!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
              return(paste("Binding has to be one of",
                           toString(SosSupportedBindings()),
                           "- given:", object@binding))
            }
 
-           if(object@version != sos200_version)
+           if (object@version != sos200_version)
              return(paste0("Version must be 2.0.0 but is", object@version))
 
            # url has to match an URL pattern
@@ -92,7 +93,8 @@ setClass("SosCapabilities_2.0.0",
 # represented by character strings.
 # TODO: FeatureRelationship
 setClass("SosObservationOffering_2.0.0",
-         representation(id = "character", name = "character",
+         representation(id = "character",
+                        name = "character",
                         resultTime = "GmlTimeGeometricPrimitive",
                         phenomenonTime = "GmlTimeGeometricPrimitive",
                         procedure = "character",
@@ -110,7 +112,7 @@ setClass("SosObservationOffering_2.0.0",
                           observableProperty = list(NA),
                           featureOfInterestType = list(NA),
                           observationType = list(NA),
-                          observedArea=NULL,
+                          observedArea = NULL,
                           procedureDescriptionFormat = list(NA),
                           responseFormat = list(NA)),
          validity = function(object) {
@@ -140,7 +142,8 @@ setClass("SosGetObservation_2.0.0",
            result = "OgcComparisonOpsOrXMLOrNULL",
            resultModel = "character",
            responseMode = "character",
-           BBOX = "character"),
+           BBOX = "character",
+           valueReferenceTemporalFilter = "character"),
          prototype = list(
            service = as.character(NA),
            version = as.character(NA),
@@ -162,7 +165,7 @@ setClass("SosGetObservation_2.0.0",
            # responseFormat is optional for GET
            #if(is.na(object@responseFormat))
            #	return("responseFormat parameter must be given")
-           if(length(object@observedProperty) < 1)
+           if (length(object@observedProperty) < 1)
              return("at least one observedProperty is mandatory")
 
            # if version is there, it has to be in a certain format, see ows common
@@ -172,9 +175,8 @@ setClass("SosGetObservation_2.0.0",
 
            # result is null or an ogc:comparisonOps element
            cls <- class(slot(object, "result"))
-           #			print(paste("class of result slot: ", cls))
            if ( !any(cls %in% c("OgcComparisonOps", "xml_document",
-                                "xml_node"))) {
+                                "xml_node", "NULL"))) {
              return("'response' argument does not have allowed class!")
            }
 
@@ -200,9 +202,9 @@ setClass("SosGetFeatureOfInterest_2.0.0",
          contains = "OwsServiceOperation",
          validity = function(object) {
            # service, version are mandatory
-           if(is.na(object@service))
+           if (is.na(object@service))
              return("service parameter must be given")
-           if(is.na(object@version))
+           if (is.na(object@version))
              return("version must be given")
 
            return(TRUE)

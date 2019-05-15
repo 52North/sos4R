@@ -29,8 +29,6 @@
 ################################################################################
 ## handy top level sos functions
 
-library(sp)
-
 # phenomena ####
 # ~ us.1.1 ####
 # What phenomena are available from a SOS?
@@ -497,7 +495,7 @@ setMethod(f = "sites",
       }
     }
     # add geometry
-    .siteRow <- c(.siteRow, setNames(c("geometry", use.names = TRUE), as(.site@feature@shape@point), "SpatialPoints"), use.names = TRUE)
+    .siteRow <- c(.siteRow, setNames(c("geometry", use.names = TRUE), as(.site@feature@shape@point, "SpatialPoints")), use.names = TRUE)
     print("bla")
     # append new row at dataframe
     #.sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,

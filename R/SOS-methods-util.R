@@ -290,13 +290,13 @@ setMethod(f = "sosCreateBBoxMatrix",
 setMethod(f = "sosCapabilitiesDocumentOriginal",
           signature = signature(sos = "SOS"),
           definition = function(sos, verbose = FALSE) {
-            .verbose <- sos@verboseOutput || verbose
-            .gc <- OwsGetCapabilities(service = sosService,
-                                      acceptVersions = c(sos@version))
-            .response = sosRequest(sos = sos,
-                                   request = .gc,
-                                   verbose = .verbose,
-                                   inspect = FALSE)
+            verbose <- sos@verboseOutput || verbose
+            gc <- OwsGetCapabilities(service = sosService,
+                                     acceptVersions = c(sos@version))
+            response = sosRequest(sos = sos,
+                                  request = gc,
+                                  verbose = verbose,
+                                  inspect = FALSE)
             return(.response)
           }
 )
@@ -304,10 +304,10 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
 setMethod(f = "sosCapabilitiesUrl",
           signature = signature(sos = "SOS"),
           definition = function(sos) {
-            .gc <- OwsGetCapabilities(service = sosService,
-                                      acceptVersions = c(sos@version))
-            .request <- paste0(sosUrl(sos), "?", encodeRequestKVP(.gc, sos))
-            return(.request)
+            gc <- OwsGetCapabilities(service = sosService,
+                                     acceptVersions = c(sos@version))
+            request <- paste0(sosUrl(sos), "?", encodeRequestKVP(gc, sos))
+            return(request)
           }
 )
 
@@ -334,7 +334,7 @@ setMethod(f = "sosCapabilitiesUrl",
 .handleExceptionReport <- function(sos, obj) {
   if (sos@verboseOutput) warning("Received ExceptionReport!")
   .parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
-  .er <- .parsingFunction(obj)
+  .er <- .parsingFunction(obj, sos = sos)
   if (any(class(.er) == "OwsExceptionReport"))
     warning(toString(.er))
   return(.er)
@@ -345,7 +345,7 @@ setMethod(f = "sosExceptionCodeMeaning",
           definition = function(exceptionCode) {
             .meaning <- as.character(
               .owsStandardExceptions[
-                .owsStandardExceptions$exceptionCode==exceptionCode,
+                .owsStandardExceptions$exceptionCode == exceptionCode,
                 2])
             return(.meaning)
           }
@@ -416,9 +416,9 @@ setMethod(f = "sosGetCRS",
             else
               if (verbose) cat("[sosGetCRS] rgdal loaded! \n")
 
-            .crs <- NULL
+            crs <- NULL
             tryCatch({
-              .crs <- sp::CRS(.initString)
+              crs <- sp::CRS(.initString)
             }, error = function(err) {
               warning("[sosGetCRS] error was detected, probably the ",
                       "EPSG code ", .epsg, " is not recognized ",
@@ -428,10 +428,10 @@ setMethod(f = "sosGetCRS",
 
             if (verbose) {
               cat("[sosGetCRS] found: ")
-              show(.crs)
+              show(crs)
             }
 
-            return(.crs)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
@@ -448,15 +448,15 @@ setMethod(f = "sosGetCRS",
 setMethod(f = "sosGetCRS",
           signature = c(obj = "OmObservation"),
           definition = function(obj, verbose = FALSE) {
-            .crs <- .getCRSfromOM(obj)
-            return(.crs)
+            crs <- .getCRSfromOM(obj)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "OmMeasurement"),
           definition = function(obj, verbose = FALSE) {
-            .crs <- .getCRSfromOM(obj)
-            return(.crs)
+            crs <- .getCRSfromOM(obj)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
@@ -464,29 +464,56 @@ setMethod(f = "sosGetCRS",
           definition = function(obj, verbose = FALSE) {
             .srsName <- sosBoundedBy(obj)[["srsName"]]
             if (is.null(.srsName))
-              .crs <- NULL
-            else .crs <- sosGetCRS(.srsName, verbose = verbose)
-            return(.crs)
+              crs <- NULL
+            else crs <- sosGetCRS(.srsName, verbose = verbose)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "SOS"),
           definition = function(obj, verbose = FALSE) {
             .offs <- sosOfferings(obj)
-            .crss <- lapply(.offs, sosGetCRS, verbose = verbose)
-            if (length(.crss) == 1)
-              return(.crss[[1]])
-            return(.crss)
+            crss <- lapply(.offs, sosGetCRS, verbose = verbose)
+            if (length(crss) == 1)
+              return(crss[[1]])
+            return(crss)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "list"),
           definition = function(obj, verbose = FALSE) {
-            .crs <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
-            return(.crs)
+            crs <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
+            return(crs)
           }
 )
-
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlDirectPosition"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@srsName)
+            return(crs)
+          }
+)
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlPoint"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@pos)
+            return(crs)
+          }
+)
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlPointProperty"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@point)
+            return(crs)
+          }
+)
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlEnvelope"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@srsName)
+            return(crs)
+          }
+)
 .getCRSfromOM <- function(obj) {
   .char <- as.vector(sosCoordinates(obj)[[sosDefaultColumnNameSRS]])
   .l <- sapply(X = .char, FUN = sosGetCRS)

@@ -30,7 +30,6 @@
 ################################################################################
 # PegelOnlineSOS
 pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
-print(object.size(pegelsos), units = c("Mb"))
 # works so far... :-)
 
 sosFeaturesOfInterest(pegelsos)

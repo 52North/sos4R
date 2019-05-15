@@ -31,15 +31,9 @@
 # main request method ----
 #
 .sosRequest_2.0.0 <- function(sos, request, verbose = FALSE, inspect = FALSE) {
-  # check the request for consistency with service description
-  .checkResult <- checkRequest(service = sos, operation = request,
-                               verbose = verbose)
-  if (!.checkResult) {
-    warning("Check returned FALSE! Turn on verbose option for possible details.",
-            immediate. = TRUE)
-  }
+  if (inspect) cat("[.sosRequest_2.0.0] REQUEST:\n", toString(request), "\n")
 
-  .response = ""
+  response = ""
 
   # get encoding function for the respective method
   .encodingFunction <- sos@encoders[[sos@binding]]
@@ -65,8 +59,7 @@
 
       if (is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
         .dcp <- list("Get", "application/x-kvp", sos@url)
-        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using ",
-                         .dcp, "\n")
+        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request, using ", toString(.dcp), "\n")
       }
 
       if (is.list(.dcp) && length(.dcp) && is.list(.dcp[[1]])) {
@@ -78,7 +71,7 @@
 
       if (verbose) cat("[.sosRequest_2.0.0] Using DCP:", toString(.dcp), "\n")
     }
-    else if (verbose) cat("[.sosRequest_2.0.0] Not using DCP from capabilities, but use ", .dcp, "\n")
+    else if (verbose) cat("[.sosRequest_2.0.0] Not using DCP from capabilities, but use ", toString(.dcp), "\n")
 
     if (isTRUE(grep(pattern = "[\\?]", x = .dcp[[owsDcpUrlIndex]]) > 0)) {
       if (verbose) cat("Given url already contains a '?', appending arguments!\n")
@@ -101,15 +94,15 @@
 
     if (verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
 
-    .response = httr::GET(url = .url,
+    response = httr::GET(url = .url,
                           httr::accept_xml())
-    .content <- .processResponse(.response, verbose)
+    .content <- .processResponse(response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.\n")
   }
   else if (sos@binding == .sosBindingPOX) {
     if (inspect) {
-      cat("[.sosRequest_2.0.0] POST!\n[.sosRequest_2.0.0] REQUEST:\n")
+      cat("[.sosRequest_2.0.0] REQUEST:\n")
       print(.encodedRequest)
     }
 
@@ -119,7 +112,7 @@
       .dcp <- sosGetDCP(sos, sosName(request), owsPostName) #sos@url as fallback
       if (is.null(.dcp) || is.na(.dcp) || !length(.dcp)) {
         .dcp <- list("Post", "application/xml", sos@url)
-        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", .dcp, "\n")
+        if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", toString(.dcp), "\n")
       }
       else if (verbose) cat("[.sosRequest_2.0.0] Got DCPs from capabilites:", toString(.dcp), "\n")
 
@@ -140,11 +133,11 @@
     # using 'POST' for application/xml encoded requests
     if (verbose) cat("[.sosRequest_2.0.0] Do request...\n")
 
-    .response <- httr::POST(url = .dcp[[owsDcpUrlIndex]],
+    response <- httr::POST(url = .dcp[[owsDcpUrlIndex]],
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-    .content <- .processResponse(.response, verbose)
+    .content <- .processResponse(response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -161,9 +154,13 @@
                SosSupportedBindings(), "but is", sos@binding))
   }
 
+  if (inspect) cat("[.sosRequest_2.0.0] RESPONSE:\n", toString(.content), "\n")
   return(.content)
 }
 
+#
+# operation functions ----
+#
 .getCapabilities_2.0.0 <- function(sos, verbose, inspect, sections,
                                    acceptFormats, updateSequence, owsVersion,	acceptLanguages) {
   if (verbose) {
@@ -176,24 +173,188 @@
                             owsVersion = owsVersion, acceptLanguages = acceptLanguages)
   if (verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
 
-  .response = sosRequest(sos = sos,
-                         request = .gc,
-                         verbose = verbose,
-                         inspect = inspect)
+  response = sosRequest(sos = sos,
+                        request = .gc,
+                        verbose = verbose,
+                        inspect = inspect)
   if (inspect) {
     cat("[.getCapabilities_2.0.0] RESPONSE DOC:\n")
-    print(.response)
+    print(response)
   }
 
-  if (.isExceptionReport(.response)) {
-    return(.handleExceptionReport(sos, .response))
+  if (.isExceptionReport(response)) {
+    return(.handleExceptionReport(sos, response))
   }
   else {
     .parsingFunction <- sosParsers(sos)[[sosGetCapabilitiesName]]
-    .caps <- .parsingFunction(obj = .response, sos = sos)
+    .caps <- .parsingFunction(obj = response, sos = sos)
     if (verbose) {
       cat("[.getCapabilities_2.0.0] DONE WITH PARSING!\n")
     }
     return(.caps)
   }
+}
+
+.describeSensor_2.0.0 <- function(sos, procedure,
+                                  procedureDescriptionFormat,
+                                  validTime,
+                                  verbose, inspect, saveOriginal) {
+  if (verbose) cat("[.describeSensor_2.0.0] ", procedure, "@", sos@url, "\n")
+
+  # check inputs: procedure
+  procedures = unique(unlist(sosProcedures(sos)))
+  if (!any(procedure %in% procedures)) warning("Requested procedure(s) not listed in capablities, service might return error!")
+
+  # check inputs: description format
+  supportedFormats <- sosOperation(sos, sosDescribeSensorName)@parameters[["procedureDescriptionFormat"]]
+  if (!(procedureDescriptionFormat %in% supportedFormats))
+    warning(paste("outputFormat has to be one of", paste(supportedFormats, sep = ", ",
+                                                         collapse = "', '"),
+                  "'. Requested format is '", procedureDescriptionFormat, "'."))
+
+  # check if multiple sensors
+  if (length(procedure) > 1) {
+    if (verbose) cat("[.describeSensor_2.0.0] multiple sensors: ", procedure, "\n")
+
+    descriptions <- list()
+    for (p in procedure) {
+      description <- .describeSensor_2.0.0(sos = sos,
+                                          procedure = p,
+                                          procedureDescriptionFormat = procedureDescriptionFormat,
+                                          validTime = validTime,
+                                          verbose = verbose,
+                                          inspect = inspect,
+                                          saveOriginal = saveOriginal)
+      descriptions <- c(descriptions, description)
+    }
+
+    return(descriptions)
+  }
+
+  # single procedure
+  ds <- SosDescribeSensor(service = sosService,
+                           version = sos@version,
+                           procedure = procedure,
+                           procedureDescriptionFormat = procedureDescriptionFormat,
+                           validTime = validTime)
+  if (verbose) cat("[.describeSensor_2.0.0] REQUEST:\n", toString(ds), "\n")
+
+  response = sosRequest(sos = sos,
+                        request = ds,
+                        verbose = verbose,
+                        inspect = inspect)
+
+  filename <- NULL
+  if (!is.null(saveOriginal)) {
+    if (is.character(saveOriginal)) {
+      filename <- saveOriginal
+      if (verbose) cat("Using saveOriginal parameter for file name:", filename, "\n")
+    }
+    else if (is.logical(saveOriginal)) {
+      if (saveOriginal) filename <- paste(cleanupFileName(procedure), ".xml", sep = "")
+      if (verbose) cat("Generated file name:", filename, "\n")
+    }
+
+    if (verbose) cat("[.describeSensor_2.0.0] Saving original document...", filename, "in", getwd(), "\n")
+
+    xml2::write_xml(x = response, file = filename)
+    cat("[sos4R] Original document saved:", filename, "\n")
+  }
+
+  if (.isExceptionReport(response)) {
+    return(.handleExceptionReport(sos, response))
+  }
+  else {
+    parsingFunction <- sosParsers(sos)[[swesDescribeSensorResponseName]]
+    sml <- parsingFunction(obj = response, sos = sos, verbose = verbose)
+
+    return(sml)
+  }
+}
+
+#
+# encoding functions XML ----
+#
+.sosEncodeRequestXMLGetObservationById_2.0.0 <- function(obj, sos) {
+  xmlDoc <- xml2::xml_new_root(sosGetObservationByIdName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos200Namespace,
+                                service = obj@service,
+                                version = obj@version,
+                                "xmlns:xsi" = xsiNamespace,
+                                "xmlns:sos20" = sos200Namespace))
+
+  for (i in 1:length(obj@observationId)) {
+    xml2::xml_add_child(xmlDoc, sos200ObservationName, obj@observationId[[i]])
+  }
+
+  return(xmlDoc)
+}
+
+.sosEncodeRequestXMLDescribeSensor_2.0.0 <- function(obj, sos) {
+  xmlDoc <- xml2::xml_new_root(swesDescribeSensorName)
+  xml2::xml_set_attrs(x = xmlDoc,
+                      value = c(xmlns = sos@namespaces[[swesNamespacePrefix]],
+                                service = obj@service,
+                                version = obj@version,
+                                "xmlns:xsi" = xsiNamespace,
+                                "xmlns:swes" = sos@namespaces[[swesNamespacePrefix]]))
+
+  xml2::xml_add_child(xmlDoc, swesProcedureName, obj@procedure)
+  xml2::xml_add_child(xmlDoc, swesProcedureDescriptionFormatName, obj@procedureDescriptionFormat)
+
+  if (!is.null(obj@validTime)) {
+    validTime <- xml2::xml_add_child(xmlDoc, swesValidTimeName)
+    xml2::xml_add_child(validTime, encodeXML(obj = obj@validTime, sos = sos))
+  }
+
+  return(xmlDoc)
+}
+
+#
+# encoding functions KVP ----
+#
+.sosEncodeRequestKVPGetObservationById_2.0.0 <- function(obj, sos, verbose = FALSE) {
+  requestBase <- paste(
+    paste("service", .kvpEscapeSpecialCharacters(x = obj@service), sep = "="),
+    paste("version", .kvpEscapeSpecialCharacters(x = obj@version), sep = "="),
+    paste("request", .kvpEscapeSpecialCharacters(x = sosGetObservationByIdName), sep = "="),
+    sep = "&")
+
+  escapedIds <-  sapply(X = obj@observationId, FUN = .kvpEscapeSpecialCharacters)
+  observation <- paste("observation", paste(escapedIds, collapse = ","), sep = "=")
+  kvpString <- paste(requestBase, observation, sep = "&")
+
+  if (verbose) cat("[.sosEncodeRequestKVPGetObservationById_2.0.0] ", kvpString)
+  return(kvpString)
+}
+
+# defined in SWES 2.0, OGC 09-001
+.sosEncodeRequestKVPDescribeSensor_2.0.0 <- function(obj, sos, verbose = FALSE) {
+  requestBase <- .kvpBuildRequestBase(sos, sosDescribeSensorName)
+
+  # one mandatory:
+  procedure <- paste("procedure", .kvpEscapeSpecialCharacters(x = obj@procedure), sep = "=")
+  format <- paste("procedureDescriptionFormat",
+                  .kvpEscapeSpecialCharacters(x = gsub(obj@procedureDescriptionFormat,
+                                                       pattern = "&quot;",
+                                                       replacement = '"')),
+                  sep = "=")
+
+  kvpString <- paste(requestBase,
+                     procedure,
+                     format,
+                     sep = "&")
+
+  # zero or one (optional)
+  if (!is.null(obj@validTime)) {
+    kvpString <- paste0(kvpString, "&", "validTime=",
+                        .kvpEscapeSpecialCharacters(
+                          encodeKVP(obj = obj@validTime, sos = sos, verbose = verbose))
+                        )
+  }
+
+  if (verbose) cat("[.sosEncodeRequestKVPDescribeSensor_2.0.0] ", kvpString)
+
+  return(kvpString)
 }

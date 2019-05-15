@@ -124,3 +124,14 @@ fluggs <- SOS(url = "https://fluggs.wupperverband.de/sos2/service", binding = "K
 sosContents(fluggs)
 ```
 
+## MONALISA
+
+SOS by [MONALISA](http://www.monalisa-project.eu/en/home/Pages/default.aspx) project, operated by [eurac research](http://www.eurac.edu/).
+
+About: http://monalisasos.eurac.edu/sos/
+
+```{r monalisa}
+monalisa <- SOS(url = "http://monalisasos.eurac.edu/sos/service", binding = "KVP", version = "2.0.0")
+sosContents(monalisa)
+```
+

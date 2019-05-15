@@ -114,8 +114,9 @@ GmlMeasure <- function(value, uom) {
 
 
 #
-# Encoding methods ----
+# XML encoding methods ----
 #
+
 #
 # encodeXML(GmlTimeInstantProperty, SOS) ----
 #
@@ -127,6 +128,7 @@ setMethod(f = "encodeXML",
             stop("Function encodeXML for GmlTimeInstantProperty not implemented yet!")
           }
 )
+
 #
 # encodeXML(GmlTimeInstant, SOS) ----
 #
@@ -138,14 +140,22 @@ setMethod(f = "encodeXML",
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #pos <- xml2::xml_new_root(gmlTimeInstantName,
             #                          xmlns = gmlNamespace)
-            ti <- xml2::read_xml(paste0("<", gmlTimeInstantName, " xmlns:", gmlNamespacePrefix, "=\"", gmlNamespace, "\" />"))
+            ti <- xml2::read_xml(paste0("<", gmlTimeInstantName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                        sos@namespaces[[gmlNamespacePrefix]], "\" />"))
 
             time <- encodeXML(obj = obj@timePosition, sos = sos, verbose = verbose)
+            # FIXME: manually drop namespace from time position
+            #if (xml2::xml_has_attr(x = time, attr = paste0("xmlns:", gmlNamespacePrefix))) {
+            #  keptAttrs <- names(xml2::xml_attrs(x = time)) != paste0("xmlns:", gmlNamespacePrefix)
+            #  xml2::xml_attrs(x = time) <- xml2::xml_attrs(x = time)[keptAttrs]
+            #}
+
             xml2::xml_add_child(ti, time)
 
             return(ti)
           }
 )
+
 #
 # encodeXML(GmlTimePosition, SOS) ----
 #
@@ -158,7 +168,8 @@ setMethod(f = "encodeXML",
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #pos <- xml2::xml_new_root(gmlTimePositionName,
             #                          xmlns = gmlNamespace)
-            tpos <- xml2::read_xml(paste0("<", gmlTimePositionName, " xmlns:", gmlNamespacePrefix, "=\"", gmlNamespace, "\" />"))
+            tpos <- xml2::read_xml(paste0("<", gmlTimePositionName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                          sos@namespaces[[gmlNamespacePrefix]], "\" />"))
 
             if (!is.na(obj@frame)) {
               xml2::xml_set_attr(x = tpos, attr = "frame", value = obj@frame)
@@ -176,6 +187,7 @@ setMethod(f = "encodeXML",
             return(tpos)
           }
 )
+
 #
 # encodeXML(GmlTimePeriod, SOS) ----
 #
@@ -187,7 +199,8 @@ setMethod(f = "encodeXML",
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #tperiod <- xml2::xml_new_root(gmlTimePeriodName,
             #                          xmlns = gmlNamespace)
-            tperiod <- xml2::read_xml(paste0("<", gmlTimePeriodName, " xmlns:", gmlNamespacePrefix, "=\"", gmlNamespace, "\" />"))
+            tperiod <- xml2::read_xml(paste0("<", gmlTimePeriodName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                             sos@namespaces[[gmlNamespacePrefix]], "\" />"))
 
             # switch cases:
             # 1. begin and end
@@ -243,6 +256,7 @@ setMethod(f = "encodeXML",
             return(tperiod)
           }
 )
+
 #
 # encodeXML(GmlEnvelope, SOS) ----
 #
@@ -254,7 +268,8 @@ setMethod(f = "encodeXML",
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #pos <- xml2::xml_new_root(gmlEnvelopeName,
             #                          xmlns = gmlNamespace)
-            env <- xml2::read_xml(paste0("<", gmlEnvelopeName, " xmlns:", gmlNamespacePrefix, "=\"", gmlNamespace, "\" />"))
+            env <- xml2::read_xml(paste0("<", gmlEnvelopeName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                         sos@namespaces[[gmlNamespacePrefix]], "\" />"))
 
             if (!is.na(obj@srsName)) {
               xml2::xml_set_attr(x = env, attr = "srsName", value = obj@srsName)
@@ -284,6 +299,7 @@ setMethod(f = "encodeXML",
             return(env)
           }
 )
+
 #
 # encodeXML(GmlDirectPosition, SOS) ----
 #
@@ -296,7 +312,8 @@ setMethod(f = "encodeXML",
             #pos <- xml2::xml_new_root(gmlPosName,
             #                          obj@pos,
             #                          xmlns = gmlNamespace)
-            pos <- xml2::read_xml(paste0("<", gmlPosName, " xmlns:", gmlNamespacePrefix, "=\"", gmlNamespace, "\" />"))
+            pos <- xml2::read_xml(paste0("<", gmlPosName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                         sos@namespaces[[gmlNamespacePrefix]], "\" />"))
             xml2::xml_text(pos) <- obj@pos
 
             if (!is.na(obj@srsName)) {
@@ -318,6 +335,7 @@ setMethod(f = "encodeXML",
             return(pos)
           }
 )
+
 #
 # encodeXML(GmlPoint, SOS) ----
 #
@@ -329,7 +347,8 @@ setMethod(f = "encodeXML",
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #point <- xml2::xml_new_root(gmlPointName,
             #                            gml = gmlNameName)
-            point <- xml2::read_xml(paste0("<", gmlPointName, " xmlns:", gmlNamespacePrefix, "=\"", gmlNamespace, "\" />"))
+            point <- xml2::read_xml(paste0("<", gmlPointName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                           sos@namespaces[[gmlNamespacePrefix]], "\" />"))
 
             position <- encodeXML(obj = obj@pos, sos = sos)
             xml2::xml_add_child(point, position)
@@ -337,6 +356,7 @@ setMethod(f = "encodeXML",
             return(point)
           }
 )
+
 #
 # encodeXML(GmlLineString, SOS) ----
 #
@@ -348,6 +368,7 @@ setMethod(f = "encodeXML",
             warning("Encoding for GmlLineString NOT IMPLEMENTED!")
           }
 )
+
 #
 # encodeXML(GmlPolygon, SOS) ----
 #
@@ -359,6 +380,7 @@ setMethod(f = "encodeXML",
             warning("Encoding for GmlPolygon NOT IMPLEMENTED!")
           }
 )
+
 #
 # encodeXML(GmlPointProperty, SOS) ----
 #
@@ -370,3 +392,45 @@ setMethod(f = "encodeXML",
             warning("Encoding for GmlPointProperty NOT IMPLEMENTED!")
           }
 )
+
+#
+# KVP encoding methods ----
+#
+setMethod(f = "encodeKVP",
+          signature = signature(obj = "GmlTimeInstant", sos = "SOS"),
+          function(obj, sos, verbose = FALSE) {
+            if (verbose) cat("ENCODE KVP ", class(obj), "\n")
+            time <- encodeKVP(obj = obj@timePosition, sos = sos, verbose = verbose)
+            return(time)
+          }
+)
+setMethod(f = "encodeKVP",
+          signature = signature(obj = "GmlTimePosition", sos = "SOS"),
+          function(obj, sos, verbose = FALSE) {
+            if (verbose) cat("ENCODE KVP ", class(obj), "\n")
+            time <- encodeKVP(obj = obj@time, sos = sos, verbose = verbose)
+            return(time)
+          }
+)
+
+setMethod(f = "encodeKVP",
+          signature = signature(obj = "GmlTimePeriod", sos = "SOS"),
+          function(obj, sos, verbose = FALSE) {
+            if (verbose) cat("ENCODE KVP ", class(obj), "\n")
+
+            if (!is.null(obj@begin) && !is.null(obj@end)) {
+              stop("Encoding of 'begin'/'end' time period not supported")
+            }
+
+            if (!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
+              if (verbose) cat("[encodeXML] GmlTimePeriod beginPosition/endPosition found\n")
+
+              beginTimeString <- encodeKVP(obj = obj@beginPosition@time, sos = sos, verbose = verbose)
+              endTimeString <- encodeKVP(obj = obj@endPosition@time, sos = sos, verbose = verbose)
+              return(paste0(beginTimeString, "::", endTimeString))
+            }
+
+            stop("Unsupport GmlTimePeriod: ", toString(obj))
+          }
+)
+
