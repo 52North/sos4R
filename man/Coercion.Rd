@@ -7,7 +7,17 @@
 \alias{as.SpatialPointsDataFrame.OmObservation}
 \alias{as.SpatialPointsDataFrame.OmObservationCollection}
 
-\alias{as.SensorML.SpatialPointsDataFrame}
+\alias{as.SpatialPointsDataFrame.SensorML}
+
+\alias{as.SpatialPoints.GmlDirectPosition}
+\alias{as.SpatialPoints.GmlEnvelope}
+\alias{as.SpatialPoints.GmlFeatureProperty}
+\alias{as.SpatialPoints.GmlPoint}
+\alias{as.SpatialPoints.GmlPointProperty}
+
+\alias{as.SpatialPoints.MonitoringPoint}
+
+\alias{as.SpatialPoints.SaSamplingPoint}
 
 \alias{as.SpatialPolygons.SosObservationOffering}
 
@@ -21,6 +31,8 @@ For easy access to these coordinates, there are coercion functions to matching c
 }
 
 \details{
+Most coercions, e.g. from \code{Gml..} classes, are used internally during parsing and result extraction.
+
 Objects containing data, e.g. \code{OmObservationCollection}, return a \code{SpatialPointsDataFrame}.
 
 Objects not containing data, e.g. \code{SensorML} instances, return an object of class \code{SpatialPoints}.
