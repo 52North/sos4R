@@ -33,7 +33,7 @@
 # ~ us.1.1 ####
 # What phenomena are available from a SOS?
 #   phenomena(sos)
-# → list[phenomenonId]
+# → data.frame[phenomenonId]
 # GetCapabilities::Contents
 #
 # ~ us.1.2 ####
@@ -165,15 +165,15 @@ setMethod(f = "phenomena",
 # siteList ####
 # ~ us.2.1: List all sites (containing data) ####
 #   siteList(sos)
-# → list[siteID]
+# → data.frame[siteID]
 #
 # ~ us.2.2: List all sites (also not containing data) ####
 #   siteList(sos, empty=TRUE)
-# → list[siteID]
+# → data.frame[siteID]
 #
 # ~ us.2.3: List all sites w/wo data for a given time window ####
 #   siteList(sos, timeInterval=ISO-String)
-# → list[siteID]
+# → data.frame[siteID]
 #
 # ~ us.2.4: List all sites with metadata ####
 # siteList(sos, includePhenomena=T|F, includeTemporalBBox=T|F, ...)
@@ -552,17 +552,17 @@ getData <- function(sos,
 # ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ####
 # getDataAsST(sos, phenomena=[List of phenomena], sites=[List of sites])
 # →
-# STSDF[phen_1, phen_2, …] + coords + time + index
+# SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
 #
 # ~ us.3.2: Retrieve sensor values by phenomenon/a and spatial bounding box (in the CRS of the SOS) ####
 # getDataAsST(sos, phenomena=[List of phenomena], spatialBBox=matrix/c(minX,minY,maxX,maxY))
 # →
-# STSDF[phen_1, phen_2, …] + coords + time + index
+# SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
 #
 # ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ####
 # getDataAsST(sos, …, timeInterval=ISO-String)
 # →
-# STSDF[phen_1, phen_2, …] + coords + time + index
+# SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
 
 getDataAsST <- function(sos,
                         phenomena, # no default to force the user to actively pick phenomena
