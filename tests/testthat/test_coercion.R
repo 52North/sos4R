@@ -22,7 +22,37 @@ test_that("OM measurement can be coerced to data.frame", {
 test_that("OM observation can be coerced to data.frame", {
 })
 
+offeringXml <- '<sos:ObservationOffering gml:id="Luft" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+        <gml:name>Luft</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG::31466">
+            <gml:lowerCorner>5659544.05 2574316.031</gml:lowerCorner>
+            <gml:upperCorner>5681937.709 2609172.838</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2005-12-03T00:00:00.000+01:00</gml:beginPosition>
+            <gml:endPosition>2013-09-17T04:40:00.000+02:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="Luftfeuchte_Barmen_Wupperverband"/>
+        <sos:observedProperty xlink:href="Luftfeuchte"/>
+        <sos:featureOfInterest xlink:href="Barmen_Wupperverband"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>'
+
 test_that("OM observation offering can be coerced to Spatial/SpatialPolygons", {
+  offering <- parseSosObservationOffering(obj = xml2::read_xml(offeringXml), sos = testsos)
+
+  coerced <- as(offering, "Spatial")
+  expect_equal(coerced, as(coerced, "SpatialPolygons"))
+  expect_equal(bbox(coerced)["x", "min"], 2574316.031)
+  expect_equal(bbox(coerced)["y", "max"], 5681937.709)
 })
 
 test_that("GML envelope can be coerced to Spatial/SpatialPolygons", {

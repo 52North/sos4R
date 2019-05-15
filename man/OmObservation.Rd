@@ -31,8 +31,6 @@
 
 \alias{sosGetCRS,OmObservation-method}
 
-\alias{as.SpatialPointsDataFrame.OmObservation}
-
 \alias{sosUOM,OmObservation-method}
 \alias{print.summary.OmObservation}
 \alias{summary.OmObservation}

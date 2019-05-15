@@ -207,7 +207,6 @@
 \alias{plot,SOS,missing-method}
 \alias{plot.SosObservationOffering}
 \alias{plot,SosObservationOffering,missing-method}
-\alias{as.SosObservationOffering.SpatialPolygons}
 
 \alias{print.summary.SOS}
 \alias{print.summary.SosObservationOffering}

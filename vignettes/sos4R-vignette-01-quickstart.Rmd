@@ -116,12 +116,12 @@ There are accessor methods for the slots of the class.
 The encoders, parsers and converters are described extensively in the vignette "Extending".
 
 ```{r connDetails1}
-sosUrl(mySOS)
-sosTitle(mySOS)
-sosAbstract(mySOS)
-sosVersion(mySOS)
-sosTimeFormat(mySOS)
-sosBinding(mySOS)
+cat("URL:", sosUrl(mySOS), "\n")
+cat("Title:", sosTitle(mySOS), "\n")
+cat("Abstract:", sosAbstract(mySOS), "\n")
+cat("Version:", sosVersion(mySOS), "\n")
+cat("Time format:", sosTimeFormat(mySOS), "\n")
+cat("Binding:", sosBinding(mySOS), "\n")
 ```
 
 You can also access the used encoding, decoding, and conversion functions (extensive output not included here).
@@ -194,7 +194,7 @@ leaflet::leaflet(obs.1.spatial) %>%
 
 Using the [`mapview`](https://r-spatial.github.io/mapview/) package you can quickly add plots into pop-up windows.
 
-```{r leftlet}
+```{r mapview}
 library("mapview")
 
 plotfile <- tempfile(fileext = ".png")
@@ -207,6 +207,7 @@ dev.off()
 mapview(obs.1.spatial, popup = popupImage(plotfile, embed = TRUE))
 ```
 
+For more details on the coercion functions see `` ?`coerce-sos4R` ``.
 
 ## Inspect Requests and Verbose Printing
 

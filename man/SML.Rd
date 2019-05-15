@@ -18,7 +18,6 @@
 \alias{sosBoundedBy,SensorML-method}
 \alias{sosGetCRS,SensorML-method}
 
-\alias{as.SensorML.SpatialPointsDataFrame}
 \alias{plot.SensorML}
 
 \alias{plot,SensorML,missing-method}
