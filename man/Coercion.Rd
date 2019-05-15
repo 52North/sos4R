@@ -10,7 +10,7 @@
 \alias{as.SpatialPointsDataFrame.SensorML}
 
 \alias{as.SpatialPoints.GmlDirectPosition}
-\alias{as.SpatialPoints.GmlEnvelope}
+\alias{as.SpatialPolygons.GmlEnvelope}
 \alias{as.SpatialPoints.GmlFeatureProperty}
 \alias{as.SpatialPoints.GmlPoint}
 \alias{as.SpatialPoints.GmlPointProperty}
@@ -18,6 +18,9 @@
 \alias{as.SpatialPoints.MonitoringPoint}
 
 \alias{as.SpatialPoints.SaSamplingPoint}
+
+\alias{as.SpatialPoints.SamsSamplingFeature}
+\alias{as.SpatialPoints.SamsShape}
 
 \alias{as.SpatialPolygons.SosObservationOffering}
 
