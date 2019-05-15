@@ -407,7 +407,7 @@ setMethod(f = "sosRequest",
                            updateSequence = updateSequence,
                            owsVersion = owsVersion,
                            acceptLanguages = acceptLanguages)
-  if (verbose) cat("[.getCapabilities_1.0.0] REQUEST:\n", toString(.gc), "\n")
+  if (verbose) cat("[.getCapabilities_1.0.0] REQUEST:\n", toString(gc), "\n")
 
   response = sosRequest(sos = sos,
                         request = gc,

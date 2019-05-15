@@ -42,7 +42,7 @@
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
       filename <- saveOriginal
-      if (verbose) cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", .filename, "'.\n", sep = "")
+      if (verbose) cat("[.getDataAvailability_1.0.0] Using saveOriginal parameter for file name: '", filename, "'\n", sep = "")
     }
     else if (is.logical(saveOriginal)) {
       if (saveOriginal) {
@@ -58,7 +58,7 @@
                                       featuresOfInterest = featuresOfInterest,
                                       offerings = offerings)
 
-  if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(.gda), "\n")
+  if (verbose) cat("[.getDataAvailability_1.0.0] REQUEST:\n", toString(gda), "\n")
 
   response <- sosRequest(sos = sos,
                          request = gda,

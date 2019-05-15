@@ -167,14 +167,14 @@
     cat("[.getCapabilities_2.0.0] of", sosUrl(sos), "\n")
   }
 
-  .gc <- OwsGetCapabilities(service = sosService,
+  gc <- OwsGetCapabilities(service = sosService,
                             acceptVersions = c(sosVersion(sos)), sections = sections,
                             acceptFormats = acceptFormats, updateSequence = updateSequence,
                             owsVersion = owsVersion, acceptLanguages = acceptLanguages)
-  if (verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(.gc), "\n")
+  if (verbose) cat("[.getCapabilities_2.0.0] REQUEST:\n", toString(gc), "\n")
 
   response = sosRequest(sos = sos,
-                        request = .gc,
+                        request = gc,
                         verbose = verbose,
                         inspect = inspect)
   if (inspect) {
@@ -251,7 +251,7 @@
       if (verbose) cat("Using saveOriginal parameter for file name:", filename, "\n")
     }
     else if (is.logical(saveOriginal)) {
-      if (saveOriginal) filename <- paste(cleanupFileName(procedure), ".xml", sep = "")
+      if (saveOriginal) filename <- paste(.cleanupFileName(procedure), ".xml", sep = "")
       if (verbose) cat("Generated file name:", filename, "\n")
     }
 

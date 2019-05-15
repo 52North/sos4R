@@ -1,7 +1,7 @@
 Package: sos4R
 Type: Package
 Title: Client for OGC Sensor Observation Services
-Version: 0.4.0.9000
+Version: 0.4.0.9001
 Date: 2019-04-13
 Authors@R:
   c(person(given = "Daniel",
@@ -31,8 +31,9 @@ Imports:
     httr,
     methods,
     sp,
+    stats,
     stringr,
-    xml2,
+    xml2
 Suggests:
     readr,
     spacetime,
@@ -59,6 +60,7 @@ Encoding: UTF-8
 LazyLoad: TRUE
 ByteCompile: TRUE
 BugReports: https://github.com/52North/sos4R/issues
+VignetteBuilder: knitr
 Collate:
 	Constants.R
 	R-Helper.R
