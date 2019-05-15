@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gda:GetDataAvailabilityResponse xmlns:gda="http://www.opengis.net/sosgda/1.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sosgda/1.0 http://waterml2.org/schemas/gda/1.0/gda.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+  <gda:dataAvailabilityMember gml:id="dam_2">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_2">
+        <gml:beginPosition>2019-03-01T00:10:00.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-28T23:50:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_3">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindMaxGust" xlink:title="WindMaxGust"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_4">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="Humidity" xlink:title="Humidity"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_6">
+    <gda:procedure xlink:href="ws2500-internal" xlink:title="ws2500-internal"/>
+    <gda:observedProperty xlink:href="Humidity" xlink:title="Humidity"/>
+    <gda:featureOfInterest xlink:href="elv-ws2500-internal" xlink:title="52n-serverroom"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_1">
+        <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_7">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="Humidity" xlink:title="Humidity"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_3">
+        <gml:beginPosition>2019-03-01T00:16:55.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-28T23:46:46.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_8">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="Visibility" xlink:title="Visibility"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_9">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindSpeedKmh" xlink:title="WindSpeedKmh"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_10">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="AirTemperature" xlink:title="AirTemperature"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_11">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="AirTemperature" xlink:title="AirTemperature"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_13">
+    <gda:procedure xlink:href="ws2500-internal" xlink:title="ws2500-internal"/>
+    <gda:observedProperty xlink:href="AirTemperature" xlink:title="AirTemperature"/>
+    <gda:featureOfInterest xlink:href="elv-ws2500-internal" xlink:title="52n-serverroom"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_14">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindSpeedBft" xlink:title="WindSpeedBft"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_15">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindSpeedMperSec" xlink:title="WindSpeedMperSec"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_16">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="AthmosphericPressure" xlink:title="AthmosphericPressure"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_18">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="AthmosphericPressure" xlink:title="AthmosphericPressure"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_19">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="ShortwaveRadiation" xlink:title="ShortwaveRadiation"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_20">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WeatherCode" xlink:title="WeatherCode"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_21">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WeatherCodeText" xlink:title="WeatherCodeText"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_22">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindDirectionText" xlink:title="WindDirectionText"/>
+    <gda:featureOfInterest xlink:href="wwu-ws-kli-hsb" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_23">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="RainfallAccumulated" xlink:title="RainfallAccumulated"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_30">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="HailAccumulated" xlink:title="HailAccumulated"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_31">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="WindSpeedMinimum" xlink:title="WindSpeedMinimum"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_32">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="WindSpeedAverage" xlink:title="WindSpeedAverage"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_33">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="HailIntensity" xlink:title="HailIntensity"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_34">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="RainfallPeakIntensity" xlink:title="RainfallPeakIntensity"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_35">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="WindSpeedMaximum" xlink:title="WindSpeedMaximum"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_36">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="WindDirectionMaximum" xlink:title="WindDirectionMaximum"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_37">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="RainfallIntensity" xlink:title="RainfallIntensity"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_38">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="WindDirectionMinimum" xlink:title="WindDirectionMinimum"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_39">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="HailDuration" xlink:title="HailDuration"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_40">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="RainfallDuration" xlink:title="RainfallDuration"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_41">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="InSystemTemperature" xlink:title="InSystemTemperature"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_42">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="HailPeakIntensity" xlink:title="HailPeakIntensity"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_43">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="WindDirectionAverage" xlink:title="WindDirectionAverage"/>
+    <gda:featureOfInterest xlink:href="vaisala-wxt520" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+</gda:GetDataAvailabilityResponse>

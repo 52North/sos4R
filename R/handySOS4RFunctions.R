@@ -296,7 +296,7 @@ setMethod(f = "siteList",
   if (length(unlist(.features)) == 0) {
     .sites <- data.frame("siteID" = character(0), stringsAsFactors = FALSE)
   } else {
-    .sites <- data.frame("siteID" = unique(sort(as.vector(unlist(sosFeaturesOfInterest(.features))))), stringsAsFactors = FALSE)
+    .sites <- data.frame("siteID" = sort(unique(sosFeatureIds(.features)), na.last = NA), stringsAsFactors = FALSE)
   }
   return(.sites)
 }
