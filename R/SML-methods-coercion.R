@@ -30,7 +30,7 @@
 #
 #
 #
-as.SensorML.SpatialPointsDataFrame = function(from) {
+as.SpatialPointsDataFrame.SensorML = function(from) {
   .coords <- sosCoordinates(from, handleNames = TRUE)
   .coordsNames <- names(.coords)
 
@@ -40,7 +40,7 @@ as.SensorML.SpatialPointsDataFrame = function(from) {
     .crs <- sosGetCRS(from)
 
     if (is.null(.crs)) {
-      warning("[as.SensorML.SpatialPointsDataFrame] No CRS from sensor ",
+      warning("[as.SpatialPointsDataFrame.SensorML] No CRS from sensor ",
               "description (using sosGetCRS(...), using default.")
       .crs <- sosGetCRS(sosDefaultReferenceFrameSensorDescription)
     }
@@ -64,19 +64,19 @@ as.SensorML.SpatialPointsDataFrame = function(from) {
                                   data = data.frame(NA_character_)))
   }
 }
-setAs("SensorML", "SpatialPointsDataFrame",
+setAs(from = "SensorML", to = "SpatialPointsDataFrame",
       function(from) {
-        as.SensorML.SpatialPointsDataFrame(from)
+        as.SpatialPointsDataFrame.SensorML(from)
       }
 )
-setAs("SensorML", "SpatialPoints",
+setAs(from = "SensorML", to = "SpatialPoints",
       function(from) {
-        as.SensorML.SpatialPointsDataFrame(from)
+        as.SpatialPointsDataFrame.SensorML(from)
       }
 )
-setAs("SensorML", "Spatial",
+setAs(from = "SensorML", to = "Spatial",
       function(from) {
-        as.SensorML.SpatialPointsDataFrame(from)
+        as.SpatialPointsDataFrame.SensorML(from)
       }
 )
 

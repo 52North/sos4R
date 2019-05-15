@@ -15,9 +15,6 @@
 \alias{sosGetCRS,OmMeasurement-method}
 \alias{names.OmMeasurement}
 
-\alias{as.data.frame.OmMeasurement}
-\alias{as.SpatialPointsDataFrame.OmMeasurement}
-
 \alias{sosUOM,OmMeasurement-method}
 
 

@@ -71,16 +71,16 @@ parseSamplingPoint <- function(obj, sos) {
 #
 # coercion methods ----
 #
-as.SaSamplingPoint.SpatialPoints = function(from) {
+as.SpatialPoints.SaSamplingPoint = function(from) {
   as(from@position, "SpatialPoints")
 }
 setAs("SaSamplingPoint", "SpatialPoints",
       function(from) {
-        as.SaSamplingPoint.SpatialPoints(from)
+        as.SpatialPoints.SaSamplingPoint(from)
       }
 )
 setAs("SaSamplingPoint", "Spatial",
       function(from) {
-        as.SaSamplingPoint.SpatialPoints(from)
+        as.SpatialPoints.SaSamplingPoint(from)
       }
 )

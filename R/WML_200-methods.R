@@ -79,16 +79,16 @@ parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
 #
 # coercion methods ----
 #
-as.MonitoringPoint.SpatialPoints = function(from) {
+as.SpatialPoints.MonitoringPoint = function(from) {
   as(from@shape, "SpatialPoints")
 }
 setAs("MonitoringPoint", "SpatialPoints",
       function(from) {
-        as.MonitoringPoint.SpatialPoints(from)
+        as.SpatialPoints.MonitoringPoint(from)
       }
 )
 setAs("MonitoringPoint", "Spatial",
       function(from) {
-        as.MonitoringPoint.SpatialPoints(from)
+        as.SpatialPoints.MonitoringPoint(from)
       }
 )

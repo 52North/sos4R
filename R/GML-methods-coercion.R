@@ -27,7 +27,7 @@
 #                                                                              #
 ################################################################################
 
-as.GmlEnvelope.SpatialPolygons = function(from) {
+as.SpatialPolygons.GmlEnvelope = function(from) {
   # create clockwise, first row equals last row
   crs <- sosGetCRS(obj = from)
 
@@ -59,30 +59,30 @@ as.GmlEnvelope.SpatialPolygons = function(from) {
 }
 setAs("GmlEnvelope", "SpatialPolygons",
       function(from) {
-        as.GmlEnvelope.SpatialPolygons(from)
+        as.SpatialPolygons.GmlEnvelope(from)
       }
 )
 setAs("GmlEnvelope", "Spatial",
       function(from) {
-        as.GmlEnvelope.SpatialPolygons(from)
+        as.SpatialPolygons.GmlEnvelope(from)
       }
 )
 
-as.GmlPoint.SpatialPoints = function(from) {
+as.SpatialPoints.GmlPoint = function(from) {
   as(from@pos, "SpatialPoints")
 }
 setAs("GmlPoint", "SpatialPoints",
       function(from) {
-        as.GmlPoint.SpatialPoints(from)
+        as.SpatialPoints.GmlPoint(from)
       }
 )
 setAs("GmlPoint", "Spatial",
       function(from) {
-        as.GmlPoint.SpatialPoints(from)
+        as.SpatialPoints.GmlPoint(from)
       }
 )
 
-as.GmlPointProperty.SpatialPoints = function(from) {
+as.SpatialPoints.GmlPointProperty = function(from) {
   if (!is.na(from@href))
     stop("GML PointProperty with href, cannot coerce reference property.")
 
@@ -90,16 +90,16 @@ as.GmlPointProperty.SpatialPoints = function(from) {
 }
 setAs("GmlPointProperty", "SpatialPoints",
       function(from) {
-        as.GmlPointProperty.SpatialPoints(from)
+        as.SpatialPoints.GmlPointProperty(from)
       }
 )
 setAs("GmlPointProperty", "Spatial",
       function(from) {
-        as.GmlPointProperty.SpatialPoints(from)
+        as.SpatialPoints.GmlPointProperty(from)
       }
 )
 
-as.GmlDirectPosition.SpatialPoints = function(from) {
+as.SpatialPoints.GmlDirectPosition = function(from) {
   crs <- sosGetCRS(obj = from)
   if (is.logical(crs))
     stop("CRS is missing in GmlDirectPosition, cannot coerce to Spatial class")
@@ -108,16 +108,16 @@ as.GmlDirectPosition.SpatialPoints = function(from) {
 }
 setAs("GmlDirectPosition", "SpatialPoints",
       function(from) {
-        as.GmlDirectPosition.SpatialPoints(from)
+        as.SpatialPoints.GmlDirectPosition(from)
       }
 )
 setAs("GmlDirectPosition", "Spatial",
       function(from) {
-        as.GmlDirectPosition.SpatialPoints(from)
+        as.SpatialPoints.GmlDirectPosition(from)
       }
 )
 
-as.GmlFeatureProperty.SpatialPoints = function(from) {
+as.SpatialPoints.GmlFeatureProperty = function(from) {
   if (!is.na(from@href))
     stop("GML FeatureProperty with href, cannot coerce reference property.")
 
@@ -125,11 +125,11 @@ as.GmlFeatureProperty.SpatialPoints = function(from) {
 }
 setAs("GmlFeatureProperty", "SpatialPoints",
       function(from) {
-        as.GmlFeatureProperty.SpatialPoints(from)
+        as.SpatialPoints.GmlFeatureProperty(from)
       }
 )
 setAs("GmlFeatureProperty", "Spatial",
       function(from) {
-        as.GmlFeatureProperty.SpatialPoints(from)
+        as.SpatialPoints.GmlFeatureProperty(from)
       }
 )

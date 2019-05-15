@@ -214,7 +214,6 @@ setClass("GmlFeatureProperty",
 setClassUnion(name = "GmlFeatureOrGmlFeaturePropertyOrNULL",
               members = c("GmlFeatureProperty", "GmlFeature", "NULL"))
 
-
 #
 # GmlFeatureCollection ----
 #

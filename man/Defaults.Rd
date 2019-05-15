@@ -118,22 +118,24 @@ SosDefaultBinding()
 # usage of defaults in construction method for SOS class
 sos <- SOS("http://mysos.com/sos", binding = SosDefaultBinding(),
 		timeFormat = sosDefaultTimeFormat)
-}
 
 # functions to disable all parsing
 SosDisabledParsers()
+}
+
 
 # Replace a parsing function
 myER <- function(xml) {
 	return("EXCEPTION!!!11")
 }
-SosParsingFunctions("ExceptionReport" = myER)
+myParsingFunctions <- SosParsingFunctions("ExceptionReport" = myER)
 
 # use inclusion and exclusion, important: even the just added function needs to
 # be included manually!
-SosParsingFunctions("ExceptionReport" = myER,
+myParsingFunctions <- SosParsingFunctions("ExceptionReport" = myER,
 	include = c("GetObservation", "DescribeSensor", "ExceptionReport"))
-SosParsingFunctions(exclude = c("GetObservation", "DescribeSensor"))
+
+myParsingFunctions <- SosParsingFunctions(exclude = c("GetObservation", "DescribeSensor"))
 
 \dontrun{
 # Replace an encoding function
@@ -154,22 +156,18 @@ sosDataFieldConverters(mySos)
 # inspecting XML using dummy parsing function
 sos = SOS(url = "http://mysos.com/sos", parsers = SosDisabledParsers)
 describeSensor(sos, sosProcedures(sos)[[1]])
-}
-
-# a list of example services
-SosExampleServices()
-
-# a named list of all defaults
-SosDefaults()
 
 # replace the parsing functions with the default ones
-\dontrun{
 sos <- SosResetParsingFunctions(sos)
+}
+
+\dontrun{
+# a named list of all defaults
+SosDefaults()
 }
 
 # parsing options used by xml2
 SosDefaultParsingOptions()
-
 }
 
 \keyword{misc}

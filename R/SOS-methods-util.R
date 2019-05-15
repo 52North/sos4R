@@ -297,7 +297,7 @@ setMethod(f = "sosCapabilitiesDocumentOriginal",
                                   request = gc,
                                   verbose = verbose,
                                   inspect = FALSE)
-            return(.response)
+            return(response)
           }
 )
 

@@ -17,8 +17,8 @@
 
 \alias{sosBoundedBy,SensorML-method}
 \alias{sosGetCRS,SensorML-method}
+\alias{sosTime,SensorML-method}
 
-\alias{as.SensorML.SpatialPointsDataFrame}
 \alias{plot.SensorML}
 
 \alias{plot,SensorML,missing-method}
@@ -37,12 +37,13 @@ Objects can be created by calls to the construction method in the form \code{Sen
 
 \section{Slots}{
   \describe{
-    \item{\code{xml}:}{Object of class \code{"XMLInternalDocument"}, holds the XML representation of the sensor description.}
+    \item{\code{boundedBy}:}{Object of class \code{"matrix"}, the bounding box of the sensor.}
     \item{\code{coords}:}{Object of class \code{"data.frame"}, holds the position of the sensor.}
+    \item{\code{description}:}{Object of class \code{"character"}, a normal text description of the sensor.}
     \item{\code{id}:}{Object of class \code{"character"}, the main identifier of the sensor.}
     \item{\code{name}:}{Object of class \code{"character"}, a naming identifier of the sensor.}
-    \item{\code{description}:}{Object of class \code{"character"}, a normal text description of the sensor.}
-    \item{\code{boundedBy}:}{Object of class \code{"matrix"}, the bounding box of the sensor.}
+    \item{\code{validTime}:}{Object of class \code{"GmlTimeObjectOrNULL"}, the time period or instance for which the description is valid (only SOS 2.0.0).}
+    \item{\code{xml}:}{Object of class \code{"XMLInternalDocument"}, holds the XML representation of the sensor description.}
   }
 }
 
@@ -79,6 +80,16 @@ sosName(mySensor)
 sosBoundedBy(mySensor)
 sosCoordinates(mySensor)
 sosGetCRS(mySensor)
+
+# valid time from SOS 2.0.0
+mySOS2 <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             binding = "KVP",
+             version = "2.0.0")
+mySensor2 <- describeSensor(sos = mySOS2,
+		procedure = sosProcedures(mySOS2)[[1]],
+		outputFormat = 'text/xml; subtype="sensorML/1.0.1"')
+
+sosTime(mySensor2)
 
 \dontrun{
 plot(mySensor)

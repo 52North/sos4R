@@ -28,6 +28,7 @@ test_that("identifier is parsed", {
   sams.doc <- xml2::xml_root(x = xml2::read_xml(x = sams1))
   samsSF <- parseSams200SamplingFeature(obj = sams.doc, sos = testsos)
   expect_equal(samsSF@identifier, "foi-1")
+  expect_equal(sosFeatureIds(samsSF), "foi-1")
 })
 
 test_that("name is parsed", {

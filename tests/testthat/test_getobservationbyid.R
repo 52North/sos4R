@@ -61,7 +61,7 @@ test_that("KVP encoding works (2.0.0)", {
   expect_match(request, "observation=http%3A%2F%2Fobservation%2F100,http%3A%2F%2Fobservation%2F200")
 })
 
-context("GetObservationById: integration test\n")
+context("GetObservationById: integration tests\n")
 
 test_that("KVP (2.0.0)", {
   skip_on_cran()
