@@ -7,6 +7,10 @@
 \alias{print,DataAvailabilityMember-method}
 \alias{show,DataAvailabilityMember-method}
 \alias{toString,DataAvailabilityMember-method}
+\alias{sosFeaturesOfInterest,DataAvailabilityMember-method}
+\alias{sosObservedProperties,DataAvailabilityMember-method}
+\alias{sosProcedures,DataAvailabilityMember-method}
+\alias{sosTime,DataAvailabilityMember-method}
 \alias{SosGetDataAvailability_1.0.0}
 \alias{SosGetDataAvailability_1.0.0-class}
 

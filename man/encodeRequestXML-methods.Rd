@@ -13,6 +13,7 @@
 \alias{encodeRequestXML,SosEventTime,SOS-method}
 \alias{encodeRequestXML,SosFeatureOfInterest,SOS-method}
 \alias{encodeRequestXML,SosGetFeatureOfInterest_2.0.0,SOS-method}
+\alias{encodeRequestXML,SosGetFeatureOfInterest_2.0.0-method}
 \alias{encodeRequestXML,XMLNode,SOS-method}
 
 \title{Methods for Encoding Requests to SOS in XML Format}

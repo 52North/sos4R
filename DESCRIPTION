@@ -41,6 +41,7 @@ Suggests:
     mapdata,
     maps,
     maptools,
+    mapview,
     xts,
     testthat,
     rgdal,

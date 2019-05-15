@@ -99,7 +99,7 @@ test_that("All feature members identified and parsed", {
   expect_equal(featureClasses, c("SamsSamplingFeature", "SamsSamplingFeature", "MonitoringPoint"))
 })
 
-context("GetFeatureOfInterest: integration test\n")
+context("GetFeatureOfInterest: integration tests\n")
 
 test_that("KVP (2.0.0)", {
   skip_on_cran()

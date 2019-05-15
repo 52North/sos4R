@@ -80,6 +80,10 @@
 \alias{parseTextEncoding}
 \alias{parseTime}
 
+\alias{parseDescribeSensorResponse}
+\alias{parseEnvelope}
+\alias{parseGetObservationByIdResponse}
+
 \title{Parsing Functions for XML Documents and Elements}
 
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}
@@ -138,7 +142,6 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
   \item{sos}{An object of class \link{SOS-class}, which may be utilized/required by some parsing functions to access other parsing functions or encoding information.}
   \item{verbose}{A boolean value indication whether information is printed out to the console during the process - potentially a lot of output!}
   \item{namespaces}{A vector of namespace prefixes and definitions to use.}
-  \item{format}{A character string defining the time format to be used in \code{strptime}.}
   \item{values}{The values to be parsed in \code{parseValues(...)}.}
   \item{fields}{Field information  in \code{parseValues(...)}, a named list.}
   \item{file}{Name of the file to be parsed in \code{sosParse(...)}.}
@@ -151,6 +154,8 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
 The naming of the functions follow the following rule: parse[optional: namespace prefix][name of the XML element to be parsed]
 
 Not all parsing function that have a \code{SOS} object or \code{verbose} in their signature, but few actually use it at this points of development. Some of the parsing functions are \strong{exchangeable} when creating a new SOS connection. Please see the examples!
+
+Functions parsing time rely on the slot \code{timeFormat} of \code{SOS} objects.
 
 \code{parseOM} is a special function in the respect that it matches sub parsing function depending on an objects \code{xmlName} from the list of the given \code{SOS}'s parsing functions.
 
@@ -179,7 +184,7 @@ er.doc <- xml2::read_xml(paste0("<ows:ExceptionReport xmlns:ows=\"http://www.ope
   "<ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\">",
   "<ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version",
   " of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>"))
-er.parsed <- parseOwsExceptionReport(er.doc)
+er.parsed <- parseOwsExceptionReport(er.doc, sos = SOS_Test())
 print(er.parsed)
 utils::str(er.parsed)
 

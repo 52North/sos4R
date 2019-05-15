@@ -365,8 +365,9 @@ SOS_Test(name = "test",
   \item{useDCPs}{See the corresponding slot description.}
   \item{dcpFilter}{See the corresponding slot description.}
   \item{additionalKVPs}{See the corresponding slot description.}
-  \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
   \item{name}{Name of the test SOS class.}
+  \item{namespaces}{Namespace definitions to be used for parsing and encoding or responses and requests, passed to \code{ns} argument of \pkg{xml2} functions.}
+  \item{...}{Additional parameters that are passed on to the \code{\link{getObservation}} call that is done within this function.}
 }
 
 \value{The construction functions returns an object of class \code{\link{SOS-class}}.}

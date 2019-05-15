@@ -468,7 +468,7 @@ setMethod(f = "sites",
   }
   # set-up base dataframe
   nrows <- length(.sites)
-  .sitesDataFrame <- st_sf(geometry = st_sfc(lapply(1:nrows, function(x) st_geometrycollection())))
+  .sitesDataFrame <- sf::st_sf(geometry = sf::st_sfc(lapply(1:nrows, function(x) sf::st_geometrycollection(x = x))))
   # set values for phenomena at stations
   # for each station
   for (.site in .sites) {
