@@ -536,8 +536,10 @@ setMethod(f = "sites",
 .listStationsAsSPDF <- function(sos) {
   # get all stations
   .sites <- getFeatureOfInterest(sos)
-  if (is.null(.sites) || !is.list(.sites) || length(.sites) < 1) {
-    stop("Continue implementation here: handySOS4Rfunctions.R:442: return empty dataframe")
+  if (is.null(.sites) || is.list(.sites) && length(.sites) < 1) {
+    return(SpatialPointsDataFrame(coords = SpatialPoints(data.frame(x = 0, y = 0))[-1,],
+                                  data = data.frame("siteID" = character(0), stringsAsFactors = FALSE),
+                                  match.ID = FALSE))
   }
   stop("Continue implementation here: handySOS4Rfunctions.R:444: return filled dataframe")
 }
