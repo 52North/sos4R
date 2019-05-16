@@ -70,7 +70,7 @@ if (!isGeneric("phenomena")) {
 #
 setMethod(f = "phenomena",
           signature = signature(sos = "SOS_2.0.0"),
-          def = function(sos,
+          definition = function(sos,
                          includeTemporalBBox,
                          includeSiteId) {
             stopifnot(inherits(sos, "SOS_2.0.0"))
@@ -217,11 +217,11 @@ if (!isGeneric("siteList")) {
                                    "includeTemporalBBox",
                                    "phenomena"),
              def = function(sos,
-                            empty=FALSE,                 # filter
-                            timeInterval=NA_character_,  # filter
-                            includePhenomena=FALSE,      # meta data
-                            includeTemporalBBox=FALSE,   # meta data
-                            phenomena=list()) {          # filter
+                            empty = FALSE,                 # filter
+                            timeInterval = NA_character_,  # filter
+                            includePhenomena = FALSE,      # meta data
+                            includeTemporalBBox = FALSE,   # meta data
+                            phenomena = list()) {          # filter
                standardGeneric("siteList")
              })
 }
@@ -231,7 +231,7 @@ if (!isGeneric("siteList")) {
 #
 setMethod(f = "siteList",
           signature = signature(sos = "SOS_2.0.0"),
-          def = function(sos,
+          definition = function(sos,
                          empty,
                          timeInterval,
                          includePhenomena,
@@ -295,15 +295,15 @@ setMethod(f = "siteList",
 # see: https://github.com/52North/sos4R/issues/86
 #
 .listSites <- function(sos) {
-  .features <- getFeatureOfInterest(sos)
-  stopifnot(!is.null(.features))
-  stopifnot(is.list(.features))
-  if (length(unlist(.features)) == 0) {
-    .sites <- data.frame("siteID" = character(0), stringsAsFactors = FALSE)
+  features <- getFeatureOfInterest(sos)
+  stopifnot(!is.null(features))
+  stopifnot(is.list(features))
+  if (length(unlist(features)) == 0) {
+    sites <- data.frame("siteID" = character(0), stringsAsFactors = FALSE)
   } else {
-    .sites <- data.frame("siteID" = sort(unique(sosFeatureIds(.features)), na.last = NA), stringsAsFactors = FALSE)
+    sites <- data.frame("siteID" = sort(unique(sosFeatureIds(features)), na.last = NA), stringsAsFactors = FALSE)
   }
-  return(.sites)
+  return(sites)
 }
 
 #
@@ -388,7 +388,7 @@ if (!isGeneric("sites")) {
 #
 setMethod(f = "sites",
           signature = signature(sos = "SOS_2.0.0"),
-          def = function(sos,
+          definition = function(sos,
                          empty,
                          timeInterval,
                          includePhenomena,
@@ -515,29 +515,27 @@ setMethod(f = "sites",
   # set projection for .sitesDataFrame
 }
 
-# getData ####
-# use Units package!
+# getData ----
 #
-# ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ####
+# ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ----
 # getData(sos, phenomena=[List of phenomena], sites=[List of sites])
 # →
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
 #
-# ~ us.3.2: Retrieve sensor values by phenomenon/a and spatial bounding box (in the CRS of the SOS) ####
+# ~ us.3.2: Retrieve sensor values by phenomenon/a and spatial bounding box (in the CRS of the SOS) ----
 # getData(sos, phenomena=[List of phenomena], spatialBBox)
 # →
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
 #
-# ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ####
+# ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ----
 # getData(sos, …, timeInterval=ISO-String)
 # →
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
-
 getData <- function(sos,
-                    phenomena, # no default to force the user to actively pick phenomena
-                    sites, # no default to force the user to actively pick sites
-                    spatialBBox=NA,
-                    timeInterval=NA_character_) {
+                    phenomena,
+                    sites,
+                    spatialBBox = NA,
+                    timeInterval = NA_character_) {
   stopifnot(inherits(sos, "SOS_2.0.0"))
   stopifnot(is.character(timeInterval))
 
@@ -554,10 +552,20 @@ getData <- function(sos,
     }
   }
 
+  observations <- getObservation(sos = sos,
+                                 offering = as.list(sosOfferingIds(sos)), # "all"
+                                 observedProperty = , # phenomena
+                                 responseFormat = om20Namespace, # default by spec, see Table 19
+                                 featureOfInterest = , # sites
+                                 eventTime = , # timeInterval
+                                 BBOX = )
+
+  results <- sosResult(observations)
+
+  return(results)
 }
 
-# getDataAsST ####
-# use Units package!
+# getDataAsST ----
 #
 # ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ####
 # getDataAsST(sos, phenomena=[List of phenomena], sites=[List of sites])
@@ -573,7 +581,6 @@ getData <- function(sos,
 # getDataAsST(sos, …, timeInterval=ISO-String)
 # →
 # SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
-
 getDataAsST <- function(sos,
                         phenomena, # no default to force the user to actively pick phenomena
                         sites, # no default to force the user to actively pick sites
