@@ -43,7 +43,7 @@ test_that("creation temporal filter has a valueReference in SOS 2.0, but not for
   expect_match(requestString200, "&temporalFilter=om%3Atime%2C2019-01-01")
 })
 
-test_that("creation temporal filter includes namespaces in KVP (SOS 2.0.0)", {
+test_that("creation temporal filter includes namespaces in KVP (2.0.0)", {
   testsos20 <- SOS_Test(name = "twozero", version = sos200_version)
   period <- sosCreateTimePeriod(sos = testsos20,
                                 begin = as.POSIXct("2019-01-01"),
@@ -56,7 +56,7 @@ test_that("creation temporal filter includes namespaces in KVP (SOS 2.0.0)", {
   expect_match(request, "&namespaces=xmlns%28om%2Chttp%3A%2F%2Fwww.opengis.net%2Fom%2F2.0%29")
 })
 
-test_that("multiple temporal filters give warning in KVP (SOS 2.0.0)", {
+test_that("multiple temporal filters give warning in KVP (2.0.0)", {
   testsos20 <- SOS_Test(name = "twozero", version = sos200_version)
   period <- sosCreateTimePeriod(sos = testsos20,
                                 begin = as.POSIXct("2019-01-01"),
@@ -67,7 +67,7 @@ test_that("multiple temporal filters give warning in KVP (SOS 2.0.0)", {
                  "Discarding(.*)KVP")
 })
 
-test_that("feature of interest in KVP (SOS 2.0.0)", {
+test_that("feature of interest in KVP (2.0.0)", {
   testsos <- SOS_Test(name = "getobspox", version = sos200_version)
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -84,7 +84,7 @@ feat1 <- GmlFeatureProperty(feature = SamsSamplingFeature(id = "id",
                                                           sampledFeature = "sample",
                                                           shape = SamsShape(GmlPoint(GmlDirectPositionLatLon(1, 2)))))
 
-test_that("multiple feature of interest with mixed characters and objects in KVP (SOS 2.0.0)", {
+test_that("multiple feature of interest with mixed characters and objects in KVP (2.0.0)", {
   testsos <- SOS_Test(name = "getobspox", version = sos200_version)
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -94,7 +94,7 @@ test_that("multiple feature of interest with mixed characters and objects in KVP
   expect_match(request, "featureOfInterest=http%3A%2F%2Ffeature%2F0,http%3A%2F%2Ffeature%2F1")
 })
 
-test_that("observed property/ies in KVP (SOS 2.0.0)", {
+test_that("observed property/ies in KVP (2.0.0)", {
   testsos <- SOS_Test(name = "getobspox", version = sos200_version)
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -111,7 +111,7 @@ erature", "prop2", "prop3"))
   expect_match(request, "observedProperty=http%3A%2F%2Fsweet.jpl.nasa.gov%2F2.0%2FatmoThermo.owl%23EffectiveTemp%0Aerature,prop2,prop3")
 })
 
-test_that("spatial filter in KVP (SOS 2.0.0)", {
+test_that("spatial filter in KVP (2.0.0)", {
   testsos <- SOS_Test(name = "getobspox", version = sos200_version)
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -125,7 +125,7 @@ test_that("spatial filter in KVP (SOS 2.0.0)", {
   expect_match(request, "spatialFilter=om%3AfeatureOfInterest%2F*%2Fsams%3Ashape%2C22.32%2C11.2%2C32.32%2C22.2%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326")
 })
 
-test_that("multiple offering IDs with KVP (SOS 2.0.0)", {
+test_that("multiple offering IDs with KVP (2.0.0)", {
   testsos <- SOS_Test(name = "getobspox", version = sos200_version)
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -157,7 +157,7 @@ off2b <- SosObservationOffering_2.0.0(id = "off2b",
                                       featureOfInterestType = list("foiB"),
                                       responseFormat = list("rf"))
 
-test_that("multiple offerings (mixed IDs and objects) with KVP (SOS 2.0.0)", {
+test_that("multiple offerings (mixed IDs and objects) with KVP (2.0.0)", {
   testsos <- SOS_Test(name = "getobspox", version = sos200_version)
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -171,12 +171,21 @@ test_that("multiple offerings (mixed IDs and objects) with KVP (SOS 2.0.0)", {
   expect_match(request, "offering=http%3A%2F%2Foff1a,off2a,off2b,off3")
 })
 
-test_that("responseFormat with KVP (SOS 2.0.0)", {
+test_that("responseFormat with KVP (2.0.0)", {
   testsos <- SOS_Test(name = "getobspox", version = sos200_version)
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
                                     offering = list("http://off1a"),
                                     responseFormat = "http://www.opengis.net/om/2.0")
+  request <- encodeRequestKVP(obj = getobs, sos = testsos)
+  expect_match(request, "responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0")
+})
+
+test_that("default response format with KVP (2.0.0)", {
+  testsos <- SOS_Test(name = "getobspox", version = sos200_version)
+  getobs <- SosGetObservation_2.0.0(service = "ser",
+                                    version = "2.0.0",
+                                    offering = list("http://off1a"))
   request <- encodeRequestKVP(obj = getobs, sos = testsos)
   expect_match(request, "responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0")
 })

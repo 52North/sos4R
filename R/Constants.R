@@ -171,6 +171,7 @@ SosSupportedBindings <- function() {
 mimeTypeCSV <- 'text/csv'
 mimeTypeXML <- 'text/xml'
 mimeTypeOM <- 'text/xml;subtype="om/1.0.0"'
+mimeTypeOM20 <- 'http://www.opengis.net/om/2.0'
 mimeTypeSML <- 'text/xml;subtype="sensorML/1.0.1"'
 mimeSubtypeOM <- '"om/1.0.0"'
 

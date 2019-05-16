@@ -414,6 +414,8 @@ sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuring
 sosDefaultTemporalValueReference <- "om:phenomenonTime"
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"
 
+sos200DefaultGetObsResponseFormat <- mimeTypeOM20
+
 # use for the names created data.frames
 sosDefaultColumnNameFeatureIdentifier <- "feature"
 sosDefaultColumnNameLat <- "lat"
