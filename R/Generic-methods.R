@@ -97,19 +97,30 @@ if (!isGeneric("getObservationById"))
 #
 if (!isGeneric("getObservation"))
   setGeneric(name = "getObservation",
-             signature = signature("sos", "offering", "observedProperty",
-                                   "responseFormat", "srsName", "eventTime", "procedure",
-                                   "featureOfInterest", "result", "resultModel",
-                                   "responseMode", "BBOX", "verbose", "inspect",
+             signature = signature("sos",
+                                   "offering",
+                                   "observedProperty",
+                                   "responseFormat",
+                                   "srsName",
+                                   "eventTime",
+                                   "procedure",
+                                   "featureOfInterest",
+                                   "result",
+                                   "resultModel",
+                                   "responseMode",
+                                   "BBOX",
+                                   "verbose",
+                                   "inspect",
                                    "saveOriginal"),
              def = function(sos,
-                            offering,
-                            observedProperty = sosObservedProperties(obj = offering),
-                            responseFormat = sosDefaultGetObsResponseFormat,
+                            # mandatory for SOS 1.0.0, different defaults set in the method for SOS_1.0.0:
+                            offering = list(),
+                            observedProperty = list(),
+                            responseFormat = as.character(NA),
                             # optional:
                             srsName = as.character(NA),
                             eventTime = list(), # sosCreateEventTimeList(time = sosTime(obj = offering))
-                            procedure = as.character(NA), # sosProcedures(obj = offering),
+                            procedure = list(), # sosProcedures(obj = offering),
                             featureOfInterest = NULL,
                             result = NULL,
                             resultModel = as.character(NA),
@@ -117,7 +128,8 @@ if (!isGeneric("getObservation"))
                             BBOX = as.character(NA),
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
-                            saveOriginal = NULL) {
+                            saveOriginal = NULL,
+                            ...) {
                standardGeneric("getObservation")
              })
 

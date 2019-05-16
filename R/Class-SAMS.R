@@ -41,6 +41,8 @@ setClass("SamsShape",
          # TODO is this class inheritence required? Fields of GmlGeometry are contained in GmlPoint.
          contains = "GmlGeometry"
 )
+setClassUnion(name = "SamsShapeOrNULL",
+              members = c("SamsShape", "NULL"))
 
 SamsShape <- function(point) {
   new("SamsShape", point = point)

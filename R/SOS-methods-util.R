@@ -186,7 +186,7 @@ setMethod(f = "sosCreateTime",
 }
 
 setMethod(f = "sosCreateEventTime",
-          signature = signature(time = "GmlTimeGeometricPrimitive"),
+          signature = signature(time = "GmlTimeObject"),
           definition = function(time, operator) {
 
             if (operator == ogcTempOpTMAfterName) {

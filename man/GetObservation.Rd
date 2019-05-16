@@ -1,6 +1,8 @@
 \name{GetObservation}
 \Rdversion{1.1}
 
+\alias{getObservation-methods}
+%\docType{methods}
 \docType{class}
 
 \alias{GetObservation}
@@ -17,12 +19,43 @@
 \alias{print,SosGetObservationById-method}
 \alias{toString,SosGetObservationById-method}
 
+\alias{getObservation}
+\alias{getObservation-methods}
+\alias{getObservation,SOS,character-method}
+\alias{getObservation,SOS,SosObservationOffering-method}
+\alias{getObservation,SOS_1.0.0,character-method}
+\alias{getObservation,SOS_1.0.0,SosObservationOffering-method}
+\alias{getObservationById}
+\alias{getObservationById-methods}
+\alias{getObservationById,SOS,character-method}
+\alias{getObservationById,SOS_1.0.0,character-method}
+
+% Version 2.0.0
+\alias{getObservation,SOS_2.0.0,SosObservationOffering_2.0.0-method}
+\alias{getObservation,SOS_2.0.0,character-method}
+\alias{getObservationById,SOS_2.0.0,character-method}
+
 \alias{SosGetObservation_2.0.0}
 \alias{SosGetObservation_2.0.0-class}
 
-\title{GetObservation and GetObservationById Request Objects}
+\title{Request data with GetObservation and GetObservationById requests}
 
-\description{Classes (and their construction functions) to request observations from a Sensor Observation Service.}
+\description{
+\code{getObservation(..)} can be used to retrieve data from a SOS instance by sending a GetObservation request to the given SOS.
+
+\code{getObservationById(..)} can be used to retrieve data from a SOS instance by sending a GetObservationById request to the given SOS.
+
+These methods take a variety of inputs (see slot definitions), of which only \code{offering} is mandatory for GetObservation operation, and the \code{observationId} for GetObservationById operation.
+
+This document also describes classes (and their construction functions) for the operations.
+}
+
+\section{Methods}{
+\describe{
+	\item{\code{signature(sos = "SOS", offering = "SosObservationOffering")} or \code{signature(sos = "SOS", offering = "character")}}{Request observation data from the given SOS for the given offering (either character identifier or an object of class \code{SosObservationOffering}).}
+	\item{\code{signature(sos = "SOS", observationId = "character")}}{Request observation data from the given SOS for the given observation identifier.}
+}
+}
 
 \usage{
 SosGetObservation(service, version, offering, observedProperty, responseFormat,
@@ -47,7 +80,7 @@ Objects can be created by calls to the construction functions of the form \code{
     \item{\code{featureOfInterest}:}{Object of class \code{"SosFeatureOfInterestOrNULL"}, specifies the feature for which observations are requested. This can either be represented by a reference to a feature ID advertised in the capabilities document or can be a spatial constraint}
     \item{\code{observationId}:}{Object of class \code{"character"}, the Id of the requested observation.}
     \item{\code{observedProperty}:}{Object of class \code{"list"}, specifies the phenomenon or phenomena for which observations are requested.}
-    \item{\code{offering}:}{Object of class \code{"character"}, specifies the offering URI advertised in the GetCapabilities document.}
+    \item{\code{offering}:}{For \bold{SOS 1.0.0}: object of class \code{"character"} for \bold{SOS 2.0.0} a list, specifies the offering advertised in the GetCapabilities document.}
     \item{\code{procedure}:}{Object of class \code{"list"}, procedure parameter specifies the sensor system(s) for which observations are requested.}
     \item{\code{request}:}{Object of class \code{"character"}, the name of the request.}
     \item{\code{responseFormat}:}{Object of class \code{"character"}, specifies the desired resultFormat MIME content type for transport of the results.}
@@ -61,19 +94,11 @@ Objects can be created by calls to the construction functions of the form \code{
   }
 }
 
-\section{Extends}{
-\bold{SosGetObservation:}
-Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
-
-\bold{SosGetObservationById:}
-Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
-}
-
 \arguments{
   \item{service}{The \verb{service} attribute of the request, e.g. \samp{SOS}.}
   \item{version}{The \verb{version} attribute of the request, e.g. \samp{1.0.0}.}
   \item{observationId}{The value of the \verb{ObservationId} element in the request, e.g. \samp{o_12345}, which is to be optained. This could have been obtained by the client via a URL in a feed, alert, or some other notification.}
-  \item{offering}{The \verb{offering} element value in the request, e.g. \samp{"temperatures"}. All other parameters are depending on the selected offering.}
+  \item{offering}{The \verb{offering} element value in the request, e.g. \samp{"temperatures"}. All other parameters are depending on the selected offering. This must be a character string for an object of class \link{SosObservationOffering-class} obtained by \code{sosOfferings(..)}; can be a list for \bold{SOS 2.0.0} with both character strings and objects.}
   \item{observedProperty}{A list of values for \verb{observedProperty} elements in the request, e.g. \samp{"urn:property:AirTemperature"}. IDs of phenomena are advertised in capabilities document.}
   \item{responseFormat}{The \verb{responseFormat} element value in the request, e.g. \samp{text/xml;subtype="om/1.0.0"}. ID of the output format to be used for the requested data. The supported output formats are listed in the selected offering capabilities.}
   \item{srsName}{The \verb{srsName} attribute of the request, e.g. \samp{urn:ogc:def:crs:EPSG:4326}.}
@@ -87,19 +112,25 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
     \item{valueReferenceTemporalFilter}{The property name used in a temporal filter for SOS 2.0 KVP reuests, ignore for SOS 1.0.0.}
 }
 
-\section{Methods}{
-  \describe{
-    \item{encodeRequestKVP}{\code{signature(obj = "SosGetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to key-value pair format, see \code{\link{encodeKVP}}.}
-    \item{encodeRequestXML}{\code{signature(obj = "SosGetObservationById")} or \code{signature(obj = "GetObservation")}: Transform the information to XML format, see \code{\link{encodeXML}}.}
-    \item{encodeRequestSOAP}{\code{signature(obj = "SosGetObservation")}: Transform the information to XML format for SOAP requests.}
-	 }
+\section{Extends}{
+\bold{SosGetObservation:}
+Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
+
+\bold{SosGetObservationById:}
+Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 }
 
 \details{
 Please consult the specification for details on possible contents of the request.
 }
 
-\value{An object of class \link{SosGetObservation-class} or \link{SosGetObservationById-class} respectively.}
+\value{
+\bold{Constructor functions:}
+An object of class \link{SosGetObservation-class} or \link{SosGetObservationById-class} respectively.
+
+\bold{Request functions:}
+A list of or an object of class \link{OmObservationCollection-class} or \link{OmObservation-class} depending on the returned content.
+}
 
 \references{
 See OGC 06-009r6 section 8.4, or the XSD schema file at \url{http://schemas.opengis.net/sos/1.0.0/sosGetObservation.xsd}.
@@ -112,6 +143,27 @@ See OGC 06-009r6 section 10.1, or the XSD schema file at \url{http://schemas.ope
 \seealso{\code{\link{SosGetObservation-class}}, \code{\link{SosGetObservationById-class}}}
 
 \examples{
+\dontrun{
+# request observations
+mySOSpox <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+             binding = "POX", useDCPs = FALSE)
+
+myOffering <- sosOfferings(mySOS)[["ws2500"]]
+period <- sosCreateTimePeriod(sos = mySOS,
+		begin = as.POSIXct("2015/11/01"),
+		end = as.POSIXct("2015/11/02"))
+eventTime <- sosCreateEventTimeList(period)
+
+nov2015 <- getObservation(sos = mySOSpox,
+                          offering = myOffering,
+                          eventTime = eventTime)
+
+# request observation by identifier and get the data
+obsId <- getObservationById(sos = mySOSpox,
+                            observationId = "http://www.52north.org/test/observation/1")
+sosResult(obsId, coordinates = TRUE)
+}
+
 showClass("SosGetObservation")
 showClass("SosGetObservationById")
 
@@ -136,4 +188,5 @@ encodeXML(obsByIdReq, sos = sos)
 }
 
 \keyword{classes}
+\keyword{methods}
 \keyword{utitlities}

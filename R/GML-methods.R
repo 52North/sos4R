@@ -415,7 +415,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeKVP",
           signature = signature(obj = "GmlTimeInstant", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
-            if (verbose) cat("ENCODE KVP ", class(obj), "\n")
+            if (verbose) cat("[encodeKVP] ", class(obj), "\n")
             time <- encodeKVP(obj = obj@timePosition, sos = sos, verbose = verbose)
             return(time)
           }
@@ -423,7 +423,7 @@ setMethod(f = "encodeKVP",
 setMethod(f = "encodeKVP",
           signature = signature(obj = "GmlTimePosition", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
-            if (verbose) cat("ENCODE KVP ", class(obj), "\n")
+            if (verbose) cat("[encodeKVP] ", class(obj), "\n")
             time <- encodeKVP(obj = obj@time, sos = sos, verbose = verbose)
             return(time)
           }
@@ -432,18 +432,24 @@ setMethod(f = "encodeKVP",
 setMethod(f = "encodeKVP",
           signature = signature(obj = "GmlTimePeriod", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
-            if (verbose) cat("ENCODE KVP ", class(obj), "\n")
+            if (verbose) cat("[encodeKVP] ", class(obj), "\n")
 
             if (!is.null(obj@begin) && !is.null(obj@end)) {
               stop("Encoding of 'begin'/'end' time period not supported")
             }
 
             if (!is.null(obj@beginPosition) && !is.null(obj@endPosition)) {
-              if (verbose) cat("[encodeXML] GmlTimePeriod beginPosition/endPosition found\n")
+              if (verbose) cat("[encodeXML] GmlTimePeriod beginPosition/endPosition found, SOS version:", sos@version, " \n")
+
+              if (sos@version == sos100_version)
+                separator = "::"
+              else if (sos@version == sos200_version)
+                separator = "/"
+              else stop("Unsupported SOS version, don't know separator.")
 
               beginTimeString <- encodeKVP(obj = obj@beginPosition@time, sos = sos, verbose = verbose)
               endTimeString <- encodeKVP(obj = obj@endPosition@time, sos = sos, verbose = verbose)
-              return(paste0(beginTimeString, "::", endTimeString))
+              return(paste0(beginTimeString, separator, endTimeString))
             }
 
             stop("Unsupport GmlTimePeriod: ", toString(obj))

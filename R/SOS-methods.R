@@ -343,7 +343,7 @@ SosGetObservationById <- function(
 
       if (verbose) cat("[.sosRequest_1.0.0] Using DCP:", toString(dcp), "\n")
     }
-    else if (verbose) cat("[.sosRequest_1.0.0] *NOT* using DCP from capabilities:", dcp, "\n")
+    else if (verbose) cat("[.sosRequest_1.0.0] *NOT* using DCP from capabilities, but", toString(dcp), "\n")
 
     .requestString <- toString(.encodedRequest)
 
@@ -432,6 +432,9 @@ setMethod(f = "sosRequest",
   }
 }
 
+#
+# getCapabilities ----
+#
 setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
           definition = function(sos, verbose, inspect, sections, acceptFormats,
                                 updateSequence, owsVersion,	acceptLanguages) {
@@ -444,7 +447,9 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_1.0.0"),
           }
 )
 
-
+#
+# describeSensor ----
+#
 setMethod(f = "describeSensor",
           signature = signature(sos = "SOS_1.0.0", procedure  = "character"),
           definition = function(sos, procedure, outputFormat, verbose, inspect, saveOriginal) {
@@ -525,6 +530,9 @@ setMethod(f = "describeSensor",
   }
 }
 
+#
+# getObservationById ----
+#
 setMethod(f = "getObservationById",
           signature = signature(sos = "SOS_1.0.0", observationId = "character"),
           definition = function(sos, observationId, responseFormat, srsName,
@@ -705,8 +713,8 @@ setMethod(f = "getObservationById",
       .countInfo <- paste(.sum, "result values [", toString(.resultLength), "].")
     }
 
-    cat("[sos4R] Finished getObservation to", sos@url,
-        "\n\t--> received", length(.obs), "observation(s) having", .countInfo , "\n")
+    if (verbose) cat("[sos4R] Finished getObservation to", sos@url,
+                     "\n\t--> received", length(.obs), "observation(s) having", .countInfo , "\n")
     if (!is.null(.filename)) cat("[sos4R] Original document saved:", .filename, "\n")
 
     return(.obs)
@@ -734,8 +742,8 @@ setMethod(f = "getObservationById",
         utils::write.csv(.csv, .filename)
       }
 
-      cat("[sos4R] Finished getObservation to", sos@url, "\n\t",
-          "--> received observations with dimensions", toString(dim(.csv)), "\n")
+      if (verbose) cat("[sos4R] Finished getObservation to", sos@url, "\n\t",
+                       "--> received observations with dimensions", toString(dim(.csv)), "\n")
       if (!is.null(.filename)) cat("[sos4R] Original document saved:", .filename, "\n")
 
       return(.csv)
@@ -756,22 +764,51 @@ setMethod(f = "getObservationById",
   return(response)
 }
 
+#
+# getObservation ----
+#
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_1.0.0",
                                 offering = "SosObservationOffering"),
-          definition = function(sos, offering, observedProperty, responseFormat, srsName,
-                                eventTime,	procedure, featureOfInterest, result, resultModel,
-                                responseMode, BBOX, verbose, inspect, saveOriginal) {
-            .offeringId <- offering@id
-            if (verbose)	cat("[getObservation] Requesting offering", .offeringId,
-                             "by SosObservationOffering.\n")
+          definition = function(sos,
+                                offering,
+                                observedProperty,
+                                responseFormat,
+                                srsName,
+                                eventTime,
+                                procedure = NA_character_,
+                                featureOfInterest,
+                                result,
+                                resultModel,
+                                responseMode,
+                                BBOX,
+                                verbose,
+                                inspect,
+                                saveOriginal) {
+            offeringId <- offering@id
+            if (verbose)	cat("[getObservation] Requesting offering", offeringId, "with SosObservationOffering.\n")
 
-            return(.getObservation_1.0.0(sos = sos, offeringId = .offeringId,
-                                         observedProperty = observedProperty,
+            if (is.na(responseFormat))
+              responseFormat <- sosDefaultGetObsResponseFormat
+            if (length(observedProperty) == 0) {
+              obsProps <- sosObservedProperties(sosOfferings(sos)[[offering]])
+              if (verbose) cat("[getObservation] Got observation(s) from offering because none given:", toString(obsProps), "\n")
+            }
+            else {
+              obsProps <- observedProperty
+            }
+
+            if (is.list(procedure) && length(procedure) == 0)
+              proc <- NA_character_
+            else proc <- procedure
+
+            return(.getObservation_1.0.0(sos = sos,
+                                         offeringId = offeringId,
+                                         observedProperty = obsProps,
                                          responseFormat = responseFormat,
                                          srsName = srsName,
                                          eventTime = eventTime,
-                                         procedure = procedure,
+                                         procedure = proc,
                                          featureOfInterest = featureOfInterest,
                                          result = result,
                                          resultModel = resultModel,
@@ -786,34 +823,52 @@ setMethod(f = "getObservation",
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_1.0.0",
                                 offering = "character"),
-          definition = function(sos, offering, observedProperty = list(), responseFormat,
-                         srsName, eventTime,	procedure, featureOfInterest, result,
-                         resultModel, responseMode, BBOX, verbose, inspect,
-                         saveOriginal) {
-            if (verbose)	cat("[getObservation] Requesting offering", offering,
-                             "by name.\n")
+          definition = function(sos,
+                                offering,
+                                observedProperty,
+                                responseFormat = sosDefaultGetObsResponseFormat,
+                                srsName,
+                                eventTime,
+                                procedure,
+                                featureOfInterest,
+                                result,
+                                resultModel,
+                                responseMode,
+                                BBOX,
+                                verbose,
+                                inspect,
+                                saveOriginal) {
+            if (verbose)	cat("[getObservation] Requesting offering", offering, "by name.\n")
 
-            .off <- sosOfferings(sos)[[offering]]
-
+            if (is.na(responseFormat))
+              responseFormat <- sosDefaultGetObsResponseFormat
             if (length(observedProperty) == 0) {
-              .obsProps <- sosObservedProperties(.off)
-              if (verbose) cat("[getObservation] Got observation(s) from offering because none given:",
-                               toString(.obsProps), "\n")
+              obsProps <- sosObservedProperties(sosOfferings(sos)[[offering]])
+              if (verbose) cat("[getObservation] Got observation(s) from offering because none given:", toString(obsProps), "\n")
             }
             else {
-              .obsProps <- observedProperty
+              obsProps <- observedProperty
             }
 
-            return(.getObservation_1.0.0(sos = sos, offeringId = offering,
-                                         observedProperty = .obsProps,
+            if (is.list(procedure) && length(procedure) == 0)
+              proc <- NA_character_
+            else proc <- procedure
+
+            return(.getObservation_1.0.0(sos = sos,
+                                         offeringId = offering,
+                                         observedProperty = obsProps,
                                          responseFormat = responseFormat,
-                                         srsName = srsName, eventTime = eventTime,
-                                         procedure = procedure,
+                                         srsName = srsName,
+                                         eventTime = eventTime,
+                                         procedure = proc,
                                          featureOfInterest = featureOfInterest,
-                                         result = result, resultModel = resultModel,
-                                         responseMode = responseMode, BBOX = BBOX,
+                                         result = result,
+                                         resultModel = resultModel,
+                                         responseMode = responseMode,
+                                         BBOX = BBOX,
                                          verbose = verbose,
-                                         inspect = inspect, saveOriginal = saveOriginal))
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal))
           }
 )
 
@@ -1035,8 +1090,9 @@ setMethod(f = "encodeRequestXML", signature = signature(obj = "SosGetObservation
                                                               verbose = verbose))
             }
             else if (sos@version == sos200_version) {
-              stop(paste("XML request encoding for SOS 2.0 GetObservation",
-                         " not implemented. Use KVP binding."))
+              return(.sosEncodeRequestXMLGetObservation_2.0.0(obj = obj,
+                                                              sos = sos,
+                                                              verbose = verbose))
             } else {
               stop("Version not supported!")
             }
@@ -1308,7 +1364,7 @@ setMethod(f = "encodeXML",
 setMethod(f = "encodeKVP",
           signature = signature(obj = "SosEventTime", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
-            if (verbose) cat("ENCODE KVP ", class(obj), "\n")
+            if (verbose) cat("[encodeKVP] ", class(obj), "\n")
 
             temporalOpsKVP <- encodeKVP(obj = obj@temporalOps,
                                         sos = sos,
@@ -1381,7 +1437,7 @@ setMethod(f = "encodeKVP",
       content <- rawToChar(content)
     }
     xml <- xml2::read_xml(content)
-    if ( !inherits(xml, c("xml_node", "xml_document", "xml_nodeset"))) {
+    if (!inherits(xml, c("xml_node", "xml_document", "xml_nodeset"))) {
       stop(paste("[sos4R]: ERROR: Received content as 'application/octet-stream' that could not be parsed to xml:\n",
                  content, "\n\n"))
     }

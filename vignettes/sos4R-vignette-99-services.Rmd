@@ -42,6 +42,24 @@ ioosdif
 #sosContents(ioosdif)
 ```
 
+## Integrated Ocean Observing System (IOOS)
+
+More information: https://sdf.ndbc.noaa.gov/sos/
+
+This SOS supports **CSV** as a response format.
+
+```{r ioos}
+ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
+              useDCPs = FALSE,
+              timeFormat = "%Y-%m-%dT%H:%M:%SZ")
+ioos.off <- sosOfferings(ioos)
+obs <- getObservation(sos = ioos,
+                      offering = sosName(ioos.off[[100]]),
+                      responseFormat = "text/csv",
+                      observedProperty = sosObservedProperties(ioos.off[[100]])[1])
+obs
+```
+
 ## NOAA National Data Buoy Center
 
 ```{r ndbc}

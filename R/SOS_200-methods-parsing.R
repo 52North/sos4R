@@ -205,7 +205,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
   return(ob)
 }
 
-parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
+parseGetObservationResponse <- function(obj, sos, verbose = FALSE, retrieveFOI = TRUE) {
   if (verbose) {
     cat("[parseGetObservationResponse] entering... \n")
     print(obj)
@@ -219,7 +219,8 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE) {
                          parseObservation_2.0,
                          sos = sos,
                          featureCache = featureCache,
-                         verbose = verbose)
+                         verbose = verbose,
+                         retrieveFOI = retrieveFOI)
 
   return(observations)
 }
