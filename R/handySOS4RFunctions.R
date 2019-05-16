@@ -28,8 +28,20 @@
 #                                                                              #
 ################################################################################
 ## handy top level sos functions
-
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # phenomena ####
+#
+#
+#
 # ~ us.1.1 ####
 # What phenomena are available from a SOS?
 #   phenomena(sos)
@@ -162,7 +174,20 @@ setMethod(f = "phenomena",
   return(.phenomena)
 }
 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # siteList ####
+#
+#
+#
 # ~ us.2.1: List all sites (containing data) ####
 #   siteList(sos)
 # → data.frame[siteID]
@@ -401,8 +426,20 @@ setMethod(f = "siteList",
   }
   return(.filteredDams)
 }
-
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # sites ####
+#
+#
+#
 # ~ us.2.1: List all sites (containing data) ####
 # sites(sos)
 # → SpatialPointsDataFrame[siteID] + coords
@@ -584,7 +621,20 @@ setMethod(f = "sites",
   # set projection for .sitesDataFrame
 }
 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # getData ####
+#
+#
+#
 # use Units package!
 #
 # ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ####
@@ -626,7 +676,20 @@ getData <- function(sos,
 
 }
 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # getDataAsST ####
+#
+#
+#
 # use Units package!
 #
 # ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ####
