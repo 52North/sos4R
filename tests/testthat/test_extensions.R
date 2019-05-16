@@ -1,6 +1,6 @@
-context("extensions")
+context("extensions: integration tests\n")
 
-test_that("replacing a parsing function (integration test)", {
+test_that("replacing a parsing function", {
   skip_on_cran()
 
   myER <- function(xml, sos, verbose) {
@@ -18,7 +18,7 @@ test_that("replacing a parsing function (integration test)", {
   expect_equal(erroneousResponse, "EXCEPTION!!!11")
 })
 
-test_that("disabling all parsing functions (integration test)", {
+test_that("disabling all parsing functions", {
   skip_on_cran()
 
   disabledParserSOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",

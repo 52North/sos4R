@@ -10,10 +10,18 @@
 \alias{print,SosDescribeSensor-method}
 \alias{toString,SosDescribeSensor-method}
 
-\title{Class and Construction Function for "SosDescribeSensor"}
+\alias{describeSensor}
+\alias{describeSensor-methods}
+\alias{describeSensor,SOS,character-method}
+\alias{describeSensor,SOS_1.0.0,character-method}
+\alias{describeSensor,SOS_2.0.0,character-method}
+
+\title{Retrieve Sensor Descriptions from a SOS}
 
 \description{
 The DescribeSensor Operatiosn of a Sensor Observation Service can be used to retrieve metadata of procedures that are available from a SOS. This sensor description is normally encoded in \verb{SensorML}.
+
+The method \code{describeSensor(..)} sends a DescribeSensor request for a description of the given procedure to the given Sensor Observation Service instance. If the procedure is a vector, the method will send multiple requests and combine the results in a list.
 
 Please also consult the specification for details on possible contents of the request.
 
@@ -23,18 +31,31 @@ This functions should not be called directly, but instead using the function \co
 \section{Objects from the Class}{Objects can be created by calling the construction function of the form \code{DescribeSensor(...)}. The contain the procedure identifier that is to be described by a service.}
 
 \usage{
-SosDescribeSensor(service, version, procedure, outputFormat)
-SosDescribeSensor(service, version, procedure, procedureDescriptionFormat)
-SosDescribeSensor(service, version, procedure, procedureDescriptionFormat, validTime)
+describeSensor(sos, procedure, outputFormat, validTime, verbose, inspect, saveOriginal)
+
+# internal constructors:
+# exactly one of outputFormat or procedureDescriptionFormat must be used
+SosDescribeSensor(service, version, procedure, outputFormat = NA_character_,
+                  procedureDescriptionFormat = NA_character_, validTime = NULL)
+}
+
+\section{Methods}{
+	\describe{
+		\item{\code{signature(sos = "SOS", procedure = "character")}}{Method requests a description of the given procedure(s) from the given SOS.}
+	}
 }
 
 \arguments{
   \item{service}{The service attribute of the request, e.g. \samp{SOS}.}
+  \item{sos}{The SOS connection to use.}
   \item{version}{The version attribute of the request, e.g. \samp{1.0.0}.}
   \item{procedure}{The value of the procedure elements in the request, e.g. \samp{urn:procedure:42}.}
   \item{outputFormat}{The value of the output format element in the request, e.g. \samp{text/xml;subtype="sensorML/1.0.1"}.}
   \item{procedureDescriptionFormat}{The desired description format for the procedure, e.g. \samp{http://www.opengis.net/sensorML/1.0.1}. For using facing function \code{describeSensor(..)} the value of \code{outputFormat} is used.}
   \item{validTime}{An object of class \code{GmlTimeObject}, either a time instant or time period for which the returned description shall be valid; use functions \code{sosCreateTimePeriod(..)} and \code{sosCreateTimeInstant(..)} to create this parameter.}
+  \item{verbose}{A boolean value indicating whether debug information is printed out to the console during the execution.}
+  \item{inspect}{A boolean value to enable printing of the sent request and received response to the console.}
+  \item{saveOriginal}{Save the received document to the current working directory. If \code{TRUE} a filename is automatically generated, if a character string is given it is used as the filename.}
 }
 
 \value{The value of the construction function is an object of class \link{SosDescribeSensor-class}}

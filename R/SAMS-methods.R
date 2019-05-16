@@ -59,31 +59,31 @@ parseSams200SamplingFeature <- function(obj, sos) {
 #
 # coercion methods ----
 #
-as.SamsShape.SpatialPoints = function(from) {
+as.SpatialPoints.SamsShape = function(from) {
   as(from@point, "SpatialPoints")
 }
 setAs("SamsShape", "SpatialPoints",
       function(from) {
-        as.SamsShape.SpatialPoints(from)
+        as.SpatialPoints.SamsShape(from)
       }
 )
 setAs("SamsShape", "Spatial",
       function(from) {
-        as.SamsShape.SpatialPoints(from)
+        as.SpatialPoints.SamsShape(from)
       }
 )
 
-as.SamsSamplingFeature.SpatialPoints = function(from) {
+as.SpatialPoints.SamsSamplingFeature = function(from) {
   as(from@shape, "SpatialPoints")
 }
 setAs("SamsSamplingFeature", "SpatialPoints",
       function(from) {
-        as.SamsSamplingFeature.SpatialPoints(from)
+        as.SpatialPoints.SamsSamplingFeature(from)
       }
 )
 setAs("SamsSamplingFeature", "Spatial",
       function(from) {
-        as.SamsSamplingFeature.SpatialPoints(from)
+        as.SpatialPoints.SamsSamplingFeature(from)
       }
 )
 

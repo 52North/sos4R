@@ -547,12 +547,12 @@ setMethod(f = "sites",
   }
   # set-up base dataframe
   nrows <- length(.sites)
-  .sitesDataFrame <- st_sf(geometry = st_sfc(lapply(1:nrows, function(x) st_geometrycollection())))
+  .sitesDataFrame <- sf::st_sf(geometry = sf::st_sfc(lapply(1:nrows, function(x) sf::st_geometrycollection(x = x))))
   # set values for phenomena at stations
   # for each station
   for (.site in .sites) {
     # add siteID
-    .siteRow <- c(setNames(c(.site@feature@identifier, use.names = TRUE), "siteID"))
+    .siteRow <- c(stats::setNames(c(.site@feature@identifier, use.names = TRUE), "siteID"))
     # add phenomena
     # for each phenomenon
     for (.phenomenon in .phenomena) {
@@ -564,17 +564,17 @@ setMethod(f = "sites",
           # .damFound := TRUE
           # if yes -> set value to TRUE
           .damFound <- TRUE
-          .siteRow <- c(.siteRow, setNames(c(TRUE, use.names = TRUE), .phenomenon), use.names = TRUE)
+          .siteRow <- c(.siteRow, stats::setNames(c(TRUE, use.names = TRUE), .phenomenon), use.names = TRUE)
         }
       }
       # if dam not found
       if (!.damFound) {
         # apppend false to list for phen
-        .siteRow <- c(.siteRow, setNames(c(FALSE, use.names = TRUE), .phenomenon), use.names = TRUE)
+        .siteRow <- c(.siteRow, stats::setNames(c(FALSE, use.names = TRUE), .phenomenon), use.names = TRUE)
       }
     }
     # add geometry
-    .siteRow <- c(.siteRow, setNames(c("geometry", use.names = TRUE), as(.site@feature@shape@point, "SpatialPoints")), use.names = TRUE)
+    .siteRow <- c(.siteRow, stats::setNames(c("geometry", use.names = TRUE), as(.site@feature@shape@point, "SpatialPoints")), use.names = TRUE)
     print("bla")
     # append new row at dataframe
     #.sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,

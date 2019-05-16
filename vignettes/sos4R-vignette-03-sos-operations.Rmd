@@ -492,15 +492,14 @@ class(myOffering.time@endPosition@time)
 ```
 
 The structure of these elements is very flexible (with some of optional elements) and not self-explanatory.
-Therefore the parameter `convert` can be used to try to create R objects and return these instead.
-Please be aware that this might not work for temporal elements returned by all service.
+Therefore the parameter `convert` can be used to disable attempts to create R objects and return the raw parsed objects instead.
 
 ```{r metadataExtraction8}
-myOffering.time.converted <- sosTime(myOffering, convert = TRUE)
-utils::str(myOffering.time.converted)
+myOffering.time.unconverted <- sosTime(myOffering, convert = FALSE)
+utils::str(myOffering.time.unconverted)
 ```
 
-Furthermore the offering comprises **lists of procedures, **observed properties**, and **features of interest**.
+Furthermore the offering comprises lists of _procedures_, _observed properties_, and _features of interest_.
 In our example the feature and procedure identifiers are the same - this does not have to be the case.
 
 **Important Note:** The order of these lists is not guaranteed to be the same upon every connection to a service.

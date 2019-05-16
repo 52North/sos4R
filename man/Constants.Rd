@@ -130,6 +130,7 @@
 \alias{owsMaximumValueName}
 \alias{owsSpacingName}
 \alias{owsConstraintName}
+\alias{owsContentTypeConstraintName}
 \alias{owsMetadataName}
 \alias{owsExceptionName}
 \alias{owsExceptionTextName}
@@ -257,15 +258,19 @@
 \alias{sweUpperCornerName}
 \alias{xlinkNamespace}
 \alias{xsiNamespace}
+\alias{xsiNamespacePrefix}
+\alias{xsiTypeName}
 
 % Version 2.0.0
-
 \alias{sos200ContentsName}
 \alias{sos200FilterCapabilitiesName}
+
+\alias{sosGetObservationByIdResponseName}
 
 \alias{om20ResultMeasureTypeName}
 \alias{om20ResultTypeAttributeName}
 \alias{om20OM_Observation}
+\alias{om20UomAttributeName}
 
 \alias{om20PhenomenonTimeName}
 
@@ -278,13 +283,24 @@
 \alias{sosResultTimeName}
 
 \alias{sweTextEncodingName}
+
+\alias{swesDescribeSensorName}
+\alias{swesDescribeSensorResponseName}
+\alias{swesDescriptionName}
+\alias{swesSensorDescriptionName}
+\alias{swesDescribeSensorName}
 \alias{swesIdentifierName}
 \alias{swesNameName}
 \alias{swesObservablePropertyName}
 \alias{swesOfferingName}
 \alias{swesProcedureDescriptionFormatName}
+\alias{swesValidTimeName}
 
+\alias{wmlNamespace}
+\alias{wmlNamespacePrefix}
 \alias{wmlMonitoringPointName}
+\alias{wmlTimeZoneName}
+\alias{wmlVerticalDatumName}
 
 \alias{fesNamespace}
 \alias{gml32Namespace}
@@ -296,9 +312,12 @@
 \alias{samsNamespacePrefix}
 \alias{samsSamplingFeatureName}
 \alias{samNamespace}
+\alias{sos200FeatureOfInterestName}
 \alias{sos200FeatureOfInterestTypeName}
 \alias{sos200Namespace}
 \alias{sos200NamespacePrefix}
+\alias{sos200ObservationDataName}
+\alias{sos200ObservationName}
 \alias{sos200ObservationOfferingListName}
 \alias{sos200ObservationOfferingName}
 \alias{sos200ObservationTypeName}
@@ -318,6 +337,19 @@
 \alias{swesNamespacePrefix}
 \alias{swesProcedureName}
 
+\alias{gdaDataAvailabilityMemberName}
+\alias{gdaFeatureOfInterestName}
+\alias{gdaGetDataAvailabilityResponseName}
+\alias{gdaNamespace}
+\alias{gdaObservedPropertyName}
+\alias{gdaPhenomenonTimeName}
+\alias{gdaPrefix}
+\alias{gdaProcedureName}
+
+% Internal constants
+\alias{owsDcpContentTypeIndex}
+\alias{owsDcpHttpMethodIndex}
+\alias{owsDcpUrlIndex}
 
 \title{Constants in sos4R}
 

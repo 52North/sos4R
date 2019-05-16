@@ -91,24 +91,28 @@
 \alias{sosCoordinates,GmlFeatureProperty-method}
 \alias{sosCoordinates,GmlPoint-method}
 \alias{sosCoordinates,GmlPointProperty-method}
-
-\alias{sosId,GmlFeature-method}
-\alias{sosSrsName,GmlDirectPosition-method}
-\alias{sosSrsName,GmlPoint-method}
 \alias{sosFeatureIds,GmlFeatureCollection-method}
 \alias{sosFeatureIds,GmlFeatureProperty-method}
-
 \alias{sosFeaturesOfInterest,GmlFeatureCollection-method}
-
+\alias{sosFeaturesOfInterest,GmlFeatureProperty-method}
+\alias{sosGetCRS,GmlDirectPosition-method}
+\alias{sosGetCRS,GmlEnvelope-method}
+\alias{sosGetCRS,GmlPoint-method}
+\alias{sosGetCRS,GmlPointProperty-method}
+\alias{sosId,GmlFeature-method}
+\alias{sosId,GmlFeatureProperty-method}
+\alias{sosName,GmlFeatureProperty-method}
+\alias{sosSrsName,GmlDirectPosition-method}
+\alias{sosSrsName,GmlPoint-method}
 \alias{sosTime,GmlTimeInstant-method}
 \alias{sosTime,GmlTimeInstantProperty-method}
 \alias{sosTime,GmlTimePeriod-method}
 \alias{sosTime,GmlTimePosition-method}
+\alias{sosUOM,GmlMeasure-method}
 
 \alias{summary.GmlTimePeriod}
 \alias{print.summary.GmlTimePeriod}
 
-\alias{sosUOM,GmlMeasure-method}
 
 
 \title{Classes and Construction Functions from the GML Namespace}
@@ -326,6 +330,12 @@ show(pos1)
 env1 <- GmlEnvelope(upperCorner = pos1,
                     lowerCorner = GmlDirectPosition("6.0 51.0"))
 print(env1)
+
+# create envelope with CRS and access it
+env1 <- GmlEnvelope(upperCorner = pos1,
+                    lowerCorner = GmlDirectPosition("6.0 51.0"),
+                    srsName = "http://www.opengis.net/def/crs/EPSG/0/4326")
+sosGetCRS(env1)
 
 # wrap elements in feature collection
 GmlFeatureCollection(id = "001", featureMembers=list(pos1, env1))
