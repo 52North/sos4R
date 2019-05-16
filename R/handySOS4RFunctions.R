@@ -541,7 +541,20 @@ setMethod(f = "sites",
                                   data = data.frame("siteID" = character(0), stringsAsFactors = FALSE),
                                   match.ID = FALSE))
   }
-  stop("Continue implementation here: handySOS4Rfunctions.R:444: return filled dataframe")
+  .coords <- data.frame()
+  .siteIds <- list()
+  .proj4string <- ""
+  for (.site in .sites) {
+    .siteIds <- c(.siteIds, .site@feature@identifier)
+    .sp <- as.SpatialPoints.SamsSamplingFeature(.site@feature)
+    .coords <- rbind(.coords, coordinates(.sp))
+    .proj4string <- .sp@proj4string
+  }
+  # TODO check proj4string difference between sites!
+  return(SpatialPointsDataFrame(coords = .coords,
+                                data = data.frame("siteID" = unlist(.siteIds), stringsAsFactors = FALSE),
+                                match.ID = FALSE,
+                                proj4string = .proj4string))
 }
 #
 # sites(sos, includePhenomena=TRUE, includeTemporalBBox=FALSE) → sp::SPDF[siteID, phen_1=logical, …, phen_n=logical]
@@ -553,11 +566,11 @@ setMethod(f = "sites",
 # - GetFeatureOfInterest w/feature list
 #
 .sitesWithDataAsSPDF <- function(sos,
-                                        begin,
-                                        end,
-                                        includePhenomena,
-                                        includeTemporalBBox,
-                                        phenomena) {
+                                 begin,
+                                 end,
+                                 includePhenomena,
+                                 includeTemporalBBox,
+                                 phenomena) {
   # validate input only if given
   if (.isPhenomenaSet(phenomena)) {
     phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
