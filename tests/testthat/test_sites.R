@@ -93,17 +93,17 @@ test_that("KVP::sites(sos, empty = TRUE|FALSE) returns an empty list of sites as
 
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
 
-  sitesDataFrame <- sites(sos)
+  sitesDataFrame <- sites(sos, empty = TRUE)
   .checkEmptySitesDataFrame(sitesDataFrame)
 
-  sitesDataFrame <- sites(sos, empty = TRUE)
+  sitesDataFrame <- sites(sos)
   .checkEmptySitesDataFrame(sitesDataFrame)
 
   sitesDataFrame <- sites(sos, empty = FALSE)
   .checkEmptySitesDataFrame(sitesDataFrame)
 })
 
-test_that("KVP::sites(sos, empty = TRUE|FALSE) returns a list of stations as SpatialPointsDataFrame that contain siteIDs and coordinates", {
+test_that("KVP::sites(sos, empty = TRUE) returns a list of stations as SpatialPointsDataFrame that contain siteIDs and coordinates", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
     webmockr::wi_th(
@@ -136,6 +136,45 @@ test_that("KVP::sites(sos, empty = TRUE|FALSE) returns a list of stations as Spa
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
 
   sitesDataFrame <- sites(sos, empty = TRUE)
+  .checkSitesDataFrameWithIdsAndCoords(sitesDataFrame)
+})
+
+
+test_that("KVP::sites(sos, empty = FALSE) returns a list of stations as SpatialPointsDataFrame that contain siteIDs and coordinates", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest&featureOfInterest=elv-ws2500%2Cwwu-ws-kli-hsb%2Celv-ws2500-internal%2Cvaisala-wxt520') %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetFeatureOfInterest_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+  sitesDataFrame <- sites(sos)
+  .checkSitesDataFrameWithIdsAndCoords(sitesDataFrame)
+
+  sitesDataFrame <- sites(sos, empty = FALSE)
   .checkSitesDataFrameWithIdsAndCoords(sitesDataFrame)
 })
 

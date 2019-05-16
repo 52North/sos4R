@@ -541,20 +541,7 @@ setMethod(f = "sites",
                                   data = data.frame("siteID" = character(0), stringsAsFactors = FALSE),
                                   match.ID = FALSE))
   }
-  .coords <- data.frame()
-  .siteIds <- list()
-  .proj4string <- ""
-  for (.site in .sites) {
-    .siteIds <- c(.siteIds, .site@feature@identifier)
-    .sp <- as.SpatialPoints.SamsSamplingFeature(.site@feature)
-    .coords <- rbind(.coords, coordinates(.sp))
-    .proj4string <- .sp@proj4string
-  }
-  # TODO check proj4string difference between sites!
-  return(SpatialPointsDataFrame(coords = .coords,
-                                data = data.frame("siteID" = unlist(.siteIds), stringsAsFactors = FALSE),
-                                match.ID = FALSE,
-                                proj4string = .proj4string))
+  return(as.SpatialPointsDataFrame.SamsSamplingFeatureList(.sites))
 }
 #
 # sites(sos, includePhenomena=TRUE, includeTemporalBBox=FALSE) → sp::SPDF[siteID, phen_1=logical, …, phen_n=logical]
@@ -571,70 +558,51 @@ setMethod(f = "sites",
                                  includePhenomena,
                                  includeTemporalBBox,
                                  phenomena) {
-  # validate input only if given
-  if (.isPhenomenaSet(phenomena)) {
-    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-  }
-  if (.isTimeIntervalSet(begin, end)) {
-    stopifnot(begin < end)
-  }
-
   if (includeTemporalBBox && !includePhenomena) {
     includePhenomena <- TRUE
     warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
   }
   # get all phenomena
   .phenomena <- as.list(.listPhenomena(sos)[, 1])
-  if (is.null(.phenomena) || !is.list(.phenomena) || length(.phenomena) < 1) {
-    return(.sitesAsSPDF(sos))
-  }
-  # get all stations
-  .sites <- getFeatureOfInterest(sos)
-  if (is.null(.sites) || !is.list(.sites) || length(.sites) < 1) {
+  if (is.null(.phenomena) || is.list(.phenomena) && length(.phenomena) < 1) {
     return(.sitesAsSPDF(sos))
   }
   # get data availability
-  .dams <- getDataAvailability(sos)
-  if (is.null(.dams) || is.na(.dams) || !is.list(.dams)) {
-    .dams <- list()
+  .dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
+
+  # get sites
+  if (length(.dams) > 1) {
+    .sites <- getFeatureOfInterest(sos, featureOfInterest = unique(sosFeatureIds(.dams)))
   }
-  # set-up base dataframe
-  nrows <- length(.sites)
-  .sitesDataFrame <- sf::st_sf(geometry = sf::st_sfc(lapply(1:nrows, function(x) sf::st_geometrycollection(x = x))))
-  # set values for phenomena at stations
-  # for each station
-  for (.site in .sites) {
-    # add siteID
-    .siteRow <- c(stats::setNames(c(.site@feature@identifier, use.names = TRUE), "siteID"))
-    # add phenomena
-    # for each phenomenon
-    for (.phenomenon in .phenomena) {
-      .damFound <- FALSE
-      # for each dam
-      for (.dam in .dams) {
-        # is phenomenon available at the station
-        if (.dam@featureOfInterest == .site@feature@identifier && .dam@observedProperty == .phenomenon) {
-          # .damFound := TRUE
-          # if yes -> set value to TRUE
-          .damFound <- TRUE
-          .siteRow <- c(.siteRow, stats::setNames(c(TRUE, use.names = TRUE), .phenomenon), use.names = TRUE)
-        }
-      }
-      # if dam not found
-      if (!.damFound) {
-        # apppend false to list for phen
-        .siteRow <- c(.siteRow, stats::setNames(c(FALSE, use.names = TRUE), .phenomenon), use.names = TRUE)
-      }
+  else {
+    .sites <- getFeatureOfInterest(sos)
+  }
+  if (is.null(.sites) || is.list(.sites) && length(.sites) < 1) {
+    return(.sitesAsSPDF(sos))
+  }
+  return(as.SpatialPointsDataFrame.SamsSamplingFeatureList(.sites))
+}
+
+
+# TODO convert to real conversion function
+as.SpatialPointsDataFrame.SamsSamplingFeatureList <- function(list) {
+  if (inherits(list[[1]], "GmlFeatureProperty") &&
+      inherits(list[[1]]@feature, "SamsSamplingFeature")) {
+    .coords <- data.frame()
+    .siteIds <- list()
+    .proj4string <- ""
+    for (.site in list) {
+      .siteIds <- c(.siteIds, .site@feature@identifier)
+      .sp <- as.SpatialPoints.SamsSamplingFeature(.site@feature)
+      .coords <- rbind(.coords, coordinates(.sp))
+      .proj4string <- .sp@proj4string
     }
-    # add geometry
-    .siteRow <- c(.siteRow, stats::setNames(c("geometry", use.names = TRUE), as(.site@feature@shape@point, "SpatialPoints")), use.names = TRUE)
-    print("bla")
-    # append new row at dataframe
-    #.sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,
-    #                                   stringsAsFactors = FALSE))
-      # row := siteID, phen_1=logical, …, phen_n=logical
+    # TODO check proj4string difference between sites!
+    return(SpatialPointsDataFrame(coords = .coords,
+                                  data = data.frame("siteID" = unlist(.siteIds), stringsAsFactors = FALSE),
+                                  match.ID = FALSE,
+                                  proj4string = .proj4string))
   }
-  # set projection for .sitesDataFrame
 }
 
 #
