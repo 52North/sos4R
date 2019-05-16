@@ -50,10 +50,10 @@ setClass("MonitoringPoint",
          validity = function(object) {
            #print("Entering validation: MonitoringPoint")
 
-           if ( !class(slot(object, "verticalDatums")) %in% c("xml_nodeset", "xml_missing")) {
+           if (!class(slot(object, "verticalDatums")) %in% c("xml_nodeset", "xml_missing")) {
              return("'verticalDatums' must be an XML node set or missing.")
            }
-           if ( !class(slot(object, "timeZone")) %in% c("xml_node", "xml_missing")) {
+           if (!class(slot(object, "timeZone")) %in% c("xml_node", "xml_missing")) {
              return("'verticalDatums' must be an XML node or missing.")
            }
 

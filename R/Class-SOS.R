@@ -165,7 +165,7 @@ setClass("SosDescribeSensor",
                return("procedureDescriptionFormat missing")
              }
              cls <- class(object@validTime)
-             if ( !any(cls %in% c("GmlTimeInstant", "GmlTimePeriod", "NULL")))
+             if (!any(cls %in% c("GmlTimeInstant", "GmlTimePeriod", "NULL")))
                return("'validTime' argument does not have allowed class!")
            }
 
@@ -228,7 +228,7 @@ setClass("SosGetObservation",
            # result is null or an ogc:comparisonOps element
            cls <- class(slot(object, "result"))
            #			print(paste("class of result slot: ", cls))
-           if ( !any(cls %in% c("OgcComparisonOps", "xml_document", "xml_node", "NULL"))) {
+           if (!any(cls %in% c("OgcComparisonOps", "xml_document", "xml_node", "NULL"))) {
              return("'response' argument does not have allowed class!")
            }
 

@@ -183,3 +183,29 @@ test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns the current l
 })
 
 webmockr::disable("httr")
+
+context("phenomena: integration tests\n")
+
+test_that("gives error if unsupported SOS version", {
+  skip_on_cran()
+
+  sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service",
+             version = sos100_version, useDCPs = FALSE)
+  expect_error(
+    phenomena(sos = sos),
+    "unable to find an inherited method"
+  )
+})
+
+test_that("can retrieve phenomena from an online SOS 2.0.0 (KVP)", {
+  skip_on_cran()
+
+  sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             version = sos200_version, binding = "KVP", useDCPs = FALSE)
+  phen <- phenomena(sos = sos)
+
+  expect_s3_class(phen, "data.frame")
+  expect_named(phen, c("phenomenon"))
+  expect_length(phen$phenomenon, 33)
+})
+

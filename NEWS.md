@@ -1,12 +1,14 @@
 # sos4R 0.4.0.9000
 
 - Add full support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)
+- Add wrapper functions for more convenient access to phenomena, stations and data without OGC SWE terms and SOS specifics, see [new vignette](../vignettes/sos4R-vignette-05-wrapper-functions.html)
 - Give warnings if time cannot be parsed with the format provided in the SOS object
 - Do not save file name as attribute of returned object anymore (adds complexity, not documented/widely used)
 - Manage namespaces as part of the SOS object (allows user manipulation via `sos@namespaces`)
 - Accessor functions return lists only if the content is complex: `sosName()`, `sosObservedProperties()`, `sosProcedures()` `sosFeatureIds()`, `sosUOM()` now return character vectors if applied to collections or lists
 - Add help page for coercion functions, see `` ?`coerce-sos4R` ``
 - `sosTime(..)` now always returns base R classes, i.e. a list with `begin` and `end` based on `POSIXct` (change default for `convert` parameter to `TRUE`).
+- `getObservation(..)` now supports multiple offerings for SOS 2.0.0 (in conformance with the specfication)
 - Drop "Created SOS for URL" message after creation
 - Drop `checkRequest` methods, they were 90% "TODO" comments; actually existing checks preserved in functions where sensible
 - Drop support for KML (Keyhole Markup Language), because it is not a data format, the parsing was never implemented, and the only SOS using it provided it specifically for display in Google Earth

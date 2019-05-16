@@ -1015,7 +1015,6 @@ plot(sensors4all_off, add = TRUE, lwd = 3)
 
 ################################################################################
 # TODO check out VITO SOS with air quality data (live data planned) for Antwerp
-library(sos4R)
 idea <- SOS(url = "http://sensorweb.vito.be:8080/IDEA_52nSOSv3.2/sos")
 
 idea_offs <- sosOfferings(idea)
@@ -1032,7 +1031,6 @@ alix5_result <- sosResult(alix5_observation)
 
 ################################################################################
 # TODO check out IRCEL - CELINE SOS with air quality data
-library(sos4R)
 ircel <- SOS(url = "http://sos.irceline.be/sos")
 
 sosOfferings(ircel)
@@ -1040,8 +1038,6 @@ sosOfferings(ircel)
 
 ################################################################################
 # TODO check out NZ groundwater data: https://geier.gns.cri.nz/ngmp-sos/
-library(sos4R)
-
 gwl.converters <- SosDataFieldConvertingFunctions(
 	"http://data.gns.cri.nz/ggwdata/phenomenon/groundwaterlevel" = sosConvertDouble,
 	"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
@@ -1072,7 +1068,6 @@ getObservation(sos = gwl, offering = off, eventTime = sosCreateTime(sos = gwl, t
 ################################################################################
 # TODO check out USGS SOS used in WPS-R script at
 # https://github.com/USGS-CIDA/WaterSMART/blob/master/watersmart-wps/src/main/webapp/R/r_scripts/stats_compare_wps.R
-library(sos4R)
 
 sos_url_temp="http://waterservices.usgs.gov/nwis/dv/?format=waterml,1.1&sites="
 offering_temp='00003'

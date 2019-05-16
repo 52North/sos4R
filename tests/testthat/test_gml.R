@@ -49,6 +49,7 @@ test_that("time position minimal", {
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
   expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition>')
+  expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 
 test_that("time position all", {
@@ -73,6 +74,7 @@ test_that("time instant", {
 
   expect_match(encodedString, '<gml:TimeInstant')
   expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition></gml:TimeInstant>')
+  expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 
 test_that("GML namespace of SOS is used", {
@@ -87,7 +89,6 @@ test_that("GML namespace of SOS is used", {
   expect_match(toString(encoded2), paste0('xmlns:gml="', gml32Namespace))
 })
 
-
 test_that("time period", {
   period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
   encoded <- encodeXML(obj = period, sos = testsos)
@@ -95,6 +96,7 @@ test_that("time period", {
 
   expect_match(encodedString, '2019-01-01T00:00:00</gml:beginPosition>')
   expect_match(encodedString, '2019-02-03T00:00:00</gml:endPosition></gml:TimePeriod>')
+  expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 
 test_that("time interval", {
@@ -104,6 +106,7 @@ test_that("time interval", {
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
   expect_match(encodedString, '<gml:timeInterval unit="hr" radix="17" factor="2">everyother</gml:timeInterval>')
+  expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 
 context("encoding GML: temporal classes to KVP")
@@ -114,10 +117,17 @@ test_that("time instant", {
   expect_equal(encodedString, '2019-01-01T00:00:00')
 })
 
-test_that("time period", {
+test_that("time period (SOS 1.0.0)", {
   period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
   encodedString <- encodeKVP(obj = period, sos = testsos)
   expect_equal(encodedString, '2019-01-01T00:00:00::2019-02-03T00:00:00')
+})
+
+test_that("time period (SOS 2.0.0)", {
+  testsos20 <- SOS_Test(name = "testgml20", version = sos200_version)
+  period <- sosCreateTimePeriod(sos = testsos20, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
+  encodedString <- encodeKVP(obj = period, sos = testsos20)
+  expect_equal(encodedString, '2019-01-01T00:00:00/2019-02-03T00:00:00')
 })
 
 context("parsing: GML")

@@ -30,7 +30,7 @@ Do you **know about an SOS instance not on this list**?
 Open an [issue](https://github.com/52North/sos4R/issues) or a pull request.
 
 ```{r setup}
-library(sos4R)
+library("sos4R")
 ```
 
 ## NOAA Center for Operational Oceanographic Products and Services (CO-OPS)
@@ -40,6 +40,24 @@ ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS",
                binding = "KVP")
 ioosdif
 #sosContents(ioosdif)
+```
+
+## Integrated Ocean Observing System (IOOS)
+
+More information: https://sdf.ndbc.noaa.gov/sos/
+
+This SOS supports **CSV** as a response format.
+
+```{r ioos}
+ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
+              useDCPs = FALSE,
+              timeFormat = "%Y-%m-%dT%H:%M:%SZ")
+ioos.off <- sosOfferings(ioos)
+obs <- getObservation(sos = ioos,
+                      offering = sosName(ioos.off[[100]]),
+                      responseFormat = "text/csv",
+                      observedProperty = sosObservedProperties(ioos.off[[100]])[1])
+obs
 ```
 
 ## NOAA National Data Buoy Center
@@ -135,3 +153,19 @@ monalisa <- SOS(url = "http://monalisasos.eurac.edu/sos/service", binding = "KVP
 sosContents(monalisa)
 ```
 
+## NIWA
+
+Two SOS by New Zealands [National Institute of Water and Atmospheric Research](https://www.niwa.co.nz/about/our-company) (NIWA) for hydrometric and climate data, see https://teamwork.niwa.co.nz/display/NEDA/Access+to+Sensor+Data.
+
+```{r niwa_hydro}
+niwa.hydro <- SOS(url = "https://hydro-sos.niwa.co.nz/",
+                  binding = "POX",
+                  #binding = "KVP",
+                  version = "2.0.0")
+sosContents(niwa.hydro)
+```
+
+```{r niwa_climate}
+niwa.climate <- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+sosContents(niwa.climate)
+```

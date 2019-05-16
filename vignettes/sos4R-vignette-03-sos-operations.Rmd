@@ -56,8 +56,9 @@ SosSupportedBindings()
 SosSupportedResponseFormats()
 ```
 
-The response format `"text/csv"` is not standard conform, but used by services as a well established alternative to XML encodings.
+The response format `"text/csv"` is not standard conform, but used by services as an alternative to XML encodings.
 The package `readr` must be installed to parse responses in this format.
+See the _IOOS_ example in the [Services Vignette](sos4R-vignette-99-services.html).
 
 ```{r supported03}
 SosSupportedResponseModes()

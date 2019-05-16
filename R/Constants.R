@@ -77,6 +77,8 @@ sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
 sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
 sos200ObservationName <- paste0(sos200NamespacePrefix, ":observation")
 sos200ObservationDataName <- paste0(sos200NamespacePrefix, ":observationData")
+sos200TemporalFilterName <- paste0(sos200NamespacePrefix, ":temporalFilter")
+sos200SpatialFilterName <- paste0(sos200NamespacePrefix, ":spatialFilter")
 
 sosGetObservationByIdResponseName <- "GetObservationByIdResponse"
 sosGetObservationResponseName <- "GetObservationResponse"
@@ -147,6 +149,10 @@ sosKVPParamNameResultModel <- "resultModel"
 sosKVPParamNameResponseMode <- "responseMode"
 sosKVPParamNameBBOX <- "BBOX"
 
+sosKVPParamNameNamespaces <- "namespaces"
+sosKVPParamNameSpatialFilter <- "spatialFilter"
+sosKVPParamNameTemporalFilter <- "temporalFilter"
+
 #
 # not exported SOS ----
 #
@@ -212,7 +218,6 @@ swesNamespace <- "http://www.opengis.net/swes/2.0"
 om20Namespace <- "http://www.opengis.net/om/2.0"
 
 sos200Namespace <- "http://www.opengis.net/sos/2.0"
-fesNamespace <- "http://www.opengis.net/fes/2.0"
 
 gdaNamespace <- "http://www.opengis.net/sosgda/1.0"
 
@@ -395,6 +400,14 @@ wmlVerticalDatumName <- paste0(wmlNamespacePrefix, ":verticalDatum")
 wmlTimeZoneName <- paste0(wmlNamespacePrefix, ":timeZone")
 
 #
+# FES ----
+#
+fesNamespacePrefix = "fes"
+fesNamespace <- "http://www.opengis.net/fes/2.0"
+fesDuringName <- paste0(fesNamespacePrefix, ":During")
+fesValueReferenceName <- paste0(fesNamespacePrefix, ":ValueReference")
+
+#
 # OGC ----
 #
 ogcTempOpTMAfterName <- "TM_After"
@@ -414,7 +427,8 @@ ogcTempOpTMOverlappedBy <- "TM_OverlappedBy"
   ogcTempOpTMAfterName,
   ogcTempOpTMBeforeName,
   ogcTempOpTMDuringName,
-  ogcTempOpTMEqualsName
+  ogcTempOpTMEqualsName,
+  fesDuringName
 )
 names(.ogcSupportedTemporalOps) <- .ogcSupportedTemporalOps
 SosSupportedTemporalOperators <- function() {
