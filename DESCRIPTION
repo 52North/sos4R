@@ -33,6 +33,7 @@ Imports:
     sp,
     stats,
     stringr,
+    uuid,
     xml2
 Suggests:
     readr,

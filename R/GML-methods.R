@@ -129,6 +129,10 @@ setMethod(f = "encodeXML",
           }
 )
 
+.gmlUUID <- function() {
+  paste0(gmlNamespacePrefix, ":id=\"id_", uuid::UUIDgenerate(), "\"")
+}
+
 #
 # encodeXML(GmlTimeInstant, SOS) ----
 #
@@ -141,7 +145,9 @@ setMethod(f = "encodeXML",
             #pos <- xml2::xml_new_root(gmlTimeInstantName,
             #                          xmlns = gmlNamespace)
             ti <- xml2::read_xml(paste0("<", gmlTimeInstantName, " xmlns:", gmlNamespacePrefix, "=\"",
-                                        sos@namespaces[[gmlNamespacePrefix]], "\" />"))
+                                        sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                        .gmlUUID(),
+                                        " />"))
 
             time <- encodeXML(obj = obj@timePosition, sos = sos, verbose = verbose)
             # FIXME: manually drop namespace from time position
@@ -169,7 +175,9 @@ setMethod(f = "encodeXML",
             #pos <- xml2::xml_new_root(gmlTimePositionName,
             #                          xmlns = gmlNamespace)
             tpos <- xml2::read_xml(paste0("<", gmlTimePositionName, " xmlns:", gmlNamespacePrefix, "=\"",
-                                          sos@namespaces[[gmlNamespacePrefix]], "\" />"))
+                                          sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                          .gmlUUID(),
+                                          " />"))
 
             if (!is.na(obj@frame)) {
               xml2::xml_set_attr(x = tpos, attr = "frame", value = obj@frame)
@@ -199,8 +207,10 @@ setMethod(f = "encodeXML",
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #tperiod <- xml2::xml_new_root(gmlTimePeriodName,
             #                          xmlns = gmlNamespace)
-            tperiod <- xml2::read_xml(paste0("<", gmlTimePeriodName, " xmlns:", gmlNamespacePrefix, "=\"",
-                                             sos@namespaces[[gmlNamespacePrefix]], "\" />"))
+            tperiod <- xml2::read_xml(paste0("<", gmlTimePeriodName,
+                                             " xmlns:", gmlNamespacePrefix, "=\"", sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                             .gmlUUID(),
+                                             " />"))
 
             # switch cases:
             # 1. begin and end
@@ -269,7 +279,9 @@ setMethod(f = "encodeXML",
             #pos <- xml2::xml_new_root(gmlEnvelopeName,
             #                          xmlns = gmlNamespace)
             env <- xml2::read_xml(paste0("<", gmlEnvelopeName, " xmlns:", gmlNamespacePrefix, "=\"",
-                                         sos@namespaces[[gmlNamespacePrefix]], "\" />"))
+                                         sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                         .gmlUUID(),
+                                         " />"))
 
             if (!is.na(obj@srsName)) {
               xml2::xml_set_attr(x = env, attr = "srsName", value = obj@srsName)
@@ -313,7 +325,9 @@ setMethod(f = "encodeXML",
             #                          obj@pos,
             #                          xmlns = gmlNamespace)
             pos <- xml2::read_xml(paste0("<", gmlPosName, " xmlns:", gmlNamespacePrefix, "=\"",
-                                         sos@namespaces[[gmlNamespacePrefix]], "\" />"))
+                                         sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                         .gmlUUID(),
+                                         " />"))
             xml2::xml_text(pos) <- obj@pos
 
             if (!is.na(obj@srsName)) {
@@ -348,7 +362,9 @@ setMethod(f = "encodeXML",
             #point <- xml2::xml_new_root(gmlPointName,
             #                            gml = gmlNameName)
             point <- xml2::read_xml(paste0("<", gmlPointName, " xmlns:", gmlNamespacePrefix, "=\"",
-                                           sos@namespaces[[gmlNamespacePrefix]], "\" />"))
+                                           sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                           .gmlUUID(),
+                                           " />"))
 
             position <- encodeXML(obj = obj@pos, sos = sos)
             xml2::xml_add_child(point, position)
