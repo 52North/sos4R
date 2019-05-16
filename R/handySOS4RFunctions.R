@@ -245,30 +245,15 @@ setMethod(f = "siteList",
             stopifnot(is.logical(includePhenomena))
             stopifnot(is.logical(includeTemporalBBox))
 
-            .phenomenaSet <- FALSE
-            .timeIntervalSet <- FALSE
-
-            # validate input only if given
-            if (.isPhenomenaSet(phenomena)) {
-              phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-              .phenomenaSet <- TRUE
-            }
-            if (.isTimeIntervalSet(begin, end)) {
-              stopifnot(begin < end)
-              .timeIntervalSet <- TRUE
-            }
-
-            if (includeTemporalBBox && !includePhenomena) {
-              includePhenomena <- TRUE
-              warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-            }
-
-            if (empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
+            if (empty) {
               return(.listSites(sos))
             }
-
-            if (!empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
-              return(.listSitesWithData(sos))
+            else {
+              return(.listSitesWithData(sos,
+                                        begin,
+                                        end,
+                                        includePhenomena,
+                                        includeTemporalBBox))
             }
           }
 )
@@ -276,15 +261,12 @@ setMethod(f = "siteList",
 .isTimeIntervalSet <- function(begin, end) {
   return(!is.null(begin) &&
            !is.null(end) &&
-           !is.na(begin) &&
-           !is.na(end) &&
            inherits(begin, "POSIXct") &&
            inherits(end, "POSIXct"))
 }
 
 .isPhenomenaSet <- function(phenomena) {
   return(!is.null(phenomena) &&
-           !is.na(phenomena) &&
            is.list(phenomena) &&
            length(phenomena) > 0)
 }
@@ -308,13 +290,38 @@ setMethod(f = "siteList",
 
 #
 # siteList(sos) → data.frame[siteID]
+# siteList(sos, EMPTY = FALSE) → data.frame[siteID]
+# siteList(sos, begin = POSIXct, end = POSIXct) → data.frame[siteID]
 #
 # see: https://github.com/52North/sos4R/issues/84
 #
-.listSitesWithData <- function(sos) {
-  .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+.listSitesWithData <- function(sos,
+                               begin,
+                               end,
+                               includePhenomena,
+                               includeTemporalBBox) {
+  if (.isPhenomenaSet(phenomena)) {
+    # TODO Filter requesting dams by phenomena
+    # validate input only if given
+    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+    .dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput)
+  } else {
+    .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  }
   stopifnot(!is.null(.dams))
   stopifnot(is.list(.dams))
+
+  if (.isTimeIntervalSet(begin, end)) {
+    stopifnot(begin < end)
+    # filter returned .dams by given temporal filter
+    .dams <- .filterDAMsByTime(.dams, begin, end)
+  }
+
+  if (includeTemporalBBox && !includePhenomena) {
+    includePhenomena <- TRUE
+    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+  }
+
   if (length(.dams) == 0) {
     .sites <- data.frame("siteID" = character(0),
                              stringsAsFactors = FALSE)
@@ -323,7 +330,7 @@ setMethod(f = "siteList",
     .sites <- data.frame("siteID" = character(0),
                              stringsAsFactors = FALSE)
     for (.dam in .dams) {
-      # check if siteID aka observed property is in data.frame
+      # check if siteID is already in data.frame
       if (!(.dam@featureOfInterest %in% .sites[, 1])) {
         # if not -> append at the end
         .sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,
@@ -333,6 +340,66 @@ setMethod(f = "siteList",
     .sites <- data.frame("siteID" = .sites[order(.sites$siteID),], stringsAsFactors = FALSE)
   }
   return(.sites)
+}
+
+#
+# ~ us.2.3: List all sites w/wo data for a given time window ####
+#   siteList(sos, begin = POSIXct, end = POSIXct) → data.frame[siteID]
+#           123456789012345678901234
+# ts1     : *   *   *  *     *
+# ts2     : +  + +
+# ts3     :     " " "
+# ts4     :        = =  =  =  =
+# ts5     :                ~ ~   ~
+# ts6     :    ..........
+# ts7     : ° °
+# ts8     : #              #
+# ^ we cannot identify such cases and exclude ts8
+#   because of the limitations of sos and GDA operation
+# interval:    ||||||||||
+#
+# result 1: ts1, ts2, ts3, ts4, ts6, ts8 <-- we implement this solution
+# result 2: ts3, ts6
+# result 3: ts6
+#
+# see OGC#09-001 figure 8 (http://www.opengeospatial.org/standards/swes)
+#
+# Limitations:
+# - we cannot identify ts8 cases
+# - start and end are compared with >= and <=
+# - length of requested interval is smaller than measure frequency (see ts8 above)
+#
+# see: https://github.com/52North/sos4R/issues/88
+#
+# Potential performance improvement (causing more complex logic):
+# Use offering metadata from capabilites to request GDA only for offerings "touching" the timeinterval
+.filterDAMsByTime <- function(dams, begin, end) {
+  .filteredDams <- list()
+  for (.dam in dams) {
+    # 1 Check 6 cases for each site and add if one is matching
+    .damBegin <- .dam@phenomenonTime@beginPosition@time
+    .damEnd <- .dam@phenomenonTime@endPosition@time
+    # 1.1 before
+    if (.damEnd < begin) next
+    # 1.2 after
+    if (end < .damBegin) next
+    if (
+      # 1.3 contains
+      (.damBegin < begin && end < .damEnd)
+      ||
+      # 1.4 begins/during/equals/ends
+      (begin <= .damBegin && .damEnd <= end)
+      ||
+      # 1.5 Overlaps
+      (.damBegin < begin && begin < .damEnd && .damEnd < end)
+      ||
+      # 1.6 OverlappedBy
+      (begin < .damBegin &&  .damBegin < end && end < .damEnd)
+    ) {
+      .filteredDams <- c(.filteredDams, .dam)
+    }
+  }
+  return(.filteredDams)
 }
 
 # sites ####

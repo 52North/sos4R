@@ -182,4 +182,111 @@ test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns an empty l
   .checkEmptySitesDataFrame(sitesDataFrame)
 })
 
+.checkTimeIntervalFilteredSitesDataFrame <- function(sitesDataFrame) {
+  expect_false(is.null(sitesDataFrame))
+  expect_true(is.data.frame(sitesDataFrame))
+  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
+  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
+  expect_equal(nrow(sitesDataFrame), 5, info = "number of unique sites")
+  # check all values
+  expect_equal("feature-1", sitesDataFrame[ 1, 1])
+  expect_equal("feature-2", sitesDataFrame[ 2, 1])
+  expect_equal("feature-3", sitesDataFrame[ 3, 1])
+  expect_equal("feature-4", sitesDataFrame[ 4, 1])
+  expect_equal("feature-6", sitesDataFrame[ 5, 1])
+}
+
+#
+# ts1     : *   *   *  *     *
+# ts2     : +  + + 
+# ts3     :     " " "
+# ts4     :        = =  =  =  =
+# ts5     :                ~ ~   ~
+# ts6     :    ..........
+# ts7     : ° °
+# interval:    ||||||||||
+# 
+# result 1: ts1, ts2, ts3, ts4, ts6
+#
+test_that("KVP::siteList(sos, begin, end) or siteList(sos, empty = FALSE, begin, end) return a list of stations that provide data at least 'touching' the given time window", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com_ForTimeFilter.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+  
+  .begin <- sosConvertTime(x = "1970-06-04T12:00:00.000Z", sos = sos)
+  .end <- sosConvertTime(x = "1970-06-13T12:00:00.000Z", sos = sos)
+  
+  sitesDataFrame <- siteList(sos, empty = FALSE, begin = .begin, end = .end)
+  .checkTimeIntervalFilteredSitesDataFrame(sitesDataFrame)
+  
+  sitesDataFrame <- siteList(sos, begin = .begin, end = .end)
+  .checkTimeIntervalFilteredSitesDataFrame(sitesDataFrame)
+})
+
+.checkTimeIntervalFilteredSitesDataFrameWithMerge <- function(sitesDataFrame) {
+  expect_false(is.null(sitesDataFrame))
+  expect_true(is.data.frame(sitesDataFrame))
+  expect_equal(length(colnames(sitesDataFrame)), 1, info = "number of columns in sites data.frame")
+  expect_equal(colnames(sitesDataFrame)[[1]], "siteID", info = "correct column name")
+  expect_equal(nrow(sitesDataFrame), 6, info = "number of unique sites")
+  # check all values
+  expect_equal("feature-1", sitesDataFrame[ 1, 1])
+  expect_equal("feature-2", sitesDataFrame[ 2, 1])
+  expect_equal("feature-3", sitesDataFrame[ 3, 1])
+  expect_equal("feature-4", sitesDataFrame[ 4, 1])
+  expect_equal("feature-6", sitesDataFrame[ 5, 1])
+  expect_equal("feature-7", sitesDataFrame[ 6, 1])
+}
+
+test_that("KVP::siteList(sos, begin, end) or siteList(sos, empty = FALSE, begin, end) return a list of stations that provide data at least 'touching' the given time window", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com_ForTimeFilterWithMerge.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+  
+  .begin <- sosConvertTime(x = "1970-06-04T12:00:00.000Z", sos = sos)
+  .end <- sosConvertTime(x = "1970-06-13T12:00:00.000Z", sos = sos)
+  
+  sitesDataFrame <- siteList(sos, empty = FALSE, begin = .begin, end = .end)
+  .checkTimeIntervalFilteredSitesDataFrameWithMerge(sitesDataFrame)
+  
+  sitesDataFrame <- siteList(sos, begin = .begin, end = .end)
+  .checkTimeIntervalFilteredSitesDataFrameWithMerge(sitesDataFrame)
+})
+
 webmockr::disable("httr")
