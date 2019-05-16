@@ -73,6 +73,8 @@
     parseTemporalObservation,
     parseComplexObservation,
     #
+    parseMeasurementTimeseries,
+    #
     parseCSV,
     parseOM,
     parseOM)
@@ -112,6 +114,8 @@
     omTruthObservationName,
     omTemporalObservationName,
     omComplexObservationName,
+    #
+    wmlMeasurementTimeseriesName,
     #
     mimeTypeCSV,
     mimeTypeOM,
@@ -409,6 +413,8 @@ sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 sosDefaultTemporalValueReference <- "om:phenomenonTime"
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"
+
+sos200DefaultGetObsResponseFormat <- mimeTypeOM20
 
 # use for the names created data.frames
 sosDefaultColumnNameFeatureIdentifier <- "feature"

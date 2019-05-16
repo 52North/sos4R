@@ -365,7 +365,7 @@ parseFOI <- function(obj, sos, verbose = FALSE) {
       .foi <- parseFeatureCollection(.feature, sos = sos)
     }
     else if (.name == wmlMonitoringPointName) {
-      .foi <- parseMonitoringPoint(.feature, sos = sos)
+      .foi <- parseWmlMonitoringPoint(.feature, sos = sos)
     }
     else if (.name == samsSamplingFeatureName) {
       .foi <- parseSams200SamplingFeature(.feature, sos = sos)

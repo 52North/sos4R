@@ -30,14 +30,14 @@
 #
 # contruction function ----
 #
-MonitoringPoint <- function(sampledFeatures,
+WmlMonitoringPoint <- function(sampledFeatures,
                             id,
                             identifier,
                             names,
                             shape,
                             verticalDatums = xml2::xml_missing(),
                             timeZone = xml2::xml_missing()) {
-  new("MonitoringPoint",
+  new("WmlMonitoringPoint",
       sampledFeatures = sampledFeatures,
       id = id,
       identifier = identifier,
@@ -50,7 +50,7 @@ MonitoringPoint <- function(sampledFeatures,
 #
 # parsing functions ----
 #
-parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
+parseWmlMonitoringPoint <- function(obj, sos, verbose = FALSE) {
   sampledFeaturesXml <- xml2::xml_find_all(x = obj, xpath = samSampledFeatureName, ns = sos@namespaces)
   sampledFeatures <- sapply(X = sampledFeaturesXml, FUN = function(feature) {
     link <- xml2::xml_attr(x = feature, attr = "xlink:href", ns = sos@namespaces)
@@ -65,29 +65,33 @@ parseMonitoringPoint <- function(obj, sos, verbose = FALSE) {
   verticalDatums <- xml2::xml_find_all(x = obj, xpath = wmlVerticalDatumName, ns = sos@namespaces)
   timeZone <-   xml2::xml_find_first(x = obj, xpath = wmlTimeZoneName, ns = sos@namespaces)
 
-  mp <- MonitoringPoint(sampledFeatures = sampledFeatures,
-                        id = id,
-                        identifier = identifier,
-                        names = names,
-                        shape = shape,
-                        verticalDatums = verticalDatums,
-                        timeZone = timeZone)
+  mp <- WmlMonitoringPoint(sampledFeatures = sampledFeatures,
+                           id = id,
+                           identifier = identifier,
+                           names = names,
+                           shape = shape,
+                           verticalDatums = verticalDatums,
+                           timeZone = timeZone)
 
   return(mp)
+}
+
+parseMeasurementTimeseries <- function(obj, sos, verbose = FALSE) {
+  return(obj)
 }
 
 #
 # coercion methods ----
 #
-as.SpatialPoints.MonitoringPoint = function(from) {
+as.SpatialPoints.WmlMonitoringPoint = function(from) {
   as(from@shape, "SpatialPoints")
 }
-setAs("MonitoringPoint", "SpatialPoints",
+setAs("WmlMonitoringPoint", "SpatialPoints",
       function(from) {
         as.SpatialPoints.MonitoringPoint(from)
       }
 )
-setAs("MonitoringPoint", "Spatial",
+setAs("WmlMonitoringPoint", "Spatial",
       function(from) {
         as.SpatialPoints.MonitoringPoint(from)
       }

@@ -214,6 +214,11 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE, retrieveFOI =
   observationsXML <- xml2::xml_find_all(x = obj,
                                        xpath = sos200ObservationDataName,
                                        ns = sos@namespaces)
+  if (!length(observationsXML)) {
+    if (verbose) cat("[parseGetObservationResponse] No content in response!\n")
+    return(list())
+  }
+
   featureCache <- list()
   observations <- sapply(observationsXML,
                          parseObservation_2.0,
@@ -276,7 +281,7 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
     if (verbose) cat("[.parseFeatureMember] Parsing ", name, "\n")
 
     if (name == wmlMonitoringPointName) {
-      sp <- parseMonitoringPoint(member, sos = sos)
+      sp <- parseWmlMonitoringPoint(member, sos = sos)
       parsed <- GmlFeatureProperty(feature = sp)
     }
     else if (name == samsSamplingFeatureName) {

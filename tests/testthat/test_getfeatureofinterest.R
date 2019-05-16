@@ -96,7 +96,7 @@ test_that("All feature members identified and parsed", {
   featureClasses <- sapply(response, function(member) {
     return(class(member@feature))
   })
-  expect_equal(featureClasses, c("SamsSamplingFeature", "SamsSamplingFeature", "MonitoringPoint"))
+  expect_equal(featureClasses, c("SamsSamplingFeature", "SamsSamplingFeature", "WmlMonitoringPoint"))
 })
 
 context("GetFeatureOfInterest: integration tests\n")

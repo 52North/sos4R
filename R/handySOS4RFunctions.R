@@ -622,18 +622,18 @@ as.SpatialPointsDataFrame.SamsSamplingFeatureList <- function(list) {
 # →
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
 getData <- function(sos,
-                    phenomena, # no default to force the user to actively pick phenomena
-                    sites, # no default to force the user to actively pick sites
-                    spatialBBox=NA,
-                    begin=NA,
-                    end=NA) {
+                    phenomena,
+                    sites,
+                    spatialBBox = NA,
+                    begin = NA,
+                    end = NA,
+                    ...) {
   stopifnot(inherits(sos, "SOS_2.0.0"))
-  stopifnot(is.character(timeInterval))
+  stopifnot(!is.null(phenomena), length(phenomena) > 0, !any(is.na(phenomena)))
+  stopifnot(!is.null(sites), length(sites) > 0, !any(is.na(sites)))
 
   if (missing(sites) && is.na(spatialBBox))
     stop("Either 'sites' or 'spatialBBox' must be provided.")
-
-  phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
 
   if (!missing(sites)) {
     sites <- .validateListOrDfColOfStrings(sites, "sites")
@@ -643,13 +643,23 @@ getData <- function(sos,
     }
   }
 
+  time <- list()
+  if (!is.na(begin) && !is.na(end))
+    time <- list(sosCreateTimePeriod(sos = sos,
+                                begin = begin,
+                                end = end))
+
   observations <- getObservation(sos = sos,
-                                 offering = as.list(sosOfferingIds(sos)), # "all"
-                                 observedProperty = , # phenomena
+                                 offering = list(), # "all"
+                                 observedProperty = as.list(phenomena), # phenomena
                                  responseFormat = om20Namespace, # default by spec, see Table 19
-                                 featureOfInterest = , # sites
-                                 eventTime = , # timeInterval
-                                 BBOX = )
+                                 featureOfInterest = as.list(sites), # sites
+                                 eventTime = time,
+                                 BBOX = NA_character_,
+                                 ... = ...)
+
+  if (length(observations) < 1)
+    return(data.frame())
 
   results <- sosResult(observations)
 

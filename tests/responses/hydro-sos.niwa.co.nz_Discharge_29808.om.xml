@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:GetObservationResponse xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/om/2.0 http://schemas.opengis.net/om/2.0/observation.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd">
+  <sos:observationData>
+    <om:OM_Observation xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="o_1">
+      <om:type xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement"/>
+      <om:phenomenonTime>
+        <gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="phenomenonTime_1">
+          <gml:timePosition>2019-05-17T07:00:00.000+12:00</gml:timePosition>
+        </gml:TimeInstant>
+      </om:phenomenonTime>
+      <om:resultTime xlink:href="#phenomenonTime_1"/>
+      <om:procedure xlink:href="Hydrometric_Station"/>
+      <om:parameter>
+        <om:NamedValue xmlns:om="http://www.opengis.net/om/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <om:name xlink:href="offering"/>
+          <om:value xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">QR.Master@29808</om:value>
+        </om:NamedValue>
+      </om:parameter>
+      <om:observedProperty xlink:href="Discharge" xlink:title="Discharge"/>
+      <om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#mp_ea8fd71430265a8b33a82e22fa02ef6eec7660c8ce3b7b7e74cbd1c71c6cf1df"/>
+      <om:result xmlns:ns="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="m^3/s" xsi:type="ns:MeasureType">4.19773641385934</om:result>
+    </om:OM_Observation>
+  </sos:observationData>
+</sos:GetObservationResponse>

@@ -21,8 +21,8 @@ mpXml <- '<wml2:MonitoringPoint gml:id="xsd-monitoring-point.example" xmlns:wml2
       </wml2:timeZone>
     </wml2:MonitoringPoint>'
 
-test_that("reference frame", {
-  mp <- parseMonitoringPoint(obj = xml2::read_xml(x = mpXml), sos = testsos)
+test_that("reference frame is parsed correctly", {
+  mp <- parseWmlMonitoringPoint(obj = xml2::read_xml(x = mpXml), sos = testsos)
 
   expect_equal(sosId(mp), "xsd-monitoring-point.example")
   expect_equal(sosName(mp), c("Deddington"))
@@ -32,4 +32,31 @@ test_that("reference frame", {
   expect_s3_class(mp@timeZone, "xml_node")
   expect_match(toString(mp@timeZone), "AEDT")
   expect_equal(mp@sampledFeatures, c("Nile River" = "http://csiro.au/features/rivers/nile"))
+})
+
+mtXml <- '<wml2:MeasurementTimeseries gml:id="timeseries.1" xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:wml2="http://www.opengis.net/waterml/2.0">
+          <wml2:metadata>
+            <wml2:MeasurementTimeseriesMetadata>
+              <wml2:temporalExtent xlink:href="#phenomenonTime_1"/>
+            </wml2:MeasurementTimeseriesMetadata>
+          </wml2:metadata>
+          <wml2:defaultPointMetadata>
+            <wml2:DefaultTVPMeasurementMetadata>
+              <wml2:uom code="m^3/s"/>
+              <wml2:interpolationType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/continuous" xlink:title="Instantaneous"/>
+            </wml2:DefaultTVPMeasurementMetadata>
+          </wml2:defaultPointMetadata>
+          <wml2:point>
+            <wml2:MeasurementTVP>
+              <wml2:time>2019-05-17T06:00:00.000+12:00</wml2:time>
+              <wml2:value>4.26702452619947</wml2:value>
+            </wml2:MeasurementTVP>
+          </wml2:point>
+        </wml2:MeasurementTimeseries>'
+
+test_that("[TODO] measurement timeseries is parsed correctly", {
+  mt <- parseMeasurementTimeseries(obj = xml2::read_xml(x = mtXml), sos = testsos)
+
+  # TODO implement parsing
+  expect_s3_class(mt, "xml_document")
 })

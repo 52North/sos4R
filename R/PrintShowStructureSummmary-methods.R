@@ -312,16 +312,16 @@
   invisible(x)
 }
 
-.toString.MonitoringPoint <- function(x, ...) {
-  .mp <- paste("Object of class MonitoringPoint; ",
+.toString.WmlMonitoringPoint <- function(x, ...) {
+  .mp <- paste("Object of class WmlMonitoringPoint; ",
                "id: ", x@id, ", names: ", toString(paste(x@names)),
                "\n\tidentifier: ", x@identifier,
                "\n\tshape: ", (toString(x@shape)))
   return(.mp)
 }
 
-.print.MonitoringPoint <- function(x, ...) {
-  cat(.toString.MonitoringPoint(x, ...), "\n")
+.print.WmlMonitoringPoint <- function(x, ...) {
+  cat(.toString.WmlMonitoringPoint(x, ...), "\n")
   invisible(x)
 }
 
@@ -1024,7 +1024,7 @@ setMethod("print", "SOS_2.0.0", function(x, ...) .print.SOS_2.0.0(x, ...))
 setMethod("print", "SosFilter_Capabilities", function(x, ...) .print.SosFilter_Capabilities(x, ...))
 setMethod("print", "SosObservationOffering", function(x, ...) .print.SosObservationOffering(x, ...))
 setMethod("print", "SosObservationOffering_2.0.0", function(x, ...) .print.SosObservationOffering_2.0.0(x, ...))
-setMethod("print", "MonitoringPoint", function(x, ...) .print.MonitoringPoint(x, ...))
+setMethod("print", "WmlMonitoringPoint", function(x, ...) .print.WmlMonitoringPoint(x, ...))
 setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
 setMethod("print", "SosFeatureOfInterest", function(x, ...) .print.SosFeatureOfInterest(x, ...))
 setMethod("print", "SensorML", function(x, ...) .print.SensorML(x, ...))
@@ -1086,7 +1086,7 @@ setMethod("toString", "SOS_2.0.0", function(x, ...) .toString.SOS_2.0.0(x, ...))
 setMethod("toString", "SosFilter_Capabilities", function(x, ...) .toString.SosFilter_Capabilities(x, ...))
 setMethod("toString", "SosObservationOffering", function(x, ...) .toString.SosObservationOffering(x, ...))
 setMethod("toString", "SosObservationOffering_2.0.0", function(x, ...) .toString.SosObservationOffering_2.0.0(x, ...))
-setMethod("toString", "MonitoringPoint", function(x, ...) .toString.MonitoringPoint(x, ...))
+setMethod("toString", "WmlMonitoringPoint", function(x, ...) .toString.WmlMonitoringPoint(x, ...))
 setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, ...))
 setMethod("toString", "SosFeatureOfInterest", function(x, ...) .toString.SosFeatureOfInterest(x, ...))
 setMethod("toString", "SensorML", function(x, ...) .toString.SensorML(x, ...))
@@ -1148,7 +1148,7 @@ setMethod("show", "SOS_2.0.0", function(object) .print.SOS_2.0.0(object))
 setMethod("show", "SosFilter_Capabilities", function(object) .print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) .print.SosObservationOffering(object))
 setMethod("show", "SosObservationOffering_2.0.0", function(object) .print.SosObservationOffering_2.0.0(object))
-setMethod("show", "MonitoringPoint", function(object) .print.MonitoringPoint(object))
+setMethod("show", "WmlMonitoringPoint", function(object) .print.WmlMonitoringPoint(object))
 setMethod("show", "SosContents", function(object) .print.SosContents(object))
 setMethod("show", "SosFeatureOfInterest", function(object) .print.SosFeatureOfInterest(object))
 setMethod("show", "SensorML", function(object) .print.SensorML(object))
