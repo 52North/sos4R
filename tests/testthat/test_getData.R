@@ -33,9 +33,8 @@ context("convenience layer -> getData()")
 
 # download mock responses
 #niwaHydro <- SOS(url = "https://hydro-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
-#niwaOffering <- sosOfferings(niwaHydro)[[3]]
 #obs <- getObservation(sos = niwaHydro,
-#               offering = niwaOffering,
+#               offering = sosOfferings(niwaHydro)[1:10],
 #               observedProperty = list("Height of Gauge (River Stage)"),
 #               eventTime = sosCreateTime(sos = niwaHydro, time = "2019-05-01 00:00:00::2019-05-01 01:00:00"),
 #               saveOriginal = "tests/responses/getData_gauge_niwa.xml")
