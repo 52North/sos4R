@@ -48,15 +48,17 @@ phenomena
 The retrieved data can be extended to the time intervals and site identifier for which data is available.
 
 ```{r phenomena_include_time}
-phenomena(sos = niwaHydro, includeTemporalBBox = TRUE)[1:5,]
+phenomena(sos = niwaHydro, includeTemporalBBox = TRUE)
 ```
 
 ```{r phenomena_include_siteid}
-phenomena(sos = niwaHydro, includeSiteId = TRUE)[1:5,]
+# not implemented
+#phenomena(sos = niwaHydro, includeSiteId = TRUE)
 ```
 
 ```{r phenomena_include_all}
-phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)[1:5,]
+# not implemented
+#phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)
 ```
 
 ## `sites()`
@@ -65,6 +67,51 @@ The function `sites(..)` provides information about sites where observations are
 
 ```{r sites}
 sites(sos = niwaHydro)
+```
+
+To see all sites, even the ones without any data, use the `empty` parameter.
+
+```{r sites_empty, eval=FALSE}
+sites(sos = niwaHydro, empty = TRUE)
+```
+
+You can retrieve additional metadata about the phenomena and the time period for which data is available. 
+
+```{r sites_metadata}
+sites(sos = niwaHydro, includePhenomena = TRUE, includeTemporalBBox = TRUE)[1:3,]
+```
+
+You can filter sites using phenomena and temporal extent.
+
+```{r sites_phenomena}
+sites(sos = niwaHydro, phenomena = phenomena[2:3,])
+```
+
+```{r sites_time}
+sites(sos = niwaHydro, begin = as.POSIXct("1904-01-01"), end = as.POSIXct("1905-12-31"))
+```
+
+The returned object is a `SpatialPointsDataFrame`.
+It allows access to coordinates with coordinate reference system (CRS) and mapping.
+
+```{r sites_coords}
+sites <- sites(sos = niwaHydro)
+
+sp::coordinates(sites)[1:3,]
+```
+
+```{r sites_structure}
+str(sites)
+```
+
+```{r sites_bbox}
+sp::bbox(sites)
+```
+
+```{r sites_map}
+suppressPackageStartupMessages(library("mapview"))
+
+mapview(sites)
 ```
 
 ## `siteList()`
@@ -82,7 +129,7 @@ You can extend the information returned with these parameters:
 - `includePhenomena` to add phenomena to the table (boolean)
 - `includeTemporalBBox` to also show the time when data is available (boolean)
 
-```{r siteList_empty}
+```{r siteList_empty, eval=FALSE}
 siteList(sos = sos, empty = TRUE)
 ```
 
@@ -96,33 +143,36 @@ You can reduce the results with these parameters:
 - `begin` and `end` define a time interval (date and time class objects) for which some data must be available (sites may have data outside the given interval)
 
 ```{r siteList_phenomena_time}
-siteList(sos = niwaHydro, phenomena = phenomena[1:2], begin = as.POSIXct("2017-11-01"), end = as.POSIXct("2018-02-20"))
+siteList(sos = niwaHydro,
+         phenomena = phenomena$phenomenon[1:2],
+         begin = as.POSIXct("1950-01-01"), end = as.POSIXct("1960-12-31"))
 ```
 
 ## `getData()`
 
 The function `getData(..)` retrieves the actual data and returns them in ready-to-use data structures from the [`spacetime`](https://cran.r-project.org/package=spacetime) package.
 
-The returned data can be limited by spatial and temporal filters.
-Spatial filters are either stations, or a bounding box.
+The returned data can be limited by thematical, spatial, and temporal filters.
+Thematical filtering (phenomena) support the values of the previous functions as inputs.
+Spatial filters are either sites, or a bounding box.
 
 ```{r getData_single}
 singleSite <- siteList$siteID[[1]]
 
-getData(sos = niwaHydro, phenomena = phenomena$phenomenon[[1]], sites = singleSite)
+# not implemented
+#getData(sos = niwaHydro, phenomena = phenomena$phenomenon[[1]], sites = singleSite)
 ```
 
 ```{r getData_multiple}
 multipleSites <- siteList$siteID[4:6]
 # get data for all phenomena at three sites
-data <- getData(sos = niwaHydro, phenomena = phenomena, sites = multipleSites)
-str(data)
+
+# not implemented
+#data <- getData(sos = niwaHydro, phenomena = phenomena, sites = multipleSites)
+#str(data)
 ```
 
 ```{r getData_summary}
-summary(data)
+# not implemented
+#summary(data)
 ```
-
- 
-spatialBBox=NA,
-                    timeInterval
