@@ -1395,7 +1395,7 @@ setMethod(f = "encodeKVP",
   contentType <- httr::http_type(response)
 
   if (!httr::has_content(response)) {
-    stop("Response has no content: ", toString(response),
+    warning("Response has no content: ", toString(response),
          " | headers: ", paste(names(httr::headers(response)),
                                httr::headers(response),
                                sep = ": ",

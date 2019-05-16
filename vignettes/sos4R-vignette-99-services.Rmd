@@ -165,6 +165,18 @@ niwa.hydro <- SOS(url = "https://hydro-sos.niwa.co.nz/",
 sosContents(niwa.hydro)
 ```
 
+```{r niwa_hydro_data}
+#sosResponseFormats(niwaHydro)
+discharge29808 <- getObservation(sos = niwaHydro,
+                                 observedProperty = list("Discharge"), # phenomena
+                                 featureOfInterest = list("29808"), # sites
+                                 #saveOriginal = "../tests/responses/hydro-sos.niwa.co.nz_Discharge_29808.xml",
+                                 #responseFormat = "http://www.opengis.net/waterml/2.0",
+                                 #inspect = TRUE,
+                                 retrieveFOI = FALSE)
+sosResult(discharge29808)
+```
+
 ```{r niwa_climate}
 niwa.climate <- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 sosContents(niwa.climate)
