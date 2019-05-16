@@ -73,6 +73,8 @@
     parseTemporalObservation,
     parseComplexObservation,
     #
+    parseMeasurementTimeseries,
+    #
     parseCSV,
     parseOM,
     parseOM)
@@ -112,6 +114,8 @@
     omTruthObservationName,
     omTemporalObservationName,
     omComplexObservationName,
+    #
+    wmlMeasurementTimeseriesName,
     #
     mimeTypeCSV,
     mimeTypeOM,

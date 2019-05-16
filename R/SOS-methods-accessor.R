@@ -1116,7 +1116,7 @@ setMethod(f = "sosName", signature = signature(obj = "SamsSamplingFeature"),
           definition = function(obj) {
             return(obj@name)
           })
-setMethod(f = "sosName", signature = signature(obj = "MonitoringPoint"),
+setMethod(f = "sosName", signature = signature(obj = "WmlMonitoringPoint"),
           definition = function(obj) {
             return(obj@names)
           })

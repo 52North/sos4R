@@ -398,6 +398,7 @@ wmlNamespacePrefix <- "wml2"
 wmlMonitoringPointName <- paste0(wmlNamespacePrefix, ":MonitoringPoint")
 wmlVerticalDatumName <- paste0(wmlNamespacePrefix, ":verticalDatum")
 wmlTimeZoneName <- paste0(wmlNamespacePrefix, ":timeZone")
+wmlMeasurementTimeseriesName <- paste0(wmlNamespacePrefix, ":MeasurementTimeseries")
 
 #
 # FES ----

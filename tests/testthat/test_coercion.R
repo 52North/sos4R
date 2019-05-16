@@ -135,11 +135,11 @@ test_that("there is an error if GML direct position has no SRS/CRS", {
 
 test_that("WML monitoring point can be coerced to Spatial/SpatialPolygons", {
   pos <- GmlDirectPositionLatLon(lat = 22, lon = 33, srsName = "http://www.opengis.net/def/crs/EPSG/0/4326")
-  mp <- MonitoringPoint(sampledFeatures = c("feature1", "feature2"),
-                        id = "mp1",
-                        identifier = "monitoring point one",
-                        names = c("name"),
-                        shape = SamsShape(point = GmlPoint(pos = pos)))
+  mp <- WmlMonitoringPoint(sampledFeatures = c("feature1", "feature2"),
+                           id = "mp1",
+                           identifier = "monitoring point one",
+                           names = c("name"),
+                           shape = SamsShape(point = GmlPoint(pos = pos)))
   coerced <- as(mp, "Spatial")
   expect_equal(coerced, as(mp, "SpatialPoints"))
   expect_s4_class(coerced, "SpatialPoints")

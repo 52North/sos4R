@@ -276,7 +276,7 @@ parseGetFeatureOfInterestResponse <- function(obj, sos, verbose = FALSE) {
     if (verbose) cat("[.parseFeatureMember] Parsing ", name, "\n")
 
     if (name == wmlMonitoringPointName) {
-      sp <- parseMonitoringPoint(member, sos = sos)
+      sp <- parseWmlMonitoringPoint(member, sos = sos)
       parsed <- GmlFeatureProperty(feature = sp)
     }
     else if (name == samsSamplingFeatureName) {

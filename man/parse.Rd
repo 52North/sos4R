@@ -69,7 +69,7 @@
 
 \alias{parseGetFeatureOfInterestResponse}
 \alias{parseGetObservationResponse}
-\alias{parseMonitoringPoint}
+\alias{parseWmlMonitoringPoint}
 \alias{parseObservation_2.0}
 \alias{parseSamsShape}
 \alias{parseSosCapabilities100}

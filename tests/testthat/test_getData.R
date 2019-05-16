@@ -49,22 +49,23 @@ test_that("KVP::getData(sos) returns data values in data.frame", {
     ) %>%
     webmockr::to_return(
       status = 200,
-      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      body = readr::read_file("../responses/hydro-sos.niwa.co.nz.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS&request=GetObservation") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/getData_gauge_niwa.xml"),
       headers = list("Content-Type" = "application/xml")
     )
 
-  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
-  dataFrameOfPhenomena <- phenomena(sos)
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-get-data", binding = "KVP")
+  observationData <- getData(sos)
 
-  expect_false(is.null(dataFrameOfPhenomena))
   expect_true(is.data.frame(dataFrameOfPhenomena))
-  expect_equal(length(colnames(dataFrameOfPhenomena)), 1, info = "number of columns in phenomena data.frame")
-  expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "correct column name")
-  expect_equal(nrow(dataFrameOfPhenomena), 33, info = "number of unique phenomena")
-  # check all values
-  expect_equal("AirTemperature",        dataFrameOfPhenomena[ 1, 1])
-  expect_equal("WindSpeed",             dataFrameOfPhenomena[27, 1])
-  expect_equal("WindSpeedMperSec",      dataFrameOfPhenomena[33, 1])
 })
 
 webmockr::disable("httr")

@@ -37,7 +37,7 @@
 # MonitoringPoint ----
 # http://schemas.opengis.net/waterml/2.0/monitoringPoint.xsd
 #
-setClass("MonitoringPoint",
+setClass("WmlMonitoringPoint",
          representation(sampledFeatures = "character",
                         id = "character",
                         identifier = "character",
@@ -62,8 +62,22 @@ setClass("MonitoringPoint",
 )
 
 #
-# FoiOrNULL ----
-# Defining class after the last member is defined.
+# MeasurementTimeseries and Timeseries ----
+# http://schemas.opengis.net/waterml/2.0/timeseries.xsd
 #
-setClassUnion(name = "FoiOrNULL",
-              members = c("GmlFeatureOrGmlFeaturePropertyOrNULL", "MonitoringPoint", "NULL"))
+setClass("WmlTimeseries",
+         representation(),
+         prototype = list(),
+         validity = function(object) {
+           return(TRUE)
+         }
+)
+
+setClass("WmlMeasurementTimeseries",
+         representation(),
+         prototype = list(),
+         contains = "WmlTimeseries",
+         validity = function(object) {
+           return(TRUE)
+         }
+)

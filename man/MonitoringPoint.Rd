@@ -4,22 +4,22 @@
 
 \docType{class}
 
-\alias{MonitoringPoint-class}
-\alias{MonitoringPoint}
-\alias{print,MonitoringPoint-method}
-\alias{show,MonitoringPoint-method}
-\alias{toString,MonitoringPoint-method}
+\alias{WmlMonitoringPoint-class}
+\alias{WmlMonitoringPoint}
+\alias{print,WmlMonitoringPoint-method}
+\alias{show,WmlMonitoringPoint-method}
+\alias{toString,WmlMonitoringPoint-method}
 
-\alias{sosName,MonitoringPoint-method}
+\alias{sosName,WmlMonitoringPoint-method}
 
-\title{Class \code{"MonitoringPoint"}}
+\title{Class \code{"WmlMonitoringPoint"}}
 
 \description{
 A monitoring point is the feature of interest defined for WaterML observations, i.e. a monitoring point represents the real world feature for which observations are taken. This may be, for example, the position of a stream flow sensor at a river.
 }
 
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{new("MonitoringPoint", ...)}.
+Objects can be created by calls of the form \code{new("WmlMonitoringPoint", ...)}.
 }
 
 \section{Slots}{
@@ -43,11 +43,11 @@ Class \code{"\linkS4class{GmlFeatureOrGmlFeaturePropertyOrNULL}"}, by class "Gml
 
 \section{Methods}{
   \describe{
-    \item{sosName}{\code{signature(x = "MonitoringPoint")}: access the name of the point.}
+    \item{sosName}{\code{signature(x = "WmlMonitoringPoint")}: access the name of the point.}
 	 }
 }
 
 \examples{
-showClass("MonitoringPoint")
+showClass("WmlMonitoringPoint")
 }
 \keyword{classes}
