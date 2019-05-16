@@ -278,7 +278,8 @@ setMethod(f = "siteList",
                                         begin,
                                         end,
                                         includePhenomena,
-                                        includeTemporalBBox))
+                                        includeTemporalBBox,
+                                        phenomena))
             }
           }
 )
@@ -325,6 +326,7 @@ setMethod(f = "siteList",
                                end,
                                includePhenomena,
                                includeTemporalBBox,
+                               phenomena) {
   .dams <- .getDataAvailabilityMember(sos, phenomena)
   stopifnot(!is.null(.dams))
   stopifnot(is.list(.dams))
