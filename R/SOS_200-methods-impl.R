@@ -75,9 +75,9 @@
 
     if (isTRUE(grep(pattern = "[\\?]", x = dcp[[owsDcpUrlIndex]]) > 0)) {
       if (verbose) cat("Given url already contains a '?', appending arguments!\n")
-      .url = paste0(dcp[[owsDcpUrlIndex]], .encodedRequest)
+      url = paste0(dcp[[owsDcpUrlIndex]], .encodedRequest)
     }
-    else .url = paste(dcp[[owsDcpUrlIndex]], .encodedRequest, sep = "?")
+    else url = paste(dcp[[owsDcpUrlIndex]], .encodedRequest, sep = "?")
 
     if (!is.na(sos@additionalKVPs) && length(sos@additionalKVPs) > 0) {
       .kvps <- sos@additionalKVPs
@@ -87,16 +87,16 @@
             toString(.kvps))
 
       .kvpsString <- .encodeAdditionalKVPs(.kvps)
-      .url <- paste(.url, .kvpsString, sep = "&")
+      url <- paste(url, .kvpsString, sep = "&")
     }
 
-    if (inspect) cat("[.sosRequest_2.0.0] GET!\n[.sosRequest_2.0.0] REQUEST:\n\t", .url, "\n")
+    if (inspect) cat("[.sosRequest_2.0.0] GET!\n[.sosRequest_2.0.0] REQUEST:\n\t", url, "\n")
 
     if (verbose) cat("[.sosRequest_2.0.0] Do GET request...\n")
 
-    response = httr::GET(url = .url,
+    response = httr::GET(url = url,
                           httr::accept_xml())
-    .content <- .processResponse(response, verbose)
+    content <- .processResponse(response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.\n")
   }
@@ -138,7 +138,7 @@
                             httr::content_type_xml(),
                             httr::accept_xml(),
                             body = .requestString )
-    .content <- .processResponse(response, verbose)
+    content <- .processResponse(response, verbose)
 
     if (verbose) cat("[.sosRequest_2.0.0] ... done.")
   }
@@ -155,8 +155,8 @@
                SosSupportedBindings(), "but is", sos@binding))
   }
 
-  if (inspect) cat("[.sosRequest_2.0.0] RESPONSE:\n", toString(.content), "\n")
-  return(.content)
+  if (inspect) cat("[.sosRequest_2.0.0] RESPONSE:\n", toString(content), "\n")
+  return(content)
 }
 
 #
@@ -383,7 +383,6 @@
 
   if (!is.null(filename)) {
     xml2::write_xml(x = response, file = filename)
-    if (verbose) cat("[.getObservation_2.0.0] Saved original document:", filename, "\n")
   }
 
   if (.isExceptionReport(response)) {
@@ -423,7 +422,7 @@
         .resultLength <- 0
       }
     }
-    else if (is.list(obs) && all(sapply(obs, function(o) { class(o) == "OmOM_Observation"}))) {
+    else if (is.list(obs) && length(obs) > 0 && all(sapply(obs, function(o) { class(o) == "OmOM_Observation"}))) {
       .resultLength <- sum(sapply(obs, function(o){ !is.null(o@result)}))
     }
     else .resultLength <- NA
@@ -642,6 +641,11 @@
     # TODO: implement SamsShape encoding
 
     # use sosCreateBBOX to create Envelope!
+  }
+
+  if (!is.na(obj@responseFormat)) {
+    responseFormat <- .kvpKeyAndValues(sosKVPParamNameResponseFormat, obj@responseFormat)
+    optionals <- c(optionals, responseFormat)
   }
 
   if (length(namespaces) > 0) {

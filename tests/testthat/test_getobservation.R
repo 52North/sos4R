@@ -171,6 +171,16 @@ test_that("multiple offerings (mixed IDs and objects) with KVP (SOS 2.0.0)", {
   expect_match(request, "offering=http%3A%2F%2Foff1a,off2a,off2b,off3")
 })
 
+test_that("responseFormat with KVP (SOS 2.0.0)", {
+  testsos <- SOS_Test(name = "getobspox", version = sos200_version)
+  getobs <- SosGetObservation_2.0.0(service = "ser",
+                                    version = "2.0.0",
+                                    offering = list("http://off1a"),
+                                    responseFormat = "http://www.opengis.net/om/2.0")
+  request <- encodeRequestKVP(obj = getobs, sos = testsos)
+  expect_match(request, "responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0")
+})
+
 context("GetObservation: POX encoding")
 
 test_that("minimal", {
