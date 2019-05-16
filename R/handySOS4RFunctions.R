@@ -580,7 +580,51 @@ setMethod(f = "sites",
   if (is.null(.sites) || is.list(.sites) && length(.sites) < 1) {
     return(.sitesAsSPDF(sos))
   }
-  return(as.SpatialPointsDataFrame.SamsSamplingFeatureList(.sites))
+  .sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(.sites)
+  # extend spdf@data with information about the available phenomena
+  if (includePhenomena) {
+    .sitesSPDF@data <- .addMetadataAboutPhenomena(.sitesSPDF@data, .phenomena, .dams)
+  }
+  return(.sitesSPDF)
+}
+
+.addMetadataAboutPhenomena <- function(dataframe, allPhenomena, dams) {
+  # store setting of stringsAsFactors to reset after this function
+  tmpStringsAsFactors <- getOption("stringsAsFactors")
+  options(stringsAsFactors = FALSE)
+  # create initial dataframe
+  newDataFrame <- data.frame(matrix(ncol = length(allPhenomena), nrow = 0), stringsAsFactors = FALSE)
+  colnames(newDataFrame) <- c(allPhenomena)
+  # for each row in dataframe
+  for (row in 1:nrow(dataframe)) {
+    # get all available phen via dams
+    siteId <- dataframe[row, "siteID"]
+    phenomenaAvailability <- c()
+    for (phenomenon in allPhenomena) {
+      found <- FALSE
+      for (dam in dams) {
+        if (dam@featureOfInterest == siteId &&
+            dam@observedProperty == phenomenon) {
+          phenomenaAvailability <- c(phenomenaAvailability, TRUE)
+          found <- TRUE
+          break
+        }
+      }
+      if ( !found) {
+        phenomenaAvailability <- c(phenomenaAvailability, FALSE)
+      }
+    }
+    tmpDataFrame <- data.frame(matrix(ncol = length(allPhenomena), nrow = 0), stringsAsFactors = FALSE)
+    tmpDataFrame <- rbind(c(phenomenaAvailability))
+    colnames(tmpDataFrame) <- c(allPhenomena)
+    # create new row for new dataframe
+    # utils::type.convert((newDataFrame[,2]))
+    newDataFrame <- rbind.data.frame(newDataFrame, tmpDataFrame, stringsAsFactors = FALSE)
+  }
+  # add siteIds
+  newDataFrame <- cbind("siteID" = dataframe[["siteID"]], newDataFrame)
+  options(stringsAsFactors = tmpStringsAsFactors)
+  return(newDataFrame)
 }
 
 
