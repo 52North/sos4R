@@ -327,15 +327,7 @@ setMethod(f = "siteList",
                                includePhenomena,
                                includeTemporalBBox,
                                phenomena) {
-  .dams <- .getDataAvailabilityMember(sos, phenomena)
-  stopifnot(!is.null(.dams))
-  stopifnot(is.list(.dams))
-
-  if (.isTimeIntervalSet(begin, end)) {
-    stopifnot(begin < end)
-    # filter returned .dams by given temporal filter
-    .dams <- .filterDAMsByTime(.dams, begin, end)
-  }
+  .dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
 
   if (includeTemporalBBox && !includePhenomena) {
     includePhenomena <- TRUE
@@ -362,13 +354,21 @@ setMethod(f = "siteList",
   return(.sites)
 }
 
-.getDataAvailabilityMember <- function(sos, phenomena) {
+.getDataAvailabilityMember <- function(sos, phenomena, begin, end) {
   if (.isPhenomenaSet(phenomena)) {
     # validate input only if given
     phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
     .dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput)
   } else {
     .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  }
+  stopifnot(!is.null(.dams))
+  stopifnot(is.list(.dams))
+
+  if (.isTimeIntervalSet(begin, end)) {
+    stopifnot(begin < end)
+    # filter returned .dams by given temporal filter
+    .dams <- .filterDAMsByTime(.dams, begin, end)
   }
   return(.dams)
 }
@@ -517,11 +517,11 @@ setMethod(f = "sites",
             }
             else {
               return(.sitesWithDataAsSPDF(sos,
-                                                 begin,
-                                                 end,
-                                                 includePhenomena,
-                                                 includeTemporalBBox,
-                                                 phenomena))
+                                          begin,
+                                          end,
+                                          includePhenomena,
+                                          includeTemporalBBox,
+                                          phenomena))
             }
           }
 )
