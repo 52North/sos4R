@@ -324,15 +324,8 @@ setMethod(f = "siteList",
                                begin,
                                end,
                                includePhenomena,
-                               includeTemporalBBox) {
-  if (.isPhenomenaSet(phenomena)) {
-    # TODO Filter requesting dams by phenomena
-    # validate input only if given
-    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-    .dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput)
-  } else {
-    .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
-  }
+                               includeTemporalBBox,
+  .dams <- .getDataAvailabilityMember(sos, phenomena)
   stopifnot(!is.null(.dams))
   stopifnot(is.list(.dams))
 
@@ -365,6 +358,17 @@ setMethod(f = "siteList",
     .sites <- data.frame("siteID" = .sites[order(.sites$siteID),], stringsAsFactors = FALSE)
   }
   return(.sites)
+}
+
+.getDataAvailabilityMember <- function(sos, phenomena) {
+  if (.isPhenomenaSet(phenomena)) {
+    # validate input only if given
+    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+    .dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput)
+  } else {
+    .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  }
+  return(.dams)
 }
 
 #
