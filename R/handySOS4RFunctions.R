@@ -172,7 +172,7 @@ setMethod(f = "phenomena",
 # → data.frame[siteID]
 #
 # ~ us.2.3: List all sites w/wo data for a given time window ####
-#   siteList(sos, timeInterval=ISO-String)
+#   siteList(sos, begin=POSIXct, end=POSIXct)
 # → data.frame[siteID]
 #
 # ~ us.2.4: List all sites with metadata ####
@@ -212,13 +212,15 @@ if (!isGeneric("siteList")) {
   setGeneric(name = "siteList",
              signature = signature("sos",
                                    "empty",
-                                   "timeInterval",
+                                   "begin",
+                                   "end",
                                    "includePhenomena",
                                    "includeTemporalBBox",
                                    "phenomena"),
              def = function(sos,
                             empty=FALSE,                 # filter
-                            timeInterval=NA_character_,  # filter
+                            begin=NA,                    # filter
+                            end=NA,                      # filter
                             includePhenomena=FALSE,      # meta data
                             includeTemporalBBox=FALSE,   # meta data
                             phenomena=list()) {          # filter
@@ -233,13 +235,13 @@ setMethod(f = "siteList",
           signature = signature(sos = "SOS_2.0.0"),
           def = function(sos,
                          empty,
-                         timeInterval,
+                         begin,
+                         end,
                          includePhenomena,
                          includeTemporalBBox,
                          phenomena) {
             stopifnot(inherits(sos, "SOS_2.0.0"))
             stopifnot(is.logical(empty))
-            stopifnot(is.character(timeInterval))
             stopifnot(is.logical(includePhenomena))
             stopifnot(is.logical(includeTemporalBBox))
 
@@ -251,8 +253,8 @@ setMethod(f = "siteList",
               phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
               .phenomenaSet <- TRUE
             }
-            if (.isTimeIntervalSet(timeInterval)) {
-              .timeInterval <- .validateISO8601String(timeInterval)
+            if (.isTimeIntervalSet(begin, end)) {
+              stopifnot(begin < end)
               .timeIntervalSet <- TRUE
             }
 
@@ -271,15 +273,13 @@ setMethod(f = "siteList",
           }
 )
 
-.isTimeIntervalSet <- function(timeInterval) {
-  return(!is.null(timeInterval) &&
-           !is.na(timeInterval) &&
-           is.character(timeInterval) &&
-           length(timeInterval) > 0)
-}
-
-.validateISO8601String <- function(timeInterval) {
-  stop(".validateISO8601String NOT YET IMPLEMENTED")
+.isTimeIntervalSet <- function(begin, end) {
+  return(!is.null(begin) &&
+           !is.null(end) &&
+           !is.na(begin) &&
+           !is.na(end) &&
+           inherits(begin, "POSIXct") &&
+           inherits(end, "POSIXct"))
 }
 
 .isPhenomenaSet <- function(phenomena) {
@@ -345,7 +345,7 @@ setMethod(f = "siteList",
 # → SpatialPointsDataFrame[siteID, Empty=logical] + coords
 #
 # ~ us.2.3: List all sites with data for a given time window ####
-# sites(sos, timeInterval=ISO-String)
+# sites(sos, begin=POSIXct, end=POSIXct)
 # → SpatialPointsDataFrame[siteID, Empty=logical] + coords
 
 # ~ us.2.4: List all sites with metadata ####
@@ -369,13 +369,15 @@ if (!isGeneric("sites")) {
   setGeneric(name = "sites",
              signature = signature("sos",
                                    "empty",
-                                   "timeInterval",
+                                   "begin",
+                                   "end",
                                    "includePhenomena",
                                    "includeTemporalBBox",
                                    "phenomena"),
              def = function(sos,
                             empty=FALSE,                 # filter
-                            timeInterval=NA_character_,  # filter
+                            begin=NA,                    # filter
+                            end=NA,                      # filter
                             includePhenomena=FALSE,      # meta data
                             includeTemporalBBox=FALSE,   # meta data
                             phenomena=list()) {          # filter
@@ -390,13 +392,13 @@ setMethod(f = "sites",
           signature = signature(sos = "SOS_2.0.0"),
           def = function(sos,
                          empty,
-                         timeInterval,
+                         begin,
+                         end,
                          includePhenomena,
                          includeTemporalBBox,
                          phenomena) {
             stopifnot(inherits(sos, "SOS_2.0.0"))
             stopifnot(is.logical(empty))
-            stopifnot(is.character(timeInterval))
             stopifnot(is.logical(includePhenomena))
             stopifnot(is.logical(includeTemporalBBox))
 
@@ -409,8 +411,8 @@ setMethod(f = "sites",
               phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
               .phenomenaSet <- TRUE
             }
-            if (.isTimeIntervalSet(timeInterval)) {
-              .timeInterval <- .validateISO8601String(timeInterval)
+            if (.isTimeIntervalSet(begin, end)) {
+              stopifnot(begin < end)
               .timeIntervalSet <- TRUE
             }
 
@@ -529,7 +531,7 @@ setMethod(f = "sites",
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
 #
 # ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ####
-# getData(sos, …, timeInterval=ISO-String)
+# getData(sos, …, begin=POSIXct, end=POSIXct)
 # →
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
 
@@ -537,7 +539,8 @@ getData <- function(sos,
                     phenomena, # no default to force the user to actively pick phenomena
                     sites, # no default to force the user to actively pick sites
                     spatialBBox=NA,
-                    timeInterval=NA_character_) {
+                    begin=NA,
+                    end=NA) {
   stopifnot(inherits(sos, "SOS_2.0.0"))
   stopifnot(is.character(timeInterval))
 
@@ -570,7 +573,7 @@ getData <- function(sos,
 # SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
 #
 # ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ####
-# getDataAsST(sos, …, timeInterval=ISO-String)
+# getDataAsST(sos, …, begin=POSIXct, end=POSIXct)
 # →
 # SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
 
@@ -578,7 +581,8 @@ getDataAsST <- function(sos,
                         phenomena, # no default to force the user to actively pick phenomena
                         sites, # no default to force the user to actively pick sites
                         spatialBBox=NA,
-                        timeInterval=NA_character_) {
+                        begin=NA,
+                        end=NA) {
   stopifnot(inherits(sos, "SOS_2.0.0"))
   stopifnot(is.character(timeInterval))
 
