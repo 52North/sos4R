@@ -512,39 +512,17 @@ setMethod(f = "sites",
             stopifnot(is.logical(includePhenomena))
             stopifnot(is.logical(includeTemporalBBox))
 
-            .phenomenaSet <- FALSE
-            .timeIntervalSet <- FALSE
-
-            # TODO reduce duplicate code @see siteListe method
-            # validate input only if given
-            if (.isPhenomenaSet(phenomena)) {
-              phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-              .phenomenaSet <- TRUE
-            }
-            if (.isTimeIntervalSet(begin, end)) {
-              stopifnot(begin < end)
-              .timeIntervalSet <- TRUE
-            }
-
-            if (includeTemporalBBox && !includePhenomena) {
-              includePhenomena <- TRUE
-              warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-            }
-
-            # print(paste0("empty               : ", empty))
-            # print(paste0(".phenomenaSet       : ", .phenomenaSet))
-            # print(paste0(".timeIntervalSet    : ", .timeIntervalSet))
-            # print(paste0("includePhenomena    : ", includePhenomena))
-            # print(paste0("includeTemporalBBox : ", includeTemporalBBox))
-
-            if (empty && !.phenomenaSet && !.timeIntervalSet && !includePhenomena && !includeTemporalBBox) {
+            if (empty) {
               return(.listStationsAsSPDF(sos))
             }
-
-            if (!empty && !.phenomenaSet && !.timeIntervalSet && includePhenomena && !includeTemporalBBox) {
-              return(.listStationsWithPhenomenaAsSPDF(sos))
+            else {
+              return(.listStationsWithDataAsSPDF(sos,
+                                                 begin,
+                                                 end,
+                                                 includePhenomena,
+                                                 includeTemporalBBox,
+                                                 phenomena))
             }
-            stop("NOT YET IMPLEMENTED")
           }
 )
 #
@@ -572,7 +550,24 @@ setMethod(f = "sites",
 # - GetDataAvailability v1.0
 # - GetFeatureOfInterest w/feature list
 #
-.listStationsWithPhenomenaAsSPDF <- function(sos) {
+.listStationsWithDataAsSPDF <- function(sos,
+                                        begin,
+                                        end,
+                                        includePhenomena,
+                                        includeTemporalBBox,
+                                        phenomena) {
+  # validate input only if given
+  if (.isPhenomenaSet(phenomena)) {
+    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+  }
+  if (.isTimeIntervalSet(begin, end)) {
+    stopifnot(begin < end)
+  }
+
+  if (includeTemporalBBox && !includePhenomena) {
+    includePhenomena <- TRUE
+    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+  }
   # get all phenomena
   .phenomena <- as.list(.listPhenomena(sos)[, 1])
   if (is.null(.phenomena) || !is.list(.phenomena) || length(.phenomena) < 1) {
