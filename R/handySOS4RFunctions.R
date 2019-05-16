@@ -513,10 +513,10 @@ setMethod(f = "sites",
             stopifnot(is.logical(includeTemporalBBox))
 
             if (empty) {
-              return(.listStationsAsSPDF(sos))
+              return(.sitesAsSPDF(sos))
             }
             else {
-              return(.listStationsWithDataAsSPDF(sos,
+              return(.sitesWithDataAsSPDF(sos,
                                                  begin,
                                                  end,
                                                  includePhenomena,
@@ -533,7 +533,7 @@ setMethod(f = "sites",
 # Used SOS operations/requests
 #  - GetFeatureOfInterest without parameter
 #
-.listStationsAsSPDF <- function(sos) {
+.sitesAsSPDF <- function(sos) {
   # get all stations
   .sites <- getFeatureOfInterest(sos)
   if (is.null(.sites) || is.list(.sites) && length(.sites) < 1) {
@@ -552,7 +552,7 @@ setMethod(f = "sites",
 # - GetDataAvailability v1.0
 # - GetFeatureOfInterest w/feature list
 #
-.listStationsWithDataAsSPDF <- function(sos,
+.sitesWithDataAsSPDF <- function(sos,
                                         begin,
                                         end,
                                         includePhenomena,
@@ -573,12 +573,12 @@ setMethod(f = "sites",
   # get all phenomena
   .phenomena <- as.list(.listPhenomena(sos)[, 1])
   if (is.null(.phenomena) || !is.list(.phenomena) || length(.phenomena) < 1) {
-    return(.listStationsAsSPDF(sos))
+    return(.sitesAsSPDF(sos))
   }
   # get all stations
   .sites <- getFeatureOfInterest(sos)
   if (is.null(.sites) || !is.list(.sites) || length(.sites) < 1) {
-    return(.listStationsAsSPDF(sos))
+    return(.sitesAsSPDF(sos))
   }
   # get data availability
   .dams <- getDataAvailability(sos)
