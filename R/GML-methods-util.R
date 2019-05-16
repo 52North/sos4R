@@ -19,22 +19,39 @@
 # You should have received a copy of the GNU General Public License along with #
 # this program (see gpl-2.0.txt). If not, write to the Free Software           #
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
-# visit the Free Software Foundation web page, http://www.fsf.org              #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
-# Created: 2018-11-23                                                          #
+# Created: 2019-05-15                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 #
-# Helper function to check if the given list field is available.
+# GML Utility Functions and methos
 #
-# Returns TRUE in the case of not NULL and a list with min 1 element
 #
-.isListFieldAvailable <- function(listField) {
-  !is.null(listField) &&
-    is.list(listField) &&
-    length(listField) > 0 &&
-    !length(listField) == 1 &&
-    !is.na(listField[[1]])
+# Checks if the current node refers to another node by an in-documents reference
+#
+gmlIsNodeReferenced <- function(sos, node) {
+  return(!is.na(xml2::xml_attr(x = node, attr = "href")) &&
+           startsWith(xml2::xml_attr(x = node, attr = "xlink:href", ns = sos@namespaces), "#"))
+}
+#
+# Returns the referenced node in doc that is referenced in node
+#
+gmlGetReferencedNode <- function(sos, doc, node, verbose = FALSE) {
+  nodeHref <- xml2::xml_attr(x = node, attr = "xlink:href", ns = sos@namespaces)
+  nodeHref <- stringr::str_remove_all(nodeHref, "#")
+  if (verbose) cat(paste0("[gmlGetReferencedNode] trying to get referenced node via '", nodeHref, "'\n"))
+  
+  referencedNode <- xml2::xml_parent(
+    xml2::xml_find_first(x = xml2::xml_root(doc), xpath = paste0("//*[@gml:id='", nodeHref, "']"))
+  )
+  if (is.na(referencedNode)) {
+    stop(paste0("[gmlGetReferencedNode] XML document invalid. Node reference '", nodeHref ,"' not in document."))
+  }
+  if (verbose) cat("[gmlGetReferencedNode] Found node, using the one from ",
+                   xml2::xml_attr(x = xml2::xml_parent(referencedNode),
+                                  attr = "gml:id", ns = sos@namespaces), "\n")
+  return(referencedNode)
 }

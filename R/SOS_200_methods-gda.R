@@ -234,22 +234,8 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   }
 
   # if href is in <gda:phenomenonTime xlink:href="#tp_2"/> then in-document reference starting with "#" and than the GML:id of the referenced element
-  if (!is.na(xml2::xml_attr(x = ptNode, attr = "href"))) {
-    ptNodeHref <- xml2::xml_attr(x = ptNode, attr = "xlink:href", ns = sos@namespaces)
-    ptNodeHref <- stringr::str_remove_all(ptNodeHref, "#")
-    if (verbose) cat(paste0("[parseGDAMember] trying to get referenced phenomenon time via '", ptNodeHref, "'\n"))
-
-    referencedNode <- xml2::xml_parent(
-      xml2::xml_find_first(x = xml2::xml_root(gdaMember), xpath = paste0("//*[@gml:id='", ptNodeHref, "']"))
-    )
-    if (is.na(referencedNode)) {
-      stop(paste0("[parseGDAMember] XML document invalid. Time reference '", ptNodeHref ,"' not in document."))
-    } else {
-      if (verbose) cat("[parseGDAMember] Found time, using the one from ",
-                       xml2::xml_attr(x = xml2::xml_parent(referencedNode),
-                                      attr = "gml:id", ns = sos@namespaces), "\n")
-      ptNode <- referencedNode
-    }
+  if (gmlIsNodeReferenced(sos, ptNode)) {
+    ptNode <- gmlGetReferencedNode(sos, gdaMember, ptNode, verbose = verbose)
   }
 
   phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,

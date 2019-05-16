@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gda:GetDataAvailabilityResponse xmlns:gda="http://www.opengis.net/sosgda/1.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sosgda/1.0 http://waterml2.org/schemas/gda/1.0/gda.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+  <gda:dataAvailabilityMember gml:id="ts_1">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="feature-1" xlink:title="feature-1"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_1">
+        <gml:beginPosition>1970-06-01T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-18T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_2">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="feature-2" xlink:title="feature-2"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_2">
+        <gml:beginPosition>1970-06-01T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-06T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_3">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindMaxGust" xlink:title="WindMaxGust"/>
+    <gda:featureOfInterest xlink:href="feature-3" xlink:title="feature-3"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_3">
+        <gml:beginPosition>1970-06-05T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-09T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_4">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="Humidity" xlink:title="Humidity"/>
+    <gda:featureOfInterest xlink:href="feature-4" xlink:title="feature-4"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_4">
+        <gml:beginPosition>1970-06-08T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-19T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_5">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="Humidity" xlink:title="Humidity"/>
+    <gda:featureOfInterest xlink:href="feature-5" xlink:title="feature-5"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_5">
+        <gml:beginPosition>1970-06-16T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-23T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_6">
+    <gda:procedure xlink:href="ws2500-internal" xlink:title="ws2500-internal"/>
+    <gda:observedProperty xlink:href="Humidity" xlink:title="Humidity"/>
+    <gda:featureOfInterest xlink:href="feature-6" xlink:title="feature-6"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_6">
+        <gml:beginPosition>1970-06-04T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-13T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_7">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="Humidity" xlink:title="Humidity"/>
+    <gda:featureOfInterest xlink:href="feature-7" xlink:title="feature-7"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_7">
+        <gml:beginPosition>1970-06-01T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-03T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_8">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="Visibility" xlink:title="Visibility"/>
+    <gda:featureOfInterest xlink:href="feature-7" xlink:title="feature-7"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_8">
+        <gml:beginPosition>1970-06-08T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-19T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+</gda:GetDataAvailabilityResponse>
