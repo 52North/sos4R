@@ -936,8 +936,12 @@ setMethod(f = "sosCoordinates", signature = signature(obj = "OmObservation"),
           })
 setMethod(f = "sosCoordinates", signature = signature(obj = "OmObservationProperty"),
           definition = function(obj) {
-            warning("No coordinates in om:ObservationProperty ", obj@href)
-            return(c())
+            warning("No coordinates in om:ObservationProperty ", obj@href, "\n")
+            coords <- as.data.frame(list(NA, NA, NA))
+            names(coords) <- c(sosDefaultColumnNameLon,
+                               sosDefaultColumnNameLat,
+                               sosDefaultColumnNameSRS)
+            return(coords)
           })
 setMethod(f = "sosCoordinates", signature = signature(obj = "OmOM_Observation"),
           definition = function(obj) {
@@ -1006,10 +1010,10 @@ setMethod(f = "sosCoordinates",
           signature = signature(obj = "list"),
 definition = function(obj, sos = NULL, verbose = FALSE) {
             if (is.null(sos))
-              list <- lapply(obj, sosCoordinates)
-            else list <- lapply(obj, sosCoordinates, sos = sos)
+              allCoords <- lapply(obj, sosCoordinates)
+            else allCoords <- lapply(obj, sosCoordinates, sos = sos)
 
-            coords <- do.call(rbind, list)
+            coords <- do.call(rbind, allCoords)
             return(coords)
           })
 

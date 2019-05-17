@@ -832,8 +832,16 @@ Unfiltered versus spatially filtered coordinates of the responses (spatial filte
 
 ```{r spatialFiltering1b}
 summary(sosCoordinates(obs.sept15))
-cat("--------\n")
-sosCoordinates(obs.sept15.bbox)
+```
+
+The returned object matches the structure of the coordinates table, but contains `NA`, and a warning is issued.
+
+```{r spatialFiltering1c}
+naCoords <- sosCoordinates(obs.sept15.bbox)
+```
+
+```{r spatialFiltering1d}
+naCoords
 ```
 
 More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented.

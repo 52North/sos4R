@@ -56,7 +56,6 @@ test_that("coordinates are not available without FOI with a warning", {
   expect_true(is.na(coords))
 })
 
-
 test_that("coordinates are available with retrieved FOI", {
   skip_on_cran()
 
@@ -106,3 +105,13 @@ test_that("observed property parsed from observation", {
   expect_equal(obsProps, "http://www.52north.org/test/observableProperty/1")
 })
 
+context("OM: accessors")
+
+test_that("coordinates from om:ObservationProperty returns data.frame with NAs", {
+  property <- OmObservationProperty(href = "http://obs/prop/1")
+  sos <- SOS_Test(name = "testgml")
+  expect_warning(coords <- sosCoordinates(property),
+                  "No coordinates")
+  expect_named(coords, c("lon", "lat", "SRS"))
+  expect_equal(as.list(coords[1,]), list(lon = NA, lat = NA, SRS = NA))
+})
