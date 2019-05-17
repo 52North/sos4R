@@ -397,6 +397,31 @@ test_that("POX (1.0.0)", {
   expect_named(result, c("phenomenonTime", "AirTemperature"))
 })
 
+test_that("POX with spatial filter not matching anything (1.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+               binding = "POX",
+               useDCPs = FALSE)
+  off.1 <- sosOfferings(mySOS)[[1]]
+  request.bbox <- sosCreateBBOX(lowLat = 5.0, lowLon = 1.0,
+                                uppLat = 10.0, uppLon = 3.0,
+                                srsName = "urn:ogc:def:crs:EPSG::4326")
+  request.bbox.foi <- sosCreateFeatureOfInterest(spatialOps = request.bbox)
+
+  expect_warning(obs.sept15.bbox <- getObservation(sos = mySOS,
+                                    offering = off.1,
+                                    featureOfInterest = request.bbox.foi,
+                                    #inspect = TRUE,
+                                    eventTime = sept15.eventTimeList),
+                 "urn:ogc:def:nil:OGC:inapplicable")
+
+  expect_s4_class(obs.sept15.bbox, "OmObservationCollection")
+  expect_length(obs.sept15.bbox, 1)
+  expect_s4_class(obs.sept15.bbox[[1]], "OmObservationProperty")
+  expect_s4_class(obs.sept15.bbox[[1]]@href, "urn:ogc:def:nil:OGC:inapplicable")
+})
+
 test_that("CSV parsing works (1.0.0)", {
   skip_on_cran()
 
