@@ -771,7 +771,6 @@ getDataAsST <- function(sos,
                         begin=NA,
                         end=NA) {
   stopifnot(inherits(sos, "SOS_2.0.0"))
-  stopifnot(is.character(timeInterval))
 
   if (missing(sites) && is.na(spatialBBox))
     stop("Either 'sites' or 'spatialBBox' must be provided.")
