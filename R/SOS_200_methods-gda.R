@@ -172,7 +172,7 @@ setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties ",
                      obj@observedProperties, "\n")
     .optionals <- paste(.optionals,
-                        .kvpKeyAndValues(key = sosKVPParamNameObservedProperty, obj@observedProperties),
+                        .kvpKeyAndValues(key = sosKVPParamNameObsProp, obj@observedProperties),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@featuresOfInterest)) {

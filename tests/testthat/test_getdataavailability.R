@@ -160,6 +160,24 @@ test_that("there is an error if GDA with SOS 1.0.0 is attempted", {
   expect_error(getDataAvailability(sos = mySOS), "unable to find an inherited method")
 })
 
+context("GetDataAvailability: encoding")
+
+test_that("KVP (1.0.0)", {
+  testsos <- SOS_Test(name = "gda_100", version = sos200_version)
+  gda <- SosGetDataAvailability_1.0.0(service = "ser", version = testsos@version,
+                               observedProperties = list("prop1", "http://prop2"),
+                               procedures = list("proc1", "https://proc2"),
+                               featuresOfInterest = list("foi1", "https://foi2"),
+                               offerings = list("off1", "off2"))
+  request <- encodeRequestKVP(obj = gda, sos = testsos)
+
+  expect_match(request, "service=SOS&version=2.0.0&request=GetDataAvailability&")
+  expect_match(request, "procedure=proc1,https%3A%2F%2Fproc2")
+  expect_match(request, "observedProperty=prop1,http%3A%2F%2Fprop2")
+  expect_match(request, "featureOfInterest=foi1,https%3A%2F%2Ffoi2")
+  expect_match(request, "offering=off1,off2")
+})
+
 context("GetDataAvailability: integration tests\n")
 
 test_that("KVP (2.0.0)", {
