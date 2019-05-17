@@ -791,7 +791,7 @@ setMethod(f = "getObservation",
             if (is.na(responseFormat))
               responseFormat <- sosDefaultGetObsResponseFormat
             if (length(observedProperty) == 0) {
-              obsProps <- sosObservedProperties(sosOfferings(sos)[[offering]])
+              obsProps <- sosObservedProperties(sosOfferings(sos)[[offeringId]])
               if (verbose) cat("[getObservation] Got observation(s) from offering because none given:", toString(obsProps), "\n")
             }
             else {

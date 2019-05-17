@@ -411,15 +411,13 @@ test_that("POX with spatial filter not matching anything (1.0.0)", {
 
   expect_warning(obs.sept15.bbox <- getObservation(sos = mySOS,
                                     offering = off.1,
-                                    featureOfInterest = request.bbox.foi,
-                                    #inspect = TRUE,
-                                    eventTime = sept15.eventTimeList),
+                                    featureOfInterest = request.bbox.foi),
                  "urn:ogc:def:nil:OGC:inapplicable")
 
   expect_s4_class(obs.sept15.bbox, "OmObservationCollection")
   expect_length(obs.sept15.bbox, 1)
   expect_s4_class(obs.sept15.bbox[[1]], "OmObservationProperty")
-  expect_s4_class(obs.sept15.bbox[[1]]@href, "urn:ogc:def:nil:OGC:inapplicable")
+  expect_equal(obs.sept15.bbox[[1]]@href, "urn:ogc:def:nil:OGC:inapplicable")
 })
 
 test_that("CSV parsing works (1.0.0)", {

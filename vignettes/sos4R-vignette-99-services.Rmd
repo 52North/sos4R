@@ -158,11 +158,11 @@ sosContents(monalisa)
 Two SOS by New Zealands [National Institute of Water and Atmospheric Research](https://www.niwa.co.nz/about/our-company) (NIWA) for hydrometric and climate data, see https://teamwork.niwa.co.nz/display/NEDA/Access+to+Sensor+Data.
 
 ```{r niwa_hydro}
-niwa.hydro <- SOS(url = "https://hydro-sos.niwa.co.nz/",
-                  binding = "POX",
+niwaHydro <- SOS(url = "https://hydro-sos.niwa.co.nz/",
+                  binding = "POX", useDCPs = FALSE,
                   #binding = "KVP",
                   version = "2.0.0")
-sosContents(niwa.hydro)
+sosContents(niwaHydro)
 ```
 
 ```{r niwa_hydro_data}
@@ -178,6 +178,7 @@ sosResult(discharge29808)
 ```
 
 ```{r niwa_climate}
-niwa.climate <- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
-sosContents(niwa.climate)
+# service offline - HTTP 503
+#niwaClimate <- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+#sosContents(niwaClimate)
 ```

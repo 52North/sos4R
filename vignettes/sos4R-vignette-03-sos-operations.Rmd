@@ -477,19 +477,19 @@ The optional attribute `bbox` can be used to obtain a bounding box matrix as use
 sosBoundedBy(myOffering, bbox = TRUE)
 ```
 
-The **temporal extend** is modeled as an object of the respective class of the element in the offering description, which normally is a gml:TimePeriod, but does not have to be.
+The **temporal extent** is modeled as an object of the respective class of the element in the offering description, which normally is a `gml:TimePeriod`, but does not have to be.
 
 ```{r metadataExtraction7a}
-myOffering.time <- sosTime(myOffering)
-utils::str(myOffering.time)
+class(myOffering@time)
+cat("------\n")
+myOffering@time@beginPosition
 ```
 
-You can also access the actual timestamps, which is a bit cumbersome.
+You can also access the actual timestamps with an accessor function `sosTime()`.
 
 ```{r metadataExtraction7b}
-myOffering.time@beginPosition@time
-myOffering.time@endPosition@time
-class(myOffering.time@endPosition@time)
+myOffering.time <- sosTime(myOffering)
+utils::str(myOffering.time)
 ```
 
 The structure of these elements is very flexible (with some of optional elements) and not self-explanatory.
