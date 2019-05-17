@@ -29,9 +29,11 @@
 FROM rocker/geospatial:latest
 MAINTAINER "Jürrens, Eike Hinderk" e.h.juerrens@52north.org
 
-RUN install2.r --error --skipinstalled XML && \
-    install2.r --error --skipinstalled httr && \
+RUN install2.r --error --skipinstalled httr && \
+    install2.r --error --skipinstalled methods && \
+    install2.r --error --skipinstalled sp && \
     install2.r --error --skipinstalled stringr && \
+    install2.r --error --skipinstalled xml2 && \
     install2.r --error --skipinstalled devtools && \
     install2.r --error --skipinstalled webmockr && \
     rm -rf /tmp/downloaded_packages && \
