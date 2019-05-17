@@ -217,6 +217,7 @@ samsNamespace <- "http://www.opengis.net/samplingSpatial/2.0"
 samNamespace <- "http://www.opengis.net/sampling/2.0"
 swesNamespace <- "http://www.opengis.net/swes/2.0"
 om20Namespace <- "http://www.opengis.net/om/2.0"
+swe20Namespace <- "http://www.opengis.net/swe/2.0"
 
 sos200Namespace <- "http://www.opengis.net/sos/2.0"
 
@@ -247,6 +248,7 @@ SosAllNamespaces <- function(version) {
                 sml = smlNamespace,
                 gml1 = gmlNamespace, # need old GML for within SensorML 1.0.1
                 swe = sweNamespace, # needed for Envelope within SensorML 1.0.1
+                swe20 = swe20Namespace, # needed for OM 2.0
                 gml = gml32Namespace,
                 fes = fesNamespace,
                 gda = gdaNamespace,
@@ -373,6 +375,12 @@ sweCoordinateName <- paste0(sweNamespacePrefix, ":coordinate")
 swePositionName <- paste0(sweNamespacePrefix, ":Position")
 sweLowerCornerName <- paste0(sweNamespacePrefix, ":upperCorner")
 sweUpperCornerName <- paste0(sweNamespacePrefix, ":lowerCorner")
+
+#
+# SWE 2.0
+#
+swe20NamespacePrefix <- "swe20"
+swe20DataArrayName <- paste0(swe20NamespacePrefix, ":DataArray")
 
 #
 # SWE Service Model (SWES) ----

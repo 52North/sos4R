@@ -27,6 +27,18 @@
 #                                                                              #
 ################################################################################
 
+switchSweNamespace <- function(docNamespaces, sos){
+  docNs <- unique(docNamespaces)
+
+  if (!sweNamespace %in% docNs) {
+    targetNs <- sos@namespaces[names(sos@namespaces) != sweNamespacePrefix]
+    targetNs <- c(targetNs, swe = swe20Namespace)
+    return(targetNs)
+  }
+
+  return(sos@namespaces)
+}
+
 #
 # optimized for 52N SOS, that means only options used there in OMEncoder are
 # handled here.
@@ -36,14 +48,16 @@
 # here it is just looked for a child element swe:value.
 #
 parseDataArray <- function(obj, sos, verbose = FALSE) {
-  .elementCount <- xml2::xml_text(xml2::xml_find_first(x = obj,
-                                                       xpath = "./swe:elementCount/swe:Count/swe:value",
-                                                       ns = sos@namespaces)
+  namespaces <- switchSweNamespace(xml2::xml_ns(obj), sos)
+
+  elementCount <- xml2::xml_text(xml2::xml_find_first(x = obj,
+                                                      xpath = "./swe:elementCount/swe:Count/swe:value",
+                                                      ns = namespaces)
                                   )
-  if (verbose) cat("[parseDataArray] Parsing DataArray with", .elementCount, "elements.\n")
+  if (verbose) cat("[parseDataArray] Parsing DataArray with", elementCount, "elements.\n")
 
   .elementTypeParser <- sosParsers(sos)[[sweElementTypeName]]
-  .elementTypeXml <- xml2::xml_child(x = obj, search = sweElementTypeName, ns = sos@namespaces)
+  .elementTypeXml <- xml2::xml_child(x = obj, search = sweElementTypeName, ns = namespaces)
   .fields <- .elementTypeParser(obj = .elementTypeXml,
                                 sos = sos,
                                 verbose = verbose)
@@ -52,7 +66,7 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
   .encParser <- sosParsers(sos)[[sweEncodingName]]
   .encodingXml <- xml2::xml_child(x = obj,
                                   search = sweEncodingName,
-                                  ns = sos@namespaces)
+                                  ns = namespaces)
   .encoding <- .encParser(obj = .encodingXml, sos = sos, verbose = verbose)
 
   if (verbose) cat("[parseDataArray] Parsed encoding description:", toString(.encoding), "\n")
@@ -60,7 +74,7 @@ parseDataArray <- function(obj, sos, verbose = FALSE) {
   .valParser <- sosParsers(sos)[[sweValuesName]]
   .values <- .valParser(values = xml2::xml_child(x = obj,
                                                  search = sweValuesName,
-                                                 ns = sos@namespaces),
+                                                 ns = namespaces),
                         fields = .fields,
                         encoding = .encoding,
                         sos = sos, verbose = verbose)
