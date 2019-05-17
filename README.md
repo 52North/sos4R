@@ -29,7 +29,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
     https://gitter.im/52North/sos4R](https://badges.gitter.im/52North/sos4R.svg)](https://gitter.im/52North/sos4R)
   - **Developer documentation:**
     <https://52north.github.io/sos4R/DEV-README.html>
-  - Ohloh: <https://www.ohloh.net/p/sos4R>
+  - Open Hub: <https://www.openhub.net/p/sos4R>
 
 ## Development
 

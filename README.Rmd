@@ -25,7 +25,7 @@ sos4R is an extension for the R environment for statistical computing and visual
 - Source code: https://github.com/52North/sos4R
 - **Support**: [![Join the chat at https://gitter.im/52North/sos4R](https://badges.gitter.im/52North/sos4R.svg)](https://gitter.im/52North/sos4R)
 - **Developer documentation:** https://52north.github.io/sos4R/DEV-README.html
-- Ohloh: https://www.ohloh.net/p/sos4R
+- Open Hub: <https://www.openhub.net/p/sos4R>
 
 ## Development
 
