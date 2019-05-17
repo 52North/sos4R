@@ -64,7 +64,7 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -97,6 +97,12 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -147,12 +153,13 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     <p></p><dl class='dl-horizontal'>
-    <dt><code>xml</code>:</dt><dd><p>Object of class <code>"XMLInternalDocument"</code>, holds the XML representation of the sensor description.</p></dd>
+    <dt><code>boundedBy</code>:</dt><dd><p>Object of class <code>"matrix"</code>, the bounding box of the sensor.</p></dd>
     <dt><code>coords</code>:</dt><dd><p>Object of class <code>"data.frame"</code>, holds the position of the sensor.</p></dd>
+    <dt><code>description</code>:</dt><dd><p>Object of class <code>"character"</code>, a normal text description of the sensor.</p></dd>
     <dt><code>id</code>:</dt><dd><p>Object of class <code>"character"</code>, the main identifier of the sensor.</p></dd>
     <dt><code>name</code>:</dt><dd><p>Object of class <code>"character"</code>, a naming identifier of the sensor.</p></dd>
-    <dt><code>description</code>:</dt><dd><p>Object of class <code>"character"</code>, a normal text description of the sensor.</p></dd>
-    <dt><code>boundedBy</code>:</dt><dd><p>Object of class <code>"matrix"</code>, the bounding box of the sensor.</p></dd>
+    <dt><code>validTime</code>:</dt><dd><p>Object of class <code>"GmlTimeObjectOrNULL"</code>, the time period or instance for which the description is valid (only SOS 2.0.0).</p></dd>
+    <dt><code>xml</code>:</dt><dd><p>Object of class <code>"XMLInternalDocument"</code>, holds the XML representation of the sensor description.</p></dd>
   </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -176,14 +183,18 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
     <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"SensorML"</span>)</div><div class='output co'>#&gt; Class "SensorML" [package "sos4R"]
 #&gt; 
 #&gt; Slots:
-#&gt;                                                                        
-#&gt; Name:           xml       coords           id         name  description
-#&gt; Class: xml_document   data.frame    character    character    character
-#&gt;                    
-#&gt; Name:     boundedBy
-#&gt; Class:       matrix</div><div class='input'>
+#&gt;                                                                   
+#&gt; Name:                  xml              coords                  id
+#&gt; Class:        xml_document          data.frame           character
+#&gt;                                                                   
+#&gt; Name:                 name         description           boundedBy
+#&gt; Class:           character           character              matrix
+#&gt;                           
+#&gt; Name:            validTime
+#&gt; Class: GmlTimeObjectOrNULL</div><div class='input'>
 <span class='no'>mySOS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
-             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)</div><div class='output co'>#&gt; [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp </div><div class='input'><span class='no'>mySensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='describeSensor-methods.html'>describeSensor</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)
+<span class='no'>mySensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='DescribeSensor.html'>describeSensor</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
                 <span class='kw'>procedure</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>sosProcedures</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
                 <span class='kw'>outputFormat</span> <span class='kw'>=</span> <span class='st'>'text/xml; subtype="sensorML/1.0.1"'</span>, <span class='co'># space is needed!</span>
                 )
@@ -194,7 +205,8 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
 #&gt; 	name: 52n-elv-ws2500 
 #&gt; 	description: NA 
 #&gt; 	coords: 51.934814453125, 7.652428150177, -Inf 
-#&gt; 	boundedBy: 7.652428150177, 51.934814453125, 7.652428150177, 51.934814453125 </div><div class='input'>
+#&gt; 	boundedBy: 7.652428150177, 51.934814453125, 7.652428150177, 51.934814453125 
+#&gt; 	validTime:  </div><div class='input'>
 <span class='fu'><a href='SOS.html'>sosId</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; [1] "ws2500"</div><div class='input'><span class='fu'><a href='SOS.html'>sosName</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; [1] "52n-elv-ws2500"</div><div class='input'><span class='fu'><a href='SOS.html'>sosBoundedBy</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt;                  min       max
 #&gt; coords.lon  7.652428  7.652428
 #&gt; coords.lat 51.934814 51.934814
@@ -203,6 +215,20 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
 #&gt; ws2500 51.93481 7.652428 -Inf</div><div class='input'><span class='fu'><a href='SOS.html'>sosGetCRS</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; CRS arguments:
 #&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
 #&gt; +towgs84=0,0,0 </div><div class='input'>
+<span class='co'># valid time from SOS 2.0.0</span>
+<span class='no'>mySOS2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>,
+             <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+<span class='no'>mySensor2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='DescribeSensor.html'>describeSensor</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS2</span>,
+                <span class='kw'>procedure</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>sosProcedures</a></span>(<span class='no'>mySOS2</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
+                <span class='kw'>outputFormat</span> <span class='kw'>=</span> <span class='st'>'text/xml; subtype="sensorML/1.0.1"'</span>)
+
+<span class='fu'><a href='SOS.html'>sosTime</a></span>(<span class='no'>mySensor2</span>)</div><div class='output co'>#&gt; $begin
+#&gt; [1] "2015-05-18 13:42:42 CEST"
+#&gt; 
+#&gt; $end
+#&gt; [1] NA
+#&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>mySensor</span>)
 <span class='co'># }</span><div class='input'>
@@ -236,7 +262,7 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

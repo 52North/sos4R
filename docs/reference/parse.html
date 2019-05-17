@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -96,6 +96,12 @@
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -137,33 +143,34 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>parseFile</span>(<span class='no'>sos</span>, <span class='no'>file</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-<span class='fu'>parseCSV</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>parseNoParsing</span>(<span class='no'>obj</span>)
+    <pre class="usage"><span class='fu'>parseCSV</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseFile</span>(<span class='no'>sos</span>, <span class='no'>file</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 <span class='fu'>parseCategoryObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseComplexObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>parseComponent</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>parseCompositePhenomenon</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseComponent</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseCompositePhenomenon</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseCountObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseDataArray</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseElementType</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseEncoding</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseEnvelope</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>namespaces</span> <span class='kw'>=</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/xml2/topics/xml_ns'>xml_ns</a></span>(<span class='no'>obj</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseFeatureCollection</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseField</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseFOI</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseGeometryObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseMeasure</span>(<span class='no'>obj</span>)
 <span class='fu'>parseMeasurement</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseNoParsing</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseObservationCollection</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='no'>verbose</span>)
 <span class='fu'>parseOM</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>parseOwsException</span>(<span class='no'>obj</span>)
-<span class='fu'>parseOwsExceptionReport</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>parseOwsOperation</span>(<span class='no'>obj</span>, <span class='kw'>namespaces</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>SosAllNamespaces</a></span>())
+<span class='fu'>parseOwsException</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parseOwsExceptionReport</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseOwsOperation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseOwsRange</span>(<span class='no'>obj</span>)
-<span class='fu'>parseOwsServiceIdentification</span>(<span class='no'>obj</span>, <span class='kw'>namespaces</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>SosAllNamespaces</a></span>())
-<span class='fu'>parseOwsServiceProvider</span>(<span class='no'>obj</span>)
-<span class='fu'>parsePhenomenonProperty</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseOwsServiceIdentification</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parseOwsServiceProvider</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parsePhenomenonProperty</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parsePoint</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parsePosition</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseResult</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -174,12 +181,12 @@
 <span class='fu'>parseSosObservationOffering</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseTemporalObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseTextBlock</span>(<span class='no'>obj</span>)
-<span class='fu'>parseTimeGeometricPrimitiveFromParent</span>(<span class='no'>obj</span>, <span class='no'>format</span>)
-<span class='fu'>parseTimeInstant</span>(<span class='no'>obj</span>, <span class='no'>format</span>)
-<span class='fu'>parseTimeInstantProperty</span>(<span class='no'>obj</span>, <span class='no'>format</span>)
-<span class='fu'>parseTimePeriod</span>(<span class='no'>obj</span>, <span class='no'>format</span>)
-<span class='fu'>parseTimePosition</span>(<span class='no'>obj</span>, <span class='no'>format</span>)
-<span class='fu'>parseTimeObject</span>(<span class='no'>obj</span>, <span class='no'>format</span>, <span class='kw'>timeObjectMap</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseTimeGeometricPrimitiveFromParent</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parseTimeInstant</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parseTimeInstantProperty</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parseTimePeriod</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parseTimePosition</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
+<span class='fu'>parseTimeObject</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>timeObjectMap</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseTruthObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseValues</span>(<span class='no'>values</span>, <span class='no'>fields</span>, <span class='no'>encoding</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
@@ -203,10 +210,6 @@
       <td><p>A vector of namespace prefixes and definitions to use.</p></td>
     </tr>
     <tr>
-      <th>format</th>
-      <td><p>A character string defining the time format to be used in <code>strptime</code>.</p></td>
-    </tr>
-    <tr>
       <th>values</th>
       <td><p>The values to be parsed in <code>parseValues(...)</code>.</p></td>
     </tr>
@@ -228,7 +231,7 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments that are parsed to <code>xmlParse(...)</code> in <code>sosParse(...)</code>.</p></td>
+      <td><p>Additional arguments that are parsed to <code><a href='https://www.rdocumentation.org/packages/xml2/topics/read_xml'>xml2::read_xml(..)</a></code>.</p></td>
     </tr>
     </table>
     
@@ -236,6 +239,7 @@
 
     <p>The naming of the functions follow the following rule: parse[optional: namespace prefix][name of the XML element to be parsed]</p>
 <p>Not all parsing function that have a <code>SOS</code> object or <code>verbose</code> in their signature, but few actually use it at this points of development. Some of the parsing functions are <strong>exchangeable</strong> when creating a new SOS connection. Please see the examples!</p>
+<p>Functions parsing time rely on the slot <code>timeFormat</code> of <code>SOS</code> objects.</p>
 <p><code>parseOM</code> is a special function in the respect that it matches sub parsing function depending on an objects <code>xmlName</code> from the list of the given <code>SOS</code>'s parsing functions.</p>
 <p><code>parseNoParsing</code> is a convenience function that directly returns the object without any changes.</p>
 <p><code>sosParse</code> allows parsing of files for all elements that have a parsers registered with the given SOS.</p>
@@ -262,12 +266,12 @@
   <span class='st'>"&lt;ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"&gt;"</span>,
   <span class='st'>"&lt;ows:ExceptionText&gt;The parameter 'AcceptVersions' does not contain the version"</span>,
   <span class='st'>" of this SOS: '1.0.0'&lt;/ows:ExceptionText&gt;&lt;/ows:Exception&gt;&lt;/ows:ExceptionReport&gt;"</span>))
-<span class='no'>er.parsed</span> <span class='kw'>&lt;-</span> <span class='fu'>parseOwsExceptionReport</span>(<span class='no'>er.doc</span>)
+<span class='no'>er.parsed</span> <span class='kw'>&lt;-</span> <span class='fu'>parseOwsExceptionReport</span>(<span class='no'>er.doc</span>, <span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>())
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 #&gt;  1 exception(s) (code @ locator : text):
 #&gt;   VersionNegotiationFailed @ AcceptVersions :
 #&gt; 	The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0' 
-#&gt;  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Formal class 'OwsExceptionReport' [package "sos4R"] with 3 slots
+#&gt;  </div><div class='input'><span class='kw pkg'>utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Formal class 'OwsExceptionReport' [package "sos4R"] with 3 slots
 #&gt;   ..@ version   : chr "1.0.0"
 #&gt;   ..@ lang      : chr NA
 #&gt;   ..@ exceptions:List of 1
@@ -277,7 +281,7 @@
 #&gt;   .. .. .. ..@ locator      : chr "AcceptVersions"</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># save and re-parse an observation from file</span>
-<span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getObservation-methods.html'>getObservationById</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"o_3508493"</span>,
+<span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='GetObservation.html'>getObservationById</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"o_3508493"</span>,
                 <span class='kw'>saveOriginal</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>.files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list.files'>list.files</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>())
 <span class='no'>.startWithO_</span> <span class='kw'>&lt;-</span> <span class='no'>.files</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/grep'>grep</a></span>(<span class='st'>"o_"</span>, <span class='no'>.files</span>, <span class='kw'>value</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
@@ -314,7 +318,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

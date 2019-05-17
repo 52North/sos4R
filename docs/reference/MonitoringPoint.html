@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Class <code>"MonitoringPoint"</code> — MonitoringPoint-class • sos4R</title>
+<title>Class <code>"WmlMonitoringPoint"</code> — MonitoringPoint-class • sos4R</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Class <code>"MonitoringPoint"</code> — MonitoringPoint-class" />
+<meta property="og:title" content="Class <code>"WmlMonitoringPoint"</code> — MonitoringPoint-class" />
 
 <meta property="og:description" content="A monitoring point is the feature of interest defined for WaterML observations, i.e. a monitoring point represents the real world feature for which observations are taken. This may be, for example, the position of a stream flow sensor at a river." />
 <meta name="twitter:card" content="summary" />
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -96,6 +96,12 @@
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -126,7 +132,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Class <code>"MonitoringPoint"</code></h1>
+    <h1>Class <code>"WmlMonitoringPoint"</code></h1>
     
     <div class="hidden name"><code>MonitoringPoint.Rd</code></div>
     </div>
@@ -140,48 +146,47 @@
         
     <h2 class="hasAnchor" id="objects-from-the-class"><a class="anchor" href="#objects-from-the-class"></a>Objects from the Class</h2>
 
-    <p>Objects can be created by calls of the form <code>new("MonitoringPoint", ...)</code>.</p>
+    <p>Objects can be created by calls of the form <code>new("WmlMonitoringPoint", ...)</code>.</p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     <p></p><dl class='dl-horizontal'>
-    <dt><code>sampledFeatures</code>:</dt><dd><p>Object of class <code>"list"</code> ~~</p></dd>
-    <dt><code>id</code>:</dt><dd><p>Object of class <code>"character"</code> ~~</p></dd>
-    <dt><code>identifier</code>:</dt><dd><p>Object of class <code>"list"</code> ~~</p></dd>
-    <dt><code>names</code>:</dt><dd><p>Object of class <code>"list"</code> ~~</p></dd>
-    <dt><code>shape</code>:</dt><dd><p>Object of class <code>"SamsShape"</code> ~~</p></dd>
+    <dt><code>id</code>:</dt><dd><p>Object of class <code>"character"</code>, the GML id of the point.</p></dd>
+    <dt><code>identifier</code>:</dt><dd><p>Object of class <code>"character"</code>, the identifier of the point.</p></dd>
+    <dt><code>names</code>:</dt><dd><p>Object of class <code>"character"</code>, the names of the point.</p></dd>
+    <dt><code>sampledFeatures</code>:</dt><dd><p>Object of class <code>"character"</code>, the identifiers of sampled features.</p></dd>
+    <dt><code>shape</code>:</dt><dd><p>Object of class <code>"SamsShape"</code>, the shape of the point.</p></dd>
+    <dt><code>timeZone</code>:</dt><dd><p>Object of class <code>"ANY"</code>, the time zone (if available).</p></dd>
+    <dt><code>verticalDatums</code>:</dt><dd><p>Object of class <code>"AN"</code>, the vertical datum (if available).</p></dd>
   </dl>
     
     <h2 class="hasAnchor" id="extends"><a class="anchor" href="#extends"></a>Extends</h2>
 
     <p>Class <code>"<a href='GML.html'>GmlFeature</a>"</code>, directly.
-Class <code>"<a href='Foi.html'>FoiOrNULL</a>"</code>, directly.
+Class <code>"<a href='SosFeatureOfInterest.html'>FoiOrNULL</a>"</code>, directly.
 Class <code>"<a href='GML.html'>GmlFeatureOrNULL</a>"</code>, by class "GmlFeature", distance 2.
 Class <code>"<a href='GML.html'>GmlFeatureOrGmlFeaturePropertyOrNULL</a>"</code>, by class "GmlFeature", distance 2.</p>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     <p></p><dl class='dl-horizontal'>
-    <dt>print</dt><dd><p><code>signature(x = "MonitoringPoint")</code>: ...</p></dd>
-    <dt>show</dt><dd><p><code>signature(object = "MonitoringPoint")</code>: ...</p></dd>
-    <dt>toString</dt><dd><p><code>signature(x = "MonitoringPoint")</code>: ...</p></dd>
+    <dt>sosName</dt><dd><p><code>signature(x = "WmlMonitoringPoint")</code>: access the name of the point.</p></dd>
 	 </dl>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"MonitoringPoint"</span>)</div><div class='output co'>#&gt; Class "MonitoringPoint" [package "sos4R"]
+    <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"WmlMonitoringPoint"</span>)</div><div class='output co'>#&gt; Class "WmlMonitoringPoint" [package "sos4R"]
 #&gt; 
 #&gt; Slots:
 #&gt;                                                                       
 #&gt; Name:  sampledFeatures              id      identifier           names
-#&gt; Class:            list       character            list            list
-#&gt;                       
-#&gt; Name:            shape
-#&gt; Class:       SamsShape
+#&gt; Class:       character       character       character       character
+#&gt;                                                       
+#&gt; Name:            shape  verticalDatums        timeZone
+#&gt; Class:       SamsShape             ANY             ANY
 #&gt; 
 #&gt; Extends: 
 #&gt; Class "GmlFeature", directly
-#&gt; Class "FoiOrNULL", directly
 #&gt; Class "GmlFeatureOrNULL", by class "GmlFeature", distance 2
 #&gt; Class "GmlFeatureOrGmlFeaturePropertyOrNULL", by class "GmlFeature", distance 2</div></pre>
   </div>
@@ -209,7 +214,7 @@ Class <code>"<a href='GML.html'>GmlFeatureOrGmlFeaturePropertyOrNULL</a>"</code>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

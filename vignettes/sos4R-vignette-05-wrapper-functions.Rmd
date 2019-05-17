@@ -32,7 +32,7 @@ library("sos4R")
 niwaHydro <- SOS(url = "https://hydro-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 ```
 
-## `phenomena()`
+## Phenomena
 
 The function `phenomena(..)` provides information about observed phenomena and time periods of data.
 
@@ -61,7 +61,7 @@ phenomena(sos = niwaHydro, includeTemporalBBox = TRUE)
 #phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)
 ```
 
-## `sites()`
+## Sites
 
 The function `sites(..)` provides information about sites where observations are made, including metadata about the sites (e.g. location).
 The returned object is a `SpatialPointsDataFrame`.
@@ -115,7 +115,7 @@ suppressPackageStartupMessages(library("mapview"))
 mapview(sites)
 ```
 
-## `siteList()`
+## Data at sites
 
 The function `siteList(..)` provides information about observed phenomena at sites and the time periods when data is available.
 
@@ -149,7 +149,7 @@ siteList(sos = niwaHydro,
          begin = as.POSIXct("1950-01-01"), end = as.POSIXct("1960-12-31"))
 ```
 
-## `getData()`
+## Data download
 
 The function `getData(..)` retrieves the actual data and returns them in ready-to-use data structures from the [`spacetime`](https://cran.r-project.org/package=spacetime) package.
 

@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -96,6 +96,12 @@
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -424,13 +430,10 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 #&gt; Name:         id
 #&gt; Class: character
 #&gt; 
-#&gt; Extends: 
-#&gt; Class "GmlFeatureOrNULL", directly
-#&gt; Class "GmlFeatureOrGmlFeaturePropertyOrNULL", directly
-#&gt; Class "FoiOrNULL", by class "GmlFeatureOrGmlFeaturePropertyOrNULL", distance 2
+#&gt; Extends: "GmlFeatureOrNULL", "GmlFeatureOrGmlFeaturePropertyOrNULL"
 #&gt; 
 #&gt; Known Subclasses: "GmlFeatureCollection", "SaSamplingPoint", "SaSamplingSurface", 
-#&gt; "SamsSamplingFeature", "MonitoringPoint"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlFeatureCollection"</span>)</div><div class='output co'>#&gt; Class "GmlFeatureCollection" [package "sos4R"]
+#&gt; "SamsSamplingFeature", "WmlMonitoringPoint"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlFeatureCollection"</span>)</div><div class='output co'>#&gt; Class "GmlFeatureCollection" [package "sos4R"]
 #&gt; 
 #&gt; Slots:
 #&gt;                                     
@@ -454,9 +457,7 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 #&gt; Name:              href          feature
 #&gt; Class:        character GmlFeatureOrNULL
 #&gt; 
-#&gt; Extends: 
-#&gt; Class "GmlFeatureOrGmlFeaturePropertyOrNULL", directly
-#&gt; Class "FoiOrNULL", by class "GmlFeatureOrGmlFeaturePropertyOrNULL", distance 2</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlGeometry"</span>)</div><div class='output co'>#&gt; Virtual Class "GmlGeometry" [package "sos4R"]
+#&gt; Extends: "GmlFeatureOrGmlFeaturePropertyOrNULL"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlGeometry"</span>)</div><div class='output co'>#&gt; Virtual Class "GmlGeometry" [package "sos4R"]
 #&gt; 
 #&gt; Slots:
 #&gt;                                                                        
@@ -652,9 +653,16 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>env1</span>)</div><div class='output co'>#&gt; Object of class GmlEnvelope; srsName: NA, srsDimension: NA, srsDimension: NA, uomLabels: NA;
 #&gt; 	lowerCorner: Object of class GmlDirectPosition; pos: 6.0 51.0; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA;
 #&gt; 	upperCorner: Object of class GmlDirectPosition; pos: 7.0 52.0; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA </div><div class='input'>
+<span class='co'># create envelope with CRS and access it</span>
+<span class='no'>env1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlEnvelope</span>(<span class='kw'>upperCorner</span> <span class='kw'>=</span> <span class='no'>pos1</span>,
+                    <span class='kw'>lowerCorner</span> <span class='kw'>=</span> <span class='fu'>GmlDirectPosition</span>(<span class='st'>"6.0 51.0"</span>),
+                    <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='st'>"http://www.opengis.net/def/crs/EPSG/0/4326"</span>)
+<span class='fu'><a href='SOS.html'>sosGetCRS</a></span>(<span class='no'>env1</span>)</div><div class='output co'>#&gt; CRS arguments:
+#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
+#&gt; +towgs84=0,0,0 </div><div class='input'>
 <span class='co'># wrap elements in feature collection</span>
 <span class='fu'>GmlFeatureCollection</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"001"</span>, <span class='kw'>featureMembers</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>pos1</span>, <span class='no'>env1</span>))</div><div class='output co'>#&gt; Object of class GmlFeatureCollection; id: 001;
-#&gt; 	2 featureMember(s): new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), new("GmlEnvelope", lowerCorner = new("GmlDirectPosition", pos = "6.0 51.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), upperCorner = new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA) </div><div class='input'>
+#&gt; 	2 featureMember(s): new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), new("GmlEnvelope", lowerCorner = new("GmlDirectPosition", pos = "6.0 51.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), upperCorner = new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), srsName = "http://www.opengis.net/def/crs/EPSG/0/4326", srsDimension = NA, axisLabels = NA, uomLabels = NA) </div><div class='input'>
 <span class='co'># create point with ID</span>
 <span class='no'>point1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlPoint</span>(<span class='kw'>pos</span> <span class='kw'>=</span> <span class='no'>pos1</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"002"</span>)
 
@@ -697,8 +705,8 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='no'>aWeekAgo</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
 <span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())
 <span class='no'>now</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
-<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-04-06 15:35:41 ]
-#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-04-13 15:35:41 ] ] </div></pre>
+<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-05-10 11:39:53 ]
+#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-05-17 11:39:53 ] ] </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -735,7 +743,7 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

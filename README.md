@@ -56,9 +56,8 @@ You can install the current development version (= the next release for
 CRAN) directly from GitHub with the following commands.
 
 ``` r
-install.packages("devtools")
-devtools::install_github("52North/sos4R", ref = "dev")
-# To also install the vignettes run: devtools::install_github("52North/sos4R", build_vignettes = TRUE)
+#install.packages("remotes")
+remotes::install_github("52North/sos4R", ref = "dev")
 ```
 
 ### Contributors

@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -96,6 +96,12 @@
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -163,12 +169,8 @@
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     <p></p><dl class='dl-horizontal'>
-    <dt>print</dt><dd><p><code>signature(x = "DataAvailabilityMember")</code>: ...</p></dd>
-    <dt>show</dt><dd><p><code>signature(object = "DataAvailabilityMember")</code>: ...</p></dd>
-    <dt>toString</dt><dd><p><code>signature(x = "DataAvailabilityMember")</code>: ...</p></dd>
-    <dt>checkRequest</dt><dd><p><code>signature(service = "SOS_2.0.0", operation = "SosGetDataAvailability_1.0.0", verbose = "logical")</code>: ...</p></dd>
-    <dt>encodeRequestKVP</dt><dd><p><code>signature(obj = "SosGetDataAvailability_1.0.0")</code>: ...</p></dd>
-    <dt>sosName</dt><dd><p><code>signature(obj = "SosGetDataAvailability_1.0.0")</code>: ...</p></dd>
+    <dt>encodeRequestKVP</dt><dd><p><code>signature(obj = "SosGetDataAvailability_1.0.0")</code>: encode object as URL request string.</p></dd>
+    <dt>sosName</dt><dd><p><code>signature(obj = "SosGetDataAvailability_1.0.0")</code>: access to a name (for human display) of the object.</p></dd>
     <dt>toString</dt><dd><p><code>signature(x = "SosGetDataAvailability_1.0.0")</code>: ...</p></dd>
 	 </dl>
     
@@ -230,7 +232,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

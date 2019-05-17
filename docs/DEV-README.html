@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -93,6 +93,12 @@
     </li>
     <li>
       <a href="articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -315,9 +321,7 @@
 <li>
 <code>testing.R</code> contains tests done during the development of certain functions and is a very good opportunity to (re-)check functionality and keep a history of functionality that is working (at some point in time at least…).</li>
 <li>
-<code>testing-SOSs.R</code> contains tests of connections to different types of SOS and different SOS instances.</li>
-<li>
-<code>packaging.R</code> contains the functions for creating package documentation and should be used as the spot to collect useful functions and workflows around future documentation and the packaging process.</li>
+<code>testing-SOSs(-2.0).R</code> contains tests of connections to different types of SOS and different SOS instances.</li>
 </ul>
 </div>
 <div id="naming-of-functions-defaults-and-constants" class="section level3">
@@ -406,17 +410,20 @@
 <ul>
 <li><a href="https://travis-ci.org/52North/sos4R" class="uri">https://travis-ci.org/52North/sos4R</a></li>
 <li><a href="https://ci.appveyor.com/project/52North/sos4r" class="uri">https://ci.appveyor.com/project/52North/sos4r</a></li>
+<li>If there are problems with the <code>devel</code> release of R, you can use a local Docker container to run the checks while fixing them (from the path of the parten folder of <code>sos4R</code>): <code>docker run --rm -it -v $(pwd)/sos4R:/home/sos4R rocker/geospatial:devel bash</code>, switch to <code>/home</code>, then run the commands below (<code>R CMD build</code> &amp; <code>check</code>)</li>
 </ul>
 </li>
 <li>Update version and date in <code>man/sos4R-package.Rd</code>
 </li>
 <li>Update version in <code>DESCRIPTION</code>
 </li>
+<li>Update version number in <code>NEWS.md</code>
+</li>
 <li>Run <strong>checks</strong> again and fix all problems
 <ul>
 <li>In the parent directory of the project: <code>R CMD build sos4R; R CMD check --as-cran sos4R_&lt;version number&gt;.tar.gz</code> should have no errors, warnings, or notes</li>
 <li>
-<code><a href="https://www.rdocumentation.org/packages/revdepcheck/topics/revdep_check">revdepcheck::revdep_check()</a></code> for checking reverse dependencies</li>
+<code>revdepcheck::revdep_check()</code> for checking reverse dependencies</li>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/devtools/topics/check_win">devtools::check_win_release()</a></code> and <code><a href="https://www.rdocumentation.org/packages/devtools/topics/check_win">devtools::check_win_devel()</a></code> for testing Windows using CRAN infrastructure</li>
 <li>
@@ -429,12 +436,14 @@
 <li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again, make necessary changes</li>
 <li>Merge the PR</li>
 <li>Update your local <code>master</code> to upstream’s <code>master</code> branch -_ Do the actual release_ with <code><a href="https://www.rdocumentation.org/packages/devtools/topics/release">devtools::release()</a></code> (which will ask you again if you did many of the steps before)</li>
-<li>Wait for the good news, check where the package is in the queue with <code><a href="https://www.rdocumentation.org/packages/foghorn/topics/cran_incoming">foghorn::cran_incoming(pkg = "sos4R")</a></code>
+<li>Wait for the good news, check where the package is in the queue with <code>foghorn::cran_incoming(pkg = "sos4R")</code>
 </li>
 <li>When available on CRAN:
 <ul>
 <li>Create a git tag with the version number using the letter <code>v</code> followed by the version number (see above, must match <code>DESCRIPTION</code>), e.g. <code>v1.2.3</code>, and push it to the main repository</li>
-<li>Create a release on GitHub based on the new tag, named just as the version tag</li>
+<li>Create a release on GitHub based on the new tag, named just as the version tag, see the file <code>CRAN-RELEASE</code> for the precise commit</li>
+<li>Remove the file <code>CRAN-RELEASE</code>
+</li>
 <li>Checkout the <code>dev</code> branch</li>
 <li>Merge <code>upstream/master</code>
 </li>
@@ -444,13 +453,6 @@
 <li>Tweet</li>
 </ul>
 </li>
-</ul>
-<p>You can then do the actual release with</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/release">release</a></span>()</a></code></pre></div>
-<p>When available on CRAN:</p>
-<ul>
-<li>Email on 52N mailing list(s)</li>
-<li>Tweet</li>
 </ul>
 </div>
 </div>
@@ -466,7 +468,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

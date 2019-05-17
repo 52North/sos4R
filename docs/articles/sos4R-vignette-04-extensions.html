@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -63,6 +63,12 @@
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -98,7 +104,7 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2019-04-13</h4>
+            <h4 class="date">2019-05-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-04-extensions.Rmd"><code>vignettes/sos4R-vignette-04-extensions.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-04-extensions.Rmd</code></div>
@@ -116,7 +122,6 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"sos4R"</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">mySOS &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="dt">url =</span> <span class="st">"http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox"</span>,</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">             <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">dcpFilter =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"POX"</span> =<span class="st"> "/pox"</span>))</a></code></pre></div>
-<pre><code>## [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox</code></pre>
 <div id="changing-handling-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changing-handling-functions" class="anchor"></a>Changing Handling Functions</h2>
@@ -139,49 +144,46 @@
 <p>The functions used in the exchangeable steps are organized in lists. To base your own list of functions on the existing ones, thereby not having to start from scratch, you can combine the default list of functions with your own. Use the following functions:</p>
 <p>To add your own function, simply add it as a named argument. You can add as many as you like in the <code>...</code> parameter. If a function with that identifier already exists in the default list it will be replaced by your function. For further adjustments you can explicitly include and exclude functions by identifier. Please be aware that inclusion is applied first, then exclusion. It is also important that you also have to include that functions you just added manually!</p>
 <p>Examples of function list generation with parsing functions:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">parsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="st">"ExceptionReport"</span> =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"Got Exception!"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">    },</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">    <span class="dt">include =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"GetObservation"</span>, <span class="st">"ExceptionReport"</span>))</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(parsers))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">parsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="st">"ExceptionReport"</span> =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">        <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"Got Exception!"</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">    },</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">include =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"GetObservation"</span>, <span class="st">"ExceptionReport"</span>))</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(parsers))</a></code></pre></div>
 <pre><code>## [1] "GetObservation"  "ExceptionReport"</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">parsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">        <span class="st">"ExceptionReport"</span> =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">            <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"Got Exception!"</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">        },</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">        <span class="dt">include =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"GetCapabilities"</span>))</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(parsers))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">parsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">        <span class="st">"ExceptionReport"</span> =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">            <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"Got Exception!"</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">        },</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">        <span class="dt">include =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"GetCapabilities"</span>))</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(parsers))</a></code></pre></div>
 <pre><code>## [1] "GetCapabilities"</code></pre>
 <p>The following snipped shows how to remove a large part of parsers using <code>exclude</code> and then prints the names of the remaining ones.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">parsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">        <span class="dt">exclude =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>())[<span class="dv">5</span><span class="op">:</span><span class="dv">29</span>])</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(parsers))</a></code></pre></div>
-<pre><code>## [1] "GetCapabilities"                     
-## [2] "DescribeSensor"                      
-## [3] "GetObservation"                      
-## [4] "GetObservationResponse"              
-## [5] "application/vnd.google-earth.kml+xml"
-## [6] "kml"                                 
-## [7] "text/xml"</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">parsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">        <span class="dt">exclude =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>())[<span class="dv">5</span><span class="op">:</span><span class="dv">29</span>])</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(parsers))</a></code></pre></div>
+<pre><code>## [1] "GetCapabilities"               "ows:ExceptionReport"          
+## [3] "DescribeSensor"                "DescribeSensorResponse"       
+## [5] "wml2:MeasurementTimeseries"    "text/csv"                     
+## [7] "text/xml;subtype=\"om/1.0.0\"" "text/xml"</code></pre>
 </div>
 <div id="encoders" class="section level2">
 <h2 class="hasAnchor">
 <a href="#encoders" class="anchor"></a>Encoders</h2>
 <p>The current list of a connection’s encoders can be accessed with</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosEncoders</a></span>(mySOS)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosEncoders</a></span>(mySOS)</a></code></pre></div>
 <p>A complete list of the existing encoders names:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosEncoders</a></span>(mySOS))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosEncoders</a></span>(mySOS))</a></code></pre></div>
 <pre><code>## [1] "SOAP" "POX"  "KVP"</code></pre>
 <p>Here the idea of organizing the encoding functions becomes clear: One base encoding function is given, which is a generic method that must exist for alle elements that need to be encoded.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">myPostEncoding &lt;-<span class="st"> </span><span class="cf">function</span>(object, sos, verbose) {</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(object))</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># Connection will not be established because of mising objects</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">mySOS2 =<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="kw"><a href="../reference/SOS.html">sosUrl</a></span>(mySOS),</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">    <span class="dt">encoders =</span> <span class="kw"><a href="../reference/Defaults.html">SosEncodingFunctions</a></span>(<span class="st">"POST"</span> =<span class="st"> </span>myPostEncoding))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">myPostEncoding &lt;-<span class="st"> </span><span class="cf">function</span>(object, sos, verbose) {</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(utils<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(object))</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co"># Connection will not be established because of mising objects</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">mySOS2 =<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="kw"><a href="../reference/SOS.html">sosUrl</a></span>(mySOS),</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">    <span class="dt">encoders =</span> <span class="kw"><a href="../reference/Defaults.html">SosEncodingFunctions</a></span>(<span class="st">"POST"</span> =<span class="st"> </span>myPostEncoding))</a></code></pre></div>
 <p>Encoding functions can be overriden for many specific objects. The signature of the encoding function consists of the object, <code>obj</code>, a SOS object, <code>sos</code>, and the optional <code>verbose</code> parameter.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">showMethods</span>(<span class="st">"encodeXML"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">showMethods</span>(<span class="st">"encodeXML"</span>)</a></code></pre></div>
 <pre><code>## Function: encodeXML (package sos4R)
 ## obj="character", sos="SOS"
 ## obj="GmlDirectPosition", sos="SOS"
@@ -208,30 +210,33 @@
 ## obj="TM_Equals", sos="SOS"
 ## obj="xml_document", sos="SOS"
 ## obj="xml_node", sos="SOS"</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">showMethods</span>(<span class="st">"encodeKVP"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">showMethods</span>(<span class="st">"encodeKVP"</span>)</a></code></pre></div>
 <pre><code>## Function: encodeKVP (package sos4R)
+## obj="GmlTimeInstant", sos="SOS"
+## obj="GmlTimePeriod", sos="SOS"
+## obj="GmlTimePosition", sos="SOS"
 ## obj="OgcBinaryTemporalOp", sos="SOS"
 ## obj="POSIXt", sos="SOS"
 ## obj="SosEventTime", sos="SOS"</code></pre>
 <p>A useful example can be overriding the encoding method for time classes (<code>POSIXt</code>) as presented below – see the demo <code>southesk</code> for the application of this code.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">setMethod</span>(<span class="dt">f =</span> <span class="st">"encodeXML"</span>,</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">  <span class="dt">signature =</span> <span class="kw">signature</span>(<span class="dt">obj =</span> <span class="st">"POSIXt"</span>, <span class="dt">sos =</span> <span class="st">"SOS"</span>),</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">    <span class="dt">def =</span> <span class="cf">function</span>(obj, sos, verbose) {</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">      <span class="cf">if</span>(verbose) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Using my own time encoding... "</span>)</a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6">      <span class="co"># time zone hack to fix that the time format option</span></a>
-<a class="sourceLine" id="cb17-7" data-line-number="7">      <span class="co"># %z does not work on windows machines:</span></a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">      .time &lt;-<span class="st"> </span>obj <span class="op">+</span><span class="st"> </span><span class="dv">11</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span> <span class="co"># add 11 hours</span></a>
-<a class="sourceLine" id="cb17-9" data-line-number="9">      formatted &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(<span class="dt">x =</span> .time,</a>
-<a class="sourceLine" id="cb17-10" data-line-number="10">        <span class="dt">format =</span> <span class="kw"><a href="../reference/SOS.html">sosTimeFormat</a></span>(sos))</a>
-<a class="sourceLine" id="cb17-11" data-line-number="11">      formatted &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(formatted,</a>
-<a class="sourceLine" id="cb17-12" data-line-number="12">        <span class="st">"+11:00"</span>, <span class="dt">sep =</span> <span class="st">""</span>) <span class="co"># append 11:00</span></a>
-<a class="sourceLine" id="cb17-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb17-14" data-line-number="14">      <span class="cf">if</span>(verbose) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Formatted "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/toString">toString</a></span>(obj),</a>
-<a class="sourceLine" id="cb17-15" data-line-number="15">        <span class="st">" to "</span>, formatted, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
-<a class="sourceLine" id="cb17-16" data-line-number="16">      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(formatted)</a>
-<a class="sourceLine" id="cb17-17" data-line-number="17">    }</a>
-<a class="sourceLine" id="cb17-18" data-line-number="18">)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">setMethod</span>(<span class="dt">f =</span> <span class="st">"encodeXML"</span>,</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="dt">signature =</span> <span class="kw">signature</span>(<span class="dt">obj =</span> <span class="st">"POSIXt"</span>, <span class="dt">sos =</span> <span class="st">"SOS"</span>),</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="dt">def =</span> <span class="cf">function</span>(obj, sos, verbose) {</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">      <span class="cf">if</span>(verbose) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Using my own time encoding... "</span>)</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">      <span class="co"># time zone hack to fix that the time format option</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">      <span class="co"># %z does not work on windows machines:</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">      .time &lt;-<span class="st"> </span>obj <span class="op">+</span><span class="st"> </span><span class="dv">11</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span> <span class="co"># add 11 hours</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">      formatted &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(<span class="dt">x =</span> .time,</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">        <span class="dt">format =</span> <span class="kw"><a href="../reference/SOS.html">sosTimeFormat</a></span>(sos))</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">      formatted &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(formatted,</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">        <span class="st">"+11:00"</span>, <span class="dt">sep =</span> <span class="st">""</span>) <span class="co"># append 11:00</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14">      <span class="cf">if</span>(verbose) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Formatted "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/toString">toString</a></span>(obj),</a>
+<a class="sourceLine" id="cb16-15" data-line-number="15">        <span class="st">" to "</span>, formatted, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb16-16" data-line-number="16">      <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(formatted)</a>
+<a class="sourceLine" id="cb16-17" data-line-number="17">    }</a>
+<a class="sourceLine" id="cb16-18" data-line-number="18">)</a></code></pre></div>
 <p>All later calls for encoding any classes with time will then reference this newly defined method. Be aware that this changes the encoding <strong>globally</strong>, in contrast to converters and parsers which can be changed for every <strong>instance</strong> of class <code>SOS</code>.</p>
 </div>
 <div id="decoders" class="section level2">
@@ -239,79 +244,62 @@
 <a href="#decoders" class="anchor"></a>Decoders</h2>
 <p>The terms parsing and decoding are used as synonyms for the process of processing an XML document to create an R object. XML documents are made out of hierarchical elements. That is why the decoding functions are organized in a listed, whose names are the XML elements’ names it parses.</p>
 <p>The current list of a connection’s parsers can be accessed with the following function.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosParsers</a></span>(mySOS)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosParsers</a></span>(mySOS)</a></code></pre></div>
 <p>A complete list of the elements with existing encoders is shown below. These are not only names of XML elements, but also <a href="https://en.wikipedia.org/wiki/Internet_media_type">MIME types</a>. Here the idea of organizing the encoding functions becomes clear: For every XML element or document type that must be parsed there is a function given in the list.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosParsers</a></span>(mySOS))</a></code></pre></div>
-<pre><code>##  [1] "GetCapabilities"                     
-##  [2] "DescribeSensor"                      
-##  [3] "GetObservation"                      
-##  [4] "GetObservationResponse"              
-##  [5] "GetFeatureOfInterestResponse"        
-##  [6] "GetObservationById"                  
-##  [7] "ows:ExceptionReport"                 
-##  [8] "GetDataAvailabilityResponse"         
-##  [9] "om:Measurement"                      
-## [10] "om:member"                           
-## [11] "om:Observation"                      
-## [12] "om:ObservationCollection"            
-## [13] "om:result"                           
-## [14] "swe:DataArray"                       
-## [15] "swe:elementType"                     
-## [16] "swe:encoding"                        
-## [17] "swe:values"                          
-## [18] "swe:Position"                        
-## [19] "swe:location"                        
-## [20] "swe:Vector"                          
-## [21] "swe:coordinate"                      
-## [22] "om:GeometryObservation"              
-## [23] "om:CategoryObservation"              
-## [24] "om:CountObservation"                 
-## [25] "om:TruthObservation"                 
-## [26] "om:TemporalObservation"              
-## [27] "om:ComplexObservation"               
-## [28] "text/csv"                            
-## [29] "text/xml;subtype=\"om/1.0.0\""       
-## [30] "application/vnd.google-earth.kml+xml"
-## [31] "kml"                                 
-## [32] "text/xml"</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosParsers</a></span>(mySOS))</a></code></pre></div>
+<pre><code>##  [1] "GetCapabilities"                 "ows:ExceptionReport"            
+##  [3] "DescribeSensor"                  "DescribeSensorResponse"         
+##  [5] "GetObservation"                  "GetObservationById"             
+##  [7] "gda:GetDataAvailabilityResponse" "GetFeatureOfInterestResponse"   
+##  [9] "GetObservationByIdResponse"      "GetObservationResponse"         
+## [11] "om:Measurement"                  "om:member"                      
+## [13] "om:Observation"                  "om:ObservationCollection"       
+## [15] "om:result"                       "swe:DataArray"                  
+## [17] "swe:elementType"                 "swe:encoding"                   
+## [19] "swe:values"                      "swe:Position"                   
+## [21] "swe:location"                    "swe:Vector"                     
+## [23] "swe:coordinate"                  "om:GeometryObservation"         
+## [25] "om:CategoryObservation"          "om:CountObservation"            
+## [27] "om:TruthObservation"             "om:TemporalObservation"         
+## [29] "om:ComplexObservation"           "wml2:MeasurementTimeseries"     
+## [31] "text/csv"                        "text/xml;subtype=\"om/1.0.0\""  
+## [33] "text/xml"</code></pre>
 <p>Parser selection can also be based on the <strong>mimeType</strong> of the returned document. Please be aware that this also can be a problem if you want to exchange a parse by <strong>operation name</strong>, which is done <strong>after</strong> switching the function based on the mime type. In other words, the exchange by operation name only works if the response type is as expected.</p>
 <p>If you want to <em>replace only selected parsers</em> use the include parameter as described above. You can also base your own parsing functions on a variety of existing parsing functions. For example you can replace the base function for <code>om:ObservationCollection</code>, element name <code>ObservationCollection</code>, but still use the parsing function for <code>om:Observation</code> within your own function if you include it in the parser list. The existing parsing functions are all named in the pattern <code>parse&lt;ElementName&gt;()</code>. Please be aware that some parsers require a parameter <code>sos</code> of class <code>SOS</code> upon which they might rely for example for formatting information, and some also have <code>verbose</code> (type <code>logical</code>). In case of “unused arguments” errors, please try different signatures.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Create own parsing function:</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">myER &lt;-<span class="st"> </span><span class="cf">function</span>(xml, sos, verbose) {</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"EXCEPTION!!!11"</span>)</a>
-<a class="sourceLine" id="cb21-4" data-line-number="4">}</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">myParsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"ows:ExceptionReport"</span> =<span class="st"> </span>myER)</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6">exceptionParserSOS &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="dt">url =</span> <span class="st">"http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox"</span>,</a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">                          <span class="dt">parsers =</span> myParsers,</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">                          <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">useDCPs =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<pre><code>## [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># Triggers exception:</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">erroneousResponse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getObservation-methods.html">getObservation</a></span>(exceptionParserSOS,</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">                                    <span class="co">#verbose = TRUE,</span></a>
-<a class="sourceLine" id="cb23-4" data-line-number="4">                                    <span class="dt">offering =</span> <span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(exceptionParserSOS)[[<span class="dv">1</span>]],</a>
-<a class="sourceLine" id="cb23-5" data-line-number="5">                                    <span class="dt">observedProperty =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"Bazinga!"</span>))</a>
-<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(erroneousResponse)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># Create own parsing function:</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">myER &lt;-<span class="st"> </span><span class="cf">function</span>(xml, sos, verbose) {</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"EXCEPTION!!!11"</span>)</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">}</a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">myParsers &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosParsingFunctions</a></span>(<span class="st">"ows:ExceptionReport"</span> =<span class="st"> </span>myER)</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">exceptionParserSOS &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="dt">url =</span> <span class="st">"http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox"</span>,</a>
+<a class="sourceLine" id="cb20-7" data-line-number="7">                          <span class="dt">parsers =</span> myParsers,</a>
+<a class="sourceLine" id="cb20-8" data-line-number="8">                          <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">useDCPs =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb20-9" data-line-number="9"><span class="co"># Triggers exception:</span></a>
+<a class="sourceLine" id="cb20-10" data-line-number="10">erroneousResponse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetObservation.html">getObservation</a></span>(exceptionParserSOS,</a>
+<a class="sourceLine" id="cb20-11" data-line-number="11">                                    <span class="co">#verbose = TRUE,</span></a>
+<a class="sourceLine" id="cb20-12" data-line-number="12">                                    <span class="dt">offering =</span> <span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(exceptionParserSOS)[[<span class="dv">1</span>]],</a>
+<a class="sourceLine" id="cb20-13" data-line-number="13">                                    <span class="dt">observedProperty =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"Bazinga!"</span>))</a>
+<a class="sourceLine" id="cb20-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(erroneousResponse)</a></code></pre></div>
 <pre><code>## [1] "EXCEPTION!!!11"</code></pre>
 <p>To disable all parsing, you can use the function <code><a href="../reference/Defaults.html">SosDisabledParsers()</a></code>. This effectively just “passes through”" all received data because the list returned by the function only contains the top-most parsing functions for SOS operations and exception reports.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="../reference/Defaults.html">SosDisabledParsers</a></span>()</a></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/Defaults.html">SosDisabledParsers</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="../reference/Defaults.html">SosDisabledParsers</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/Defaults.html">SosDisabledParsers</a></span>())</a></code></pre></div>
 <pre><code>## [1] "GetCapabilities"     "DescribeSensor"      "GetObservation"     
 ## [4] "GetObservationById"  "ows:ExceptionReport"</code></pre>
 <p>This is also the recommended way to start if you want to set-up your own parsers (given you have responses in XML) and an alternative to debugging if you want to inspect responses directly.</p>
 <p>The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class <code>xml_document</code>:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">disabledParserSOS &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="kw"><a href="../reference/SOS.html">sosUrl</a></span>(mySOS),</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">                         <span class="dt">parsers =</span> <span class="kw"><a href="../reference/Defaults.html">SosDisabledParsers</a></span>(),</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">                         <span class="dt">binding =</span> <span class="kw"><a href="../reference/SOS.html">sosBinding</a></span>(mySOS),</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">                         <span class="dt">dcpFilter =</span> mySOS<span class="op">@</span>dcpFilter)</a></code></pre></div>
-<pre><code>## [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">unparsed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getObservation-methods.html">getObservation</a></span>(disabledParserSOS,</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">                           <span class="dt">offering =</span> <span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(disabledParserSOS)[[<span class="dv">1</span>]],</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">                           <span class="dt">observedProperty =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"Bazinga!"</span>))</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(unparsed)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">disabledParserSOS &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="kw"><a href="../reference/SOS.html">sosUrl</a></span>(mySOS),</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">                         <span class="dt">parsers =</span> <span class="kw"><a href="../reference/Defaults.html">SosDisabledParsers</a></span>(),</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">                         <span class="dt">binding =</span> <span class="kw"><a href="../reference/SOS.html">sosBinding</a></span>(mySOS),</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">                         <span class="dt">dcpFilter =</span> mySOS<span class="op">@</span>dcpFilter)</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5">unparsed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetObservation.html">getObservation</a></span>(disabledParserSOS,</a>
+<a class="sourceLine" id="cb25-6" data-line-number="6">                           <span class="dt">offering =</span> <span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(disabledParserSOS)[[<span class="dv">1</span>]],</a>
+<a class="sourceLine" id="cb25-7" data-line-number="7">                           <span class="dt">observedProperty =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"Bazinga!"</span>))</a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(unparsed)</a></code></pre></div>
 <pre><code>## [1] "xml_document" "xml_node"</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># (Using XML functions here for accesing the root of a</span></a>
-<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="co"># document and the name of an element.)</span></a>
-<a class="sourceLine" id="cb32-3" data-line-number="3">unparsed</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># (Using XML functions here for accesing the root of a</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="co"># document and the name of an element.)</span></a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">unparsed</a></code></pre></div>
 <pre><code>## {xml_document}
 ## &lt;ExceptionReport version="1.0.0" schemaLocation="http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
 ## [1] &lt;ows:Exception exceptionCode="InvalidParameterValue" locator="observ ...</code></pre>
@@ -322,24 +310,24 @@
 <p>A list of named functions to be used by the parsing methods to convert data values to the correct R type, which are mostly based on the unit of <a href="https://en.wikipedia.org/wiki/Units_of_measurement">measurement</a> code.</p>
 <p>The conversion functions always take two parameters: <code>x</code> is the object to be converted, <code>sos</code> is the service where the request was received from.</p>
 <p>The available functions are basically wrappers for coercion functions, for example <code><a href="https://www.rdocumentation.org/packages/base/topics/double">as.double()</a></code>. The only method exploiting the second argument is the one for conversion of time stamps which uses the time format saved with the object of class <code>SOS</code> in a call to <code>strptime</code>.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">value &lt;-<span class="st"> </span><span class="fl">2.0</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">value.string &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertString</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.string))</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">value &lt;-<span class="st"> </span><span class="fl">2.0</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">value.string &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertString</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.string))</a></code></pre></div>
 <pre><code>## [1] "character"</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">value &lt;-<span class="st"> "2.0"</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">value.double &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertDouble</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.double))</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">value &lt;-<span class="st"> "2.0"</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">value.double &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertDouble</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.double))</a></code></pre></div>
 <pre><code>## [1] "numeric"</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">value &lt;-<span class="st"> "1"</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">value.logical &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertLogical</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.logical))</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">value &lt;-<span class="st"> "1"</span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">value.logical &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertLogical</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.logical))</a></code></pre></div>
 <pre><code>## [1] "logical"</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">value &lt;-<span class="st"> "2010-01-01T12:00:00.000"</span></a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">value.time &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertTime</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
-<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.time))</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">value &lt;-<span class="st"> "2010-01-01T12:00:00.000"</span></a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">value.time &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosConvert.html">sosConvertTime</a></span>(<span class="dt">x =</span> value, <span class="dt">sos =</span> mySOS)</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(value.time))</a></code></pre></div>
 <pre><code>## [1] "POSIXct" "POSIXt"</code></pre>
 <p>The full list of currently supported units can be seen below. It mostly contains common numerical units which are converted to type <code>double</code>.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/Defaults.html">SosDataFieldConvertingFunctions</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/Defaults.html">SosDataFieldConvertingFunctions</a></span>())</a></code></pre></div>
 <pre><code>##  [1] "fallBack"                                                   
 ##  [2] "urn:ogc:data:time:iso8601"                                  
 ##  [3] "urn:ogc:property:time:iso8601"                              
@@ -418,22 +406,18 @@
 ## [76] "°C"                                                         
 ## [77] "http://www.opengis.net/def/property/OGC/0/PhenomenonTime"</code></pre>
 <p>The current list of a SOS connection’s converters can be accessed with</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosDataFieldConverters</a></span>(mySOS)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosDataFieldConverters</a></span>(mySOS)</a></code></pre></div>
 <p>The following connection shows a typical workflow of connecting to a new SOS for the first time, what the errors for missing converters look like, and how to add them to the SOS connection.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">testsos &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="st">"http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox"</span>, <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">dcpFilter =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"POX"</span> =<span class="st"> "/pox"</span>))</a></code></pre></div>
-<pre><code>## [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">testsosoffering &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(testsos)[[<span class="st">"http___www.52north.org_test_offering_1"</span>]]</a>
-<a class="sourceLine" id="cb47-2" data-line-number="2">testsosobsprop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosObservedProperties</a></span>(testsosoffering)[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="kw"><a href="../reference/getObservation-methods.html">getObservation</a></span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">testsos &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="st">"http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox"</span>, <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">dcpFilter =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"POX"</span> =<span class="st"> "/pox"</span>))</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">testsosoffering &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(testsos)[[<span class="st">"http___www.52north.org_test_offering_1"</span>]]</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">testsosobsprop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosObservedProperties</a></span>(testsosoffering)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="kw"><a href="../reference/GetObservation.html">getObservation</a></span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop)</a></code></pre></div>
 <pre><code>## Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  test_unit_1  with the definition  http://www.52north.org/test/observableProperty/1 ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</code></pre>
-<pre><code>## [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox 
-##  --&gt; received 1 observation(s) having 12 result values [ 12 ].</code></pre>
 <pre><code>## Object of class OmObservationCollection with 1 members.</code></pre>
 <p>Looking at the raw response data gives us a hint at a suitable type.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw"><a href="../reference/getObservation-methods.html">getObservation</a></span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop,</a>
-<a class="sourceLine" id="cb51-2" data-line-number="2">               <span class="dt">inspect =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>## [.sosRequest_1.0.0] POST!
-## [.sosRequest_1.0.0] REQUEST:
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw"><a href="../reference/GetObservation.html">getObservation</a></span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop,</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">               <span class="dt">inspect =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## [.sosRequest_1.0.0] REQUEST:
 ## {xml_document}
 ## &lt;GetObservation service="SOS" version="1.0.0" xmlns="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml"&gt;
 ## [1] &lt;sos:offering&gt;http___www.52north.org_test_offering_1&lt;/sos:offering&gt;
@@ -441,45 +425,40 @@
 ## [3] &lt;sos:responseFormat&gt;text/xml;subtype="om/1.0.0"&lt;/sos:responseFormat&gt;
 ## [.getObservation_1.0.0] RESPONSE DOC:
 ## {xml_document}
-## &lt;ObservationCollection id="oc_1555162614708" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
+## &lt;ObservationCollection id="oc_1558086062201" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
 ## [1] &lt;gml:boundedBy&gt;\n  &lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326 ...
-## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1555162614708"&gt;\n    &lt;om:sa ...</code></pre>
+## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1558086062201"&gt;\n    &lt;om:sa ...</code></pre>
 <pre><code>## Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  test_unit_1  with the definition  http://www.52north.org/test/observableProperty/1 ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</code></pre>
-<pre><code>## [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox 
-##  --&gt; received 1 observation(s) having 12 result values [ 12 ].</code></pre>
 <pre><code>## Object of class OmObservationCollection with 1 members.</code></pre>
 <p>Converters may be matched by XML properties <code>swe:Quantity[@definition]</code> or <code>swe:uom[@code]</code>.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">testconverters &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosDataFieldConvertingFunctions</a></span>(</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">  <span class="co"># one of the following would suffice</span></a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">  <span class="st">"test_unit_1"</span> =<span class="st"> </span>sosConvertDouble,</a>
-<a class="sourceLine" id="cb56-4" data-line-number="4">    <span class="st">"http://www.52north.org/test/observableProperty/1"</span> =<span class="st"> </span>sosConvertDouble</a>
-<a class="sourceLine" id="cb56-5" data-line-number="5">  )</a>
-<a class="sourceLine" id="cb56-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb56-7" data-line-number="7">testsos &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="st">"http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox"</span>, <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">dcpFilter =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"POX"</span> =<span class="st"> "/pox"</span>),</a>
-<a class="sourceLine" id="cb56-8" data-line-number="8">               <span class="dt">dataFieldConverters =</span> testconverters)</a></code></pre></div>
-<pre><code>## [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">testsosoffering &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(testsos)[[<span class="st">"http___www.52north.org_test_offering_1"</span>]]</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2">data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getObservation-methods.html">getObservation</a></span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop)</a></code></pre></div>
-<pre><code>## [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox 
-##  --&gt; received 1 observation(s) having 12 result values [ 12 ].</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">testconverters &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosDataFieldConvertingFunctions</a></span>(</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">  <span class="co"># one of the following would suffice</span></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">  <span class="st">"test_unit_1"</span> =<span class="st"> </span>sosConvertDouble,</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">    <span class="st">"http://www.52north.org/test/observableProperty/1"</span> =<span class="st"> </span>sosConvertDouble</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb47-7" data-line-number="7">testsos &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="st">"http://sensorweb.demo.52north.org/52n-sos-webapp/sos/pox"</span>, <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">dcpFilter =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"POX"</span> =<span class="st"> "/pox"</span>),</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8">               <span class="dt">dataFieldConverters =</span> testconverters)</a>
+<a class="sourceLine" id="cb47-9" data-line-number="9">testsosoffering &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(testsos)[[<span class="st">"http___www.52north.org_test_offering_1"</span>]]</a>
+<a class="sourceLine" id="cb47-10" data-line-number="10">data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetObservation.html">getObservation</a></span>(<span class="dt">sos =</span> testsos, <span class="dt">offering =</span> testsosoffering, <span class="dt">observedProperty =</span> testsosobsprop)</a></code></pre></div>
 <p>Then retrieve the data with the correct type.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data))</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data))</a></code></pre></div>
 <pre><code>##                        phenomenonTime
-## o_1555162614958.1 2012-11-19 13:00:00
-## o_1555162614958.2 2012-11-19 13:01:00
-## o_1555162614958.3 2012-11-19 13:02:00
-## o_1555162614958.4 2012-11-19 13:03:00
-## o_1555162614958.5 2012-11-19 13:04:00
-## o_1555162614958.6 2012-11-19 13:05:00
+## o_1558086062447.1 2012-11-19 13:00:00
+## o_1558086062447.2 2012-11-19 13:01:00
+## o_1558086062447.3 2012-11-19 13:02:00
+## o_1558086062447.4 2012-11-19 13:03:00
+## o_1558086062447.5 2012-11-19 13:04:00
+## o_1558086062447.6 2012-11-19 13:05:00
 ##                   http://www.52north.org/test/observableProperty/1
-## o_1555162614958.1                                              1.0
-## o_1555162614958.2                                              1.1
-## o_1555162614958.3                                              1.2
-## o_1555162614958.4                                              1.3
-## o_1555162614958.5                                              1.4
-## o_1555162614958.6                                              1.5</code></pre>
+## o_1558086062447.1                                              1.0
+## o_1558086062447.2                                              1.1
+## o_1558086062447.3                                              1.2
+## o_1558086062447.4                                              1.3
+## o_1558086062447.5                                              1.4
+## o_1558086062447.6                                              1.5</code></pre>
 <p>The metadata of the observed property is also accessible.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attributes">attributes</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data)[[<span class="dv">1</span>]])</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attributes">attributes</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data)[[<span class="dv">1</span>]])</a></code></pre></div>
 <pre><code>## $class
 ## [1] "POSIXct" "POSIXt" 
 ## 
@@ -499,10 +478,10 @@ In .valParser(values = obj[[sweValuesName]], fields = .fields,  ... :
 No converter found! Skipping field http://mmisw.org/ont/cf/parameter/conductivity
 No converter found! Skipping field S/m</code></pre>
 <p>This shows warnings about unknown units of measurement and a swe:Quantity element (which describes a numeric field) without a given unit of measurement (which it should have as a numeric field). The next example creates conversion functions for these fields and repeats the operation.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">myConverters &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosDataFieldConvertingFunctions</a></span>(</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">    <span class="st">"S/m"</span> =<span class="st"> </span>sosConvertDouble,</a>
-<a class="sourceLine" id="cb65-3" data-line-number="3">    <span class="st">"http://mmisw.org/ont/cf/parameter/sea_water_salinity"</span></a>
-<a class="sourceLine" id="cb65-4" data-line-number="4">            =<span class="st"> </span>sosConvertDouble)</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">myConverters &lt;-<span class="st"> </span><span class="kw"><a href="../reference/Defaults.html">SosDataFieldConvertingFunctions</a></span>(</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">    <span class="st">"S/m"</span> =<span class="st"> </span>sosConvertDouble,</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3">    <span class="st">"http://mmisw.org/ont/cf/parameter/sea_water_salinity"</span></a>
+<a class="sourceLine" id="cb53-4" data-line-number="4">            =<span class="st"> </span>sosConvertDouble)</a></code></pre></div>
 </div>
 <div id="exception-handling" class="section level2">
 <h2 class="hasAnchor">
@@ -522,8 +501,8 @@ No converter found! Skipping field S/m</code></pre>
 <strong>locator</strong> Indicator of location in the client’s operation request where this exception was encountered</li>
 </ul>
 <p>The standard exception codes and meanings are accessible by calling the following function.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"knitr"</span>)</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="../reference/Constants.html">OwsExceptionsData</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"knitr"</span>)</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="../reference/Constants.html">OwsExceptionsData</a></span>())</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">exceptionCode</th>
@@ -584,14 +563,14 @@ No converter found! Skipping field S/m</code></pre>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/try">try</a></span>(<span class="kw"><a href="../reference/getObservation-methods.html">getObservationById</a></span>(<span class="dt">sos =</span> mySOS,</a>
-<a class="sourceLine" id="cb67-2" data-line-number="2">                                   <span class="dt">observationId =</span> <span class="st">""</span>))</a></code></pre></div>
-<pre><code>## Warning in .handleExceptionReport(sos, .response): Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">response &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/try">try</a></span>(<span class="kw"><a href="../reference/GetObservation.html">getObservationById</a></span>(<span class="dt">sos =</span> mySOS,</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">                                   <span class="dt">observationId =</span> <span class="st">""</span>))</a></code></pre></div>
+<pre><code>## Warning in .handleExceptionReport(sos, response): Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 ##  1 exception(s) (code @ locator : text):
 ##   MissingParameterValue @ ObservationId :
 ##  The value for the parameter 'ObservationId' is missing in the request!</code></pre>
 <p>The exception is also stored in the <code>response</code> object.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">response</a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">response</a></code></pre></div>
 <pre><code>## Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 ##  1 exception(s) (code @ locator : text):
 ##   MissingParameterValue @ ObservationId :
@@ -624,7 +603,7 @@ No converter found! Skipping field S/m</code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
 </div>

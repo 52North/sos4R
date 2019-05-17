@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -93,6 +93,12 @@
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -144,27 +150,27 @@
       <tr>
         
         <td>
+          <p><code><a href="Coercion.html">Coercion</a></code> </p>
+        </td>
+        <td><p>Coercion of SOS objects to Spatial classes</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="Constants.html">Constants</a></code> </p>
         </td>
         <td><p>Constants in sos4R</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="Defaults.html">SosDefaultBinding()</a></code> <code><a href="Defaults.html">SosParsingFunctions()</a></code> <code><a href="Defaults.html">SosEncodingFunctions()</a></code> <code><a href="Defaults.html">SosDataFieldConvertingFunctions()</a></code> <code><a href="Defaults.html">SosDisabledParsers()</a></code> <code><a href="Defaults.html">SosExampleServices()</a></code> <code><a href="Defaults.html">SosDefaults()</a></code> <code><a href="Defaults.html">SosResetParsingFunctions()</a></code> <code><a href="Defaults.html">SosDefaultDCPs()</a></code> <code><a href="Defaults.html">SosDefaultParsingOptions()</a></code> </p>
+          <p><code><a href="Defaults.html">SosDefaultBinding()</a></code> <code><a href="Defaults.html">SosParsingFunctions()</a></code> <code><a href="Defaults.html">SosEncodingFunctions()</a></code> <code><a href="Defaults.html">SosDataFieldConvertingFunctions()</a></code> <code><a href="Defaults.html">SosDisabledParsers()</a></code> <code><a href="Defaults.html">SosDefaults()</a></code> <code><a href="Defaults.html">SosResetParsingFunctions()</a></code> <code><a href="Defaults.html">SosDefaultDCPs()</a></code> <code><a href="Defaults.html">SosDefaultParsingOptions()</a></code> </p>
         </td>
         <td><p>Default Parameter Settings and Handling Functions</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="DescribeSensor.html">SosDescribeSensor()</a></code> </p>
+          <p><code><a href="DescribeSensor.html">describeSensor()</a></code> <code><a href="DescribeSensor.html">SosDescribeSensor()</a></code> </p>
         </td>
-        <td><p>Class and Construction Function for "SosDescribeSensor"</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Foi.html">FoiOrNULL-class</a></code> </p>
-        </td>
-        <td><p>Class <code>"FoiOrNULL"</code></p></td>
+        <td><p>Retrieve Sensor Descriptions from a SOS</p></td>
       </tr><tr>
         
         <td>
@@ -182,19 +188,13 @@
         <td>
           <p><code><a href="GetObservation.html">SosGetObservation()</a></code> <code><a href="GetObservation.html">SosGetObservationById()</a></code> </p>
         </td>
-        <td><p>GetObservation and GetObservationById Request Objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="KML.html">KML</a></code> </p>
-        </td>
-        <td><p>Methods for the Namespace kml</p></td>
+        <td><p>Request data with GetObservation and GetObservationById requests</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="MonitoringPoint.html">MonitoringPoint-class</a></code> </p>
         </td>
-        <td><p>Class <code>"MonitoringPoint"</code></p></td>
+        <td><p>Class <code>"WmlMonitoringPoint"</code></p></td>
       </tr><tr>
         
         <td>
@@ -330,18 +330,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="checkRequest-methods.html">checkRequest-methods</a></code> </p>
-        </td>
-        <td><p>Methods for Function checkRequest</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="describeSensor-methods.html">describeSensor-methods</a></code> </p>
-        </td>
-        <td><p>Method for a DescribeSensor Request to a SOS</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="encodeKVP-methods.html">encodeKVP-methods</a></code> </p>
         </td>
         <td><p>Encode Classes as KVP</p></td>
@@ -378,21 +366,45 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="getData.html">getData()</a></code> </p>
+        </td>
+        <td><p>This function queries a SOS v2.0 for time series data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getDataAsST.html">getDataAsST()</a></code> </p>
+        </td>
+        <td><p>This function queries a SOS v2.0 for time series data and returns it as ST-object</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="getFeatureOfInterest.html">getFeatureOfInterest()</a></code> </p>
         </td>
         <td><p>Function retrieving features of interest, i.e. the representations of the real world features that are observed and for which observations are provided.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="getObservation-methods.html">getObservation-methods</a></code> </p>
+          <p><code><a href="parse.html">parseCSV()</a></code> <code><a href="parse.html">parseFile()</a></code> <code><a href="parse.html">parseCategoryObservation()</a></code> <code><a href="parse.html">parseComplexObservation()</a></code> <code><a href="parse.html">parseComponent()</a></code> <code><a href="parse.html">parseCompositePhenomenon()</a></code> <code><a href="parse.html">parseCountObservation()</a></code> <code><a href="parse.html">parseDataArray()</a></code> <code><a href="parse.html">parseElementType()</a></code> <code><a href="parse.html">parseEncoding()</a></code> <code><a href="parse.html">parseEnvelope()</a></code> <code><a href="parse.html">parseFeatureCollection()</a></code> <code><a href="parse.html">parseField()</a></code> <code><a href="parse.html">parseFOI()</a></code> <code><a href="parse.html">parseGeometryObservation()</a></code> <code><a href="parse.html">parseMeasure()</a></code> <code><a href="parse.html">parseMeasurement()</a></code> <code><a href="parse.html">parseNoParsing()</a></code> <code><a href="parse.html">parseObservation()</a></code> <code><a href="parse.html">parseObservationCollection()</a></code> <code><a href="parse.html">parseOM()</a></code> <code><a href="parse.html">parseOwsException()</a></code> <code><a href="parse.html">parseOwsExceptionReport()</a></code> <code><a href="parse.html">parseOwsOperation()</a></code> <code><a href="parse.html">parseOwsRange()</a></code> <code><a href="parse.html">parseOwsServiceIdentification()</a></code> <code><a href="parse.html">parseOwsServiceProvider()</a></code> <code><a href="parse.html">parsePhenomenonProperty()</a></code> <code><a href="parse.html">parsePoint()</a></code> <code><a href="parse.html">parsePosition()</a></code> <code><a href="parse.html">parseResult()</a></code> <code><a href="parse.html">parseSamplingPoint()</a></code> <code><a href="parse.html">parseSensorML()</a></code> <code><a href="parse.html">parseSosCapabilities()</a></code> <code><a href="parse.html">parseSosFilter_Capabilities()</a></code> <code><a href="parse.html">parseSosObservationOffering()</a></code> <code><a href="parse.html">parseTemporalObservation()</a></code> <code><a href="parse.html">parseTextBlock()</a></code> <code><a href="parse.html">parseTimeGeometricPrimitiveFromParent()</a></code> <code><a href="parse.html">parseTimeInstant()</a></code> <code><a href="parse.html">parseTimeInstantProperty()</a></code> <code><a href="parse.html">parseTimePeriod()</a></code> <code><a href="parse.html">parseTimePosition()</a></code> <code><a href="parse.html">parseTimeObject()</a></code> <code><a href="parse.html">parseTruthObservation()</a></code> <code><a href="parse.html">parseValues()</a></code> </p>
         </td>
-        <td><p>Request Observations</p></td>
+        <td><p>Parsing Functions for XML Documents and Elements</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="parse.html">parseFile()</a></code> <code><a href="parse.html">parseCSV()</a></code> <code><a href="parse.html">parseNoParsing()</a></code> <code><a href="parse.html">parseCategoryObservation()</a></code> <code><a href="parse.html">parseComplexObservation()</a></code> <code><a href="parse.html">parseComponent()</a></code> <code><a href="parse.html">parseCompositePhenomenon()</a></code> <code><a href="parse.html">parseCountObservation()</a></code> <code><a href="parse.html">parseDataArray()</a></code> <code><a href="parse.html">parseElementType()</a></code> <code><a href="parse.html">parseEncoding()</a></code> <code><a href="parse.html">parseFeatureCollection()</a></code> <code><a href="parse.html">parseField()</a></code> <code><a href="parse.html">parseFOI()</a></code> <code><a href="parse.html">parseGeometryObservation()</a></code> <code><a href="parse.html">parseMeasure()</a></code> <code><a href="parse.html">parseMeasurement()</a></code> <code><a href="parse.html">parseObservation()</a></code> <code><a href="parse.html">parseObservationCollection()</a></code> <code><a href="parse.html">parseOM()</a></code> <code><a href="parse.html">parseOwsException()</a></code> <code><a href="parse.html">parseOwsExceptionReport()</a></code> <code><a href="parse.html">parseOwsOperation()</a></code> <code><a href="parse.html">parseOwsRange()</a></code> <code><a href="parse.html">parseOwsServiceIdentification()</a></code> <code><a href="parse.html">parseOwsServiceProvider()</a></code> <code><a href="parse.html">parsePhenomenonProperty()</a></code> <code><a href="parse.html">parsePoint()</a></code> <code><a href="parse.html">parsePosition()</a></code> <code><a href="parse.html">parseResult()</a></code> <code><a href="parse.html">parseSamplingPoint()</a></code> <code><a href="parse.html">parseSensorML()</a></code> <code><a href="parse.html">parseSosCapabilities()</a></code> <code><a href="parse.html">parseSosFilter_Capabilities()</a></code> <code><a href="parse.html">parseSosObservationOffering()</a></code> <code><a href="parse.html">parseTemporalObservation()</a></code> <code><a href="parse.html">parseTextBlock()</a></code> <code><a href="parse.html">parseTimeGeometricPrimitiveFromParent()</a></code> <code><a href="parse.html">parseTimeInstant()</a></code> <code><a href="parse.html">parseTimeInstantProperty()</a></code> <code><a href="parse.html">parseTimePeriod()</a></code> <code><a href="parse.html">parseTimePosition()</a></code> <code><a href="parse.html">parseTimeObject()</a></code> <code><a href="parse.html">parseTruthObservation()</a></code> <code><a href="parse.html">parseValues()</a></code> </p>
+          <p><code><a href="phenomena.html">phenomena()</a></code> </p>
         </td>
-        <td><p>Parsing Functions for XML Documents and Elements</p></td>
+        <td><p>Function retrieve phenomena of a SOS v2.0</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="siteList.html">siteList()</a></code> </p>
+        </td>
+        <td><p>This function queries a SOS v2.0 for its sites and returns them as data.frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sites.html">sites()</a></code> </p>
+        </td>
+        <td><p>This function queries a SOS v2.0 for its sites and returns them as SpatialPointsDataFrame</p></td>
       </tr><tr>
         
         <td>
@@ -448,7 +460,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

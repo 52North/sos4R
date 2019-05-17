@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GetObservation and GetObservationById Request Objects — GetObservation • sos4R</title>
+<title>Request data with GetObservation and GetObservationById requests — GetObservation • sos4R</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="GetObservation and GetObservationById Request Objects — GetObservation" />
+<meta property="og:title" content="Request data with GetObservation and GetObservationById requests — GetObservation" />
 
-<meta property="og:description" content="Classes (and their construction functions) to request observations from a Sensor Observation Service." />
+<meta property="og:description" content="getObservation(..) can be used to retrieve data from a SOS instance by sending a GetObservation request to the given SOS.
+getObservationById(..) can be used to retrieve data from a SOS instance by sending a GetObservationById request to the given SOS.
+These methods take a variety of inputs (see slot definitions), of which only offering is mandatory for GetObservation operation, and the observationId for GetObservationById operation.
+This document also describes classes (and their construction functions) for the operations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
       </span>
     </div>
 
@@ -86,7 +89,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -96,6 +99,12 @@
     </li>
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
     </li>
   </ul>
 </li>
@@ -126,14 +135,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>GetObservation and GetObservationById Request Objects</h1>
+    <h1>Request data with GetObservation and GetObservationById requests</h1>
     
     <div class="hidden name"><code>GetObservation.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Classes (and their construction functions) to request observations from a Sensor Observation Service.</p>
+    <p><code>getObservation(..)</code> can be used to retrieve data from a SOS instance by sending a GetObservation request to the given SOS.</p>
+<p><code>getObservationById(..)</code> can be used to retrieve data from a SOS instance by sending a GetObservationById request to the given SOS.</p>
+<p>These methods take a variety of inputs (see slot definitions), of which only <code>offering</code> is mandatory for GetObservation operation, and the <code>observationId</code> for GetObservationById operation.</p>
+<p>This document also describes classes (and their construction functions) for the operations.</p>
     
     </div>
 
@@ -164,7 +176,7 @@
     </tr>
     <tr>
       <th>offering</th>
-      <td><p>The <code>offering</code> element value in the request, e.g. <samp>"temperatures"</samp>. All other parameters are depending on the selected offering.</p></td>
+      <td><p>The <code>offering</code> element value in the request, e.g. <samp>"temperatures"</samp>. All other parameters are depending on the selected offering. This must be a character string for an object of class <a href='SosObservationOffering.html'>SosObservationOffering-class</a> obtained by <code><a href='SOS.html'>sosOfferings(..)</a></code>; can be a list for <b>SOS 2.0.0</b> with both character strings and objects.</p></td>
     </tr>
     <tr>
       <th>observedProperty</th>
@@ -212,6 +224,13 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    <dl class='dl-horizontal'>
+	<dt><code>signature(sos = "SOS", offering = "SosObservationOffering")</code> or <code>signature(sos = "SOS", offering = "character")</code></dt><dd><p>Request observation data from the given SOS for the given offering (either character identifier or an object of class <code>SosObservationOffering</code>).</p></dd>
+	<dt><code>signature(sos = "SOS", observationId = "character")</code></dt><dd><p>Request observation data from the given SOS for the given observation identifier.</p></dd>
+</dl>
+    
     <h2 class="hasAnchor" id="objects-from-the-class"><a class="anchor" href="#objects-from-the-class"></a>Objects from the Class</h2>
 
     <p>Objects can be created by calls to the construction functions of the form <code>SosGetObservationById(...)</code> or <code>SosGetObservationById(...)</code>.</p>
@@ -224,7 +243,7 @@
     <dt><code>featureOfInterest</code>:</dt><dd><p>Object of class <code>"SosFeatureOfInterestOrNULL"</code>, specifies the feature for which observations are requested. This can either be represented by a reference to a feature ID advertised in the capabilities document or can be a spatial constraint</p></dd>
     <dt><code>observationId</code>:</dt><dd><p>Object of class <code>"character"</code>, the Id of the requested observation.</p></dd>
     <dt><code>observedProperty</code>:</dt><dd><p>Object of class <code>"list"</code>, specifies the phenomenon or phenomena for which observations are requested.</p></dd>
-    <dt><code>offering</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies the offering URI advertised in the GetCapabilities document.</p></dd>
+    <dt><code>offering</code>:</dt><dd><p>For <b>SOS 1.0.0</b>: object of class <code>"character"</code> for <b>SOS 2.0.0</b> a list, specifies the offering advertised in the GetCapabilities document.</p></dd>
     <dt><code>procedure</code>:</dt><dd><p>Object of class <code>"list"</code>, procedure parameter specifies the sensor system(s) for which observations are requested.</p></dd>
     <dt><code>request</code>:</dt><dd><p>Object of class <code>"character"</code>, the name of the request.</p></dd>
     <dt><code>responseFormat</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies the desired resultFormat MIME content type for transport of the results.</p></dd>
@@ -244,22 +263,16 @@ Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
 <p><b>SosGetObservationById:</b>
 Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
     
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    <p></p><dl class='dl-horizontal'>
-    <dt>checkRequest</dt><dd><p><code>signature(service = "SOS", operation = "SosGetObservationById", verbose = "logical")</code> or <code>signature(service = "SOS", operation = "GetObservation", verbose = "logical")</code>: Check the request for validity and for compliance with the metadata available in from the given SOS.</p></dd>
-    <dt>encodeRequestKVP</dt><dd><p><code>signature(obj = "SosGetObservationById")</code> or <code>signature(obj = "GetObservation")</code>: Transform the information to key-value pair format, see <code><a href='encodeKVP-methods.html'>encodeKVP</a></code>.</p></dd>
-    <dt>encodeRequestXML</dt><dd><p><code>signature(obj = "SosGetObservationById")</code> or <code>signature(obj = "GetObservation")</code>: Transform the information to XML format, see <code><a href='encodeXML-methods.html'>encodeXML</a></code>.</p></dd>
-    <dt>encodeRequestSOAP</dt><dd><p><code>signature(obj = "SosGetObservation")</code>: Transform the information to XML format for SOAP requests.</p></dd>
-	 </dl>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Please consult the specification for details on possible contents of the request.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class SosGetObservation-class or SosGetObservationById-class respectively.</p>
+    <p><b>Constructor functions:</b>
+An object of class SosGetObservation-class or SosGetObservationById-class respectively.</p>
+<p><b>Request functions:</b>
+A list of or an object of class <a href='OmObservationCollection.html'>OmObservationCollection-class</a> or <a href='OmObservation.html'>OmObservation-class</a> depending on the returned content.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -272,7 +285,27 @@ Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"SosGetObservation"</span>)</div><div class='output co'>#&gt; Class "SosGetObservation" [package "sos4R"]
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># request observations</span>
+<span class='no'>mySOSpox</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"POX"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='no'>myOffering</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>sosOfferings</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='st'>"ws2500"</span>]]
+<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateTimePeriod</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
+                <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2015/11/01"</span>),
+                <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2015/11/02"</span>))
+<span class='no'>eventTime</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateEventTimeList</a></span>(<span class='no'>period</span>)
+
+<span class='no'>nov2015</span> <span class='kw'>&lt;-</span> <span class='fu'>getObservation</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOSpox</span>,
+                          <span class='kw'>offering</span> <span class='kw'>=</span> <span class='no'>myOffering</span>,
+                          <span class='kw'>eventTime</span> <span class='kw'>=</span> <span class='no'>eventTime</span>)
+
+<span class='co'># request observation by identifier and get the data</span>
+<span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'>getObservationById</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOSpox</span>,
+                            <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"http://www.52north.org/test/observation/1"</span>)
+<span class='fu'><a href='OmObservation.html'>sosResult</a></span>(<span class='no'>obsId</span>, <span class='kw'>coordinates</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><div class='input'>
+<span class='fu'>showClass</span>(<span class='st'>"SosGetObservation"</span>)</div><div class='output co'>#&gt; Class "SosGetObservation" [package "sos4R"]
 #&gt; 
 #&gt; Slots:
 #&gt;                                                                 
@@ -345,13 +378,13 @@ Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#methods">Methods</a></li>
+
       <li><a href="#objects-from-the-class">Objects from the Class</a></li>
 
       <li><a href="#slots">Slots</a></li>
 
       <li><a href="#extends">Extends</a></li>
-
-      <li><a href="#methods">Methods</a></li>
 
       <li><a href="#details">Details</a></li>
 
@@ -375,7 +408,7 @@ Class <code>"<a href='OWS.html'>OwsServiceOperation</a>"</code>, directly.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>
