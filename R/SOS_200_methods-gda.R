@@ -165,28 +165,28 @@ setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding procedures ",
                      obj@procedures, "\n")
     .optionals <- paste(.optionals,
-                        .kvpKeyAndValues(key = sosProcedureName, obj@procedures),
+                        .kvpKeyAndValues(key = sosKVPParamNameProcedure, obj@procedures),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@observedProperties)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties ",
                      obj@observedProperties, "\n")
     .optionals <- paste(.optionals,
-                        .kvpKeyAndValues(key = sosObservedPropertyName, obj@observedProperties),
+                        .kvpKeyAndValues(key = sosKVPParamNameObservedProperty, obj@observedProperties),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@featuresOfInterest)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding features of interest ",
                      obj@featuresOfInterest, "\n")
     .optionals <- paste(.optionals,
-                        .kvpKeyAndValues(key = sosFeatureOfInterestName, obj@featuresOfInterest),
+                        .kvpKeyAndValues(key = sosKVPParamNameFoi, obj@featuresOfInterest),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@offerings)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding offerings ",
                      obj@offerings, "\n")
     .optionals <- paste(.optionals,
-                        .kvpKeyAndValues(key = sosOfferingName, obj@offerings),
+                        .kvpKeyAndValues(key = sosKVPParamNameOffering, obj@offerings),
                         sep = "&")
   }
 
