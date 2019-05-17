@@ -513,7 +513,7 @@ setMethod(f = "sites",
             stopifnot(is.logical(includeTemporalBBox))
 
             if (empty) {
-              return(.sitesAsSPDF(sos))
+              return(.sitesAsSPDF(sos, empty))
             }
             else {
               return(.sitesWithDataAsSPDF(sos,
@@ -533,16 +533,54 @@ setMethod(f = "sites",
 # Used SOS operations/requests
 #  - GetFeatureOfInterest without parameter
 #
-.sitesAsSPDF <- function(sos) {
+.sitesAsSPDF <- function(sos, empty = TRUE) {
   # get all stations
-  .sites <- getFeatureOfInterest(sos)
-  if (is.null(.sites) || is.list(.sites) && length(.sites) < 1) {
+  sites <- getFeatureOfInterest(sos)
+  if (is.null(sites) || is.list(sites) && length(sites) < 1) {
     return(SpatialPointsDataFrame(coords = SpatialPoints(data.frame(x = 0, y = 0))[-1,],
                                   data = data.frame("siteID" = character(0), stringsAsFactors = FALSE),
                                   match.ID = FALSE))
   }
-  return(as.SpatialPointsDataFrame.SamsSamplingFeatureList(.sites))
+  sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(sites)
+  if (empty) {
+    sitesSPDF <- .addEmptyColumn(sos, sitesSPDF)
+  }
+  return(sitesSPDF)
 }
+
+.addEmptyColumn <- function(sos, sitesSPDF) {
+  data <- sitesSPDF@data
+  dams <- getDataAvailability(sos, featuresOfInterest = as.list(data[["siteID"]]), verbose = sos@verboseOutput)
+  # one column dataframe with empty column
+  dataframeToAdd <- data.frame("empty" = logical(0), stringsAsFactors = FALSE)
+  if (length(dams) < 1) {
+    # all empty
+  } else {
+    # process dams
+    for (row in 1:nrow(data)) {
+      siteId <- data[row, "siteID"]
+      # check if any dam is matching the "siteID"
+      found <- FALSE
+      for (dam in dams) {
+        if (dam@featureOfInterest == siteId) {
+          dataframeToAdd <- rbind(dataframeToAdd, c(FALSE))
+          found <- TRUE
+          break
+        }
+      }
+      if (!found) {
+        dataframeToAdd <- rbind(dataframeToAdd, c(TRUE))
+      }
+      colnames(dataframeToAdd) <- c("empty")
+    }
+    # column to sitesSPDF
+    data <- cbind(data, dataframeToAdd)
+    sitesSPDF@data <- data
+  }
+  return(sitesSPDF)
+}
+
+
 #
 # sites(sos, includePhenomena=TRUE, includeTemporalBBox=FALSE) → sp::SPDF[siteID, phen_1=logical, …, phen_n=logical]
 #
@@ -565,7 +603,7 @@ setMethod(f = "sites",
   # get all phenomena
   .phenomena <- as.list(.listPhenomena(sos)[, 1])
   if (is.null(.phenomena) || is.list(.phenomena) && length(.phenomena) < 1) {
-    return(.sitesAsSPDF(sos))
+    return(.sitesAsSPDF(sos, FALSE))
   }
   # get data availability
   .dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
@@ -578,7 +616,7 @@ setMethod(f = "sites",
     .sites <- getFeatureOfInterest(sos)
   }
   if (is.null(.sites) || is.list(.sites) && length(.sites) < 1) {
-    return(.sitesAsSPDF(sos))
+    return(.sitesAsSPDF(sos, FALSE))
   }
   .sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(.sites)
   # extend spdf@data with information about the available phenomena
