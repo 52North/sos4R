@@ -278,10 +278,16 @@ setMethod(f = "encodeXML",
             # FIXME: https://github.com/r-lib/xml2/issues/239
             #pos <- xml2::xml_new_root(gmlEnvelopeName,
             #                          xmlns = gmlNamespace)
-            env <- xml2::read_xml(paste0("<", gmlEnvelopeName, " xmlns:", gmlNamespacePrefix, "=\"",
-                                         sos@namespaces[[gmlNamespacePrefix]], "\" ",
-                                         .gmlUUID(),
-                                         " />"))
+            if (sos@version == sos100_version) {
+              env <- xml2::read_xml(paste0("<", gmlEnvelopeName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                           sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                           " />"))
+            } else {
+              env <- xml2::read_xml(paste0("<", gmlEnvelopeName, " xmlns:", gmlNamespacePrefix, "=\"",
+                                           sos@namespaces[[gmlNamespacePrefix]], "\" ",
+                                           .gmlUUID(),
+                                           " />"))
+            }
 
             if (!is.na(obj@srsName)) {
               xml2::xml_set_attr(x = env, attr = "srsName", value = obj@srsName)

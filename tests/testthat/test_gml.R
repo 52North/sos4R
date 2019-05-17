@@ -109,6 +109,29 @@ test_that("time interval", {
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 
+test_that("envelope", {
+  bbox <- sosCreateBBOX(lowLat = 5.0, lowLon = 1.0,
+                        uppLat = 10.0, uppLon = 3.0,
+                        srsName = "urn:ogc:def:crs:EPSG::4326")
+
+  encoded <- encodeXML(obj = bbox, sos = testsos)
+  encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
+
+  expect_match(encodedString, '<ogc:BBOX')
+  expect_match(encodedString, 'urn:ogc:data:location</ogc:PropertyName>')
+  expect_false(grepl(pattern = 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"', x = encodedString))
+  expect_match(encodedString, '<gml:lowerCorner>5 1</gml:lowerCorner><gml:upperCorner>10 3</gml:upperCorner></gml:Envelope></ogc:BBOX>')
+
+  testsos20 <- SOS_Test(name = "gml_200", version = sos200_version)
+  encoded <- encodeXML(obj = bbox, sos = testsos20)
+  encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
+
+  expect_match(encodedString, '<ogc:BBOX')
+  expect_match(encodedString, 'urn:ogc:data:location</ogc:PropertyName>')
+  expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
+  expect_match(encodedString, '<gml:lowerCorner>5 1</gml:lowerCorner><gml:upperCorner>10 3</gml:upperCorner></gml:Envelope></ogc:BBOX>')
+})
+
 context("encoding GML: temporal classes to KVP")
 
 test_that("time instant", {
@@ -263,4 +286,3 @@ test_that("featureOfInterest from GmlFeatureProperty", {
   property <- GmlFeatureProperty(feature = samplingPoint)
   expect_equal(sosFeaturesOfInterest(property),  samplingPoint)
 })
-
