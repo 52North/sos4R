@@ -507,10 +507,6 @@
                                 "xmlns:fes" = fesNamespace,
                                 "xmlns:gml" = gml32Namespace))
 
-  for (foi in obj@featureOfInterest) {
-    xml2::xml_add_child(xmlDoc, sosFeatureOfInterestName, foi)
-  }
-
   for (op in obj@observedProperty) {
     xml2::xml_add_child(xmlDoc, sosObservedPropertyName, op)
   }
@@ -521,11 +517,6 @@
 
   for (p in obj@procedure) {
     xml2::xml_add_child(xmlDoc, sosProcedureName, p)
-  }
-
-  if (!is.na(obj@responseFormat)) {
-    rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
-    xml2::xml_add_child(xmlDoc, sosResponseFormatName, rF)
   }
 
   if (length(obj@temporalFilter) > 0) {
@@ -541,8 +532,17 @@
     }
   }
 
+  for (foi in obj@featureOfInterest) {
+    xml2::xml_add_child(xmlDoc, sosFeatureOfInterestName, foi)
+  }
+
   if (!is.null(obj@spatialFilter)) {
     warning("GetObservation contains spatialFilter, but that is not supported for 'POST' and ignored.")
+  }
+
+  if (!is.na(obj@responseFormat)) {
+    rF <- gsub(obj@responseFormat, pattern = "&quot;", replacement = "\"")
+    xml2::xml_add_child(xmlDoc, sosResponseFormatName, rF)
   }
 
   return(xmlDoc)

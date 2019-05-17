@@ -256,7 +256,7 @@ test_that("procedure(s) with POX (SOS 2.0.0)", {
                                     procedure = list("http://www.52north.org/test/procedure/1"))
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
-  expect_match(encodedString, "<sos:procedure>http://www.52north.org/test/procedure/1</sos:procedure></GetObservation>")
+  expect_match(encodedString, "<sos:procedure>http://www.52north.org/test/procedure/1</sos:procedure><sos:responseFormat>")
 
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -274,7 +274,7 @@ test_that("feature(s) of interest with POX (SOS 2.0.0)", {
                                     featureOfInterest = list("http://www.52north.org/test/featureOfInterest/1"))
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
-  expect_match(encodedString, "<sos:featureOfInterest>http://www.52north.org/test/featureOfInterest/1</sos:featureOfInterest></GetObservation>")
+  expect_match(encodedString, "<sos:featureOfInterest>http://www.52north.org/test/featureOfInterest/1</sos:featureOfInterest><sos:responseFormat>")
 
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -446,8 +446,10 @@ test_that("POX without offering (2.0.0)", {
                                 begin = as.POSIXct("2017-12-19 00:00:00"),
                                 end = as.POSIXct("2017-12-19 01:00:00"))
   obs.1 <- getObservation(sos = mySOS,
+                          #inspect = TRUE,
                           eventTime = list(period))
 
+  expect_true(class(obs.1) != "OwsExceptionReport")
   expect_length(obs.1, 76)
   for (obs in obs.1) {
     expect_s4_class(obs, "OmOM_Observation")
@@ -478,6 +480,7 @@ test_that("POX with observed property (2.0.0)", {
                           #,inspect=TRUE
                           )
 
+  expect_true(class(obs.1) != "OwsExceptionReport")
   expect_length(obs.1, 8)
   for (obs in obs.1) {
     expect_s4_class(obs, "OmOM_Observation")
@@ -501,6 +504,7 @@ test_that("POX with offering object in list and not in list (2.0.0)", {
                           eventTime = list(period),
                           offering = sosOfferings(mySOS)["wxt520"])
 
+  expect_true(class(obs.1) != "OwsExceptionReport")
   expect_length(obs.1, 18)
   for (obs in obs.1) {
     expect_s4_class(obs, "OmOM_Observation")
