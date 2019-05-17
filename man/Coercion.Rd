@@ -15,7 +15,7 @@
 \alias{as.SpatialPoints.GmlPoint}
 \alias{as.SpatialPoints.GmlPointProperty}
 
-\alias{as.SpatialPoints.MonitoringPoint}
+\alias{as.SpatialPoints.WmlMonitoringPoint}
 
 \alias{as.SpatialPoints.SaSamplingPoint}
 

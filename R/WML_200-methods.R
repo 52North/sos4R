@@ -88,11 +88,11 @@ as.SpatialPoints.WmlMonitoringPoint = function(from) {
 }
 setAs("WmlMonitoringPoint", "SpatialPoints",
       function(from) {
-        as.SpatialPoints.MonitoringPoint(from)
+        as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
 setAs("WmlMonitoringPoint", "Spatial",
       function(from) {
-        as.SpatialPoints.MonitoringPoint(from)
+        as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
