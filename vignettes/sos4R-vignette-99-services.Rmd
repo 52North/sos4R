@@ -10,7 +10,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{sos4R-vignette-99-services}
+  %\VignetteIndexEntry{6. List of SOS instances}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
