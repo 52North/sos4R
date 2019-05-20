@@ -30,7 +30,7 @@
 switchSweNamespace <- function(docNamespaces, sos){
   docNs <- unique(docNamespaces)
 
-  if (!sweNamespace %in% docNs) {
+  if (swe20Namespace %in% docNs) {
     targetNs <- sos@namespaces[names(sos@namespaces) != sweNamespacePrefix]
     targetNs <- c(targetNs, swe = swe20Namespace)
     return(targetNs)
