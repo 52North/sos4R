@@ -213,6 +213,7 @@ names(.sosDefaultEncoders) <- list(
   sosConvertDouble,
   sosConvertDouble,
   sosConvertDouble,
+  sosConvertDouble,
   sosConvertString, # urn:ogc:data:feature
   sosConvertString,
   sosConvertDouble,
@@ -234,6 +235,7 @@ names(.sosDefaultFieldConverters) <- list(
   "m", # meter
   "m2", # square meter
   "m3", # cubic meter
+  "m^3/s", # cubic meter per second
   "s", # second
   "ms", # millisecond
   "us", # microsecond
