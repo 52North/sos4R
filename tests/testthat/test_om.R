@@ -26,6 +26,8 @@
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
+library(webmockr)
+library(httr)
 context("parsing: OM 2.0 result")
 
 resultXml <- '<om:result xmlns:om="http://www.opengis.net/om/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://www.opengis.net/gml/3.2" uom="test_unit_9_3" xsi:type="ns:MeasureType">50.28</om:result>'
@@ -94,8 +96,28 @@ test_that("coordinates are not available without FOI with a warning", {
 #
 # coordinates are available with retrieved FOI ####
 #
+webmockr::enable("httr")
+webmockr::httr_mock()
 test_that("coordinates are available with retrieved FOI", {
-  skip_on_cran()
+  webmockr::stub_registry_clear()
+  webmockr::stub_request('get', uri = 'http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request('get', uri = 'http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp?service=SOS&version=2.0.0&request=GetFeatureOfInterest&featureOfInterest=http%3A%2F%2Fwww.52north.org%2Ftest%2FfeatureOfInterest%2F1') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetFeatureOfInterest_200_O&M_Test.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
 
   mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/kvp",
                binding = "KVP",
@@ -106,8 +128,9 @@ test_that("coordinates are available with retrieved FOI", {
   coords <- sosCoordinates(observation)
   expect_named(coords, c("lon", "lat", "SRS"))
   expect_equal(coords[["lon"]], 7.727958)
-  expect_equal(coords[["lat"]], 51.9483)
+  expect_equal(coords[["lat"]], 51.883906)
 })
+webmockr::disable("httr")
 #
 # result parsed from observation ####
 #
