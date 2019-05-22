@@ -30,7 +30,7 @@ context("encoding GML: spatial")
 
 testsos <- SOS_Test(name = "testgml")
 #
-# point minimal ####
+# point minimal ----
 #
 test_that("point minimal", {
   point <- GmlPoint(pos = GmlDirectPositionLatLon(10, 20))
@@ -39,7 +39,7 @@ test_that("point minimal", {
   expect_match(encodedString, "10 20</gml:pos></gml:Point>")
 })
 #
-# position minimal ####
+# position minimal ----
 #
 test_that("position minimal", {
   position <- GmlDirectPosition(pos = "1 2")
@@ -48,7 +48,7 @@ test_that("position minimal", {
   expect_match(toString(encoded), "1 2</gml:pos>")
 })
 #
-# position full ####
+# position full ----
 #
 test_that("position full", {
   position <- GmlDirectPosition(pos = "1 2", srsName = "the_srs", srsDimension = as.integer(3),
@@ -61,7 +61,7 @@ test_that("position full", {
   expect_match(encodedString, 'uomLabels="m deg"')
 })
 #
-# envelope ####
+# envelope ----
 #
 test_that("envelope", {
   env <- GmlEnvelope(lowerCorner = GmlDirectPositionLatLon(1, 2),
@@ -78,7 +78,7 @@ context("encoding GML: temporal classes to XML")
 
 testsos <- SOS_Test(name = "testgml")
 #
-# time position minimal ####
+# time position minimal ----
 #
 test_that("time position minimal", {
   tpos <- GmlTimePosition(time = as.POSIXct("2019-01-01"))
@@ -90,7 +90,7 @@ test_that("time position minimal", {
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 #
-# time position all ####
+# time position all ----
 #
 test_that("time position all", {
   tpos <- GmlTimePosition(time = as.POSIXct("2019-01-01"),
@@ -107,7 +107,7 @@ test_that("time position all", {
   expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition>')
 })
 #
-# time instant ####
+# time instant ----
 #
 test_that("time instant", {
   instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
@@ -119,7 +119,7 @@ test_that("time instant", {
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 #
-# GML namespace of SOS is used ####
+# GML namespace of SOS is used ----
 #
 test_that("GML namespace of SOS is used", {
   sos1 <- SOS_Test(version = sos100_version)
@@ -133,7 +133,7 @@ test_that("GML namespace of SOS is used", {
   expect_match(toString(encoded2), paste0('xmlns:gml="', gml32Namespace))
 })
 #
-# time period ####
+# time period ----
 #
 test_that("time period", {
   period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
@@ -145,7 +145,7 @@ test_that("time period", {
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 #
-# time interval ####
+# time interval ----
 #
 test_that("time interval", {
   interval <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"),
@@ -157,7 +157,7 @@ test_that("time interval", {
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 #
-# envelope ####
+# envelope ----
 #
 test_that("envelope", {
   bbox <- sosCreateBBOX(lowLat = 5.0, lowLon = 1.0,
@@ -184,7 +184,7 @@ test_that("envelope", {
 
 context("encoding GML: temporal classes to KVP")
 #
-# time instant ####
+# time instant ----
 #
 test_that("time instant", {
   instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
@@ -192,7 +192,7 @@ test_that("time instant", {
   expect_equal(encodedString, '2019-01-01T00:00:00')
 })
 #
-# time period (SOS 1.0.0) ####
+# time period (SOS 1.0.0) ----
 #
 test_that("time period (SOS 1.0.0)", {
   period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
@@ -200,7 +200,7 @@ test_that("time period (SOS 1.0.0)", {
   expect_equal(encodedString, '2019-01-01T00:00:00::2019-02-03T00:00:00')
 })
 #
-# time period (SOS 2.0.0) ####
+# time period (SOS 2.0.0) ----
 #
 test_that("time period (SOS 2.0.0)", {
   testsos20 <- SOS_Test(name = "testgml20", version = sos200_version)
@@ -216,7 +216,7 @@ periodXml <- '<gml:TimePeriod xmlns:gml="http://www.opengis.net/gml">
   <gml:endPosition>2007-01-01T00:10:00Z</gml:endPosition>
 </gml:TimePeriod>'
 #
-# indetermindate end position in TimePeriod ####
+# indetermindate end position in TimePeriod ----
 #
 test_that("indetermindate end position in TimePeriod", {
   period <- parseTimePeriod(obj = xml2::read_xml(periodXml), sos = testsos)
@@ -237,7 +237,7 @@ indeterminatePeriodXml <- '<gml:TimePeriod xmlns:gml="http://www.opengis.net/gml
   <gml:endPosition indeterminatePosition="now"/>
 </gml:TimePeriod>'
 #
-# indeterminate end position in TimePeriod ####
+# indeterminate end position in TimePeriod ----
 #
 test_that("indeterminate end position in TimePeriod", {
   period <- parseTimePeriod(obj = xml2::read_xml(indeterminatePeriodXml), sos = testsos)
@@ -251,7 +251,7 @@ test_that("indeterminate end position in TimePeriod", {
   expect_equal(period@endPosition@indeterminatePosition, "now")
 })
 #
-# accessor function translates indeterminate time 'now' to current time ####
+# accessor function translates indeterminate time 'now' to current time ----
 #
 test_that("accessor function translates indeterminate time 'now' to current time", {
   period <- parseTimePeriod(obj = xml2::read_xml(indeterminatePeriodXml), sos = testsos)
@@ -271,7 +271,7 @@ envelopeXml <- '<gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/432
     <gml:upperCorner>71.758 180</gml:upperCorner>
   </gml:Envelope>'
 #
-# boundedBy ####
+# boundedBy ----
 #
 test_that("boundedBy", {
   env <- parseEnvelope(obj = xml2::read_xml(envelopeXml), sos = testsos)
@@ -283,7 +283,7 @@ test_that("boundedBy", {
   expect_equal(env$upperCorner, "71.758 180")
 })
 #
-# boundedBy with coordinate swichting ####
+# boundedBy with coordinate swichting ----
 #
 test_that("boundedBy with coordinate swichting", {
   switchsos <- SOS_Test(name = "testswitchgml", switchCoordinates = TRUE)
@@ -309,7 +309,7 @@ point1 <- '<gml32:Point xmlns:gml32="http://www.opengis.net/gml/3.2" gml32:id="P
            </gml32:Point>'
 
 #
-# gml:Point with gml:pos string ####
+# gml:Point with gml:pos string ----
 #
 test_that("gml:Point with gml:pos string", {
   webmockr::stub_registry_clear()
@@ -343,7 +343,7 @@ webmockr::disable("httr")
 
 context("GML: accessors")
 #
-# featureOfInterest from GmlFeaturePropert ####
+# featureOfInterest from GmlFeaturePropert ----
 #
 test_that("featureOfInterest from GmlFeatureProperty", {
   sos <- SOS_Test(name = "testgml")

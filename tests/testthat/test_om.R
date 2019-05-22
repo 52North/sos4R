@@ -32,7 +32,7 @@ context("parsing: OM 2.0 result")
 
 resultXml <- '<om:result xmlns:om="http://www.opengis.net/om/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://www.opengis.net/gml/3.2" uom="test_unit_9_3" xsi:type="ns:MeasureType">50.28</om:result>'
 #
-# result value parsing works ####
+# result value parsing works ----
 #
 test_that("result value parsing works", {
   testsos <- SOS_Test(name = "omresult")
@@ -64,7 +64,7 @@ observationXml <- '<sos:observation xmlns:sos="http://www.opengis.net/sos/2.0" x
 
 testsos <- SOS_Test(name = "omresult", version = sos200_version)
 #
-# correct class is returned ####
+# correct class is returned ----
 #
 test_that("correct class is returned", {
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, featureCache = list(), retrieveFOI = FALSE)
@@ -84,7 +84,7 @@ test_that("time parsing works", {
   expect_named(times, c("resultTime", "phenomenonTime"))
 })
 #
-# coordinates are not available without FOI with a warning ####
+# coordinates are not available without FOI with a warning ----
 #
 test_that("coordinates are not available without FOI with a warning", {
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, featureCache = list(), retrieveFOI = FALSE)
@@ -94,7 +94,7 @@ test_that("coordinates are not available without FOI with a warning", {
   expect_true(is.na(coords))
 })
 #
-# coordinates are available with retrieved FOI ####
+# coordinates are available with retrieved FOI ----
 #
 webmockr::enable("httr")
 webmockr::httr_mock()
@@ -132,7 +132,7 @@ test_that("coordinates are available with retrieved FOI", {
 })
 webmockr::disable("httr")
 #
-# result parsed from observation ####
+# result parsed from observation ----
 #
 test_that("result parsed from observation", {
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, featureCache = list(), retrieveFOI = FALSE)
@@ -143,7 +143,7 @@ test_that("result parsed from observation", {
   expect_named(result, c("test_unit_1"))
 })
 #
-# observation metadata is in result ####
+# observation metadata is in result ----
 #
 test_that("observation metadata is in result", {
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, featureCache = list(), retrieveFOI = FALSE)
@@ -155,7 +155,7 @@ test_that("observation metadata is in result", {
   expect_equal(sosUOM(result), c("test_unit_1"))
 })
 #
-# feature ID parsed from observation ####
+# feature ID parsed from observation ----
 #
 test_that("feature ID parsed from observation", {
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, featureCache = list(), retrieveFOI = FALSE)
@@ -165,7 +165,7 @@ test_that("feature ID parsed from observation", {
   expect_equal(fid, "http://www.52north.org/test/featureOfInterest/1")
 })
 #
-# observed property parsed from observation ####
+# observed property parsed from observation ----
 #
 test_that("observed property parsed from observation", {
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, featureCache = list(), retrieveFOI = FALSE)
@@ -228,7 +228,7 @@ observationXml20 <- '<om:OM_Observation xmlns:om="http://www.opengis.net/om/2.0"
       </om:result>
     </om:OM_Observation>'
 #
-# SWE 2.0 data array can be parsed ####
+# SWE 2.0 data array can be parsed ----
 #
 test_that("SWE 2.0 data array can be parsed", {
   skip("NOT IMPLEMENTED")
@@ -236,7 +236,7 @@ test_that("SWE 2.0 data array can be parsed", {
 
 context("OM: accessors")
 #
-# coordinates from om:ObservationProperty returns data.frame with NAs ####
+# coordinates from om:ObservationProperty returns data.frame with NAs ----
 #
 test_that("coordinates from om:ObservationProperty returns data.frame with NAs", {
   property <- OmObservationProperty(href = "http://obs/prop/1")
