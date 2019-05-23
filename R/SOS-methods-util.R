@@ -33,7 +33,7 @@ sosConvertTime <- function(x, sos) {
   parsedTimestamp <- parsedate::parse_iso_8601(x)
   if (any(is.na(parsedTimestamp)))
     warning("Error converting string '", x, "' to 'ISO8601' format! Returning 'NA'")
-
+  attributes(parsedTimestamp) <- c(attributes(parsedTimestamp), "original_value" = x)
   return(parsedTimestamp)
 }
 

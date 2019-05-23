@@ -34,8 +34,10 @@ test_that("timezones are parsed correctly", {
   sos <- SOS_Test(name = "test_sos_time_functions", version = sos200_version)
   convertedTime <- sosConvertTime("2000-01-02T13:00:00.000+13:00", sos = sos)
   expect_equal(parsedate::format_iso_8601(convertedTime), "2000-01-02T00:00:00+00:00")
+  expect_equal(attr(convertedTime, "original_value"), "2000-01-02T13:00:00.000+13:00")
   convertedTime <- sosConvertTime("2000-01-02T10:12:34.567+13:00", sos = sos)
   expect_equal(parsedate::format_iso_8601(convertedTime), "2000-01-01T21:12:34+00:00")
+  expect_equal(attr(convertedTime, "original_value"), "2000-01-02T10:12:34.567+13:00")
 })
 context("encoding(KVP|XML): POSIXt objects")
 #

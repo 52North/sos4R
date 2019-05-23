@@ -368,6 +368,6 @@ gmlTimeInstantXml <- '<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2
 test_that("timezones are parsed correctly", {
   sos <- SOS_Test(name = "testgml", version = sos200_version)
   gmlTimeInstant <- parseTimeInstant(obj = xml2::read_xml(x = gmlTimeInstantXml), sos = sos)
-  expect_equal(gmlTimeInstant@timePosition@time, as.POSIXct(x = "2000-01-02 00:00", tz = "UTC"))
+  expect_equal(parsedate::format_iso_8601(gmlTimeInstant@timePosition@time), "2000-01-02T00:00:00+00:00")
   expect_equal(gmlTimeInstant@id, "gml-time-instant-id")
 })
