@@ -219,11 +219,10 @@ test_that("time instant", {
 test_that("warning on non-matching time format", {
   doc <- xml2::read_xml(x = '<om:samplingTime xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml">
     <gml:TimeInstant>
-      <gml:timePosition>2005-08T12:13Z</gml:timePosition>
+      <gml:timePosition>2005-08T12:13+24:00</gml:timePosition>
     </gml:TimeInstant>
   </om:samplingTime>')
-  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), "Error converting")
-  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), sosTimeFormat(testsos))
+  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), "Error converting string '2005-08T12:13\\+24:00' to 'ISO8601' format! Returning 'NA'")
   expect_true(is.na(sosTime(samplingTime)))
   expect_s3_class(sosTime(samplingTime), "POSIXt")
   expect_s4_class(samplingTime, "GmlTimeObjectOrNULL")

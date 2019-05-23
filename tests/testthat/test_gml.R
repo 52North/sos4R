@@ -86,7 +86,7 @@ test_that("time position minimal", {
   encoded <- encodeXML(obj = tpos, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
-  expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition>')
+  expect_match(encodedString, '2019-01-01T00:00:00\\+00:00</gml:timePosition>')
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 #
@@ -104,7 +104,7 @@ test_that("time position all", {
   expect_match(encodedString, 'frame="the_frame"')
   expect_match(encodedString, 'calendarEraName="the_era"')
   expect_match(encodedString, 'indeterminatePosition="yes"')
-  expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition>')
+  expect_match(encodedString, '2019-01-01T00:00:00\\+00:00</gml:timePosition>')
 })
 #
 # time instant ----
@@ -115,7 +115,7 @@ test_that("time instant", {
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
   expect_match(encodedString, '<gml:TimeInstant')
-  expect_match(encodedString, '2019-01-01T00:00:00</gml:timePosition></gml:TimeInstant>')
+  expect_match(encodedString, '2019-01-01T00:00:00\\+00:00</gml:timePosition></gml:TimeInstant>')
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 #
@@ -140,8 +140,8 @@ test_that("time period", {
   encoded <- encodeXML(obj = period, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
-  expect_match(encodedString, '2019-01-01T00:00:00</gml:beginPosition>')
-  expect_match(encodedString, '2019-02-03T00:00:00</gml:endPosition></gml:TimePeriod>')
+  expect_match(encodedString, '2019-01-01T00:00:00\\+00:00</gml:beginPosition>')
+  expect_match(encodedString, '2019-02-03T00:00:00\\+00:00</gml:endPosition></gml:TimePeriod>')
   expect_match(encodedString, 'gml:id="id_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"')
 })
 #
@@ -189,7 +189,7 @@ context("encoding GML: temporal classes to KVP")
 test_that("time instant", {
   instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
   encodedString <- encodeKVP(obj = instant, sos = testsos)
-  expect_equal(encodedString, '2019-01-01T00:00:00')
+  expect_equal(encodedString, '2019-01-01T00:00:00+00:00')
 })
 #
 # time period (SOS 1.0.0) ----
@@ -197,7 +197,7 @@ test_that("time instant", {
 test_that("time period (SOS 1.0.0)", {
   period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
   encodedString <- encodeKVP(obj = period, sos = testsos)
-  expect_equal(encodedString, '2019-01-01T00:00:00::2019-02-03T00:00:00')
+  expect_equal(encodedString, '2019-01-01T00:00:00+00:00::2019-02-03T00:00:00+00:00')
 })
 #
 # time period (SOS 2.0.0) ----
@@ -206,7 +206,7 @@ test_that("time period (SOS 2.0.0)", {
   testsos20 <- SOS_Test(name = "testgml20", version = sos200_version)
   period <- sosCreateTimePeriod(sos = testsos20, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
   encodedString <- encodeKVP(obj = period, sos = testsos20)
-  expect_equal(encodedString, '2019-01-01T00:00:00/2019-02-03T00:00:00')
+  expect_equal(encodedString, '2019-01-01T00:00:00+00:00/2019-02-03T00:00:00+00:00')
 })
 
 context("parsing: GML")
@@ -355,4 +355,19 @@ test_that("featureOfInterest from GmlFeatureProperty", {
                                    position = GmlPointProperty(point = GmlPoint(pos = pos)))
   property <- GmlFeatureProperty(feature = samplingPoint)
   expect_equal(sosFeaturesOfInterest(property),  samplingPoint)
+})
+
+context("decoding GML: temporal classes from XML")
+
+gmlTimeInstantXml <- '<gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="gml-time-instant-id">
+          <gml:timePosition>2000-01-02T13:00:00.000+13:00</gml:timePosition>
+        </gml:TimeInstant>'
+#
+# timezones are parsed correctly ----
+#
+test_that("timezones are parsed correctly", {
+  sos <- SOS_Test(name = "testgml", version = sos200_version)
+  gmlTimeInstant <- parseTimeInstant(obj = xml2::read_xml(x = gmlTimeInstantXml), sos = sos)
+  expect_equal(gmlTimeInstant@timePosition@time, as.POSIXct(x = "2000-01-02 00:00", tz = "UTC"))
+  expect_equal(gmlTimeInstant@id, "gml-time-instant-id")
 })

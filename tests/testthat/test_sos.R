@@ -21,32 +21,35 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
-# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
-# Created: 2019-03-27                                                          #
+# Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
+# Created: 2019-05-21                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
-context("encode filter: time")
-
-testsos <- SOS_Test(name = "testogc")
-
-test_that("during", {
-  during <- TM_During(time = GmlTimePeriod(beginPosition = GmlTimePosition(time = as.POSIXct("2019-01-01")),
-                                 endPosition = GmlTimePosition(time = as.POSIXct("2019-01-01"))))
-  encoded <- encodeXML(obj = during, sos = testsos)
-  encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
-
-  expect_match(encodedString, "<ogc:PropertyName>om:samplingTime</ogc:PropertyName>")
-  expect_match(encodedString, "2019-01-01T00:00:00\\+00:00</gml:endPosition></gml:TimePeriod></ogc:TM_During>")
+context("sosConvertTime: correct timezone handling")
+#
+# timezones are parsed correctly ----
+#
+test_that("timezones are parsed correctly", {
+  sos <- SOS_Test(name = "test_sos_time_functions", version = sos200_version)
+  convertedTime <- sosConvertTime("2000-01-02T13:00:00.000+13:00", sos = sos)
+  expect_equal(parsedate::format_iso_8601(convertedTime), "2000-01-02T00:00:00+00:00")
+})
+context("encoding(KVP|XML): POSIXt objects")
+#
+# POSIXct xml encoding
+#
+test_that("POSIXct is correct encoded in XML strings", {
+  sos <- SOS_Test(name = "test_sos_time_functions", version = sos200_version)
+  encoded <- encodeXML(parsedate::parse_iso_8601("2000-01-02T13:00:00.000+13:00"), sos = sos)
+  expect_equal(encoded, "2000-01-02T00:00:00+00:00")
 })
 
-test_that("bbox", {
-  box <- OgcBBOX(envelope = GmlEnvelope(lowerCorner = GmlDirectPositionLatLon(1, 20),
-                                        upperCorner = GmlDirectPositionLatLon(300, 4000)))
-  encoded <- encodeXML(obj = box, sos = testsos)
-  encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
-
-  expect_match(encodedString, paste0(sosDefaultSpatialOpPropertyName, "</ogc:PropertyName>"))
-  expect_match(encodedString, "300 4000</gml:upperCorner></gml:Envelope></ogc:BBOX>")
+#
+# POSIXct KVP encoding
+#
+test_that("POSIXct is correct encoded in KVP strings", {
+  sos <- SOS_Test(name = "test_sos_time_functions", version = sos200_version)
+  encoded <- encodeKVP(parsedate::parse_iso_8601("2000-01-02T13:00:00.000+13:00"), sos = sos)
+  expect_equal(encoded, "2000-01-02T00:00:00+00:00")
 })
-

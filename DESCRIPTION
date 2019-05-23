@@ -30,6 +30,7 @@ Depends: R (>= 3.4.0)
 Imports:
     httr,
     methods,
+    parsedate,
     sp,
     stats,
     stringr,

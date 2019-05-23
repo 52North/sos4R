@@ -256,7 +256,7 @@ test_that("with event time (SOS 1.0.0)", {
   expect_match(encodedString, "<sos:responseFormat>fmt</sos:responseFormat>")
   expect_match(encodedString, "<ogc:TM_During")
   expect_match(encodedString, "<ogc:PropertyName>om:samplingTime</ogc:PropertyName>")
-  expect_match(encodedString, "2017-12-20T00:00:00</gml:endPosition>")
+  expect_match(encodedString, "2017-12-20T00:00:00\\+00:00</gml:endPosition>")
   expect_match(encodedString, "</ogc:TM_During></sos:eventTime>")
 })
 
@@ -336,7 +336,7 @@ test_that("temporal filter with POX (SOS 2.0.0)", {
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
   expect_match(encodedString, "sos20:temporalFilter><fes:During><fes:ValueReference>phenomenonTime</fes:ValueReference>")
-  expect_match(encodedString, "2019-02-02T00:00:00</gml:beginPosition><gml:endPosition>2019-03-03T00:00:00</gml:endPosition></gml:TimePeriod>")
+  expect_match(encodedString, "2019-02-02T00:00:00\\+00:00</gml:beginPosition><gml:endPosition>2019-03-03T00:00:00\\+00:00</gml:endPosition></gml:TimePeriod>")
 })
 
 test_that("multiple offering IDs with POX (SOS 2.0.0)", {

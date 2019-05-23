@@ -409,7 +409,7 @@ sosDefaultGetCapSections <- c("All")
 sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[[1]]
-sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
+sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS%z"
 sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H-%M-%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]

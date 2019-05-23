@@ -1346,21 +1346,26 @@ setMethod(f = "encodeXML",
             return(foi)
           }
 )
-
+#
 # to make just the time encoding interchangeable by users
+#
+# encodeXML(POSIXt, SOS) ----
+#
 setMethod(f = "encodeXML",
           signature = signature(obj = "POSIXt", sos = "SOS"),
           definition = function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeXML] POSIXt with value", toString(obj), "\n")
 
-            formatted <- strftime(x = obj, format = sosTimeFormat(sos))
+            formatted <- parsedate::format_iso_8601(obj)
 
             if (verbose) cat("Formatted ", obj, " to ", formatted)
 
             return(formatted)
           }
 )
-
+#
+# encodeKVP(SosEventTime, SOS) ----
+#
 setMethod(f = "encodeKVP",
           signature = signature(obj = "SosEventTime", sos = "SOS"),
           function(obj, sos, verbose = FALSE) {
@@ -1372,14 +1377,17 @@ setMethod(f = "encodeKVP",
             return(temporalOpsKVP)
           }
 )
-
+#
 # to make just the time encoding interchangeable by users
+#
+# encodeKVP(POSIXt, SOS) ----
+#
 setMethod(f = "encodeKVP",
           signature = signature(obj = "POSIXt", sos = "SOS"),
           definition = function(obj, sos, verbose) {
             if (verbose) cat("[encodeKVP] POSIXt with value", toString(obj), "\n")
 
-            formatted <- strftime(x = obj, format = sosTimeFormat(sos))
+            formatted <- parsedate::format_iso_8601(obj)
 
             if (verbose) cat("Formatted ", obj, " to ", formatted, "\n")
 

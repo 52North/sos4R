@@ -172,7 +172,7 @@ test_that("validTime period for KVP (2.0.0)", {
                                                           end = as.POSIXct("2019-02-02 02:22:00")))
 
   kvp <- encodeRequestKVP(obj = ds, sos = sos)
-  expect_match(kvp, "validTime=2019-01-01T00%3A00%3A00%2F2019-02-02T02%3A22%3A00")
+  expect_match(kvp, "validTime=2019-01-01T00%3A00%3A00%2B00%3A00%2F2019-02-02T02%3A22%3A00%2B00%3A00")
 })
 
 test_that("procedure and description format for POX (2.0.0)", {
@@ -189,7 +189,7 @@ test_that("validTime instant for POX (2.0.0)", {
                           validTime = sosCreateTimeInstant(sos = sos, time = as.POSIXct("2019-05-05 05:05:05")))
   xml <- encodeRequestXML(obj = ds, sos = sos)
   encodedString <- stringr::str_replace_all(toString(xml), ">\\s*<", "><")
-  expect_match(encodedString, "2019-05-05T05:05:05</gml:timePosition></gml:TimeInstant></swes:validTime>")
+  expect_match(encodedString, "2019-05-05T05:05:05\\+00:00</gml:timePosition></gml:TimeInstant></swes:validTime>")
 })
 
 test_that("validTime period for POX (2.0.0)", {
@@ -200,8 +200,8 @@ test_that("validTime period for POX (2.0.0)", {
                                                           end = as.POSIXct("2019-05-05 05:05:05")))
   xml <- encodeRequestXML(obj = ds, sos = sos)
   encodedString <- stringr::str_replace_all(toString(xml), ">\\s*<", "><")
-  expect_match(encodedString, "2019-04-04T04:04:04</gml:beginPosition>")
-  expect_match(encodedString, "2019-05-05T05:05:05</gml:endPosition></gml:TimePeriod></swes:validTime>")
+  expect_match(encodedString, "2019-04-04T04:04:04\\+00:00</gml:beginPosition>")
+  expect_match(encodedString, "2019-05-05T05:05:05\\+00:00</gml:endPosition></gml:TimePeriod></swes:validTime>")
 })
 
 webmockr::disable("httr")
