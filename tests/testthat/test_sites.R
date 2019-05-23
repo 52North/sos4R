@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2019-04-04                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 library(webmockr)
@@ -196,7 +196,7 @@ context("convenience layer -> sites()")
   expect_true(51.9692611694336 == coords[4,2])
 }
 #
-# test KVP::sites(sos, empty = TRUE|FALSE) ####
+# test KVP::sites(sos, empty = TRUE|FALSE) ----
 #
 test_that("KVP::sites(sos, empty = TRUE|FALSE) returns an empty list of sites as SpatialPointsDataFrame if the SOS is empty", {
   webmockr::stub_registry_clear()
@@ -233,7 +233,7 @@ test_that("KVP::sites(sos, empty = TRUE|FALSE) returns an empty list of sites as
 })
 
 #
-# test KVP::sites(sos, empty = TRUE) ####
+# test KVP::sites(sos, empty = TRUE) ----
 #
 test_that("KVP::sites(sos, empty = TRUE) returns a list of stations as SpatialPointsDataFrame that contain siteIDs and coordinates", {
   webmockr::stub_registry_clear()
@@ -272,7 +272,7 @@ test_that("KVP::sites(sos, empty = TRUE) returns a list of stations as SpatialPo
 })
 
 #
-# test KVP::sites(sos, empty = FALSE) ####
+# test KVP::sites(sos, empty = FALSE) ----
 #
 test_that("KVP::sites(sos, empty = FALSE) returns a list of stations as SpatialPointsDataFrame that contain siteIDs and coordinates", {
   webmockr::stub_registry_clear()
@@ -313,7 +313,7 @@ test_that("KVP::sites(sos, empty = FALSE) returns a list of stations as SpatialP
 })
 
 #
-# test KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTemporalBbox = FALSE) ####
+# test KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTemporalBbox = FALSE) ----
 #
 test_that("KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTemporalBbox = FALSE) returns a list of stations as SpatialPointsDataFrame that contain siteIDs and coordinates", {
   webmockr::stub_registry_clear()

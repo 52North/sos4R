@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,6 +23,7 @@
 #                                                                              #
 # Author: - Ben Graler (b.graeler@52north.org)                                 #
 #         - Eike Hinderk Jürrens (e.h.juerrens@52north.org)                    #
+#         - Daniel Nüst (daniel.nuest@uni-muenster.de)                         #
 # Created: 2019-01-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
@@ -38,23 +39,23 @@
 #
 #
 #
-# phenomena ####
+# phenomena ----
 #
 #
 #
-# ~ us.1.1 ####
+# ~ us.1.1 ----
 # What phenomena are available from a SOS?
 #   phenomena(sos)
 # → data.frame[phenomenonId]
 # GetCapabilities::Contents
 #
-# ~ us.1.2 ####
+# ~ us.1.2 ----
 # What phenomena are available from a SOS and what are their temporal ranges?
 #   phenomena(sos, includeTemporalBBox=TRUE)
 # → data.frame[phenomena, timeBegin, timeEnd]
 # GetDataAvailability v1.0
 #
-# ~ us.1.4 ####
+# ~ us.1.4 ----
 # What phenomena are available from a SOS and at which locations
 #
 # phenomena(sos, listSites=TRUE)
@@ -184,27 +185,27 @@ setMethod(f = "phenomena",
 #
 #
 #
-# siteList ####
+# siteList ----
 #
 #
 #
-# ~ us.2.1: List all sites (containing data) ####
+# ~ us.2.1: List all sites (containing data) ----
 #   siteList(sos)
 # → data.frame[siteID]
 #
-# ~ us.2.2: List all sites (also not containing data) ####
+# ~ us.2.2: List all sites (also not containing data) ----
 #   siteList(sos, empty=TRUE)
 # → data.frame[siteID]
 #
-# ~ us.2.3: List all sites w/wo data for a given time window ####
+# ~ us.2.3: List all sites w/wo data for a given time window ----
 #   siteList(sos, begin=POSIXct, end=POSIXct)
 # → data.frame[siteID]
 #
-# ~ us.2.4: List all sites with metadata ####
+# ~ us.2.4: List all sites with metadata ----
 # siteList(sos, includePhenomena=T|F, includeTemporalBBox=T|F, ...)
 # → data.frame[siteid, phenomenon, beginTime, endTime]
 #
-# ~ us.2.5: List all sites where specified phenomena have been captured ####
+# ~ us.2.5: List all sites where specified phenomena have been captured ----
 #   siteList(sos, phenomena=[List of phenomena])
 # → data.frame[siteID, phenomenon, timeBegin, timeEnd]
 
@@ -374,7 +375,7 @@ setMethod(f = "siteList",
 }
 
 #
-# ~ us.2.3: List all sites w/wo data for a given time window ####
+# ~ us.2.3: List all sites w/wo data for a given time window ----
 #   siteList(sos, begin = POSIXct, end = POSIXct) → data.frame[siteID]
 #           123456789012345678901234
 # ts1     : *   *   *  *     *
@@ -442,23 +443,23 @@ setMethod(f = "siteList",
 #
 #
 #
-# sites ####
+# sites ----
 #
 #
 #
-# ~ us.2.1: List all sites (containing data) ####
+# ~ us.2.1: List all sites (containing data) ----
 # sites(sos)
 # → SpatialPointsDataFrame[siteID] + coords
 #
-# ~ us.2.2: List all sites (also not containing data) ####
+# ~ us.2.2: List all sites (also not containing data) ----
 # sites(sos, empty=TRUE)
 # → SpatialPointsDataFrame[siteID, Empty=logical] + coords
 #
-# ~ us.2.3: List all sites with data for a given time window ####
+# ~ us.2.3: List all sites with data for a given time window ----
 # sites(sos, begin=POSIXct, end=POSIXct)
 # → SpatialPointsDataFrame[siteID, Empty=logical] + coords
 
-# ~ us.2.4: List all sites with metadata ####
+# ~ us.2.4: List all sites with metadata ----
 # sites(sos, includePhenomena=F, includeTemporalBBox=F) = sites(sos)
 # → see us.2.1/us.2.2
 #
@@ -468,7 +469,7 @@ setMethod(f = "siteList",
 # sites(sos, includePhenomena=T, includeTemporalBBox=T)
 # → SpatialPointsDataFrame[phen_1=df[beginTime, endTime], …, phen_n=df[beginTime, endTime]] + coords
 #
-# ~ us.2.5: List all sites where specified phenomena have been captured ####
+# ~ us.2.5: List all sites where specified phenomena have been captured ----
 # sites(sos, phenomena=[List of phenomena])
 # → SpatialPointsDataFrame[phen_1=df[beginTime, endTime], …, phen_n=df[beginTime, endTime]] + coords
 
@@ -699,7 +700,7 @@ as.SpatialPointsDataFrame.SamsSamplingFeatureList <- function(list) {
 # →
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
 #
-# ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ####
+# ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ----
 # getData(sos, …, begin=POSIXct, end=POSIXct)
 # →
 # data.frame[siteID, timestamp, phen_1, phen_2, …]
@@ -750,17 +751,17 @@ getData <- function(sos,
 
 # getDataAsST ----
 #
-# ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ####
+# ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ----
 # getDataAsST(sos, phenomena=[List of phenomena], sites=[List of sites])
 # →
 # SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
 #
-# ~ us.3.2: Retrieve sensor values by phenomenon/a and spatial bounding box (in the CRS of the SOS) ####
+# ~ us.3.2: Retrieve sensor values by phenomenon/a and spatial bounding box (in the CRS of the SOS) ----
 # getDataAsST(sos, phenomena=[List of phenomena], spatialBBox=matrix/c(minX,minY,maxX,maxY))
 # →
 # SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index
 #
-# ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ####
+# ~ us.3.3: Temporal Filter for us.3.1 and us.3.2 ----
 # getDataAsST(sos, …, begin=POSIXct, end=POSIXct)
 # →
 # SpatialPointsDataFrame[phen_1, phen_2, …] + coords + time + index

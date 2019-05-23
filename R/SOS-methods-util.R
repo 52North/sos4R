@@ -26,17 +26,15 @@
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
-
 #
 # conversion methods ----
 #
 sosConvertTime <- function(x, sos) {
-  format <- sosTimeFormat(sos = sos)
-  t <- as.POSIXct(x = strptime(x = x, format = format))
-  if (any(is.na(t)))
-    warning("Error converting string '", x, "' with format '", format, "'! Returning 'NA'")
-
-  return(t)
+  parsedTimestamp <- parsedate::parse_iso_8601(x)
+  if (any(is.na(parsedTimestamp)))
+    warning("Error converting string '", x, "' to 'ISO8601' format! Returning 'NA'")
+  attributes(parsedTimestamp) <- c(attributes(parsedTimestamp), "original_value" = x)
+  return(parsedTimestamp)
 }
 
 sosConvertDouble <- function(x, sos) {

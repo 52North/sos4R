@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -175,11 +175,11 @@ test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns the current l
   expect_equal(nrow(dataFrameOfPhenomena), 2, info = "number of unique phenomena")
   # check all values
   expect_equal("WindDirection", dataFrameOfPhenomena[ 1, 1], info = "phenomenon")
-  expect_equal(strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 1, 2], info = "timeBegin")
-  expect_equal(strptime("2019-04-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 1, 3], info = "timeEnd")
+  expect_equal("2019-03-01T00:30:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 1, 2]), info = "timeBegin")
+  expect_equal("2019-04-28T23:45:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 1, 3]), info = "timeEnd")
   expect_equal("WindDirectionTest", dataFrameOfPhenomena[ 2, 1], info = "phenomenon")
-  expect_equal(strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 2, 2], info = "timeBegin")
-  expect_equal(strptime("2019-05-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), dataFrameOfPhenomena[ 2, 3], info = "timeEnd")
+  expect_equal("2019-03-01T00:30:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 2, 2]), info = "timeBegin")
+  expect_equal("2019-05-28T23:45:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 2, 3]), info = "timeEnd")
 })
 
 webmockr::disable("httr")

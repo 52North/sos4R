@@ -30,55 +30,55 @@
 #
 # SOS ----
 #
-sos100_version <- "1.0.0"
-sosService <- "SOS"
 sos100NamespacePrefix <- "sos"
-sosIntendedApplicationName <- paste0(sos100NamespacePrefix, ":intendedApplication")
-sosTimeName <- paste0(sos100NamespacePrefix, ":time")
-sosProcedureName <- paste0(sos100NamespacePrefix, ":procedure")
-sosObservedPropertyName <- paste0(sos100NamespacePrefix, ":observedProperty")
+sos100_version <- "1.0.0"
+sosCapabilitiesName <- paste0(sos100NamespacePrefix, ":Capabilities")
+sosContentsName <- paste0(sos100NamespacePrefix, ":Contents")
+sosEventTimeName <- paste0(sos100NamespacePrefix, ":eventTime")
 sosFeatureOfInterestName <- paste0(sos100NamespacePrefix, ":featureOfInterest")
-sosResultModelName <- paste0(sos100NamespacePrefix, ":resultModel")
+sosFeatureOfInterestTypeName <- paste0(sos100NamespacePrefix, ":featureOfInterestType")
+sosFilterCapabilitiesName <- paste0(sos100NamespacePrefix, ":Filter_Capabilities")
+sosIntendedApplicationName <- paste0(sos100NamespacePrefix, ":intendedApplication")
+sosObjectIDName <- paste0(sos100NamespacePrefix, ":ObjectID")
+sosObservationIdName <- paste0(sos100NamespacePrefix, ":ObservationId")
+sosObservationOfferingListName <- paste0(sos100NamespacePrefix, ":ObservationOfferingList")
+sosObservationOfferingName <- paste0(sos100NamespacePrefix, ":ObservationOffering")
+sosObservationTypeName <- paste0(sos100NamespacePrefix, ":observationType")
+sosObservedAreaName <- paste0(sos100NamespacePrefix, ":observedArea")
+sosObservedPropertyName <- paste0(sos100NamespacePrefix, ":observedProperty")
+sosOfferingName <- paste0(sos100NamespacePrefix, ":offering")
+sosPhenomenonTimeName <- paste0(sos100NamespacePrefix, ":phenomenonTime")
+sosProcedureDescriptionFormat <- paste0(sos100NamespacePrefix, ":procedureDescriptionFormat")
+sosProcedureName <- paste0(sos100NamespacePrefix, ":procedure")
+sosProcedureName <- paste0(sos100NamespacePrefix, ":procedure")
 sosResponseFormatName <- paste0(sos100NamespacePrefix, ":responseFormat")
 sosResponseModeName <- paste0(sos100NamespacePrefix, ":responseMode")
-sosObservationOfferingName <- paste0(sos100NamespacePrefix, ":ObservationOffering")
-sosObservationOfferingListName <- paste0(sos100NamespacePrefix, ":ObservationOfferingList")
-sosContentsName <- paste0(sos100NamespacePrefix, ":Contents")
-sosFilterCapabilitiesName <- paste0(sos100NamespacePrefix, ":Filter_Capabilities")
-sosCapabilitiesName <- paste0(sos100NamespacePrefix, ":Capabilities")
-sosEventTimeName <- paste0(sos100NamespacePrefix, ":eventTime")
-sosObjectIDName <- paste0(sos100NamespacePrefix, ":ObjectID")
+sosResultModelName <- paste0(sos100NamespacePrefix, ":resultModel")
 sosResultName <- paste0(sos100NamespacePrefix, ":result")
 sosResultTimeName <- paste0(sos100NamespacePrefix, ":resultTime")
-sosPhenomenonTimeName <- paste0(sos100NamespacePrefix, ":phenomenonTime")
-sosObservationTypeName <- paste0(sos100NamespacePrefix, ":observationType")
-sosFeatureOfInterestTypeName <- paste0(sos100NamespacePrefix, ":featureOfInterestType")
-sosProcedureDescriptionFormat <- paste0(sos100NamespacePrefix, ":procedureDescriptionFormat")
-sosObservedAreaName <- paste0(sos100NamespacePrefix, ":observedArea")
-sosOfferingName <- paste0(sos100NamespacePrefix, ":offering")
-sosProcedureName <- paste0(sos100NamespacePrefix, ":procedure")
-sosObservationIdName <- paste0(sos100NamespacePrefix, ":ObservationId")
+sosService <- "SOS"
+sosTimeName <- paste0(sos100NamespacePrefix, ":time")
 
 #
 # SOS v2.0 ----
 #
 sos200_version <- "2.0.0"
 sos200NamespacePrefix <- "sos20"
-sos200contentsName <- paste0(sos200NamespacePrefix, ":contents")
 sos200ContentsName <- paste0(sos200NamespacePrefix, ":Contents")
-sos200ObservationOfferingName <- paste0(sos200NamespacePrefix, ":ObservationOffering")
-sos200FilterCapabilitiesName <- paste0(sos200NamespacePrefix, ":filterCapabilities")
-sos200FeatureOfInterestTypeName <- paste0(sos200NamespacePrefix, ":featureOfInterestType")
 sos200FeatureOfInterestName <- paste0(sos200NamespacePrefix, ":featureOfInterest")
+sos200FeatureOfInterestTypeName <- paste0(sos200NamespacePrefix, ":featureOfInterestType")
+sos200FilterCapabilitiesName <- paste0(sos200NamespacePrefix, ":filterCapabilities")
+sos200ObservationDataName <- paste0(sos200NamespacePrefix, ":observationData")
+sos200ObservationName <- paste0(sos200NamespacePrefix, ":observation")
+sos200ObservationOfferingName <- paste0(sos200NamespacePrefix, ":ObservationOffering")
 sos200ObservationTypeName <- paste0(sos200NamespacePrefix, ":observationType")
+sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
+sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
 sos200ResponseFormatName <- paste0(sos200NamespacePrefix, ":responseFormat")
 sos200ResultTimeName <- paste0(sos200NamespacePrefix, ":resultTime")
-sos200PhenomenonTimeName <- paste0(sos200NamespacePrefix, ":phenomenonTime")
-sos200ObservedAreaName <- paste0(sos200NamespacePrefix, ":observedArea")
-sos200ObservationName <- paste0(sos200NamespacePrefix, ":observation")
-sos200ObservationDataName <- paste0(sos200NamespacePrefix, ":observationData")
-sos200TemporalFilterName <- paste0(sos200NamespacePrefix, ":temporalFilter")
 sos200SpatialFilterName <- paste0(sos200NamespacePrefix, ":spatialFilter")
+sos200TemporalFilterName <- paste0(sos200NamespacePrefix, ":temporalFilter")
+sos200contentsName <- paste0(sos200NamespacePrefix, ":contents")
 
 sosGetObservationByIdResponseName <- "GetObservationByIdResponse"
 sosGetObservationResponseName <- "GetObservationResponse"
@@ -135,23 +135,22 @@ SosSupportedOperations <- function(version = sos100_version) {
 #
 # KVP parameter names ----
 #
-sosKVPParamNameRequest <- "request"
-sosKVPParamNameService <- "service"
-sosKVPParamNameVersion <- "version"
-sosKVPParamNameOffering <- "offering"
-sosKVPParamNameObsProp <- "observedProperty"
-sosKVPParamNameFoi <- "featureOfInterest"
-sosKVPParamNameResponseFormat <- "responseFormat"
-sosKVPParamNameSrsName <- "srsName"
-sosKVPParamNameEventTime <- "eventTime"
-sosKVPParamNameProcedure <- "procedure"
-sosKVPParamNameResultModel <- "resultModel"
-sosKVPParamNameResponseMode <- "responseMode"
 sosKVPParamNameBBOX <- "BBOX"
-
+sosKVPParamNameEventTime <- "eventTime"
+sosKVPParamNameFoi <- "featureOfInterest"
 sosKVPParamNameNamespaces <- "namespaces"
+sosKVPParamNameObsProp <- "observedProperty"
+sosKVPParamNameOffering <- "offering"
+sosKVPParamNameProcedure <- "procedure"
+sosKVPParamNameRequest <- "request"
+sosKVPParamNameResponseFormat <- "responseFormat"
+sosKVPParamNameResponseMode <- "responseMode"
+sosKVPParamNameResultModel <- "resultModel"
+sosKVPParamNameService <- "service"
 sosKVPParamNameSpatialFilter <- "spatialFilter"
+sosKVPParamNameSrsName <- "srsName"
 sosKVPParamNameTemporalFilter <- "temporalFilter"
+sosKVPParamNameVersion <- "version"
 
 #
 # not exported SOS ----
@@ -217,6 +216,7 @@ samsNamespace <- "http://www.opengis.net/samplingSpatial/2.0"
 samNamespace <- "http://www.opengis.net/sampling/2.0"
 swesNamespace <- "http://www.opengis.net/swes/2.0"
 om20Namespace <- "http://www.opengis.net/om/2.0"
+swe20Namespace <- "http://www.opengis.net/swe/2.0"
 
 sos200Namespace <- "http://www.opengis.net/sos/2.0"
 
@@ -247,6 +247,7 @@ SosAllNamespaces <- function(version) {
                 sml = smlNamespace,
                 gml1 = gmlNamespace, # need old GML for within SensorML 1.0.1
                 swe = sweNamespace, # needed for Envelope within SensorML 1.0.1
+                swe20 = swe20Namespace, # needed for OM 2.0
                 gml = gml32Namespace,
                 fes = fesNamespace,
                 gda = gdaNamespace,
@@ -373,6 +374,12 @@ sweCoordinateName <- paste0(sweNamespacePrefix, ":coordinate")
 swePositionName <- paste0(sweNamespacePrefix, ":Position")
 sweLowerCornerName <- paste0(sweNamespacePrefix, ":upperCorner")
 sweUpperCornerName <- paste0(sweNamespacePrefix, ":lowerCorner")
+
+#
+# SWE 2.0
+#
+swe20NamespacePrefix <- "swe20"
+swe20DataArrayName <- paste0(swe20NamespacePrefix, ":DataArray")
 
 #
 # SWE Service Model (SWES) ----

@@ -1,3 +1,31 @@
+################################################################################
+# Copyright (C) 2019 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.                                                    #
+#                                                                              #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.                                     #
+#                                                                              #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+# Created: 2019-01-07                                                          #
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
+################################################################################
 context("GetObservation")
 
 test_that("creation of request fails if eventTime contains objects of wrong class", {
@@ -228,7 +256,7 @@ test_that("with event time (SOS 1.0.0)", {
   expect_match(encodedString, "<sos:responseFormat>fmt</sos:responseFormat>")
   expect_match(encodedString, "<ogc:TM_During")
   expect_match(encodedString, "<ogc:PropertyName>om:samplingTime</ogc:PropertyName>")
-  expect_match(encodedString, "2017-12-20T00:00:00</gml:endPosition>")
+  expect_match(encodedString, "2017-12-20T00:00:00\\+00:00</gml:endPosition>")
   expect_match(encodedString, "</ogc:TM_During></sos:eventTime>")
 })
 
@@ -308,7 +336,7 @@ test_that("temporal filter with POX (SOS 2.0.0)", {
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
   expect_match(encodedString, "sos20:temporalFilter><fes:During><fes:ValueReference>phenomenonTime</fes:ValueReference>")
-  expect_match(encodedString, "2019-02-02T00:00:00</gml:beginPosition><gml:endPosition>2019-03-03T00:00:00</gml:endPosition></gml:TimePeriod>")
+  expect_match(encodedString, "2019-02-02T00:00:00\\+00:00</gml:beginPosition><gml:endPosition>2019-03-03T00:00:00\\+00:00</gml:endPosition></gml:TimePeriod>")
 })
 
 test_that("multiple offering IDs with POX (SOS 2.0.0)", {

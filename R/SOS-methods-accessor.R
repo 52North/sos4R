@@ -620,7 +620,7 @@ if (!isGeneric("sosResponseFormats"))
     standardGeneric("sosResponseFormats")
   })
 setMethod(f = "sosResponseFormats", signature = signature(obj = "SOS"),
-definition = function(obj, unique = FALSE, removeNulls = TRUE) {
+          definition = function(obj, unique = FALSE, removeNulls = TRUE) {
             formats <- sapply(sosOperations(obj), sosResponseFormats)
             if (unique) {
               combined <- do.call(c, formats)
@@ -652,7 +652,7 @@ if (!isGeneric("sosOutputFormats"))
     standardGeneric("sosOutputFormats")
   })
 setMethod(f = "sosOutputFormats", signature = signature(obj = "SOS"),
-definition = function(obj, unique = FALSE, removeNulls = TRUE) {
+          definition = function(obj, unique = FALSE, removeNulls = TRUE) {
             formats <- sapply(sosOperations(obj), sosOutputFormats)
             if (unique) {
               combined <- do.call(c, formats)
@@ -674,7 +674,7 @@ if (!isGeneric("sosResponseMode"))
     standardGeneric("sosResponseMode")
   })
 setMethod(f = "sosResponseMode", signature = signature(obj = "SOS"),
-definition = function(obj, unique = FALSE) {
+          definition = function(obj, unique = FALSE) {
             rf <- sapply(sosOperations(obj), sosResponseMode)
             if (unique) {
               combined <- do.call(c, rf)
@@ -698,7 +698,7 @@ if (!isGeneric("sosResultModels"))
     standardGeneric("sosResultModels")
   })
 setMethod(f = "sosResultModels", signature = signature(obj = "SOS"),
-definition = function(obj, unique = FALSE) {
+          definition = function(obj, unique = FALSE) {
             #			caps <- sosCaps(obj)
             #			.getOb <- caps@operations@operations[[sosGetObservationName]]
             #			return(.getOb@parameters$resultModel)
@@ -725,12 +725,12 @@ if (!isGeneric("sosTime"))
     standardGeneric("sosTime")
   })
 setMethod(f = "sosTime", signature = signature(obj = "SOS"),
-definition = function(obj, convert = TRUE) {
+          definition = function(obj, convert = TRUE) {
             times <- lapply(sosOfferings(obj), sosTime, convert = convert)
             return(times)
           })
 setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering"),
-definition = function(obj, convert = TRUE) {
+          definition = function(obj, convert = TRUE) {
             if (!convert)
               return(obj@time)
 
@@ -743,7 +743,7 @@ definition = function(obj, convert = TRUE) {
             return(obj@time)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
-definition = function(obj, ...) {
+          definition = function(obj, ...) {
             start <- NA
             end <- NA
 
@@ -762,7 +762,7 @@ definition = function(obj, ...) {
             return(period)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePosition"),
-definition = function(obj, ...) {
+          definition = function(obj, ...) {
             time <- obj@time
             if (!is.na(obj@indeterminatePosition) && obj@indeterminatePosition == "now") {
               time <- Sys.time()
@@ -776,7 +776,7 @@ definition = function(obj, ...) {
             return(time)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimeInstantProperty"),
-definition = function(obj, ...) {
+          definition = function(obj, ...) {
             if (is.na(obj@href))
               return(obj@href)
 
@@ -786,21 +786,21 @@ definition = function(obj, ...) {
             return(NA)
           })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimeInstant"),
-definition = function(obj, ...) {
+          definition = function(obj, ...) {
             return(sosTime(obj@timePosition))
           })
 setMethod(f = "sosTime", signature = signature(obj = "list"),
-definition = function(obj, convert = TRUE) {
+          definition = function(obj, convert = TRUE) {
             return(lapply(X = obj, FUN = sosTime, convert = convert))
           })
 setMethod(f = "sosTime", signature = signature(obj = "OmOM_Observation"),
-definition = function(obj, convert = TRUE) {
+          definition = function(obj, convert = TRUE) {
             times <- list(resultTime = sosTime(obj@resultTime),
                           phenomenonTime = sosTime(obj@phenomenonTime))
             return(times)
           })
 setMethod(f = "sosTime", signature = signature(obj = "DataAvailabilityMember"),
-definition = function(obj, ...) {
+          definition = function(obj, ...) {
             return(sosTime(obj@phenomenonTime))
           })
 setMethod(f = "sosTime", signature = signature(obj = "SensorML"),
@@ -838,7 +838,7 @@ if (!isGeneric("sosResult"))
     standardGeneric("sosResult")
   })
 setMethod(f = "sosResult", signature = signature(obj = "OmObservation"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
             if (coordinates){
               coords <- sosCoordinates(obj)
               data <- merge(x = obj@result, y = coords)
@@ -847,7 +847,7 @@ definition = function(obj, coordinates = FALSE) {
             return(obj@result)
           })
 setMethod(f = "sosResult", signature = signature(obj = "OmOM_Observation"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
             if (coordinates){
               coords <- sosCoordinates(obj)
               data <- merge(x = obj@result, y = coords)
@@ -856,7 +856,7 @@ definition = function(obj, coordinates = FALSE) {
             return(obj@result)
           })
 setMethod(f = "sosResult", signature = signature(obj = "OmMeasurement"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
 
             obsProp <- sosObservedProperties(obj)
             value <- obj@result@value
@@ -874,7 +874,7 @@ definition = function(obj, coordinates = FALSE) {
             else return(result)
           })
 setMethod(f = "sosResult", signature = signature(obj = "OmObservationProperty"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
             if (!is.na(obj@href))
               return(c(href = obj@href))
             else if (!is.null(obj@obs))
@@ -882,7 +882,7 @@ definition = function(obj, coordinates = FALSE) {
             else return(NA)
           })
 setMethod(f = "sosResult", signature = signature(obj = "OmObservationCollection"),
-definition = function(obj, coordinates = FALSE, bind = TRUE) {
+          definition = function(obj, coordinates = FALSE, bind = TRUE) {
             l <- lapply(obj@members, sosResult, coordinates = coordinates)
             if (bind)
               result <- do.call(rbind, l)
@@ -890,25 +890,25 @@ definition = function(obj, coordinates = FALSE, bind = TRUE) {
             return(result)
           })
 setMethod(f = "sosResult", signature = signature(obj = "list"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
             l <- lapply(obj, sosResult, coordinates = coordinates)
             result <- do.call(rbind, l)
             return(result)
           })
 setMethod(f = "sosResult", signature = signature(obj = "OwsExceptionReport"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
             warning("OwsExceptionReport does not have a result set.")
             return(toString(obj))
           })
 setMethod(f = "sosResult", signature = signature(obj = "character"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
             warning(paste("No processable result given: ", obj))
             return(toString(obj))
           })
 # just returns the data.frame again, allows using the binding facilities of
 # the sosResult(list) function
 setMethod(f = "sosResult", signature = signature(obj = "data.frame"),
-definition = function(obj, coordinates = FALSE) {
+          definition = function(obj, coordinates = FALSE) {
             return(obj)
           })
 
@@ -1008,7 +1008,7 @@ setMethod(f = "sosCoordinates",
           })
 setMethod(f = "sosCoordinates",
           signature = signature(obj = "list"),
-definition = function(obj, sos = NULL, verbose = FALSE) {
+          definition = function(obj, sos = NULL, verbose = FALSE) {
             if (is.null(sos))
               allCoords <- lapply(obj, sosCoordinates)
             else allCoords <- lapply(obj, sosCoordinates, sos = sos)
@@ -1193,8 +1193,8 @@ setMethod(f = "sosDataFieldConverters", signature = signature(sos = "SOS_Test"),
 #
 if (!isGeneric("sosUOM"))
   setGeneric(name = "sosUOM", def = function(obj) {
-               standardGeneric("sosUOM")
-             })
+    standardGeneric("sosUOM")
+  })
 setMethod(f = "sosUOM",
           signature = c(obj = "list"),
           definition = function(obj) {

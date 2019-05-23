@@ -1,3 +1,31 @@
+################################################################################
+# Copyright (C) 2019 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.                                                    #
+#                                                                              #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.                                     #
+#                                                                              #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+# Created: 2019-03-20                                                          #
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
+################################################################################
 context("parsing: observation collection")
 
 testsos <- SOS_Test(name = "testobscoll")
@@ -191,11 +219,10 @@ test_that("time instant", {
 test_that("warning on non-matching time format", {
   doc <- xml2::read_xml(x = '<om:samplingTime xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml">
     <gml:TimeInstant>
-      <gml:timePosition>2005-08T12:13Z</gml:timePosition>
+      <gml:timePosition>2005-08T12:13+24:00</gml:timePosition>
     </gml:TimeInstant>
   </om:samplingTime>')
-  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), "Error converting")
-  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), sosTimeFormat(testsos))
+  expect_warning(samplingTime <- parseTime(obj = doc, sos = testsos), "Error converting string '2005-08T12:13\\+24:00' to 'ISO8601' format! Returning 'NA'")
   expect_true(is.na(sosTime(samplingTime)))
   expect_s3_class(sosTime(samplingTime), "POSIXt")
   expect_s4_class(samplingTime, "GmlTimeObjectOrNULL")

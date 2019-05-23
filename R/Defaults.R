@@ -213,6 +213,7 @@ names(.sosDefaultEncoders) <- list(
   sosConvertDouble,
   sosConvertDouble,
   sosConvertDouble,
+  sosConvertDouble,
   sosConvertString, # urn:ogc:data:feature
   sosConvertString,
   sosConvertDouble,
@@ -234,6 +235,7 @@ names(.sosDefaultFieldConverters) <- list(
   "m", # meter
   "m2", # square meter
   "m3", # cubic meter
+  "m^3/s", # cubic meter per second
   "s", # second
   "ms", # millisecond
   "us", # microsecond
@@ -407,7 +409,7 @@ sosDefaultGetCapSections <- c("All")
 sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[[1]]
-sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
+sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS%z"
 sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H-%M-%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]

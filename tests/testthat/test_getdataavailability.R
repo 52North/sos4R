@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -23,7 +23,7 @@
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2019-03-28                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 context("GetDataAvailability: parsing")
@@ -101,8 +101,8 @@ test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of D
   expect_true(is.object(dam@phenomenonTime))
   expect_true(isS4(dam@phenomenonTime))
   expect_true(is(dam@phenomenonTime,"GmlTimePeriod"))
-  expect_equal(dam@phenomenonTime@beginPosition@time, strptime("2019-03-01T00:30:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::start")
-  expect_equal(dam@phenomenonTime@endPosition@time, strptime("2019-03-28T23:45:00.000Z", format = "%Y-%m-%dT%H:%M:%OS"), info = "phenomenonTime::end")
+  expect_equal(parsedate::format_iso_8601(dam@phenomenonTime@beginPosition@time), "2019-03-01T00:30:00+00:00", info = "phenomenonTime::start")
+  expect_equal(parsedate::format_iso_8601(dam@phenomenonTime@endPosition@time), "2019-03-28T23:45:00+00:00", info = "phenomenonTime::end")
 })
 
 test_that("accessing feature ID from dataAvailabilityMember elements works", {

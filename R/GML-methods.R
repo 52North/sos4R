@@ -418,26 +418,34 @@ setMethod(f = "encodeXML",
 #
 # KVP encoding methods ----
 #
+#
+# encodeKVP(GmlTimeInstant, SOS) ----
+#
 setMethod(f = "encodeKVP",
           signature = signature(obj = "GmlTimeInstant", sos = "SOS"),
-          function(obj, sos, verbose = FALSE) {
+          definition = function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeKVP] ", class(obj), "\n")
             time <- encodeKVP(obj = obj@timePosition, sos = sos, verbose = verbose)
             return(time)
           }
 )
+#
+# encodeKVP(GmlTimePosition, SOS) ----
+#
 setMethod(f = "encodeKVP",
           signature = signature(obj = "GmlTimePosition", sos = "SOS"),
-          function(obj, sos, verbose = FALSE) {
+          definition = function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeKVP] ", class(obj), "\n")
             time <- encodeKVP(obj = obj@time, sos = sos, verbose = verbose)
             return(time)
           }
 )
-
+#
+# encodeKVP(GmlTimePeriod, SOS) ----
+#
 setMethod(f = "encodeKVP",
           signature = signature(obj = "GmlTimePeriod", sos = "SOS"),
-          function(obj, sos, verbose = FALSE) {
+          definition = function(obj, sos, verbose = FALSE) {
             if (verbose) cat("[encodeKVP] ", class(obj), "\n")
 
             if (!is.null(obj@begin) && !is.null(obj@end)) {

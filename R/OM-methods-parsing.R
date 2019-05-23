@@ -272,7 +272,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
     }
   } else {
     name <- xml2::xml_name(x = children[[1]], ns = sos@namespaces)
-    if (name == sweDataArrayName) {
+    if (name %in% c(sweDataArrayName, swe20DataArrayName)) {
       if (verbose) cat("[parseResult] Parsing result with swe:DataArray.\n")
 
       # data array parser is exchangeable
