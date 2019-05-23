@@ -84,7 +84,7 @@ parseSosObservationOffering <- function(obj, sos) {
   }
   else {
     warning("Mandatory element 'time' missing in offering", .id)
-    .time <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
+    .time <- GmlTimeInstant(timePosition = GmlTimePosition(time = parsedate::parse_iso_8601(NA)))
   }
 
   .resultModel <- xml2::xml_text(xml2::xml_find_all(x = obj,

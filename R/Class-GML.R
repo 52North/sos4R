@@ -92,7 +92,7 @@ setClass("GmlTimePosition",
                         calendarEraName = "character",
                         indeterminatePosition = "character"
          ),
-         prototype = list(time = as.POSIXct(NA)),
+         prototype = list(time = parsedate::parse_iso_8601(NA)),
          validity = function(object) {
            #print("Entering validation: GmlTimePosition")
            # TODO implement validity function

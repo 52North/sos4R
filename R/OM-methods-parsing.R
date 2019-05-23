@@ -408,15 +408,12 @@ parseTime <- function(obj, sos, verbose = FALSE) {
   else if (!is.na(.timeReference)) {
     if (verbose) cat("[parseTime] Found referenced time\n")
     .timeObject <- GmlTimeInstantProperty(href = .timeReference)
-    #if (is.null(.timeObject)) {
-    #  stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
-    #}
   }
   else {
     warning("Could not create GmlTimeObject from given O&M time object.
             Require gml:TimeInstant or gml:TimePeriod as children.")
     .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
+      time = parsedate::parse_iso_8601(NA)))
   }
 
   if (verbose) cat("[parseTime] Done:", toString(.timeObject), "\n")
