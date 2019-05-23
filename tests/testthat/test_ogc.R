@@ -31,8 +31,8 @@ context("encode filter: time")
 testsos <- SOS_Test(name = "testogc")
 
 test_that("during", {
-  during <- TM_During(time = GmlTimePeriod(beginPosition = GmlTimePosition(time = as.POSIXct("2019-01-01")),
-                                 endPosition = GmlTimePosition(time = as.POSIXct("2019-01-01"))))
+  during <- TM_During(time = GmlTimePeriod(beginPosition = GmlTimePosition(time = parsedate::parse_iso_8601("2019-01-01")),
+                                 endPosition = GmlTimePosition(time = parsedate::parse_iso_8601("2019-01-01"))))
   encoded <- encodeXML(obj = during, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 

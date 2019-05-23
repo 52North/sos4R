@@ -40,7 +40,6 @@ test_that("replacing a parsing function", {
                             parsers = myParsers,
                             binding = "POX", useDCPs = FALSE)
   erroneousResponse <- getObservation(exceptionParserSOS,
-                                      #verbose = TRUE,
                                       offering = sosOfferings(exceptionParserSOS)[[1]],
                                       observedProperty = list("Bazinga!"))
   expect_equal(erroneousResponse, "EXCEPTION!!!11")

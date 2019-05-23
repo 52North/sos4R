@@ -748,6 +748,8 @@ lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = (Sys.time() - 3600 * 24 * 7),
 	end = Sys.time())
 
+# when creating timestamps from strings note that `as.POSIXct`
+# are in the locally configured timezone (see `Sys.timezone`)
 period <- sosCreateTimePeriod(sos = mySOS,
 		begin = as.POSIXct("2015/11/01"),
 		end = as.POSIXct("2015/11/02"))
@@ -759,7 +761,7 @@ Please note that the create function `sosCreateEventTimeList()` wraps the create
 
 The most comfortable creation function for event times is `sosCreateTime()`.
 It supports time intervals with starttime and endtime as character strings seperated by `::` or `/` as defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), section Time intervals}.
-The respective time stamps have to be parsable by `as.POSIXct()`.
+The respective time stamps have to be parsable by `parsedate::parse_iso_8601(..)`.
 If either one of the time stamps is missing, a `GmlTimePosition` wrapped in the appropriate relative temporal operator, e.g. `"before"`.
 
 ```{r temporalFiltering1b}
@@ -803,8 +805,8 @@ Another example workflow, using a `KVP`-based connection.
 
 ```{r temporalFiltering4}
 sept15.period <- sosCreateTimePeriod(sos = mySOS,
-                                     begin = as.POSIXct("2015-09-01 00:00"),
-                                     end = as.POSIXct("2015-09-30 00:00"))
+                                     begin = parsedate::parse_iso_8601("2015-09-01 00:00"),
+                                     end = parsedate::parse_iso_8601("2015-09-30 00:00"))
 sept15.eventTimeList <- sosCreateEventTimeList(sept15.period)
 obs.sept15 <- getObservation(sos = mySOS,
 	offering = myOffering,

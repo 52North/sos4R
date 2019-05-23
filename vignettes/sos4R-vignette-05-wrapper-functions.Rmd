@@ -96,6 +96,8 @@ as.data.frame(sites_1_3)
 
 You can filter sites using phenomena and temporal extent.
 
+**Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
+
 ```{r sites_phenomena}
 as.data.frame(sites(sos = niwaHydro, phenomena = phenomena[3,]))
 ```
@@ -155,6 +157,8 @@ You can reduce the results with these parameters:
 - `phenomena` is a vector of phenomena which must be measured at the sites
 - `begin` and `end` define a time interval (date and time class objects) for which some data must be available (sites may have data outside the given interval)
 
+**Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
+
 ```{r siteList_phenomena_time}
 siteList(sos = niwaHydro,
          phenomena = phenomena$phenomenon[1:2], # no effect with current data
@@ -190,6 +194,8 @@ attributes(observationData$`m^3/s`)
 ```
 
 Request more data with a temporal extent for all sites.
+
+**Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
 
 ```{r getData_temporal}
 # under development - see https://github.com/52North/sos4R/issues/138 and https://github.com/52North/sos4R/issues/96
