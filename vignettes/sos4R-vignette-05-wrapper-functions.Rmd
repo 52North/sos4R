@@ -195,7 +195,7 @@ Request more data with a temporal extent for all sites.
 # under development - see https://github.com/52North/sos4R/issues/138 and https://github.com/52North/sos4R/issues/96
 observationData <- getData(sos = niwaHydro,
                           phenomena = phenomena$phenomenon[1],
-                          sites = siteList$siteID[1],
+                          sites = sites@data,
                           begin = as.POSIXct("2019-01-01"),
                           end = as.POSIXct("2019-01-02"),
                           inspect = F,
@@ -203,10 +203,6 @@ observationData <- getData(sos = niwaHydro,
                           )
 
 str(observationData)
-
-library(xts)
-ts <- xts(as.numeric(observationData$Discharge), observationData$phenomenonTime)
-plot(ts)
 ```
 
 The next example gets data for two phenomena a site.
@@ -219,7 +215,20 @@ The next example gets data for two phenomena a site.
 #        retrieveFOI = FALSE, # TO BE FIXED
 #        )
 #observationData <- getData(sos = niwaHydro, phenomena = phenomena, sites = multipleSites)
-#str(observationData)
+
+observationData <- getData(sos = niwaHydro,
+                          phenomena = phenomena$phenomenon[1],
+                          sites = siteList$siteID[1],
+                          begin = as.POSIXct("2019-01-01"),
+                          end = as.POSIXct("2019-01-02"),
+                          inspect = F,
+                          retrieveFOI = FALSE, # TO BE FIXED
+                          )
+
+library(xts)
+ts <- xts(as.numeric(observationData$Discharge), observationData$phenomenonTime)
+
+plot(ts)
 ```
 
 
