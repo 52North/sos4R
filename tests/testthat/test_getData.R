@@ -78,7 +78,9 @@ webmockr::stub_request("get", uri = ".*GetObservation.*") %>%
     body = readr::read_file("../responses/getData_gauge_niwa.xml"),
     headers = list("Content-Type" = "application/xml")
   )
-
+#
+# KVP::getData(sos) returns data values in data.frame ----
+#
 test_that("KVP::getData(sos) returns data values in data.frame", {
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-get-data", binding = "KVP", useDCPs = FALSE)
 
@@ -88,7 +90,9 @@ test_that("KVP::getData(sos) returns data values in data.frame", {
   expect_equal(dim(observationData), c(1,1))
   expect_named(observationData, c("m^3/s"))
 })
-
+#
+# KVP::getData(sos) stops if inputs are incorrect ----
+#
 test_that("KVP::getData(sos) stops if inputs are incorrect", {
   skip("Not implemented!")
 
@@ -114,21 +118,27 @@ test_that("KVP::getData(sos) stops if inputs are incorrect", {
   expect_error(getData(sos, phenomena = list("test"), sites = list()),
                "is not TRUE")
 })
-
+#
+# KVP::getData(sos) returns empty data.frame if no data found ----
+#
 test_that("KVP::getData(sos) returns empty data.frame if no data found", {
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-get-data", binding = "KVP", useDCPs = FALSE)
   observationData <- getData(sos = sos, phenomena = c("pH"), sites = c("29808"))
   expect_true(is.data.frame(observationData))
   expect_equal(dim(observationData), c(0, 0))
 })
-
+#
+# KVP::getData(sos) returns empty data.frame if no data found (list input) ----
+#
 test_that("KVP::getData(sos) returns empty data.frame if no data found (list input)", {
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-get-data", binding = "KVP", useDCPs = FALSE)
   observationData <- getData(sos = sos, phenomena = list("pH"), sites = list("29808"))
   expect_true(is.data.frame(observationData))
   expect_equal(dim(observationData), c(0, 0))
 })
-
+#
+# KVP::getData(sos) passes verbose paramter on ----
+#
 test_that("KVP::getData(sos) passes verbose paramter on", {
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-get-data", binding = "KVP", useDCPs = FALSE)
   output <- capture_output(getData(sos = sos, phenomena = c("pH"), sites = c("29808"), verbose = TRUE))
