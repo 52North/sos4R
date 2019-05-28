@@ -149,19 +149,19 @@ test_that("KVP::getData(sos) passes verbose paramter on", {
 webmockr::disable("httr")
 
 context("getData: integration tests\n")
-
-test_that("can retrieve data from an online SOS 2.0.0 (KVP)", {
-  skip("Takes too long - debug!")
+#
+# KVP::can retrieve data from an online SOS 2.0.0 ----
+#
+test_that("KVP::can retrieve data from an online SOS 2.0.0", {
   skip_on_cran()
 
   sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
              version = sos200_version, binding = "KVP", useDCPs = FALSE)
-  obs <- getData(sos = sos, phenomena = c("AirTemperature", "AthmosphericPressure"),
+  obs <- getData(sos = sos, phenomena = c("AirTemperature"),
                  sites = c("Vaisala-WXT520", "wwu-ws-kli-hsb"),
-                 begin = as.POSIXct("2015-03-29 22:00:00"), end = as.POSIXct("2015-03-30 23:00:00"),
-                 verbose = TRUE)
+                 begin = as.POSIXct("2015-03-29 22:00:00"), end = as.POSIXct("2015-03-30 23:00:00"))
 
   expect_s3_class(obs, "data.frame")
-  expect_named(obs, c("phenomenon"))
-  expect_length(obs$phenomenon, 33)
+  expect_named(obs, c("degC"))
+  expect_length(obs$degC, 150)
 })

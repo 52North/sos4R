@@ -30,7 +30,7 @@
 #
 # Function parses om:OM_Observation elements from sos:observationData and sos:observation elements.
 #
-parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE, retrieveFOI = TRUE) {
+parseObservation_2.0 <- function(obj, sos, verbose = FALSE, retrieveFOI = TRUE) {
   if (verbose) cat("[parseObservation_2.0] Parsing", xml2::xml_name(obj), "\n")
 
   observationXml <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = sos@namespaces)
@@ -70,6 +70,11 @@ parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE, retrie
 
       # TODO what about in-document references
       cachedFeature <- featureCache[[featureOfInterest@href]]
+      if (startsWith("#", featureOfInterest@href)) {
+        cachedFeature <- featureCache[[substring(text = featureOfInterest@href, first = 2)]]
+      } else {
+        cachedFeature <- featureCache[[featureOfInterest@href]]
+      }
       if (is.null(cachedFeature)) {
         if (retrieveFOI) {
           if (verbose) cat("[parseObservation_2.0] referenced featureOfInterest is not cached, retrieving... \n")
@@ -78,7 +83,9 @@ parseObservation_2.0 <- function(obj, sos, featureCache, verbose = FALSE, retrie
           # should return only one featureOfInterest
           if (length(foiList) == 1) {
             featureOfInterest <- foiList[[1]]
-            featureCache[[featureOfInterest@href]] <- featureOfInterest
+            if (!is.na(featureOfInterest@href)) featureCache[[featureOfInterest@href]] <<- featureOfInterest
+            if (!is.na(featureOfInterest@feature@identifier)) featureCache[[featureOfInterest@feature@identifier]] <<- featureOfInterest
+            if (!is.na(featureOfInterest@feature@id)) featureCache[[featureOfInterest@feature@id]] <<- featureOfInterest
             if (verbose) cat("[parseObservation_2.0] Retrieved FOI: ", toString(featureOfInterest), "\n")
           } else {
             stop("Retrieved multiple FOIs for ", featureOfInterest@href, " - cannot resolve FOI for observation.")

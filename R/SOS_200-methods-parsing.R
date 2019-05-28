@@ -219,14 +219,13 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE, retrieveFOI =
     return(list())
   }
 
-  featureCache <- list()
+  featureCache <<- list()
   observations <- sapply(observationsXML,
                          parseObservation_2.0,
                          sos = sos,
-                         featureCache = featureCache,
                          verbose = verbose,
                          retrieveFOI = retrieveFOI)
-
+  featureCache <<- list()
   return(observations)
 }
 
