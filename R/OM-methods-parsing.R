@@ -238,7 +238,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
     if (verbose) cat("[parseResult] No non-text nodes in result, returning content.\n")
 
     # in O&M 2.0 there can be (literal) results of type MeasurementType
-    omTypeAttribute <- xml2::xml_attr(x = obj, attr = om20ResultTypeAttributeName, ns = sos@namespaces)
+    omTypeAttribute <- xml2::xml_attr(x = obj, attr = gmlResultTypeAttributeName, ns = sos@namespaces)
     xsiType <- xml2::xml_attr(x = obj, attr = xsiTypeName, ns = sos@namespaces)
     uom <- xml2::xml_attr(x = obj, attr = "uom")
 
