@@ -28,8 +28,8 @@ In general, these functions always return an object of class `data.frame`, even 
 
 ```{r setup}
 library("sos4R")
-myUrl <- "https://climate-sos.niwa.co.nz/"
-#myUrl <- "https://hydro-sos.niwa.co.nz/"
+#myUrl <- "https://climate-sos.niwa.co.nz/"
+myUrl <- "https://hydro-sos.niwa.co.nz/"
 niwaHydro <- SOS(url = myUrl, binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 
 ```
@@ -105,7 +105,7 @@ as.data.frame(sites(sos = niwaHydro, phenomena = phenomena[3,]))
 ```
 
 ```{r sites_time}
-as.data.frame(sites(sos = niwaHydro, begin = as.POSIXct("1904-01-01"), end = as.POSIXct("1905-12-31")))
+as.data.frame(sites(sos = niwaHydro, begin = parsedate::parse_iso_8601("1904-01-01"), end = parsedate::parse_iso_8601("1905-12-31")))
 ```
 
 The `SpatialPointsDataFrame` allows access to coordinates with coordinate reference system (CRS).
@@ -204,20 +204,23 @@ Request more data with a temporal extent for all sites.
 observationData <- getData(sos = niwaHydro,
                            phenomena = phenomena$phenomenon[1],
                            sites = sites@data[1,1],
-                           begin = as.POSIXct("2000-01-01"),
-                           end = as.POSIXct("2000-01-02"),
+                           begin = parsedate::parse_iso_8601("2000-01-01T12:00:00+12:00"),
+                           end = parsedate::parse_iso_8601("2000-01-02T12:00:00+12:00"),
                            retrieveFOI = FALSE, # TO BE FIXED
                            )
 
 str(observationData)
 ```
+
+## Timeseries Plotting
+
 Plot received data as time series:
 
 ```{r getData_timeseries_plot}
-library(xts)
+suppressPackageStartupMessages(library(xts))
 ts <- xts(observationData[,2], observationData$phenomenonTime)
 
-plot(ts)
+plot(x = ts, main = "Discharge (m³/s) at Station#15341", yaxis.right = FALSE)
 ```
 
 
@@ -256,7 +259,7 @@ observationData2 <- getData(sos = niwaHydro,
 
 ts2 <- xts(observationData2[,2], observationData2$phenomenonTime)
 
-plot(na.fill(merge(ts,ts2/4), list(NA, "extend", NA)), main = phenomena$phenomenon[1])
+plot(x = na.fill(merge(ts,ts2/4), list(NA, "extend", NA)), main = "Discharge (m³/s) at Stations #15341 and #15514 * 1/4", yaxis.right = FALSE)
 ```
 
 
