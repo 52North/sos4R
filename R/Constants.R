@@ -342,7 +342,7 @@ gmlDurationName <- paste0(gmlNamespacePrefix, ":duration")
 gmlTimeIntervalName <- paste0(gmlNamespacePrefix, ":timeInterval")
 gmlFeatureMemberName <- paste0(gmlNamespacePrefix, ":featureMember")
 gmlIdentifierName <- paste0(gmlNamespacePrefix, ":identifier")
-
+gmlResultTypeAttributeName <- paste0(gmlNamespacePrefix, ":type")
 #
 # SWE ----
 #

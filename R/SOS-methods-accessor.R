@@ -464,60 +464,51 @@ setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SOS"),
             wantedOfferings <- lapply(offs, slot, name = "featureOfInterest")
             return(wantedOfferings)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "SosObservationOffering"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SosObservationOffering"),
           definition = function(obj) {
             return(obj@featureOfInterest)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmObservation"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmObservation"),
           definition = function(obj) {
             .foi <- obj@featureOfInterest
             if (is.list(.foi) && length(.foi) == 1)
               return(.foi[[1]])
             return(.foi)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmOM_Observation"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmOM_Observation"),
           definition = function(obj) {
             .foi <- obj@featureOfInterest
             if (is.list(.foi) && length(.foi) == 1)
               return(.foi[[1]])
             return(.foi)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmMeasurement"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmMeasurement"),
           definition = function(obj) {
             .foi <- obj@featureOfInterest
             if (is.list(.foi) && length(.foi) == 1)
               return(.foi[[1]])
             return(.foi)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmObservationCollection"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmObservationCollection"),
           definition = function(obj) {
             fois <- lapply(obj@members, sosFeaturesOfInterest)
             return(fois)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "list"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "list"),
           definition = function(obj) {
             fois <- lapply(obj, sosFeaturesOfInterest)
             return(fois)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "GmlFeatureCollection"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "GmlFeatureCollection"),
           definition = function(obj) {
             fois <- lapply(obj@featureCollection, sosFeaturesOfInterest)
             return(fois)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "DataAvailabilityMember"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "DataAvailabilityMember"),
           definition = function(obj) {
             return(obj@featureOfInterest)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "GmlFeatureProperty"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "GmlFeatureProperty"),
           definition = function(obj) {
             if (!is.null(obj@feature)) {
               return(sosFeaturesOfInterest(obj@feature))
@@ -526,13 +517,11 @@ setMethod(f = "sosFeaturesOfInterest",
               return(obj@href)
             }
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "SaSamplingPoint"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SaSamplingPoint"),
           definition = function(obj) {
             return(obj)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "SamsSamplingFeature"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SamsSamplingFeature"),
           definition = function(obj) {
             return(obj)
           })

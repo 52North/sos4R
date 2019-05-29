@@ -28,8 +28,10 @@ In general, these functions always return an object of class `data.frame`, even 
 
 ```{r setup}
 library("sos4R")
+myUrl <- "https://climate-sos.niwa.co.nz/"
+#myUrl <- "https://hydro-sos.niwa.co.nz/"
+niwaHydro <- SOS(url = myUrl, binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 
-niwaHydro <- SOS(url = "https://hydro-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 ```
 
 ## Phenomena
@@ -199,17 +201,26 @@ Request more data with a temporal extent for all sites.
 
 ```{r getData_temporal}
 # under development - see https://github.com/52North/sos4R/issues/138 and https://github.com/52North/sos4R/issues/96
-#observationData <- getData(sos = niwaHydro,
-#                           phenomena = phenomena$phenomenon[1],
-#                           sites = sites@data,
-#                           begin = as.POSIXct("2000-01-01"),
-#                           end = as.POSIXct("2000-01-02"),
-#                           inspect = TRUE,
-#                           retrieveFOI = FALSE, # TO BE FIXED
-#                           )
-#
-#str(observationData)
+observationData <- getData(sos = niwaHydro,
+                           phenomena = phenomena$phenomenon[1],
+                           sites = sites@data[1,1],
+                           begin = as.POSIXct("2000-01-01"),
+                           end = as.POSIXct("2000-01-02"),
+                           retrieveFOI = FALSE, # TO BE FIXED
+                           )
+
+str(observationData)
 ```
+Plot received data as time series:
+
+```{r getData_timeseries_plot}
+library(xts)
+ts <- xts(observationData[,2], observationData$phenomenonTime)
+
+plot(ts)
+```
+
+
 
 The next example gets data for two phenomena a site.
 
@@ -232,6 +243,20 @@ multipleSites <- siteList$siteID[35:38]
 # TO BE IMPLEMENTED: merge different observation types
 #observationData <- getData(sos = niwaHydro, phenomena = phenomena, sites = multipleSites)
 #str(observationData)
+#
+# WORKAROUND
+#
+observationData2 <- getData(sos = niwaHydro,
+                           phenomena = phenomena$phenomenon[1],
+                           sites = sites@data[2,1],
+                           begin = as.POSIXct("2000-01-01"),
+                           end = as.POSIXct("2000-01-02"),
+                           retrieveFOI = FALSE, # TO BE FIXED
+                           )
+
+ts2 <- xts(observationData2[,2], observationData2$phenomenonTime)
+
+plot(na.fill(merge(ts,ts2/4), list(NA, "extend", NA)), main = phenomena$phenomenon[1])
 ```
 
 
