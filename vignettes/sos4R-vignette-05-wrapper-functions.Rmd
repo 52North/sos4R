@@ -28,8 +28,10 @@ In general, these functions always return an object of class `data.frame`, even 
 
 ```{r setup}
 library("sos4R")
+myUrl <- "https://climate-sos.niwa.co.nz/"
+#myUrl <- "https://hydro-sos.niwa.co.nz/"
+niwaHydro <- SOS(url = myUrl, binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 
-niwaHydro <- SOS(url = "https://hydro-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 ```
 
 ## Phenomena
