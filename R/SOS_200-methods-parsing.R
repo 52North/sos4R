@@ -220,12 +220,14 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE, retrieveFOI =
   }
 
   featureCache <<- list()
+  timeObjectCache <<- list()
   observations <- sapply(observationsXML,
                          parseObservation_2.0,
                          sos = sos,
                          verbose = verbose,
                          retrieveFOI = retrieveFOI)
   featureCache <<- list()
+  timeObjectCache <<- list()
   return(observations)
 }
 
@@ -240,12 +242,14 @@ parseGetObservationByIdResponse <- function(obj, sos, verbose = FALSE) {
                                         ns = sos@namespaces)
   if (verbose) cat("[parseGetObservationByIdResponse] Parsing ", length(observationsXML), " observations\n")
 
-  featureCache <- list()
+  featureCache <<- list()
+  timeObjectCache <<- list()
   observations <- sapply(X = observationsXML,
                          parseObservation_2.0,
                          sos = sos,
-                         featureCache = featureCache,
                          verbose = verbose)
+  featureCache <<- list()
+  timeObjectCache <<- list()
 
   return(observations)
 }
