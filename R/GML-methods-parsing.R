@@ -118,7 +118,7 @@ parseTimePosition <- function(obj, sos) {
   .indeterminatePosition <- xml2::xml_attr(x = obj, attr = "indeterminatePosition", default = NA_character_)
   if (is.na(.indeterminatePosition))
     .time <- sosConvertTime(xml2::xml_text(x = obj), sos = sos)
-  else .time <- as.POSIXct(NA)
+  else .time <- parsedate::parse_iso_8601(NA)
 
   # optional:
   .frame <- xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
@@ -190,7 +190,7 @@ parseTimeGeometricPrimitiveFromParent <- function(obj, sos) {
   else {
     timeObject <- GmlTimeInstant(
       timePosition = GmlTimePosition(
-        time = as.POSIXct(x = NA)))
+        time = parsedate::parse_iso_8601(NA)))
   }
 
   return(timeObject)

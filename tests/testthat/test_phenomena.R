@@ -130,7 +130,7 @@ test_that("KVP::phenomena(sos, includeTemporalBBox) returns an empty list of phe
       headers = list("Content-Type" = "application/xml")
     )
 
-  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena-empty", binding = "KVP", verboseOutput = FALSE)
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena-empty", binding = "KVP")
   dataFrameOfPhenomena <- phenomena(sos, includeTemporalBBox = TRUE)
 
   expect_false(is.null(dataFrameOfPhenomena))

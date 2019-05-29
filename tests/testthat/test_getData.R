@@ -129,7 +129,7 @@ test_that("KVP::getData(sos) returns empty data.frame if no data found (list inp
   expect_equal(dim(observationData), c(0, 0))
 })
 
-test_that("KVP::getData(sos) passes verbose paramter on", {
+test_that("KVP::getData(sos) passes verbose parameter on", {
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-get-data", binding = "KVP", useDCPs = FALSE)
   output <- capture_output(getData(sos = sos, phenomena = c("pH"), sites = c("29808"), verbose = TRUE))
   expect_match(output, "Requesting list of offerings")
@@ -141,15 +141,15 @@ webmockr::disable("httr")
 context("getData: integration tests\n")
 
 test_that("can retrieve data from an online SOS 2.0.0 (KVP)", {
-  skip("Takes too long - debug!")
+  skip("handling of multiple phenomena not implemented")
   skip_on_cran()
 
   sos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
              version = sos200_version, binding = "KVP", useDCPs = FALSE)
   obs <- getData(sos = sos, phenomena = c("AirTemperature", "AthmosphericPressure"),
                  sites = c("Vaisala-WXT520", "wwu-ws-kli-hsb"),
-                 begin = as.POSIXct("2015-03-29 22:00:00"), end = as.POSIXct("2015-03-30 23:00:00"),
-                 verbose = TRUE)
+                 begin = parsedate::parse_iso_8601("2015-03-29 22:00:00"), end = parsedate::parse_iso_8601("2015-03-30 23:00:00"),
+                 retrieveFOI = FALSE)
 
   expect_s3_class(obs, "data.frame")
   expect_named(obs, c("phenomenon"))
