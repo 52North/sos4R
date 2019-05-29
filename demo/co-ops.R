@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -24,12 +24,12 @@
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 library("sos4R")
 
 
-################################################################################
+############################################################################## #
 # NOAA Center for Operational Oceanographic Products and Services (CO-OPS)
 # http://oceanservice.noaa.gov/programs/coops/
 #
@@ -44,7 +44,7 @@ library("sos4R")
 # Presentation: http://sdf.ndbc.noaa.gov/sos/IOOS_DIF_SOS_Project.ppt
 #
 
-################################################################################
+############################################################################## #
 ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS",
                binding = "KVP")
 ioosdif_off <- sosOfferings(ioosdif)

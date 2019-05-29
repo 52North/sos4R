@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2013-03-06                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 parseSosCapabilities200 <- function(obj, sos) {
   if (sos@verboseOutput) cat("[parseSosCapabilities200] entered... \n")

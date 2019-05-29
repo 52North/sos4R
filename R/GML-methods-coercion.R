@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-04-29                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 as.SpatialPolygons.GmlEnvelope = function(from) {
   # create clockwise, first row equals last row

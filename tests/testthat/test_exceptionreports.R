@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-03-07                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 context("parsing: exception reports")
 
 er1 <- "<ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"><ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"><ows:ExceptionText>The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'</ows:ExceptionText></ows:Exception></ows:ExceptionReport>"

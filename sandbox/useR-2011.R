@@ -11,7 +11,7 @@ weathersos <- SOS(url =
 weathersos
 summary(weathersos)
 
-################################################################################
+############################################################################## #
 # Request data for specific time intervall and offering
 names(sosOfferings(weathersos))
 sosOfferings(weathersos)[[1]]
@@ -40,7 +40,7 @@ sosProcedures(obs)
 # vs.
 sosProcedures(weathersos)
 
-################################################################################
+############################################################################## #
 # get the REAL data
 result <- sosResult(obs) # sosResult(obs[[1]])
 summary(result)
@@ -51,7 +51,7 @@ obs.spdf <- as(obs, "SpatialPointsDataFrame")
 summary(obs.spdf)
 # Metadata are useful!
 
-################################################################################
+############################################################################## #
 # Create plot
 # Attention: plots ignore the fact that the times do NOT perfectly match!
 x <- 800
@@ -69,7 +69,7 @@ lines(x = obs[[2]]@result[[1]][1:x], y = obs[[2]]@result[[3]][1:x],
 legend("topleft", legend = c("Muenster", "Kaernten"),
 		col = c("steelblue", "orange"), lty = 1, bty="n")
 
-################################################################################
+############################################################################## #
 # Time series analysis example
 timeSeriesDemo()
 
@@ -121,7 +121,7 @@ timeSeriesDemo <- function(inspect = FALSE) {
 	print(periodicity(tempLastWeek))
 }
 
-################################################################################
+############################################################################## #
 # Spatial analysis example, running while taking questions
 demo("airquality")
 

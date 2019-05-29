@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52°North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-04-29                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 context("parsing: WaterML MonitoringPoint")
 
 testsos <- SOS_Test(name = "testwml", version = sos200_version)

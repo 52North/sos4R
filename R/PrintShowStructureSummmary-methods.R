@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,9 +25,9 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
-################################################################################
+############################################################################## #
 # ACTUAL TO STRING AND PRINTING FUNCTIONS
 
 .toString.OwsServiceOperation <- function(x, ...) {
@@ -1001,7 +1001,7 @@
   invisible(x)
 }
 
-################################################################################
+############################################################################## #
 # PRINT FUNCTIONS
 setMethod("print", "OwsServiceOperation", function(x, ...) .print.OwsServiceOperation(x, ...))
 setMethod("print", "OwsGetCapabilities", function(x, ...) .print.OwsGetCapabilities(x, ...))
@@ -1063,7 +1063,7 @@ setMethod("print", "OgcContains", function(x, ...) .print.OgcContains(x, ...))
 setMethod("print", "OgcIntersects", function(x, ...) .print.OgcIntersects(x, ...))
 setMethod("print", "OgcOverlaps", function(x, ...) .print.OgcOverlaps(x, ...))
 
-################################################################################
+############################################################################## #
 # TO STRING FUNCTIONS
 setMethod("toString", "OwsServiceOperation", function(x, ...) .toString.OwsServiceOperation(x, ...))
 setMethod("toString", "OwsGetCapabilities", function(x, ...) .toString.OwsGetCapabilities(x, ...))
@@ -1125,7 +1125,7 @@ setMethod("toString", "OgcContains", function(x, ...) .toString.OgcContains(x, .
 setMethod("toString", "OgcIntersects", function(x, ...) .toString.OgcIntersects(x, ...))
 setMethod("toString", "OgcOverlaps", function(x, ...) .toString.OgcOverlaps(x, ...))
 
-################################################################################
+############################################################################## #
 # SHOW FUNCTIONS
 setMethod("show", "OwsServiceOperation", function(object) .print.OwsServiceOperation(object))
 setMethod("show", "OwsGetCapabilities", function(object) .print.OwsGetCapabilities(object))
@@ -1186,7 +1186,7 @@ setMethod("show", "OgcContains", function(object) .print.OgcContains(object))
 setMethod("show", "OgcIntersects", function(object) .print.OgcIntersects(object))
 setMethod("show", "OgcOverlaps", function(object) .print.OgcOverlaps(object))
 
-################################################################################
+############################################################################## #
 # SUMMARY FUNCTIONS
 summary.SOS_versioned = function(object, ...) {
   obj = list()
@@ -1417,7 +1417,7 @@ print.summary.OmObservationCollection = function(x, ...) {
 }
 
 
-################################################################################
+############################################################################## #
 # utils
 .addTabIndent <- function(str) {
   .s <- gsub(pattern = "\t",  replacement = "\t\t", x = str)

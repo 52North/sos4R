@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -24,12 +24,12 @@
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 library("sos4R")
 
 
-################################################################################
+############################################################################## #
 # IOOS/NDBC
 #
 # Service Description: http://sdf.ndbc.noaa.gov/sos/
@@ -72,7 +72,7 @@ ioos.procedures <- unique(unlist(sosProcedures(ioos)))
 length(ioos.procedures); length(ioos.off)
 # seems like one offering per sensor
 
-################################################################################
+############################################################################## #
 # get data:
 
 # offerings in pacific?
@@ -130,7 +130,7 @@ plot(world.lines, col = "grey50")
 plot(spdf, add = TRUE)
 
 
-################################################################################
+############################################################################## #
 # describe sensor:
 # requires SensorML 1.0.0
 describeSensorOp <- sosOperation(ioos, sosDescribeSensorName)
