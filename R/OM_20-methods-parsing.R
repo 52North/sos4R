@@ -161,7 +161,7 @@ parseTimeObject <- function(obj, sos, timeObjectMap = list(), verbose = FALSE) {
     warning("Could not create GmlTimeObject from given O&M time object.
             Require gml:TimeInstant or gml:TimePeriod as children.")
     timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
+      time = parsedate::parse_iso_8601(NA)))
   }
 
   return(list(timeObject, timeObjectMap))

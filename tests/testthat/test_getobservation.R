@@ -34,8 +34,8 @@ test_that("creation of request fails if eventTime contains objects of wrong clas
   testsos@capabilities <- axiomCaps
 
   eventTimeList <- sosCreateEventTimeList(sosCreateTimePeriod(sos = testsos,
-                                                              begin = as.POSIXct(Sys.time() - 3600 * 24),
-                                                              end = as.POSIXct(Sys.time())))
+                                                              begin = parsedate::parse_iso_8601(Sys.time() - 3600 * 24),
+                                                              end = parsedate::parse_iso_8601(Sys.time())))
   eventTimeList[[2]] <- eventTimeList[[1]]
   eventTimeList[[3]] <- eventTimeList[[1]]
   getobs <- SosGetObservation(service = "test", version = "test", offering = "test", observedProperty = list("test"),
@@ -54,8 +54,8 @@ test_that("creation temporal filter has a valueReference in SOS 2.0, but not for
   testsos100 <- SOS_Test(name = "onezerozero", version = sos100_version)
   testsos200 <- SOS_Test(name = "twozero", version = sos200_version)
   period <- sosCreateTimePeriod(sos = testsos100,
-                                begin = as.POSIXct("2019-01-01"),
-                                end = as.POSIXct("2019-01-02"))
+                                begin = parsedate::parse_iso_8601("2019-01-01"),
+                                end = parsedate::parse_iso_8601("2019-01-02"))
   eventTimeList <- sosCreateEventTimeList(period)
 
   request100 <- SosGetObservation(service = sosService, version = testsos100@version,
@@ -74,8 +74,8 @@ test_that("creation temporal filter has a valueReference in SOS 2.0, but not for
 test_that("creation temporal filter includes namespaces in KVP (2.0.0)", {
   testsos20 <- SOS_Test(name = "twozero", version = sos200_version)
   period <- sosCreateTimePeriod(sos = testsos20,
-                                begin = as.POSIXct("2019-01-01"),
-                                end = as.POSIXct("2019-01-02"))
+                                begin = parsedate::parse_iso_8601("2019-01-01"),
+                                end = parsedate::parse_iso_8601("2019-01-02"))
   getobs <- SosGetObservation_2.0.0(service = sosService, version = testsos20@version,
                                     temporalFilter =  list(period), valueReferenceTemporalFilter = "om:time")
   request <- encodeRequestKVP(getobs, testsos20)
@@ -87,8 +87,8 @@ test_that("creation temporal filter includes namespaces in KVP (2.0.0)", {
 test_that("multiple temporal filters give warning in KVP (2.0.0)", {
   testsos20 <- SOS_Test(name = "twozero", version = sos200_version)
   period <- sosCreateTimePeriod(sos = testsos20,
-                                begin = as.POSIXct("2019-01-01"),
-                                end = as.POSIXct("2019-01-02"))
+                                begin = parsedate::parse_iso_8601("2019-01-01"),
+                                end = parsedate::parse_iso_8601("2019-01-02"))
   getobs <- SosGetObservation_2.0.0(service = sosService, version = testsos20@version,
                                     temporalFilter =  list(period, period), valueReferenceTemporalFilter = "om:time")
   expect_warning(request <- encodeRequestKVP(getobs, testsos20),
@@ -166,8 +166,8 @@ test_that("multiple offering IDs with KVP (2.0.0)", {
 createsos <- SOS_Test(name = "getobspox", version = sos200_version)
 off2a <- SosObservationOffering_2.0.0(id = "off2a",
                                       name = "testoff",
-                                      resultTime = sosCreateTimePeriod(sos = createsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-01-02")),
-                                      phenomenonTime = sosCreateTimePeriod(sos = createsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-01-02")),
+                                      resultTime = sosCreateTimePeriod(sos = createsos, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-01-02")),
+                                      phenomenonTime = sosCreateTimePeriod(sos = createsos, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-01-02")),
                                       procedure = "procA",
                                       observableProperty = list("obsA"),
                                       observationType = list("measurement"),
@@ -176,8 +176,8 @@ off2a <- SosObservationOffering_2.0.0(id = "off2a",
                                       responseFormat = list("rf"))
 off2b <- SosObservationOffering_2.0.0(id = "off2b",
                                       name = "testoff",
-                                      resultTime = sosCreateTimePeriod(sos = createsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-01-02")),
-                                      phenomenonTime = sosCreateTimePeriod(sos = createsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-01-02")),
+                                      resultTime = sosCreateTimePeriod(sos = createsos, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-01-02")),
+                                      phenomenonTime = sosCreateTimePeriod(sos = createsos, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-01-02")),
                                       procedure = "procB",
                                       observableProperty = list("obsB"),
                                       observationType = list("measurement"),
@@ -330,8 +330,8 @@ test_that("temporal filter with POX (SOS 2.0.0)", {
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
                                     temporalFilter = list(sosCreateTimePeriod(sos = testsos,
-                                                                              begin = as.POSIXct("2019-02-02"),
-                                                                              end = as.POSIXct("2019-03-03"))),
+                                                                              begin = parsedate::parse_iso_8601("2019-02-02"),
+                                                                              end = parsedate::parse_iso_8601("2019-03-03"))),
                                     valueReferenceTemporalFilter = "phenomenonTime")
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
@@ -494,8 +494,8 @@ test_that("POX without offering (2.0.0)", {
                binding = "POX",
                useDCPs = FALSE)
   period <- sosCreateTimePeriod(sos = mySOS,
-                                begin = as.POSIXct("2017-12-19 00:00:00"),
-                                end = as.POSIXct("2017-12-19 01:00:00"))
+                                begin = parsedate::parse_iso_8601("2017-12-19 00:00:00"),
+                                end = parsedate::parse_iso_8601("2017-12-19 01:00:00"))
   obs.1 <- getObservation(sos = mySOS,
                           #inspect = TRUE,
                           eventTime = list(period))
@@ -522,8 +522,8 @@ test_that("POX with observed property (2.0.0)", {
                binding = "POX",
                useDCPs = FALSE)
   period <- sosCreateTimePeriod(sos = mySOS,
-                                begin = as.POSIXct("2017-12-19 12:00:00"),
-                                end = as.POSIXct("2017-12-19 13:00:00"))
+                                begin = parsedate::parse_iso_8601("2017-12-19 12:00:00"),
+                                end = parsedate::parse_iso_8601("2017-12-19 13:00:00"))
   wxt520 <- sosOfferings(mySOS)[["wxt520"]]
   obs.1 <- getObservation(sos = mySOS,
                           eventTime = list(period),
@@ -549,8 +549,8 @@ test_that("POX with offering object in list and not in list (2.0.0)", {
                binding = "POX",
                useDCPs = FALSE)
   period <- sosCreateTimePeriod(sos = mySOS,
-                                begin = as.POSIXct("2017-12-19 12:00:00"),
-                                end = as.POSIXct("2017-12-19 12:12:00"))
+                                begin = parsedate::parse_iso_8601("2017-12-19 12:00:00"),
+                                end = parsedate::parse_iso_8601("2017-12-19 12:12:00"))
   obs.1 <- getObservation(sos = mySOS,
                           eventTime = list(period),
                           offering = sosOfferings(mySOS)["wxt520"])
@@ -578,8 +578,8 @@ test_that("FOI retrieval can be disabled (tested with POX, 2.0.0)", {
                binding = "POX",
                useDCPs = FALSE)
   period <- sosCreateTimePeriod(sos = mySOS,
-                                begin = as.POSIXct("2017-12-20 09:00:00"),
-                                end = as.POSIXct("2017-12-20 10:00:00"))
+                                begin = parsedate::parse_iso_8601("2017-12-20 09:00:00"),
+                                end = parsedate::parse_iso_8601("2017-12-20 10:00:00"))
 
   withFoi <- getObservation(sos = mySOS,
                             eventTime = list(period),
