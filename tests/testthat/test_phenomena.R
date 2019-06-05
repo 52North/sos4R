@@ -30,7 +30,9 @@
 webmockr::enable("httr")
 webmockr::httr_mock()
 context("convenience layer -> phenomena()")
-
+#
+# test KVP::phenomena(sos) ----
+#
 test_that("KVP::phenomena(sos) returns the current list of phenomena as one column data.frame", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -86,7 +88,9 @@ test_that("KVP::phenomena(sos) returns the current list of phenomena as one colu
   expect_equal("WindSpeedMinimum",      dataFrameOfPhenomena[32, 1])
   expect_equal("WindSpeedMperSec",      dataFrameOfPhenomena[33, 1])
 })
-
+#
+# test KVP::phenomena(sos) empty sos ----
+#
 test_that("KVP::phenomena(sos) returns an empty list of phenomena as one column data.frame if the SOS is empty", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena-empty?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -108,8 +112,10 @@ test_that("KVP::phenomena(sos) returns an empty list of phenomena as one column 
   expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "correct column name")
   expect_equal(nrow(dataFrameOfPhenomena), 0, info = "number of unique phenomena")
 })
-
-test_that("KVP::phenomena(sos, includeTemporalBBox) returns an empty list of phenomena as three column data.frame if the SOS is empty", {
+#
+# test KVP::phenomena(sos, includeTemporalBBox = TRUE) with empty sos ----
+#
+test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns an empty list of phenomena as three column data.frame if the SOS is empty", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena-empty?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
     webmockr::wi_th(
@@ -141,7 +147,9 @@ test_that("KVP::phenomena(sos, includeTemporalBBox) returns an empty list of phe
   expect_equal(colnames(dataFrameOfPhenomena)[[3]], "timeEnd", info = "correct column name")
   expect_equal(nrow(dataFrameOfPhenomena), 0, info = "number of unique phenomena")
 })
-
+#
+# test KVP::phenomena(sos, includeTemporalBBox = TRUE) ----
+#
 test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns the current list of phenomena as three column data.frame", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -181,7 +189,9 @@ test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE) returns the current l
   expect_equal("2019-03-01T00:30:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 2, 2]), info = "timeBegin")
   expect_equal("2019-05-28T23:45:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 2, 3]), info = "timeEnd")
 })
-
+#
+# test KVP::phenomena(sos, includeSiteId = TRUE) ----
+#
 test_that("KVP::phenomena(sos, includeSiteId = TRUE) returns a data.frame with two columns with phenomenon id and site id.", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -245,7 +255,9 @@ test_that("KVP::phenomena(sos, includeSiteId = TRUE) returns a data.frame with t
   expect_equal("station-2", dataFrameOfPhenomena[14, 2])
   expect_equal("station-2", dataFrameOfPhenomena[15, 2])
 })
-
+#
+# test KVP::phenomena(sos, includeSiteId = TRUE) #2 ----
+#
 test_that("KVP::phenomena(sos, includeSiteId = TRUE) returns a data.frame with two columns with phenomenon id and site id #2.", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -283,7 +295,9 @@ test_that("KVP::phenomena(sos, includeSiteId = TRUE) returns a data.frame with t
   expect_equal("elv-ws2500",   dataFrameOfPhenomena[ 1, 2])
   expect_equal("elv-ws2500-2", dataFrameOfPhenomena[ 2, 2])
 })
-
+#
+# test KVP::phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = TRUE) ----
+#
 test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = TRUE)", {
   webmockr::stub_registry_clear()
   webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
@@ -333,7 +347,9 @@ test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = TRUE)
 webmockr::disable("httr")
 
 context("phenomena: integration tests\n")
-
+#
+# test gives error if unsupported SOS version ----
+#
 test_that("gives error if unsupported SOS version", {
   skip_on_cran()
 
@@ -344,7 +360,9 @@ test_that("gives error if unsupported SOS version", {
     "unable to find an inherited method"
   )
 })
-
+#
+# test can retrieve phenomena from an online SOS 2.0.0 (KVP) ----
+#
 test_that("can retrieve phenomena from an online SOS 2.0.0 (KVP)", {
   skip_on_cran()
 

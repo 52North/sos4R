@@ -255,7 +255,8 @@ test_that("KVP::sites(sos, empty = TRUE) returns a list of stations as SpatialPo
       body = readr::read_file("../responses/GetFeatureOfInterest_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability&featureOfInterest=elv-ws2500,elv-ws2500-internal,vaisala-wxt520,wwu-ws-kli-hsb') %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability&',
+                                   'featureOfInterest=elv-ws2500,elv-ws2500-internal,vaisala-wxt520,wwu-ws-kli-hsb')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -285,7 +286,8 @@ test_that("KVP::sites(sos, empty = FALSE) returns a list of stations as SpatialP
       body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest&featureOfInterest=elv-ws2500%2Cwwu-ws-kli-hsb%2Celv-ws2500-internal%2Cvaisala-wxt520') %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest&',
+                                   'featureOfInterest=elv-ws2500%2Cwwu-ws-kli-hsb%2Celv-ws2500-internal%2Cvaisala-wxt520')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -294,7 +296,13 @@ test_that("KVP::sites(sos, empty = FALSE) returns a list of stations as SpatialP
       body = readr::read_file("../responses/GetFeatureOfInterest_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability',
+                                   '&observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,HailAccumulated,HailDuration,',
+                                   'HailIntensity,HailPeakIntensity,Humidity,InSystemTemperature,Luminance,RainfallAccumulated,',
+                                   'RainfallDuration,RainfallIntensity,RainfallPeakIntensity,ShortwaveRadiation,Sunshine,Visibility,',
+                                   'WeatherCode,WeatherCodeText,Windchill,WindDirection,WindDirectionAverage,WindDirectionMaximum,',
+                                   'WindDirectionMinimum,WindDirectionText,WindMaxGust,WindSpeed,WindSpeedAverage,WindSpeedBft,',
+                                   'WindSpeedKmh,WindSpeedMaximum,WindSpeedMinimum,WindSpeedMperSec')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -326,7 +334,8 @@ test_that("KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTempor
       body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest&featureOfInterest=elv-ws2500%2Cwwu-ws-kli-hsb%2Celv-ws2500-internal%2Cvaisala-wxt520') %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest&',
+                                   'featureOfInterest=elv-ws2500%2Cwwu-ws-kli-hsb%2Celv-ws2500-internal%2Cvaisala-wxt520')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -335,7 +344,13 @@ test_that("KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTempor
       body = readr::read_file("../responses/GetFeatureOfInterest_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability&',
+                                   'observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,HailAccumulated,HailDuration,',
+                                   'HailIntensity,HailPeakIntensity,Humidity,InSystemTemperature,Luminance,RainfallAccumulated,',
+                                   'RainfallDuration,RainfallIntensity,RainfallPeakIntensity,ShortwaveRadiation,Sunshine,Visibility,',
+                                   'WeatherCode,WeatherCodeText,Windchill,WindDirection,WindDirectionAverage,WindDirectionMaximum,',
+                                   'WindDirectionMinimum,WindDirectionText,WindMaxGust,WindSpeed,WindSpeedAverage,WindSpeedBft,',
+                                   'WindSpeedKmh,WindSpeedMaximum,WindSpeedMinimum,WindSpeedMperSec')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
