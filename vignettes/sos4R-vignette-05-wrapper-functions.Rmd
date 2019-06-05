@@ -36,7 +36,7 @@ niwaHydro <- SOS(url = myUrl, binding = "KVP", useDCPs = FALSE, version = "2.0.0
 
 ## Phenomena
 
-The function `phenomena(..)` provides information about observed phenomena and time periods of data.
+The function `phenomena(..)` provides information about observed phenomena, time periods of data, and sites observing these phenomena.
 
 ```{r phenomena}
 phenomena <- phenomena(sos = niwaHydro)
@@ -47,22 +47,22 @@ str(phenomena)
 phenomena
 ```
 
-The retrieved data can be extended to the time intervals and site identifier for which data is available.
+The retrieved data can be extended to the time intervals and site identifier for which data is available. The next example shows the overall temporal availability of the phenomena in the SOS instance:
 
 ```{r phenomena_include_time}
 phenomena(sos = niwaHydro, includeTemporalBBox = TRUE)
 ```
 
+This example shows at which site the phenomena are available:
+
 ```{r phenomena_include_siteid}
-# not implemented - https://github.com/52North/sos4R/issues/83
-#phenomena(sos = niwaHydro, includeSiteId = TRUE)
+phenomena(sos = niwaHydro, includeSiteId = TRUE)
 ```
 
-You can also add both temporal extent and sites.
+You can also add both temporal extent and sites:
 
 ```{r phenomena_include_all}
-# not implemented - https://github.com/52North/sos4R/issues/83
-#phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)
+phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)
 ```
 
 ## Sites
