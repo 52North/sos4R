@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+## Introduction
+
 `sos4R` includes a collection of convenience functions which wrap the complex SOS interface with its specific terms (e.g. FOI, procedure).
 The wrapper function use more generic terms easily accessible for all users, especially without a strong knowledge of the OGC standards of the Sensor Web Enablement (see ["OGC SWE and SOS"](sos4R-vignette-02-ogc-sos.html) vignette for details).
 
@@ -33,6 +36,7 @@ myUrl <- "https://hydro-sos.niwa.co.nz/"
 niwaHydro <- SOS(url = myUrl, binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 
 ```
+
 
 ## Phenomena
 
@@ -64,6 +68,7 @@ You can also add both temporal extent and sites:
 ```{r phenomena_include_all}
 phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)
 ```
+
 
 ## Sites
 
@@ -104,6 +109,9 @@ The following chunk shows how to get a better representation:
 str(tail(sites_with_temporal_bbox@data,3))
 ```
 
+
+### Filter
+
 You can filter sites using phenomena and temporal extent.
 
 **Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
@@ -138,6 +146,7 @@ suppressPackageStartupMessages(library("mapview"))
 mapview(sites)
 ```
 
+
 ## Data at sites
 
 The function `siteList(..)` provides information about observed phenomena at sites and the time periods when data is available.
@@ -162,7 +171,10 @@ siteList(sos = niwaHydro, empty = TRUE)
 #siteList(sos = niwaHydro, includePhenomena = TRUE, includeTemporalBBox = TRUE)
 ```
 
-You can reduce the results with these parameters:
+
+### Filter
+
+You can filter the results with these parameters:
 
 - `phenomena` is a vector of phenomena which must be measured at the sites
 - `begin` and `end` define a time interval (date and time class objects) for which some data must be available (sites may have data outside the given interval)
