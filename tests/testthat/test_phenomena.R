@@ -280,8 +280,54 @@ test_that("KVP::phenomena(sos, includeSiteId = TRUE) returns a data.frame with t
   expect_equal("WindDirection", dataFrameOfPhenomena[ 1, 1])
   expect_equal("WindDirection", dataFrameOfPhenomena[ 2, 1])
 
-  expect_equal("elv-ws2500",     dataFrameOfPhenomena[ 1, 2])
+  expect_equal("elv-ws2500",   dataFrameOfPhenomena[ 1, 2])
   expect_equal("elv-ws2500-2", dataFrameOfPhenomena[ 2, 2])
+})
+
+test_that("KVP::phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = TRUE)", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com_double.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+  dataFrameOfPhenomena <- phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = TRUE)
+
+  expect_true(!is.null(dataFrameOfPhenomena))
+  expect_true(is.data.frame(dataFrameOfPhenomena))
+  expect_equal(length(colnames(dataFrameOfPhenomena)), 4, info = "number of columns in phenomena data.frame")
+  expect_equal(colnames(dataFrameOfPhenomena)[[1]], "phenomenon", info = "column #1 name")
+  expect_equal(colnames(dataFrameOfPhenomena)[[2]], "siteID", info = "column #2 name")
+  expect_equal(colnames(dataFrameOfPhenomena)[[3]], "timeBegin", info = "column #3 name")
+  expect_equal(colnames(dataFrameOfPhenomena)[[4]], "timeEnd", info = "column #4 name")
+  expect_equal(nrow(dataFrameOfPhenomena), 2, info = "number of phenomenon and site pairs")
+  # check all values
+  expect_equal("WindDirection", dataFrameOfPhenomena[ 1, 1])
+  expect_equal("WindDirection", dataFrameOfPhenomena[ 2, 1])
+
+  expect_equal("elv-ws2500",   dataFrameOfPhenomena[ 1, 2])
+  expect_equal("elv-ws2500-2", dataFrameOfPhenomena[ 2, 2])
+
+  expect_equal("2019-03-01T00:30:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 1, 3]))
+  expect_equal("2019-03-01T00:30:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 2, 3]))
+
+  expect_equal("2019-03-28T23:45:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 1, 4]))
+  expect_equal("2019-03-28T23:45:00+00:00", parsedate::format_iso_8601(dataFrameOfPhenomena[ 2, 4]))
 })
 
 webmockr::disable("httr")

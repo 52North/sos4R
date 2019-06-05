@@ -7,41 +7,31 @@
     <gda:phenomenonTime>
       <gml:TimePeriod gml:id="tp_1">
         <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
-        <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
+        <gml:endPosition>2019-03-14T23:45:00.000Z</gml:endPosition>
       </gml:TimePeriod>
     </gda:phenomenonTime>
   </gda:dataAvailabilityMember>
-  <gda:dataAvailabilityMember gml:id="dam_1">
+  <gda:dataAvailabilityMember gml:id="dam_2">
     <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
     <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
     <gda:featureOfInterest xlink:href="elv-ws2500-2" xlink:title="ELV WS2500"/>
-    <gda:phenomenonTime>
-      <gml:TimePeriod gml:id="tp_1">
-        <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
-        <gml:endPosition>2019-04-28T23:45:00.000Z</gml:endPosition>
-      </gml:TimePeriod>
-    </gda:phenomenonTime>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
   </gda:dataAvailabilityMember>
-  <gda:dataAvailabilityMember gml:id="dam_1">
+  <gda:dataAvailabilityMember gml:id="dam_3">
     <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
     <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
     <gda:featureOfInterest xlink:href="elv-ws2500" xlink:title="ELV WS2500"/>
     <gda:phenomenonTime>
-      <gml:TimePeriod gml:id="tp_1">
-        <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
+      <gml:TimePeriod gml:id="tp_2">
+        <gml:beginPosition>2019-03-15T00:30:00.000Z</gml:beginPosition>
         <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
       </gml:TimePeriod>
     </gda:phenomenonTime>
   </gda:dataAvailabilityMember>
-  <gda:dataAvailabilityMember gml:id="dam_1">
+  <gda:dataAvailabilityMember gml:id="dam_4">
     <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
     <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
     <gda:featureOfInterest xlink:href="elv-ws2500-2" xlink:title="ELV WS2500"/>
-    <gda:phenomenonTime>
-      <gml:TimePeriod gml:id="tp_1">
-        <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
-        <gml:endPosition>2019-05-28T23:45:00.000Z</gml:endPosition>
-      </gml:TimePeriod>
-    </gda:phenomenonTime>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
   </gda:dataAvailabilityMember>
 </gda:GetDataAvailabilityResponse>

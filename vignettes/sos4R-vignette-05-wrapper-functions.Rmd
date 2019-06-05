@@ -59,11 +59,10 @@ This example shows at which site the phenomena are available:
 phenomena(sos = niwaHydro, includeSiteId = TRUE)
 ```
 
-You can also add both temporal extent and sites.
+You can also add both temporal extent and sites:
 
 ```{r phenomena_include_all}
-# not implemented - https://github.com/52North/sos4R/issues/83
-#phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)
+phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE)
 ```
 
 ## Sites

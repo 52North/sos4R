@@ -95,11 +95,8 @@ setMethod(f = "phenomena",
             else if (includeTemporalBBox && !includeSiteId) {
               return(.listPhenomenaWithTemporalBBox(sos))
             }
-            else if (!includeTemporalBBox && includeSiteId) {
-              return(.listPhenomenaWithSiteIds(sos))
-            }
-            else if (includeTemporalBBox && includeSiteId) {
-              stop("return(.listPhenomenaWithTemporalBBoxAndSiteIds(sos)) not implemented")
+            else if (includeSiteId) {
+              return(.listPhenomenaWithMetadata(sos, includeTemporalBBox))
             }
           })
 #
@@ -120,10 +117,17 @@ setMethod(f = "phenomena",
   return(phenomena)
 }
 
-.listPhenomenaWithSiteIds <- function(sos) {
+.listPhenomenaWithMetadata <- function(sos, includeTemporalBBox) {
   dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
   stopifnot(!is.null(dams))
   stopifnot(is.list(dams))
+  if (includeTemporalBBox) {
+    phenomena <- data.frame("phenomenon" = character(0),
+                            "siteID" = character(0),
+                            "timeBegin" = double(0),
+                            "timeEnd" = double(0),
+                            stringsAsFactors = FALSE)
+  } else {
     phenomena <- data.frame("phenomenon" = character(0),
                             "siteID" = character(0),
                             stringsAsFactors = FALSE)
@@ -133,13 +137,31 @@ setMethod(f = "phenomena",
       # check if phenomenon aka observed property is in data.frame and the feature, too
       observedProperty <- dam@observedProperty
       featureOfInterest <- dam@featureOfInterest
-      testDf <- phenomena[phenomena$phenomenon == observedProperty, ]
-      if (nrow(testDf) == 0 ||
-          nrow(testDf[testDf$siteID == featureOfInterest, ]) == 0) {
+      damBegin <- dam@phenomenonTime@beginPosition@time
+      damEnd <- dam@phenomenonTime@endPosition@time
+      if (nrow(phenomena[which(phenomena$phenomenon == observedProperty & phenomena$siteID == featureOfInterest), ]) == 0) {
         # if not -> append at the end
-        phenomena <- rbind(phenomena, data.frame("phenomenon" = observedProperty,
-                                                 "siteID" = featureOfInterest,
-                                                 stringsAsFactors = FALSE))
+        if (includeTemporalBBox) {
+          phenomena <- rbind(phenomena, data.frame("phenomenon" = observedProperty,
+                                                   "siteID" = featureOfInterest,
+                                                   "timeBegin" = damBegin,
+                                                   "timeEnd" = damEnd,
+                                                   stringsAsFactors = FALSE))
+        } else {
+          phenomena <- rbind(phenomena, data.frame("phenomenon" = observedProperty,
+                                                   "siteID" = featureOfInterest,
+                                                   stringsAsFactors = FALSE))
+        }
+      }
+      # merge time intervals
+      else if (includeTemporalBBox &&
+               nrow(phenomena[which(phenomena$phenomenon == observedProperty & phenomena$siteID == featureOfInterest), ]) == 1) {
+        if (damBegin < phenomena[which(phenomena$phenomenon == observedProperty & phenomena$siteID == featureOfInterest), "timeBegin"]) {
+          phenomena[which(phenomena$phenomenon == observedProperty & phenomena$siteID == featureOfInterest), "timeBegin"] <- damBegin
+        }
+        if (phenomena[which(phenomena$phenomenon == observedProperty & phenomena$siteID == featureOfInterest), "timeEnd"] < damEnd) {
+          phenomena[which(phenomena$phenomenon == observedProperty & phenomena$siteID == featureOfInterest), "timeEnd"] <- damEnd
+        }
       }
     }
   }
