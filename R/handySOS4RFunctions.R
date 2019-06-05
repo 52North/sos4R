@@ -370,50 +370,50 @@ setMethod(f = "siteList",
                                includePhenomena,
                                includeTemporalBBox,
                                phenomena) {
-  .dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
+  dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
 
   if (includeTemporalBBox && !includePhenomena) {
     includePhenomena <- TRUE
     warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
   }
 
-  if (length(.dams) == 0) {
-    .sites <- data.frame("siteID" = character(0),
+  if (length(dams) == 0) {
+    sites <- data.frame("siteID" = character(0),
                              stringsAsFactors = FALSE)
   }
   else {
-    .sites <- data.frame("siteID" = character(0),
+    sites <- data.frame("siteID" = character(0),
                              stringsAsFactors = FALSE)
-    for (.dam in .dams) {
+    for (dam in dams) {
       # check if siteID is already in data.frame
-      if (!(.dam@featureOfInterest %in% .sites[, 1])) {
+      if (!(dam@featureOfInterest %in% sites[, 1])) {
         # if not -> append at the end
-        .sites <- rbind(.sites, data.frame("siteID" = .dam@featureOfInterest,
+        sites <- rbind(sites, data.frame("siteID" = dam@featureOfInterest,
                                                    stringsAsFactors = FALSE))
       }
     }
-    .sites <- data.frame("siteID" = .sites[order(.sites$siteID),], stringsAsFactors = FALSE)
+    sites <- data.frame("siteID" = sites[order(sites$siteID),], stringsAsFactors = FALSE)
   }
-  return(.sites)
+  return(sites)
 }
 
 .getDataAvailabilityMember <- function(sos, phenomena, begin, end) {
   if (.isPhenomenaSet(phenomena)) {
     # validate input only if given
     phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-    .dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput)
+    dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput)
   } else {
-    .dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+    dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
   }
-  stopifnot(!is.null(.dams))
-  stopifnot(is.list(.dams))
+  stopifnot(!is.null(dams))
+  stopifnot(is.list(dams))
 
   if (.isTimeIntervalSet(begin, end)) {
     stopifnot(begin < end)
-    # filter returned .dams by given temporal filter
-    .dams <- .filterDAMsByTime(.dams, begin, end)
+    # filter returned dams by given temporal filter
+    dams <- .filterDAMsByTime(dams, begin, end)
   }
-  return(.dams)
+  return(dams)
 }
 
 #
@@ -448,32 +448,32 @@ setMethod(f = "siteList",
 # Potential performance improvement (causing more complex logic):
 # Use offering metadata from capabilites to request GDA only for offerings "touching" the timeinterval
 .filterDAMsByTime <- function(dams, begin, end) {
-  .filteredDams <- list()
-  for (.dam in dams) {
+  filteredDams <- list()
+  for (dam in dams) {
     # 1 Check 6 cases for each site and add if one is matching
-    .damBegin <- .dam@phenomenonTime@beginPosition@time
-    .damEnd <- .dam@phenomenonTime@endPosition@time
+    damBegin <- dam@phenomenonTime@beginPosition@time
+    damEnd <- dam@phenomenonTime@endPosition@time
     # 1.1 before
-    if (.damEnd < begin) next
+    if (damEnd < begin) next
     # 1.2 after
-    if (end < .damBegin) next
+    if (end < damBegin) next
     if (
       # 1.3 contains
-      (.damBegin < begin && end < .damEnd)
+      (damBegin < begin && end < damEnd)
       ||
       # 1.4 begins/during/equals/ends
-      (begin <= .damBegin && .damEnd <= end)
+      (begin <= damBegin && damEnd <= end)
       ||
       # 1.5 Overlaps
-      (.damBegin < begin && begin < .damEnd && .damEnd < end)
+      (damBegin < begin && begin < damEnd && damEnd < end)
       ||
       # 1.6 OverlappedBy
-      (begin < .damBegin &&  .damBegin < end && end < .damEnd)
+      (begin < damBegin &&  damBegin < end && end < damEnd)
     ) {
-      .filteredDams <- c(.filteredDams, .dam)
+      filteredDams <- c(filteredDams, dam)
     }
   }
-  return(.filteredDams)
+  return(filteredDams)
 }
 #
 #
@@ -644,29 +644,29 @@ setMethod(f = "sites",
     warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
   }
   # get all phenomena
-  .phenomena <- as.list(.listPhenomena(sos)[, 1])
-  if (is.null(.phenomena) || is.list(.phenomena) && length(.phenomena) < 1) {
+  phenomena <- as.list(.listPhenomena(sos)[, 1])
+  if (is.null(phenomena) || is.list(phenomena) && length(phenomena) < 1) {
     return(.sitesAsSPDF(sos, FALSE))
   }
   # get data availability
-  .dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
+  dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
 
   # get sites
-  if (length(.dams) > 1) {
-    .sites <- getFeatureOfInterest(sos, featureOfInterest = unique(sosFeatureIds(.dams)))
+  if (length(dams) > 1) {
+    sites <- getFeatureOfInterest(sos, featureOfInterest = unique(sosFeatureIds(dams)))
   }
   else {
-    .sites <- getFeatureOfInterest(sos)
+    sites <- getFeatureOfInterest(sos)
   }
-  if (is.null(.sites) || is.list(.sites) && length(.sites) < 1) {
+  if (is.null(sites) || is.list(sites) && length(sites) < 1) {
     return(.sitesAsSPDF(sos, FALSE))
   }
-  .sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(.sites)
+  sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(sites)
   # extend spdf@data with information about the available phenomena
   if (includePhenomena) {
-    .sitesSPDF@data <- .addMetadataAboutPhenomena(.sitesSPDF@data, .phenomena, .dams)
+    sitesSPDF@data <- .addMetadataAboutPhenomena(sitesSPDF@data, phenomena, dams)
   }
-  return(.sitesSPDF)
+  return(sitesSPDF)
 }
 
 .addMetadataAboutPhenomena <- function(dataframe, allPhenomena, dams) {
@@ -713,23 +713,32 @@ setMethod(f = "sites",
 as.SpatialPointsDataFrame.SamsSamplingFeatureList <- function(list) {
   if (inherits(list[[1]], "GmlFeatureProperty") &&
       inherits(list[[1]]@feature, "SamsSamplingFeature")) {
-    .coords <- data.frame()
-    .siteIds <- list()
-    .proj4string <- ""
+    coords <- data.frame()
+    siteIDs <- list()
+    proj4string <- ""
     for (.site in list) {
-      .siteIds <- c(.siteIds, .site@feature@identifier)
-      .sp <- as.SpatialPoints.SamsSamplingFeature(.site@feature)
-      .coords <- rbind(.coords, coordinates(.sp))
-      .proj4string <- .sp@proj4string
+      siteIDs <- c(siteIDs, .site@feature@identifier)
+      spatialPoints <- as.SpatialPoints.SamsSamplingFeature(.site@feature)
+      coords <- rbind(coords, coordinates(spatialPoints))
+      proj4string <- spatialPoints@proj4string
     }
     # TODO check proj4string difference between sites!
-    return(SpatialPointsDataFrame(coords = .coords,
-                                  data = data.frame("siteID" = unlist(.siteIds), stringsAsFactors = FALSE),
+    return(SpatialPointsDataFrame(coords = coords,
+                                  data = data.frame("siteID" = unlist(siteIDs), stringsAsFactors = FALSE),
                                   match.ID = FALSE,
-                                  proj4string = .proj4string))
+                                  proj4string = proj4string))
   }
 }
-
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # getData ----
 #
 # ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ----
