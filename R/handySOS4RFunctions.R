@@ -124,15 +124,11 @@ setMethod(f = "phenomena",
   dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
   stopifnot(!is.null(dams))
   stopifnot(is.list(dams))
-  if (length(dams) == 0) {
     phenomena <- data.frame("phenomenon" = character(0),
                             "siteID" = character(0),
                             stringsAsFactors = FALSE)
   }
-  else {
-    phenomena <- data.frame("phenomenon" = character(0),
-                            "siteID" = character(0),
-                            stringsAsFactors = FALSE)
+  if (length(dams) > 0) {
     for (dam in dams) {
       # check if phenomenon aka observed property is in data.frame and the feature, too
       observedProperty <- dam@observedProperty
@@ -171,17 +167,11 @@ setMethod(f = "phenomena",
   dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
   stopifnot(!is.null(dams))
   stopifnot(is.list(dams))
-  if (length(dams) == 0) {
-    phenomena <- data.frame("phenomenon" = character(0),
+  phenomena <- data.frame("phenomenon" = character(0),
                           "timeBegin" = double(0),
                           "timeEnd" = double(0),
-                        stringsAsFactors = FALSE)
-  }
-  else {
-    phenomena <- data.frame("phenomenon" = character(0),
-                        "timeBegin" = double(0),
-                        "timeEnd" = double(0),
-                        stringsAsFactors = FALSE)
+                          stringsAsFactors = FALSE)
+  if (length(dams) > 0) {
     for (dam in dams) {
       # check if phenomenon aka observed property is in data.frame
       if (dam@observedProperty %in% phenomena[, 1]) {
