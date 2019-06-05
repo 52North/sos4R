@@ -96,7 +96,7 @@ setMethod(f = "phenomena",
               return(.listPhenomenaWithTemporalBBox(sos))
             }
             else if (!includeTemporalBBox && includeSiteId) {
-              stop("return(.listPhenomenaWithSiteIds(sos)) not implemented")
+              return(.listPhenomenaWithSiteIds(sos))
             }
             else if (includeTemporalBBox && includeSiteId) {
               stop("return(.listPhenomenaWithTemporalBBoxAndSiteIds(sos)) not implemented")
@@ -118,6 +118,36 @@ setMethod(f = "phenomena",
     phenomena <- data.frame("phenomenon" = observableProperties, stringsAsFactors = FALSE)
   }
   return(phenomena)
+}
+
+.listPhenomenaWithSiteIds <- function(sos) {
+  dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+  stopifnot(!is.null(dams))
+  stopifnot(is.list(dams))
+  if (length(dams) == 0) {
+    phenomena <- data.frame("phenomenon" = character(0),
+                            "siteID" = character(0),
+                            stringsAsFactors = FALSE)
+  }
+  else {
+    phenomena <- data.frame("phenomenon" = character(0),
+                            "siteID" = character(0),
+                            stringsAsFactors = FALSE)
+    for (dam in dams) {
+      # check if phenomenon aka observed property is in data.frame and the feature, too
+      observedProperty <- dam@observedProperty
+      featureOfInterest <- dam@featureOfInterest
+      testDf <- phenomena[phenomena$phenomenon == observedProperty, ]
+      if (nrow(testDf) == 0 ||
+          nrow(testDf[testDf$siteID == featureOfInterest, ]) == 0) {
+        # if not -> append at the end
+        phenomena <- rbind(phenomena, data.frame("phenomenon" = observedProperty,
+                                                 "siteID" = featureOfInterest,
+                                                 stringsAsFactors = FALSE))
+      }
+    }
+  }
+  return(phenomena[order(phenomena$phenomenon),])
 }
 
 #
