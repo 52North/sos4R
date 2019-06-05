@@ -91,9 +91,17 @@ sites_1_3 <- sites(sos = niwaHydro, includePhenomena = TRUE)[1:3,]
 as.data.frame(sites_1_3)
 ```
 
+The next section show how to retriev spatial information about the sites and temporal information about the available phenomena:
+
 ```{r sites_metadata_temporal}
-# not fully implemented - temporal extent missing, see https://github.com/52North/sos4R/issues/93
-#as.data.frame(sites(sos = niwaHydro, includeTemporalBBox = TRUE)[1:3,])
+sites_with_temporal_bbox <- sites(sos = niwaHydro, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+tail(as.data.frame(sites_with_temporal_bbox[1:3,]), 3)
+```
+
+The following chunk shows how to get a better representation:
+
+```{r sites_with_temporal_bbox_structure}
+str(tail(sites_with_temporal_bbox@data,3))
 ```
 
 You can filter sites using phenomena and temporal extent.

@@ -663,10 +663,69 @@ setMethod(f = "sites",
   }
   sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(sites)
   # extend spdf@data with information about the available phenomena
-  if (includePhenomena) {
+  if (includePhenomena && !includeTemporalBBox) {
     sitesSPDF@data <- .addMetadataAboutPhenomena(sitesSPDF@data, phenomena, dams)
   }
+  if (includeTemporalBBox) {
+    sitesSPDF@data <- .addPhenomenaTemporalBBoxes(sitesSPDF@data, phenomena, dams)
+  }
   return(sitesSPDF)
+}
+#
+# https://github.com/52North/sos4R/issues/93
+#
+.addPhenomenaTemporalBBoxes <- function(dataframe, allPhenomena, dams) {
+  # store setting of stringsAsFactors to reset after this function
+  tmpStringsAsFactors <- getOption("stringsAsFactors")
+  options(stringsAsFactors = FALSE)
+  # create initial dataframe
+  newDataFrame <- data.frame(matrix(ncol = length(allPhenomena), nrow = 0), stringsAsFactors = FALSE)
+  colnames(newDataFrame) <- c(allPhenomena)
+  # for each row in dataframe
+  for (row in 1:nrow(dataframe)) {
+    # get all available phen via dams
+    siteId <- dataframe[row, "siteID"]
+    phenomenaAvailability <- c()
+    index <- 1
+    for (phenomenon in allPhenomena) {
+      found <- FALSE
+      for (dam in dams) {
+        featureOfInterest <- dam@featureOfInterest
+        observedProperty <- dam@observedProperty
+        if (class(phenomenaAvailability) != "list") {
+          class(phenomenaAvailability) <- "list"
+        }
+        if (featureOfInterest == siteId && observedProperty == phenomenon) {
+          if ( !found) {
+            timeBegin <- dam@phenomenonTime@beginPosition@time
+            timeEnd <- dam@phenomenonTime@endPosition@time
+            phenomenaAvailability[[index]] <- data.frame("timeBegin" = timeBegin,
+                                                  "timeEnd" = timeEnd,
+                                                  stringsAsFactors = FALSE)
+            found <- TRUE
+          }
+          else {
+            # extend already present time interval
+            str(phenomenaAvailability)
+          }
+        }
+      }
+      if ( !found) {
+        phenomenaAvailability[[index]] <- NA
+      }
+      index <- index + 1
+    }
+    tmpDataFrame <- data.frame(matrix(ncol = length(allPhenomena), nrow = 0), stringsAsFactors = FALSE)
+    tmpDataFrame <- rbind(c(phenomenaAvailability))
+    colnames(tmpDataFrame) <- c(allPhenomena)
+    # create new row for new dataframe
+    # utils::type.convert((newDataFrame[,2]))
+    newDataFrame <- rbind.data.frame(newDataFrame, tmpDataFrame, stringsAsFactors = FALSE)
+  }
+  # add siteIds
+  newDataFrame <- cbind("siteID" = dataframe[["siteID"]], newDataFrame)
+  options(stringsAsFactors = tmpStringsAsFactors)
+  return(newDataFrame)
 }
 
 .addMetadataAboutPhenomena <- function(dataframe, allPhenomena, dams) {
