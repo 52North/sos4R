@@ -108,16 +108,16 @@ setMethod(f = "phenomena",
 # see: https://github.com/52North/sos4R/issues/81
 #
 .listPhenomena <- function(sos) {
-  phenomena <- sosObservableProperties(sos)
-  stopifnot(!is.null(phenomena))
-  stopifnot(is.list(phenomena))
-  if (length(unlist(phenomena)) == 0) {
-    phens <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
+  observableProperties <- sosObservableProperties(sos)
+  stopifnot(!is.null(observableProperties))
+  stopifnot(is.list(observableProperties))
+  if (length(unlist(observableProperties)) == 0) {
+    phenomena <- data.frame("phenomenon" = character(0), stringsAsFactors = FALSE)
   } else {
-    phenomena <- unique(sort(as.vector(unlist(phenomena))))
-    phens <- data.frame("phenomenon" = phenomena, stringsAsFactors = FALSE)
+    observableProperties <- unique(sort(as.vector(unlist(observableProperties))))
+    phenomena <- data.frame("phenomenon" = observableProperties, stringsAsFactors = FALSE)
   }
-  return(phens)
+  return(phenomena)
 }
 
 #
