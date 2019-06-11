@@ -32,7 +32,12 @@
 
 <meta property="og:title" content="Convenience Functions for Request Parameter Creations — sosCreate" />
 
-<meta property="og:description" content="These methods can be seen as convenience functions or shortcuts to regularly used parameters in GetObservation requests to a Sensor Observation Service. The remove some complexity and target the most common cases, but also limit flexibility." />
+<meta property="og:description" content="These methods can be seen as convenience functions or shortcuts to regularly used parameters in GetObservation requests to a Sensor Observation Service. The remove some complexity and target the most common cases, but also limit flexibility.
+NOTE: Whenever time objects are created from characters, note that functions may use your local timezone.
+All R time objects are UTC-based.
+All SOS queries use UTC timestamps.
+This can be confusing when you query data from an SOS located a different timezone or if the time stamp encoded in the request seems to mismatch your input at first glance.
+Therefore always check if the time period you retrieve matches what you need, and in general stick to using UTC time." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,6 +145,11 @@
     <div class="ref-description">
     
     <p>These methods can be seen as convenience functions or shortcuts to regularly used parameters in GetObservation requests to a Sensor Observation Service. The remove some complexity and target the most common cases, but also limit flexibility.</p>
+<p>NOTE: Whenever time objects are created from characters, note that functions may use your local timezone.
+All R time objects are UTC-based.
+All SOS queries use UTC timestamps.
+This can be confusing when you query data from an SOS located a different timezone or if the time stamp encoded in the request seems to mismatch your input at first glance.
+Therefore always check if the time period you retrieve matches what you need, and in general stick to using UTC time.</p>
     
     </div>
 
@@ -213,7 +223,7 @@
     </tr>
     <tr>
       <th>time</th>
-      <td><p>Object of class <code>"GmlTimeGeometricPrimitive"</code> for <code>sosCreateEventTimeList</code>, or an object of class <code>POSIXt</code> for <code>sosCreateTimePeriod</code>,or an object of class <code>character</code> for <code>sosCreateTime</code>.</p></td>
+      <td><p>Object of class <code>"GmlTimeGeometricPrimitive"</code> for <code>sosCreateEventTimeList</code>, or an object of class <code>POSIXt</code> for <code>sosCreateTimePeriod</code>,or an object of class <code>character</code> for <code>sosCreateTime</code>. Note that creating timestamps with <code><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
     </tr>
     <tr>
       <th>operator</th>
@@ -233,11 +243,11 @@
     </tr>
     <tr>
       <th>begin</th>
-      <td><p>Object of class <code>POSIXt</code>.</p></td>
+      <td><p>Object of class <code>POSIXt</code>. Note that creating timestamps with <code><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
     </tr>
     <tr>
       <th>end</th>
-      <td><p>Object of class <code>POSIXt</code>.</p></td>
+      <td><p>Object of class <code>POSIXt</code>.. Note that creating timestamps with <code><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
     </tr>
     <tr>
       <th>indeterminatePosition</th>
