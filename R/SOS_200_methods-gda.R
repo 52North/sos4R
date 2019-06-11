@@ -163,28 +163,28 @@ setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
   .optionals <- ""
   if (.isListFieldAvailable(obj@procedures)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding procedures ",
-                     obj@procedures, "\n")
+                     paste0("'", unlist(obj@procedures), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameProcedure, obj@procedures),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@observedProperties)) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties ",
-                     obj@observedProperties, "\n")
+    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties: ",
+                     paste0("'", unlist(obj@observedProperties), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameObsProp, obj@observedProperties),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@featuresOfInterest)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding features of interest ",
-                     obj@featuresOfInterest, "\n")
+                     paste0("'", unlist(obj@featuresOfInterest), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameFoi, obj@featuresOfInterest),
                         sep = "&")
   }
   if (.isListFieldAvailable(obj@offerings)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding offerings ",
-                     obj@offerings, "\n")
+                     paste0("'", unlist(obj@offerings), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameOffering, obj@offerings),
                         sep = "&")
@@ -213,9 +213,11 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = sos@namespaces)
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(gdaMembers), "element(s).\n")
+  phenTimeCache <<- list()
   parsedGDAMembers <- lapply(gdaMembers, .parseGDAMember, sos, verbose)
   if (verbose) cat("[parseGetDataAvailabilityResponse] Done. Processed", length(parsedGDAMembers),
                    "elements")
+  phenTimeCache <<- list()
   return(parsedGDAMembers)
 }
 
@@ -232,16 +234,26 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (is.na(ptNode)) {
     stop(paste0("[parseGDAMember] ", gdaPhenomenonTimeName, " not found!"))
   }
-
   # if href is in <gda:phenomenonTime xlink:href="#tp_2"/> then in-document reference starting with "#" and than the GML:id of the referenced element
   if (gmlIsNodeReferenced(sos, ptNode)) {
-    ptNode <- gmlGetReferencedNode(sos, gdaMember, ptNode, verbose = verbose)
+    phenTime <- phenTimeCache[[substring(text = xml2::xml_attr(ptNode, "xlink:href", ns = sos@namespaces), first = 2)]]
+    if (is.null(phenTime)) {
+      ptNode <- gmlGetReferencedNode(sos, gdaMember, ptNode, verbose = verbose)
+      phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
+                                                       xpath = gmlTimePeriodName,
+                                                       ns = sos@namespaces),
+                                  sos = sos)
+      phenTimeCache[[phenTime@id]] <<- phenTime
+    }
+  } else {
+    phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
+                                                     xpath = gmlTimePeriodName,
+                                                     ns = sos@namespaces),
+                                sos = sos)
+    if (!is.na(phenTime@id)) {
+      phenTimeCache[[phenTime@id]] <<- phenTime
+    }
   }
-
-  phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
-                                                   xpath = gmlTimePeriodName,
-                                                   ns = sos@namespaces),
-                              sos = sos)
   if (is.null(phenTime)) {
     stop("[parseGDAMember] could NOT parse phenomenon time.")
   }
@@ -253,11 +265,11 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
 }
 
 .parseGDAReferencedElement <- function(gdaMember, sos, elementName, verbose = FALSE) {
-  .nodes <- xml2::xml_find_all(x = gdaMember, xpath = elementName, ns = sos@namespaces)
-  if (is.na(.nodes) || length(.nodes) != 1) {
+  node <- xml2::xml_find_first(x = gdaMember, xpath = elementName, ns = sos@namespaces)
+  if (is.na(node)) {
     stop(paste0("[parseGDAMember] no element found for '", elementName, "'."))
   }
-  .element <- xml2::xml_attr(x = .nodes[[1]], attr = "href")
+  .element <- xml2::xml_attr(x = node, attr = "href")
   if (is.na(.element) || stringr::str_length(.element) < 1) {
     stop(paste0("[parseGDAMember] element found for '", elementName, "' misses href attribute. Found '",
                 .element, "'."))
