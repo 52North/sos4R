@@ -578,7 +578,7 @@ setMethod(f = "sites",
 #
 .sitesAsSPDF <- function(sos, empty = TRUE) {
   # get all stations
-  sites <- getFeatureOfInterest(sos)
+  sites <- getFeatureOfInterest(sos, verbose = sos@verboseOutput)
   if (is.null(sites) || is.list(sites) && length(sites) < 1) {
     return(SpatialPointsDataFrame(coords = SpatialPoints(data.frame(x = 0, y = 0))[-1,],
                                   data = data.frame("siteID" = character(0), stringsAsFactors = FALSE),
@@ -644,8 +644,8 @@ setMethod(f = "sites",
     warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
   }
   # get all phenomena
-  phenomena <- as.list(.listPhenomena(sos)[, 1])
-  if (is.null(phenomena) || is.list(phenomena) && length(phenomena) < 1) {
+  phenomenaOfSos <- as.list(.listPhenomena(sos)[, 1])
+  if (is.null(phenomenaOfSos) || is.list(phenomenaOfSos) && length(phenomenaOfSos) < 1) {
     return(.sitesAsSPDF(sos, FALSE))
   }
   # get data availability
@@ -653,7 +653,7 @@ setMethod(f = "sites",
 
   # get sites
   if (length(dams) > 1) {
-    sites <- getFeatureOfInterest(sos, featureOfInterest = unique(sosFeatureIds(dams)))
+    sites <- getFeatureOfInterest(sos, featureOfInterest = unique(sosFeatureIds(dams)), verbose = sos@verboseOutput)
   }
   else {
     sites <- getFeatureOfInterest(sos)
@@ -663,11 +663,16 @@ setMethod(f = "sites",
   }
   sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(sites)
   # extend spdf@data with information about the available phenomena
+  if (includePhenomena && .isPhenomenaSet(phenomena)) {
+    phenomenaFilter <- phenomena
+  } else {
+    phenomenaFilter <- phenomenaOfSos
+  }
   if (includePhenomena && !includeTemporalBBox) {
-    sitesSPDF@data <- .addMetadataAboutPhenomena(sitesSPDF@data, phenomena, dams)
+    sitesSPDF@data <- .addMetadataAboutPhenomena(sitesSPDF@data, phenomenaFilter, dams)
   }
   if (includeTemporalBBox) {
-    sitesSPDF@data <- .addPhenomenaTemporalBBoxes(sitesSPDF@data, phenomena, dams)
+    sitesSPDF@data <- .addPhenomenaTemporalBBoxes(sitesSPDF@data, phenomenaFilter, dams)
   }
   return(sitesSPDF)
 }

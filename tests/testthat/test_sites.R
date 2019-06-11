@@ -351,8 +351,8 @@ test_that("KVP::sites(sos, empty = TRUE|FALSE) returns an empty list of sites as
       headers = list("Content-Type" = "application/xml")
     )
 
-  stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest') %>%
-    wi_th(
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest') %>%
+    webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
     webmockr::to_return(
@@ -437,13 +437,7 @@ test_that("KVP::sites(sos, empty = FALSE) returns a list of stations as SpatialP
       body = readr::read_file("../responses/GetFeatureOfInterest_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability',
-                                   '&observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,HailAccumulated,HailDuration,',
-                                   'HailIntensity,HailPeakIntensity,Humidity,InSystemTemperature,Luminance,RainfallAccumulated,',
-                                   'RainfallDuration,RainfallIntensity,RainfallPeakIntensity,ShortwaveRadiation,Sunshine,Visibility,',
-                                   'WeatherCode,WeatherCodeText,Windchill,WindDirection,WindDirectionAverage,WindDirectionMaximum,',
-                                   'WindDirectionMinimum,WindDirectionText,WindMaxGust,WindSpeed,WindSpeedAverage,WindSpeedBft,',
-                                   'WindSpeedKmh,WindSpeedMaximum,WindSpeedMinimum,WindSpeedMperSec')) %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -485,13 +479,7 @@ test_that("KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTempor
       body = readr::read_file("../responses/GetFeatureOfInterest_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability&',
-                                   'observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,HailAccumulated,HailDuration,',
-                                   'HailIntensity,HailPeakIntensity,Humidity,InSystemTemperature,Luminance,RainfallAccumulated,',
-                                   'RainfallDuration,RainfallIntensity,RainfallPeakIntensity,ShortwaveRadiation,Sunshine,Visibility,',
-                                   'WeatherCode,WeatherCodeText,Windchill,WindDirection,WindDirectionAverage,WindDirectionMaximum,',
-                                   'WindDirectionMinimum,WindDirectionText,WindMaxGust,WindSpeed,WindSpeedAverage,WindSpeedBft,',
-                                   'WindSpeedKmh,WindSpeedMaximum,WindSpeedMinimum,WindSpeedMperSec')) %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -534,13 +522,7 @@ test_that("KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTempor
       body = readr::read_file("../responses/GetFeatureOfInterest_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability&',
-                                   'observedProperty=AirTemperature,AthmosphericPressure,Dewpoint,HailAccumulated,HailDuration,',
-                                   'HailIntensity,HailPeakIntensity,Humidity,InSystemTemperature,Luminance,RainfallAccumulated,',
-                                   'RainfallDuration,RainfallIntensity,RainfallPeakIntensity,ShortwaveRadiation,Sunshine,Visibility,',
-                                   'WeatherCode,WeatherCodeText,Windchill,WindDirection,WindDirectionAverage,WindDirectionMaximum,',
-                                   'WindDirectionMinimum,WindDirectionText,WindMaxGust,WindSpeed,WindSpeedAverage,WindSpeedBft,',
-                                   'WindSpeedKmh,WindSpeedMaximum,WindSpeedMinimum,WindSpeedMperSec')) %>%
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability')) %>%
     wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
