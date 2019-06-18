@@ -49,6 +49,14 @@ sosConvertLogical <- function(x, sos) {
   return(as.logical(x = x))
 }
 
+sosConvertInteger <- function(x, sos) {
+  return(as.integer(x = x))
+}
+
+sosConvertFactor <- function(x, sos) {
+  return(as.factor(x = x))
+}
+
 
 #
 # convenience functions time class creation ----

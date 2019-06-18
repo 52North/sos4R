@@ -143,7 +143,7 @@ names(.sosDefaultEncoders) <- list(
 #
 #
 .sosDefaultFieldConverters <- list(
-  sosConvertString,
+  sosConvertDouble, # fallback <- numeric values exptected more often than character values!
   sosConvertTime,
   sosConvertTime,
   sosConvertTime,
@@ -221,6 +221,13 @@ names(.sosDefaultEncoders) <- list(
   sosConvertDouble,
   sosConvertDouble,
   # 52N SOS 4.x
+  sosConvertTime,
+  # R classes
+  sosConvertFactor,
+  sosConvertDouble,
+  sosConvertInteger,
+  sosConvertString,
+  sosConvertLogical,
   sosConvertTime
 )
 names(.sosDefaultFieldConverters) <- list(
@@ -302,7 +309,14 @@ names(.sosDefaultFieldConverters) <- list(
   "degC", # degree celsius
   "\u00B0C", # degree Celsius
   # 52N SOS 4.x
-  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
+  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime",
+  # convert R classes
+  "factor",
+  "numeric",
+  "integer",
+  "character",
+  "logical",
+  "POSIXct"
 )
 
 
