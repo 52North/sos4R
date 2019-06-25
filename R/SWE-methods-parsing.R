@@ -330,10 +330,16 @@ parseField <- function(obj, sos, verbose = FALSE) {
   # The parsed elements and fields are closely bound to 52N SOS (OMEncoder.java)
   if (innerFieldName == sweTimeName) {
     def <- xml2::xml_attr(x = innerField, attr = "definition")
-    child <- xml2::xml_child(x = innerField)
     uom <- NA
-    if (sweUomName == xml2::xml_name(child, ns = namespaces)) {
-      uom <- xml2::xml_attr(x = child, attr = "href")
+    #
+    # handle special case of no children available
+    # see https://github.com/r-lib/xml2/issues/264
+    #
+    if (length(xml2::xml_children(innerField)) > 0) {
+      child <- xml2::xml_child(innerField)
+      if (sweUomName == xml2::xml_name(child, ns = namespaces)) {
+        uom <- xml2::xml_attr(x = child, attr = "href")
+      }
     }
     field <- c(name = name, definition = def, uom = uom, rClass = "POSIXct")
   }

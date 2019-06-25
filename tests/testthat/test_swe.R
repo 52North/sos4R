@@ -22,6 +22,7 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+#         Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2019-03-27                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
@@ -356,4 +357,23 @@ test_that("time values are parsed", {
   expect_s3_class(parsedValues[[2,1]], "POSIXct")
   expect_true(parsedValues[[1,1]] == parsedate::parse_iso_8601("2019-06-18"))
   expect_true(parsedValues[[2,1]] == parsedate::parse_iso_8601("2019-05-18"))
+})
+#
+# test parsing: SWE fields::time without uom ----
+#
+#
+# test data
+#
+fieldsString <- '<swe:DataRecord
+                    xmlns:swe="http://www.opengis.net/swe/1.0.1"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <swe:field name="field_6_name">
+                      <swe:Time definition="field_6_definition" />
+                  </swe:field>
+                </swe:DataRecord>'
+test_that("time without uom has uom NA", {
+  doc <- xml2::xml_root(x = xml2::read_xml(x = fieldsString))
+  xmlFields <- xml2::xml_children(doc)
+  fields <- lapply(xmlFields, parseField, testsos)
+  expect_true(is.na(fields[[1]][["uom"]]))
 })
