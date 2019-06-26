@@ -51,15 +51,3 @@ SweTextBlock <- function(tokenSeparator, blockSeparator, decimalSeparator,
       blockSeparator = blockSeparator,
       decimalSeparator = decimalSeparator, id = id)
 }
-
-
-# SWE 2.0
-
-SweTextEncoding <- function(tokenSeparator, blockSeparator, decimalSeparator = as.character(NA),
-                            id = as.character(NA)) {
-  new("SweTextEncoding", tokenSeparator = tokenSeparator,
-      blockSeparator = blockSeparator,
-      decimalSeparator = decimalSeparator, id = id)
-}
-
-
