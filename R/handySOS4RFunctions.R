@@ -710,8 +710,12 @@ setMethod(f = "sites",
             found <- TRUE
           }
           else {
-            # extend already present time interval
-            str(phenomenaAvailability)
+            if (timeBegin < phenomenaAvailability[[index]]$timeBegin) {
+              phenomenaAvailability[[index]]$timeBegin <- timeBegin
+            }
+            if (phenomenaAvailability[[index]]$timeEnd < timeEnd) {
+              phenomenaAvailability[[index]]$timeEnd <- timeEnd
+            }
           }
         }
       }
@@ -858,8 +862,50 @@ getData <- function(sos,
 
   if (length(observations) < 1)
     return(data.frame())
+  #
+  # implement without sosResult
+  #
+  # TODO document that we use the phentime or phentime.end
+  if (ncol(observations[[1]]@result) == 1) {
+    observations[[1]]@result <- cbind("timestamp" = sosTimeStamp(observations[[1]]), observations[[1]]@result)
+  }
+  result <- cbind("siteID" = sosFeatureIds(observations[[1]]), observations[[1]]@result, stringsAsFactors = FALSE)
+  if (length(observations) == 1) {
+    names(result)[[2]] <- "timestamp"
+    return(result)
+  }
+  for (observation in observations[-1]) {
+    if (ncol(observation@result) == 1) {
+      observation@result <- cbind("timestamp" = sosTimeStamp(observation), observation@result)
+    }
+    output <- utils::capture.output(result <- dplyr::full_join(result, cbind("siteID" = sosFeatureIds(observation), observation@result, stringsAsFactors = FALSE)), type = "message")
+    # this lovely construct prevents "argument is of length zero" constructs because R has not short circuit and and or
+    # https://en.wikipedia.org/wiki/Short-circuit_evaluation
+    if (sos@verboseOutput) {
+      if (!is.null(output)) {
+        if (nchar(output) > 0) {
+          cat(paste0("[getData] Processing received observations:\n\t", output))
+        }
+      }
+    }
+  }
+  #
+  # set timestamp column name correct
+  #
+  names(result)[[2]] <- "timestamp"
+  #
+  # in the end, we want siteIDs as factors (during the join, it produces error messages)
+  #
+  result[["siteID"]] <- as.factor(result[["siteID"]])
+  return(result)
+}
 
-  results <- sosResult(observations)
-
-  return(results)
+sosTimeStamp <- function(observation = NULL) {
+  stopifnot(!is.null(observation))
+  if (inherits(observation@phenomenonTime, "GmlTimeInstant")) {
+    timestamp <- observation@phenomenonTime@timePosition@time
+  } else {
+    timestamp <- observation@phenomenonTime@endPosition@time
+  }
+  return(timestamp)
 }

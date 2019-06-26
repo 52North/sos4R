@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:GetFeatureOfInterestResponse xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sams="http://www.opengis.net/samplingSpatial/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:sf="http://www.opengis.net/sampling/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetFeatureOfInterest.xsd">
+    <sos:featureMember>
+        <sams:SF_SpatialSamplingFeature gml:id="ssf_de200ad929d803866d1a5b30ec35cc17933afd3f453a7165ad99a613f00566e1">
+            <gml:identifier codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">1056</gml:identifier>
+            <gml:name codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">KERIKERI EWS</gml:name>
+            <sf:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint"/>
+            <sf:sampledFeature xlink:href="http://www.opengis.net/def/nil/OGC/0/unknown"/>
+            <sams:shape>
+                <ns:Point xmlns:ns="http://www.opengis.net/gml/3.2" ns:id="Point_ssf_de200ad929d803866d1a5b30ec35cc17933afd3f453a7165ad99a613f00566e1">
+                    <ns:pos srsName="http://www.opengis.net/def/crs/EPSG/0/4326">-35.183 173.926</ns:pos>
+                </ns:Point>
+            </sams:shape>
+        </sams:SF_SpatialSamplingFeature>
+    </sos:featureMember>
+</sos:GetFeatureOfInterestResponse>

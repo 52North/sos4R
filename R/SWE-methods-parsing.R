@@ -134,15 +134,18 @@ parseValues <- function(values, fields, encoding, sos, verbose = FALSE) {
       }
       if (is.null(valueConverter)) {
         # fallback option
-        message(paste0("No converter for values with the definition '",
-                       currentField[["definition"]],
-                       "'! Trying a default for R class '",
-                       currentField[["rClass"]],
-                       "' or the default fallback '",
-                       "sosConvertDouble", # manually sync with Defaults.R
-                       "', but you can add one when creating a SOS using ",
-                       "SosDataFieldConvertingFunctions() if the converted ",
-                       "values are not as expected.\n"))
+        # TODO clarify, if the if should be removed or not
+        if (verbose) {
+          cat(paste0("[parseValues] No converter for values with the definition '",
+                         currentField[["definition"]],
+                         "'! Trying a default for R class '",
+                         currentField[["rClass"]],
+                         "' or the default fallback '",
+                         "sosConvertDouble", # manually sync with Defaults.R
+                         "', but you can add one when creating a SOS using ",
+                         "SosDataFieldConvertingFunctions() if the converted ",
+                         "values are not as expected.\n"))
+        }
         if (is.null(currentField[["rClass"]])) {
           valueConverter <- converters[["fallBack"]]
         } else {

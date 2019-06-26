@@ -28,6 +28,7 @@ Authors@R:
 	         role = "cph"))
 Depends: R (>= 3.4.0)
 Imports:
+    dplyr,
     httr,
     methods,
     parsedate,
