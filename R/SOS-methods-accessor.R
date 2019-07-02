@@ -731,6 +731,18 @@ setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering"),
             warning("Could not convert time to R objects.")
             return(obj@time)
           })
+setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering_2.0.0"),
+          definition = function(obj, convert = TRUE) {
+            if (!convert)
+              return(data.frame("resultTime" = obj@resultTime, "phenomenonTime" = obj@phenomenonTime))
+
+            if (is(obj@resultTime, "GmlTimePeriod") && is(obj@phenomenonTime, "GmlTimePeriod")) {
+              return(data.frame("resultTime" = sosTime(obj@resultTime), "phenomenonTime" = sosTime(obj@phenomenonTime)))
+            }
+
+            warning("Could not convert time to R objects.")
+            return(data.frame("resultTime" = obj@resultTime, "phenomenonTime" = obj@phenomenonTime))
+          })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
           definition = function(obj, ...) {
             start <- NA

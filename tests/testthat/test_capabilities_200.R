@@ -32,41 +32,57 @@ testsos <- SOS_Test(name = "testcaps", version = sos200_version)
 xmlDoc <- xml2::read_xml(x = "../responses/Capabilities_200_Example.xml", options = SosDefaultParsingOptions())
 sos200Caps <- parseSosCapabilities(obj = xmlDoc, sos = testsos)
 testsos@capabilities <- sos200Caps
-
+#
+# test identification abstract and title from ows service identification ----
+#
 test_that("identification snippet", {
   ident <- parseOwsServiceIdentification(obj = xml2::xml_child(xmlDoc, owsServiceIdentificationName),
                                          sos = testsos)
   expect_match(sosTitle(ident), "Wupperverband SOS")
   expect_match(sosAbstract(ident), "Wupperverband(.*)Catchment Area")
 })
-
+#
+# test identification abstract and title from capabilities ----
+#
 test_that("identification from capabilities", {
   expect_match(sosTitle(testsos), "Wupperverband SOS")
   expect_match(sosAbstract(testsos), "Wupperverband(.*)Catchment Area")
 })
-
+#
+# test keywords ----
+#
 test_that("keywords", {
   expect_length(sosServiceIdentification(testsos)@keywords, 3)
 })
-
+#
+# test fees ----
+#
 test_that("fees", {
   expect_equal(sosServiceIdentification(testsos)@fees, "NONE")
 })
-
+#
+# test access constraints ----
+#
 test_that("access constraints", {
   expect_match(sosServiceIdentification(testsos)@accessConstraints, "http://fluggs.wupperverband.de")
 })
-
+#
+# test profiles ----
+#
 test_that("profiles", {
   expect_equal(sosServiceIdentification(testsos)@profile[11], "http://www.opengis.net/spec/SOS/2.0/conf/core")
   expect_length(sosServiceIdentification(testsos)@profile, 34)
 })
-
+#
+# test content: offerings ----
+#
 test_that("content: offerings", {
   expect_length(sosOfferings(testsos), 8)
   expect_equal(sosName(sosOfferings(testsos)[[2]]), "Zeitreihen für Prozedur Einzelwert")
 })
-
+#
+# test content: offering IDs ----
+#
 test_that("content: offering IDs", {
   expect_length(sosOfferingIds(testsos), 8)
   expect_equal(sosOfferingIds(testsos)[[2]], "Zeitreihen_Einzelwert")
@@ -127,7 +143,9 @@ xsi:schemaLocation="http://www.opengis.net/swes/2.0 http://schemas.opengis.net/s
 <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPolygon</sos:featureOfInterestType>
 </sos:ObservationOffering>
 </swes:offering>'
-
+#
+# test offering is parsed correctly ----
+#
 test_that("offering is parsed correctly", {
   offering <- parseSosObservationOffering_200(obj = xml2::read_xml(x = swes_offering), sos = testsos)
   expect_equal(offering@id, "ws2500")
@@ -151,7 +169,9 @@ context("capabilities: NIWA 2.0 SOS")
 
 niwa <- SOS_Test(name = "testniwa")
 niwa@capabilities <- parseSosCapabilities200(obj = xml2::read_xml("../responses/climate-sos.niwa.co.nz.xml"), sos = testsos)
-
+#
+# test provider is parsed correctly ----
+#
 test_that("provider is parsed correctly", {
   expect_equal(sosServiceProvider(niwa)@providerName, "NIWA")
 })
@@ -192,13 +212,17 @@ operationXml200 <- '<ows:Operation name="DescribeSensor" xmlns:sos="http://www.o
 				</ows:AllowedValues>
 			</ows:Parameter>
 		</ows:Operation>'
-
-test_that("name", {
+#
+# test name parsing operation::name ----
+#
+test_that("name parsing of operations", {
   doc <- xml2::read_xml(x = operationXml200)
   operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_equal(sosName(operation), "DescribeSensor")
 })
-
+#
+# test parsing operation::DCP ----
+#
 test_that("DCP", {
   doc <- xml2::read_xml(x = operationXml200)
   operation <- parseOwsOperation(obj = doc, sos = testsos)
@@ -207,15 +231,59 @@ test_that("DCP", {
   expect_equal(operation@DCPs[[3]], list("ows:Post", "text/xml", "http://ioossos.axiomalaska.com/52n-sos-ioos-dev/sos/pox"))
 })
 
+#
+# test name parsing operation::parameter::name ----
+#
 test_that("parameter names", {
   doc <- xml2::read_xml(x = operationXml200)
   operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_named(operation@parameters, c("outputFormat"))
 })
 
+#
+# test name parsing operation::parameter::value ----
+#
 test_that("parameter values", {
   doc <- xml2::read_xml(x = operationXml200)
   operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_length(operation@parameters[["outputFormat"]], 1)
   expect_equal(operation@parameters[["outputFormat"]], list('text/xml; subtype="sensorML/1.0.1/profiles/ioos_sos/1.0"'))
+})
+#
+# test summary of SOS ----
+#
+test_that("summary(SOS_200) returns no error", {
+  webmockr::enable("httr")
+  webmockr::httr_mock()
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_for-summary.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  summaryTestSos <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+                        version = sos200_version, binding = "KVP", useDCPs = FALSE)
+  summary <- summary(summaryTestSos)
+
+  expect_length(summary, 10)
+  expect_equal(summary$class[[1]], "SOS_2.0.0")
+  expect_equal(summary$version, "2.0.0")
+  expect_equal(summary$url, "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp")
+  expect_equal(summary$binding, "KVP")
+  expect_equal(summary$title, "52N SOS")
+  expect_equal(summary$abstract, "52North Sensor Observation Service - Data Access for the Sensor Web")
+  # TODO test time elemenent in summary
+  #expect_equal(summary$time, "TBD")
+  expect_equal(summary$offeringCount, 4)
+  expect_equal(summary$procedureCount, 4)
+  expect_equal(summary$observablePropCount, 43)
+  expect_true(inherits(summary, "summary.SOS_versioned"))
+
+  webmockr::stub_registry_clear()
+  webmockr::disable("httr")
 })
