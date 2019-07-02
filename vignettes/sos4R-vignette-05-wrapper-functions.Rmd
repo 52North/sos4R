@@ -32,8 +32,8 @@ In general, these functions always return an object of class `data.frame`, even 
 ```{r setup}
 library("sos4R")
 mySos <- SOS(url = "https://climate-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
-maxOutputRowsPerExample <- 30
-
+maxOutputRowsPerExample <- 5
+maxOutputColumnsPerExample <- 3
 ```
 
 
@@ -47,7 +47,7 @@ str(phenomena)
 ```
 
 ```{r phenomena_table}
-phenomena
+phenomena[1:maxOutputRowsPerExample,]
 ```
 
 The retrieved data can be extended to the time intervals and site identifier for which data is available. The next example shows the overall temporal availability of the phenomena in the SOS instance:
@@ -75,15 +75,15 @@ The function `sites(..)` provides information about sites where observations are
 The returned object is a `SpatialPointsDataFrame`.
 
 ```{r sites}
-sites <- sites(sos = mySos)[1:maxOutputRowsPerExample,]
-sites
+sites <- sites(sos = mySos)
+sites[1:maxOutputRowsPerExample,]
 ```
 
 To see all sites, even the ones without any data, use the `empty` parameter.
 
 ```{r sites_empty, eval=FALSE}
 sitesEmpty <- sites(sos = mySos, empty = TRUE)
-as.data.frame(sitesEmpty)[1:maxOutputRowsPerExample,]
+sitesEmpty[1:maxOutputRowsPerExample,]
 ```
 
 You can retrieve additional metadata about the phenomena and the time period for which data is available.
@@ -92,20 +92,20 @@ In the next chunks the object is coerced to a `date.frame` to get a tabular view
 
 ```{r sites_metadata_phen}
 sites_with_phenomena <- sites(sos = mySos, includePhenomena = TRUE)
-as.data.frame(sites_with_phenomena)[1:maxOutputRowsPerExample,1:5]
+sites_with_phenomena[1:maxOutputRowsPerExample, 1:maxOutputColumnsPerExample]
 ```
 
-The next section show how to retriev spatial information about the sites and temporal information about the available phenomena:
+The next section show how to retrieve spatial information about the sites and temporal information about the available phenomena:
 
 ```{r sites_metadata_temporal}
 sites_with_temporal_bbox <- sites(sos = mySos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
-tail(sites_with_temporal_bbox@data, n = 3)[,1:3]
+tail(sites_with_temporal_bbox, n = 3)[,1:maxOutputColumnsPerExample]
 ```
 
 The following chunk shows how to get a better representation:
 
 ```{r sites_with_temporal_bbox_structure}
-str(tail(sites_with_temporal_bbox@data, n = 3)[,1:3])
+str(tail(sites_with_temporal_bbox, n = 3)[,1:maxOutputColumnsPerExample])
 ```
 
 
@@ -122,13 +122,13 @@ sites_by_phenomena[1:maxOutputRowsPerExample,]
 
 ```{r sites_time}
 sites_by_time <- sites(sos = mySos, begin = parsedate::parse_iso_8601("1904-01-01"), end = parsedate::parse_iso_8601("1905-12-31"))
-sites_by_time
+sites_by_time[1:maxOutputRowsPerExample,]
 ```
 
 The `SpatialPointsDataFrame` allows access to coordinates with coordinate reference system (CRS).
 
 ```{r sites_coords}
-sp::coordinates(sites)[1:3,]
+sp::coordinates(sites)[1:maxOutputRowsPerExample,]
 ```
 
 ```{r sites_projection}
@@ -164,12 +164,14 @@ You can extend the information returned with these parameters:
 - `includeTemporalBBox` to also show the time when data is available (boolean)
 
 ```{r siteList_empty, eval=FALSE}
-siteList(sos = mySos, empty = TRUE)
+siteList_with_empty <- siteList(sos = mySos, empty = TRUE)
+siteList_with_empty[1:maxOutputRowsPerExample,]
 ```
 
 ```{r siteList_includes}
 # under development - https://github.com/52North/sos4R/issues/90
-#siteList(sos = mySos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+#siteListe_with_metadata <- siteList(sos = mySos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+#siteListe_with_metadata[1:maxOutputRowsPerExample,]
 ```
 
 
@@ -183,10 +185,11 @@ You can filter the results with these parameters:
 **Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
 
 ```{r siteList_phenomena_time}
-siteList(sos = mySos,
-         phenomena = phenomena$phenomenon[1:2], # no effect with current data
+siteList_filtered_by_time_and_phenomenon <- siteList(sos = mySos,
+         phenomena = phenomena$phenomenon[1:2],
          begin = as.POSIXct("1950-01-01"), end = as.POSIXct("1960-12-31")
          )
+siteList_filtered_by_time_and_phenomenon
 ```
 
 ## Data download
@@ -202,17 +205,16 @@ Without a temporal extent, the used SOS only returns the last measurement.
 
 ```{r getData_single}
 observationData <- getData(sos = mySos,
-                           phenomena = phenomena$phenomenon[1],
-                           sites = siteList$siteID[1]
+                           phenomena = phenomena[18,1],
+                           sites = siteList[1:2,1]
                            )
-
 str(observationData)
 ```
 
 The result `data.frame` includes additional metadata.
 
 ```{r getData_attributes}
-attributes(observationData$`m^3/s`)
+attributes(observationData$DEGREE_CELSIUS)
 ```
 
 Request more data with a temporal extent for all sites.
@@ -222,11 +224,10 @@ Request more data with a temporal extent for all sites.
 ```{r getData_temporal}
 # under development - see https://github.com/52North/sos4R/issues/138 and https://github.com/52North/sos4R/issues/96
 observationData <- getData(sos = mySos,
-                           phenomena = phenomena$phenomenon[1],
-                           sites = sites@data[1,1],
+                           phenomena = phenomena[18,1],
+                           sites = siteList[1,1],
                            begin = parsedate::parse_iso_8601("1970-01-01T12:00:00+12:00"),
-                           end = parsedate::parse_iso_8601("2000-01-02T12:00:00+12:00"),
-                           retrieveFOI = FALSE, # TO BE FIXED
+                           end = parsedate::parse_iso_8601("2000-01-02T12:00:00+12:00")
                            )
 
 str(observationData)
@@ -238,9 +239,9 @@ Plot received data as time series:
 
 ```{r getData_timeseries_plot}
 suppressPackageStartupMessages(library(xts))
-ts <- xts(observationData[,3], observationData$timestamp)
-
-plot(x = ts, main = "Monthly Discharge (m³/s) at Station#15341", yaxis.right = FALSE)
+ts1056 <- xts(observationData[observationData$siteID == '1056',3], observationData[observationData$siteID == '1056',"timestamp"])
+names(ts1056) <- "#1056"
+plot(x = ts1056, main = "Monthly: Extreme max. Temp. (°C)", yaxis.right = FALSE, legend.loc = 'topleft')
 ```
 
 
@@ -270,28 +271,21 @@ multipleSites <- siteList$siteID[35:38]
 # WORKAROUND
 #
 observationData <- getData(sos = mySos,
-                           phenomena = phenomena$phenomenon[1],
-                           sites = sites@data[c(1,10),1],
-                           begin = parsedate::parse_iso_8601("1997-05-31"),
-                           end = parsedate::parse_iso_8601("1999-12-31"),
-                           retrieveFOI = FALSE, # TO BE FIXED
-                           )
-observationData2 <- getData(sos = mySos,
-                           phenomena = phenomena$phenomenon[1],
-                           sites = sites@data[10,1],
-                           begin = as.POSIXct("1997-05-31"),
-                           end = as.POSIXct("1999-12-31"),
-                           retrieveFOI = FALSE, # TO BE FIXED
+                           phenomena = phenomena[18,1],
+                           sites = siteList[1:2,1],
+                           begin = parsedate::parse_iso_8601("1997-01-01T12:00:00+12:00"),
+                           end = parsedate::parse_iso_8601("2000-01-02T12:00:00+12:00")
                            )
 
-ts <- xts(observationData[,3], observationData$timestamp)
-ts2 <- xts(observationData2[,3], observationData2$timestamp)
 
-plot(x = na.fill(merge(ts,ts2), list(NA, "extend", NA)), main = "Discharge (m³/s) at Stations #15341 and #15514", yaxis.right = FALSE)
+ts1056 <- xts(observationData[observationData$siteID == '1056',3], observationData[observationData$siteID == '1056',"timestamp"])
+names(ts1056) <- "Station#1056"
+ts11234 <- xts(observationData[observationData$siteID == '11234',3], observationData[observationData$siteID == '11234',"timestamp"])
+names(ts11234) <- "Station#11234"
+plot(x = na.fill(merge(ts1056, ts11234), list(NA, "extend", NA)), main = "Monthly: Extreme max. Temp. (°C)", yaxis.right = FALSE, legend.loc = 'topleft')
 ```
 
 
 ```{r getData_summary}
-# not implemented
 summary(observationData)
 ```
