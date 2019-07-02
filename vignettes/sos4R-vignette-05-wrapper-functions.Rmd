@@ -222,7 +222,6 @@ Request more data with a temporal extent for all sites.
 **Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
 
 ```{r getData_temporal}
-# under development - see https://github.com/52North/sos4R/issues/138 and https://github.com/52North/sos4R/issues/96
 observationData <- getData(sos = mySos,
                            phenomena = phenomena[18,1],
                            sites = siteList[1,1],
