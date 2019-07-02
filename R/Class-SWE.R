@@ -22,6 +22,7 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+#         Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
@@ -98,11 +99,11 @@ setClass("SweTextBlock",
          }
 )
 
-
-# SWE 2.0
-
+#
+# SWE 2.0 ----
 #
 #
+# class SweTextEncoding ----
 #
 setClass("SweTextEncoding",
          representation(tokenSeparator = "character",
@@ -119,6 +120,36 @@ setClass("SweTextEncoding",
            return(TRUE)
          }
 )
+
+.print.SweTextEncoding <- function(x, ...) {
+  cat(.toString.SweTextEncoding(x, ...), "\n")
+  invisible(x)
+}
+
+.toString.SweTextEncoding <- function(x, ...) {
+  s <- paste("Object of class SweTextEncoding",
+              " '",
+              x@tokenSeparator,
+              " ",
+              x@blockSeparator,
+              " ",
+              x@decimalSeparator,
+              "'; id: ",
+              x@id,
+              sep = "")
+  return(s)
+}
+
+setMethod("print", "SweTextEncoding", function(x, ...) .print.SweTextEncoding(x, ...))
+setMethod("show", "SweTextEncoding", function(object) .print.SweTextEncoding(object))
+setMethod("toString", "SweTextEncoding", function(x, ...) .toString.SweTextEncoding(x, ...))
+
+SweTextEncoding <- function(tokenSeparator, blockSeparator, decimalSeparator = as.character(NA),
+                            id = as.character(NA)) {
+  new("SweTextEncoding", tokenSeparator = tokenSeparator,
+      blockSeparator = blockSeparator,
+      decimalSeparator = decimalSeparator, id = id)
+}
 
 
 ############################################################################## #
