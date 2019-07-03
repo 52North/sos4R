@@ -779,16 +779,20 @@ setMethod(f = "sites",
 
 # TODO convert to real conversion function
 as.SpatialPointsDataFrame.SamsSamplingFeatureList <- function(list) {
-  if (inherits(list[[1]], "GmlFeatureProperty") &&
-      inherits(list[[1]]@feature, "SamsSamplingFeature")) {
+  if (inherits(list[[1]], "GmlFeatureProperty")) {
     coords <- data.frame()
     siteIDs <- list()
     proj4string <- ""
-    for (.site in list) {
-      siteIDs <- c(siteIDs, .site@feature@identifier)
-      spatialPoints <- as.SpatialPoints.SamsSamplingFeature(.site@feature)
-      coords <- rbind(coords, coordinates(spatialPoints))
-      proj4string <- spatialPoints@proj4string
+    for (site in list) {
+      if (inherits(site@feature, "SamsSamplingFeature")) {
+        siteIDs <- c(siteIDs, site@feature@identifier)
+        spatialPoints <- as.SpatialPoints.SamsSamplingFeature(site@feature)
+        coords <- rbind(coords, coordinates(spatialPoints))
+        proj4string <- spatialPoints@proj4string
+      }
+      else {
+        stop(paste0("Input type not supported: ", class(site@feature)))
+      }
     }
     # TODO check proj4string difference between sites!
     return(SpatialPointsDataFrame(coords = coords,
@@ -796,6 +800,7 @@ as.SpatialPointsDataFrame.SamsSamplingFeatureList <- function(list) {
                                   match.ID = FALSE,
                                   proj4string = proj4string))
   }
+  stop(paste0("Input type not supported: ", class(list[[1]]@feature)))
 }
 #
 #
