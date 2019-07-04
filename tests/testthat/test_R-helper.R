@@ -19,22 +19,24 @@
 # You should have received a copy of the GNU General Public License along with #
 # this program (see gpl-2.0.txt). If not, write to the Free Software           #
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
-# visit the Free Software Foundation web page, http://www.fsf.org              #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
-# Created: 2018-11-23                                                          #
+# Created: 2019-07-04                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ############################################################################## #
+context("R-helper::sosIsListFieldAvailable")
 #
-# Helper function to check if the given list field is available.
+# test sosIsListFieldAvailable ----
 #
-# Returns TRUE in the case of not NULL and a list with min 1 element
-#
-sosIsListFieldAvailable <- function(listField) {
-  is(listField, "list") &&
-    length(listField) > 0 &&
-    !any(sapply(listField, is.na)) &&
-    all(sapply(listField, is, "character")) &&
-    all(sapply(listField, nchar) > 0)
-}
+test_that("test sosIsListFieldAvailable", {
+  expect_false(sosIsListFieldAvailable(NA))
+  expect_false(sosIsListFieldAvailable(NULL))
+  expect_false(sosIsListFieldAvailable("you shall return false"))
+  expect_false(sosIsListFieldAvailable(list(NA,"", "you shall return false, again")))
+  expect_false(sosIsListFieldAvailable(list(2.0,"", "you shall return false, again")))
+  expect_false(sosIsListFieldAvailable(list("")))
+  expect_true(sosIsListFieldAvailable(list("a")))
+  expect_true(sosIsListFieldAvailable(list("a","b")))
+})
