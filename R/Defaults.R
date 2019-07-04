@@ -73,7 +73,7 @@
     parseTemporalObservation,
     parseComplexObservation,
     #
-    parseMeasurementTimeseries,
+    parseWmlMeasurementTimeseries,
     #
     parseCSV,
     parseOM,

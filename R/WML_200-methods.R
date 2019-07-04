@@ -22,30 +22,11 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Benjamin Pross (b.pross@52north.org)                                 #
+#         Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2016-01-27                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ############################################################################## #
-
-#
-# contruction function ----
-#
-WmlMonitoringPoint <- function(sampledFeatures,
-                            id,
-                            identifier,
-                            names,
-                            shape,
-                            verticalDatums = xml2::xml_missing(),
-                            timeZone = xml2::xml_missing()) {
-  new("WmlMonitoringPoint",
-      sampledFeatures = sampledFeatures,
-      id = id,
-      identifier = identifier,
-      names = names,
-      shape = shape,
-      verticalDatums = verticalDatums,
-      timeZone = timeZone)
-}
 
 #
 # parsing functions ----
@@ -75,15 +56,119 @@ parseWmlMonitoringPoint <- function(obj, sos, verbose = FALSE) {
 
   return(mp)
 }
-
-parseMeasurementTimeseries <- function(obj, sos, verbose = FALSE) {
-  return(obj)
+#
+# <wml2:metadata>
+#   <wml2:MeasurementTimeseriesMetadata>
+#     <wml2:temporalExtent>
+#       <gml:TimePeriod xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="phenomenonTime_1">
+#         <gml:beginPosition>2019-01</gml:beginPosition>
+#         <gml:endPosition>2019-06</gml:endPosition>
+#       </gml:TimePeriod>
+#     </wml2:temporalExtent>
+#   </wml2:MeasurementTimeseriesMetadata>
+# </wml2:metadata>
+#
+# <wml2:metadata>
+#   <wml2:MeasurementTimeseriesMetadata>
+#     <wml2:temporalExtent xlink:href="#referenced-timestamp" />
+#   </wml2:MeasurementTimeseriesMetadata>
+# </wml2:metadata>
+#
+parseWmlMeasurementTimeseriesMetadata <- function(obj, sos, verbose = FALSE) {
+  temporalExtentNode <- xml2::xml_child(obj, search = "wml2:temporalExtent", ns = sos@namespaces)
+  if (xml2::xml_has_attr(temporalExtentNode, "xlink:href", ns = sos@namespaces)) {
+    href <- xml2::xml_attr(temporalExtentNode, "xlink:href", ns = sos@namespaces) # remove this line
+    refNode <- gmlGetReferencedNode(sos = sos, doc = xml2::xml_root(obj), node = temporalExtentNode, verbose = verbose)
+    stopifnot(!is.na(refNode), !is.null(refNode), is(refNode, "xml_node"))
+    timePeriodNode <- xml2::xml_child(refNode, search = "gml:TimePeriod", ns = sos@namespaces)
+    timeInstantNode <- xml2::xml_child(refNode, search = "gml:TimeInstant", ns = sos@namespaces)
+  } else {
+    timePeriodNode <- xml2::xml_child(obj, search = "wml2:temporalExtent/gml:TimePeriod", ns = sos@namespaces)
+    timeInstantNode <- xml2::xml_child(obj, search = "wml2:temporalExtent/gml:TimeInstant", ns = sos@namespaces)
+  }
+  stopifnot(is(timePeriodNode, "xml_node") || is(timeInstantNode, "xml_node"))
+  if (is(timePeriodNode, "xml_node")) {
+    temporalExtent <- parseTimePeriod(timePeriodNode, sos)
+  } else {
+    temporalExtent <- parseTimeInstant(timeInstantNode, sos)
+  }
+  return(WmlMeasurementTimeseriesMetadata(temporalExtent = temporalExtent))
+}
+#
+# <wml2:interpolationType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/continuous" xlink:title="Instantaneous"/>
+#
+parseWmlInterpolationType <- function(obj, sos, verbose = FALSE) {
+  href <- xml2::xml_attr(obj, "xlink:href", ns = sos@namespaces)
+  stopifnot(is(href, "character"), nchar(href) > 0)
+  title <- xml2::xml_attr(obj, "xlink:title", ns = sos@namespaces)
+  stopifnot(is(title, "character"), nchar(title) > 0)
+  return(WmlInterpolationType(href = href, title = title))
+}
+#
+# <wml2:defaultPointMetadata>
+#   <wml2:DefaultTVPMeasurementMetadata>
+#     <wml2:uom code="m^3/s"/>
+#     <wml2:interpolationType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/continuous" xlink:title="Instantaneous"/>
+#   </wml2:DefaultTVPMeasurementMetadata>
+# </wml2:defaultPointMetadata>
+#
+parseWmlDefaultTVPMeasurementMetadata <- function(obj, sos, verbose = FALSE) {
+  uomNode <- xml2::xml_find_first(obj, xpath = "wml2:uom")
+  uom <- xml2::xml_attr(uomNode, "code", ns = sos@namespaces)
+  stopifnot(is(uom, "character"), nchar(uom) > 0)
+  interpolationTypeXml <- xml2::xml_find_first(obj, xpath = "wml2:interpolationType")
+  interpolationType <- parseWmlInterpolationType(interpolationTypeXml, sos)
+  stopifnot(isS4(interpolationType), is(interpolationType, "WmlInterpolationType"))
+  return(WmlDefaultTVPMeasurementMetadata(uom = uom, interpolationType = interpolationType))
+}
+#
+# <wml2:point>
+#   <wml2:MeasurementTVP>
+#     <wml2:time>2019-05-17T07:00:00.000+12:00</wml2:time>
+#     <wml2:value>5.3</wml2:value>
+#   </wml2:MeasurementTVP>
+# </wml2:point>
+#
+parseWmlMeasurementTVP <- function(obj, sos, verbose = FALSE) {
+  timeNode <- xml2::xml_child(obj, search = "wml2:time", ns = sos@namespaces)
+  timeString <- xml2::xml_text(timeNode, trim = TRUE)
+  time <- parsedate::parse_iso_8601(timeString)
+  valueNode <- xml2::xml_child(obj, search = "wml2:value", ns = sos@namespaces)
+  value <- xml2::xml_double(valueNode)
+  return(WmlMeasurementTVP(time = time, value = value))
+}
+#
+#
+#
+parseWmlMeasurementTimeseries <- function(obj, sos, verbose = FALSE) {
+  id <- xml2::xml_attr(x = obj, attr = "gml:id", ns = sos@namespaces)
+  #
+  # metadata
+  #
+  metadataNode <- xml2::xml_child(obj, search = "wml2:metadata/wml2:MeasurementTimeseriesMetadata", ns = sos@namespaces)
+  metadata <- parseWmlMeasurementTimeseriesMetadata(metadataNode, sos)
+  stopifnot(isS4(metadata), is(metadata, "WmlMeasurementTimeseriesMetadata"))
+  #
+  # defaultPointMetadata
+  #
+  defaultPointMetadataNode <- xml2::xml_child(obj, search = "wml2:defaultPointMetadata/wml2:DefaultTVPMeasurementMetadata", ns = sos@namespaces)
+  defaultPointMetadata <- parseWmlDefaultTVPMeasurementMetadata(defaultPointMetadataNode, sos)
+  stopifnot(isS4(defaultPointMetadata), is(defaultPointMetadata, "WmlDefaultTVPMeasurementMetadata"))
+  #
+  # points
+  #
+  pointNodes <- xml2::xml_find_all(obj, xpath = "wml2:point/wml2:MeasurementTVP", ns = sos@namespaces)
+  points <- sapply(pointNodes, parseWmlMeasurementTVP, sos)
+  stopifnot(is(points, "list"), length(points) > 0, all(sapply(points, inherits, what = "WmlMeasurementTVP")))
+  #
+  mt <- WmlMeasurementTimeseries(id = id, metadata = metadata, defaultPointMetadata = defaultPointMetadata, points = points)
+  return(mt)
 }
 
 #
 # coercion methods ----
 #
-as.SpatialPoints.WmlMonitoringPoint = function(from) {
+as.SpatialPoints.WmlMonitoringPoint <- function(from) {
   as(from@shape, "SpatialPoints")
 }
 setAs("WmlMonitoringPoint", "SpatialPoints",
@@ -96,3 +181,50 @@ setAs("WmlMonitoringPoint", "Spatial",
         as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
+#
+#
+#
+as.data.frame.WmlMeasurmentTimeseries <- function(from) {
+  # cols: timestamp, value <- should be renamed afterwards
+  df <- data.frame("timestamp" = double(0), "value" = double(0), stringsAsFactors = FALSE)
+  for (wmlMTVP in from@points) {
+    df <- rbind(df, data.frame("timestamp" = wmlMTVP@time,
+                                      "value" = wmlMTVP@value,
+                                      stringsAsFactors = FALSE))
+  }
+  attr(df, "metadata") <- from@metadata
+  attr(df, "defaultPointMetadata") <- from@defaultPointMetadata
+  return(df)
+}
+setAs("WmlMeasurementTimeseries", "data.frame",
+      function(from) {
+        as.data.frame.WmlMeasurmentTimeseries(from)
+      }
+)
+#
+# accessor methods ----
+#
+#
+# sosTime(WmlMeasurementTVP) ----
+#
+setMethod(f = "sosTime",
+          signature = signature(obj = "WmlMeasurementTVP"),
+          definition = function(obj) {
+            return(as(obj@time, "POSIXct"))
+          })
+#
+# sosResult(WmlMeasurementTVP) ----
+#
+setMethod(f = "sosResult",
+          signature = signature(obj = "WmlMeasurementTVP"),
+          definition = function(obj) {
+            return(obj@value)
+          })
+#
+# sosFeatureIds(WmlMonitoringPoint) ----
+#
+setMethod(f = "sosFeatureIds",
+          signature = signature(obj = "WmlMonitoringPoint"),
+          definition = function(obj) {
+            return(obj@identifier)
+          })

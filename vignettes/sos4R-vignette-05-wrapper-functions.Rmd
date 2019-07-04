@@ -214,7 +214,7 @@ str(observationData)
 The result `data.frame` includes additional metadata.
 
 ```{r getData_attributes}
-attributes(observationData$DEGREE_CELSIUS)
+attributes(observationData[[3]])
 ```
 
 Request more data with a temporal extent for all sites.

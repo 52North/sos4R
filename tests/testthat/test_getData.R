@@ -22,6 +22,7 @@
 # visit the Free Software Foundation web page, http://www.fsf.org.             #
 #                                                                              #
 # Author: Daniel Nüst (daniel.nuest@uni-muenster.de)                           #
+#         Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2019-05-16                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
@@ -51,7 +52,7 @@ webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS
     body = readr::read_file("../responses/hydro-sos.niwa.co.nz.xml"),
     headers = list("Content-Type" = "application/xml")
   )
-webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=pH&featureOfInterest=29808&responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0") %>%
+webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=pH&featureOfInterest=29808") %>%
   webmockr::wi_th(
     headers = list("Accept" = "application/xml")
   ) %>%
@@ -60,7 +61,7 @@ webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS
     body = emptyGetObservationResponse,
     headers = list("Content-Type" = "application/xml")
   )
-webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=Discharge&featureOfInterest=29808&responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0") %>%
+webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=Discharge&featureOfInterest=29808") %>%
   webmockr::wi_th(
     headers = list("Accept" = "application/xml")
   ) %>%
@@ -158,7 +159,7 @@ test_that("KVP::getData() provides the siteIDs, column metadata, and correct val
       body = readr::read_file("../responses/hydro-sos.niwa.co.nz.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  webmockr::stub_request('get', uri = 'http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=MTHLY_STATS__EXTREME_MAXIMUM_TEMPERATURE__MTHLY__EXTR_MAX_TEMP_&featureOfInterest=1056,11234&responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0') %>%
+  webmockr::stub_request('get', uri = 'http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=MTHLY_STATS__EXTREME_MAXIMUM_TEMPERATURE__MTHLY__EXTR_MAX_TEMP_&featureOfInterest=1056,11234') %>%
     webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -302,7 +303,7 @@ test_that("KVP::test merge with two ts with same feature but different phenomeno
       body = readr::read_file("../responses/hydro-sos.niwa.co.nz.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  webmockr::stub_request('get', uri = 'http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=MTHLY_STATS__EXTREME_MAXIMUM_TEMPERATURE__MTHLY__EXTR_MAX_TEMP_&featureOfInterest=1056&responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0') %>%
+  webmockr::stub_request('get', uri = 'http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=MTHLY_STATS__EXTREME_MAXIMUM_TEMPERATURE__MTHLY__EXTR_MAX_TEMP_&featureOfInterest=1056') %>%
     webmockr::wi_th(
       headers = list('Accept' = 'application/xml')
     ) %>%
@@ -359,10 +360,72 @@ test_that("KVP::test merge with two ts with same feature but different phenomeno
   expect_equal(observationData[[1,4]], 26.5)
   expect_equal(observationData[[2,4]], 29)
 })
+#
+# KVP::getData(sos) parses WML 2.0 encoded observations ----
+#
+test_that("WaterML 2.0 Observations are decoded", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-get-data?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/hydro-sos.niwa.co.nz.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request('get', uri = 'http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetObservation&observedProperty=MTHLY_EXTR_MAX_TEMP&featureOfInterest=1056') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetObservationResponse_200_WML_200.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request('get', uri = 'http://example.com/sos-get-data?service=SOS&version=2.0.0&request=GetFeatureOfInterest&featureOfInterest=1056') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetFeatureOfInterestResponse_200_niwa_1056.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-get-data", binding = "KVP", useDCPs = FALSE)
+  observationData <- getData(sos = sos, phenomena = c("MTHLY_EXTR_MAX_TEMP"), sites = c("1056"), verbose = FALSE)
+  expect_true(is(observationData, "data.frame"))
+  colnames <- colnames(observationData)
+  #
+  # test meta data
+  #
+  expect_length(colnames, 3)
+  expect_equal(colnames[1], "siteID")
+  expect_equal(colnames[2], "timestamp")
+  expect_equal(colnames[3], "MTHLY_EXTR_MAX_TEMP")
+  #
+  # test the data
+  #
+  expect_length(observationData[,1], 6)
+  expect_true(all(observationData[,1] == "1056"))
+  expect_true(observationData[1,2] == parsedate::parse_iso_8601("2019-01"))
+  expect_true(observationData[2,2] == parsedate::parse_iso_8601("2019-02"))
+  expect_true(observationData[3,2] == parsedate::parse_iso_8601("2019-03"))
+  expect_true(observationData[4,2] == parsedate::parse_iso_8601("2019-04"))
+  expect_true(observationData[5,2] == parsedate::parse_iso_8601("2019-05"))
+  expect_true(observationData[6,2] == parsedate::parse_iso_8601("2019-06"))
+  expect_equal(observationData[1,3], 31.2)
+  expect_equal(observationData[2,3], 29.4)
+  expect_equal(observationData[3,3], 27.0)
+  expect_equal(observationData[4,3], 23.5)
+  expect_equal(observationData[5,3], 22.1)
+  expect_equal(observationData[6,3], 20.2)
+})
 
 webmockr::disable("httr")
 
-context("getData: integration tests\n")
+context("getData: integration tests")
 #
 # KVP::can retrieve data from an online SOS 2.0.0 ----
 #

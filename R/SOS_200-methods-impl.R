@@ -376,7 +376,7 @@
                                 spatialFilter = filterShape,
                                 valueReferenceTemporalFilter = valueReferenceTemporalFilter)
 
-  response = sosRequest(sos = sos,
+  response <- sosRequest(sos = sos,
                         request = go,
                         verbose = verbose,
                         inspect = inspect)

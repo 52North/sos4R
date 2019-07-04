@@ -285,6 +285,10 @@ parseResult <- function(obj, sos, verbose = FALSE) {
         result <- xml2::xml_text(x = children, trim = TRUE)
       }
     }
+    else if (name == wmlMeasurementTimeseriesName) {
+      parsingFunction <- sosParsers(sos)[[wmlMeasurementTimeseriesName]]
+      result <- parsingFunction(children[[1]], sos, verbose)
+    }
     else {
       warning(paste("[parseResult] Parsing of given result is NOT supported:",
                     xml2::xml_name(x = children[[1]], ns = sos@namespaces),

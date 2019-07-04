@@ -230,17 +230,6 @@ test_that("responseFormat with KVP (2.0.0)", {
   request <- encodeRequestKVP(obj = getobs, sos = testsos)
   expect_match(request, "responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0")
 })
-#
-# default response format with KVP (2.0.0) ----
-#
-test_that("default response format with KVP (2.0.0)", {
-  testsos <- SOS_Test(name = "getobspox", version = sos200_version)
-  getobs <- SosGetObservation_2.0.0(service = "ser",
-                                    version = "2.0.0",
-                                    offering = list("http://off1a"))
-  request <- encodeRequestKVP(obj = getobs, sos = testsos)
-  expect_match(request, "responseFormat=http%3A%2F%2Fwww.opengis.net%2Fom%2F2.0")
-})
 
 context("GetObservation: POX encoding")
 #
@@ -318,7 +307,7 @@ test_that("procedure(s) with POX (SOS 2.0.0)", {
                                     procedure = list("http://www.52north.org/test/procedure/1"))
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
-  expect_match(encodedString, "<sos:procedure>http://www.52north.org/test/procedure/1</sos:procedure><sos:responseFormat>")
+  expect_match(encodedString, "<sos:procedure>http://www.52north.org/test/procedure/1</sos:procedure></GetObservation>")
 
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",
@@ -338,7 +327,7 @@ test_that("feature(s) of interest with POX (SOS 2.0.0)", {
                                     featureOfInterest = list("http://www.52north.org/test/featureOfInterest/1"))
   request <- encodeRequestXML(obj = getobs, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(request), ">\\s*<", "><")
-  expect_match(encodedString, "<sos:featureOfInterest>http://www.52north.org/test/featureOfInterest/1</sos:featureOfInterest><sos:responseFormat>")
+  expect_match(encodedString, "<sos:featureOfInterest>http://www.52north.org/test/featureOfInterest/1</sos:featureOfInterest></GetObservation>")
 
   getobs <- SosGetObservation_2.0.0(service = "ser",
                                     version = "2.0.0",

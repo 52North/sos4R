@@ -436,18 +436,13 @@ SosGetObservation_2.0.0 <- function(
     }
   })
 
-  if (is.na(responseFormat))
-    format <- sos200DefaultGetObsResponseFormat
-  else
-    format <- responseFormat
-
   new("SosGetObservation_2.0.0",
       request = sosGetObservationName,
       service = service,
       version = version,
       offering = offeringIDs,
       observedProperty = observedProperty,
-      responseFormat = format,
+      responseFormat = responseFormat,
       temporalFilter = temporalFilter,
       procedure = procedure,
       featureOfInterest = featureIDs,

@@ -252,6 +252,9 @@ setMethod(f = "phenomena",
 # → data.frame[siteID, phenomenon, timeBegin, timeEnd]
 
 .validateListOrDfColOfStrings <- function(los, argName) {
+  if (is(los, "SpatialPointsDataFrame")) {
+    los <- los@data
+  }
   if (is.data.frame(los)) {
     stopifnot(ncol(los) > 0)
     if (ncol(los) > 1)
@@ -584,7 +587,7 @@ setMethod(f = "sites",
                                   data = data.frame("siteID" = character(0), stringsAsFactors = FALSE),
                                   match.ID = FALSE))
   }
-  sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(sites)
+  sitesSPDF <- .asSpatialPointsDataFrame(sites)
   if (empty) {
     sitesSPDF <- .addEmptyColumn(sos, sitesSPDF)
   }
@@ -661,7 +664,7 @@ setMethod(f = "sites",
   if (is.null(sites) || is.list(sites) && length(sites) < 1) {
     return(.sitesAsSPDF(sos, FALSE))
   }
-  sitesSPDF <- as.SpatialPointsDataFrame.SamsSamplingFeatureList(sites)
+  sitesSPDF <- .asSpatialPointsDataFrame(sites)
   # extend spdf@data with information about the available phenomena
   if (includePhenomena && .isPhenomenaSet(phenomena)) {
     phenomenaFilter <- phenomena
@@ -736,7 +739,9 @@ setMethod(f = "sites",
   options(stringsAsFactors = tmpStringsAsFactors)
   return(newDataFrame)
 }
-
+#
+#
+#
 .addMetadataAboutPhenomena <- function(dataframe, allPhenomena, dams) {
   # store setting of stringsAsFactors to reset after this function
   tmpStringsAsFactors <- getOption("stringsAsFactors")
@@ -775,32 +780,40 @@ setMethod(f = "sites",
   options(stringsAsFactors = tmpStringsAsFactors)
   return(newDataFrame)
 }
-
-
-# TODO convert to real conversion function
-as.SpatialPointsDataFrame.SamsSamplingFeatureList <- function(list) {
-  if (inherits(list[[1]], "GmlFeatureProperty")) {
-    coords <- data.frame()
-    siteIDs <- list()
-    proj4string <- ""
-    for (site in list) {
-      if (inherits(site@feature, "SamsSamplingFeature")) {
-        siteIDs <- c(siteIDs, site@feature@identifier)
-        spatialPoints <- as.SpatialPoints.SamsSamplingFeature(site@feature)
-        coords <- rbind(coords, coordinates(spatialPoints))
-        proj4string <- spatialPoints@proj4string
-      }
-      else {
-        stop(paste0("Input type not supported: ", class(site@feature)))
-      }
-    }
-    # TODO check proj4string difference between sites!
-    return(SpatialPointsDataFrame(coords = coords,
-                                  data = data.frame("siteID" = unlist(siteIDs), stringsAsFactors = FALSE),
-                                  match.ID = FALSE,
-                                  proj4string = proj4string))
+#
+#
+#
+.asSpatialPointsDataFrame <- function(sites) {
+  if (!all(sapply(sites, inherits, what = "GmlFeatureProperty"))) {
+    stop(paste0("Received not supported input. Required: List of GmlFeatureProperty objects.\n",
+                "Received the following classes:\n",
+                paste(sapply(sites, class), collapse = ", ")
+    ))
   }
-  stop(paste0("Input type not supported: ", class(list[[1]]@feature)))
+  coords <- data.frame()
+  siteIDs <- list()
+  proj4string <- NA
+  for (site in sites) {
+    if (!hasMethod("sosFeatureIds", class(site))) {
+      stop(paste0("Input type not supported because it has no method sosFeatureIds: ", class(site)))
+    }
+    siteIDs <- c(siteIDs, sosFeatureIds(site))
+    if (!canCoerce(site, "SpatialPoints")) {
+      stop(paste0("Input type not supported because it cannot be coerced to SpatialPoints: ", class(site@feature)))
+    }
+    spatialPoints <- as(site@feature, "SpatialPoints")
+    coords <- rbind(coords, coordinates(spatialPoints))
+    if (isS4(proj4string) && !identical(proj4string, spatialPoints@proj4string)){
+      print(proj4string)
+      print(spatialPoints@proj4string)
+      stop("Found features with different CRS, hence stopped.")
+    }
+    proj4string <- spatialPoints@proj4string
+  }
+  return(SpatialPointsDataFrame(coords = coords,
+                                data = data.frame("siteID" = unlist(siteIDs), stringsAsFactors = FALSE),
+                                match.ID = FALSE,
+                                proj4string = proj4string))
 }
 #
 #
@@ -837,7 +850,7 @@ getData <- function(sos,
                     ...) {
   stopifnot(inherits(sos, "SOS_2.0.0"))
   stopifnot(!is.null(phenomena), length(phenomena) > 0, !any(is.na(phenomena)))
-  stopifnot(!is.null(sites), length(sites) > 0, !any(is.na(sites)))
+  stopifnot(!is.null(sites), length(sites) > 0)
 
   if (missing(sites) && is.na(spatialBBox))
     stop("Either 'sites' or 'spatialBBox' must be provided.")
@@ -859,7 +872,6 @@ getData <- function(sos,
   observations <- getObservation(sos = sos,
                                  offering = list(), # "all"
                                  observedProperty = as.list(phenomena), # phenomena
-                                 responseFormat = om20Namespace, # default by spec, see Table 19
                                  featureOfInterest = as.list(sites), # sites
                                  eventTime = time,
                                  BBOX = NA_character_,
@@ -868,30 +880,52 @@ getData <- function(sos,
   if (length(observations) < 1)
     return(data.frame())
   #
-  # implement without sosResult
+  # convert WmlMeasurementTimeseries in each observation to data.frame
   #
+  if (any(sapply(sapply(observations, slot, "result"), is, "WmlMeasurementTimeseries"))) {
+    for (i in 1:length(observations)) {
+      observation <- observations[[i]]
+      if (is(observation@result, "WmlMeasurementTimeseries")) {
+        observation@result <- as(observation@result, "data.frame")
+        stopifnot(is.null(observation@observedProperty@phenomenon),
+                  !is.null(observation@observedProperty@href),
+                  nchar(observation@observedProperty@href) > 0)
+        colnames(observation@result)[2] <- observation@observedProperty@href
+        observations[[i]] <- observation
+      }
+    }
+  }
   # TODO document that we use the phentime or phentime.end
   if (ncol(observations[[1]]@result) == 1) {
     observations[[1]]@result <- cbind("timestamp" = sosTimeStamp(observations[[1]]), observations[[1]]@result)
   }
-  result <- cbind("siteID" = sosFeatureIds(observations[[1]]), observations[[1]]@result, stringsAsFactors = FALSE)
+  obsAttributes <- attributes(observations[[1]]@result)
+  obsAttributes <- obsAttributes[names(obsAttributes) %in% c("names", "row.names", "class") == FALSE]
+  result <- cbind("siteID" = sosFeatureIds(observations[[1]]), observations[[1]]@result)
+  attributes(result[[3]]) <- append(attributes(result[[3]]), obsAttributes)
   if (length(observations) == 1) {
     names(result)[[2]] <- "timestamp"
     return(result)
   }
+  #
+  # this loops starts with the SECOND element
+  #
   for (observation in observations[-1]) {
     if (ncol(observation@result) == 1) {
       observation@result <- cbind("timestamp" = sosTimeStamp(observation), observation@result)
     }
-    output <- utils::capture.output(result <- dplyr::full_join(result, cbind("siteID" = sosFeatureIds(observation), observation@result, stringsAsFactors = FALSE)), type = "message")
-    # this lovely construct prevents "argument is of length zero" constructs because R has not short circuit and and or
-    # https://en.wikipedia.org/wiki/Short-circuit_evaluation
-    if (sos@verboseOutput) {
-      if (!is.null(output)) {
-        if (nchar(output) > 0) {
-          cat(paste0("[getData] Processing received observations:\n\t", output))
-        }
-      }
+    obsAttributes <- attributes(observation@result)
+    obsAttributes <- obsAttributes[names(obsAttributes) %in% c("names", "row.names", "class") == FALSE]
+    newColumn <- cbind("siteID" = sosFeatureIds(observation), observation@result)
+    attributes(newColumn[[3]]) <- append(attributes(newColumn[[3]]), obsAttributes)
+    if (!sos@verboseOutput) {
+     suppressMessages({
+       suppressWarnings({
+         result <- dplyr::full_join(result, newColumn)
+       })
+     })
+    } else {
+      result <- dplyr::full_join(result, newColumn)
     }
   }
   #
