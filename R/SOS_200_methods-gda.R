@@ -37,7 +37,8 @@
                                        offerings,
                                        verbose,
                                        inspect,
-                                       saveOriginal) {
+                                       saveOriginal,
+                                       ...) {
   filename <- NULL
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
@@ -110,7 +111,8 @@ setMethod(f = "getDataAvailability",
                          offerings,
                          verbose,
                          inspect = FALSE,
-                         saveOriginal = NULL) {
+                         saveOriginal = NULL,
+                         ...) {
             if (verbose) {
               cat("[getDataAvailability] Requesting metadata via procedures: '",
                   paste0(procedures, collapse = ", "),
@@ -129,7 +131,8 @@ setMethod(f = "getDataAvailability",
                                               offerings = offerings,
                                               verbose = verbose,
                                               inspect = inspect,
-                                              saveOriginal = saveOriginal))
+                                              saveOriginal = saveOriginal,
+                                              ...))
           }
 )
 
