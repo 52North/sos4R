@@ -144,7 +144,7 @@ This object can be directly used as input for various mapping libraries, e.g. `m
 ```{r sites_map}
 suppressPackageStartupMessages(library("mapview"))
 
-mapview(sites)
+mapview(sites, legend = FALSE, col.regions = "blue")
 ```
 
 

@@ -299,7 +299,7 @@
   if (verbose)
     cat("[.getFeatureOfInterest_2.0.0] REQUEST:\n\n", toString(gfoi), "\n")
 
-  response = sosRequest(sos = sos,
+  response <- sosRequest(sos = sos,
                         request = gfoi,
                         verbose = verbose,
                         inspect = inspect)

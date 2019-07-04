@@ -423,31 +423,31 @@ parseTextEncoding <- function(obj) {
 }
 
 parsePhenomenonProperty <- function(obj, sos, verbose = FALSE) {
-  .obsProp <- NULL
+  obsProp <- NULL
 
   # check if reference or inline phenomenon
-  .href <- xml2::xml_attr(x = obj, attr = "href")
-  if (!is.na(.href)) {
-    if (verbose) cat("[parsePhenomenonProperty] with reference", .href, "\n")
-    .obsProp <- SwePhenomenonProperty(href = .href)
+  href <- xml2::xml_attr(x = obj, attr = "href")
+  if (!is.na(href)) {
+    if (verbose) cat("[parsePhenomenonProperty] with reference", href, "\n")
+    obsProp <- SwePhenomenonProperty(href = href)
   }
   else {
-    .compPhen <- xml2::xml_child(x = obj)
+    compPhen <- xml2::xml_child(x = obj)
     # 52N SOS only returns swe:CompositePhenomenon
-    .name <- xml2::xml_name(x = .compPhen, ns = sos@namespaces)
-    if (verbose) cat("[parsePhenomenonProperty] inline with name", .name, "\n")
+    name <- xml2::xml_name(x = compPhen, ns = sos@namespaces)
+    if (verbose) cat("[parsePhenomenonProperty] inline with name", name, "\n")
 
-    if (.name == sweCompositePhenomenonName) {
-      .phen <- parseCompositePhenomenon(.compPhen,  sos = sos, verbose = verbose)
-      .obsProp <- SwePhenomenonProperty(phenomenon = .phen)
+    if (name == sweCompositePhenomenonName) {
+      phen <- parseCompositePhenomenon(compPhen,  sos = sos, verbose = verbose)
+      obsProp <- SwePhenomenonProperty(phenomenon = phen)
     }
     else {
       warning(paste("[parsePhenomenonProperty] Unsupported observed property: ",
-                    .name, "\n"))
+                    name, "\n"))
     }
   }
 
-  return(.obsProp)
+  return(obsProp)
 }
 
 parseCompositePhenomenon <- function(obj, sos, verbose = FALSE) {

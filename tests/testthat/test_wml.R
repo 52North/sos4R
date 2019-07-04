@@ -29,8 +29,9 @@
 context("parsing: WaterML MonitoringPoint")
 
 testsos <- SOS_Test(name = "testwml", version = sos200_version)
-
+#
 # example from OGC 10-126r4, 10.13 Requirements Class: Monitoring Point
+#
 mpXml <- '<wml2:MonitoringPoint gml:id="xsd-monitoring-point.example" xmlns:wml2="http://www.opengis.net/waterml/2.0" xmlns:sam="http://www.opengis.net/sampling/2.0" xmlns:sams="http://www.opengis.net/samplingSpatial/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink">
       <gml:description>Nile river at Deddington, South Esk catchment, Tasmania</gml:description>
       <gml:name codeSpace="http://www.csiro.au/">Deddington</gml:name>
@@ -48,7 +49,9 @@ mpXml <- '<wml2:MonitoringPoint gml:id="xsd-monitoring-point.example" xmlns:wml2
         </wml2:TimeZone>
       </wml2:timeZone>
     </wml2:MonitoringPoint>'
-
+#
+# test that reference frame is parsed correctly ----
+#
 test_that("reference frame is parsed correctly", {
   mp <- parseWmlMonitoringPoint(obj = xml2::read_xml(x = mpXml), sos = testsos)
 
