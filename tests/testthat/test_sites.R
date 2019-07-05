@@ -108,7 +108,7 @@ context("convenience layer -> sites()")
   expect_length(colnames(data), 34)
   expect_equal(colnames(data)[[1]], "siteID", info = "correct column name")
   expect_equal(nrow(sitesDataFrame), 4, info = "number of unique sites")
-  # check all values#
+  # check all values
   expect_equal("elv-ws2500",          data[ 1, 1])
   expect_equal("elv-ws2500-internal", data[ 2, 1])
   expect_equal("vaisala-wxt520",      data[ 3, 1])

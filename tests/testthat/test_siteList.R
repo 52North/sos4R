@@ -198,14 +198,14 @@ test_that("KVP::siteList(sos) or siteList(sos, empty = FALSE) returns an empty l
 
 #
 # ts1     : *   *   *  *     *
-# ts2     : +  + + 
+# ts2     : +  + +
 # ts3     :     " " "
 # ts4     :        = =  =  =  =
 # ts5     :                ~ ~   ~
 # ts6     :    ..........
 # ts7     : ° °
 # interval:    ||||||||||
-# 
+#
 # result 1: ts1, ts2, ts3, ts4, ts6
 #
 test_that("KVP::siteList(sos, begin, end) or siteList(sos, empty = FALSE, begin, end) return a list of stations that provide data at least 'touching' the given time window", {
@@ -228,15 +228,15 @@ test_that("KVP::siteList(sos, begin, end) or siteList(sos, empty = FALSE, begin,
       body = readr::read_file("../responses/GetDataAvailability_100_Example.com_ForTimeFilter.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  
+
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
-  
+
   .begin <- sosConvertTime(x = "1970-06-04T12:00:00.000Z", sos = sos)
   .end <- sosConvertTime(x = "1970-06-13T12:00:00.000Z", sos = sos)
-  
+
   sitesDataFrame <- siteList(sos, empty = FALSE, begin = .begin, end = .end)
   .checkTimeIntervalFilteredSitesDataFrame(sitesDataFrame)
-  
+
   sitesDataFrame <- siteList(sos, begin = .begin, end = .end)
   .checkTimeIntervalFilteredSitesDataFrame(sitesDataFrame)
 })
@@ -276,15 +276,15 @@ test_that("KVP::siteList(sos, begin, end) or siteList(sos, empty = FALSE, begin,
       body = readr::read_file("../responses/GetDataAvailability_100_Example.com_ForTimeFilterWithMerge.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  
+
   sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
-  
+
   .begin <- sosConvertTime(x = "1970-06-04T12:00:00.000Z", sos = sos)
   .end <- sosConvertTime(x = "1970-06-13T12:00:00.000Z", sos = sos)
-  
+
   sitesDataFrame <- siteList(sos, empty = FALSE, begin = .begin, end = .end)
   .checkTimeIntervalFilteredSitesDataFrameWithMerge(sitesDataFrame)
-  
+
   sitesDataFrame <- siteList(sos, begin = .begin, end = .end)
   .checkTimeIntervalFilteredSitesDataFrameWithMerge(sitesDataFrame)
 })
