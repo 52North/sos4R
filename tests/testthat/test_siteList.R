@@ -289,6 +289,40 @@ test_that("KVP::siteList(sos, begin, end) or siteList(sos, empty = FALSE, begin,
   .checkTimeIntervalFilteredSitesDataFrameWithMerge(sitesDataFrame)
 })
 
+#
+# test KVP::siteList(sos, includePhenomena = TRUE, includeTemporalBBox = TRUE) ----
+#
+test_that("KVP::siteList(sos, includePhenomena = TRUE, includeTemporalBBox = TRUE) return a list of stations that provide data at least 'touching' the given time window with metadata", {
+  skip("TODO implement: https://github.com/52North/sos4R/issues/90")
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  webmockr::stub_request('get', uri = 'http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability') %>%
+    webmockr::wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_Example.com_ForTimeFilter.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+
+  sitesDataFrame <- siteList(sos, empty = FALSE, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+  .checkSitesDataFrameWithTemporalBBox(sitesDataFrame)
+
+  sitesDataFrame <- siteList(sos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+  .checkSitesDataFrameWithTemporalBBox(sitesDataFrame)
+})
+
 webmockr::disable("httr")
 
 context("siteList: integration tests\n")
