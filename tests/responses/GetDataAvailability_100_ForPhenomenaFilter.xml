@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gda:GetDataAvailabilityResponse xmlns:gda="http://www.opengis.net/sosgda/1.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sosgda/1.0 http://waterml2.org/schemas/gda/1.0/gda.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+  <gda:dataAvailabilityMember gml:id="ts_1">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="feature-1" xlink:title="feature-1"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_1">
+        <gml:beginPosition>1970-06-01T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-18T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="ts_2">
+    <gda:procedure xlink:href="wwu-ws-kli-hsb" xlink:title="wwu-ws-kli-hsb"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="feature-2" xlink:title="feature-2"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_2">
+        <gml:beginPosition>1970-06-01T12:00:00.000Z</gml:beginPosition>
+        <gml:endPosition>1970-06-06T12:00:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+</gda:GetDataAvailabilityResponse>

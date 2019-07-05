@@ -115,14 +115,24 @@ You can filter sites using phenomena and temporal extent.
 
 **Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
 
-```{r sites_phenomena}
-sites_by_phenomena <- sites(sos = mySos, phenomena = phenomena[3,])
-sites_by_phenomena[1:maxOutputRowsPerExample,]
+```{r sites_filtered_by_phenomena}
+sites_filtered_by_phenomena <- sites(sos = mySos, phenomena = phenomena[3,])
+nrow(sites_filtered_by_phenomena@data)
+nrow(sites@data)
+str(sites_filtered_by_phenomena)
 ```
 
-```{r sites_time}
-sites_by_time <- sites(sos = mySos, begin = parsedate::parse_iso_8601("1904-01-01"), end = parsedate::parse_iso_8601("1905-12-31"))
-sites_by_time[1:maxOutputRowsPerExample,]
+Use the parameter `includeTemporalBBox` for including additional metadata:
+```{r sites_filtered_by_phenomena_with_metadata}
+sites_filtered_by_phenomena_with_metadata <- sites(sos = mySos, phenomena = phenomena[3,], includePhenomena = TRUE, includeTemporalBBox = TRUE)
+str(sites_filtered_by_phenomena_with_metadata)
+```
+
+```{r sites_filtered_by_time}
+# under development - no github issue atm
+#sites_filtered_by_time <- sites(sos = mySos, begin = parsedate::parse_iso_8601("1904-01-01"), end = parsedate::parse_iso_8601("1905-12-31"))
+#nrow(sites_filtered_by_time@data)
+#str(sites_filtered_by_time)
 ```
 
 The `SpatialPointsDataFrame` allows access to coordinates with coordinate reference system (CRS).
@@ -249,41 +259,40 @@ The next example gets data for two phenomena a site.
 
 ```{r getData_multipleA}
 # TO BE IMPLEMENTED: merge different observation types - see https://github.com/52North/sos4R/issues/96#issuecomment-493424151
-# getData(sos = mySos,
-#        phenomena = phenomena$phenomenon[1:2],
-#        sites = siteList$siteID[1],
-#        retrieveFOI = FALSE, # TO BE FIXED
-#        )
-# observationData <- getData(sos = mySos, phenomena = phenomena, sites = multipleSites)
-# str(observationData)
+observationData <- getData(sos = mySos,
+       phenomena = phenomena$phenomenon[1:2],
+       sites = siteList$siteID[c(1,58)],
+       begin = parsedate::parse_iso_8601("1994-12-31T12:00:00+12:00"),
+       end = parsedate::parse_iso_8601("1995-12-31T12:00:00+12:00")
+       )
+str(observationData)
 ```
-
 
 You can also retrieve data for phenomena from multiple sites.
 
 ```{r getData_multipleB}
-multipleSites <- siteList$siteID[35:38]
-# TO BE IMPLEMENTED: merge different observation types
-#observationData <- getData(sos = mySos, phenomena = phenomena, sites = multipleSites)
-#str(observationData)
-#
-# WORKAROUND
-#
+multipleSites <- siteList$siteID[1:2]
 observationData <- getData(sos = mySos,
-                           phenomena = phenomena[18,1],
-                           sites = siteList[1:2,1],
+                           phenomena = phenomena[18, 1],
+                           sites = multipleSites,
                            begin = parsedate::parse_iso_8601("1997-01-01T12:00:00+12:00"),
                            end = parsedate::parse_iso_8601("2000-01-02T12:00:00+12:00")
                            )
 
 
-ts1056 <- xts(observationData[observationData$siteID == '1056',3], observationData[observationData$siteID == '1056',"timestamp"])
+ts1056 <- xts(observationData[observationData$siteID == '1056', 3], observationData[observationData$siteID == '1056',"timestamp"])
 names(ts1056) <- "Station#1056"
-ts11234 <- xts(observationData[observationData$siteID == '11234',3], observationData[observationData$siteID == '11234',"timestamp"])
+ts11234 <- xts(observationData[observationData$siteID == '11234', 3], observationData[observationData$siteID == '11234',"timestamp"])
 names(ts11234) <- "Station#11234"
 plot(x = na.fill(merge(ts1056, ts11234), list(NA, "extend", NA)), main = "Monthly: Extreme max. Temp. (°C)", yaxis.right = FALSE, legend.loc = 'topleft')
 ```
 
+Map of the according sites:
+
+```{r map_of_sites_of_timeseries}
+sites_of_timeseries <- sites[sites$siteID == "1056" | sites$siteID == "11234",]
+mapview(sites_of_timeseries, legend = FALSE, col.regions = "blue")
+```
 
 ```{r getData_summary}
 summary(observationData)

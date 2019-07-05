@@ -594,7 +594,7 @@
   mandatory <- .kvpBuildRequestBase(sos, sosGetObservationName)
   if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]", "mandatory elements: ", mandatory, "\n")
 
-  optionals = c()
+  optionals <- c()
   namespaces <- c()
 
   if (length(obj@offering) > 0) {

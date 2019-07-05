@@ -263,8 +263,15 @@ setMethod(f = "phenomena",
       warning(paste0("Using the first column of '", argName, "' as filter."))
     los <- los[,1]
   }
+  if (is.character(los) && is.vector(los) && length(los) == 1) {
+    stopifnot(nchar(los) > 0)
+    los <- list(los)
+  }
+  if (is.character(los) && is.vector(los) && length(los) > 1) {
+    los <- as.list(los)
+  }
 
-  stopifnot(is.list(los) || is.vector(los))
+  stopifnot(is.list(los))
 
   if (length(los) > 0) {
     stopifnot(all(sapply(los, is.character)))
@@ -343,9 +350,13 @@ setMethod(f = "siteList",
 }
 
 .isPhenomenaSet <- function(phenomena) {
-  return(!is.null(phenomena) &&
-           is.list(phenomena) &&
-           length(phenomena) > 0)
+  if (is.null(phenomena)) {
+    return(FALSE)
+  }
+  if (is(phenomena, "character") && nchar(phenomena) > 0) {
+    return(TRUE)
+  }
+  return(is(phenomena, "list") && length(phenomena) > 0)
 }
 
 #
@@ -603,9 +614,13 @@ setMethod(f = "sites",
   return(sitesSPDF)
 }
 
-.addEmptyColumn <- function(sos, sitesSPDF, phenomena, ...) {
+.addEmptyColumn <- function(sos, sitesSPDF, phenomena = NA, ...) {
   data <- sitesSPDF@data
-  dams <- getDataAvailability(sos, featuresOfInterest = as.list(data[["siteID"]]), verbose = sos@verboseOutput, ...)
+  if (is.na(phenomena)) {
+    dams <- getDataAvailability(sos, featuresOfInterest = as.list(data[["siteID"]]), verbose = sos@verboseOutput, ...)
+  } else {
+    dams <- getDataAvailability(sos, featuresOfInterest = as.list(data[["siteID"]]), phenomena = phenomena, verbose = sos@verboseOutput, ...)
+  }
   # one column dataframe with empty column
   dataframeToAdd <- data.frame("empty" = logical(0), stringsAsFactors = FALSE)
   if (length(dams) < 1) {
@@ -676,10 +691,12 @@ setMethod(f = "sites",
   }
   sitesSPDF <- .asSpatialPointsDataFrame(sites)
   # extend spdf@data with information about the available phenomena
-  if (includePhenomena && .isPhenomenaSet(phenomena)) {
-    phenomenaFilter <- phenomena
-  } else {
-    phenomenaFilter <- phenomenaOfSos
+  if (includePhenomena) {
+    if (.isPhenomenaSet(phenomena)) {
+      phenomenaFilter <- phenomena
+    } else {
+      phenomenaFilter <- phenomenaOfSos
+    }
   }
   if (includePhenomena && !includeTemporalBBox) {
     sitesSPDF@data <- .addMetadataAboutPhenomena(sitesSPDF@data, phenomenaFilter, dams)
@@ -872,18 +889,20 @@ getData <- function(sos,
       warning("'spatialBBox' has been ignored and 'sites' is used instead.")
     }
   }
+  if (!missing(phenomena)) {
+    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+  }
 
   time <- list()
   if (!is.na(begin) && !is.na(end))
     time <- list(sosCreateTimePeriod(sos = sos,
                                 begin = begin,
                                 end = end))
-
   observations <- getObservation(sos = sos,
-                                 offering = list(), # "all"
-                                 observedProperty = as.list(phenomena), # phenomena
-                                 featureOfInterest = as.list(sites), # sites
-                                 eventTime = time,
+                                 offering = list(),            # "all"
+                                 observedProperty = phenomena, # phenomena
+                                 featureOfInterest = sites,    # sites
+                                 eventTime = time,             #
                                  BBOX = NA_character_,
                                  ... = ...)
 

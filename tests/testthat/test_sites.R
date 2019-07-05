@@ -544,4 +544,56 @@ test_that("KVP::sites(sos, empty = FALSE, includePhenomena = TRUE, includeTempor
   .checkSitesDataFrameWithIdsAndCoordsAndPhenomenaInformationAndTemporalBBox(sitesDataFrame)
 })
 
+#
+# test KVP::sites(sos, phenomena = list of phenomenon) ----
+#
+test_that("KVP::sites(sos, phenomena = list of phenomenon)", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetFeatureOfInterest&',
+                                   'featureOfInterest=feature-1%2Cfeature-2')) %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetFeatureOfInterest_200_ForGdaWithPhenomenaFiter.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+  stub_request('get', uri = paste0('http://example.com/sos-list-phenomena?service=SOS&version=2.0.0&request=GetDataAvailability&',
+                                   'observedProperty=WindDirection')) %>%
+    wi_th(
+      headers = list('Accept' = 'application/xml')
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/GetDataAvailability_100_ForPhenomenaFilter.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+
+  sitesDataFrame <- sites(sos, phenomena = "WindDirection")
+  data <- sitesDataFrame@data
+  expect_length(data[,1], 2)
+  expect_equal(data[1,1], "feature-1")
+  expect_equal(data[2,1], "feature-2")
+  coords <- sitesDataFrame@coords
+  expect_equal("lon", colnames(coords)[[1]])
+  expect_equal("lat", colnames(coords)[[2]])
+  expect_equal(2, nrow(coords))
+  expect_true(7.5   == coords[1,1])
+  expect_true(51.0  == coords[1,2])
+  expect_true(7.5 == coords[2,1])
+  expect_true(52.0  == coords[2,2])
+})
+
 webmockr::disable("httr")
