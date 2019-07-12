@@ -1,13 +1,14 @@
 ---
 title: "sos4R: Wrapper Functions for easier SOS access"
 author:
-  name: "Daniel Nüst"
-  affiliation: Institute for Geoinformatics, University of Münster, Germany.
-  email: daniel.nuest@uni-muenster.de
+  name: "Daniel Nüst , Eike Hinderk Jürrens, and Benedikt Gräler"
+  affiliation: Institute for Geoinformatics, University of Münster, Germany. 52°North GmbH, Münster, Germany.
+  email: daniel.nuest@uni-muenster.de, e.h.juerrens@52north.org, and b.graeler@52north.org
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{5. Convenient wrapper functions}
   %\VignetteEngine{knitr::rmarkdown}
@@ -69,7 +70,7 @@ phenomena(sos = mySos, includeTemporalBBox = TRUE, includeSiteId = TRUE)[1:maxOu
 ```
 
 
-## Sites
+## Sites With Coordinates
 
 The function `sites(..)` provides information about sites where observations are performed, including metadata about the sites (e.g. location).
 The returned object is a `SpatialPointsDataFrame`.
@@ -81,9 +82,9 @@ sites[1:maxOutputRowsPerExample,]
 
 To see all sites, even the ones without any data, use the `empty` parameter.
 
-```{r sites_empty, eval=FALSE}
-sitesEmpty <- sites(sos = mySos, empty = TRUE)
-sitesEmpty[1:maxOutputRowsPerExample,]
+```{r sites_empty}
+sites_with_empty <- sites(sos = mySos, empty = TRUE)
+sites_with_empty[1:maxOutputRowsPerExample,]
 ```
 
 You can retrieve additional metadata about the phenomena and the time period for which data is available.
@@ -109,7 +110,7 @@ str(tail(sites_with_temporal_bbox, n = 3)[,1:maxOutputColumnsPerExample])
 ```
 
 
-### Filter
+## Filter Sites With Coordinates
 
 You can filter sites using phenomena and temporal extent.
 
@@ -158,7 +159,7 @@ mapview(sites, legend = FALSE, col.regions = "blue")
 ```
 
 
-## Data at sites
+## Site Listings
 
 The function `siteList(..)` provides information about observed phenomena at sites and the time periods when data is available.
 
@@ -173,7 +174,7 @@ You can extend the information returned with these parameters:
 - `includePhenomena` to add phenomena to the table (boolean)
 - `includeTemporalBBox` to also show the time when data is available (boolean)
 
-```{r siteList_empty, eval=FALSE}
+```{r siteList_empty}
 siteList_with_empty <- siteList(sos = mySos, empty = TRUE)
 siteList_with_empty[1:maxOutputRowsPerExample,]
 ```
@@ -185,7 +186,7 @@ siteList_with_empty[1:maxOutputRowsPerExample,]
 ```
 
 
-### Filter
+## Filter Site Listings
 
 You can filter the results with these parameters:
 
@@ -242,6 +243,11 @@ observationData <- getData(sos = mySos,
 str(observationData)
 ```
 
+Get an overview of the data using the `summary` function:
+```{r getData_summary}
+summary(observationData)
+```
+
 ## Timeseries Plotting
 
 Plot received data as time series:
@@ -292,8 +298,4 @@ Map of the according sites:
 ```{r map_of_sites_of_timeseries}
 sites_of_timeseries <- sites[sites$siteID == "1056" | sites$siteID == "11234",]
 mapview(sites_of_timeseries, legend = FALSE, col.regions = "blue")
-```
-
-```{r getData_summary}
-summary(observationData)
 ```
