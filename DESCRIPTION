@@ -1,7 +1,7 @@
 Package: sos4R
 Type: Package
 Title: Client for OGC Sensor Observation Services
-Version: 0.3.0
+Version: 0.3.1
 Date: 2019-04-13
 Authors@R:
   c(person(given = "Daniel",
@@ -32,7 +32,7 @@ Imports:
     methods,
     sp,
     stringr,
-    xml2,
+    xml2 (>= 1.2.2),
 Suggests:
     readr,
     spacetime,
@@ -63,7 +63,6 @@ BugReports: https://github.com/52North/sos4R/issues
 Collate:
 	Constants.R
 	R-Helper.R
-	Class-XML.R
 	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
 	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
 	Generic-methods.R
