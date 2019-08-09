@@ -18,8 +18,8 @@
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
-	Version: \tab 0.3.0\cr
-	Date: \tab 2019-03-30\cr
+	Version: \tab 0.3.1\cr
+	Date: \tab 2019-07-09\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr

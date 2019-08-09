@@ -1,3 +1,7 @@
+# sos4R 0.3.1
+
+- Bugfix release: don't set classes for `xml2` (requires version `1.2.2`, see #148)
+
 # sos4R 0.3.0
 
 - Switch from `XML` to `xml2`
