@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2019-04-13</h4>
+            <h4 class="date">2019-08-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-03-sos-operations.Rmd"><code>vignettes/sos4R-vignette-03-sos-operations.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-03-sos-operations.Rmd</code></div>
@@ -462,20 +462,23 @@
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># background map:</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"maps"</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"mapdata"</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"maptools"</span>)</a>
 <a class="sourceLine" id="cb29-3" data-line-number="3"><span class="co">#&gt; Loading required package: sp</span></a>
-<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co">#&gt; Checking rgeos availability: TRUE</span></a>
-<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(worldHiresMapEnv)</a>
-<a class="sourceLine" id="cb29-6" data-line-number="6">crs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosGetCRS</a></span>(mySOS)[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb29-7" data-line-number="7">worldHigh &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/maptools/topics/map2SpatialPolygons">pruneMap</a></span>(</a>
-<a class="sourceLine" id="cb29-8" data-line-number="8">        <span class="kw"><a href="https://www.rdocumentation.org/packages/maps/topics/map">map</a></span>(<span class="dt">database =</span> <span class="st">"worldHires"</span>,</a>
-<a class="sourceLine" id="cb29-9" data-line-number="9">            <span class="dt">region =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Germany"</span>, <span class="st">"Austria"</span>, <span class="st">"Netherlands"</span>),</a>
-<a class="sourceLine" id="cb29-10" data-line-number="10">            <span class="dt">plot =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb29-11" data-line-number="11">worldHigh.lines &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/maptools/topics/map2SpatialPolygons">map2SpatialLines</a></span>(worldHigh, <span class="dt">proj4string =</span> crs)</a>
-<a class="sourceLine" id="cb29-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb29-13" data-line-number="13"><span class="co"># the plot:</span></a>
-<a class="sourceLine" id="cb29-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(worldHigh.lines, <span class="dt">col =</span> <span class="st">"grey50"</span>)</a>
-<a class="sourceLine" id="cb29-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(mySOS, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb29-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Offerings by '"</span>, <span class="kw"><a href="../reference/SOS.html">sosTitle</a></span>(mySOS), <span class="st">"'"</span>, <span class="dt">sep =</span> <span class="st">""</span>),</a>
-<a class="sourceLine" id="cb29-17" data-line-number="17">        <span class="dt">sub =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/toString">toString</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(mySOS))))</a></code></pre></div>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co">#&gt; Checking rgeos availability: FALSE</span></a>
+<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="co">#&gt;      Note: when rgeos is not available, polygon geometry     computations in maptools depend on gpclib,</span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">#&gt;      which has a restricted licence. It is disabled by default;</span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt;      to enable gpclib, type gpclibPermit()</span></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(worldHiresMapEnv)</a>
+<a class="sourceLine" id="cb29-9" data-line-number="9">crs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosGetCRS</a></span>(mySOS)[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb29-10" data-line-number="10">worldHigh &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/maptools/topics/map2SpatialPolygons">pruneMap</a></span>(</a>
+<a class="sourceLine" id="cb29-11" data-line-number="11">        <span class="kw"><a href="https://www.rdocumentation.org/packages/maps/topics/map">map</a></span>(<span class="dt">database =</span> <span class="st">"worldHires"</span>,</a>
+<a class="sourceLine" id="cb29-12" data-line-number="12">            <span class="dt">region =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Germany"</span>, <span class="st">"Austria"</span>, <span class="st">"Netherlands"</span>),</a>
+<a class="sourceLine" id="cb29-13" data-line-number="13">            <span class="dt">plot =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb29-14" data-line-number="14">worldHigh.lines &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/maptools/topics/map2SpatialPolygons">map2SpatialLines</a></span>(worldHigh, <span class="dt">proj4string =</span> crs)</a>
+<a class="sourceLine" id="cb29-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb29-16" data-line-number="16"><span class="co"># the plot:</span></a>
+<a class="sourceLine" id="cb29-17" data-line-number="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(worldHigh.lines, <span class="dt">col =</span> <span class="st">"grey50"</span>)</a>
+<a class="sourceLine" id="cb29-18" data-line-number="18"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(mySOS, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb29-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Offerings by '"</span>, <span class="kw"><a href="../reference/SOS.html">sosTitle</a></span>(mySOS), <span class="st">"'"</span>, <span class="dt">sep =</span> <span class="st">""</span>),</a>
+<a class="sourceLine" id="cb29-20" data-line-number="20">        <span class="dt">sub =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/toString">toString</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(mySOS))))</a></code></pre></div>
 <p><img src="sos4R-vignette-03-sos-operations_files/figure-html/sosPlot-1.png" width="700"></p>
 </div>
 </div>
@@ -897,7 +900,7 @@
 <a class="sourceLine" id="cb66-2" data-line-number="2"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb66-3" data-line-number="3"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb66-4" data-line-number="4"><span class="co">#&gt;  observedProperty: AirTemperature</span></a>
-<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="co">#&gt;  foi: sf_B6EC41A0E69F7A2AA24F2307944A6CAB5833E952</span></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="co">#&gt;  foi: sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC</span></a>
 <a class="sourceLine" id="cb66-6" data-line-number="6"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb66-7" data-line-number="7"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb66-8" data-line-number="8"><span class="co">#&gt;  result dimensions: 360, 2</span></a></code></pre></div>
@@ -938,11 +941,11 @@
 <a class="sourceLine" id="cb71-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"------</span><span class="ch">\n</span><span class="st">"</span>)</a>
 <a class="sourceLine" id="cb71-5" data-line-number="5"><span class="co">#&gt; ------</span></a>
 <a class="sourceLine" id="cb71-6" data-line-number="6">myObservationData[index.obsProp]</a>
-<a class="sourceLine" id="cb71-7" data-line-number="7"><span class="co">#&gt; $o_1555162558924</span></a>
+<a class="sourceLine" id="cb71-7" data-line-number="7"><span class="co">#&gt; $o_1565356068080</span></a>
 <a class="sourceLine" id="cb71-8" data-line-number="8"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb71-9" data-line-number="9"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb71-10" data-line-number="10"><span class="co">#&gt;  observedProperty: AirTemperature</span></a>
-<a class="sourceLine" id="cb71-11" data-line-number="11"><span class="co">#&gt;  foi: sf_B6EC41A0E69F7A2AA24F2307944A6CAB5833E952</span></a>
+<a class="sourceLine" id="cb71-11" data-line-number="11"><span class="co">#&gt;  foi: sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC</span></a>
 <a class="sourceLine" id="cb71-12" data-line-number="12"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb71-13" data-line-number="13"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb71-14" data-line-number="14"><span class="co">#&gt;  result dimensions: 360, 2</span></a></code></pre></div>
@@ -955,83 +958,83 @@
 <a class="sourceLine" id="cb72-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"------</span><span class="ch">\n</span><span class="st">"</span>)</a>
 <a class="sourceLine" id="cb72-8" data-line-number="8"><span class="co">#&gt; ------</span></a>
 <a class="sourceLine" id="cb72-9" data-line-number="9">myObservationData[index.proc]</a>
-<a class="sourceLine" id="cb72-10" data-line-number="10"><span class="co">#&gt; $o_1555162558924</span></a>
+<a class="sourceLine" id="cb72-10" data-line-number="10"><span class="co">#&gt; $o_1565356068080</span></a>
 <a class="sourceLine" id="cb72-11" data-line-number="11"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-12" data-line-number="12"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-13" data-line-number="13"><span class="co">#&gt;  observedProperty: AirTemperature</span></a>
-<a class="sourceLine" id="cb72-14" data-line-number="14"><span class="co">#&gt;  foi: sf_B6EC41A0E69F7A2AA24F2307944A6CAB5833E952</span></a>
+<a class="sourceLine" id="cb72-14" data-line-number="14"><span class="co">#&gt;  foi: sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC</span></a>
 <a class="sourceLine" id="cb72-15" data-line-number="15"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-16" data-line-number="16"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-17" data-line-number="17"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-18" data-line-number="18"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-19" data-line-number="19"><span class="co">#&gt; $o_1555162558928</span></a>
+<a class="sourceLine" id="cb72-19" data-line-number="19"><span class="co">#&gt; $o_1565356068081</span></a>
 <a class="sourceLine" id="cb72-20" data-line-number="20"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-21" data-line-number="21"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-22" data-line-number="22"><span class="co">#&gt;  observedProperty: RainfallAccumulated</span></a>
-<a class="sourceLine" id="cb72-23" data-line-number="23"><span class="co">#&gt;  foi: sf_ECE82997AE34E24608C5F65A0AF685998AB3E589</span></a>
+<a class="sourceLine" id="cb72-23" data-line-number="23"><span class="co">#&gt;  foi: sf_C3378C4973BDD7786ADA2B2E5AECC25FC1045852</span></a>
 <a class="sourceLine" id="cb72-24" data-line-number="24"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-25" data-line-number="25"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-26" data-line-number="26"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-27" data-line-number="27"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-28" data-line-number="28"><span class="co">#&gt; $o_1555162558929</span></a>
+<a class="sourceLine" id="cb72-28" data-line-number="28"><span class="co">#&gt; $o_1565356068082</span></a>
 <a class="sourceLine" id="cb72-29" data-line-number="29"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-30" data-line-number="30"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-31" data-line-number="31"><span class="co">#&gt;  observedProperty: Humidity</span></a>
-<a class="sourceLine" id="cb72-32" data-line-number="32"><span class="co">#&gt;  foi: sf_E9852B02E184F6FFC8983743045D6A2DFF4DE520</span></a>
+<a class="sourceLine" id="cb72-32" data-line-number="32"><span class="co">#&gt;  foi: sf_39A1A9F2920D559BE060F0A75960813F5C94D71E</span></a>
 <a class="sourceLine" id="cb72-33" data-line-number="33"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-34" data-line-number="34"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-35" data-line-number="35"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-36" data-line-number="36"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-37" data-line-number="37"><span class="co">#&gt; $o_1555162558930</span></a>
+<a class="sourceLine" id="cb72-37" data-line-number="37"><span class="co">#&gt; $o_1565356068083</span></a>
 <a class="sourceLine" id="cb72-38" data-line-number="38"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-39" data-line-number="39"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-40" data-line-number="40"><span class="co">#&gt;  observedProperty: AthmosphericPressure</span></a>
-<a class="sourceLine" id="cb72-41" data-line-number="41"><span class="co">#&gt;  foi: sf_485D30222B1DA73909079C17A8C28BDF69AAA997</span></a>
+<a class="sourceLine" id="cb72-41" data-line-number="41"><span class="co">#&gt;  foi: sf_F80B5EB3A550F862411E1327D6E09CCE5F191DF4</span></a>
 <a class="sourceLine" id="cb72-42" data-line-number="42"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-43" data-line-number="43"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-44" data-line-number="44"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-45" data-line-number="45"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-46" data-line-number="46"><span class="co">#&gt; $o_1555162558931</span></a>
+<a class="sourceLine" id="cb72-46" data-line-number="46"><span class="co">#&gt; $o_1565356068084</span></a>
 <a class="sourceLine" id="cb72-47" data-line-number="47"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-48" data-line-number="48"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-49" data-line-number="49"><span class="co">#&gt;  observedProperty: WindDirection</span></a>
-<a class="sourceLine" id="cb72-50" data-line-number="50"><span class="co">#&gt;  foi: sf_B0E0F269253A30B1F22E9B0B5F6FFA0EE2AF8299</span></a>
+<a class="sourceLine" id="cb72-50" data-line-number="50"><span class="co">#&gt;  foi: sf_63980E8519C24F68ECBA1130CA69C83675CE1C14</span></a>
 <a class="sourceLine" id="cb72-51" data-line-number="51"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-52" data-line-number="52"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-53" data-line-number="53"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-54" data-line-number="54"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-55" data-line-number="55"><span class="co">#&gt; $o_1555162558932</span></a>
+<a class="sourceLine" id="cb72-55" data-line-number="55"><span class="co">#&gt; $o_1565356068102</span></a>
 <a class="sourceLine" id="cb72-56" data-line-number="56"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-57" data-line-number="57"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-58" data-line-number="58"><span class="co">#&gt;  observedProperty: Windchill</span></a>
-<a class="sourceLine" id="cb72-59" data-line-number="59"><span class="co">#&gt;  foi: sf_B0E0F269253A30B1F22E9B0B5F6FFA0EE2AF82991</span></a>
+<a class="sourceLine" id="cb72-59" data-line-number="59"><span class="co">#&gt;  foi: sf_A517067DD435DBB494E33BC87A4BF547CF09E4B6</span></a>
 <a class="sourceLine" id="cb72-60" data-line-number="60"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-61" data-line-number="61"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-62" data-line-number="62"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-63" data-line-number="63"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-64" data-line-number="64"><span class="co">#&gt; $o_1555162558933</span></a>
+<a class="sourceLine" id="cb72-64" data-line-number="64"><span class="co">#&gt; $o_1565356068103</span></a>
 <a class="sourceLine" id="cb72-65" data-line-number="65"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-66" data-line-number="66"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-67" data-line-number="67"><span class="co">#&gt;  observedProperty: Dewpoint</span></a>
-<a class="sourceLine" id="cb72-68" data-line-number="68"><span class="co">#&gt;  foi: sf_37D74410B385F30771C191630CA14E0B0C732E58</span></a>
+<a class="sourceLine" id="cb72-68" data-line-number="68"><span class="co">#&gt;  foi: sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B</span></a>
 <a class="sourceLine" id="cb72-69" data-line-number="69"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-70" data-line-number="70"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-71" data-line-number="71"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-72" data-line-number="72"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-73" data-line-number="73"><span class="co">#&gt; $o_1555162558934</span></a>
+<a class="sourceLine" id="cb72-73" data-line-number="73"><span class="co">#&gt; $o_1565356068104</span></a>
 <a class="sourceLine" id="cb72-74" data-line-number="74"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-75" data-line-number="75"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-76" data-line-number="76"><span class="co">#&gt;  observedProperty: Luminance</span></a>
-<a class="sourceLine" id="cb72-77" data-line-number="77"><span class="co">#&gt;  foi: sf_71DF230CC564A88481B0304D9CCA7E82A3A6DDD9</span></a>
+<a class="sourceLine" id="cb72-77" data-line-number="77"><span class="co">#&gt;  foi: sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B1</span></a>
 <a class="sourceLine" id="cb72-78" data-line-number="78"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-79" data-line-number="79"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-80" data-line-number="80"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
 <a class="sourceLine" id="cb72-81" data-line-number="81"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb72-82" data-line-number="82"><span class="co">#&gt; $o_1555162558935</span></a>
+<a class="sourceLine" id="cb72-82" data-line-number="82"><span class="co">#&gt; $o_1565356068105</span></a>
 <a class="sourceLine" id="cb72-83" data-line-number="83"><span class="co">#&gt; Object of class OmObservation;</span></a>
 <a class="sourceLine" id="cb72-84" data-line-number="84"><span class="co">#&gt;  procedure: ws2500</span></a>
 <a class="sourceLine" id="cb72-85" data-line-number="85"><span class="co">#&gt;  observedProperty: WindSpeed</span></a>
-<a class="sourceLine" id="cb72-86" data-line-number="86"><span class="co">#&gt;  foi: sf_E9A612A92201ECA557D702B16B6F74CCF925AB89</span></a>
+<a class="sourceLine" id="cb72-86" data-line-number="86"><span class="co">#&gt;  foi: sf_65B66DC8B5E532115D97C0A09C41214BD2A35ABC</span></a>
 <a class="sourceLine" id="cb72-87" data-line-number="87"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb72-88" data-line-number="88"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb72-89" data-line-number="89"><span class="co">#&gt;  result dimensions: 360, 2</span></a></code></pre></div>
@@ -1041,24 +1044,24 @@
 <a href="#result-extraction" class="anchor"></a>Result Extraction</h4>
 <p><strong>Data Values</strong> can be extracted from observations, measurements and observation collections with the function <code><a href="../reference/OmObservation.html">sosResult()</a></code>. The function returns an object of class <code>data.frame</code>. In the case of collections, it automatically binds the data frames (you can turn this off by adding <code>bind = FALSE</code> as a parameter).</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(myObservationData)</a>
-<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="co">#&gt;                                        o_1555162558924.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="co">#&gt;       "ws2500_AirTemperature_sf_B6EC41A0E69F7A2AA24F2307944A6CAB5833E952" </span></a>
-<a class="sourceLine" id="cb73-4" data-line-number="4"><span class="co">#&gt;                                        o_1555162558928.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-5" data-line-number="5"><span class="co">#&gt;  "ws2500_RainfallAccumulated_sf_ECE82997AE34E24608C5F65A0AF685998AB3E589" </span></a>
-<a class="sourceLine" id="cb73-6" data-line-number="6"><span class="co">#&gt;                                        o_1555162558929.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-7" data-line-number="7"><span class="co">#&gt;             "ws2500_Humidity_sf_E9852B02E184F6FFC8983743045D6A2DFF4DE520" </span></a>
-<a class="sourceLine" id="cb73-8" data-line-number="8"><span class="co">#&gt;                                        o_1555162558930.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-9" data-line-number="9"><span class="co">#&gt; "ws2500_AthmosphericPressure_sf_485D30222B1DA73909079C17A8C28BDF69AAA997" </span></a>
-<a class="sourceLine" id="cb73-10" data-line-number="10"><span class="co">#&gt;                                        o_1555162558931.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-11" data-line-number="11"><span class="co">#&gt;        "ws2500_WindDirection_sf_B0E0F269253A30B1F22E9B0B5F6FFA0EE2AF8299" </span></a>
-<a class="sourceLine" id="cb73-12" data-line-number="12"><span class="co">#&gt;                                        o_1555162558932.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-13" data-line-number="13"><span class="co">#&gt;           "ws2500_Windchill_sf_B0E0F269253A30B1F22E9B0B5F6FFA0EE2AF82991" </span></a>
-<a class="sourceLine" id="cb73-14" data-line-number="14"><span class="co">#&gt;                                        o_1555162558933.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-15" data-line-number="15"><span class="co">#&gt;             "ws2500_Dewpoint_sf_37D74410B385F30771C191630CA14E0B0C732E58" </span></a>
-<a class="sourceLine" id="cb73-16" data-line-number="16"><span class="co">#&gt;                                        o_1555162558934.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-17" data-line-number="17"><span class="co">#&gt;            "ws2500_Luminance_sf_71DF230CC564A88481B0304D9CCA7E82A3A6DDD9" </span></a>
-<a class="sourceLine" id="cb73-18" data-line-number="18"><span class="co">#&gt;                                        o_1555162558935.proc_obsProp_foiID </span></a>
-<a class="sourceLine" id="cb73-19" data-line-number="19"><span class="co">#&gt;            "ws2500_WindSpeed_sf_E9A612A92201ECA557D702B16B6F74CCF925AB89"</span></a></code></pre></div>
+<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="co">#&gt;                                        o_1565356068080.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="co">#&gt;       "ws2500_AirTemperature_sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC" </span></a>
+<a class="sourceLine" id="cb73-4" data-line-number="4"><span class="co">#&gt;                                        o_1565356068081.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-5" data-line-number="5"><span class="co">#&gt;  "ws2500_RainfallAccumulated_sf_C3378C4973BDD7786ADA2B2E5AECC25FC1045852" </span></a>
+<a class="sourceLine" id="cb73-6" data-line-number="6"><span class="co">#&gt;                                        o_1565356068082.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-7" data-line-number="7"><span class="co">#&gt;             "ws2500_Humidity_sf_39A1A9F2920D559BE060F0A75960813F5C94D71E" </span></a>
+<a class="sourceLine" id="cb73-8" data-line-number="8"><span class="co">#&gt;                                        o_1565356068083.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-9" data-line-number="9"><span class="co">#&gt; "ws2500_AthmosphericPressure_sf_F80B5EB3A550F862411E1327D6E09CCE5F191DF4" </span></a>
+<a class="sourceLine" id="cb73-10" data-line-number="10"><span class="co">#&gt;                                        o_1565356068084.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-11" data-line-number="11"><span class="co">#&gt;        "ws2500_WindDirection_sf_63980E8519C24F68ECBA1130CA69C83675CE1C14" </span></a>
+<a class="sourceLine" id="cb73-12" data-line-number="12"><span class="co">#&gt;                                        o_1565356068102.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-13" data-line-number="13"><span class="co">#&gt;            "ws2500_Windchill_sf_A517067DD435DBB494E33BC87A4BF547CF09E4B6" </span></a>
+<a class="sourceLine" id="cb73-14" data-line-number="14"><span class="co">#&gt;                                        o_1565356068103.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-15" data-line-number="15"><span class="co">#&gt;             "ws2500_Dewpoint_sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B" </span></a>
+<a class="sourceLine" id="cb73-16" data-line-number="16"><span class="co">#&gt;                                        o_1565356068104.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-17" data-line-number="17"><span class="co">#&gt;           "ws2500_Luminance_sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B1" </span></a>
+<a class="sourceLine" id="cb73-18" data-line-number="18"><span class="co">#&gt;                                        o_1565356068105.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-19" data-line-number="19"><span class="co">#&gt;            "ws2500_WindSpeed_sf_65B66DC8B5E532115D97C0A09C41214BD2A35ABC"</span></a></code></pre></div>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">myObservationData.result<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(myObservationData[[<span class="dv">1</span>]])</a>
 <a class="sourceLine" id="cb74-2" data-line-number="2">myObservationData.result<span class="fl">.2</span></a>
 <a class="sourceLine" id="cb74-3" data-line-number="3"><span class="co">#&gt;          phenomenonTime AirTemperature</span></a>
@@ -1476,24 +1479,24 @@
 <a class="sourceLine" id="cb77-9" data-line-number="9"><span class="co">#&gt; [1] "degC"</span></a></code></pre></div>
 <p><strong>Spatial Information</strong> can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result <code>data.frame</code>, (ii) within a feature collection in the observation. In the latter case the utility functions <code><a href="../reference/SOS.html">sosCoordinates()</a></code> and <code><a href="../reference/SOS.html">sosFeatureIds()</a></code> can be used to extract the coordinates respectively the identifiers from <code>OmObservationCollection</code> or <code>OmObservation</code> classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by <code><a href="../reference/SOS.html">sosCoordinates()</a></code>.</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosFeatureIds</a></span>(myObservationData)</a>
-<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="co">#&gt;                                o_1555162558924 </span></a>
-<a class="sourceLine" id="cb78-3" data-line-number="3"><span class="co">#&gt;  "sf_B6EC41A0E69F7A2AA24F2307944A6CAB5833E952" </span></a>
-<a class="sourceLine" id="cb78-4" data-line-number="4"><span class="co">#&gt;                                o_1555162558928 </span></a>
-<a class="sourceLine" id="cb78-5" data-line-number="5"><span class="co">#&gt;  "sf_ECE82997AE34E24608C5F65A0AF685998AB3E589" </span></a>
-<a class="sourceLine" id="cb78-6" data-line-number="6"><span class="co">#&gt;                                o_1555162558929 </span></a>
-<a class="sourceLine" id="cb78-7" data-line-number="7"><span class="co">#&gt;  "sf_E9852B02E184F6FFC8983743045D6A2DFF4DE520" </span></a>
-<a class="sourceLine" id="cb78-8" data-line-number="8"><span class="co">#&gt;                                o_1555162558930 </span></a>
-<a class="sourceLine" id="cb78-9" data-line-number="9"><span class="co">#&gt;  "sf_485D30222B1DA73909079C17A8C28BDF69AAA997" </span></a>
-<a class="sourceLine" id="cb78-10" data-line-number="10"><span class="co">#&gt;                                o_1555162558931 </span></a>
-<a class="sourceLine" id="cb78-11" data-line-number="11"><span class="co">#&gt;  "sf_B0E0F269253A30B1F22E9B0B5F6FFA0EE2AF8299" </span></a>
-<a class="sourceLine" id="cb78-12" data-line-number="12"><span class="co">#&gt;                                o_1555162558932 </span></a>
-<a class="sourceLine" id="cb78-13" data-line-number="13"><span class="co">#&gt; "sf_B0E0F269253A30B1F22E9B0B5F6FFA0EE2AF82991" </span></a>
-<a class="sourceLine" id="cb78-14" data-line-number="14"><span class="co">#&gt;                                o_1555162558933 </span></a>
-<a class="sourceLine" id="cb78-15" data-line-number="15"><span class="co">#&gt;  "sf_37D74410B385F30771C191630CA14E0B0C732E58" </span></a>
-<a class="sourceLine" id="cb78-16" data-line-number="16"><span class="co">#&gt;                                o_1555162558934 </span></a>
-<a class="sourceLine" id="cb78-17" data-line-number="17"><span class="co">#&gt;  "sf_71DF230CC564A88481B0304D9CCA7E82A3A6DDD9" </span></a>
-<a class="sourceLine" id="cb78-18" data-line-number="18"><span class="co">#&gt;                                o_1555162558935 </span></a>
-<a class="sourceLine" id="cb78-19" data-line-number="19"><span class="co">#&gt;  "sf_E9A612A92201ECA557D702B16B6F74CCF925AB89"</span></a></code></pre></div>
+<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="co">#&gt;                                o_1565356068080 </span></a>
+<a class="sourceLine" id="cb78-3" data-line-number="3"><span class="co">#&gt;  "sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC" </span></a>
+<a class="sourceLine" id="cb78-4" data-line-number="4"><span class="co">#&gt;                                o_1565356068081 </span></a>
+<a class="sourceLine" id="cb78-5" data-line-number="5"><span class="co">#&gt;  "sf_C3378C4973BDD7786ADA2B2E5AECC25FC1045852" </span></a>
+<a class="sourceLine" id="cb78-6" data-line-number="6"><span class="co">#&gt;                                o_1565356068082 </span></a>
+<a class="sourceLine" id="cb78-7" data-line-number="7"><span class="co">#&gt;  "sf_39A1A9F2920D559BE060F0A75960813F5C94D71E" </span></a>
+<a class="sourceLine" id="cb78-8" data-line-number="8"><span class="co">#&gt;                                o_1565356068083 </span></a>
+<a class="sourceLine" id="cb78-9" data-line-number="9"><span class="co">#&gt;  "sf_F80B5EB3A550F862411E1327D6E09CCE5F191DF4" </span></a>
+<a class="sourceLine" id="cb78-10" data-line-number="10"><span class="co">#&gt;                                o_1565356068084 </span></a>
+<a class="sourceLine" id="cb78-11" data-line-number="11"><span class="co">#&gt;  "sf_63980E8519C24F68ECBA1130CA69C83675CE1C14" </span></a>
+<a class="sourceLine" id="cb78-12" data-line-number="12"><span class="co">#&gt;                                o_1565356068102 </span></a>
+<a class="sourceLine" id="cb78-13" data-line-number="13"><span class="co">#&gt;  "sf_A517067DD435DBB494E33BC87A4BF547CF09E4B6" </span></a>
+<a class="sourceLine" id="cb78-14" data-line-number="14"><span class="co">#&gt;                                o_1565356068103 </span></a>
+<a class="sourceLine" id="cb78-15" data-line-number="15"><span class="co">#&gt;  "sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B" </span></a>
+<a class="sourceLine" id="cb78-16" data-line-number="16"><span class="co">#&gt;                                o_1565356068104 </span></a>
+<a class="sourceLine" id="cb78-17" data-line-number="17"><span class="co">#&gt; "sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B1" </span></a>
+<a class="sourceLine" id="cb78-18" data-line-number="18"><span class="co">#&gt;                                o_1565356068105 </span></a>
+<a class="sourceLine" id="cb78-19" data-line-number="19"><span class="co">#&gt;  "sf_65B66DC8B5E532115D97C0A09C41214BD2A35ABC"</span></a></code></pre></div>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosCoordinates</a></span>(myObservationData)</a>
 <a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw"><a href="../reference/SOS.html">sosCoordinates</a></span>(myObservationData[[<span class="dv">1</span>]])</a></code></pre></div>
 <p>An observation collection also contains a bounding box of the contained observations, which can be extracted with the function <code><a href="../reference/SOS.html">sosBoundedBy()</a></code>. The optional attribute <code>bbox</code> can be used to obtain a bounding box matrix as used by package <code>sp</code>.</p>
@@ -1586,7 +1589,7 @@
 <a class="sourceLine" id="cb88-4" data-line-number="4">    <span class="dt">operator =</span> <span class="kw"><a href="../reference/Supported.html">SosSupportedTemporalOperators</a></span>()[[<span class="st">"TM_After"</span>]])</a>
 <a class="sourceLine" id="cb88-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(lastDay.eventTime)</a>
 <a class="sourceLine" id="cb88-6" data-line-number="6"><span class="co">#&gt; Object of class SosEventTime:</span></a>
-<a class="sourceLine" id="cb88-7" data-line-number="7"><span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2019-04-12 15:36:36 ]</span></a></code></pre></div>
+<a class="sourceLine" id="cb88-7" data-line-number="7"><span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2019-08-08 15:07:57 ]</span></a></code></pre></div>
 <p>Another example workflow, using a <code>KVP</code>-based connection.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1">sept15.period &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosCreate.html">sosCreateTimePeriod</a></span>(<span class="dt">sos =</span> mySOS,</a>
 <a class="sourceLine" id="cb89-2" data-line-number="2">                                     <span class="dt">begin =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="st">"2015-09-01 00:00"</span>),</a>
@@ -1775,7 +1778,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
 </div>
