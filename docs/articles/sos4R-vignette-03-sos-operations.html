@@ -30,7 +30,11 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
+<<<<<<< HEAD
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+=======
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+>>>>>>> dev
       </span>
     </div>
 
@@ -104,7 +108,11 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
+<<<<<<< HEAD
             <h4 class="date">2019-05-17</h4>
+=======
+            <h4 class="date">2019-08-09</h4>
+>>>>>>> dev
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-03-sos-operations.Rmd"><code>vignettes/sos4R-vignette-03-sos-operations.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-03-sos-operations.Rmd</code></div>
@@ -481,6 +489,7 @@
 <h4 class="hasAnchor">
 <a href="#plotting-sos-and-offerings" class="anchor"></a>Plotting SOS and Offerings</h4>
 <p>The content of the capabilities document allows the plotting of a service’s offerings. The following example uses the packages <code>maps</code>, <code>mapdata</code> and <code>maptools</code> to create a background map. Plotting functions exist for objects of class <code>SOS</code> and <code>SosObservationOffering</code>, so offerings can also be plotted separately.</p>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># background map:</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"maps"</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"mapdata"</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"maptools"</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3"><span class="co">#&gt; Loading required package: sp</span></a>
@@ -498,6 +507,28 @@
 <a class="sourceLine" id="cb30-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(mySOS, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">10</span>, <span class="dt">col =</span> <span class="st">"red"</span>)</a>
 <a class="sourceLine" id="cb30-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Offerings by '"</span>, <span class="kw"><a href="../reference/SOS.html">sosTitle</a></span>(mySOS), <span class="st">"'"</span>, <span class="dt">sep =</span> <span class="st">""</span>),</a>
 <a class="sourceLine" id="cb30-17" data-line-number="17">        <span class="dt">sub =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/toString">toString</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(mySOS))))</a></code></pre></div>
+=======
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># background map:</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"maps"</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"mapdata"</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"maptools"</span>)</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="co">#&gt; Loading required package: sp</span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co">#&gt; Checking rgeos availability: FALSE</span></a>
+<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="co">#&gt;      Note: when rgeos is not available, polygon geometry     computations in maptools depend on gpclib,</span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">#&gt;      which has a restricted licence. It is disabled by default;</span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt;      to enable gpclib, type gpclibPermit()</span></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(worldHiresMapEnv)</a>
+<a class="sourceLine" id="cb29-9" data-line-number="9">crs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosGetCRS</a></span>(mySOS)[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb29-10" data-line-number="10">worldHigh &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/maptools/topics/map2SpatialPolygons">pruneMap</a></span>(</a>
+<a class="sourceLine" id="cb29-11" data-line-number="11">        <span class="kw"><a href="https://www.rdocumentation.org/packages/maps/topics/map">map</a></span>(<span class="dt">database =</span> <span class="st">"worldHires"</span>,</a>
+<a class="sourceLine" id="cb29-12" data-line-number="12">            <span class="dt">region =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Germany"</span>, <span class="st">"Austria"</span>, <span class="st">"Netherlands"</span>),</a>
+<a class="sourceLine" id="cb29-13" data-line-number="13">            <span class="dt">plot =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb29-14" data-line-number="14">worldHigh.lines &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/maptools/topics/map2SpatialPolygons">map2SpatialLines</a></span>(worldHigh, <span class="dt">proj4string =</span> crs)</a>
+<a class="sourceLine" id="cb29-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb29-16" data-line-number="16"><span class="co"># the plot:</span></a>
+<a class="sourceLine" id="cb29-17" data-line-number="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(worldHigh.lines, <span class="dt">col =</span> <span class="st">"grey50"</span>)</a>
+<a class="sourceLine" id="cb29-18" data-line-number="18"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(mySOS, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb29-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Offerings by '"</span>, <span class="kw"><a href="../reference/SOS.html">sosTitle</a></span>(mySOS), <span class="st">"'"</span>, <span class="dt">sep =</span> <span class="st">""</span>),</a>
+<a class="sourceLine" id="cb29-20" data-line-number="20">        <span class="dt">sub =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/toString">toString</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="../reference/SOS.html">sosOfferings</a></span>(mySOS))))</a></code></pre></div>
+>>>>>>> dev
 <p><img src="sos4R-vignette-03-sos-operations_files/figure-html/sosPlot-1.png" width="700"></p>
 </div>
 </div>
@@ -907,6 +938,7 @@
 <h4 class="hasAnchor">
 <a href="#response-subsetting" class="anchor"></a>Response Subsetting</h4>
 <p>Subsetting of elements in an <code>OmObservationCollection</code> can be done just like in a normal list (in fact, it just wraps at list of observations at this point), i.e. with the operators <code>[</code> and <code>[[</code>. Summary functions are available for single observations or an observation collection.</p>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(myObservationData)</a>
 <a class="sourceLine" id="cb66-2" data-line-number="2"><span class="co">#&gt; [1] 9</span></a></code></pre></div>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">myObservationData[[<span class="dv">1</span>]]</a>
@@ -938,6 +970,39 @@
 <a class="sourceLine" id="cb69-12" data-line-number="12"><span class="co">#&gt;  Mean   :2018-01-03 12:15:18   Mean   :22.8  </span></a>
 <a class="sourceLine" id="cb69-13" data-line-number="13"><span class="co">#&gt;  3rd Qu.:2018-01-04 18:07:30   3rd Qu.:22.8  </span></a>
 <a class="sourceLine" id="cb69-14" data-line-number="14"><span class="co">#&gt;  Max.   :2018-01-06 00:00:00   Max.   :22.8</span></a></code></pre></div>
+=======
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(myObservationData)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="co">#&gt; [1] 9</span></a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">myObservationData[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb66-3" data-line-number="3"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="co">#&gt;  observedProperty: AirTemperature</span></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="co">#&gt;  foi: sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC</span></a>
+<a class="sourceLine" id="cb66-6" data-line-number="6"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb66-8" data-line-number="8"><span class="co">#&gt;  result dimensions: 360, 2</span></a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myObservationData)</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="co">#&gt; Object of class OmObservationCollection</span></a>
+<a class="sourceLine" id="cb67-3" data-line-number="3"><span class="co">#&gt; [[members:]]     [1] 9</span></a>
+<a class="sourceLine" id="cb67-4" data-line-number="4"><span class="co">#&gt; [[bounded by:]]      [1] "urn:ogc:def:crs:EPSG::4326, 51.934814453125 7.652428150177, 51.934814453125 7.652428150177"</span></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="co">#&gt; [[procedures:]]      [1] 1</span></a>
+<a class="sourceLine" id="cb67-6" data-line-number="6"><span class="co">#&gt; [[obs. props:]]      [1] 9</span></a>
+<a class="sourceLine" id="cb67-7" data-line-number="7"><span class="co">#&gt; [[features:]]        [1] 9</span></a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(myObservationData[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="co">#&gt; Object of class OmObservation</span></a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="co">#&gt; [[samplingTime:]]    [1] 1</span></a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"><span class="co">#&gt; [[procedures:]]      [1] 1</span></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="co">#&gt; [[obs. props:]]      [1] 1</span></a>
+<a class="sourceLine" id="cb68-6" data-line-number="6"><span class="co">#&gt; [[features:]]        [1] 1</span></a>
+<a class="sourceLine" id="cb68-7" data-line-number="7"><span class="co">#&gt; [[result summary:]]</span></a>
+<a class="sourceLine" id="cb68-8" data-line-number="8"><span class="co">#&gt;  phenomenonTime                AirTemperature</span></a>
+<a class="sourceLine" id="cb68-9" data-line-number="9"><span class="co">#&gt;  Min.   :2018-01-01 00:30:00   Min.   :22.8  </span></a>
+<a class="sourceLine" id="cb68-10" data-line-number="10"><span class="co">#&gt;  1st Qu.:2018-01-02 06:26:15   1st Qu.:22.8  </span></a>
+<a class="sourceLine" id="cb68-11" data-line-number="11"><span class="co">#&gt;  Median :2018-01-03 12:15:00   Median :22.8  </span></a>
+<a class="sourceLine" id="cb68-12" data-line-number="12"><span class="co">#&gt;  Mean   :2018-01-03 12:15:18   Mean   :22.8  </span></a>
+<a class="sourceLine" id="cb68-13" data-line-number="13"><span class="co">#&gt;  3rd Qu.:2018-01-04 18:07:30   3rd Qu.:22.8  </span></a>
+<a class="sourceLine" id="cb68-14" data-line-number="14"><span class="co">#&gt;  Max.   :2018-01-06 00:00:00   Max.   :22.8</span></a></code></pre></div>
+>>>>>>> dev
 <p>The collection can also be subset in parts:</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">myObservationData[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
 <p><strong>Observation collection indexing</strong> is possible with identifiers of procedure(s), observed property(ies), and feature(s) of interest.</p>
@@ -946,6 +1011,7 @@
 <a class="sourceLine" id="cb71-3" data-line-number="3"><span class="co">#&gt; [1] "ELV-WS2500"</span></a>
 <a class="sourceLine" id="cb71-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"------</span><span class="ch">\n</span><span class="st">"</span>)</a>
 <a class="sourceLine" id="cb71-5" data-line-number="5"><span class="co">#&gt; ------</span></a>
+<<<<<<< HEAD
 <a class="sourceLine" id="cb71-6" data-line-number="6">myObservationData[index.foiId]</a>
 <a class="sourceLine" id="cb71-7" data-line-number="7"><span class="co">#&gt; list()</span></a></code></pre></div>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">index.obsProp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosObservedProperties</a></span>(myOffering)[[<span class="dv">1</span>]]</a>
@@ -1051,11 +1117,112 @@
 <a class="sourceLine" id="cb73-87" data-line-number="87"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
 <a class="sourceLine" id="cb73-88" data-line-number="88"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
 <a class="sourceLine" id="cb73-89" data-line-number="89"><span class="co">#&gt;  result dimensions: 360, 2</span></a></code></pre></div>
+=======
+<a class="sourceLine" id="cb71-6" data-line-number="6">myObservationData[index.obsProp]</a>
+<a class="sourceLine" id="cb71-7" data-line-number="7"><span class="co">#&gt; $o_1565356068080</span></a>
+<a class="sourceLine" id="cb71-8" data-line-number="8"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb71-9" data-line-number="9"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb71-10" data-line-number="10"><span class="co">#&gt;  observedProperty: AirTemperature</span></a>
+<a class="sourceLine" id="cb71-11" data-line-number="11"><span class="co">#&gt;  foi: sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC</span></a>
+<a class="sourceLine" id="cb71-12" data-line-number="12"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb71-13" data-line-number="13"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb71-14" data-line-number="14"><span class="co">#&gt;  result dimensions: 360, 2</span></a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">index.proc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosProcedures</a></span>(myOffering)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">index.proc.alternative1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosProcedures</a></span>(myOffering)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb72-3" data-line-number="3">index.proc.alternative2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">sosProcedures</a></span>(mySOS)</a>
+<a class="sourceLine" id="cb72-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb72-5" data-line-number="5">index.proc</a>
+<a class="sourceLine" id="cb72-6" data-line-number="6"><span class="co">#&gt; [1] "ws2500"</span></a>
+<a class="sourceLine" id="cb72-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"------</span><span class="ch">\n</span><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb72-8" data-line-number="8"><span class="co">#&gt; ------</span></a>
+<a class="sourceLine" id="cb72-9" data-line-number="9">myObservationData[index.proc]</a>
+<a class="sourceLine" id="cb72-10" data-line-number="10"><span class="co">#&gt; $o_1565356068080</span></a>
+<a class="sourceLine" id="cb72-11" data-line-number="11"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-12" data-line-number="12"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-13" data-line-number="13"><span class="co">#&gt;  observedProperty: AirTemperature</span></a>
+<a class="sourceLine" id="cb72-14" data-line-number="14"><span class="co">#&gt;  foi: sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC</span></a>
+<a class="sourceLine" id="cb72-15" data-line-number="15"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-16" data-line-number="16"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-17" data-line-number="17"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-19" data-line-number="19"><span class="co">#&gt; $o_1565356068081</span></a>
+<a class="sourceLine" id="cb72-20" data-line-number="20"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-21" data-line-number="21"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-22" data-line-number="22"><span class="co">#&gt;  observedProperty: RainfallAccumulated</span></a>
+<a class="sourceLine" id="cb72-23" data-line-number="23"><span class="co">#&gt;  foi: sf_C3378C4973BDD7786ADA2B2E5AECC25FC1045852</span></a>
+<a class="sourceLine" id="cb72-24" data-line-number="24"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-25" data-line-number="25"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-26" data-line-number="26"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-27" data-line-number="27"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-28" data-line-number="28"><span class="co">#&gt; $o_1565356068082</span></a>
+<a class="sourceLine" id="cb72-29" data-line-number="29"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-30" data-line-number="30"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-31" data-line-number="31"><span class="co">#&gt;  observedProperty: Humidity</span></a>
+<a class="sourceLine" id="cb72-32" data-line-number="32"><span class="co">#&gt;  foi: sf_39A1A9F2920D559BE060F0A75960813F5C94D71E</span></a>
+<a class="sourceLine" id="cb72-33" data-line-number="33"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-34" data-line-number="34"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-35" data-line-number="35"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-36" data-line-number="36"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-37" data-line-number="37"><span class="co">#&gt; $o_1565356068083</span></a>
+<a class="sourceLine" id="cb72-38" data-line-number="38"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-39" data-line-number="39"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-40" data-line-number="40"><span class="co">#&gt;  observedProperty: AthmosphericPressure</span></a>
+<a class="sourceLine" id="cb72-41" data-line-number="41"><span class="co">#&gt;  foi: sf_F80B5EB3A550F862411E1327D6E09CCE5F191DF4</span></a>
+<a class="sourceLine" id="cb72-42" data-line-number="42"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-43" data-line-number="43"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-44" data-line-number="44"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-45" data-line-number="45"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-46" data-line-number="46"><span class="co">#&gt; $o_1565356068084</span></a>
+<a class="sourceLine" id="cb72-47" data-line-number="47"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-48" data-line-number="48"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-49" data-line-number="49"><span class="co">#&gt;  observedProperty: WindDirection</span></a>
+<a class="sourceLine" id="cb72-50" data-line-number="50"><span class="co">#&gt;  foi: sf_63980E8519C24F68ECBA1130CA69C83675CE1C14</span></a>
+<a class="sourceLine" id="cb72-51" data-line-number="51"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-52" data-line-number="52"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-53" data-line-number="53"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-54" data-line-number="54"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-55" data-line-number="55"><span class="co">#&gt; $o_1565356068102</span></a>
+<a class="sourceLine" id="cb72-56" data-line-number="56"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-57" data-line-number="57"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-58" data-line-number="58"><span class="co">#&gt;  observedProperty: Windchill</span></a>
+<a class="sourceLine" id="cb72-59" data-line-number="59"><span class="co">#&gt;  foi: sf_A517067DD435DBB494E33BC87A4BF547CF09E4B6</span></a>
+<a class="sourceLine" id="cb72-60" data-line-number="60"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-61" data-line-number="61"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-62" data-line-number="62"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-63" data-line-number="63"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-64" data-line-number="64"><span class="co">#&gt; $o_1565356068103</span></a>
+<a class="sourceLine" id="cb72-65" data-line-number="65"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-66" data-line-number="66"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-67" data-line-number="67"><span class="co">#&gt;  observedProperty: Dewpoint</span></a>
+<a class="sourceLine" id="cb72-68" data-line-number="68"><span class="co">#&gt;  foi: sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B</span></a>
+<a class="sourceLine" id="cb72-69" data-line-number="69"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-70" data-line-number="70"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-71" data-line-number="71"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-72" data-line-number="72"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-73" data-line-number="73"><span class="co">#&gt; $o_1565356068104</span></a>
+<a class="sourceLine" id="cb72-74" data-line-number="74"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-75" data-line-number="75"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-76" data-line-number="76"><span class="co">#&gt;  observedProperty: Luminance</span></a>
+<a class="sourceLine" id="cb72-77" data-line-number="77"><span class="co">#&gt;  foi: sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B1</span></a>
+<a class="sourceLine" id="cb72-78" data-line-number="78"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-79" data-line-number="79"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-80" data-line-number="80"><span class="co">#&gt;  result dimensions: 360, 2 </span></a>
+<a class="sourceLine" id="cb72-81" data-line-number="81"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb72-82" data-line-number="82"><span class="co">#&gt; $o_1565356068105</span></a>
+<a class="sourceLine" id="cb72-83" data-line-number="83"><span class="co">#&gt; Object of class OmObservation;</span></a>
+<a class="sourceLine" id="cb72-84" data-line-number="84"><span class="co">#&gt;  procedure: ws2500</span></a>
+<a class="sourceLine" id="cb72-85" data-line-number="85"><span class="co">#&gt;  observedProperty: WindSpeed</span></a>
+<a class="sourceLine" id="cb72-86" data-line-number="86"><span class="co">#&gt;  foi: sf_65B66DC8B5E532115D97C0A09C41214BD2A35ABC</span></a>
+<a class="sourceLine" id="cb72-87" data-line-number="87"><span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span></a>
+<a class="sourceLine" id="cb72-88" data-line-number="88"><span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span></a>
+<a class="sourceLine" id="cb72-89" data-line-number="89"><span class="co">#&gt;  result dimensions: 360, 2</span></a></code></pre></div>
+>>>>>>> dev
 </div>
 <div id="result-extraction" class="section level4">
 <h4 class="hasAnchor">
 <a href="#result-extraction" class="anchor"></a>Result Extraction</h4>
 <p><strong>Data Values</strong> can be extracted from observations, measurements and observation collections with the function <code><a href="../reference/OmObservation.html">sosResult()</a></code>. The function returns an object of class <code>data.frame</code>. In the case of collections, it automatically binds the data frames (you can turn this off by adding <code>bind = FALSE</code> as a parameter).</p>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(myObservationData)</a>
 <a class="sourceLine" id="cb74-2" data-line-number="2"><span class="co">#&gt;                                        o_1558086034268.proc_obsProp_foiID </span></a>
 <a class="sourceLine" id="cb74-3" data-line-number="3"><span class="co">#&gt;       "ws2500_AirTemperature_sf_A8589341CE054E4A96EF0152CC3CFC6A675AF32F" </span></a>
@@ -1438,6 +1605,390 @@
 <a class="sourceLine" id="cb75-361" data-line-number="361"><span class="co">#&gt; 358 2018-01-05 23:30:00           22.8</span></a>
 <a class="sourceLine" id="cb75-362" data-line-number="362"><span class="co">#&gt; 359 2018-01-05 23:45:00           22.8</span></a>
 <a class="sourceLine" id="cb75-363" data-line-number="363"><span class="co">#&gt; 360 2018-01-06 00:00:00           22.8</span></a></code></pre></div>
+=======
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(myObservationData)</a>
+<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="co">#&gt;                                        o_1565356068080.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="co">#&gt;       "ws2500_AirTemperature_sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC" </span></a>
+<a class="sourceLine" id="cb73-4" data-line-number="4"><span class="co">#&gt;                                        o_1565356068081.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-5" data-line-number="5"><span class="co">#&gt;  "ws2500_RainfallAccumulated_sf_C3378C4973BDD7786ADA2B2E5AECC25FC1045852" </span></a>
+<a class="sourceLine" id="cb73-6" data-line-number="6"><span class="co">#&gt;                                        o_1565356068082.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-7" data-line-number="7"><span class="co">#&gt;             "ws2500_Humidity_sf_39A1A9F2920D559BE060F0A75960813F5C94D71E" </span></a>
+<a class="sourceLine" id="cb73-8" data-line-number="8"><span class="co">#&gt;                                        o_1565356068083.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-9" data-line-number="9"><span class="co">#&gt; "ws2500_AthmosphericPressure_sf_F80B5EB3A550F862411E1327D6E09CCE5F191DF4" </span></a>
+<a class="sourceLine" id="cb73-10" data-line-number="10"><span class="co">#&gt;                                        o_1565356068084.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-11" data-line-number="11"><span class="co">#&gt;        "ws2500_WindDirection_sf_63980E8519C24F68ECBA1130CA69C83675CE1C14" </span></a>
+<a class="sourceLine" id="cb73-12" data-line-number="12"><span class="co">#&gt;                                        o_1565356068102.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-13" data-line-number="13"><span class="co">#&gt;            "ws2500_Windchill_sf_A517067DD435DBB494E33BC87A4BF547CF09E4B6" </span></a>
+<a class="sourceLine" id="cb73-14" data-line-number="14"><span class="co">#&gt;                                        o_1565356068103.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-15" data-line-number="15"><span class="co">#&gt;             "ws2500_Dewpoint_sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B" </span></a>
+<a class="sourceLine" id="cb73-16" data-line-number="16"><span class="co">#&gt;                                        o_1565356068104.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-17" data-line-number="17"><span class="co">#&gt;           "ws2500_Luminance_sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B1" </span></a>
+<a class="sourceLine" id="cb73-18" data-line-number="18"><span class="co">#&gt;                                        o_1565356068105.proc_obsProp_foiID </span></a>
+<a class="sourceLine" id="cb73-19" data-line-number="19"><span class="co">#&gt;            "ws2500_WindSpeed_sf_65B66DC8B5E532115D97C0A09C41214BD2A35ABC"</span></a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">myObservationData.result<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(myObservationData[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">myObservationData.result<span class="fl">.2</span></a>
+<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="co">#&gt;          phenomenonTime AirTemperature</span></a>
+<a class="sourceLine" id="cb74-4" data-line-number="4"><span class="co">#&gt; 1   2018-01-01 00:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-5" data-line-number="5"><span class="co">#&gt; 2   2018-01-01 00:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-6" data-line-number="6"><span class="co">#&gt; 3   2018-01-01 01:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-7" data-line-number="7"><span class="co">#&gt; 4   2018-01-01 01:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-8" data-line-number="8"><span class="co">#&gt; 5   2018-01-01 01:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-9" data-line-number="9"><span class="co">#&gt; 6   2018-01-01 02:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-10" data-line-number="10"><span class="co">#&gt; 7   2018-01-01 02:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-11" data-line-number="11"><span class="co">#&gt; 8   2018-01-01 02:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-12" data-line-number="12"><span class="co">#&gt; 9   2018-01-01 03:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-13" data-line-number="13"><span class="co">#&gt; 10  2018-01-01 03:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-14" data-line-number="14"><span class="co">#&gt; 11  2018-01-01 03:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-15" data-line-number="15"><span class="co">#&gt; 12  2018-01-01 04:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-16" data-line-number="16"><span class="co">#&gt; 13  2018-01-01 04:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-17" data-line-number="17"><span class="co">#&gt; 14  2018-01-01 04:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-18" data-line-number="18"><span class="co">#&gt; 15  2018-01-01 05:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-19" data-line-number="19"><span class="co">#&gt; 16  2018-01-01 05:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-20" data-line-number="20"><span class="co">#&gt; 17  2018-01-01 05:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-21" data-line-number="21"><span class="co">#&gt; 18  2018-01-01 06:15:00           22.8</span></a>
+<a class="sourceLine" id="cb74-22" data-line-number="22"><span class="co">#&gt; 19  2018-01-01 06:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-23" data-line-number="23"><span class="co">#&gt; 20  2018-01-01 06:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-24" data-line-number="24"><span class="co">#&gt; 21  2018-01-01 07:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-25" data-line-number="25"><span class="co">#&gt; 22  2018-01-01 07:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-26" data-line-number="26"><span class="co">#&gt; 23  2018-01-01 07:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-27" data-line-number="27"><span class="co">#&gt; 24  2018-01-01 08:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-28" data-line-number="28"><span class="co">#&gt; 25  2018-01-01 08:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-29" data-line-number="29"><span class="co">#&gt; 26  2018-01-01 08:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-30" data-line-number="30"><span class="co">#&gt; 27  2018-01-01 09:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-31" data-line-number="31"><span class="co">#&gt; 28  2018-01-01 09:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-32" data-line-number="32"><span class="co">#&gt; 29  2018-01-01 09:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-33" data-line-number="33"><span class="co">#&gt; 30  2018-01-01 10:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-34" data-line-number="34"><span class="co">#&gt; 31  2018-01-01 10:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-35" data-line-number="35"><span class="co">#&gt; 32  2018-01-01 10:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-36" data-line-number="36"><span class="co">#&gt; 33  2018-01-01 11:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-37" data-line-number="37"><span class="co">#&gt; 34  2018-01-01 11:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-38" data-line-number="38"><span class="co">#&gt; 35  2018-01-01 11:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-39" data-line-number="39"><span class="co">#&gt; 36  2018-01-01 12:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-40" data-line-number="40"><span class="co">#&gt; 37  2018-01-01 12:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-41" data-line-number="41"><span class="co">#&gt; 38  2018-01-01 12:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-42" data-line-number="42"><span class="co">#&gt; 39  2018-01-01 13:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-43" data-line-number="43"><span class="co">#&gt; 40  2018-01-01 13:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-44" data-line-number="44"><span class="co">#&gt; 41  2018-01-01 13:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-45" data-line-number="45"><span class="co">#&gt; 42  2018-01-01 14:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-46" data-line-number="46"><span class="co">#&gt; 43  2018-01-01 14:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-47" data-line-number="47"><span class="co">#&gt; 44  2018-01-01 14:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-48" data-line-number="48"><span class="co">#&gt; 45  2018-01-01 15:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-49" data-line-number="49"><span class="co">#&gt; 46  2018-01-01 15:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-50" data-line-number="50"><span class="co">#&gt; 47  2018-01-01 15:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-51" data-line-number="51"><span class="co">#&gt; 48  2018-01-01 16:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-52" data-line-number="52"><span class="co">#&gt; 49  2018-01-01 16:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-53" data-line-number="53"><span class="co">#&gt; 50  2018-01-01 16:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-54" data-line-number="54"><span class="co">#&gt; 51  2018-01-01 17:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-55" data-line-number="55"><span class="co">#&gt; 52  2018-01-01 17:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-56" data-line-number="56"><span class="co">#&gt; 53  2018-01-01 17:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-57" data-line-number="57"><span class="co">#&gt; 54  2018-01-01 18:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-58" data-line-number="58"><span class="co">#&gt; 55  2018-01-01 18:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-59" data-line-number="59"><span class="co">#&gt; 56  2018-01-01 18:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-60" data-line-number="60"><span class="co">#&gt; 57  2018-01-01 19:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-61" data-line-number="61"><span class="co">#&gt; 58  2018-01-01 19:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-62" data-line-number="62"><span class="co">#&gt; 59  2018-01-01 19:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-63" data-line-number="63"><span class="co">#&gt; 60  2018-01-01 20:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-64" data-line-number="64"><span class="co">#&gt; 61  2018-01-01 20:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-65" data-line-number="65"><span class="co">#&gt; 62  2018-01-01 20:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-66" data-line-number="66"><span class="co">#&gt; 63  2018-01-01 21:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-67" data-line-number="67"><span class="co">#&gt; 64  2018-01-01 21:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-68" data-line-number="68"><span class="co">#&gt; 65  2018-01-01 21:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-69" data-line-number="69"><span class="co">#&gt; 66  2018-01-01 22:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-70" data-line-number="70"><span class="co">#&gt; 67  2018-01-01 22:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-71" data-line-number="71"><span class="co">#&gt; 68  2018-01-01 22:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-72" data-line-number="72"><span class="co">#&gt; 69  2018-01-01 23:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-73" data-line-number="73"><span class="co">#&gt; 70  2018-01-01 23:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-74" data-line-number="74"><span class="co">#&gt; 71  2018-01-01 23:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-75" data-line-number="75"><span class="co">#&gt; 72  2018-01-02 00:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-76" data-line-number="76"><span class="co">#&gt; 73  2018-01-02 00:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-77" data-line-number="77"><span class="co">#&gt; 74  2018-01-02 00:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-78" data-line-number="78"><span class="co">#&gt; 75  2018-01-02 01:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-79" data-line-number="79"><span class="co">#&gt; 76  2018-01-02 01:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-80" data-line-number="80"><span class="co">#&gt; 77  2018-01-02 01:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-81" data-line-number="81"><span class="co">#&gt; 78  2018-01-02 02:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-82" data-line-number="82"><span class="co">#&gt; 79  2018-01-02 02:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-83" data-line-number="83"><span class="co">#&gt; 80  2018-01-02 02:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-84" data-line-number="84"><span class="co">#&gt; 81  2018-01-02 03:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-85" data-line-number="85"><span class="co">#&gt; 82  2018-01-02 03:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-86" data-line-number="86"><span class="co">#&gt; 83  2018-01-02 03:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-87" data-line-number="87"><span class="co">#&gt; 84  2018-01-02 04:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-88" data-line-number="88"><span class="co">#&gt; 85  2018-01-02 04:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-89" data-line-number="89"><span class="co">#&gt; 86  2018-01-02 04:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-90" data-line-number="90"><span class="co">#&gt; 87  2018-01-02 05:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-91" data-line-number="91"><span class="co">#&gt; 88  2018-01-02 05:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-92" data-line-number="92"><span class="co">#&gt; 89  2018-01-02 05:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-93" data-line-number="93"><span class="co">#&gt; 90  2018-01-02 06:15:00           22.8</span></a>
+<a class="sourceLine" id="cb74-94" data-line-number="94"><span class="co">#&gt; 91  2018-01-02 06:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-95" data-line-number="95"><span class="co">#&gt; 92  2018-01-02 06:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-96" data-line-number="96"><span class="co">#&gt; 93  2018-01-02 07:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-97" data-line-number="97"><span class="co">#&gt; 94  2018-01-02 07:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-98" data-line-number="98"><span class="co">#&gt; 95  2018-01-02 07:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-99" data-line-number="99"><span class="co">#&gt; 96  2018-01-02 08:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-100" data-line-number="100"><span class="co">#&gt; 97  2018-01-02 08:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-101" data-line-number="101"><span class="co">#&gt; 98  2018-01-02 08:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-102" data-line-number="102"><span class="co">#&gt; 99  2018-01-02 09:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-103" data-line-number="103"><span class="co">#&gt; 100 2018-01-02 09:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-104" data-line-number="104"><span class="co">#&gt; 101 2018-01-02 09:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-105" data-line-number="105"><span class="co">#&gt; 102 2018-01-02 10:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-106" data-line-number="106"><span class="co">#&gt; 103 2018-01-02 10:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-107" data-line-number="107"><span class="co">#&gt; 104 2018-01-02 10:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-108" data-line-number="108"><span class="co">#&gt; 105 2018-01-02 11:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-109" data-line-number="109"><span class="co">#&gt; 106 2018-01-02 11:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-110" data-line-number="110"><span class="co">#&gt; 107 2018-01-02 11:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-111" data-line-number="111"><span class="co">#&gt; 108 2018-01-02 12:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-112" data-line-number="112"><span class="co">#&gt; 109 2018-01-02 12:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-113" data-line-number="113"><span class="co">#&gt; 110 2018-01-02 12:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-114" data-line-number="114"><span class="co">#&gt; 111 2018-01-02 13:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-115" data-line-number="115"><span class="co">#&gt; 112 2018-01-02 13:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-116" data-line-number="116"><span class="co">#&gt; 113 2018-01-02 13:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-117" data-line-number="117"><span class="co">#&gt; 114 2018-01-02 14:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-118" data-line-number="118"><span class="co">#&gt; 115 2018-01-02 14:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-119" data-line-number="119"><span class="co">#&gt; 116 2018-01-02 14:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-120" data-line-number="120"><span class="co">#&gt; 117 2018-01-02 15:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-121" data-line-number="121"><span class="co">#&gt; 118 2018-01-02 15:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-122" data-line-number="122"><span class="co">#&gt; 119 2018-01-02 15:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-123" data-line-number="123"><span class="co">#&gt; 120 2018-01-02 16:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-124" data-line-number="124"><span class="co">#&gt; 121 2018-01-02 16:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-125" data-line-number="125"><span class="co">#&gt; 122 2018-01-02 16:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-126" data-line-number="126"><span class="co">#&gt; 123 2018-01-02 17:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-127" data-line-number="127"><span class="co">#&gt; 124 2018-01-02 17:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-128" data-line-number="128"><span class="co">#&gt; 125 2018-01-02 17:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-129" data-line-number="129"><span class="co">#&gt; 126 2018-01-02 18:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-130" data-line-number="130"><span class="co">#&gt; 127 2018-01-02 18:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-131" data-line-number="131"><span class="co">#&gt; 128 2018-01-02 18:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-132" data-line-number="132"><span class="co">#&gt; 129 2018-01-02 19:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-133" data-line-number="133"><span class="co">#&gt; 130 2018-01-02 19:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-134" data-line-number="134"><span class="co">#&gt; 131 2018-01-02 19:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-135" data-line-number="135"><span class="co">#&gt; 132 2018-01-02 20:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-136" data-line-number="136"><span class="co">#&gt; 133 2018-01-02 20:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-137" data-line-number="137"><span class="co">#&gt; 134 2018-01-02 20:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-138" data-line-number="138"><span class="co">#&gt; 135 2018-01-02 21:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-139" data-line-number="139"><span class="co">#&gt; 136 2018-01-02 21:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-140" data-line-number="140"><span class="co">#&gt; 137 2018-01-02 21:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-141" data-line-number="141"><span class="co">#&gt; 138 2018-01-02 22:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-142" data-line-number="142"><span class="co">#&gt; 139 2018-01-02 22:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-143" data-line-number="143"><span class="co">#&gt; 140 2018-01-02 22:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-144" data-line-number="144"><span class="co">#&gt; 141 2018-01-02 23:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-145" data-line-number="145"><span class="co">#&gt; 142 2018-01-02 23:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-146" data-line-number="146"><span class="co">#&gt; 143 2018-01-02 23:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-147" data-line-number="147"><span class="co">#&gt; 144 2018-01-03 00:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-148" data-line-number="148"><span class="co">#&gt; 145 2018-01-03 00:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-149" data-line-number="149"><span class="co">#&gt; 146 2018-01-03 00:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-150" data-line-number="150"><span class="co">#&gt; 147 2018-01-03 01:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-151" data-line-number="151"><span class="co">#&gt; 148 2018-01-03 01:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-152" data-line-number="152"><span class="co">#&gt; 149 2018-01-03 01:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-153" data-line-number="153"><span class="co">#&gt; 150 2018-01-03 02:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-154" data-line-number="154"><span class="co">#&gt; 151 2018-01-03 02:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-155" data-line-number="155"><span class="co">#&gt; 152 2018-01-03 02:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-156" data-line-number="156"><span class="co">#&gt; 153 2018-01-03 03:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-157" data-line-number="157"><span class="co">#&gt; 154 2018-01-03 03:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-158" data-line-number="158"><span class="co">#&gt; 155 2018-01-03 03:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-159" data-line-number="159"><span class="co">#&gt; 156 2018-01-03 04:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-160" data-line-number="160"><span class="co">#&gt; 157 2018-01-03 04:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-161" data-line-number="161"><span class="co">#&gt; 158 2018-01-03 04:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-162" data-line-number="162"><span class="co">#&gt; 159 2018-01-03 05:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-163" data-line-number="163"><span class="co">#&gt; 160 2018-01-03 05:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-164" data-line-number="164"><span class="co">#&gt; 161 2018-01-03 05:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-165" data-line-number="165"><span class="co">#&gt; 162 2018-01-03 06:15:00           22.8</span></a>
+<a class="sourceLine" id="cb74-166" data-line-number="166"><span class="co">#&gt; 163 2018-01-03 06:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-167" data-line-number="167"><span class="co">#&gt; 164 2018-01-03 06:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-168" data-line-number="168"><span class="co">#&gt; 165 2018-01-03 07:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-169" data-line-number="169"><span class="co">#&gt; 166 2018-01-03 07:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-170" data-line-number="170"><span class="co">#&gt; 167 2018-01-03 07:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-171" data-line-number="171"><span class="co">#&gt; 168 2018-01-03 08:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-172" data-line-number="172"><span class="co">#&gt; 169 2018-01-03 08:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-173" data-line-number="173"><span class="co">#&gt; 170 2018-01-03 08:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-174" data-line-number="174"><span class="co">#&gt; 171 2018-01-03 09:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-175" data-line-number="175"><span class="co">#&gt; 172 2018-01-03 09:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-176" data-line-number="176"><span class="co">#&gt; 173 2018-01-03 09:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-177" data-line-number="177"><span class="co">#&gt; 174 2018-01-03 10:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-178" data-line-number="178"><span class="co">#&gt; 175 2018-01-03 10:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-179" data-line-number="179"><span class="co">#&gt; 176 2018-01-03 10:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-180" data-line-number="180"><span class="co">#&gt; 177 2018-01-03 11:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-181" data-line-number="181"><span class="co">#&gt; 178 2018-01-03 11:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-182" data-line-number="182"><span class="co">#&gt; 179 2018-01-03 11:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-183" data-line-number="183"><span class="co">#&gt; 180 2018-01-03 12:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-184" data-line-number="184"><span class="co">#&gt; 181 2018-01-03 12:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-185" data-line-number="185"><span class="co">#&gt; 182 2018-01-03 12:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-186" data-line-number="186"><span class="co">#&gt; 183 2018-01-03 13:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-187" data-line-number="187"><span class="co">#&gt; 184 2018-01-03 13:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-188" data-line-number="188"><span class="co">#&gt; 185 2018-01-03 13:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-189" data-line-number="189"><span class="co">#&gt; 186 2018-01-03 14:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-190" data-line-number="190"><span class="co">#&gt; 187 2018-01-03 14:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-191" data-line-number="191"><span class="co">#&gt; 188 2018-01-03 14:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-192" data-line-number="192"><span class="co">#&gt; 189 2018-01-03 15:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-193" data-line-number="193"><span class="co">#&gt; 190 2018-01-03 15:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-194" data-line-number="194"><span class="co">#&gt; 191 2018-01-03 15:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-195" data-line-number="195"><span class="co">#&gt; 192 2018-01-03 16:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-196" data-line-number="196"><span class="co">#&gt; 193 2018-01-03 16:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-197" data-line-number="197"><span class="co">#&gt; 194 2018-01-03 16:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-198" data-line-number="198"><span class="co">#&gt; 195 2018-01-03 17:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-199" data-line-number="199"><span class="co">#&gt; 196 2018-01-03 17:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-200" data-line-number="200"><span class="co">#&gt; 197 2018-01-03 17:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-201" data-line-number="201"><span class="co">#&gt; 198 2018-01-03 18:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-202" data-line-number="202"><span class="co">#&gt; 199 2018-01-03 18:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-203" data-line-number="203"><span class="co">#&gt; 200 2018-01-03 18:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-204" data-line-number="204"><span class="co">#&gt; 201 2018-01-03 19:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-205" data-line-number="205"><span class="co">#&gt; 202 2018-01-03 19:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-206" data-line-number="206"><span class="co">#&gt; 203 2018-01-03 19:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-207" data-line-number="207"><span class="co">#&gt; 204 2018-01-03 20:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-208" data-line-number="208"><span class="co">#&gt; 205 2018-01-03 20:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-209" data-line-number="209"><span class="co">#&gt; 206 2018-01-03 20:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-210" data-line-number="210"><span class="co">#&gt; 207 2018-01-03 21:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-211" data-line-number="211"><span class="co">#&gt; 208 2018-01-03 21:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-212" data-line-number="212"><span class="co">#&gt; 209 2018-01-03 21:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-213" data-line-number="213"><span class="co">#&gt; 210 2018-01-03 22:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-214" data-line-number="214"><span class="co">#&gt; 211 2018-01-03 22:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-215" data-line-number="215"><span class="co">#&gt; 212 2018-01-03 22:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-216" data-line-number="216"><span class="co">#&gt; 213 2018-01-03 23:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-217" data-line-number="217"><span class="co">#&gt; 214 2018-01-03 23:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-218" data-line-number="218"><span class="co">#&gt; 215 2018-01-03 23:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-219" data-line-number="219"><span class="co">#&gt; 216 2018-01-04 00:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-220" data-line-number="220"><span class="co">#&gt; 217 2018-01-04 00:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-221" data-line-number="221"><span class="co">#&gt; 218 2018-01-04 00:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-222" data-line-number="222"><span class="co">#&gt; 219 2018-01-04 01:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-223" data-line-number="223"><span class="co">#&gt; 220 2018-01-04 01:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-224" data-line-number="224"><span class="co">#&gt; 221 2018-01-04 01:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-225" data-line-number="225"><span class="co">#&gt; 222 2018-01-04 02:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-226" data-line-number="226"><span class="co">#&gt; 223 2018-01-04 02:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-227" data-line-number="227"><span class="co">#&gt; 224 2018-01-04 02:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-228" data-line-number="228"><span class="co">#&gt; 225 2018-01-04 03:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-229" data-line-number="229"><span class="co">#&gt; 226 2018-01-04 03:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-230" data-line-number="230"><span class="co">#&gt; 227 2018-01-04 03:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-231" data-line-number="231"><span class="co">#&gt; 228 2018-01-04 04:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-232" data-line-number="232"><span class="co">#&gt; 229 2018-01-04 04:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-233" data-line-number="233"><span class="co">#&gt; 230 2018-01-04 04:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-234" data-line-number="234"><span class="co">#&gt; 231 2018-01-04 05:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-235" data-line-number="235"><span class="co">#&gt; 232 2018-01-04 05:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-236" data-line-number="236"><span class="co">#&gt; 233 2018-01-04 05:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-237" data-line-number="237"><span class="co">#&gt; 234 2018-01-04 06:15:00           22.8</span></a>
+<a class="sourceLine" id="cb74-238" data-line-number="238"><span class="co">#&gt; 235 2018-01-04 06:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-239" data-line-number="239"><span class="co">#&gt; 236 2018-01-04 06:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-240" data-line-number="240"><span class="co">#&gt; 237 2018-01-04 07:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-241" data-line-number="241"><span class="co">#&gt; 238 2018-01-04 07:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-242" data-line-number="242"><span class="co">#&gt; 239 2018-01-04 07:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-243" data-line-number="243"><span class="co">#&gt; 240 2018-01-04 08:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-244" data-line-number="244"><span class="co">#&gt; 241 2018-01-04 08:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-245" data-line-number="245"><span class="co">#&gt; 242 2018-01-04 08:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-246" data-line-number="246"><span class="co">#&gt; 243 2018-01-04 09:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-247" data-line-number="247"><span class="co">#&gt; 244 2018-01-04 09:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-248" data-line-number="248"><span class="co">#&gt; 245 2018-01-04 09:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-249" data-line-number="249"><span class="co">#&gt; 246 2018-01-04 10:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-250" data-line-number="250"><span class="co">#&gt; 247 2018-01-04 10:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-251" data-line-number="251"><span class="co">#&gt; 248 2018-01-04 10:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-252" data-line-number="252"><span class="co">#&gt; 249 2018-01-04 11:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-253" data-line-number="253"><span class="co">#&gt; 250 2018-01-04 11:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-254" data-line-number="254"><span class="co">#&gt; 251 2018-01-04 11:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-255" data-line-number="255"><span class="co">#&gt; 252 2018-01-04 12:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-256" data-line-number="256"><span class="co">#&gt; 253 2018-01-04 12:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-257" data-line-number="257"><span class="co">#&gt; 254 2018-01-04 12:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-258" data-line-number="258"><span class="co">#&gt; 255 2018-01-04 13:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-259" data-line-number="259"><span class="co">#&gt; 256 2018-01-04 13:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-260" data-line-number="260"><span class="co">#&gt; 257 2018-01-04 13:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-261" data-line-number="261"><span class="co">#&gt; 258 2018-01-04 14:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-262" data-line-number="262"><span class="co">#&gt; 259 2018-01-04 14:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-263" data-line-number="263"><span class="co">#&gt; 260 2018-01-04 14:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-264" data-line-number="264"><span class="co">#&gt; 261 2018-01-04 15:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-265" data-line-number="265"><span class="co">#&gt; 262 2018-01-04 15:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-266" data-line-number="266"><span class="co">#&gt; 263 2018-01-04 15:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-267" data-line-number="267"><span class="co">#&gt; 264 2018-01-04 16:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-268" data-line-number="268"><span class="co">#&gt; 265 2018-01-04 16:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-269" data-line-number="269"><span class="co">#&gt; 266 2018-01-04 16:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-270" data-line-number="270"><span class="co">#&gt; 267 2018-01-04 17:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-271" data-line-number="271"><span class="co">#&gt; 268 2018-01-04 17:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-272" data-line-number="272"><span class="co">#&gt; 269 2018-01-04 17:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-273" data-line-number="273"><span class="co">#&gt; 270 2018-01-04 18:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-274" data-line-number="274"><span class="co">#&gt; 271 2018-01-04 18:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-275" data-line-number="275"><span class="co">#&gt; 272 2018-01-04 18:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-276" data-line-number="276"><span class="co">#&gt; 273 2018-01-04 19:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-277" data-line-number="277"><span class="co">#&gt; 274 2018-01-04 19:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-278" data-line-number="278"><span class="co">#&gt; 275 2018-01-04 19:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-279" data-line-number="279"><span class="co">#&gt; 276 2018-01-04 20:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-280" data-line-number="280"><span class="co">#&gt; 277 2018-01-04 20:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-281" data-line-number="281"><span class="co">#&gt; 278 2018-01-04 20:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-282" data-line-number="282"><span class="co">#&gt; 279 2018-01-04 21:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-283" data-line-number="283"><span class="co">#&gt; 280 2018-01-04 21:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-284" data-line-number="284"><span class="co">#&gt; 281 2018-01-04 21:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-285" data-line-number="285"><span class="co">#&gt; 282 2018-01-04 22:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-286" data-line-number="286"><span class="co">#&gt; 283 2018-01-04 22:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-287" data-line-number="287"><span class="co">#&gt; 284 2018-01-04 22:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-288" data-line-number="288"><span class="co">#&gt; 285 2018-01-04 23:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-289" data-line-number="289"><span class="co">#&gt; 286 2018-01-04 23:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-290" data-line-number="290"><span class="co">#&gt; 287 2018-01-04 23:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-291" data-line-number="291"><span class="co">#&gt; 288 2018-01-05 00:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-292" data-line-number="292"><span class="co">#&gt; 289 2018-01-05 00:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-293" data-line-number="293"><span class="co">#&gt; 290 2018-01-05 00:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-294" data-line-number="294"><span class="co">#&gt; 291 2018-01-05 01:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-295" data-line-number="295"><span class="co">#&gt; 292 2018-01-05 01:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-296" data-line-number="296"><span class="co">#&gt; 293 2018-01-05 01:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-297" data-line-number="297"><span class="co">#&gt; 294 2018-01-05 02:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-298" data-line-number="298"><span class="co">#&gt; 295 2018-01-05 02:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-299" data-line-number="299"><span class="co">#&gt; 296 2018-01-05 02:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-300" data-line-number="300"><span class="co">#&gt; 297 2018-01-05 03:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-301" data-line-number="301"><span class="co">#&gt; 298 2018-01-05 03:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-302" data-line-number="302"><span class="co">#&gt; 299 2018-01-05 03:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-303" data-line-number="303"><span class="co">#&gt; 300 2018-01-05 04:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-304" data-line-number="304"><span class="co">#&gt; 301 2018-01-05 04:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-305" data-line-number="305"><span class="co">#&gt; 302 2018-01-05 04:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-306" data-line-number="306"><span class="co">#&gt; 303 2018-01-05 05:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-307" data-line-number="307"><span class="co">#&gt; 304 2018-01-05 05:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-308" data-line-number="308"><span class="co">#&gt; 305 2018-01-05 05:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-309" data-line-number="309"><span class="co">#&gt; 306 2018-01-05 06:16:00           22.8</span></a>
+<a class="sourceLine" id="cb74-310" data-line-number="310"><span class="co">#&gt; 307 2018-01-05 06:31:00           22.8</span></a>
+<a class="sourceLine" id="cb74-311" data-line-number="311"><span class="co">#&gt; 308 2018-01-05 06:46:00           22.8</span></a>
+<a class="sourceLine" id="cb74-312" data-line-number="312"><span class="co">#&gt; 309 2018-01-05 07:16:00           22.8</span></a>
+<a class="sourceLine" id="cb74-313" data-line-number="313"><span class="co">#&gt; 310 2018-01-05 07:31:00           22.8</span></a>
+<a class="sourceLine" id="cb74-314" data-line-number="314"><span class="co">#&gt; 311 2018-01-05 07:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-315" data-line-number="315"><span class="co">#&gt; 312 2018-01-05 08:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-316" data-line-number="316"><span class="co">#&gt; 313 2018-01-05 08:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-317" data-line-number="317"><span class="co">#&gt; 314 2018-01-05 08:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-318" data-line-number="318"><span class="co">#&gt; 315 2018-01-05 09:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-319" data-line-number="319"><span class="co">#&gt; 316 2018-01-05 09:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-320" data-line-number="320"><span class="co">#&gt; 317 2018-01-05 09:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-321" data-line-number="321"><span class="co">#&gt; 318 2018-01-05 10:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-322" data-line-number="322"><span class="co">#&gt; 319 2018-01-05 10:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-323" data-line-number="323"><span class="co">#&gt; 320 2018-01-05 10:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-324" data-line-number="324"><span class="co">#&gt; 321 2018-01-05 11:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-325" data-line-number="325"><span class="co">#&gt; 322 2018-01-05 11:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-326" data-line-number="326"><span class="co">#&gt; 323 2018-01-05 11:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-327" data-line-number="327"><span class="co">#&gt; 324 2018-01-05 12:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-328" data-line-number="328"><span class="co">#&gt; 325 2018-01-05 12:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-329" data-line-number="329"><span class="co">#&gt; 326 2018-01-05 12:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-330" data-line-number="330"><span class="co">#&gt; 327 2018-01-05 13:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-331" data-line-number="331"><span class="co">#&gt; 328 2018-01-05 13:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-332" data-line-number="332"><span class="co">#&gt; 329 2018-01-05 13:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-333" data-line-number="333"><span class="co">#&gt; 330 2018-01-05 14:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-334" data-line-number="334"><span class="co">#&gt; 331 2018-01-05 14:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-335" data-line-number="335"><span class="co">#&gt; 332 2018-01-05 14:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-336" data-line-number="336"><span class="co">#&gt; 333 2018-01-05 15:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-337" data-line-number="337"><span class="co">#&gt; 334 2018-01-05 15:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-338" data-line-number="338"><span class="co">#&gt; 335 2018-01-05 15:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-339" data-line-number="339"><span class="co">#&gt; 336 2018-01-05 16:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-340" data-line-number="340"><span class="co">#&gt; 337 2018-01-05 16:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-341" data-line-number="341"><span class="co">#&gt; 338 2018-01-05 16:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-342" data-line-number="342"><span class="co">#&gt; 339 2018-01-05 17:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-343" data-line-number="343"><span class="co">#&gt; 340 2018-01-05 17:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-344" data-line-number="344"><span class="co">#&gt; 341 2018-01-05 17:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-345" data-line-number="345"><span class="co">#&gt; 342 2018-01-05 18:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-346" data-line-number="346"><span class="co">#&gt; 343 2018-01-05 18:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-347" data-line-number="347"><span class="co">#&gt; 344 2018-01-05 18:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-348" data-line-number="348"><span class="co">#&gt; 345 2018-01-05 19:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-349" data-line-number="349"><span class="co">#&gt; 346 2018-01-05 19:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-350" data-line-number="350"><span class="co">#&gt; 347 2018-01-05 19:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-351" data-line-number="351"><span class="co">#&gt; 348 2018-01-05 20:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-352" data-line-number="352"><span class="co">#&gt; 349 2018-01-05 20:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-353" data-line-number="353"><span class="co">#&gt; 350 2018-01-05 20:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-354" data-line-number="354"><span class="co">#&gt; 351 2018-01-05 21:15:00           22.8</span></a>
+<a class="sourceLine" id="cb74-355" data-line-number="355"><span class="co">#&gt; 352 2018-01-05 21:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-356" data-line-number="356"><span class="co">#&gt; 353 2018-01-05 21:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-357" data-line-number="357"><span class="co">#&gt; 354 2018-01-05 22:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-358" data-line-number="358"><span class="co">#&gt; 355 2018-01-05 22:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-359" data-line-number="359"><span class="co">#&gt; 356 2018-01-05 22:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-360" data-line-number="360"><span class="co">#&gt; 357 2018-01-05 23:00:00           22.8</span></a>
+<a class="sourceLine" id="cb74-361" data-line-number="361"><span class="co">#&gt; 358 2018-01-05 23:30:00           22.8</span></a>
+<a class="sourceLine" id="cb74-362" data-line-number="362"><span class="co">#&gt; 359 2018-01-05 23:45:00           22.8</span></a>
+<a class="sourceLine" id="cb74-363" data-line-number="363"><span class="co">#&gt; 360 2018-01-06 00:00:00           22.8</span></a></code></pre></div>
+>>>>>>> dev
 <p>Additional metadata, like units of measurement or definitions, is accessible via <code><a href="https://www.rdocumentation.org/packages/base/topics/attributes">attributes()</a></code> for every column of the data frame.</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attributes">attributes</a></span>(myObservationData.result<span class="fl">.2</span>)</a>
 <a class="sourceLine" id="cb76-2" data-line-number="2"><span class="co">#&gt; $names</span></a>
@@ -1491,6 +2042,7 @@
 <a class="sourceLine" id="cb78-8" data-line-number="8"><span class="co">#&gt; $`unit of measurement`</span></a>
 <a class="sourceLine" id="cb78-9" data-line-number="9"><span class="co">#&gt; [1] "degC"</span></a></code></pre></div>
 <p><strong>Spatial Information</strong> can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result <code>data.frame</code>, (ii) within a feature collection in the observation. In the latter case the utility functions <code><a href="../reference/SOS.html">sosCoordinates()</a></code> and <code><a href="../reference/SOS.html">sosFeatureIds()</a></code> can be used to extract the coordinates respectively the identifiers from <code>OmObservationCollection</code> or <code>OmObservation</code> classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by <code><a href="../reference/SOS.html">sosCoordinates()</a></code>.</p>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosFeatureIds</a></span>(myObservationData)</a>
 <a class="sourceLine" id="cb79-2" data-line-number="2"><span class="co">#&gt;                               o_1558086034268 </span></a>
 <a class="sourceLine" id="cb79-3" data-line-number="3"><span class="co">#&gt; "sf_A8589341CE054E4A96EF0152CC3CFC6A675AF32F" </span></a>
@@ -1512,6 +2064,29 @@
 <a class="sourceLine" id="cb79-19" data-line-number="19"><span class="co">#&gt; "sf_2B15D68CF0765E796391505317293895F851D4EC"</span></a></code></pre></div>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosCoordinates</a></span>(myObservationData)</a>
 <a class="sourceLine" id="cb80-2" data-line-number="2"><span class="kw"><a href="../reference/SOS.html">sosCoordinates</a></span>(myObservationData[[<span class="dv">1</span>]])</a></code></pre></div>
+=======
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosFeatureIds</a></span>(myObservationData)</a>
+<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="co">#&gt;                                o_1565356068080 </span></a>
+<a class="sourceLine" id="cb78-3" data-line-number="3"><span class="co">#&gt;  "sf_70C6FE193D45B813FBDE00F54E29F691A25A58EC" </span></a>
+<a class="sourceLine" id="cb78-4" data-line-number="4"><span class="co">#&gt;                                o_1565356068081 </span></a>
+<a class="sourceLine" id="cb78-5" data-line-number="5"><span class="co">#&gt;  "sf_C3378C4973BDD7786ADA2B2E5AECC25FC1045852" </span></a>
+<a class="sourceLine" id="cb78-6" data-line-number="6"><span class="co">#&gt;                                o_1565356068082 </span></a>
+<a class="sourceLine" id="cb78-7" data-line-number="7"><span class="co">#&gt;  "sf_39A1A9F2920D559BE060F0A75960813F5C94D71E" </span></a>
+<a class="sourceLine" id="cb78-8" data-line-number="8"><span class="co">#&gt;                                o_1565356068083 </span></a>
+<a class="sourceLine" id="cb78-9" data-line-number="9"><span class="co">#&gt;  "sf_F80B5EB3A550F862411E1327D6E09CCE5F191DF4" </span></a>
+<a class="sourceLine" id="cb78-10" data-line-number="10"><span class="co">#&gt;                                o_1565356068084 </span></a>
+<a class="sourceLine" id="cb78-11" data-line-number="11"><span class="co">#&gt;  "sf_63980E8519C24F68ECBA1130CA69C83675CE1C14" </span></a>
+<a class="sourceLine" id="cb78-12" data-line-number="12"><span class="co">#&gt;                                o_1565356068102 </span></a>
+<a class="sourceLine" id="cb78-13" data-line-number="13"><span class="co">#&gt;  "sf_A517067DD435DBB494E33BC87A4BF547CF09E4B6" </span></a>
+<a class="sourceLine" id="cb78-14" data-line-number="14"><span class="co">#&gt;                                o_1565356068103 </span></a>
+<a class="sourceLine" id="cb78-15" data-line-number="15"><span class="co">#&gt;  "sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B" </span></a>
+<a class="sourceLine" id="cb78-16" data-line-number="16"><span class="co">#&gt;                                o_1565356068104 </span></a>
+<a class="sourceLine" id="cb78-17" data-line-number="17"><span class="co">#&gt; "sf_8F5DDF1A4F9D7E56507DAB2474988B3E9351373B1" </span></a>
+<a class="sourceLine" id="cb78-18" data-line-number="18"><span class="co">#&gt;                                o_1565356068105 </span></a>
+<a class="sourceLine" id="cb78-19" data-line-number="19"><span class="co">#&gt;  "sf_65B66DC8B5E532115D97C0A09C41214BD2A35ABC"</span></a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosCoordinates</a></span>(myObservationData)</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw"><a href="../reference/SOS.html">sosCoordinates</a></span>(myObservationData[[<span class="dv">1</span>]])</a></code></pre></div>
+>>>>>>> dev
 <p>An observation collection also contains a bounding box of the contained observations, which can be extracted with the function <code><a href="../reference/SOS.html">sosBoundedBy()</a></code>. The optional attribute <code>bbox</code> can be used to obtain a bounding box matrix as used by package <code>sp</code>.</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw"><a href="../reference/SOS.html">sosBoundedBy</a></span>(myObservationData)</a>
 <a class="sourceLine" id="cb81-2" data-line-number="2"><span class="co">#&gt; $srsName</span></a>
@@ -1574,6 +2149,7 @@
 <a class="sourceLine" id="cb86-19" data-line-number="19"><span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2007-08-05 ]</span></a></code></pre></div>
 <p><strong>Example:</strong> What was the minimum, average and maximum temperature during one week?</p>
 <p>For temporal filtering, we use <code>"POX"</code>-based connection to the same SOS server:</p>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">mySOSpox &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="dt">url =</span> <span class="st">"http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox"</span>, </a>
 <a class="sourceLine" id="cb87-2" data-line-number="2">             <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">useDCPs =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb87-3" data-line-number="3">nov2015 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetObservation.html">getObservation</a></span>(<span class="dt">sos =</span> mySOSpox,</a>
@@ -1600,6 +2176,37 @@
 <a class="sourceLine" id="cb89-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(lastDay.eventTime)</a>
 <a class="sourceLine" id="cb89-6" data-line-number="6"><span class="co">#&gt; Object of class SosEventTime:</span></a>
 <a class="sourceLine" id="cb89-7" data-line-number="7"><span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2019-05-16 11:40:44 ]</span></a></code></pre></div>
+=======
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">mySOSpox &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SOS.html">SOS</a></span>(<span class="dt">url =</span> <span class="st">"http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox"</span>, </a>
+<a class="sourceLine" id="cb86-2" data-line-number="2">             <span class="dt">binding =</span> <span class="st">"POX"</span>, <span class="dt">useDCPs =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb86-3" data-line-number="3"><span class="co">#&gt; [sos4R] Created SOS for URL http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox</span></a>
+<a class="sourceLine" id="cb86-4" data-line-number="4">nov2015 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getObservation-methods.html">getObservation</a></span>(<span class="dt">sos =</span> mySOSpox,</a>
+<a class="sourceLine" id="cb86-5" data-line-number="5">                          <span class="dt">offering =</span> myOffering,</a>
+<a class="sourceLine" id="cb86-6" data-line-number="6">                          <span class="dt">eventTime =</span> eventTime)</a>
+<a class="sourceLine" id="cb86-7" data-line-number="7"><span class="co">#&gt; Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  l_m^2  with the definition  RainfallAccumulated ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</span></a>
+<a class="sourceLine" id="cb86-8" data-line-number="8"><span class="co">#&gt; Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  min  with the definition  Sunshine ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</span></a>
+<a class="sourceLine" id="cb86-9" data-line-number="9"><span class="co">#&gt; Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  klux  with the definition  Luminance ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</span></a>
+<a class="sourceLine" id="cb86-10" data-line-number="10"><span class="co">#&gt; Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  km_h  with the definition  WindSpeed ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</span></a>
+<a class="sourceLine" id="cb86-11" data-line-number="11"><span class="co">#&gt; [sos4R] Finished getObservation to http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox </span></a>
+<a class="sourceLine" id="cb86-12" data-line-number="12"><span class="co">#&gt;  --&gt; received 10 observation(s) having 710 result values [ 71, 71, 71, 71, 71, 71, 71, 71, 71, 71 ].</span></a></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">nov2015.result<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(nov2015[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb87-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(nov2015.result<span class="fl">.1</span>)</a>
+<a class="sourceLine" id="cb87-3" data-line-number="3"><span class="co">#&gt;  phenomenonTime                AirTemperature  </span></a>
+<a class="sourceLine" id="cb87-4" data-line-number="4"><span class="co">#&gt;  Min.   :2015-11-01 00:30:00   Min.   : 2.700  </span></a>
+<a class="sourceLine" id="cb87-5" data-line-number="5"><span class="co">#&gt;  1st Qu.:2015-11-01 06:22:30   1st Qu.: 4.300  </span></a>
+<a class="sourceLine" id="cb87-6" data-line-number="6"><span class="co">#&gt;  Median :2015-11-01 12:00:00   Median : 6.300  </span></a>
+<a class="sourceLine" id="cb87-7" data-line-number="7"><span class="co">#&gt;  Mean   :2015-11-01 12:05:16   Mean   : 9.001  </span></a>
+<a class="sourceLine" id="cb87-8" data-line-number="8"><span class="co">#&gt;  3rd Qu.:2015-11-01 17:52:30   3rd Qu.:14.600  </span></a>
+<a class="sourceLine" id="cb87-9" data-line-number="9"><span class="co">#&gt;  Max.   :2015-11-01 23:45:00   Max.   :20.000</span></a></code></pre></div>
+<p>The default temporal operator is <code>"during"</code>, but others are supported as well. The next example shows how to create a temporal filter for all observations taken <strong>after</strong> a certain point in time. Here the creation function creates just one object of class <code>SosEventTime</code> which must be added to a list manually before passing it to <code><a href="../reference/getObservation-methods.html">getObservation()</a></code>.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">lastDay.instant &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosCreate.html">sosCreateTimeInstant</a></span>(</a>
+<a class="sourceLine" id="cb88-2" data-line-number="2">    <span class="dt">time =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.time">Sys.time</a></span>() <span class="op">-</span><span class="st"> </span><span class="dv">3600</span> <span class="op">*</span><span class="st"> </span><span class="dv">24</span>), <span class="dt">sos =</span> mySOSpox)</a>
+<a class="sourceLine" id="cb88-3" data-line-number="3">lastDay.eventTime &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosCreate.html">sosCreateEventTime</a></span>(<span class="dt">time =</span> lastDay.instant,</a>
+<a class="sourceLine" id="cb88-4" data-line-number="4">    <span class="dt">operator =</span> <span class="kw"><a href="../reference/Supported.html">SosSupportedTemporalOperators</a></span>()[[<span class="st">"TM_After"</span>]])</a>
+<a class="sourceLine" id="cb88-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(lastDay.eventTime)</a>
+<a class="sourceLine" id="cb88-6" data-line-number="6"><span class="co">#&gt; Object of class SosEventTime:</span></a>
+<a class="sourceLine" id="cb88-7" data-line-number="7"><span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2019-08-08 15:07:57 ]</span></a></code></pre></div>
+>>>>>>> dev
 <p>Another example workflow, using a <code>KVP</code>-based connection.</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">sept15.period &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sosCreate.html">sosCreateTimePeriod</a></span>(<span class="dt">sos =</span> mySOS,</a>
 <a class="sourceLine" id="cb90-2" data-line-number="2">                                     <span class="dt">begin =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="st">"2015-09-01 00:00"</span>),</a>

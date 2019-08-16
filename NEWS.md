@@ -13,6 +13,10 @@
 - Drop `checkRequest` methods, they were 90% "TODO" comments; actually existing checks preserved in functions where sensible
 - Drop support for KML (Keyhole Markup Language), because it is not a data format, the parsing was never implemented, and the only SOS using it provided it specifically for display in Google Earth
 
+# sos4R 0.3.1
+
+- Bugfix release: don't set classes for `xml2` (requires version `1.2.2`, see #148)
+
 # sos4R 0.3.0
 
 - Switch from `XML` to `xml2`

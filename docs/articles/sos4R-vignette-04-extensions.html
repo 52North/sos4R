@@ -30,7 +30,11 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
+<<<<<<< HEAD
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+=======
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+>>>>>>> dev
       </span>
     </div>
 
@@ -104,7 +108,11 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
+<<<<<<< HEAD
             <h4 class="date">2019-05-17</h4>
+=======
+            <h4 class="date">2019-08-09</h4>
+>>>>>>> dev
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-04-extensions.Rmd"><code>vignettes/sos4R-vignette-04-extensions.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-04-extensions.Rmd</code></div>
@@ -189,11 +197,11 @@
 ## obj="GmlDirectPosition", sos="SOS"
 ## obj="GmlEnvelope", sos="SOS"
 ## obj="GmlLineString", sos="SOS"
-## obj="GmlPointProperty", sos="SOS"
 ## obj="GmlPoint", sos="SOS"
+## obj="GmlPointProperty", sos="SOS"
 ## obj="GmlPolygon", sos="SOS"
-## obj="GmlTimeInstantProperty", sos="SOS"
 ## obj="GmlTimeInstant", sos="SOS"
+## obj="GmlTimeInstantProperty", sos="SOS"
 ## obj="GmlTimePeriod", sos="SOS"
 ## obj="GmlTimePosition", sos="SOS"
 ## obj="OgcBBOX", sos="SOS"
@@ -425,9 +433,15 @@
 ## [3] &lt;sos:responseFormat&gt;text/xml;subtype="om/1.0.0"&lt;/sos:responseFormat&gt;
 ## [.getObservation_1.0.0] RESPONSE DOC:
 ## {xml_document}
+<<<<<<< HEAD
 ## &lt;ObservationCollection id="oc_1558086062201" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
 ## [1] &lt;gml:boundedBy&gt;\n  &lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326 ...
 ## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1558086062201"&gt;\n    &lt;om:sa ...</code></pre>
+=======
+## &lt;ObservationCollection id="oc_1565356095618" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
+## [1] &lt;gml:boundedBy&gt;\n  &lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326 ...
+## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1565356095619"&gt;\n    &lt;om:sa ...</code></pre>
+>>>>>>> dev
 <pre><code>## Warning in .valParser(values = xml2::xml_child(x = obj, search = sweValuesName, : No converter for the unit of measurement  test_unit_1  with the definition  http://www.52north.org/test/observableProperty/1 ! Trying a default, but you can add one when creating a SOS using SosDataFieldConvertingFunctions().</code></pre>
 <pre><code>## Object of class OmObservationCollection with 1 members.</code></pre>
 <p>Converters may be matched by XML properties <code>swe:Quantity[@definition]</code> or <code>swe:uom[@code]</code>.</p>
@@ -444,6 +458,7 @@
 <p>Then retrieve the data with the correct type.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data))</a></code></pre></div>
 <pre><code>##                        phenomenonTime
+<<<<<<< HEAD
 ## o_1558086062447.1 2012-11-19 13:00:00
 ## o_1558086062447.2 2012-11-19 13:01:00
 ## o_1558086062447.3 2012-11-19 13:02:00
@@ -457,6 +472,21 @@
 ## o_1558086062447.4                                              1.3
 ## o_1558086062447.5                                              1.4
 ## o_1558086062447.6                                              1.5</code></pre>
+=======
+## o_1565356095936.1 2012-11-19 13:00:00
+## o_1565356095936.2 2012-11-19 13:01:00
+## o_1565356095936.3 2012-11-19 13:02:00
+## o_1565356095936.4 2012-11-19 13:03:00
+## o_1565356095936.5 2012-11-19 13:04:00
+## o_1565356095936.6 2012-11-19 13:05:00
+##                   http://www.52north.org/test/observableProperty/1
+## o_1565356095936.1                                              1.0
+## o_1565356095936.2                                              1.1
+## o_1565356095936.3                                              1.2
+## o_1565356095936.4                                              1.3
+## o_1565356095936.5                                              1.4
+## o_1565356095936.6                                              1.5</code></pre>
+>>>>>>> dev
 <p>The metadata of the observed property is also accessible.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attributes">attributes</a></span>(<span class="kw"><a href="../reference/OmObservation.html">sosResult</a></span>(data)[[<span class="dv">1</span>]])</a></code></pre></div>
 <pre><code>## $class
