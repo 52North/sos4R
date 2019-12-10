@@ -26,6 +26,15 @@
 # Project: sos4R - visit the project web page,                                 #
 #      http://52north.org/communities/sensorweb/clients/sos4R/                 #
 ################################################################################
+#                                                                              #
+# Build image:   docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .         #
+#                                                                              #
+# Run container: docker run --name=sos4r-dev --env PASSWORD=r\                 #
+#                --publish 8787:8787\                                          #
+#                --volume ~/Code/git/sos4R/:/home/rstudio/sos4R\               #
+#                -d sos4r-rstudio-dev:$(date +%Y-%m-%d)                        #
+#                                                                              #
+################################################################################
 FROM rocker/geospatial:latest
 MAINTAINER "Jürrens, Eike Hinderk" e.h.juerrens@52north.org
 
