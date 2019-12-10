@@ -153,7 +153,7 @@
 <span class='fu'>parseDataArray</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseElementType</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseEncoding</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>parseEnvelope</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>namespaces</span> <span class='kw'>=</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/xml2/topics/xml_ns'>xml_ns</a></span>(<span class='no'>obj</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseEnvelope</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>namespaces</span> <span class='kw'>=</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://xml2.r-lib.org/reference/xml_ns.html'>xml_ns</a></span>(<span class='no'>obj</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseFeatureCollection</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseField</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseFOI</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -231,7 +231,7 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments that are parsed to <code><a href='https://www.rdocumentation.org/packages/xml2/topics/read_xml'>xml2::read_xml(..)</a></code>.</p></td>
+      <td><p>Additional arguments that are parsed to <code><a href='http://xml2.r-lib.org/reference/read_xml.html'>xml2::read_xml(..)</a></code>.</p></td>
     </tr>
     </table>
     
@@ -260,7 +260,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># parsing a XML string to an exception report object</span>
-<span class='no'>er.doc</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/xml2/topics/read_xml'>read_xml</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"&lt;ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\""</span>,
+<span class='no'>er.doc</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_xml</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"&lt;ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\""</span>,
   <span class='st'>" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\""</span>,
   <span class='st'>" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"&gt;"</span>,
   <span class='st'>"&lt;ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"&gt;"</span>,
