@@ -9,23 +9,23 @@ Authors@R:
            role = c("cre", "aut"),
            email = "daniel.nuest@uni-muenster.de",
            comment = c(ORCID = "0000-0002-0024-5046")),
-	  person(given = "Edzer",
-	         family = "Pebesma",
-	         role = "ctb",
-	         comment = c(ORCID = "0000-0001-8049-7069")),
-	  person(given = "Ben",
-	         family = "Graeler",
-	         role = "ctb",
-	         comment = c(ORCID = "0000-0001-5443-4304")),
-	  person(given = "Benjamin",
-	         family = "Pross",
-	         role = "ctb"),
-	  person(given = "Eike Hinderk",
-	         family = "Juerrens",
-	         role = "ctb"),
-	  person(given = "52°North Initiative for Geospatial Open Source Software GmbH",
-	         email = "info@52north.org",
-	         role = "cph"))
+    person(given = "Edzer",
+           family = "Pebesma",
+           role = "ctb",
+           comment = c(ORCID = "0000-0001-8049-7069")),
+    person(given = "Ben",
+           family = "Graeler",
+           role = "ctb",
+           comment = c(ORCID = "0000-0001-5443-4304")),
+    person(given = "Benjamin",
+           family = "Pross",
+           role = "ctb"),
+    person(given = "Eike Hinderk",
+           family = "Juerrens",
+           role = "ctb"),
+    person(given = "52°North Initiative for Geospatial Open Source Software GmbH",
+           email = "info@52north.org",
+           role = "cph"))
 Depends: R (>= 3.4.0)
 Imports:
     dplyr,
@@ -50,14 +50,14 @@ Suggests:
     rgdal,
     knitr,
     rmarkdown,
-	  webmockr
-Description: A client for Sensor Observation Services (SOS, see 
-        <https://www.opengeospatial.org/standards/sos>) as specified by the 
-        Open Geospatial Consortium (OGC). With the package users can
-        retrieve (meta)data from SOS instances and interactively 
-        create requests for near real-time observation
-        data based on the available sensors, phenomena, observations etc.
-        using thematic, temporal, and spatial filtering.
+    webmockr
+Description: A client for Sensor Observation Services (SOS, see
+    <https://www.opengeospatial.org/standards/sos>) as specified by the
+    Open Geospatial Consortium (OGC). With the package users can
+    retrieve (meta)data from SOS instances and interactively
+    create requests for near real-time observation
+    data based on the available sensors, phenomena, observations etc.
+    using thematic, temporal, and spatial filtering.
 License: GPL-2
 URL: https://github.com/52North/sos4R
 Encoding: UTF-8
@@ -66,31 +66,31 @@ ByteCompile: TRUE
 BugReports: https://github.com/52North/sos4R/issues
 VignetteBuilder: knitr
 Collate:
-	Constants.R
-	R-Helper.R
-	Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
-	Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
-	Generic-methods.R
-	OWS-methods.R OWS-methods-parsing.R
-	SOS-methods-parsing.R
-	OM-methods.R OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R
-	SA-methods.R
-	GML-methods-util.R
-	GML-methods.R GML-methods-coercion.R
-	SWE-methods.R
-	SML-methods.R
-	GML-methods-parsing.R
-	SWE-methods-parsing.R
-	OGC-methods.R
-	SOS-methods-accessor.R
-	PrintShowStructureSummmary-methods.R
-	SOS-methods-util.R
-	SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
-	SML-methods-util.R SML-methods-coercion.R
-	SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_methods-gda.R
-	WML_200-methods.R
-	SAMS-methods.R
-	Defaults.R
-	handySOS4RFunctions.R
-	Development.R
+    Constants.R
+    R-Helper.R
+    Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
+    Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
+    Generic-methods.R
+    OWS-methods.R OWS-methods-parsing.R
+    SOS-methods-parsing.R
+    OM-methods.R OM-methods-coercion.R OM-methods-parsing.R OM_20-methods-parsing.R OM_20-methods.R
+    SA-methods.R
+    GML-methods-util.R
+    GML-methods.R GML-methods-coercion.R
+    SWE-methods.R
+    SML-methods.R
+    GML-methods-parsing.R
+    SWE-methods-parsing.R
+    OGC-methods.R
+    SOS-methods-accessor.R
+    PrintShowStructureSummmary-methods.R
+    SOS-methods-util.R
+    SOS-methods.R SOS-methods-plotting.R SOS-methods-coercion.R
+    SML-methods-util.R SML-methods-coercion.R
+    SOS_200-methods-impl.R SOS_200-methods.R SOS_200-methods-parsing.R SOS_200_methods-gda.R
+    WML_200-methods.R
+    SAMS-methods.R
+    Defaults.R
+    handySOS4RFunctions.R
+    Development.R
 RoxygenNote: 6.1.1
