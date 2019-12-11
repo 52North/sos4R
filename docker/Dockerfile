@@ -27,7 +27,7 @@
 #      http://52north.org/communities/sensorweb/clients/sos4R/                 #
 ################################################################################
 #                                                                              #
-# Build image:   docker pull rocker/geospatial:latest && \                     #
+# Build image  : docker pull rocker/geospatial:latest && \                     #
 #                docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .         #
 #                                                                              #
 # Run container: docker run --name=sos4r-dev --env PASSWORD=r \                #
@@ -35,17 +35,27 @@
 #                --volume ~/Code/git/sos4R/:/home/rstudio/sos4R \              #
 #                -d sos4r-rstudio-dev:$(date +%Y-%m-%d)                        #
 #                                                                              #
+# Start rstudio: chromium-browser --app=http://localhost:8787/                 #
+#                                                                              #
+# Clean-Up     : docker stop sos4r-dev; \                                      #
+#                docker rm sos4r-dev; \                                        #
+#                docker images | grep sos4r-rstudio-dev | awk '{print $3}' \   #
+#                | xargs docker rmi                                            #
+#                                                                              #
+#                                                                              #
+#                                                                              #
+#                                                                              #
 ################################################################################
 FROM rocker/geospatial:latest
 MAINTAINER "Jürrens, Eike Hinderk" e.h.juerrens@52north.org
 
 RUN install2.r --error --skipinstalled httr && \
-    install2.r --error --skipinstalled methods && \
-    install2.r --error --skipinstalled sp && \
-    install2.r --error --skipinstalled stringr && \
-    install2.r --error --skipinstalled xml2 && \
-    install2.r --error --skipinstalled devtools && \
-    install2.r --error --skipinstalled webmockr && \
+        methods \
+        sp \
+        stringr \
+        xml2 \
+        devtools \
+        webmockr && \
     rm -rf /tmp/downloaded_packages && \
     rm -rf /tmp/repos_*.rds && \
     rm -rf /var/lib/apt/lists/*
