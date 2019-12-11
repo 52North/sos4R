@@ -226,12 +226,7 @@
         </ows:HTTP>
       </ows:DCP>
       <ows:Parameter name="procedure">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
     </ows:Operation>
     <ows:Operation name="DescribeSensor">
@@ -276,12 +271,7 @@
         </ows:HTTP>
       </ows:DCP>
       <ows:Parameter name="procedure">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="procedureDescriptionFormat">
         <ows:AllowedValues>
@@ -404,76 +394,22 @@
         </ows:HTTP>
       </ows:DCP>
       <ows:Parameter name="featureOfInterest">
-        <ows:AllowedValues>
-          <ows:Value>elv-ws2500</ows:Value>
-          <ows:Value>elv-ws2500-internal</ows:Value>
-          <ows:Value>vaisala-wxt520</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="observedProperty">
-        <ows:AllowedValues>
-          <ows:Value>AirTemperature</ows:Value>
-          <ows:Value>AthmosphericPressure</ows:Value>
-          <ows:Value>Dewpoint</ows:Value>
-          <ows:Value>HailAccumulated</ows:Value>
-          <ows:Value>HailDuration</ows:Value>
-          <ows:Value>HailIntensity</ows:Value>
-          <ows:Value>HailPeakIntensity</ows:Value>
-          <ows:Value>Humidity</ows:Value>
-          <ows:Value>InSystemTemperature</ows:Value>
-          <ows:Value>Luminance</ows:Value>
-          <ows:Value>RainfallAccumulated</ows:Value>
-          <ows:Value>RainfallDuration</ows:Value>
-          <ows:Value>RainfallIntensity</ows:Value>
-          <ows:Value>RainfallPeakIntensity</ows:Value>
-          <ows:Value>ShortwaveRadiation</ows:Value>
-          <ows:Value>Sunshine</ows:Value>
-          <ows:Value>Visibility</ows:Value>
-          <ows:Value>WeatherCode</ows:Value>
-          <ows:Value>WeatherCodeText</ows:Value>
-          <ows:Value>WindDirection</ows:Value>
-          <ows:Value>WindDirectionAverage</ows:Value>
-          <ows:Value>WindDirectionMaximum</ows:Value>
-          <ows:Value>WindDirectionMinimum</ows:Value>
-          <ows:Value>WindDirectionText</ows:Value>
-          <ows:Value>WindMaxGust</ows:Value>
-          <ows:Value>WindSpeed</ows:Value>
-          <ows:Value>WindSpeedAverage</ows:Value>
-          <ows:Value>WindSpeedBft</ows:Value>
-          <ows:Value>WindSpeedKmh</ows:Value>
-          <ows:Value>WindSpeedMaximum</ows:Value>
-          <ows:Value>WindSpeedMinimum</ows:Value>
-          <ows:Value>WindSpeedMperSec</ows:Value>
-          <ows:Value>Windchill</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="offering">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="procedure">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="resultFilter">
         <ows:AnyValue/>
       </ows:Parameter>
       <ows:Parameter name="spatialFilter">
-        <ows:AllowedValues>
-          <ows:Range>
-            <ows:MinimumValue>51.9347763061523 7.59587907791138</ows:MinimumValue>
-            <ows:MaximumValue>51.9692611694336 7.652428150177</ows:MaximumValue>
-          </ows:Range>
-        </ows:AllowedValues>
+        <ows:AnyValue/>
       </ows:Parameter>
     </ows:Operation>
     <ows:Operation name="GetFeatureOfInterest">
@@ -518,65 +454,16 @@
         </ows:HTTP>
       </ows:DCP>
       <ows:Parameter name="featureOfInterest">
-        <ows:AllowedValues>
-          <ows:Value>elv-ws2500</ows:Value>
-          <ows:Value>elv-ws2500-internal</ows:Value>
-          <ows:Value>vaisala-wxt520</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="observedProperty">
-        <ows:AllowedValues>
-          <ows:Value>AirTemperature</ows:Value>
-          <ows:Value>AthmosphericPressure</ows:Value>
-          <ows:Value>Dewpoint</ows:Value>
-          <ows:Value>HailAccumulated</ows:Value>
-          <ows:Value>HailDuration</ows:Value>
-          <ows:Value>HailIntensity</ows:Value>
-          <ows:Value>HailPeakIntensity</ows:Value>
-          <ows:Value>Humidity</ows:Value>
-          <ows:Value>InSystemTemperature</ows:Value>
-          <ows:Value>Luminance</ows:Value>
-          <ows:Value>RainfallAccumulated</ows:Value>
-          <ows:Value>RainfallDuration</ows:Value>
-          <ows:Value>RainfallIntensity</ows:Value>
-          <ows:Value>RainfallPeakIntensity</ows:Value>
-          <ows:Value>ShortwaveRadiation</ows:Value>
-          <ows:Value>Sunshine</ows:Value>
-          <ows:Value>Visibility</ows:Value>
-          <ows:Value>WeatherCode</ows:Value>
-          <ows:Value>WeatherCodeText</ows:Value>
-          <ows:Value>WindDirection</ows:Value>
-          <ows:Value>WindDirectionAverage</ows:Value>
-          <ows:Value>WindDirectionMaximum</ows:Value>
-          <ows:Value>WindDirectionMinimum</ows:Value>
-          <ows:Value>WindDirectionText</ows:Value>
-          <ows:Value>WindMaxGust</ows:Value>
-          <ows:Value>WindSpeed</ows:Value>
-          <ows:Value>WindSpeedAverage</ows:Value>
-          <ows:Value>WindSpeedBft</ows:Value>
-          <ows:Value>WindSpeedKmh</ows:Value>
-          <ows:Value>WindSpeedMaximum</ows:Value>
-          <ows:Value>WindSpeedMinimum</ows:Value>
-          <ows:Value>WindSpeedMperSec</ows:Value>
-          <ows:Value>Windchill</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="procedure">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="spatialFilter">
-        <ows:AllowedValues>
-          <ows:Range>
-            <ows:MinimumValue>51.9347763061523 7.59587907791138</ows:MinimumValue>
-            <ows:MaximumValue>51.9692611694336 7.652428150177</ows:MaximumValue>
-          </ows:Range>
-        </ows:AllowedValues>
+        <ows:AnyValue/>
       </ows:Parameter>
     </ows:Operation>
     <ows:Operation name="GetObservation">
@@ -621,65 +508,16 @@
         </ows:HTTP>
       </ows:DCP>
       <ows:Parameter name="featureOfInterest">
-        <ows:AllowedValues>
-          <ows:Value>elv-ws2500</ows:Value>
-          <ows:Value>elv-ws2500-internal</ows:Value>
-          <ows:Value>vaisala-wxt520</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="observedProperty">
-        <ows:AllowedValues>
-          <ows:Value>AirTemperature</ows:Value>
-          <ows:Value>AthmosphericPressure</ows:Value>
-          <ows:Value>Dewpoint</ows:Value>
-          <ows:Value>HailAccumulated</ows:Value>
-          <ows:Value>HailDuration</ows:Value>
-          <ows:Value>HailIntensity</ows:Value>
-          <ows:Value>HailPeakIntensity</ows:Value>
-          <ows:Value>Humidity</ows:Value>
-          <ows:Value>InSystemTemperature</ows:Value>
-          <ows:Value>Luminance</ows:Value>
-          <ows:Value>RainfallAccumulated</ows:Value>
-          <ows:Value>RainfallDuration</ows:Value>
-          <ows:Value>RainfallIntensity</ows:Value>
-          <ows:Value>RainfallPeakIntensity</ows:Value>
-          <ows:Value>ShortwaveRadiation</ows:Value>
-          <ows:Value>Sunshine</ows:Value>
-          <ows:Value>Visibility</ows:Value>
-          <ows:Value>WeatherCode</ows:Value>
-          <ows:Value>WeatherCodeText</ows:Value>
-          <ows:Value>WindDirection</ows:Value>
-          <ows:Value>WindDirectionAverage</ows:Value>
-          <ows:Value>WindDirectionMaximum</ows:Value>
-          <ows:Value>WindDirectionMinimum</ows:Value>
-          <ows:Value>WindDirectionText</ows:Value>
-          <ows:Value>WindMaxGust</ows:Value>
-          <ows:Value>WindSpeed</ows:Value>
-          <ows:Value>WindSpeedAverage</ows:Value>
-          <ows:Value>WindSpeedBft</ows:Value>
-          <ows:Value>WindSpeedKmh</ows:Value>
-          <ows:Value>WindSpeedMaximum</ows:Value>
-          <ows:Value>WindSpeedMinimum</ows:Value>
-          <ows:Value>WindSpeedMperSec</ows:Value>
-          <ows:Value>Windchill</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="offering">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="procedure">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="responseFormat">
         <ows:AllowedValues>
@@ -712,20 +550,10 @@
         <ows:AnyValue/>
       </ows:Parameter>
       <ows:Parameter name="spatialFilter">
-        <ows:AllowedValues>
-          <ows:Range>
-            <ows:MinimumValue>51.9347763061523 7.59587907791138</ows:MinimumValue>
-            <ows:MaximumValue>51.9692611694336 7.652428150177</ows:MaximumValue>
-          </ows:Range>
-        </ows:AllowedValues>
+        <ows:AnyValue/>
       </ows:Parameter>
       <ows:Parameter name="temporalFilter">
-        <ows:AllowedValues>
-          <ows:Range>
-            <ows:MinimumValue>2019-03-01T00:10:00.000Z</ows:MinimumValue>
-            <ows:MaximumValue>2019-03-28T23:50:00.000Z</ows:MaximumValue>
-          </ows:Range>
-        </ows:AllowedValues>
+        <ows:AnyValue/>
       </ows:Parameter>
     </ows:Operation>
     <ows:Operation name="GetObservationById">
@@ -815,18 +643,13 @@
         </ows:HTTP>
       </ows:DCP>
       <ows:Parameter name="featureOfInterest">
-        <ows:AnyValue/>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="observedProperty">
-        <ows:AnyValue/>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="offering">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
     </ows:Operation>
     <ows:Operation name="GetResultTemplate">
@@ -944,12 +767,7 @@
         <ows:DataType ows:reference="http://schemas.opengis.net/om/2.0/observation.xsd#OM_Observation"/>
       </ows:Parameter>
       <ows:Parameter name="offering">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
     </ows:Operation>
     <ows:Operation name="InsertResult">
@@ -1121,12 +939,7 @@
         <ows:AnyValue/>
       </ows:Parameter>
       <ows:Parameter name="procedure">
-        <ows:AllowedValues>
-          <ows:Value>ws2500</ows:Value>
-          <ows:Value>ws2500-internal</ows:Value>
-          <ows:Value>wwu-ws-kli-hsb</ows:Value>
-          <ows:Value>wxt520</ows:Value>
-        </ows:AllowedValues>
+        <ows:NoValues/>
       </ows:Parameter>
       <ows:Parameter name="procedureDescriptionFormat">
         <ows:AllowedValues>
