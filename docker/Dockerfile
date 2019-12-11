@@ -29,9 +29,9 @@
 #                                                                              #
 # Build image:   docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .         #
 #                                                                              #
-# Run container: docker run --name=sos4r-dev --env PASSWORD=r\                 #
-#                --publish 8787:8787\                                          #
-#                --volume ~/Code/git/sos4R/:/home/rstudio/sos4R\               #
+# Run container: docker run --name=sos4r-dev --env PASSWORD=r \                #
+#                --publish 8787:8787 \                                         #
+#                --volume ~/Code/git/sos4R/:/home/rstudio/sos4R \              #
 #                -d sos4r-rstudio-dev:$(date +%Y-%m-%d)                        #
 #                                                                              #
 ################################################################################
