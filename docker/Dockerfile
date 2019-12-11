@@ -27,7 +27,8 @@
 #      http://52north.org/communities/sensorweb/clients/sos4R/                 #
 ################################################################################
 #                                                                              #
-# Build image:   docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .         #
+# Build image:   docker pull rocker/geospatial:latest && \                     #
+#                docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .         #
 #                                                                              #
 # Run container: docker run --name=sos4r-dev --env PASSWORD=r \                #
 #                --publish 8787:8787 \                                         #
