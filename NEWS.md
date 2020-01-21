@@ -1,3 +1,6 @@
+---
+title: sos4R News
+---
 # sos4R 0.4.0.9002
 
 - Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)
