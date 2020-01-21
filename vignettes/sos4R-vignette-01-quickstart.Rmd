@@ -196,15 +196,16 @@ Using the [`mapview`](https://r-spatial.github.io/mapview/) package you can quic
 
 ```{r mapview}
 library("mapview")
+library("leafpop")
 
 plotfile <- tempfile(fileext = ".png")
 png(filename = plotfile)
 plot(x = obs.1.spatial$phenomenonTime, y = obs.1.spatial$AirTemperature,
      pch = 20,
      main = sosId(off.1), xlab = "Time", ylab = "Air Temperature")
-dev.off()
 
-mapview(obs.1.spatial, popup = popupImage(plotfile, embed = TRUE))
+#FIXME:mapview(obs.1.spatial, popup = leafpop::popupImage(plotfile, embed = TRUE))
+mapview(obs.1.spatial)
 ```
 
 For more details on the coercion functions see `` ?`coerce-sos4R` ``.
