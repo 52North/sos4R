@@ -73,7 +73,8 @@ if (!isGeneric("phenomena")) {
                                    "includeSiteId"),
              def = function(sos,
                             includeTemporalBBox = FALSE,
-                            includeSiteId = FALSE) {
+                            includeSiteId = FALSE,
+                            ...) {
                standardGeneric("phenomena")
              })
 }
@@ -85,18 +86,19 @@ setMethod(f = "phenomena",
           signature = signature(sos = "SOS_2.0.0"),
           definition = function(sos,
                          includeTemporalBBox,
-                         includeSiteId) {
+                         includeSiteId,
+                         ...) {
             stopifnot(inherits(sos, "SOS_2.0.0"))
             stopifnot(is.logical(includeTemporalBBox))
             stopifnot(is.logical(includeSiteId))
             if (!includeTemporalBBox && !includeSiteId) {
-              return(.listPhenomena(sos))
+              return(.listPhenomena(sos, ...))
             }
             else if (includeTemporalBBox && !includeSiteId) {
-              return(.listPhenomenaWithTemporalBBox(sos))
+              return(.listPhenomenaWithTemporalBBox(sos, ...))
             }
             else if (includeSiteId) {
-              return(.listPhenomenaWithMetadata(sos, includeTemporalBBox))
+              return(.listPhenomenaWithMetadata(sos, includeTemporalBBox, ...))
             }
           })
 #
@@ -104,8 +106,8 @@ setMethod(f = "phenomena",
 #
 # see: https://github.com/52North/sos4R/issues/81
 #
-.listPhenomena <- function(sos) {
-  observableProperties <- sosObservableProperties(sos)
+.listPhenomena <- function(sos, ...) {
+  observableProperties <- sosObservableProperties(sos, ...)
   stopifnot(!is.null(observableProperties))
   stopifnot(is.list(observableProperties))
   if (length(unlist(observableProperties)) == 0) {
@@ -117,8 +119,8 @@ setMethod(f = "phenomena",
   return(phenomena)
 }
 
-.listPhenomenaWithMetadata <- function(sos, includeTemporalBBox) {
-  dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+.listPhenomenaWithMetadata <- function(sos, includeTemporalBBox, ...) {
+  dams <- getDataAvailability(sos, verbose = sos@verboseOutput, ...)
   stopifnot(!is.null(dams))
   stopifnot(is.list(dams))
   if (includeTemporalBBox) {
@@ -185,8 +187,8 @@ setMethod(f = "phenomena",
 #   </gda:phenomenonTime>
 # </gda:dataAvailabilityMember>
 #
-.listPhenomenaWithTemporalBBox <- function(sos) {
-  dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+.listPhenomenaWithTemporalBBox <- function(sos, ...) {
+  dams <- getDataAvailability(sos, verbose = sos@verboseOutput, ...)
   stopifnot(!is.null(dams))
   stopifnot(is.list(dams))
   phenomena <- data.frame("phenomenon" = character(0),
@@ -261,8 +263,15 @@ setMethod(f = "phenomena",
       warning(paste0("Using the first column of '", argName, "' as filter."))
     los <- los[,1]
   }
+  if (is.character(los) && is.vector(los) && length(los) == 1) {
+    stopifnot(nchar(los) > 0)
+    los <- list(los)
+  }
+  if (is.character(los) && is.vector(los) && length(los) > 1) {
+    los <- as.list(los)
+  }
 
-  stopifnot(is.list(los) || is.vector(los))
+  stopifnot(is.list(los))
 
   if (length(los) > 0) {
     stopifnot(all(sapply(los, is.character)))
@@ -285,16 +294,17 @@ if (!isGeneric("siteList")) {
                                    "empty",
                                    "begin",
                                    "end",
+                                   "phenomena",
                                    "includePhenomena",
-                                   "includeTemporalBBox",
-                                   "phenomena"),
+                                   "includeTemporalBBox"),
              def = function(sos,
                             empty=FALSE,                 # filter
                             begin=NA,                    # filter
                             end=NA,                      # filter
+                            phenomena=list(),            # filter
                             includePhenomena=FALSE,      # meta data
                             includeTemporalBBox=FALSE,   # meta data
-                            phenomena=list()) {          # filter
+                            ...) {
                standardGeneric("siteList")
              })
 }
@@ -308,24 +318,26 @@ setMethod(f = "siteList",
                          empty,
                          begin,
                          end,
+                         phenomena,
                          includePhenomena,
                          includeTemporalBBox,
-                         phenomena) {
+                         ...) {
             stopifnot(inherits(sos, "SOS_2.0.0"))
             stopifnot(is.logical(empty))
             stopifnot(is.logical(includePhenomena))
             stopifnot(is.logical(includeTemporalBBox))
 
             if (empty) {
-              return(.listSites(sos))
+              return(.listSites(sos, ...))
             }
             else {
               return(.listSitesWithData(sos,
                                         begin,
                                         end,
+                                        phenomena,
                                         includePhenomena,
                                         includeTemporalBBox,
-                                        phenomena))
+                                        ...))
             }
           }
 )
@@ -338,9 +350,13 @@ setMethod(f = "siteList",
 }
 
 .isPhenomenaSet <- function(phenomena) {
-  return(!is.null(phenomena) &&
-           is.list(phenomena) &&
-           length(phenomena) > 0)
+  if (is.null(phenomena)) {
+    return(FALSE)
+  }
+  if (is(phenomena, "character") && nchar(phenomena) > 0) {
+    return(TRUE)
+  }
+  return(is(phenomena, "list") && length(phenomena) > 0)
 }
 
 #
@@ -348,8 +364,8 @@ setMethod(f = "siteList",
 #
 # see: https://github.com/52North/sos4R/issues/86
 #
-.listSites <- function(sos) {
-  features <- getFeatureOfInterest(sos)
+.listSites <- function(sos, ...) {
+  features <- getFeatureOfInterest(sos, ...)
   stopifnot(!is.null(features))
   stopifnot(is.list(features))
   if (length(unlist(features)) == 0) {
@@ -370,10 +386,11 @@ setMethod(f = "siteList",
 .listSitesWithData <- function(sos,
                                begin,
                                end,
+                               phenomena,
                                includePhenomena,
                                includeTemporalBBox,
-                               phenomena) {
-  dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
+                               ...) {
+  dams <- .getDataAvailabilityMember(sos, phenomena, begin, end, ...)
 
   if (includeTemporalBBox && !includePhenomena) {
     includePhenomena <- TRUE
@@ -400,13 +417,13 @@ setMethod(f = "siteList",
   return(sites)
 }
 
-.getDataAvailabilityMember <- function(sos, phenomena, begin, end) {
+.getDataAvailabilityMember <- function(sos, phenomena, begin, end, ...) {
   if (.isPhenomenaSet(phenomena)) {
     # validate input only if given
     phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-    dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput)
+    dams <- getDataAvailability(sos, observedProperties = phenomena, verbose = sos@verboseOutput, ...)
   } else {
-    dams <- getDataAvailability(sos, verbose = sos@verboseOutput)
+    dams <- getDataAvailability(sos, verbose = sos@verboseOutput, ...)
   }
   stopifnot(!is.null(dams))
   stopifnot(is.list(dams))
@@ -524,19 +541,20 @@ setMethod(f = "siteList",
 if (!isGeneric("sites")) {
   setGeneric(name = "sites",
              signature = signature("sos",
-                                   "empty",
                                    "begin",
                                    "end",
+                                   "phenomena",
+                                   "empty",
                                    "includePhenomena",
-                                   "includeTemporalBBox",
-                                   "phenomena"),
+                                   "includeTemporalBBox"),
              def = function(sos,
-                            empty=FALSE,                 # filter
-                            begin=NA,                    # filter
-                            end=NA,                      # filter
-                            includePhenomena=FALSE,      # meta data
-                            includeTemporalBBox=FALSE,   # meta data
-                            phenomena=list()) {          # filter
+                            begin=NA,                  # filter
+                            end=NA,                    # filter
+                            phenomena=list(),          # filter
+                            empty=FALSE,               # filter + meta data
+                            includePhenomena=FALSE,    # meta data
+                            includeTemporalBBox=FALSE, # meta data
+                            ...) {
                standardGeneric("sites")
              })
 }
@@ -547,27 +565,29 @@ if (!isGeneric("sites")) {
 setMethod(f = "sites",
           signature = signature(sos = "SOS_2.0.0"),
           definition = function(sos,
-                         empty,
                          begin,
                          end,
-                         includePhenomena,
-                         includeTemporalBBox,
-                         phenomena) {
-            stopifnot(inherits(sos, "SOS_2.0.0"))
+                         phenomena,
+                         empty = FALSE,
+                         includePhenomena = FALSE,
+                         includeTemporalBBox = FALSE,
+                         ...) {
             stopifnot(is.logical(empty))
             stopifnot(is.logical(includePhenomena))
             stopifnot(is.logical(includeTemporalBBox))
 
-            if (empty) {
-              return(.sitesAsSPDF(sos, empty))
+            if (!any(includePhenomena, includeTemporalBBox, empty)) {
+              return(.sitesAsSPDF(sos, begin, end, phenomena, ...))
             }
             else {
               return(.sitesWithDataAsSPDF(sos,
                                           begin,
                                           end,
+                                          phenomena,
+                                          empty,
                                           includePhenomena,
                                           includeTemporalBBox,
-                                          phenomena))
+                                          ...))
             }
           }
 )
@@ -579,24 +599,87 @@ setMethod(f = "sites",
 # Used SOS operations/requests
 #  - GetFeatureOfInterest without parameter
 #
-.sitesAsSPDF <- function(sos, empty = TRUE) {
+.sitesAsSPDF <- function(sos, begin = NA, end = NA, phenomena = NA, ...) {
   # get all stations
-  sites <- getFeatureOfInterest(sos, verbose = sos@verboseOutput)
+  sites <- getFeatureOfInterest(sos, verbose = sos@verboseOutput, ...)
   if (is.null(sites) || is.list(sites) && length(sites) < 1) {
     return(SpatialPointsDataFrame(coords = SpatialPoints(data.frame(x = 0, y = 0))[-1,],
                                   data = data.frame("siteID" = character(0), stringsAsFactors = FALSE),
                                   match.ID = FALSE))
   }
   sitesSPDF <- .asSpatialPointsDataFrame(sites)
-  if (empty) {
-    sitesSPDF <- .addEmptyColumn(sos, sitesSPDF)
-  }
   return(sitesSPDF)
 }
 
-.addEmptyColumn <- function(sos, sitesSPDF) {
+#
+# sites(sos, includePhenomena=TRUE, includeTemporalBBox=FALSE) → sp::SPDF[siteID, phen_1=logical, …, phen_n=logical]
+#
+# See: https://github.com/52North/sos4R/issues/92
+#
+# Used SOS operations/requests
+# - GetDataAvailability v1.0
+# - GetFeatureOfInterest w/feature list
+#
+.sitesWithDataAsSPDF <- function(sos,
+                                 begin = NA,
+                                 end = NA,
+                                 phenomena = NULL,
+                                 empty = FALSE,
+                                 includePhenomena = FALSE,
+                                 includeTemporalBBox = FALSE,
+                                 ...) {
+  if (includeTemporalBBox && !includePhenomena) {
+    includePhenomena <- TRUE
+    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
+  }
+  # get all phenomena
+  phenomenaOfSos <- as.list(.listPhenomena(sos)[, 1])
+  if (is.null(phenomenaOfSos) || is.list(phenomenaOfSos) && length(phenomenaOfSos) == 0) {
+    return(.sitesAsSPDF(sos))
+  }
+  # get data availability
+  if (.isPhenomenaSet(phenomena)) {
+    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+  }
+  stopifnot(all(phenomena %in% phenomenaOfSos))
+  #
+  dams <- .getDataAvailabilityMember(sos, phenomena, begin, end, ...)
+
+  # get sites
+  if (length(dams) > 1 && !empty) {
+    sites <- getFeatureOfInterest(sos, featureOfInterest = unique(sosFeatureIds(dams)), verbose = sos@verboseOutput, ...)
+  }
+  else {
+    sites <- getFeatureOfInterest(sos)
+  }
+  if (is.null(sites) || is.list(sites) && length(sites) < 1) {
+    return(.sitesAsSPDF(sos))
+  }
+  sitesSPDF <- .asSpatialPointsDataFrame(sites)
+  # extend spdf@data with information about the available phenomena
+  if (includePhenomena) {
+    if (.isPhenomenaSet(phenomena)) {
+      phenomenaFilter <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+    } else {
+      phenomenaFilter <- phenomenaOfSos
+    }
+  }
+  if (includePhenomena && !includeTemporalBBox) {
+    sitesSPDF@data <- .addMetadataAboutPhenomena(sitesSPDF@data, phenomenaFilter, dams)
+  }
+  if (includeTemporalBBox) {
+    sitesSPDF@data <- .addPhenomenaTemporalBBoxes(sitesSPDF@data, phenomenaFilter, dams, empty, sites)
+  }
+  if (empty && !includePhenomena) {
+    sitesSPDF <- .addEmptyColumn(sos, sitesSPDF, phenomena = phenomena, dams = dams)
+  }
+  return(sitesSPDF)
+}
+#
+#
+#
+.addEmptyColumn <- function(sos, sitesSPDF, phenomena = NA, dams = list()) {
   data <- sitesSPDF@data
-  dams <- getDataAvailability(sos, featuresOfInterest = as.list(data[["siteID"]]), verbose = sos@verboseOutput)
   # one column dataframe with empty column
   dataframeToAdd <- data.frame("empty" = logical(0), stringsAsFactors = FALSE)
   if (length(dams) < 1) {
@@ -625,64 +708,10 @@ setMethod(f = "sites",
   }
   return(sitesSPDF)
 }
-
-
-#
-# sites(sos, includePhenomena=TRUE, includeTemporalBBox=FALSE) → sp::SPDF[siteID, phen_1=logical, …, phen_n=logical]
-#
-# See: https://github.com/52North/sos4R/issues/92
-#
-# Used SOS operations/requests
-# - GetDataAvailability v1.0
-# - GetFeatureOfInterest w/feature list
-#
-.sitesWithDataAsSPDF <- function(sos,
-                                 begin,
-                                 end,
-                                 includePhenomena,
-                                 includeTemporalBBox,
-                                 phenomena) {
-  if (includeTemporalBBox && !includePhenomena) {
-    includePhenomena <- TRUE
-    warning("'includePhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-  }
-  # get all phenomena
-  phenomenaOfSos <- as.list(.listPhenomena(sos)[, 1])
-  if (is.null(phenomenaOfSos) || is.list(phenomenaOfSos) && length(phenomenaOfSos) < 1) {
-    return(.sitesAsSPDF(sos, FALSE))
-  }
-  # get data availability
-  dams <- .getDataAvailabilityMember(sos, phenomena, begin, end)
-
-  # get sites
-  if (length(dams) > 1) {
-    sites <- getFeatureOfInterest(sos, featureOfInterest = unique(sosFeatureIds(dams)), verbose = sos@verboseOutput)
-  }
-  else {
-    sites <- getFeatureOfInterest(sos)
-  }
-  if (is.null(sites) || is.list(sites) && length(sites) < 1) {
-    return(.sitesAsSPDF(sos, FALSE))
-  }
-  sitesSPDF <- .asSpatialPointsDataFrame(sites)
-  # extend spdf@data with information about the available phenomena
-  if (includePhenomena && .isPhenomenaSet(phenomena)) {
-    phenomenaFilter <- phenomena
-  } else {
-    phenomenaFilter <- phenomenaOfSos
-  }
-  if (includePhenomena && !includeTemporalBBox) {
-    sitesSPDF@data <- .addMetadataAboutPhenomena(sitesSPDF@data, phenomenaFilter, dams)
-  }
-  if (includeTemporalBBox) {
-    sitesSPDF@data <- .addPhenomenaTemporalBBoxes(sitesSPDF@data, phenomenaFilter, dams)
-  }
-  return(sitesSPDF)
-}
 #
 # https://github.com/52North/sos4R/issues/93
 #
-.addPhenomenaTemporalBBoxes <- function(dataframe, allPhenomena, dams) {
+.addPhenomenaTemporalBBoxes <- function(dataframe, allPhenomena, dams = list(), empty = FALSE, sites = list()) {
   # store setting of stringsAsFactors to reset after this function
   tmpStringsAsFactors <- getOption("stringsAsFactors")
   options(stringsAsFactors = FALSE)
@@ -862,18 +891,20 @@ getData <- function(sos,
       warning("'spatialBBox' has been ignored and 'sites' is used instead.")
     }
   }
+  if (!missing(phenomena)) {
+    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
+  }
 
   time <- list()
   if (!is.na(begin) && !is.na(end))
     time <- list(sosCreateTimePeriod(sos = sos,
                                 begin = begin,
                                 end = end))
-
   observations <- getObservation(sos = sos,
-                                 offering = list(), # "all"
-                                 observedProperty = as.list(phenomena), # phenomena
-                                 featureOfInterest = as.list(sites), # sites
-                                 eventTime = time,
+                                 offering = list(),            # "all"
+                                 observedProperty = phenomena, # phenomena
+                                 featureOfInterest = sites,    # sites
+                                 eventTime = time,             #
                                  BBOX = NA_character_,
                                  ... = ...)
 

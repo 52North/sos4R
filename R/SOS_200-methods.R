@@ -402,6 +402,15 @@ setMethod("encodeRequestXML", "SosGetFeatureOfInterest_2.0.0",
 )
 
 #
+# sosFeaturesOfInterest("SOS_2.0.0") ----
+#
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SOS_2.0.0"),
+          definition = function(obj, offerings = sosOfferingIds(obj)) {
+            return(sosOperations(obj)$GetFeatureOfInterest@parameters$featureOfInterest)
+          }
+)
+
+#
 # construction functions ----
 #
 SosGetObservation_2.0.0 <- function(
