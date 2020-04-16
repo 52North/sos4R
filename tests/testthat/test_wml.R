@@ -120,3 +120,11 @@ test_that("measurement timeseries is parsed correctly", {
   expect_true(mt@points[[2]]@time == parsedate::parse_iso_8601("2019-05-17T07:00:00.000+12:00"))
   expect_true(mt@points[[2]]@value == 5.4)
 })
+
+test_that("result data can be retrieved from measurement timeseries", {
+  mt <- parseWmlMeasurementTimeseries(obj = xml2::read_xml(x = mtXml), sos = testsos)
+  result <- sosResult(mt)
+  expect_s3_class(result, "data.frame")
+  expect_equal(dim(result), c(2, 2))
+  expect_true("uom" %in% names(attributes(result)))
+})
