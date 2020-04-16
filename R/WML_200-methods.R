@@ -171,13 +171,13 @@ parseWmlMeasurementTimeseries <- function(obj, sos, verbose = FALSE) {
 as.SpatialPoints.WmlMonitoringPoint <- function(from) {
   as(from@shape, "SpatialPoints")
 }
-setAs("WmlMonitoringPoint", "SpatialPoints",
-      function(from) {
+setAs(from = "WmlMonitoringPoint", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
-setAs("WmlMonitoringPoint", "Spatial",
-      function(from) {
+setAs(from = "WmlMonitoringPoint", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
@@ -196,8 +196,8 @@ as.data.frame.WmlMeasurementTimeseries <- function(from) {
   attr(df, "defaultPointMetadata") <- from@defaultPointMetadata
   return(df)
 }
-setAs("WmlMeasurementTimeseries", "data.frame",
-      function(from) {
+setAs(from = "WmlMeasurementTimeseries", to = "data.frame",
+      def = function(from) {
         as.data.frame.WmlMeasurementTimeseries(from)
       }
 )

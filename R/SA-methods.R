@@ -74,13 +74,13 @@ parseSamplingPoint <- function(obj, sos) {
 as.SpatialPoints.SaSamplingPoint = function(from) {
   as(from@position, "SpatialPoints")
 }
-setAs("SaSamplingPoint", "SpatialPoints",
-      function(from) {
+setAs(from = "SaSamplingPoint", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.SaSamplingPoint(from)
       }
 )
-setAs("SaSamplingPoint", "Spatial",
-      function(from) {
+setAs(from = "SaSamplingPoint", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.SaSamplingPoint(from)
       }
 )

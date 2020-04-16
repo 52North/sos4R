@@ -62,13 +62,13 @@ parseSams200SamplingFeature <- function(obj, sos) {
 as.SpatialPoints.SamsShape = function(from) {
   as(from@point, "SpatialPoints")
 }
-setAs("SamsShape", "SpatialPoints",
-      function(from) {
+setAs(from = "SamsShape", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.SamsShape(from)
       }
 )
-setAs("SamsShape", "Spatial",
-      function(from) {
+setAs(from = "SamsShape", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.SamsShape(from)
       }
 )
@@ -76,13 +76,13 @@ setAs("SamsShape", "Spatial",
 as.SpatialPoints.SamsSamplingFeature = function(from) {
   as(from@shape, "SpatialPoints")
 }
-setAs("SamsSamplingFeature", "SpatialPoints",
-      function(from) {
+setAs(from = "SamsSamplingFeature", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.SamsSamplingFeature(from)
       }
 )
-setAs("SamsSamplingFeature", "Spatial",
-      function(from) {
+setAs(from = "SamsSamplingFeature", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.SamsSamplingFeature(from)
       }
 )
