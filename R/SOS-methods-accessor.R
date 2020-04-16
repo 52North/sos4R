@@ -1231,6 +1231,12 @@ setMethod(f = "sosUOM",
           }
 )
 setMethod(f = "sosUOM",
+          signature = c(obj = "WmlDefaultTVPMeasurementMetadata"),
+          definition = function(obj) {
+            return(obj@uom)
+          }
+)
+setMethod(f = "sosUOM",
           signature = c(obj = "data.frame"),
           definition = function(obj) {
             names <- names(obj)

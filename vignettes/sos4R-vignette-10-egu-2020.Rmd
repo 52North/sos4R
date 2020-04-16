@@ -31,20 +31,38 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "##"
 )
 ```
 
 ```{r blog_post, include = FALSE, eval=FALSE}
-# run this code chunk to render an HTML snippet for use in Wordpress
-library("rmarkdown")
-render("sos4R-vignette-10-egu-2020.Rmd",
-       output_format = html_fragment(
-         #includes = includes(before_body = "javascripts.html") # TODO add JS loading here?
-       ),
-       # does not work yet because it is missing the JavaScript
-       #output_format = html_document(self_contained = TRUE),
-       output_file = "copy-to-blog_do-not-commit.html")
+# run this code chunk to render an HTML snippet for use in Wordpress and copy it to the clipboard
+library("knitr")
+library("xfun")
+# based on knit2::knit2wp
+knit2html <- function(input, envir = parent.frame(), shortcode = TRUE) {
+    out = knitr::knit(input, envir = envir)
+    on.exit(unlink(out))
+    content = xfun::file_string(out)
+    content = markdown::markdownToHTML(text = content, fragment.only = TRUE)
+    shortcode = rep(shortcode, length.out = 2L)
+    if (shortcode[1])
+        content = gsub("<pre><code class=\"([[:alpha:]]+)\">(.+?)</code></pre>", 
+            "[sourcecode language=\"\\1\"]\\2[/sourcecode]", 
+            content)
+    content = gsub("<pre><code( class=\"no-highlight\"|)>(.+?)</code></pre>", 
+        if (shortcode[2])
+            "[sourcecode]\\2[/sourcecode]"
+        else "<pre>\\2</pre>", content)
+    content = enc2utf8(content)
+    return(content)
+}
+
+post <- knit2html("sos4R-vignette-10-egu-2020.Rmd")
+
+library("clipr") # requires xclip on Linux
+clipr::write_clip(post)
+# NOTE: need to handle images manually!
 ```
 
 ## Preface
@@ -58,7 +76,7 @@ Please refer to this work by citing the DOI [`https://doi.org/10.5194/egusphere-
 Time series data of in-situ measurements is the key to many environmental studies.
 The first challenge in any analysis typically arises when the data needs to be imported into the analysis framework.
 Standardisation is one way to lower this burden.
-Unfortunate`ly, relevant interoperability standards might be challenging for non-IT experts as long as they are not dealt with behind the scenes of a client application.
+Unfortunately, relevant interoperability standards might be challenging for non-IT experts as long as they are not dealt with behind the scenes of a client application.
 One standard to provide access to environmental time series data is the Sensor Observation Service ([SOS](https://en.wikipedia.org/wiki/Sensor_Observation_Service)) specification published by the Open Geospatial Consortium ([OGC](https://www.ogc.org/)). SOS instances are currently used in a broad range of applications such as hydrology, air quality monitoring, and ocean sciences. Data sets provided via an SOS interface can be found around the globe from Europe to New Zealand.
   
 The R package [sos4R](https://52north.github.io/sos4R/) (Nüst et al., 2011) is an extension package for the R environment for statistical computing and visualization (https://www.r-project.org/), which has been demonstrated a a powerful tools for conducting and communicating geospatial research (cf. Pebesma et al., 2012).
@@ -71,58 +89,74 @@ The following example demonstrates some core operations: connect to an SOS, requ
 
 ```{r classic_sos}
 library("sos4R")
-fluggs <- SOS(url = "https://fluggs.wupperverband.de/sos2/service", binding = "KVP",
-              version = "2.0.0")
+fluggs = SOS(
+  url = "https://fluggs.wupperverband.de/sos2/service",
+  binding = "KVP",
+  version = "2.0.0")
 ```
 
 ```{r classic_sos_sensor}
-sensor2 <- describeSensor(fluggs, sosProcedures(fluggs)[2], outputFormat = "http://www.opengis.net/sensorML/1.0.1")
+sensor2 = describeSensor(
+  sos = fluggs,
+  procedure = sosProcedures(fluggs)[2],
+  outputFormat = "http://www.opengis.net/sensorML/1.0.1")
 sensor2
 ```
 
 ```{r classic_sos_data_availability}
-fluggs_data_availability <- getDataAvailability(fluggs)
+fluggs_data_availability = getDataAvailability(fluggs)
 fluggs_data_availability[1:2]
 ```
 
-
 ```{r classic_sos_data}
-fluggs_offerings <- sosOfferings(fluggs)
-fluggs_obs_jan_2019 <- getObservation(fluggs, offering = fluggs_offerings[[1]],
+fluggs_offerings = sosOfferings(fluggs)
+fluggs_obs_jan_2019 = getObservation(fluggs, offering = fluggs_offerings[[1]],
                eventTime = sosCreateTime(fluggs, "2019-01-01::2019-01-31"),
                responseFormat = "http://www.opengis.net/om/2.0")
-result <- sosResult(fluggs_obs_jan_2019)
-summary(result)
+result = sosResult(fluggs_obs_jan_2019)
+
+library("skimr")
+skimr::skim(result)
 ```
 
 However, these functions use terms and operations specific to the OGC services and the SOS standard.
 They also require some knowledge about working combinations for requests.
 Therefore, a new release of sos4R provides a convenience layer for R users to integrate observation data from data access servers compliant with the SOS standard without any knowledge about the underlying technical standards.
-This update also features specific consideration of the [OGC SOS 2.0 Hydrology Profile](TODO) and thereby opens up a new scientific domain.
+This update also features specific consideration of the [OGC SOS 2.0 Hydrology Profile](https://docs.opengeospatial.org/bp/14-004r1/14-004r1.html) and thereby opens up a new scientific domain.
 
 Especially for non-SOS experts, the wrapper functions remove complexity and technical language specific to OGC specifications with their specific terms, e.g., "FOI", or "procedure".
-The wrapper function use more generic terms easily accessible for all users, especially without a strong knowledge of the OGC standards of the Sensor Web Enablement (see ["OGC SWE and SOS"](sos4R-vignette-02-ogc-sos.html) vignette for details).
+The wrapper function use more generic terms easily accessible for all users, especially without a strong knowledge of the OGC standards of the Sensor Web Enablement (see ["OGC SWE and SOS"](https://52north.github.io/sos4R/articles/sos4R-vignette-02-ogc-sos.html) vignette for details).
 In general, these functions always return an object of class `data.frame`, even if the result is only a list, in which case the `data.frame` has one column.
 
 The following code chunks demonstrate requesting the same data as above, but using the new wrapper functions.
 
 ```{r modern_sos_sites}
-sites <- sites(sos = fluggs, includePhenomena = TRUE)
+fluggs_sites = sites(sos = fluggs, includePhenomena = TRUE)
 
 library("kableExtra")
-scroll_box(kable(sites), height = "200px")
+kable(head(fluggs_sites))
 ```
 
 ```{r modern_sos_phenomena}
-phenomena <- phenomena(sos = fluggs, includeTemporalBBox = TRUE, includeSiteId = TRUE)
-watertemp_phenomena <- subset(phenomena, phenomenon == "Wassertemperatur")
+phenomena = phenomena(
+  sos = fluggs,
+  includeTemporalBBox = TRUE,
+  includeSiteId = TRUE)
+watertemp_phenomena = subset(phenomena,
+                             phenomenon == "Wassertemperatur")
 
-observationData <- getData(sos = fluggs,
-                           sites = subset(sites, Wassertemperatur == TRUE),
-                           phenomena = watertemp_phenomena,
-                           begin = as.POSIXct("2019-01-01"),
-                           end = parsedate::parse_iso_8601("2019-01-31"))
-summary(observationData)
+# function takes R date/time objects as input
+timeBegin = as.POSIXct("1999-01-01")
+timeEnd = parsedate::parse_iso_8601("1999-02-28")
+
+observationData = getData(
+  sos = fluggs,
+  sites = subset(fluggs_sites, Wassertemperatur == TRUE),
+  phenomena = watertemp_phenomena,
+  begin = timeBegin,
+  end = timeEnd)
+
+skimr::skim(observationData)
 ```
 
 The result `data.frame` includes additional metadata.
@@ -139,44 +173,85 @@ Temporal filter is a time period during which observations are made.
 Without a temporal extent, the used SOS only returns the last measurement.
 
 Furthermore, you can use the included spatial information about the sites and temporal information about the available phenomena and display sites on a map without the user having to touch coordinates or map projections.
-For example, the `sites` object is a `SpatialPointsDataFrame` with proper coordinate reference system (CRS).
+For example, the `fluggs_sites` object is a `SpatialPointsDataFrame` with proper coordinate reference system (CRS).
 
 ```{r modern_sos_bbox}
-sites@proj4string
-sp::bbox(sites)
+fluggs_sites@proj4string
+sp::bbox(fluggs_sites)
 ```
 
-```{r sites_map, fig.width=6}
+```{r sites_map, fig.width=6, fig.align='center', fig.cap = paste0("Map of", "x")}
 suppressPackageStartupMessages(library("mapview"))
-
-mapview(sites)
+sites_map = mapview(fluggs_sites)
+map_file = tempfile(fileext = ".png") #here::here("map.png")
+# requires phantomjs, webshot::install_phantomjs()
+mapshot(sites_map, file = map_file)
+knitr::include_graphics(map_file)
 ```
-
-_A more detailed description of the function above can be found in sos4R's documentation TODO LINK TO VIGNETTE HERE._
 
 ## Integrated data analysis
 
 The abstraction provided by sos4R makes sensor observation data easily accessible across multiple SOS instances.
 It seamlessly integrates distributed observations data, i.e., across organisational boundaries, into transparent and reproducible data analysis workflows.
+These workflows can leverage the vast number of R packages for data science with geospatial and time series data.
 
-Plot received data as time series:
+Let's plot the received data as time series:
 
 ```{r getData_timeseries_plot, fig.width=6}
 suppressPackageStartupMessages(library("xts"))
-tsLaaken <- xts(observationData[observationData$siteID == 'Laaken',3],
-                observationData[observationData$siteID == 'Laaken',"timestamp"])
-names(tsLaaken) <- "Laaken"
-plot(x = tsLaaken, main = "Monthly: Extreme max. Temp. (°C)", yaxis.right = FALSE, legend.loc = 'topleft')
+siteName = "Schevelinger-Talsperre_Absperrbauwerk"
+dataColumn = 3
+tsFluggs = xts(
+  observationData[observationData$siteID == siteName, dataColumn],
+  observationData[observationData$siteID == siteName, "timestamp"])
+names(tsFluggs) = siteName
+unitOfMeasurement = sosUOM(
+  attributes(observationData[[dataColumn]])$defaultPointMetadata)
+plot(x = tsFluggs,
+     main = paste0("Water temperature (", unitOfMeasurement, ")"),
+     sub = attributes(observationData[[dataColumn]])$defaultPointMetadata@interpolationType@href,
+     yaxis.right = FALSE, legend.loc = 'topleft')
 ```
 
-TODO: integrate with data from another SOS
+It is now straightforward to show the same data together with data from another SOS.
+In this demonstrative example, we'll just combine water temperature from Germany and New Zealand.
+
+```{r niwa_data}
+niwa <- SOS(
+  url = "https://climate-sos.niwa.co.nz/",
+  binding = "KVP",
+  useDCPs = FALSE,
+  version = "2.0.0")
+siteList <- siteList(sos = niwa)
+phenomenaNiwa <- phenomena(sos = niwa)
+
+observationDataNiwa <- getData(sos = niwa,
+  phenomena = phenomenaNiwa[18, 1],
+  sites = siteList$siteID[1],
+  begin = timeBegin,
+  end = timeEnd)
+attributes(observationDataNiwa[[3]])
+skimr::skim(observationDataNiwa)
+```
+
+```{r multiple_timeseries_plot, fig.width=6}
+ts1056 <- xts(observationDataNiwa[observationDataNiwa$siteID == '1056', 3], observationDataNiwa[observationDataNiwa$siteID == '1056',"timestamp"])
+names(ts1056) <- "Station#1056 @ NIWA"
+plot(
+  x = na.fill(merge(tsFluggs, ts1056), list(NA, "extend", NA)),
+  main = "Incomparable temperatures",
+  yaxis.right = FALSE,
+  legend.loc = 'topleft')
+```
 
 ## Shiny application
 
-TODO
+TODO: short description
+
+TODO: screenshot of shiny app
 
 ## References
 
-Nüst D., Stasch C., Pebesma E. (2011) Connecting R to the Sensor Web. In: Geertman S., Reinhardt W., Toppen F. (eds) Advancing Geoinformation Science for a Changing World. Lecture Notes in Geoinformation and Cartography, Springer.
+Nüst D., Stasch C., Pebesma E. (2011) Connecting R to the Sensor Web. In: Geertman S., Reinhardt W., Toppen F. (eds) Advancing Geoinformation Science for a Changing World. Lecture Notes in Geoinformation and Cartography, Springer. doi:[10.1007/978-3-642-19789-5_12](https://doi.org/10.1007/978-3-642-19789-5_12)
 
-Pebesma, E., Nüst, D., & Bivand, R. (2012). The R software environment in reproducible geoscientific research. Eos, Transactions American Geophysical Union, 93(16), 163–163.
+Pebesma, E., Nüst, D., & Bivand, R. (2012). The R software environment in reproducible geoscientific research. Eos, Transactions American Geophysical Union, 93(16), 163–163. doi:[10.1029/2012EO160003](https://doi.org/10.1029/2012EO160003)
