@@ -50,7 +50,10 @@ Suggests:
     rgdal,
     knitr,
     rmarkdown,
-    webmockr
+    webmockr,
+    kableExtra,
+    skimr,
+    clipr
 Description: A client for Sensor Observation Services (SOS, see
     <https://www.opengeospatial.org/standards/sos>) as specified by the
     Open Geospatial Consortium (OGC). With the package users can

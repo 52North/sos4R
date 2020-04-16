@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 ## Introduction
 
 `sos4R` includes a collection of convenience functions which wrap the complex SOS interface with its specific terms (e.g. FOI, procedure).
@@ -36,7 +35,6 @@ mySos <- SOS(url = "https://climate-sos.niwa.co.nz/", binding = "KVP", useDCPs =
 maxOutputRowsPerExample <- 5
 maxOutputColumnsPerExample <- 3
 ```
-
 
 ## Phenomena
 
@@ -68,7 +66,6 @@ You can also add both temporal extent and sites:
 ```{r phenomena_include_all}
 phenomena(sos = mySos, includeTemporalBBox = TRUE, includeSiteId = TRUE)[1:maxOutputRowsPerExample,]
 ```
-
 
 ## Sites With Coordinates
 
@@ -108,7 +105,6 @@ The following chunk shows how to get a better representation:
 ```{r sites_with_temporal_bbox_structure}
 str(tail(sites_with_temporal_bbox, n = 3)[,1:maxOutputColumnsPerExample])
 ```
-
 
 ## Filter Sites With Coordinates
 
@@ -158,7 +154,6 @@ suppressPackageStartupMessages(library("mapview"))
 mapview(sites, legend = FALSE, col.regions = "blue")
 ```
 
-
 ## Site Listings
 
 The function `siteList(..)` provides information about observed phenomena at sites and the time periods when data is available.
@@ -184,7 +179,6 @@ siteList_with_empty[1:maxOutputRowsPerExample,]
 #siteListe_with_metadata <- siteList(sos = mySos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
 #siteListe_with_metadata[1:maxOutputRowsPerExample,]
 ```
-
 
 ## Filter Site Listings
 
@@ -258,8 +252,6 @@ ts1056 <- xts(observationData[observationData$siteID == '1056',3], observationDa
 names(ts1056) <- "#1056"
 plot(x = ts1056, main = "Monthly: Extreme max. Temp. (°C)", yaxis.right = FALSE, legend.loc = 'topleft')
 ```
-
-
 
 The next example gets data for two phenomena a site.
 
