@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gda:GetDataAvailabilityResponse xmlns:gda="http://www.opengis.net/sosgda/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sosgda/2.0 http://waterml2.org/schemas/gda/2.0/gda.xsd">
+  <gda:dataAvailabilityMember gml:id="dam_1">
+    <gda:procedure xlink:href="40458D_7ad6ee986167b4a706a6f791e8196cb4" xlink:title="Carbon_monoxide_component_at_40458D"/>
+    <gda:observedProperty xlink:href="https://example.com/vocab-service/Carbon_monoxide" xlink:title="Carbon_monoxide"/>
+    <gda:featureOfInterest xlink:href="40458D_IT_0e32b32a52a0cded425a4075afa65f93" xlink:title="AirSensEUR Station '40458D_IT_0e32b32a52a0cded425a4075afa65f93'"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_1">
+        <gml:beginPosition>2020-01-05T17:02:00.000Z</gml:beginPosition>
+        <gml:endPosition>2020-01-30T14:01:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+    <gda:offering xlink:href="http://example.com/offerings/40458D" xlink:title="This offering holds uncalibrated raw data of the station 40458D."/>
+    <gda:formatDescriptor>
+      <gda:procedureDescriptionFormatDescriptor>
+        <gda:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</gda:procedureDescriptionFormat>
+      </gda:procedureDescriptionFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/om/2.0</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ComplexObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/json</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>text/xml; subtype="om/1.0.0"</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/netcdf</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/gwml/2.2</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+    </gda:formatDescriptor>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_2">
+    <gda:procedure xlink:href="40458D_35443c4c9911f77ef5405a259fab674e" xlink:title="Nitric_oxide_component_at_40458D"/>
+    <gda:observedProperty xlink:href="https://example.com/vocab-service/Nitric_oxide" xlink:title="Nitric_oxide"/>
+    <gda:featureOfInterest xlink:href="40458D_IT_0e32b32a52a0cded425a4075afa65f93" xlink:title="AirSensEUR Station '40458D_IT_0e32b32a52a0cded425a4075afa65f93'"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+    <gda:offering xlink:href="http://example.com/offerings/40458D" xlink:title="This offering holds uncalibrated raw data of the station 40458D."/>
+    <gda:formatDescriptor>
+      <gda:procedureDescriptionFormatDescriptor>
+        <gda:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</gda:procedureDescriptionFormat>
+      </gda:procedureDescriptionFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/om/2.0</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ComplexObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/gwml/2.2</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/netcdf</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>text/xml; subtype="om/1.0.0"</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/json</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+    </gda:formatDescriptor>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_3">
+    <gda:procedure xlink:href="40458D_03d9b50a182e257829a042e38799a4f6" xlink:title="Nitrogen_dioxide_component_at_40458D"/>
+    <gda:observedProperty xlink:href="https://example.com/vocab-service/Nitrogen_dioxide" xlink:title="Nitrogen_dioxide"/>
+    <gda:featureOfInterest xlink:href="40458D_IT_0e32b32a52a0cded425a4075afa65f93" xlink:title="AirSensEUR Station '40458D_IT_0e32b32a52a0cded425a4075afa65f93'"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+    <gda:offering xlink:href="http://example.com/offerings/40458D" xlink:title="This offering holds uncalibrated raw data of the station 40458D."/>
+    <gda:formatDescriptor>
+      <gda:procedureDescriptionFormatDescriptor>
+        <gda:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</gda:procedureDescriptionFormat>
+      </gda:procedureDescriptionFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/gwml/2.2</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/json</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/netcdf</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>text/xml; subtype="om/1.0.0"</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/om/2.0</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ComplexObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+    </gda:formatDescriptor>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_4">
+    <gda:procedure xlink:href="40458D_486d0a3d1d227aec43e496eb5e5a27ad" xlink:title="Ozone_component_at_40458D"/>
+    <gda:observedProperty xlink:href="https://example.com/vocab-service/Ozone" xlink:title="Ozone"/>
+    <gda:featureOfInterest xlink:href="40458D_IT_0e32b32a52a0cded425a4075afa65f93" xlink:title="AirSensEUR Station '40458D_IT_0e32b32a52a0cded425a4075afa65f93'"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+    <gda:offering xlink:href="http://example.com/offerings/40458D" xlink:title="This offering holds uncalibrated raw data of the station 40458D."/>
+    <gda:formatDescriptor>
+      <gda:procedureDescriptionFormatDescriptor>
+        <gda:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</gda:procedureDescriptionFormat>
+      </gda:procedureDescriptionFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/om/2.0</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ComplexObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>text/xml; subtype="om/1.0.0"</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/json</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>application/netcdf</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+      <gda:observationFormatDescriptor>
+        <gda:responseFormat>http://www.opengis.net/gwml/2.2</gda:responseFormat>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</gda:observationType>
+        <gda:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</gda:observationType>
+      </gda:observationFormatDescriptor>
+    </gda:formatDescriptor>
+  </gda:dataAvailabilityMember>
+</gda:GetDataAvailabilityResponse>
