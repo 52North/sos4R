@@ -125,13 +125,6 @@ MVCO_WHOI <- SOS("http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos")
 sosContents(MVCO_WHOI)
 ```
 
-## VITO SOS - Antwerp air quality
-
-```{r idea}
-idea <- SOS(url = "http://sensorweb.vito.be:8080/IDEA_52nSOSv3.2/sos")
-sosContents(idea)
-```
-
 ## Wupperverband FLUGSS
 
 About: https://fluggs.wupperverband.de/v2p/web/fluggs
