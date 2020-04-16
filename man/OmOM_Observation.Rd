@@ -16,7 +16,6 @@
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification, version 2.0.}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("OmOM_Observation", ...)}.
-%%  ~~ describe objects here ~~ 
 }
 \section{Slots}{
   \describe{
@@ -40,22 +39,6 @@ Class \code{"\linkS4class{OmOM_ObservationOrNULL}"}, directly.
     \item{sosFeatureIds}{\code{signature(obj = "OmOM_Observation")}: ... }
     \item{sosFeaturesOfInterest}{\code{signature(obj = "OmOM_Observation")}: ... }
 	 }
-}
-\references{
-%%  ~~put references to the literature/web site here~~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%%  ~~objects to See Also as \code{\link{~~fun~~}}, ~~~
-%%  ~~or \code{\linkS4class{CLASSNAME}} for links to other classes ~~~
 }
 \examples{
 showClass("OmOM_Observation")

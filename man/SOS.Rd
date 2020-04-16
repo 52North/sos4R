@@ -38,6 +38,7 @@
 \alias{sosDataFieldConverters}
 \alias{sosDataFieldConverters-methods}
 \alias{sosDataFieldConverters,SOS-method}
+\alias{sosDataFieldConverters,SOS_Test-method}
 
 \alias{sosTime}
 \alias{sosTime-methods}
@@ -85,6 +86,7 @@
 \alias{sosParsers}
 \alias{sosParsers-methods}
 \alias{sosParsers,SOS-method}
+\alias{sosParsers,SOS_Test-method}
 
 \alias{sosProcedures}
 \alias{sosProcedures-methods}
@@ -97,6 +99,11 @@
 \alias{sosResponseFormats,SOS-method}
 \alias{sosResponseFormats,OwsOperation-method}
 \alias{sosResponseFormats,SosObservationOffering-method}
+
+\alias{sosOutputFormats}
+\alias{sosOutputFormats-methods}
+\alias{sosOutputFormats,SOS-method}
+\alias{sosOutputFormats,OwsOperation-method}
 
 \alias{sosResponseMode}
 \alias{sosResponseMode-methods}
@@ -223,10 +230,15 @@
 \alias{SOS_Test-class}
 
 % Version 2.0.0
-\alias{sosName,SosGetObservation_2.0.0-method}
 \alias{sosName,SosGetFeatureOfInterest_2.0.0-method}
 \alias{sosProcedures,SosObservationOffering_2.0.0-method}
 \alias{sosResponseFormats,SosObservationOffering_2.0.0-method}
+\alias{SOS_2.0.0-class}
+\alias{print,SOS_2.0.0-method}
+\alias{show,SOS_2.0.0-method}
+\alias{sosBinding,SOS_2.0.0-method}
+\alias{sosUrl,SOS_2.0.0-method}
+\alias{toString,SOS_2.0.0-method}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -247,8 +259,6 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{parsers}:}{Object of class \code{"list"}: A list of named functions for parsing of SOS responses.}
     \item{\code{encoders}:}{Object of class \code{"list"}: A list of named functions for encoding of SOS requests.}
     \item{\code{dataFieldConverters}:}{Object of class \code{"list"}: A list of named functions to be used by the parsing methods to convert data values to the correct \R type, see \code{\link{SosDataFieldConvertingFunctions}} for the default functions and how to add your own converters.}
-    \item{\code{curlHandle}:}{Object of class \code{"CURLHandle"}: The curl options to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
-    \item{\code{curlOptions}:}{Object of class \code{"ANY"}: The curl handle to be passed on to the methods \code{getURL} and \code{postForm} from the package \pkg{RCurl}.}
     \item{\code{timeFormat}:}{Object of class \code{"character"}: The time format to be used or decoding and encoding time character strings to and from \code{POSIXt} classes.}
     \item{\code{verboseOutput}:}{Object of class \code{"logical"}: Trigger parameter for extensive debugging information on the console.}
     \item{\code{switchCoordinates}:}{Object of class \code{"logical"}: Trigger enabling switching of lat/long during parsing stage.}
@@ -257,6 +267,7 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{\code{addtionalKVPs}:}{A nam of class \code{"list"}: Named list of key-value-pairs to be appended to an KVP request.}
   }
 }
+
 \section{Methods}{
   \describe{
     \item{sosAbstract}{\code{signature(obj = "SOS")}: ... }
@@ -296,6 +307,23 @@ Object from the class can be used in calls to function for metadata retrieval of
     \item{sosVersion}{\code{signature(sos = "SOS")}: ... }
     \item{sosTime}{\code{signature(obj = "SOS")}: Accessor function for the event time period from the GetObservation operations metadata.}
     \item{sosFilter_Capabilities}{\code{signature(sos = "SOS")}: Accessor function for the filter capabilities of a SOS object.}
+    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetDataAvailability_1.0.0", verbose = "logical")}: ... }
+    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetFeatureOfInterest_2.0.0", verbose = "logical")}: ... }
+    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetObservation", verbose = "logical")}: ... }
+    \item{describeSensor}{\code{signature(sos = "SOS_2.0.0", procedure = "character")}: ... }
+    \item{getCapabilities}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{getDataAvailability}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{getFeatureOfInterest}{\code{signature(sos = "SOS_2.0.0", featureOfInterest = "ANY")}: ... }
+    \item{getFeatureOfInterest}{\code{signature(sos = "SOS_2.0.0", featureOfInterest = "character")}: ... }
+    \item{getObservationById}{\code{signature(sos = "SOS_2.0.0", observationId = "character")}: ... }
+    \item{getObservation}{\code{signature(sos = "SOS_2.0.0", offering = "character")}: ... }
+    \item{getObservation}{\code{signature(sos = "SOS_2.0.0", offering = "SosObservationOffering_2.0.0")}: ... }
+    \item{print}{\code{signature(x = "SOS_2.0.0")}: ... }
+    \item{show}{\code{signature(object = "SOS_2.0.0")}: ... }
+    \item{sosBinding}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{sosRequest}{\code{signature(sos = "SOS_2.0.0", request = "OwsServiceOperation", verbose = "logical", inspect = "logical")}: ... }
+    \item{sosUrl}{\code{signature(sos = "SOS_2.0.0")}: ... }
+    \item{toString}{\code{signature(x = "SOS_2.0.0")}: ... }
 	 }
 }
 
@@ -303,19 +331,16 @@ Object from the class can be used in calls to function for metadata retrieval of
 SOS(url, binding = SosDefaultBinding(), version = sosDefaultServiceVersion,
 	parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
 	dataFieldConverters = SosDataFieldConvertingFunctions(),
-	curlOptions = list(), curlHandle = getCurlHandle(),
 	timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
 	switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
 	additionalKVPs = list(), ...)
 
-SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version, 
+SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version,
          parsers = SosParsingFunctions(), encoders = SosEncodingFunctions(),
          dataFieldConverters = SosDataFieldConvertingFunctions(),
-         timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE, 
+         timeFormat = sosDefaultTimeFormat, verboseOutput = FALSE,
          switchCoordinates = FALSE, useDCPs = TRUE, dcpFilter = SosDefaultDCPs(),
          additionalKVPs = list(), ...)
-
-# accessor methods ...
 }
 
 \arguments{
@@ -325,8 +350,6 @@ SOS_Test(name = "test", binding = SosDefaultBinding(), version = sos100_version,
   \item{parsers}{See the corresponding slot description.}
   \item{encoders}{See the corresponding slot description.}
   \item{dataFieldConverters}{See the corresponding slot description.}
-  \item{curlOptions}{See the corresponding slot description.}
-  \item{curlHandle}{See the corresponding slot description.}
   \item{timeFormat}{See the corresponding slot description.}
   \item{verboseOutput}{See the corresponding slot description.}
   \item{switchCoordinates}{See the corresponding slot description.}
@@ -346,22 +369,31 @@ From the introduction of the specification document: \dQuote{The goal of SOS is 
 \references{
 Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortium Inc., OGC 06-009r6, Version: 1.0
 
-The document is available for download at \url{http://www.opengeospatial.org/standards/sos}.
+The document is available for download at \url{https://www.opengeospatial.org/standards/sos}.
 }
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
-
-%\section{Warning }{}
 
 \seealso{See also creation function \code{\link{SOS}} and the package vignette for general description of use.}
 
 \examples{
 showClass("SOS")
+showClass("SOS_2.0.0")
+
+# create a SOS connection
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+             binding = "KVP")
+
+# create the URL to a GET request for GetCapabilities
+sosCapabilitiesUrl(mySOS)
+
+# access details of the SOS connection and it's metadata
+sosContents(mySOS)
+sosTime(mySOS)
+sosFeaturesOfInterest(mySOS)
+sosBinding(mySOS)
 
 \dontrun{
-# create a SOS connection
-mysos <- SOS(url = "http://mysos.org/sos")
-
 # create a SOS connetion with a specific connection method and time format
 mysos <- SOS(url = "http://mysos.org/sos",
     binding = "KVP", timeFormat = "%Y-%m-%d")
@@ -375,20 +407,15 @@ sosExceptionCodeMeaning(ex@exceptionCode)
 # create a CRS object from a URN CRS string
 sosGetCRS("urn:ogc:def:crs:EPSG:4217")
 
-# create the URL to a GET request for GetCapabilities
-sosCapabilitiesUrl(mysos)
-
 # create a SOS for a specific binding at a specific endpoint
 SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
 		useDCPs = FALSE)
-		
-# create a SOS using only the DCPs from the capabilities that match a specific 
+
+# create a SOS using only the DCPs from the capabilities that match a specific
 # pattern with the default binding
 SOS(url = "http://localhost:8080/52n-sos/sos/service",
 		dcpFilter = list("POX" = "/pox"))
 }
-
-
 
 }
 

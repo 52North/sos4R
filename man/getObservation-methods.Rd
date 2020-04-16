@@ -38,13 +38,24 @@ This method sends a GetObservation request to the given SOS.
 
 \examples{
 \dontrun{
-# by identifier
-sos <- SOS(...)
-os.offerings <- sosOfferings(sos)
-obsId <- getObservationById(sos = sos, observationId = "o_3508493")
+# request observations
+mySOSpox <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+             binding = "POX", useDCPs = FALSE)
 
-# TODO
+myOffering <- sosOfferings(mySOS)[["ws2500"]]
+period <- sosCreateTimePeriod(sos = mySOS,
+		begin = as.POSIXct("2015/11/01"),
+		end = as.POSIXct("2015/11/02"))
+eventTime <- sosCreateEventTimeList(period)
 
+nov2015 <- getObservation(sos = mySOSpox,
+                          offering = myOffering,
+                          eventTime = eventTime)
+
+# request observation by identifier and get the data
+obsId <- getObservationById(sos = mySOSpox,
+                            observationId = "http://www.52north.org/test/observation/1")
+sosResult(obsId, coordinates = TRUE)
 }
 }
 

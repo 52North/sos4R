@@ -13,7 +13,6 @@ Representation of a text encoding defined in the OGC SWE Common specification. I
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("SweTextEncoding", ...)}.
-%%  ~~ describe objects here ~~ 
 }
 \section{Slots}{
   \describe{
@@ -26,22 +25,7 @@ Objects can be created by calls of the form \code{new("SweTextEncoding", ...)}.
 \section{Methods}{
 No methods defined with class "SweTextEncoding" in the signature.
 }
-\references{
-%%  ~~put references to the literature/web site here~~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%%  ~~objects to See Also as \code{\link{~~fun~~}}, ~~~
-%%  ~~or \code{\linkS4class{CLASSNAME}} for links to other classes ~~~
-}
 \examples{
 showClass("SweTextEncoding")
 }

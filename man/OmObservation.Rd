@@ -9,6 +9,7 @@
 \alias{show,OmObservation-method}
 \alias{print,OmObservation-method}
 \alias{print,OmObservationProperty-method}
+\alias{sosCoordinates,OmObservationProperty-method}
 \alias{toString,OmObservation-method}
 \alias{toString,OmObservationProperty-method}
 \alias{OmObservationProperty-class}
@@ -48,8 +49,8 @@ The following classes are virtual, no objects may be created from them: \code{Om
 }
 
 \usage{
-OmObservation(samplingTime, procedure, observedProperty, featureOfInterest, 
-              result, metadata = NA, resultTime = NULL, resultQuality = NA, 
+OmObservation(samplingTime, procedure, observedProperty, featureOfInterest,
+              result, metadata = NA, resultTime = NULL, resultQuality = NA,
               parameter = NA)
 OmObservationProperty(href = as.character(NA), obs = NULL)
 }
@@ -106,9 +107,6 @@ The \verb{...OrNULL} classes are used to model optional slots.
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{  }
-%\section{Warning }{}
-
 \seealso{See Also as \code{\link{OmMeasurement-class}}.}
 
 \examples{
@@ -116,7 +114,6 @@ showClass("OmObservation")
 showClass("OmObservationProperty")
 showClass("OmObservationOrNULL")
 
-# TBD examples for construction methods
 OmObservationProperty(href = "http://link.to/myObservation")
 
 # get result from an observation

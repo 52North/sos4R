@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2016 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -32,8 +32,8 @@
 # parseSamsShape ----
 #
 parseSamsShape <- function(obj, sos) {
-  #TODO other shape types, check syntax [[1]]
-  .point <- parsePoint(obj[[1]][gmlPointName][[1]], sos = sos)
+  namespaces <- SosAllNamespaces(version = sos200_version)
+  .point <- parsePoint(xml2::xml_child(x = obj, search = gmlPointName, ns = namespaces), sos = sos)
 
   SamsShape(point = .point)
 }
@@ -41,25 +41,17 @@ parseSamsShape <- function(obj, sos) {
 #
 # parseSams200SamplingFeature ----
 #
-# <sams:SF_SpatialSamplingFeature gml:id="ssf_88204F34D0B94590AA1EDE21577C9B5D907F4BAD">
-#   <gml:identifier codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">foi-1</gml:identifier>
-#   <gml:name codeSpace="http://www.opengis.net/def/nil/OGC/0/unknown">foi one</gml:name>
-#   <sf:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint"/>
-#   <sf:sampledFeature xlink:href="http://www.52north.org/test/featureOfInterest/world"/>
-#   <sams:shape>
-#     <ns:Point xmlns:ns="http://www.opengis.net/gml/3.2" ns:id="gml-id-p1">
-#       <ns:pos srsName="http://www.opengis.net/def/crs/EPSG/0/4326">51.883906 7.727958</ns:pos>
-#     </ns:Point>
-#   </sams:shape>
-# </sams:SF_SpatialSamplingFeature>
-#
 parseSams200SamplingFeature <- function(obj, sos) {
-  .gmlid <- xmlAttrs(node = obj)[["id"]]
-  .identifier <- xmlElementsByTagName(el = obj, name = "identifier")
-  .name <- xmlElementsByTagName(el = obj, name = "name")
-  .type <- xmlElementsByTagName(el = obj, name = "type")
-  .sampledFeature <- xmlElementsByTagName(el = obj, name = "sampledFeature")
-  .shape <- parseSamsShape(obj = xmlElementsByTagName(el = obj, name = "shape"), sos = sos)
+  namespaces <- SosAllNamespaces(version = sos200_version)
+  .gmlid <- xml2::xml_attr(x = obj, attr = "id")
+
+  .identifier <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlIdentifierName)) #, ns = namespaces))
+  .name <- xml2::xml_text(xml2::xml_child(x = obj, search = gmlNameName, ns = namespaces))
+  .type <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfTypeName, ns = namespaces),
+                          attr = "href")
+  .sampledFeature <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = sfSampledFeatureName, ns = namespaces),
+                                    attr = "href")
+  .shape <- parseSamsShape(xml2::xml_child(x = obj, search = samsShapeName, ns = namespaces), sos = sos)
   SamsSamplingFeature(id = .gmlid,
                       identifier = .identifier,
                       name = .name,

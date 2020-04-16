@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <om:ObservationCollection xmlns:gml="http://www.opengis.net/gml" xmlns:om="http://www.opengis.net/om/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1" xsi:schemaLocation="http://www.opengis.net/om/1.0  http://schemas.opengis.net/om/1.0.0/om.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <gml:boundedBy>
+    <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+        <gml:lowerCorner>-171.37044143566763 -44.71596347896505</gml:lowerCorner>
+        <gml:upperCorner>142.92375463033034 67.972129750194</gml:upperCorner>
+      </gml:Envelope>
+  </gml:boundedBy>
   <om:member>
-    <om:Observation>
+    <om:Observation id="1234">
       <gml:name>urn:MyOrg:observation:1234abcde</gml:name>
       <om:samplingTime>
         <gml:TimePeriod>
@@ -40,19 +46,16 @@
                 </swe:Quantity>
               </swe:field>
               <swe:field name="MS">
-                <swe:Quantity definition="urn:ogc:def:property:OGC:ChemicalPresenceInAirMS">
-                  <swe:uom code="ppm"/>
-                </swe:Quantity>
+                <swe:Category definition="http://www.52north.org/test/observableProperty/6">
+                  <swe:codeSpace xlink:href="test_unit_6"/>
+                </swe:Category>
               </swe:field>
             </swe:SimpleDataRecord>
           </swe:elementType>
           <swe:encoding>
             <swe:TextBlock tokenSeparator="," decimalSeparator="." blockSeparator="@@"/>
           </swe:encoding>
-          <swe:values> 2005-08-05T12:21:13Z,-77.8912,38.512,20,0@@
-            2005-08-05T12:22:08Z,-77.8912,38.512,30,0@@ 2005-08-05T12:22:54Z,-77.8912,38.512,0,0@@
-            2005-08-05T12:23:03Z,-77.8912,38.512,10,10@@ 2005-08-05T12:23:59Z,-77.8912,38.512,10,0
-          </swe:values>
+          <swe:values> 2005-08-05T12:21:13Z,-77.8912,38.512,20,0@@2005-08-05T12:22:08Z,-77.8912,38.512,30,0@@ 2005-08-05T12:22:54Z,-77.8912,38.512,0,0@@2005-08-05T12:23:03Z,-77.8912,38.512,10,10@@ 2005-08-05T12:23:59Z,-77.8912,38.512,10,0</swe:values>
         </swe:DataArray>
       </om:result>
     </om:Observation>
@@ -62,8 +65,8 @@
       <gml:name>urn:MyOrg:observation:1234abcdf</gml:name>
       <om:samplingTime>
         <gml:TimePeriod>
-          <gml:beginPosition> 2005-08-05T12:23:03Z </gml:beginPosition>
-          <gml:endPosition> 2005-08-05T12:23:59Z </gml:endPosition>
+          <gml:beginPosition>2005-08-05T12:23:03Z</gml:beginPosition>
+          <gml:endPosition>2005-08-05T12:23:59Z</gml:endPosition>
         </gml:TimePeriod>
       </om:samplingTime>
       <om:procedure xlink:href="urn:ogc:object:Sensor:MyOrg:12350"/>
@@ -80,8 +83,7 @@
           <swe:encoding>
             <swe:TextBlock tokenSeparator="," decimalSeparator="." blockSeparator="@@"/>
           </swe:encoding>
-          <swe:values> 2005-08-05T12:23:03Z,-77.8912,38.512,10,10@@
-            2005-08-05T12:23:59Z,-77.8912,38.512,10,0 </swe:values>
+          <swe:values>2005-08-05T12:23:03Z,-77.8912,38.512,10,22@@2005-08-05T12:23:59Z,-77.8912,38.512,10,33</swe:values>
         </swe:DataArray>
       </om:result>
     </om:Observation>

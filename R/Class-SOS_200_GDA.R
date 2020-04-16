@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2018 by 52 North                                               #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -27,6 +27,8 @@
 #                                                                              #
 ################################################################################
 #
+# SosGetDataAvailability_1.0.0 ----
+#
 # See SOS 2.0 Hydrology profile specification, OGC 14-004r1, section 7.4
 #
 setClass("SosGetDataAvailability_1.0.0",
@@ -45,7 +47,7 @@ setClass("SosGetDataAvailability_1.0.0",
           ),
          contains = "OwsServiceOperation",
          validity = function(object) {
-           print("Entering validation: SosGetDataAvailability_1.0.0")
+           #print("Entering validation: SosGetDataAvailability_1.0.0")
 
            # service, version are mandatory
            if(is.na(object@service))
@@ -77,7 +79,7 @@ SosGetDataAvailability_1.0.0 <- function(
   featuresOfInterest = list(NA),
   offerings = list(NA)) {
   new("SosGetDataAvailability_1.0.0",
-      request = SosGetDataAvailabilityName,
+      request = sosGetDataAvailabilityName,
       service = service,
       version = version,
       observedProperties = observedProperties,
@@ -87,20 +89,63 @@ SosGetDataAvailability_1.0.0 <- function(
 }
 
 #
+# class DataAvailabilityMember ----
 #
+# See SOS 2.0 Hydrology profile specification, OGC 14-004r1, section 7.4, requirement 12
 #
-.createGetDataAvailability_1.0.0 <- function(sos,
-                                             procedures,
-                                             observedProperties,
-                                             featuresOfInterest,
-                                             offerings,
-                                             verbose,
-                                             inspect,
-                                             saveOriginal) {
-  SosGetDataAvailability_1.0.0(service = sosService,
-                               version = sos@version,
-                               observedProperties = observedProperties,
-                               procedures = procedures,
-                               featuresOfInterest = featuresOfInterest,
-                               offerings = offerings)
+setClass("DataAvailabilityMember",
+         representation(
+           procedure = "character",
+           observedProperty = "character",
+           featureOfInterest = "character",
+           phenomenonTime = "GmlTimePeriod"),
+         prototype = list(
+           procedure = as.character(NA),
+           observedProperty = as.character(NA),
+           featureOfInterest = as.character(NA),
+           phenomenonTime = NULL
+         ),
+         validity = function(object) {
+           #print("Entering validation: DataAvailabilityMember")
+
+           if(is.na(object@procedure))
+             return("procedure parameter must be given")
+           if(is.na(object@observedProperty))
+             return("observed property must be given")
+           if (is.na(object@featureOfInterest))
+             return("feature of interest must be given")
+           if(is.null(object@phenomenonTime))
+             return("phenomenon time must be given")
+
+           return(TRUE)
+         }
+)
+
+.toString.DataAvailabilityMember <- function(x, ...) {
+paste("Object of class DataAvailabilityMember:",
+      "\n  Procedure            : ", paste0(x@procedure),
+      "\n  Observed Property    : ", paste0(x@observedProperty),
+      "\n  Features Of Interest : ", paste0(x@featureOfInterest),
+      "\n  Phenomenon Time      : ", toString(x@phenomenonTime))
+}
+.print.DataAvailabilityMember <- function(x, ...) {
+  cat(.toString.DataAvailabilityMember(x, ...), "\n")
+  invisible(x)
+}
+setMethod("toString", "DataAvailabilityMember", function(x, ...) .toString.DataAvailabilityMember(x, ...))
+setMethod("print", "DataAvailabilityMember", function(x, ...) .print.DataAvailabilityMember(x, ...))
+setMethod("show", "DataAvailabilityMember", function(object) .print.DataAvailabilityMember(object))
+
+#
+# convience constructor
+#
+DataAvailabilityMember <- function(procedure = NA,
+                                   observedProperty = NA,
+                                   featureOfInterest = NA,
+                                   phenomenonTime = NULL) {
+  new("DataAvailabilityMember",
+      procedure = procedure,
+      observedProperty = observedProperty,
+      featureOfInterest = featureOfInterest,
+      phenomenonTime = phenomenonTime)
 }

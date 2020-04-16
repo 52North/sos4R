@@ -1,7 +1,7 @@
-# Copyright (C) 2015 by 52 North Initiative for Geospatial Open Source Software GmbH, Contact: info@52north.org
+# Copyright (C) 2019 by 52 North Initiative for Geospatial Open Source Software GmbH, Contact: info@52north.org
 # This program is free software; you can redistribute and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program (see gpl-2.0.txt). If not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the Free Software Foundation web page, http://www.fsf.org.
 # Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r
+# Project: sos4R - visit the project web page: https://github.com/52North/sos4R
 library("sos4R");
 library("ggplot2");
 library("latticeExtra");
@@ -9,7 +9,8 @@ library("quantreg")
 
 ##############################################################################
 # PegelOnlineSOS
-pegelsos <- SOS(url = "http://pegelonline.wsv.de/webservices/gis/gdi-sos")
+pegelsos <- SOS(url = "http://pegelonline.wsv.de/webservices/gis/gdi-sos",
+                version = "1.0.0")
 
 pegelsos
 
@@ -29,7 +30,6 @@ print(baken)
 wasserstand_roh <- sosOfferings(pegelsos)[["WASSERSTAND_ROHDATEN"]]
 # what?
 wasserstand <- sosObservedProperties(wasserstand_roh)[1]
-# PROBLEM: order of result list is not alswas the same!
 # must be "Wasserstand":
 
 # when?
@@ -71,7 +71,7 @@ range(r2$Wasserstand)
 r2clean <- subset(r2, Wasserstand > 0)
 range(r2clean$Wasserstand)
 
-plot(r1clean$SamplingTime, r1clean$Wasserstand, type = "l", ylim=c(200,800),
+plot(r1clean$SamplingTime, r1clean$Wasserstand, type = "l", ylim = c(200,800),
 		lty = "solid", col = "blue",
 		main = paste("Water level at", sosProcedures(pegelObs[c(1,2)])))
 lines(r2clean$SamplingTime, r2clean$Wasserstand, type = "l", col = "orange",
@@ -81,7 +81,7 @@ par(ask = TRUE)
 
 # Plot a quantile regression line with standard error bounds, using the quantreg package.
 r1plot <- xyplot(r1clean$Wasserstand ~ r1clean$SamplingTime, r1clean, type = "l",
-		col = "orange", main = paste0(sosProcedures(pegelObs[[1]]), 
+		col = "orange", main = paste0(sosProcedures(pegelObs[[1]]),
 				" with quantile regression line and error bounds"),
 		xlab = "Time", ylab = "Water level")
 

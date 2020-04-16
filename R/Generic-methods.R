@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2015 - 2018 by 52 North                                        #
+# Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
 # Contact: Andreas Wytzisk                                                     #
@@ -24,7 +24,7 @@
 # Authors: Daniel Nuest (daniel.nuest@uni-muenster.de)                         #
 #          Eike Hinderk Jürrens (e.h.juerrens@52north.org)                     #
 # Created: 2010-09-20                                                          #
-# Project: sos4R - visit the project web page, http://www.nordholmen.net/sos4r #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ################################################################################
 
@@ -50,7 +50,7 @@ if (!isGeneric("getCapabilities"))
                             updateSequence = c(as.character(NA)),
                             owsVersion = sosDefaultGetCapOwsVersion,
                             acceptLanguages = c(NA)) {
-               standardGeneric("getCapabilities")	
+               standardGeneric("getCapabilities")
              })
 
 #
@@ -64,7 +64,7 @@ if (!isGeneric("describeSensor"))
                             outputFormat = sosDefaultDescribeSensorOutputFormat,
                             verbose = sos@verboseOutput, inspect = FALSE,
                             saveOriginal = NULL) {
-               standardGeneric("describeSensor")	
+               standardGeneric("describeSensor")
              })
 
 #
@@ -73,7 +73,7 @@ if (!isGeneric("describeSensor"))
 if (!isGeneric("getObservationById"))
   setGeneric(name = "getObservationById",
              signature = signature("sos", "observationId", "responseFormat",
-                                   "srsName", "resultModel", "responseMode", "verbose", 
+                                   "srsName", "resultModel", "responseMode", "verbose",
                                    "inspect", "saveOriginal"),
              def = function(sos, observationId,
                             responseFormat = sosDefaultGetObsResponseFormat,
@@ -92,21 +92,20 @@ if (!isGeneric("getObservation"))
              signature = signature("sos", "offering", "observedProperty",
                                    "responseFormat", "srsName", "eventTime", "procedure",
                                    "featureOfInterest", "result", "resultModel",
-                                   "responseMode", "BBOX", "latest", "verbose", "inspect",
+                                   "responseMode", "BBOX", "verbose", "inspect",
                                    "saveOriginal"),
              def = function(sos, offering,
                             observedProperty = sosObservedProperties(obj = offering),
                             responseFormat = sosDefaultGetObsResponseFormat,
                             # optional:
                             srsName = as.character(NA),
-                            eventTime = list(NA), # sosCreateEventTimeList(time = sosTime(obj = offering))
+                            eventTime = list(), # sosCreateEventTimeList(time = sosTime(obj = offering))
                             procedure = as.character(NA), # sosProcedures(obj = offering),
                             featureOfInterest = NULL,
                             result = NULL,
                             resultModel = as.character(NA),
                             responseMode = as.character(NA),
                             BBOX = as.character(NA),
-                            latest = FALSE,
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
                             saveOriginal = NULL) {
@@ -264,7 +263,8 @@ if (!isGeneric("sosCreateTimeInstant"))
 #
 if (!isGeneric("sosCreateTimePeriod"))
   setGeneric(name = "sosCreateTimePeriod",
-             def = function(sos, begin, end, frame = as.character(NA),
+             def = function(sos, begin, end,
+                            frame = as.character(NA),
                             calendarEraName = as.character(NA),
                             indeterminatePosition = as.character(NA),
                             duration = as.character(NA),

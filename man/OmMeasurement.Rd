@@ -31,7 +31,7 @@ Objects can be created by calls to the construction function of the form \code{O
 
 \usage{
 OmMeasurement(samplingTime, procedure, observedProperty, featureOfInterest, result,
-              metadata = NA, resultTime = NULL, resultQuality = NA,	parameter = NA) 
+              metadata = NA, resultTime = NULL, resultQuality = NA,	parameter = NA)
 }
 
 \section{Slots}{
@@ -58,7 +58,7 @@ Class \code{"\linkS4class{OmObservationOrNULL}"}, by class "OmObservation", dist
   \describe{
     \item{sosResult}{\code{signature(obj = "OmMeasurement")}: Get the data in the measurement as a data.frame.}
     \item{sosGetCRS}{\code{signature(obj = "OmMeasurement")}: Get the coordinate reference system used in the feature of interest.}
-    
+
 	 }
 }
 
@@ -84,17 +84,10 @@ A Measurement contains a \code{\linkS4class{GmlMeasure}}.
 
 \author{Daniel Nuest \email{daniel.nuest@uni-muenster.de}}
 
-%\note{}
-%\section{Warning}{}
-
 \seealso{See also \code{\link{OmObservation-class}}, \code{\linkS4class{GmlMeasure}}.}
 
 \examples{
 showClass("OmMeasurement")
-
-# TBD examples for construction function
-
-# TBD examples for sosResult
 }
 
 \keyword{classes}

@@ -160,45 +160,7 @@ sensor2
 str(sensor2)
 sensor2@xml
 
-##### Messungen abfragen #######################################################
-# Einfachster Fall: "latest observation" fuer ein gesamtes offerings
-obs.temp.latest <- getObservation(sos = mySOS, offering = off.temp,
-		latest = TRUE, inspect = TRUE)
-# TIPP: "inspect" benutzen um die requests und responses kennen zu lernen!
-
-##### Response erforschen ######################################################
-# print Methoden
-obs.temp.latest
-# TIPP: str(...) fuer Einblick unter die Motorhaube
-
-# ObservationCollection behaves like a list in most cases
-length(obs.temp.latest)
-obs.temp.latest[[1]]
-obs.temp.latest[2:5]
-
-# Koordinaten, Features und BoundingBox abfragen
-sosCoordinates(obs.temp.latest)
-sosCoordinates(obs.temp.latest[[1]])
-sosFeatureIds(obs.temp.latest)
-sosBoundedBy(obs.temp.latest)
-
-
-##### Daten erforschen #########################################################
-# sosResult(...) ist die wichtigste Methode
-sosResult(obs.temp.latest[[2]])
-obs.temp.latest.result <- sosResult(obs.temp.latest[1:2])
-
-# Nur ein ganz normaler data.frame ... Attribute enthalten Metadaten. Diese 
-# gehen nach dem "merge" verloren!
-attributes(obs.temp.latest.result[["urn:ogc:def:property:OGC::Temperature"]])
-
-# Kombination der results mit den Koordinaten
-obs.temp.latest.coords <- sosCoordinates(obs.temp.latest)
-obs.temp.latest.data <- merge(x = obs.temp.latest.result,
-		y = obs.temp.latest.coords)
-obs.temp.latest.data
-
-##### Temporaere Ausschnitte ####################################################
+##### Messungen abfragen: Temporaere Ausschnitte ###############################
 # Erstellen der event time fuer GetObservation requests:
 period.august09 <- sosCreateEventTimeList(
 		sosCreateTimePeriod(sos = mySOS,
@@ -214,10 +176,33 @@ obs.august09 <- getObservation(sos = mySOS,
 		procedure = sosProcedures(off.temp),
 		eventTime = period.august09)
 
+##### Response erforschen ######################################################
+# print Methoden
+obs.august09
+# TIPP: str(...) fuer Einblick unter die Motorhaube
+
+# ObservationCollection behaves like a list in most cases
+length(obs.august09)
+obs.august09[[1]]
+obs.august09[2:5]
+
+# Koordinaten, Features und BoundingBox abfragen
+sosCoordinates(obs.august09)
+sosCoordinates(obs.august09[[1]])
+sosFeatureIds(obs.august09)
+sosBoundedBy(obs.august09)
+
+
+##### Daten erforschen #########################################################
+# sosResult(...) ist die wichtigste Methode
 obs.temp.august09.result <- sosResult(obs.august09)
 summary(obs.temp.august09.result)
 str(obs.temp.august09.result)
 obs.temp.august09.result[100:103,]
+
+# Nur ein ganz normaler data.frame ... Attribute enthalten Metadaten. Diese 
+# gehen nach dem "merge" verloren!
+attributes(obs.temp.august09.result[["urn:ogc:def:property:OGC::Temperature"]])
 
 ##### Raeumliche Ausschnitte ####################################################
 #SosSupportedSpatialOperators()
