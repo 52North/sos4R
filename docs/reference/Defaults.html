@@ -8,21 +8,29 @@
 
 <title>Default Parameter Settings and Handling Functions — Defaults • sos4R</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +38,10 @@
 
 
 
-<meta property="og:title" content="Default Parameter Settings and Handling Functions — Defaults" />
 
+<meta property="og:title" content="Default Parameter Settings and Handling Functions — Defaults" />
 <meta property="og:description" content="These values are default parameters and handling functions for connections and requests to, as well as response processing of ansers from, Sensor Observation Services. These allow to simplify a SOS connection for the most common use cases and non-expert users." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
       </span>
     </div>
 
@@ -86,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -97,12 +106,6 @@
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
-    <li>
-      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
-    </li>
-    <li>
-      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -112,7 +115,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -127,6 +129,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -138,16 +141,14 @@
     </div>
 
     <div class="ref-description">
-    
     <p>These values are default parameters and handling functions for connections and requests to, as well as response processing of ansers from, Sensor Observation Services. These allow to simplify a SOS connection for the most common use cases and non-expert users.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>SosDefaultBinding</span>()
 
-<span class='fu'>SosParsingFunctions</span>(<span class='no'>...</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>), <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>))
-<span class='fu'>SosEncodingFunctions</span>(<span class='no'>...</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>), <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>))
-<span class='fu'>SosDataFieldConvertingFunctions</span>(<span class='no'>...</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>), <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>))
+<span class='fu'>SosParsingFunctions</span>(<span class='no'>...</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>), <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))
+<span class='fu'>SosEncodingFunctions</span>(<span class='no'>...</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>), <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))
+<span class='fu'>SosDataFieldConvertingFunctions</span>(<span class='no'>...</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>), <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>))
 
 <span class='fu'>SosDisabledParsers</span>()
 
@@ -158,12 +159,12 @@
 <span class='fu'>SosDefaultDCPs</span>()
 
 <span class='fu'>SosDefaultParsingOptions</span>()</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>&#8230;</th>
+      <th>...</th>
       <td><p>Named references to functions to be used for the respective element during parsing, encoding oder conversion, e.g. <code>"myUnit" = myUnitParser</code>.</p></td>
     </tr>
     <tr>
@@ -179,7 +180,7 @@
       <td><p>An object of class <code>SOS</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The default values are strongly related to what is actually implemented in the package, but also often resemble the (hopefully) most common use cases.</p>
@@ -187,7 +188,7 @@
 <p>A special case are the functions to access the default functions for specific purposes, which are the parsing functions, the encoding functions and the field converting functions. See the examples on how to use them.</p>
 <p>The function <code>SosDisabledParsers</code> can be used to use no parsing at all (despite the parsing for the capabilities response, which is required for establishing a connection to a SOS. This function is helpful to inspect the unprocessed responses from a service.</p>
 <p>The function <code>SosResetParsingFunctions</code> can be used to replace the included parsing functions of a <code>SOS</code> object with the default ones. This is even useful for development of the default parsing functions.</p>
-<p><b>The default parameter values are:</b></p><dl class='dl-horizontal'>
+<p><b>The default parameter values are:</b></p><dl'>
 	<dt>sosDefaultCharacterEncoding</dt><dd><p><code>\Sexpr[results=verbatim,stage=render]{sosDefaultCharacterEncoding}</code></p></dd> % "UTF-8"
 	<dt>sosDefaultDescribeSensorOutputFormat</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultDescribeSensorOutputFormat}</code></p></dd>
 	<dt>sosDefaultGetCapSections</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultGetCapSections}</code></p></dd> % c("All")
@@ -199,103 +200,45 @@
 	<dt>sosDefaultTempOpPropertyName</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultTempOpPropertyName}</code></p></dd> % "om:samplingTime"
 	<dt>sosDefaultTemporalOperator</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultTemporalOperator}</code></p></dd> % SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 	<dt>sosDefaultSpatialOpPropertyName</dt><dd><p><code>\Sexpr[results=text,stage=render]{sosDefaultSpatialOpPropertyName}</code></p></dd> % "urn:ogc:data:location"
+
 </dl>
-    <p>The <b>default parsing functions</b> can be replaced for a variety of XML elements, so that you only need to replace the parts of the parsing that really must be changed. Be aware that inclusion and exclusion are performed after merging the given functions with the defaults!</p>
+
+<p>The <b>default parsing functions</b> can be replaced for a variety of XML elements, so that you only need to replace the parts of the parsing that really must be changed. Be aware that inclusion and exclusion are performed after merging the given functions with the defaults!</p>
 <p><b>Example Services:</b> This list contains a few SOS instances that were tested (to different degress) with <span class="pkg">sos4R</span>. The package authors do not maintain these services, so no guarantee can be given that these are usable.</p>
-    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The default value of the respective setting or parameter. This can be a list, especially a named list of functions.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p><code><a href='Constants.html'>Constants</a></code></p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># simple default values</span>
-<span class='fu'>show</span>(<span class='no'>sosDefaultCharacterEncoding</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultDescribeSensorOutputFormat</span>)</div><div class='output co'>#&gt; [1] "text/xml;subtype=\"sensorML/1.0.1\""</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapAcceptFormats</span>)</div><div class='output co'>#&gt; [1] "text/xml"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapOwsVersion</span>)</div><div class='output co'>#&gt; [1] "1.1.0"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapSections</span>)</div><div class='output co'>#&gt; [1] "All"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetObsResponseFormat</span>)</div><div class='output co'>#&gt; [1] "text/xml;subtype=\"om/1.0.0\""</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultSpatialOpPropertyName</span>)</div><div class='output co'>#&gt; [1] "urn:ogc:data:location"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTempOpPropertyName</span>)</div><div class='output co'>#&gt; [1] "om:samplingTime"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTemporalOperator</span>)</div><div class='output co'>#&gt; [1] "TM_During"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTimeFormat</span>)</div><div class='output co'>#&gt; [1] "%Y-%m-%dT%H:%M:%OS%z"</div><div class='input'><span class='fu'>SosDefaultBinding</span>()</div><div class='output co'>#&gt; [1] "POX"</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'># usage of defaults in construction method for SOS class</span>
-<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='st'>"http://mysos.com/sos"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'>SosDefaultBinding</span>(),
-                <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='no'>sosDefaultTimeFormat</span>)
-
-<span class='co'># functions to disable all parsing</span>
-<span class='fu'>SosDisabledParsers</span>()
-<span class='co'># }</span><div class='input'>
-
-<span class='co'># Replace a parsing function</span>
-<span class='no'>myER</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>xml</span>) {
-        <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/function'>return</a></span>(<span class='st'>"EXCEPTION!!!11"</span>)
-}
-<span class='no'>myParsingFunctions</span> <span class='kw'>&lt;-</span> <span class='fu'>SosParsingFunctions</span>(<span class='st'>"ExceptionReport"</span> <span class='kw'>=</span> <span class='no'>myER</span>)
-
-<span class='co'># use inclusion and exclusion, important: even the just added function needs to</span>
-<span class='co'># be included manually!</span>
-<span class='no'>myParsingFunctions</span> <span class='kw'>&lt;-</span> <span class='fu'>SosParsingFunctions</span>(<span class='st'>"ExceptionReport"</span> <span class='kw'>=</span> <span class='no'>myER</span>,
-        <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>, <span class='st'>"ExceptionReport"</span>))
-
-<span class='no'>myParsingFunctions</span> <span class='kw'>&lt;-</span> <span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))</div># NOT RUN {
-# Replace an encoding function
-myEncoding <- function(object, v) {
-	return(utils::str(object))
-}
-
-sos = SOS(url = "http://mysos.com/sos",
-		encoders = SosEncodingFunctions("POST" = myPostEncoding))
-
-# Use custom converting function and connection method. This mechanism works the
-# same for encoders and decoders.
-myConverters <- SosDataFieldConvertingFunctions(
-	"myNumericUnit" = sosConvertDouble,
-mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)
-sosDataFieldConverters(mySos)
-
-# inspecting XML using dummy parsing function
-sos = SOS(url = "http://mysos.com/sos", parsers = SosDisabledParsers)
-describeSensor(sos, sosProcedures(sos)[[1]])
-
-# replace the parsing functions with the default ones
-sos <- SosResetParsingFunctions(sos)
-# }
-<div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'># a named list of all defaults</span>
-<span class='fu'>SosDefaults</span>()
-<span class='co'># }</span><div class='input'>
-<span class='co'># parsing options used by xml2</span>
-<span class='fu'>SosDefaultParsingOptions</span>()</div><div class='output co'>#&gt; [1] "RECOVER"</div></pre>
+    <pre class="examples"></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
