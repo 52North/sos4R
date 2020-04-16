@@ -3,21 +3,23 @@
 #
 # author: Benedikt Graeler, 52North GmbH
 
-library(shiny)
-library(leaflet)
-library(xts)
-library(rgdal)
-library(sos4R)
+library("shiny")
+library("leaflet")
+library("xts")
+library("rgdal")
+library("sos4R")
 
 # sample SOS server hosted by the Wupperverband (wupperverband.de)
-fluggs <- SOS(url = "https://fluggs.wupperverband.de/sos2/service", 
+fluggs <- SOS(url = "https://fluggs.wupperverband.de/sos2/service",
               binding = "KVP",
               version = "2.0.0")
 
 # Define the UI for the application
 ui <- fluidPage(
-    titlePanel("sos4R application - Wupperverband"),
-    
+    titlePanel("Shiny sos4R"),
+    p("A demo app retrieving data from the Wupperverband SOS service at ",
+      a("https://fluggs.wupperverband.de/sos2/service"), " using the wrapper functions for convenient data access."),
+
     sidebarLayout(
         sidebarPanel(
             sliderInput("time",
@@ -27,7 +29,7 @@ ui <- fluidPage(
                         value = Sys.time()-c(72,24)*3600),
             uiOutput("phenSelector")
         ),
-        
+
         mainPanel(
             leafletOutput("mymap"),
             p(),
@@ -36,36 +38,36 @@ ui <- fluidPage(
     )
 )
 
-# Define the server logic 
+# Define the server logic
 server <- function(input, output) {
-    
+
     sit <- reactive({
-        sites <- sites(sos = fluggs, 
-                       begin = input$time[1], end = input$time[2], 
+        sites <- sites(sos = fluggs,
+                       begin = input$time[1], end = input$time[2],
                        includePhenomena = TRUE)
         spTransform(sites, CRS("+init=epsg:4326"))})
-    
+
     output$mymap <- renderLeaflet({
         leaflet() %>%
             addProviderTiles(providers$Stamen.TonerLite,
                              options = providerTileOptions(noWrap = TRUE)
             ) %>%
-            addMarkers(data = sit(), 
-                       popup = sit()$siteID, 
+            addMarkers(data = sit(),
+                       popup = sit()$siteID,
                        layerId = sit()$siteID)
     })
-    
-    observeEvent(input$mymap_marker_click, { 
+
+    observeEvent(input$mymap_marker_click, {
         p <- input$mymap_marker_click
         output$phenSelector <- renderUI({
             choices <- colnames(sit()@data)[-1][which(t(sit()[sit()$siteID == p$id ,]@data[,-1]))]
-            selectInput("phen", 
+            selectInput("phen",
                         paste0("Phenomena at ", p$id),
                         choices = choices,
                         selected = choices[1],
                         multiple = TRUE)
         })
-        
+
         output$timeplot <- renderPlot({
             if(!is.null(input$phen)) {
                 dat <- getData(sos = fluggs,
@@ -75,18 +77,18 @@ server <- function(input, output) {
                                end = as.POSIXct(input$time[2]))
                 if(any(input$phen %in% colnames(dat))) {
                     dat <- xts(dat[,input$phen], dat$timestamp)
-                    
+
                     plot(dat, main="Time series plot")
-                    addLegend("topright", on=1, 
-                              legend.names = input$phen, 
+                    addLegend("topright", on=1,
+                              legend.names = input$phen,
                               lty=c(1, 1), lwd=c(2, 1),
                               col=1:length(input$phen))
                 }
             }
         })
     })
-    
+
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
