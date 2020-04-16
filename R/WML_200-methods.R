@@ -184,7 +184,7 @@ setAs("WmlMonitoringPoint", "Spatial",
 #
 #
 #
-as.data.frame.WmlMeasurmentTimeseries <- function(from) {
+as.data.frame.WmlMeasurementTimeseries <- function(from) {
   # cols: timestamp, value <- should be renamed afterwards
   df <- data.frame("timestamp" = double(0), "value" = double(0), stringsAsFactors = FALSE)
   for (wmlMTVP in from@points) {
@@ -198,7 +198,7 @@ as.data.frame.WmlMeasurmentTimeseries <- function(from) {
 }
 setAs("WmlMeasurementTimeseries", "data.frame",
       function(from) {
-        as.data.frame.WmlMeasurmentTimeseries(from)
+        as.data.frame.WmlMeasurementTimeseries(from)
       }
 )
 #
