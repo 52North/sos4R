@@ -1,16 +1,11 @@
 \name{phenomena}
-
 \alias{phenomena}
-
-\alias{phenomena,SOS_2.0.0-method}
-
 \title{Function retrieve phenomena of a SOS v2.0}
-
 \description{
 This function queries a SOS v2.0 for all its phenomena
 }
 \usage{
-phenomena(sos, includeTemporalBBox = FALSE, includeSiteId = FALSE)
+phenomena(sos, includeTemporalBBox = FALSE, listSites = FALSE)
 }
 \arguments{
   \item{sos}{
@@ -19,7 +14,7 @@ phenomena(sos, includeTemporalBBox = FALSE, includeSiteId = FALSE)
   \item{includeTemporalBBox}{
 Whether the observation containing timespan of each phenomenon shall also be reported.
 }
-  \item{includeSiteId}{
+  \item{listSites}{
 Whether the sites shall be reported at which each phenomenon has been observed.
 }
 }
