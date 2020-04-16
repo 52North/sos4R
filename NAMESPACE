@@ -22,7 +22,7 @@ exportMethods(
     "getObservation",
     "getFeatureOfInterest",
     "plot",
-	"print",
+    "print",
     "show",
     "sosAbstract",
     "sosCapabilitiesDocumentOriginal",

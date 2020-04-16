@@ -164,7 +164,8 @@ if (!isGeneric("getDataAvailability")) {
                             offerings = list(NA),
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
-                            saveOriginal = NULL) {
+                            saveOriginal = NULL,
+                            ...) {
                standardGeneric("getDataAvailability")
              })
 }
