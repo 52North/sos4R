@@ -184,35 +184,69 @@
 <p>If <code>includeTemporalBBox = TRUE</code>, the data.frame also contains two character columns <code>beginTime</code> and <code>endTime</code> indicating per site id and phenomenon its earliest and latest observation time point.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## The function is currently defined as</span>
-<span class='kw'>function</span> (<span class='no'>sos</span>, <span class='no'>empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='no'>listPhenomena</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='no'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>phenomena</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
-{
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/class.html'>inherits</a></span>(<span class='no'>sos</span>, <span class='st'>"SOS_2.0.0"</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>is.logical</a></span>(<span class='no'>empty</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/character.html'>is.character</a></span>(<span class='no'>timeInterval</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>is.logical</a></span>(<span class='no'>listPhenomena</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>is.logical</a></span>(<span class='no'>includeTemporalBBox</span>))
-    <span class='no'>phenomena</span> <span class='kw'>&lt;-</span> <span class='fu'>.validateListOrDfColOfStrings</span>(<span class='no'>phenomena</span>, <span class='st'>"phenomena"</span>)
-    <span class='kw'>if</span> (<span class='no'>includeTemporalBBox</span> <span class='kw'>&amp;&amp;</span> !<span class='no'>listPhenomena</span>) {
-        <span class='no'>listPhenomena</span> <span class='kw'>&lt;-</span> <span class='fl'>TRUE</span>
-        <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>(<span class='st'>"'listPhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'."</span>)
-    }
-  }</div><div class='output co'>#&gt; function (sos, empty = FALSE, timeInterval = NA_character_, listPhenomena = FALSE,
-#&gt;     includeTemporalBBox = FALSE, phenomena = list())
-#&gt; {
-#&gt;     stopifnot(inherits(sos, "SOS_2.0.0"))
-#&gt;     stopifnot(is.logical(empty))
-#&gt;     stopifnot(is.character(timeInterval))
-#&gt;     stopifnot(is.logical(listPhenomena))
-#&gt;     stopifnot(is.logical(includeTemporalBBox))
-#&gt;     phenomena &lt;- .validateListOrDfColOfStrings(phenomena, "phenomena")
-#&gt;     if (includeTemporalBBox &amp;&amp; !listPhenomena) {
-#&gt;         listPhenomena &lt;- TRUE
-#&gt;         warning("'listPhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-#&gt;     }
-#&gt;   }
-#&gt; &lt;environment: 0x55fd04a740e8&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+
+<span class='fu'>siteList</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)</div><div class='output co'>#&gt;    siteID
+#&gt; 1    1056
+#&gt; 2   11234
+#&gt; 3   12429
+#&gt; 4   12430
+#&gt; 5   12431
+#&gt; 6   12442
+#&gt; 7   12444
+#&gt; 8   12482
+#&gt; 9   12740
+#&gt; 10  15752
+#&gt; 11  16826
+#&gt; 12  17030
+#&gt; 13  17067
+#&gt; 14  17244
+#&gt; 15  17610
+#&gt; 16  17840
+#&gt; 17  18125
+#&gt; 18  18234
+#&gt; 19  18437
+#&gt; 20  18464
+#&gt; 21  18468
+#&gt; 22  18593
+#&gt; 23   1905
+#&gt; 24   2006
+#&gt; 25  21937
+#&gt; 26  21938
+#&gt; 27  21963
+#&gt; 28  22719
+#&gt; 29  23872
+#&gt; 30  23934
+#&gt; 31  24120
+#&gt; 32  24926
+#&gt; 33  24976
+#&gt; 34  25119
+#&gt; 35  25506
+#&gt; 36  25726
+#&gt; 37  25777
+#&gt; 38  25821
+#&gt; 39  26117
+#&gt; 40  26163
+#&gt; 41  26958
+#&gt; 42  31621
+#&gt; 43  31832
+#&gt; 44  31851
+#&gt; 45  35704
+#&gt; 46  36592
+#&gt; 47  36593
+#&gt; 48  37016
+#&gt; 49  37047
+#&gt; 50  37239
+#&gt; 51  37382
+#&gt; 52  37850
+#&gt; 53  37852
+#&gt; 54  38057
+#&gt; 55  38224
+#&gt; 56  38866
+#&gt; 57  39063
+#&gt; 58   3925
+#&gt; 59  39564
+#&gt; 60   5535</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

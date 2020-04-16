@@ -176,37 +176,13 @@
     <p>A data.frame containing the data in long form where each row contains a <code>siteID</code>, the time stamp of the observation and the observed measurements for each phenomenon in a separate column. The measurements are provided with units using <code><a href='https://rdrr.io/pkg/units/man/units.html'>units</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## The function is currently defined as</span>
-<span class='kw'>function</span> (<span class='no'>sos</span>, <span class='no'>phenomena</span>, <span class='no'>sites</span>, <span class='no'>spatialBBox</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)
-{
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/class.html'>inherits</a></span>(<span class='no'>sos</span>, <span class='st'>"SOS_2.0.0"</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/character.html'>is.character</a></span>(<span class='no'>timeInterval</span>))
-    <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/missing.html'>missing</a></span>(<span class='no'>sites</span>) <span class='kw'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>spatialBBox</span>))
-        <span class='fu'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span>(<span class='st'>"Either 'sites' or 'spatialBBox' must be provided."</span>)
-    <span class='no'>phenomena</span> <span class='kw'>&lt;-</span> <span class='fu'>.validateListOrDfColOfStrings</span>(<span class='no'>phenomena</span>, <span class='st'>"phenomena"</span>)
-    <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/missing.html'>missing</a></span>(<span class='no'>sites</span>)) {
-        <span class='no'>sites</span> <span class='kw'>&lt;-</span> <span class='fu'>.validateListOrDfColOfStrings</span>(<span class='no'>sites</span>, <span class='st'>"sites"</span>)
-        <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>spatialBBox</span>)) {
-            <span class='no'>spatialBBox</span> <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
-            <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>(<span class='st'>"'spatialBBox' has been ignored and 'sites' is used instead."</span>)
-        }
-    }
-  }</div><div class='output co'>#&gt; function (sos, phenomena, sites, spatialBBox = NA, timeInterval = NA_character_)
-#&gt; {
-#&gt;     stopifnot(inherits(sos, "SOS_2.0.0"))
-#&gt;     stopifnot(is.character(timeInterval))
-#&gt;     if (missing(sites) &amp;&amp; is.na(spatialBBox))
-#&gt;         stop("Either 'sites' or 'spatialBBox' must be provided.")
-#&gt;     phenomena &lt;- .validateListOrDfColOfStrings(phenomena, "phenomena")
-#&gt;     if (!missing(sites)) {
-#&gt;         sites &lt;- .validateListOrDfColOfStrings(sites, "sites")
-#&gt;         if (!is.na(spatialBBox)) {
-#&gt;             spatialBBox &lt;- NA
-#&gt;             warning("'spatialBBox' has been ignored and 'sites' is used instead.")
-#&gt;         }
-#&gt;     }
-#&gt;   }
-#&gt; &lt;environment: 0x55fd050b8838&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+
+<span class='no'>observationData</span> <span class='kw'>&lt;-</span> <span class='fu'>getData</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>,
+                           <span class='kw'>phenomena</span> <span class='kw'>=</span> <span class='no'>phenomena</span>[<span class='fl'>18</span>,<span class='fl'>1</span>],
+                           <span class='kw'>sites</span> <span class='kw'>=</span> <span class='no'>siteList</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,<span class='fl'>1</span>])
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

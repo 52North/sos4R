@@ -220,8 +220,7 @@ Without a temporal extent, the used SOS only returns the last measurement.
 ```{r getData_single}
 observationData <- getData(sos = mySos,
                            phenomena = phenomena[18,1],
-                           sites = siteList[1:2,1]
-                           )
+                           sites = siteList[1:2,1])
 str(observationData)
 ```
 

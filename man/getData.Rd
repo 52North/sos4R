@@ -39,20 +39,11 @@ Benedikt Graeler, Eike Hinderk Juerrens
 }
 
 \examples{
-## The function is currently defined as
-function (sos, phenomena, sites, spatialBBox = NA, timeInterval = NA_character_)
-{
-    stopifnot(inherits(sos, "SOS_2.0.0"))
-    stopifnot(is.character(timeInterval))
-    if (missing(sites) && is.na(spatialBBox))
-        stop("Either 'sites' or 'spatialBBox' must be provided.")
-    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-    if (!missing(sites)) {
-        sites <- .validateListOrDfColOfStrings(sites, "sites")
-        if (!is.na(spatialBBox)) {
-            spatialBBox <- NA
-            warning("'spatialBBox' has been ignored and 'sites' is used instead.")
-        }
-    }
-  }
+\dontrun{
+mySos <- SOS(url = "https://climate-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+
+observationData <- getData(sos = mySos,
+                           phenomena = phenomena[18,1],
+                           sites = siteList[1:2,1])
+}
 }

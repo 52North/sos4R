@@ -31,11 +31,7 @@ Benedikt Graeler, Eike Hinderk Juerrens
 }
 
 \examples{
-## The function is currently defined as
-function (sos, includeTemporalBBox = FALSE, listSites = FALSE)
-{
-    stopifnot(inherits(sos, "SOS_2.0.0"))
-    stopifnot(is.logical(timeInfo))
-    stopifnot(is.logical(sites))
-  }
+mySos <- SOS(url = "https://climate-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+
+phenomena(sos = mySos)
 }

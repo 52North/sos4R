@@ -42,19 +42,6 @@ Benedikt Graeler, Eike Hinderk Juerrens
 }
 
 \examples{
-## The function is currently defined as
-function (sos, empty = FALSE, timeInterval = NA_character_, listPhenomena = FALSE,
-    includeTemporalBBox = FALSE, phenomena = list())
-{
-    stopifnot(inherits(sos, "SOS_2.0.0"))
-    stopifnot(is.logical(empty))
-    stopifnot(is.character(timeInterval))
-    stopifnot(is.logical(listPhenomena))
-    stopifnot(is.logical(includeTemporalBBox))
-    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-    if (includeTemporalBBox && !listPhenomena) {
-        listPhenomena <- TRUE
-        warning("'listPhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-    }
-  }
+mySos <- SOS(url = "https://climate-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+sites(sos = mySos)
 }

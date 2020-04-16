@@ -181,35 +181,15 @@
     <p>A <code><a href='https://rdrr.io/pkg/sp/man/SpatialPoints.html'>SpatialPointsDataFrame</a></code> containing all sites that match the filter conditions with corresponding metadata defined via the arguments. If <code>empty = TRUE</code>, the data slot contains a logical column 'empty' indicating whether any data has been observed for this site. If <code>listPhenomena = TRUE</code>, the data.frame contains a logical column per phenomenon indicating whether this specific phenomenon has been observed at that site. If <code>includeTemporalBBox = TRUE</code>, the data.frame contains a two column data.frame with <code>beginTime</code> and <code>endTime</code> per phenomenon.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## The function is currently defined as</span>
-<span class='kw'>function</span> (<span class='no'>sos</span>, <span class='no'>empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='no'>listPhenomena</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='no'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>phenomena</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
-{
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/class.html'>inherits</a></span>(<span class='no'>sos</span>, <span class='st'>"SOS_2.0.0"</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>is.logical</a></span>(<span class='no'>empty</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/character.html'>is.character</a></span>(<span class='no'>timeInterval</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>is.logical</a></span>(<span class='no'>listPhenomena</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/logical.html'>is.logical</a></span>(<span class='no'>includeTemporalBBox</span>))
-    <span class='no'>phenomena</span> <span class='kw'>&lt;-</span> <span class='fu'>.validateListOrDfColOfStrings</span>(<span class='no'>phenomena</span>, <span class='st'>"phenomena"</span>)
-    <span class='kw'>if</span> (<span class='no'>includeTemporalBBox</span> <span class='kw'>&amp;&amp;</span> !<span class='no'>listPhenomena</span>) {
-        <span class='no'>listPhenomena</span> <span class='kw'>&lt;-</span> <span class='fl'>TRUE</span>
-        <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>warning</a></span>(<span class='st'>"'listPhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'."</span>)
-    }
-  }</div><div class='output co'>#&gt; function (sos, empty = FALSE, timeInterval = NA_character_, listPhenomena = FALSE,
-#&gt;     includeTemporalBBox = FALSE, phenomena = list())
-#&gt; {
-#&gt;     stopifnot(inherits(sos, "SOS_2.0.0"))
-#&gt;     stopifnot(is.logical(empty))
-#&gt;     stopifnot(is.character(timeInterval))
-#&gt;     stopifnot(is.logical(listPhenomena))
-#&gt;     stopifnot(is.logical(includeTemporalBBox))
-#&gt;     phenomena &lt;- .validateListOrDfColOfStrings(phenomena, "phenomena")
-#&gt;     if (includeTemporalBBox &amp;&amp; !listPhenomena) {
-#&gt;         listPhenomena &lt;- TRUE
-#&gt;         warning("'listPhenomena' has been set to 'TRUE' as this is required for 'includeTemporalBBox'.")
-#&gt;     }
-#&gt;   }
-#&gt; &lt;environment: 0x55fd05ecbd60&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+<span class='fu'>sites</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)</div><div class='output co'>#&gt; class       : SpatialPointsDataFrame 
+#&gt; features    : 60 
+#&gt; extent      : -176.475, 177.9218, -77.84935, -35.13352  (xmin, xmax, ymin, ymax)
+#&gt; crs         : +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
+#&gt; variables   : 1
+#&gt; names       : siteID 
+#&gt; min values  :   1056 
+#&gt; max values  :   5535 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
