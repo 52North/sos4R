@@ -32,7 +32,7 @@ Documentation for users can be found in the package's vignette (see `browseVigne
     * libgeos-dev
     * texinfo
     * texinfo-doc-nonfree
-    * texlive
+    * texlive ([TinyTex is recommended!](https://yihui.org/tinytex/))
     * texlive-base
     * texlive-fonts-recommended
     * texlive-fonts-recommended-doc
