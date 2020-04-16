@@ -49,7 +49,7 @@
 FROM rocker/geospatial:latest
 MAINTAINER "Jürrens, Eike Hinderk" e.h.juerrens@52north.org
 
-RUN install2.r --error --skipinstalled httr && \
+RUN install2.r --error --skipinstalled httr \
         methods \
         sp \
         stringr \
