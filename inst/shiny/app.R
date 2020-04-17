@@ -76,10 +76,10 @@ server <- function(input, output) {
                                begin = as.POSIXct(input$time[1]),
                                end = as.POSIXct(input$time[2]))
                 if(any(input$phen %in% colnames(dat))) {
-                    dat <- xts(dat[,input$phen], dat$timestamp)
+                    dat <- xts::xts(dat[,input$phen], dat$timestamp)
 
                     plot(dat, main="Time series plot")
-                    addLegend("topright", on=1,
+                    xts::addLegend("topright", on=1,
                               legend.names = input$phen,
                               lty=c(1, 1), lwd=c(2, 1),
                               col=1:length(input$phen))
