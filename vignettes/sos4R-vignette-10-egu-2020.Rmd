@@ -40,7 +40,7 @@ knitr::opts_chunk$set(
 library("knitr")
 library("xfun")
 # based on knit2::knit2wp
-knit2html <- function(input, envir = parent.frame(), shortcode = TRUE) {
+knit2html = function(input, envir = parent.frame(), shortcode = TRUE) {
     out = knitr::knit(input, envir = envir)
     on.exit(unlink(out))
     content = xfun::file_string(out)
@@ -58,7 +58,7 @@ knit2html <- function(input, envir = parent.frame(), shortcode = TRUE) {
     return(content)
 }
 
-post <- knit2html("sos4R-vignette-10-egu-2020.Rmd")
+post = knit2html("sos4R-vignette-10-egu-2020.Rmd")
 
 library("clipr") # requires xclip on Linux
 clipr::write_clip(post)
@@ -85,7 +85,7 @@ The R package [sos4R](https://52north.github.io/sos4R/) (Nüst et al., 2011) is 
 
 sos4R comprises a client that can connect to an SOS server.
 The user can use it to query data from SOS instances using simple R function calls.
-The following example demonstrates some core operations: connect to an SOS, requesting data availability information and sensor metadata, and retrieving the acdtual data:
+The following example demonstrates some core operations: connect to an SOS, requesting data availability information and sensor metadata, and retrieving the actual data:
 
 ```{r classic_sos}
 library("sos4R")
@@ -210,22 +210,22 @@ unitOfMeasurement = sosUOM(
 plot(x = tsFluggs,
      main = paste0("Water temperature (", unitOfMeasurement, ")"),
      sub = attributes(observationData[[dataColumn]])$defaultPointMetadata@interpolationType@href,
-     yaxis.right = FALSE, legend.loc = 'topleft')
+     yaxis.right = FALSE, legend.loc = "topleft")
 ```
 
 It is now straightforward to show the same data together with data from another SOS.
 In this demonstrative example, we'll just combine water temperature from Germany and New Zealand.
 
 ```{r niwa_data}
-niwa <- SOS(
+niwa = SOS(
   url = "https://climate-sos.niwa.co.nz/",
   binding = "KVP",
   useDCPs = FALSE,
   version = "2.0.0")
-siteList <- siteList(sos = niwa)
-phenomenaNiwa <- phenomena(sos = niwa)
+siteList = siteList(sos = niwa)
+phenomenaNiwa = phenomena(sos = niwa)
 
-observationDataNiwa <- getData(sos = niwa,
+observationDataNiwa = getData(sos = niwa,
   phenomena = phenomenaNiwa[18, 1],
   sites = siteList$siteID[1],
   begin = timeBegin,
@@ -235,8 +235,8 @@ skimr::skim(observationDataNiwa)
 ```
 
 ```{r multiple_timeseries_plot, fig.width=6}
-ts1056 <- xts(observationDataNiwa[observationDataNiwa$siteID == '1056', 3], observationDataNiwa[observationDataNiwa$siteID == '1056',"timestamp"])
-names(ts1056) <- "Station#1056 @ NIWA"
+ts1056 = xts(observationDataNiwa[observationDataNiwa$siteID == '1056', 3], observationDataNiwa[observationDataNiwa$siteID == '1056',"timestamp"])
+names(ts1056) = "Station#1056 @ NIWA"
 plot(
   x = na.fill(merge(tsFluggs, ts1056), list(NA, "extend", NA)),
   main = "Incomparable temperatures",
@@ -246,8 +246,17 @@ plot(
 
 ## Shiny application
 
+The use of the sos4R package has also been illustrated in a simple, yet easily extensible [Shiny](https://shiny.rstudio.com/) web application.
+By default, the application queries a SOS service operated by the Wupperverband (see `fluggs` SOS above).
+This SOS provides various hydrological time series.
+On start-up, all measurement stations reporting data in a given time window are shown on a map (see screenshot below).
+The user can interactively change this time window in the sidebar on the left hand side of the user interface.
+After selecting a single station on the map, a list with available phenomena appears in the sidebar and the data is downloaded for the given period.
+The retrieved data is converted into an [`xts` object](https://cran.r-project.org/package=xts) and shown as plot beneath the map window.
+From the available phenomena, one or more can be selected and the plot will automatically be updated with newly retrieved data.
 
-The use of the sos4R package has also been illustratd in a simple, yet easily extentible Shiny Web-Application. By default, the SOS service runnning at the Wupperveband and providing various hydrological time series is querried in this application. On start-up, all measurment stations reporting data in a given time window are shown on a map. After selecting a single station on the map, a list with available phenomena apppears in the sidebar and the data is downlaoded for the given period. The retrieved data is converted into a xts object and shown as plot beneath the map window. From the available phenomena, one or more can be selected and the data will atuomaatically be retrieved and shown in the plot. The interactive app is available at  [http://pilot.52north.org/shinyApps/sos4R/](http://pilot.52north.org/shinyApps/sos4R/) and the R source code (merely three function calls of sos4R wrapped in a simple GUI) is part of the sos4R package. 
+You can try out the app online at  **[http://pilot.52north.org/shinyApps/sos4R/](http://pilot.52north.org/shinyApps/sos4R/)**.
+The app's source code, merely three function calls of sos4R wrapped in a simple graphical user interface, is [part of the sos4R package](https://github.com/52North/sos4R/tree/master/inst/shiny).
 
 ![Shiny sos4R app screenshot](sos4R-vignette-10-egu-2020_shiny-app.jpg)
 
