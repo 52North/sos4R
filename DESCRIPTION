@@ -96,6 +96,6 @@ Collate:
     WML_200-methods.R
     SAMS-methods.R
     Defaults.R
-    handySOS4RFunctions.R
+    Wrapper-methods.R
     Development.R
 RoxygenNote: 6.1.1
