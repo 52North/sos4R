@@ -1,0 +1,213 @@
+% Common settings for all lectures in this course
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{bbm}
+% \usepackage[ngerman]{babel}
+\usepackage{url}
+\usepackage{colortbl}
+\usepackage{animate}
+\usepackage{pgfpages}
+% \pgfpagesuselayout{2 on 1}[a4paper,border shrink=5mm]
+
+% mathSymbols, partly OOo like
+\newcommand{\setN}{\mathbb{N}}
+\newcommand{\setR}{\mathbb{R}}
+\newcommand{\ii}{{\rm i}}
+
+\newcommand{\ui}{{\bf I}}
+\newcommand{\us}{{\bf I}^2}
+\newcommand{\pmP}{\mathbbm{P}} 		% probability measure IP
+\newcommand{\cIR}{\overline{\mathbbm{R}}} 	% closure of IR
+\newcommand{\IR}{\mathbbm{R}}			% set of IR
+\newcommand{\IE}{\mathbbm{E}}			% IE
+\newcommand{\IP}{\mathbbm{P}} 			% probability measure IP
+\newcommand{\IN}{\mathbbm{N}} 			% set of IN
+\newcommand{\iI}{ \mathcal{I}}
+\newcommand{\sU}{\mathrm{\bf U}} 		% sample U
+\newcommand{\sV}{\mathrm{\bf V}} 		% sample V
+\newcommand{\sX}{\mathrm{\bf X}} 		% sample X
+\newcommand{\sY}{\mathrm{\bf Y}} 		% sample Y
+\newcommand{\sZ}{\mathrm{\bf Z}} 		% sample Z
+\newcommand{\bK}{\mathrm{\bf K}} 		% bold K
+\newcommand{\sXY}{\mathrm{\bf X,Y}} 		% sample X,Y
+\newcommand{\dom}{\mathrm{dom}} 		% domain
+\newcommand{\ran}{\mathrm{ran}} 			% range
+\newcommand{\rank}{\mathrm{rank}} 		% rank
+\newcommand{\mug}{\text{\textmu g}}		% upright µg used in mathmode or \unitfrac
+\newcommand{\mum}{\text{\textmu m}}		% upright µm used in mathmode or \unitfrac
+
+
+\newcommand{\ST}{\IR^2 \times \IR}		% Space and Time
+\newcommand{\R}{ \verb?R? }			% verbatim R
+
+\newcommand{\Note}{\alert{\bf Note:\\}}
+\newcommand{\Atte}{\alert{\bf Attention:\\}}
+
+\def\lecturename{Geospatial Sensing Conference 2019} %conference title, section title
+
+\title{\insertlecture}
+
+\author{Eike H. Jürrens,\linebreak Benedikt Gräler,\linebreak Daniel Nüst}
+
+\institute
+{
+52°North GmbH\\
+{\small\url{https://52north.org}}
+}
+
+\subject{\lecturename}
+
+%\AtBeginSubsection[]
+%{
+%  \begin{frame}<beamer>{Outline}
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+%}
+
+\definecolor{blue52n}{HTML}{65c6e4}
+\definecolor{grey52n}{HTML}{4f504a}
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command: 
+% \beamerdefaultoverlayspecification{<+->}
+
+
+
+% Beamer version theme settings
+
+\useoutertheme[height=0pt,width=2cm,right]{sidebar}
+\usecolortheme{rose,sidebartab}
+\useinnertheme{rectangles}
+\usefonttheme[only large]{structurebold}
+
+\setbeamercolor{sidebar right}{bg=black!10, fg=grey52n}
+\setbeamercolor{structure}{fg=blue52n}
+\setbeamercolor{author}{parent=structure}
+\setbeamercolor{alerted text}{fg=blue52n}
+\setbeamercolor{titlelike}{fg=grey52n,bg=black!10}
+\setbeamercolor{section in sidebar}{fg=grey52n}
+
+\setbeamerfont{title}{series=\normalfont,size=\LARGE}
+\setbeamerfont{title in sidebar}{series=\large}
+\setbeamerfont{author in sidebar}{series=\normalfont}
+\setbeamerfont*{item}{series=}
+\setbeamerfont{frametitle}{size=}
+\setbeamerfont{block title}{size=\small}
+\setbeamerfont{subtitle}{size=\normalsize,series=\normalfont}
+\setbeamerfont{alerted text}{shape=\itshape}
+
+%\rowcolors{2}{white}{black!10}
+\hypersetup{colorlinks,linkcolor=,urlcolor=blue52n}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{bibliography item}[book]
+\setbeamertemplate{sidebar right}
+{
+  {\usebeamerfont{title in sidebar}%
+    \vskip1.5em%
+    \hskip3pt%
+    \usebeamercolor[fg]{title in sidebar}%
+    \insertshorttitle[width=1.8cm,center,respectlinebreaks]\par%
+    \vskip1.25em%
+  }%
+  {%
+    \hskip1pt%
+    \usebeamercolor[fg]{author in sidebar}%
+    \usebeamerfont{author in sidebar}%
+    \insertshortauthor[width=2cm,center,respectlinebreaks]\par%
+    \vskip1.25em%
+  }%
+  \hbox to2cm{\hss\insertlogo\hss}
+  \vskip1.25em%
+  \insertverticalnavigation{2cm}%
+  \vfill
+  \hbox to 2cm{\hfill\usebeamerfont{subsection in
+      sidebar}\strut\usebeamercolor[fg]{subsection in
+      sidebar}\insertframenumber\hskip5pt}%
+  \vskip3pt%
+}%
+
+\setbeamertemplate{title page}
+{
+  \vbox{}
+  \vskip1em
+%  {\huge Chapter \insertshortlecture\par}
+  {\usebeamercolor[fg]{title}\usebeamerfont{title}\inserttitle\par}%
+ \ifx\insertsubtitle\@empty%
+ \else%
+    \vskip0.25em%
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+ \fi%     
+  \vskip1em\par
+  \emph{\lecturename} \\ 
+  \insertdate\par
+  \vskip0pt plus1filll
+  \leftskip=0pt plus1fill\insertauthor\par
+  \insertinstitute\vskip1em
+}
+
+\logo{\includegraphics[width=1.8cm]{Logo_52North.png}}
+
+
+% Typesetting Listings
+
+\usepackage{listings}
+\lstset{language=R}
+
+\alt<presentation>
+{\lstset{%
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\slshape\color{green!50!black},
+  keywordstyle=\bfseries\color{red!50!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+  escapechar=\#,
+  emphstyle=\color{red}}
+}
+{
+  \lstset{%
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries,
+    commentstyle=\itshape,
+    escapechar=\#,
+    emphstyle=\bfseries\color{red}
+  }
+}
+
+
+
+% Common theorem-like environments
+
+\theoremstyle{definition}
+\newtheorem{exercise}[theorem]{\translate{Exercise}}
+
+
+
+
+% New useful definitions:
+
+\newbox\mytempbox
+\newdimen\mytempdimen
+
+\newcommand\includegraphicscopyright[3][]{%
+  \leavevmode\vbox{\vskip3pt\raggedright\setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
+    \fontsize{3}{3.5}\selectfont{\color{black!10}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt%
+}}
+
+\newenvironment{colortabular}[1]{\medskip\rowcolors[]{1}{blue!20}{blue!10}\tabular{#1}\rowcolor{blue!40}}{\endtabular\medskip}
+
+\def\equad{\leavevmode\hbox{}\quad}
+
+\newenvironment{greencolortabular}[1]
+{\medskip\rowcolors[]{1}{green!50!black!20}{green!50!black!10}%
+  \tabular{#1}\rowcolor{green!50!black!40}}%
+{\endtabular\medskip}
+
+
+
