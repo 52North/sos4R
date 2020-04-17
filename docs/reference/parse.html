@@ -8,21 +8,29 @@
 
 <title>Parsing Functions for XML Documents and Elements — parse • sos4R</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +38,10 @@
 
 
 
-<meta property="og:title" content="Parsing Functions for XML Documents and Elements — parse" />
 
-<meta property="og:description" content="The functions decode a given XML object to an R representation, which can be an object of a specific class, a list, a named character vector, &amp;#8230;" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Parsing Functions for XML Documents and Elements — parse" />
+<meta property="og:description" content="The functions decode a given XML object to an R representation, which can be an object of a specific class, a list, a named character vector, ..." />
+
 
 
 
@@ -47,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
       </span>
     </div>
 
@@ -86,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -97,12 +106,6 @@
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
-    <li>
-      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
-    </li>
-    <li>
-      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -112,7 +115,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -127,6 +129,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -138,9 +141,7 @@
     </div>
 
     <div class="ref-description">
-    
-    <p>The functions decode a given XML object to an <span style="R">R</span> representation, which can be an object of a specific class, a list, a named character vector, &#8230;</p>
-    
+    <p>The functions decode a given XML object to an <span style="R">R</span> representation, which can be an object of a specific class, a list, a named character vector, ...</p>
     </div>
 
     <pre class="usage"><span class='fu'>parseCSV</span>(<span class='no'>obj</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -186,10 +187,10 @@
 <span class='fu'>parseTimeInstantProperty</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseTimePeriod</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseTimePosition</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
-<span class='fu'>parseTimeObject</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>timeObjectMap</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseTimeObject</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>timeObjectMap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseTruthObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseValues</span>(<span class='no'>values</span>, <span class='no'>fields</span>, <span class='no'>encoding</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -234,7 +235,7 @@
       <td><p>Additional arguments that are parsed to <code><a href='http://xml2.r-lib.org/reference/read_xml.html'>xml2::read_xml(..)</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The naming of the functions follow the following rule: parse[optional: namespace prefix][name of the XML element to be parsed]</p>
@@ -243,35 +244,31 @@
 <p><code>parseOM</code> is a special function in the respect that it matches sub parsing function depending on an objects <code>xmlName</code> from the list of the given <code>SOS</code>'s parsing functions.</p>
 <p><code>parseNoParsing</code> is a convenience function that directly returns the object without any changes.</p>
 <p><code>sosParse</code> allows parsing of files for all elements that have a parsers registered with the given SOS.</p>
-    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An objects of a specific class depending on the parsing method and the passed object, possibly even lists or named character vectors.</p>
-    
     <h2 class="hasAnchor" id="warning-"><a class="anchor" href="#warning-"></a>Warning </h2>
 
     <p>Functions might result in error if parsed an object of the wrong type, because that is normally not checked.</p>
 <p>Some of the functions are placeholders for future implementations!</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='Defaults.html'>SosParsingFunctions</a></code>, <code><a href='SOS.html'>sosParsers-methods</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># parsing a XML string to an exception report object</span>
-<span class='no'>er.doc</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_xml</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"&lt;ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\""</span>,
+<span class='no'>er.doc</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_xml</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"&lt;ows:ExceptionReport xmlns:ows=\"http://www.opengis.net/ows/1.1\""</span>,
   <span class='st'>" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0.0\""</span>,
   <span class='st'>" xsi:schemaLocation=\"http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd\"&gt;"</span>,
   <span class='st'>"&lt;ows:Exception exceptionCode=\"VersionNegotiationFailed\" locator=\"AcceptVersions\"&gt;"</span>,
   <span class='st'>"&lt;ows:ExceptionText&gt;The parameter 'AcceptVersions' does not contain the version"</span>,
   <span class='st'>" of this SOS: '1.0.0'&lt;/ows:ExceptionText&gt;&lt;/ows:Exception&gt;&lt;/ows:ExceptionReport&gt;"</span>))
 <span class='no'>er.parsed</span> <span class='kw'>&lt;-</span> <span class='fu'>parseOwsExceptionReport</span>(<span class='no'>er.doc</span>, <span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>())
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 #&gt;  1 exception(s) (code @ locator : text):
 #&gt;   VersionNegotiationFailed @ AcceptVersions :
 #&gt; 	The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0' 
-#&gt;  </div><div class='input'><span class='kw pkg'>utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Formal class 'OwsExceptionReport' [package "sos4R"] with 3 slots
+#&gt;  </div><div class='input'><span class='kw pkg'>utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>er.parsed</span>)</div><div class='output co'>#&gt; Formal class 'OwsExceptionReport' [package "sos4R"] with 3 slots
 #&gt;   ..@ version   : chr "1.0.0"
 #&gt;   ..@ lang      : chr NA
 #&gt;   ..@ exceptions:List of 1
@@ -279,52 +276,41 @@
 #&gt;   .. .. .. ..@ exceptionCode: chr "VersionNegotiationFailed"
 #&gt;   .. .. .. ..@ exceptionText: chr "The parameter 'AcceptVersions' does not contain the version of this SOS: '1.0.0'"
 #&gt;   .. .. .. ..@ locator      : chr "AcceptVersions"</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># save and re-parse an observation from file</span>
 <span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='GetObservation.html'>getObservationById</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>observationId</span> <span class='kw'>=</span> <span class='st'>"o_3508493"</span>,
                 <span class='kw'>saveOriginal</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>.files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list.files'>list.files</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>())
-<span class='no'>.startWithO_</span> <span class='kw'>&lt;-</span> <span class='no'>.files</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/grep'>grep</a></span>(<span class='st'>"o_"</span>, <span class='no'>.files</span>, <span class='kw'>value</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='no'>.observationFiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='no'>.files</span>, <span class='no'>.startWithO_</span>)
+<span class='no'>.files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>())
+<span class='no'>.startWithO_</span> <span class='kw'>&lt;-</span> <span class='no'>.files</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span>(<span class='st'>"o_"</span>, <span class='no'>.files</span>, <span class='kw'>value</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>.observationFiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>.files</span>, <span class='no'>.startWithO_</span>)
 
 <span class='no'>obsId</span> <span class='kw'>&lt;-</span> <span class='fu'>parseFile</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>.observationFiles</span><span class='kw'>[[</span><span class='fl'>1</span>]])
-<span class='co'># }</span><div class='input'>
-</div></pre>
+}</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#warning-">Warning </a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Daniel Nuest <a href='mailto:daniel.nuest@uni-muenster.de'>daniel.nuest@uni-muenster.de</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

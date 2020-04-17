@@ -171,20 +171,20 @@ parseWmlMeasurementTimeseries <- function(obj, sos, verbose = FALSE) {
 as.SpatialPoints.WmlMonitoringPoint <- function(from) {
   as(from@shape, "SpatialPoints")
 }
-setAs("WmlMonitoringPoint", "SpatialPoints",
-      function(from) {
+setAs(from = "WmlMonitoringPoint", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
-setAs("WmlMonitoringPoint", "Spatial",
-      function(from) {
+setAs(from = "WmlMonitoringPoint", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
 #
 #
 #
-as.data.frame.WmlMeasurmentTimeseries <- function(from) {
+as.data.frame.WmlMeasurementTimeseries <- function(from) {
   # cols: timestamp, value <- should be renamed afterwards
   df <- data.frame("timestamp" = double(0), "value" = double(0), stringsAsFactors = FALSE)
   for (wmlMTVP in from@points) {
@@ -196,9 +196,9 @@ as.data.frame.WmlMeasurmentTimeseries <- function(from) {
   attr(df, "defaultPointMetadata") <- from@defaultPointMetadata
   return(df)
 }
-setAs("WmlMeasurementTimeseries", "data.frame",
-      function(from) {
-        as.data.frame.WmlMeasurmentTimeseries(from)
+setAs(from = "WmlMeasurementTimeseries", to = "data.frame",
+      def = function(from) {
+        as.data.frame.WmlMeasurementTimeseries(from)
       }
 )
 #
@@ -218,7 +218,33 @@ setMethod(f = "sosTime",
 setMethod(f = "sosResult",
           signature = signature(obj = "WmlMeasurementTVP"),
           definition = function(obj) {
-            return(obj@value)
+            result <- sosResult(obj@value)
+            return(result)
+          })
+#
+# sosResult(WmlMeasurementTimeseries) ----
+#
+setMethod(f = "sosResult", signature = signature(obj = "WmlMeasurementTimeseries"),
+          definition = function(obj, coordinates = FALSE) {
+            result <- as(obj, "data.frame")
+
+            if (!is.null(obj@defaultPointMetadata)
+                && !is.null(obj@defaultPointMetadata@uom)) {
+              uom <- obj@defaultPointMetadata@uom
+              attributes(result) <- c(attributes(result), list("uom" = uom))
+            }
+
+            if (!is.null(obj@defaultPointMetadata@interpolationType)
+                && !is.null(obj@defaultPointMetadata@interpolationType@href)) {
+              interpolationType <- obj@defaultPointMetadata@interpolationType@href
+              attributes(result) <- c(attributes(result), list("interpolationType" = interpolationType))
+            }
+
+            if (coordinates){
+              warning("Coordinates not supported for this result class.")
+            }
+
+            return(result)
           })
 #
 # sosFeatureIds(WmlMonitoringPoint) ----

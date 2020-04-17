@@ -851,10 +851,19 @@ setMethod(f = "sosResult", signature = signature(obj = "OmOM_Observation"),
           definition = function(obj, coordinates = FALSE) {
             if (coordinates){
               coords <- sosCoordinates(obj)
-              data <- merge(x = obj@result, y = coords)
-              return(data)
+              if (is.data.frame(obj@result)) {
+                data <- merge(x = obj@result, y = coords)
+                return(data)
+              } else {
+                stop("Unsupported result object, cannot retrieve coordinates: ",
+                     toString(obj@result))
+              }
             }
-            return(obj@result)
+            if (is.data.frame(obj@result)) {
+              return(obj@result)
+            } else {
+              return(sosResult(obj@result))
+            }
           })
 setMethod(f = "sosResult", signature = signature(obj = "OmMeasurement"),
           definition = function(obj, coordinates = FALSE) {

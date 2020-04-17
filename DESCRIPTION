@@ -96,4 +96,5 @@ Collate:
     Defaults.R
     handySOS4RFunctions.R
     Development.R
+    globals.R
 RoxygenNote: 6.1.1

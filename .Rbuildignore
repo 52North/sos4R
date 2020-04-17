@@ -24,3 +24,4 @@ README.md
 docker
 ^\.vscode$
 ^cache$
+^\.circleci$

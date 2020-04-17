@@ -36,6 +36,15 @@ maxOutputRowsPerExample <- 5
 maxOutputColumnsPerExample <- 3
 ```
 
+## Shiny Demo App
+
+A minimal [Shiny](https://shiny.rstudio.com/) app demonstrating the convenience functions is included in the package.
+Run it with
+
+```{r shiny_app, eval=FALSE}
+shiny::runApp(appDir = file.path(path.package("sos4R"), "shiny"))
+```
+
 ## Phenomena
 
 The function `phenomena(..)` provides information about observed phenomena, time periods of data, and sites observing these phenomena.
@@ -211,8 +220,7 @@ Without a temporal extent, the used SOS only returns the last measurement.
 ```{r getData_single}
 observationData <- getData(sos = mySos,
                            phenomena = phenomena[18,1],
-                           sites = siteList[1:2,1]
-                           )
+                           sites = siteList[1:2,1])
 str(observationData)
 ```
 

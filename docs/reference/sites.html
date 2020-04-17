@@ -8,21 +8,29 @@
 
 <title>This function queries a SOS v2.0 for its sites and returns them as SpatialPointsDataFrame — sites • sos4R</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +38,10 @@
 
 
 
-<meta property="og:title" content="This function queries a SOS v2.0 for its sites and returns them as SpatialPointsDataFrame — sites" />
 
+<meta property="og:title" content="This function queries a SOS v2.0 for its sites and returns them as SpatialPointsDataFrame — sites" />
 <meta property="og:description" content="Information about the registered sites in a SOS can be queried using this function. This function allows for different levels of detail and returns a SpatialPointsDataFrame." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
       </span>
     </div>
 
@@ -86,7 +95,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -97,12 +106,6 @@
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
-    <li>
-      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
-    </li>
-    <li>
-      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -112,7 +115,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -127,6 +129,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -138,14 +141,12 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Information about the registered sites in a SOS can be queried using this function. This function allows for different levels of detail and returns a SpatialPointsDataFrame.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>sites</span>(<span class='no'>sos</span>, <span class='kw'>empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>includePhenomena</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-      <span class='kw'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>phenomena</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())</pre>
-    
+    <pre class="usage"><span class='fu'>sites</span>(<span class='no'>sos</span>, <span class='kw'>empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>listPhenomena</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+      <span class='kw'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>phenomena</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -159,10 +160,10 @@
     </tr>
     <tr>
       <th>timeInterval</th>
-      <td><p>A character defining an ISO-String (ISO 8601), see also <a href='https://www.rdocumentation.org/packages/xts/topics/xts'>xts</a>. Only sites with data within this interval will be retrieved.</p></td>
+      <td><p>A character defining an ISO-String (ISO 8601), see also <a href='https://rdrr.io/pkg/xts/man/xts.html'>xts</a>. Only sites with data within this interval will be retrieved.</p></td>
     </tr>
     <tr>
-      <th>includePhenomena</th>
+      <th>listPhenomena</th>
       <td><p>Whether the phenomena shall be listed per location that can be observed.</p></td>
     </tr>
     <tr>
@@ -174,73 +175,46 @@
       <td><p>A list, vector or one-column data.frame with characters identifying the relevant phenomena; only sites where these phenomena can be observed are retrieved.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='https://www.rdocumentation.org/packages/sp/topics/SpatialPoints'>SpatialPointsDataFrame</a></code> containing all sites that match the filter conditions with corresponding metadata defined via the arguments. If <code>empty = TRUE</code>, the data slot contains a logical column 'empty' indicating whether any data has been observed for this site. If <code>listPhenomena = TRUE</code>, the data.frame contains a logical column per phenomenon indicating whether this specific phenomenon has been observed at that site. If <code>includeTemporalBBox = TRUE</code>, the data.frame contains a two column data.frame with <code>beginTime</code> and <code>endTime</code> per phenomenon.</p>
-    
+    <p>A <code><a href='https://rdrr.io/pkg/sp/man/SpatialPoints.html'>SpatialPointsDataFrame</a></code> containing all sites that match the filter conditions with corresponding metadata defined via the arguments. If <code>empty = TRUE</code>, the data slot contains a logical column 'empty' indicating whether any data has been observed for this site. If <code>listPhenomena = TRUE</code>, the data.frame contains a logical column per phenomenon indicating whether this specific phenomenon has been observed at that site. If <code>includeTemporalBBox = TRUE</code>, the data.frame contains a two column data.frame with <code>beginTime</code> and <code>endTime</code> per phenomenon.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## The function is currently defined as</span>
-<span class='kw'>function</span> (<span class='no'>sos</span>, <span class='no'>empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='no'>listPhenomena</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='no'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>phenomena</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>())
-{
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>inherits</a></span>(<span class='no'>sos</span>, <span class='st'>"SOS_2.0.0"</span>))
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>is.logical</a></span>(<span class='no'>empty</span>))
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>is.character</a></span>(<span class='no'>timeInterval</span>))
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>is.logical</a></span>(<span class='no'>listPhenomena</span>))
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/logical'>is.logical</a></span>(<span class='no'>includeTemporalBBox</span>))
-    <span class='no'>phenomena</span> <span class='kw'>&lt;-</span> <span class='fu'>.validateListOrDfColOfStrings</span>(<span class='no'>phenomena</span>, <span class='st'>"phenomena"</span>)
-    <span class='kw'>if</span> (<span class='no'>includeTemporalBBox</span> <span class='kw'>&amp;&amp;</span> !<span class='no'>listPhenomena</span>) {
-        <span class='no'>listPhenomena</span> <span class='kw'>&lt;-</span> <span class='fl'>TRUE</span>
-        <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/warning'>warning</a></span>(<span class='st'>"'listPhenomena' has been set to 'TRUE' as this is required for
-        'includeTemporalBBox'."</span>)
-    }
-  }</div><div class='output co'>#&gt; function (sos, empty = FALSE, timeInterval = NA_character_, listPhenomena = FALSE,
-#&gt;     includeTemporalBBox = FALSE, phenomena = list())
-#&gt; {
-#&gt;     stopifnot(inherits(sos, "SOS_2.0.0"))
-#&gt;     stopifnot(is.logical(empty))
-#&gt;     stopifnot(is.character(timeInterval))
-#&gt;     stopifnot(is.logical(listPhenomena))
-#&gt;     stopifnot(is.logical(includeTemporalBBox))
-#&gt;     phenomena &lt;- .validateListOrDfColOfStrings(phenomena, "phenomena")
-#&gt;     if (includeTemporalBBox &amp;&amp; !listPhenomena) {
-#&gt;         listPhenomena &lt;- TRUE
-#&gt;         warning("'listPhenomena' has been set to 'TRUE' as this is required for
-#&gt;         'includeTemporalBBox'.")
-#&gt;     }
-#&gt;   }
-#&gt; &lt;environment: 0x55961a390f40&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+<span class='fu'>sites</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)</div><div class='output co'>#&gt; class       : SpatialPointsDataFrame 
+#&gt; features    : 60 
+#&gt; extent      : -176.475, 177.9218, -77.84935, -35.13352  (xmin, xmax, ymin, ymax)
+#&gt; crs         : +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
+#&gt; variables   : 1
+#&gt; names       : siteID 
+#&gt; min values  :   1056 
+#&gt; max values  :   5535 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Benedikt Graeler, Eike Hinderk Juerrens</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

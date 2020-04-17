@@ -10,7 +10,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{6. List of SOS instances}
+  %\VignetteIndexEntry{7. List of SOS instances}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

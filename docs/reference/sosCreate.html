@@ -8,21 +8,29 @@
 
 <title>Convenience Functions for Request Parameter Creations — sosCreate • sos4R</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,15 +38,15 @@
 
 
 
-<meta property="og:title" content="Convenience Functions for Request Parameter Creations — sosCreate" />
 
+<meta property="og:title" content="Convenience Functions for Request Parameter Creations — sosCreate" />
 <meta property="og:description" content="These methods can be seen as convenience functions or shortcuts to regularly used parameters in GetObservation requests to a Sensor Observation Service. The remove some complexity and target the most common cases, but also limit flexibility.
 NOTE: Whenever time objects are created from characters, note that functions may use your local timezone.
 All R time objects are UTC-based.
 All SOS queries use UTC timestamps.
 This can be confusing when you query data from an SOS located a different timezone or if the time stamp encoded in the request seems to mismatch your input at first glance.
 Therefore always check if the time period you retrieve matches what you need, and in general stick to using UTC time." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -52,9 +60,10 @@ Therefore always check if the time period you retrieve matches what you need, an
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -68,7 +77,7 @@ Therefore always check if the time period you retrieve matches what you need, an
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
       </span>
     </div>
 
@@ -91,7 +100,7 @@ Therefore always check if the time period you retrieve matches what you need, an
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
+      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
     </li>
     <li>
       <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
@@ -102,12 +111,6 @@ Therefore always check if the time period you retrieve matches what you need, an
     <li>
       <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
     </li>
-    <li>
-      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
-    </li>
-    <li>
-      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -117,7 +120,6 @@ Therefore always check if the time period you retrieve matches what you need, an
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -132,6 +134,7 @@ Therefore always check if the time period you retrieve matches what you need, an
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -143,33 +146,31 @@ Therefore always check if the time period you retrieve matches what you need, an
     </div>
 
     <div class="ref-description">
-    
     <p>These methods can be seen as convenience functions or shortcuts to regularly used parameters in GetObservation requests to a Sensor Observation Service. The remove some complexity and target the most common cases, but also limit flexibility.</p>
 <p>NOTE: Whenever time objects are created from characters, note that functions may use your local timezone.
 All R time objects are UTC-based.
 All SOS queries use UTC timestamps.
 This can be confusing when you query data from an SOS located a different timezone or if the time stamp encoded in the request seems to mismatch your input at first glance.
 Therefore always check if the time period you retrieve matches what you need, and in general stick to using UTC time.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>sosCreateBBOX</span>(<span class='no'>lowLat</span>, <span class='no'>lowLon</span>, <span class='no'>uppLat</span>, <span class='no'>uppLon</span>, <span class='no'>srsName</span>, <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
               <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
               <span class='kw'>propertyName</span> <span class='kw'>=</span> <span class='no'>sosDefaultSpatialOpPropertyName</span>)
 <span class='fu'>sosCreateBBoxMatrix</span>(<span class='no'>lowLat</span>, <span class='no'>lowLon</span>, <span class='no'>uppLat</span>, <span class='no'>uppLon</span>)
-<span class='fu'>sosCreateFeatureOfInterest</span>(<span class='kw'>objectIDs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>NA</span>), <span class='kw'>spatialOps</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+<span class='fu'>sosCreateFeatureOfInterest</span>(<span class='kw'>objectIDs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>NA</span>), <span class='kw'>spatialOps</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bbox</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
                            <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)
 <span class='fu'>sosCreateEventTime</span>(<span class='no'>time</span>, <span class='no'>operator</span>)
 <span class='fu'>sosCreateEventTimeList</span>(<span class='no'>time</span>, <span class='no'>operator</span>)
-<span class='fu'>sosCreateTimeInstant</span>(<span class='no'>sos</span>, <span class='no'>time</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                     <span class='kw'>calendarEraName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                     <span class='kw'>indeterminatePosition</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>sosCreateTimePeriod</span>(<span class='no'>sos</span>, <span class='no'>begin</span>, <span class='no'>end</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                    <span class='kw'>calendarEraName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                    <span class='kw'>indeterminatePosition</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                    <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>sosCreateTimeInstant</span>(<span class='no'>sos</span>, <span class='no'>time</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                     <span class='kw'>calendarEraName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                     <span class='kw'>indeterminatePosition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>sosCreateTimePeriod</span>(<span class='no'>sos</span>, <span class='no'>begin</span>, <span class='no'>end</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                    <span class='kw'>calendarEraName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                    <span class='kw'>indeterminatePosition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                    <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 <span class='fu'>sosCreateTime</span>(<span class='no'>sos</span>, <span class='no'>time</span>, <span class='kw'>operator</span> <span class='kw'>=</span> <span class='no'>sosDefaultTemporalOperator</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -223,7 +224,7 @@ Therefore always check if the time period you retrieve matches what you need, an
     </tr>
     <tr>
       <th>time</th>
-      <td><p>Object of class <code>"GmlTimeGeometricPrimitive"</code> for <code>sosCreateEventTimeList</code>, or an object of class <code>POSIXt</code> for <code>sosCreateTimePeriod</code>,or an object of class <code>character</code> for <code>sosCreateTime</code>. Note that creating timestamps with <code><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
+      <td><p>Object of class <code>"GmlTimeGeometricPrimitive"</code> for <code>sosCreateEventTimeList</code>, or an object of class <code>POSIXt</code> for <code>sosCreateTimePeriod</code>,or an object of class <code>character</code> for <code>sosCreateTime</code>. Note that creating timestamps with <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
     </tr>
     <tr>
       <th>operator</th>
@@ -243,11 +244,11 @@ Therefore always check if the time period you retrieve matches what you need, an
     </tr>
     <tr>
       <th>begin</th>
-      <td><p>Object of class <code>POSIXt</code>. Note that creating timestamps with <code><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
+      <td><p>Object of class <code>POSIXt</code>. Note that creating timestamps with <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
     </tr>
     <tr>
       <th>end</th>
-      <td><p>Object of class <code>POSIXt</code>.. Note that creating timestamps with <code><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
+      <td><p>Object of class <code>POSIXt</code>.. Note that creating timestamps with <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
     </tr>
     <tr>
       <th>indeterminatePosition</th>
@@ -262,29 +263,30 @@ Therefore always check if the time period you retrieve matches what you need, an
       <td><p>An object of class <code>"GmlTimeIntervalOrNULL"</code> to be used in a <code>GmlTimePeriod-class</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of the respective class, or a list in case of <code>sosEventTimeList</code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>These methods create object of the following classes: <code><a href='GML.html'>GmlTimeInstant-class</a></code>, <code><a href='GML.html'>GmlTimePeriod-class</a></code>, <code><a href='SosEventTime.html'>SosEventTime-class</a></code>, <code><a href='SosFeatureOfInterest.html'>SosFeatureOfInterest-class</a></code>, <code><a href='OGC.html'>OgcBBOX-class</a></code>, <code>matrix-class</code>.</p></div>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
-    <dl class='dl-horizontal'>
+    
+<dl'>
 	<dt><code>signature(time = "GmlTimeGeometricPrimitive")</code></dt><dd><p>Create sos:time based on the given <code>GmlTimeGeometricPrimitive</code>.</p></dd>
 	<dt><code>signature(sos = "SOS", time = "POSIXt")</code></dt><dd><p>Create sos:time with time instant based on the given time.</p></dd>
 	<dt><code>signature(sos = "SOS", begin = "POSIXt", end = "POSIXt")</code></dt><dd><p>Create sos:time with time interval based on the given begin and end times.</p></dd>
+
 </dl>
-    
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># create a feature of interest based on identifiers</span>
-<span class='no'>foiIDs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"urn:ogc:object:feature:1"</span>, <span class='st'>"urn:ogc:object:feature:2"</span>)
+<span class='no'>foiIDs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"urn:ogc:object:feature:1"</span>, <span class='st'>"urn:ogc:object:feature:2"</span>)
 <span class='no'>foiObj</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateFeatureOfInterest</span>(<span class='kw'>objectIDs</span> <span class='kw'>=</span> <span class='no'>foiIDs</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>foiObj</span>)</div><div class='output co'>#&gt; Object of class SosFeatureOfInterest;
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>foiObj</span>)</div><div class='output co'>#&gt; Object of class SosFeatureOfInterest;
 #&gt; 	objectIDs: urn:ogc:object:feature:1, urn:ogc:object:feature:2;
 #&gt; 	spatialOps:  </div><div class='input'>
 <span class='co'># create a bounding box matrix and use it to create a spatial feature of interest</span>
@@ -292,7 +294,7 @@ Therefore always check if the time period you retrieve matches what you need, an
                                   <span class='kw'>uppLat</span> <span class='kw'>=</span> <span class='fl'>53.0</span>, <span class='kw'>uppLon</span> <span class='kw'>=</span> <span class='fl'>10.0</span>)
 <span class='no'>foiBBox</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateFeatureOfInterest</span>(<span class='kw'>bbox</span> <span class='kw'>=</span> <span class='no'>bboxMatrix</span>,
                                       <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='st'>"urn:ogc:def:crs:EPSG:6.8:4326"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>foiBBox</span>)</div><div class='output co'>#&gt; Object of class SosFeatureOfInterest;
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>foiBBox</span>)</div><div class='output co'>#&gt; Object of class SosFeatureOfInterest;
 #&gt; 	objectIDs: NA;
 #&gt; 	spatialOps: Object of class OgcBBOX; propertyName: urn:ogc:data:location; envelope: Object of class GmlEnvelope; srsName: urn:ogc:def:crs:EPSG:6.8:4326, srsDimension: NA, srsDimension: NA, uomLabels: NA;
 #&gt; 	lowerCorner: Object of class GmlDirectPosition; pos: 50 7; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA;
@@ -300,19 +302,19 @@ Therefore always check if the time period you retrieve matches what you need, an
 <span class='co'># create a foi with a bounding box</span>
 <span class='no'>bbox</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateBBOX</span>(<span class='kw'>lowLat</span> <span class='kw'>=</span> <span class='fl'>50.0</span>, <span class='kw'>lowLon</span> <span class='kw'>=</span> <span class='fl'>7.0</span>, <span class='kw'>uppLat</span> <span class='kw'>=</span> <span class='fl'>53.0</span>, <span class='kw'>uppLon</span> <span class='kw'>=</span> <span class='fl'>10.0</span>,
                       <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='st'>"urn:ogc:def:crs:EPSG:6.8:4326"</span>,
-                      <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/integer'>as.integer</a></span>(<span class='fl'>2</span>), <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='st'>"lat,lon"</span>,
+                      <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='fl'>2</span>), <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='st'>"lat,lon"</span>,
                       <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='st'>"deg,deg"</span>, <span class='kw'>propertyName</span> <span class='kw'>=</span> <span class='st'>"bboxName"</span>)
 <span class='no'>foiBBox2</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateFeatureOfInterest</span>(<span class='kw'>spatialOps</span> <span class='kw'>=</span> <span class='no'>bbox</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>foiBBox2</span>)</div><div class='output co'>#&gt; Object of class SosFeatureOfInterest;
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>foiBBox2</span>)</div><div class='output co'>#&gt; Object of class SosFeatureOfInterest;
 #&gt; 	objectIDs: NA;
 #&gt; 	spatialOps: Object of class OgcBBOX; propertyName: bboxName; envelope: Object of class GmlEnvelope; srsName: urn:ogc:def:crs:EPSG:6.8:4326, srsDimension: 2, srsDimension: lat,lon, uomLabels: deg,deg;
 #&gt; 	lowerCorner: Object of class GmlDirectPosition; pos: 50 7; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA;
 #&gt; 	upperCorner: Object of class GmlDirectPosition; pos: 53 10; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA </div><div class='input'>
 <span class='no'>last.period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(),
-        <span class='kw'>begin</span> <span class='kw'>=</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>() - <span class='fl'>3600</span> * <span class='fl'>24</span> * <span class='fl'>7</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())
+        <span class='kw'>begin</span> <span class='kw'>=</span> (<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>() - <span class='fl'>3600</span> * <span class='fl'>24</span> * <span class='fl'>7</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())
 
 <span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateTimePeriod</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(),
-                <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010/01/01"</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010/01/07"</span>))
+                <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='st'>"2010/01/01"</span>), <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='st'>"2010/01/07"</span>))
 <span class='no'>eventTime</span> <span class='kw'>&lt;-</span> <span class='fu'>sosCreateEventTimeList</span>(<span class='no'>period</span>)
 
 <span class='fu'>sosCreateTime</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS_Test</a></span>(), <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"2007-07-07 07:00::2008-08-08 08:00"</span>)</div><div class='output co'>#&gt; [[1]]
@@ -333,38 +335,30 @@ Therefore always check if the time period you retrieve matches what you need, an
 #&gt; </div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Daniel Nuest <a href='mailto:daniel.nuest@uni-muenster.de'>daniel.nuest@uni-muenster.de</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
