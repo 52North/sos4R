@@ -78,7 +78,7 @@ sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
   \item{frame}{Provides a URI reference that identifies a description of the reference system.}
   \item{calendarEraName}{The name of the calendar era.}
   \item{begin}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
-  \item{end}{Object of class \code{POSIXt}.. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
+  \item{end}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
   \item{indeterminatePosition}{Inexact temporal positions may be expressed using the optional indeterminatePosition parameter. This takes one of the following values: after, before, now, unknown.}
   \item{duration}{Duration of an interval using ISO 8601 syntax for temporal length.}
   \item{timeInterval}{An object of class \code{"GmlTimeIntervalOrNULL"} to be used in a \code{GmlTimePeriod-class}.}

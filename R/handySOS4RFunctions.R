@@ -353,7 +353,7 @@ setMethod(f = "siteList",
   if (is.null(phenomena)) {
     return(FALSE)
   }
-  if (is(phenomena, "character") && nchar(phenomena) > 0) {
+  if (all(is(phenomena, "character")) && all(nchar(phenomena) > 0)) {
     return(TRUE)
   }
   return(is(phenomena, "list") && length(phenomena) > 0)

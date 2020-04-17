@@ -246,9 +246,11 @@ plot(
 
 ## Shiny application
 
-TODO: short description
+TODO: shiny app description
 
-TODO: screenshot of shiny app
+TODO: link zur online shiny app
+
+![Shiny sos4R app screenshot](sos4R-vignette-10-egu-2020_shiny-app.jpg)
 
 ## References
 

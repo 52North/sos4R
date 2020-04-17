@@ -1,2 +1,4 @@
 # a global variable to cache objects from documents when parsing GetDataAvailability responses
-utils::globalVariables(c("featureCache", "phenTimeCache", "timeObjectCache"))
+cacheVariables <- c("featureCache", "phenTimeCache", "timeObjectCache")
+utils::globalVariables(cacheVariables)
+utils::suppressForeignCheck(cacheVariables)

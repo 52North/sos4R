@@ -41,6 +41,7 @@ Suggests:
     readr,
     spacetime,
     leaflet,
+    leafpop,
     mapdata,
     maps,
     maptools,
@@ -69,6 +70,7 @@ ByteCompile: TRUE
 BugReports: https://github.com/52North/sos4R/issues
 VignetteBuilder: knitr
 Collate:
+    globals.R
     Constants.R
     R-Helper.R
     Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
@@ -96,5 +98,4 @@ Collate:
     Defaults.R
     handySOS4RFunctions.R
     Development.R
-    globals.R
 RoxygenNote: 6.1.1

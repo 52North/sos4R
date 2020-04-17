@@ -31,7 +31,8 @@ In general, these functions always return an object of class `data.frame`, even 
 
 ```{r setup}
 library("sos4R")
-mySos <- SOS(url = "https://climate-sos.niwa.co.nz/", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+mySos <- SOS(url = "https://climate-sos.niwa.co.nz/",
+             binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 maxOutputRowsPerExample <- 5
 maxOutputColumnsPerExample <- 3
 ```
