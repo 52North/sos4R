@@ -246,9 +246,8 @@ plot(
 
 ## Shiny application
 
-TODO: shiny app description
 
-TODO: link zur online shiny app
+The use of the sos4R package has also been illustratd in a simple, yet easily extentible Shiny Web-Application. By default, the SOS service runnning at the Wupperveband and providing various hydrological time series is querried in this application. On start-up, all measurment stations reporting data in a given time window are shown on a map. After selecting a single station on the map, a list with available phenomena apppears in the sidebar and the data is downlaoded for the given period. The retrieved data is converted into a xts object and shown as plot beneath the map window. From the available phenomena, one or more can be selected and the data will atuomaatically be retrieved and shown in the plot. The interactive app is available at  [http://pilot.52north.org/shinyApps/sos4R/](http://pilot.52north.org/shinyApps/sos4R/) and the R source code (merely three function calls of sos4R wrapped in a simple GUI) is part of the sos4R package. 
 
 ![Shiny sos4R app screenshot](sos4R-vignette-10-egu-2020_shiny-app.jpg)
 
