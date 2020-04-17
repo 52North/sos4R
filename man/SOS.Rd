@@ -406,7 +406,7 @@ sosBinding(mySOS)
 \dontrun{
 # create a SOS connetion with a specific connection method and time format
 mysos <- SOS(url = "http://mysos.org/sos",
-    binding = "KVP", timeFormat = "%Y-%m-%d")
+    binding = "KVP", timeFormat = "\%Y-\%m-\%d")
 
 # turn on verbose output for all methods and functions
 SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)

@@ -144,7 +144,7 @@
     <p>This function queries a SOS v2.0 for all its phenomena</p>
     </div>
 
-    <pre class="usage"><span class='fu'>phenomena</span>(<span class='no'>sos</span>, <span class='kw'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>listSites</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>phenomena</span>(<span class='no'>sos</span>, <span class='kw'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>includeSiteId</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,8 +158,12 @@
       <td><p>Whether the observation containing timespan of each phenomenon shall also be reported.</p></td>
     </tr>
     <tr>
-      <th>listSites</th>
+      <th>includeSiteId</th>
       <td><p>Whether the sites shall be reported at which each phenomenon has been observed.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Named arguments forwarded to other wrapper functions internally.</p></td>
     </tr>
     </table>
 
@@ -170,7 +174,8 @@
 <p>If <code>sites = TRUE</code>, the result is a <code>data.frame</code> where the character vector of phenomena is combined with a character column <code>siteID</code>. Phenomena that have been observed at several sites will be replicated for each site. If also <code>timeInfo = TRUE</code>, the <code>data.frame</code> will have character columns <code>beginTime</code> and <code>endTime</code> per phenomenon and site. Note that these two columns indicate the very beginning and end of any time series recorded for each phenomenon <b>at each site</b>, but does still not imply to be continuous series.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
 
 <span class='fu'>phenomena</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)</div><div class='output co'>#&gt;                                                                                              phenomenon
 #&gt; 1                         MTHLY_STATS: DAYS OF DEFICIT (WBal AWC=150mm) (MTHLY: DAYS OF DEFICIT (WBAL))

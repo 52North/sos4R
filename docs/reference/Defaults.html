@@ -213,7 +213,108 @@
     <p><code><a href='Constants.html'>Constants</a></code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><div class='input'><span class='co'># simple default values</span>
+<span class='fu'>show</span>(<span class='no'>sosDefaultCharacterEncoding</span>)</div><div class='output co'>#&gt; [1] "UTF-8"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultDescribeSensorOutputFormat</span>)</div><div class='output co'>#&gt; [1] "text/xml;subtype=\"sensorML/1.0.1\""</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapAcceptFormats</span>)</div><div class='output co'>#&gt; [1] "text/xml"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapOwsVersion</span>)</div><div class='output co'>#&gt; [1] "1.1.0"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetCapSections</span>)</div><div class='output co'>#&gt; [1] "All"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultGetObsResponseFormat</span>)</div><div class='output co'>#&gt; [1] "text/xml;subtype=\"om/1.0.0\""</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultSpatialOpPropertyName</span>)</div><div class='output co'>#&gt; [1] "urn:ogc:data:location"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTempOpPropertyName</span>)</div><div class='output co'>#&gt; [1] "om:samplingTime"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTemporalOperator</span>)</div><div class='output co'>#&gt; [1] "TM_During"</div><div class='input'><span class='fu'>show</span>(<span class='no'>sosDefaultTimeFormat</span>)</div><div class='output co'>#&gt; [1] "%Y-%m-%dT%H:%M:%OS%z"</div><div class='input'><span class='fu'>SosDefaultBinding</span>()</div><div class='output co'>#&gt; [1] "POX"</div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># usage of defaults in construction method for SOS class</span>
+<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='st'>"http://mysos.com/sos"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='fu'>SosDefaultBinding</span>(),
+                <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='no'>sosDefaultTimeFormat</span>)
+
+<span class='co'># functions to disable all parsing</span>
+<span class='fu'>SosDisabledParsers</span>()
+}
+
+
+<span class='co'># Replace a parsing function</span>
+<span class='no'>myER</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>xml</span>) {
+        <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='st'>"EXCEPTION!!!11"</span>)
+}
+<span class='no'>myParsingFunctions</span> <span class='kw'>&lt;-</span> <span class='fu'>SosParsingFunctions</span>(<span class='st'>"ExceptionReport"</span> <span class='kw'>=</span> <span class='no'>myER</span>)
+
+<span class='co'># use inclusion and exclusion, important: even the just added function needs to</span>
+<span class='co'># be included manually!</span>
+<span class='no'>myParsingFunctions</span> <span class='kw'>&lt;-</span> <span class='fu'>SosParsingFunctions</span>(<span class='st'>"ExceptionReport"</span> <span class='kw'>=</span> <span class='no'>myER</span>,
+        <span class='kw'>include</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>, <span class='st'>"ExceptionReport"</span>))
+
+<span class='no'>myParsingFunctions</span> <span class='kw'>&lt;-</span> <span class='fu'>SosParsingFunctions</span>(<span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"GetObservation"</span>, <span class='st'>"DescribeSensor"</span>))
+
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># Replace an encoding function</span>
+<span class='no'>myEncoding</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>object</span>, <span class='no'>v</span>) {
+        <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='kw pkg'>utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>object</span>))
+}
+
+<span class='no'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://mysos.com/sos"</span>,
+                <span class='kw'>encoders</span> <span class='kw'>=</span> <span class='fu'>SosEncodingFunctions</span>(<span class='st'>"POST"</span> <span class='kw'>=</span> <span class='no'>myPostEncoding</span>))
+
+
+<span class='co'># Use custom converting function and connection method. This mechanism works the</span>
+<span class='co'># same for encoders and decoders.</span>
+<span class='no'>myConverters</span> <span class='kw'>&lt;-</span> <span class='fu'>SosDataFieldConvertingFunctions</span>(
+        <span class='st'>"myNumericUnit"</span> <span class='kw'>=</span> <span class='no'>sosConvertDouble</span>)
+<span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='no'>sos.url</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>dataFieldConverters</span> <span class='kw'>=</span> <span class='no'>myConverters</span>)
+<span class='fu'><a href='SOS.html'>sosDataFieldConverters</a></span>(<span class='no'>mySos</span>)
+
+<span class='co'># inspecting XML using dummy parsing function</span>
+<span class='no'>sos</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://mysos.com/sos"</span>, <span class='kw'>parsers</span> <span class='kw'>=</span> <span class='no'>SosDisabledParsers</span>)
+<span class='fu'><a href='DescribeSensor.html'>describeSensor</a></span>(<span class='no'>sos</span>, <span class='fu'><a href='SOS.html'>sosProcedures</a></span>(<span class='no'>sos</span>)<span class='kw'>[[</span><span class='fl'>1</span>]])
+
+<span class='co'># replace the parsing functions with the default ones</span>
+<span class='no'>sos</span> <span class='kw'>&lt;-</span> <span class='fu'>SosResetParsingFunctions</span>(<span class='no'>sos</span>)
+
+}
+
+<span class='co'># a named list of all defaults</span>
+<span class='fu'>SosDefaults</span>()</div><div class='output co'>#&gt; $sosDefaultCharacterEncoding
+#&gt; [1] "UTF-8"
+#&gt; 
+#&gt; $sosDefaultDescribeSensorOutputFormat
+#&gt; [1] "text/xml;subtype=\"sensorML/1.0.1\""
+#&gt; 
+#&gt; $sosDefaultGetCapSections
+#&gt; [1] "All"
+#&gt; 
+#&gt; $sosDefaultGetCapAcceptFormats
+#&gt; [1] "text/xml"
+#&gt; 
+#&gt; $sosDefaultGetCapOwsVersion
+#&gt; [1] "1.1.0"
+#&gt; 
+#&gt; $sosDefaultGetObsResponseFormat
+#&gt; [1] "text/xml;subtype=\"om/1.0.0\""
+#&gt; 
+#&gt; $sosDefaultTimeFormat
+#&gt; [1] "%Y-%m-%dT%H:%M:%OS%z"
+#&gt; 
+#&gt; $sosDefaultFilenameTimeFormat
+#&gt; [1] "%Y-%m-%d_%H-%M-%OS"
+#&gt; 
+#&gt; $sosDefaultTempOpPropertyName
+#&gt; [1] "om:samplingTime"
+#&gt; 
+#&gt; $sosDefaultTemporalOperator
+#&gt; [1] "TM_During"
+#&gt; 
+#&gt; $sosDefaultSpatialOpPropertyName
+#&gt; [1] "urn:ogc:data:location"
+#&gt; 
+#&gt; $sosDefaultColumnNameFeatureIdentifier
+#&gt; [1] "feature"
+#&gt; 
+#&gt; $sosDefaultColumnNameLat
+#&gt; [1] "lat"
+#&gt; 
+#&gt; $sosDefaultColumnNameLon
+#&gt; [1] "lon"
+#&gt; 
+#&gt; $sosDefaultColumnNameSRS
+#&gt; [1] "SRS"
+#&gt; 
+#&gt; $sosDefaultReferenceFrameSensorDescription
+#&gt; [1] "urn:ogc:def:crs:EPSG:4326"
+#&gt; </div><div class='input'>
+<span class='co'># parsing options used by xml2</span>
+<span class='fu'>SosDefaultParsingOptions</span>()</div><div class='output co'>#&gt; [1] "RECOVER"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

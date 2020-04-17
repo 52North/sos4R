@@ -100,7 +100,7 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2020-04-16</h4>
+            <h4 class="date">2020-04-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-99-services.Rmd"><code>vignettes/sos4R-vignette-99-services.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-99-services.Rmd</code></div>
@@ -148,7 +148,7 @@
 <span class="co">#&gt; # A tibble: 1 x 7</span>
 <span class="co">#&gt;   station_id sensor_id `latitude (degr… `longitude (deg… date_time          </span>
 <span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;                &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1 urn:ioos:… urn:ioos…             23.8            -68.4 2020-04-16 13:50:00</span>
+<span class="co">#&gt; 1 urn:ioos:… urn:ioos…             23.8            -68.4 2020-04-17 16:00:00</span>
 <span class="co">#&gt; # … with 2 more variables: `depth (m)` &lt;dbl&gt;, `air_temperature (C)` &lt;dbl&gt;</span></pre></body></html></div>
 </div>
 <div id="noaa-national-data-buoy-center" class="section level2">
@@ -170,7 +170,7 @@
 <span class="co">#&gt; Object of class SOS_1.0.0 [POX, http://pegelonline.wsv.de/webservices/gis/gdi-sos, PegelOnline SOS]</span>
 <span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">pegel</span>)
 <span class="co">#&gt; Object of class SosContents with observation offerings (names):</span>
-<span class="co">#&gt;   DURCHFAHRTSHOEHE, LUFTTEMPERATUR_ROHDATEN, WASSERTEMPERATUR_ROHDATEN, ABFLUSS_ROHDATEN, LUFTFEUCHTE, WINDGESCHWINDIGKEIT, ABFLUSS, SAUERSTOFFGEHALT, WINDRICHTUNG, CHLORID, WASSERSTAND_ROHDATEN, WASSERTEMPERATUR, LUFTTEMPERATUR, FLIESSGESCHWINDIGKEIT, ELEKTRISCHE_LEITFAEHIGKEIT_ROHDATEN, PH-WERT</span></pre></body></html></div>
+<span class="co">#&gt;   DURCHFAHRTSHOEHE, ELEKTRISCHE_LEITFAEHIGKEIT_ROHDATEN, WASSERSTAND_ROHDATEN, WASSERTEMPERATUR_ROHDATEN, WINDGESCHWINDIGKEIT, ABFLUSS, CHLORID, WINDRICHTUNG, ABFLUSS_ROHDATEN, LUFTTEMPERATUR, LUFTFEUCHTE, PH-WERT, WASSERTEMPERATUR, SAUERSTOFFGEHALT, FLIESSGESCHWINDIGKEIT, LUFTTEMPERATUR_ROHDATEN</span></pre></body></html></div>
 </div>
 <div id="axiom-data-science-demo-sos" class="section level2">
 <h2 class="hasAnchor">
@@ -261,8 +261,8 @@
                                  <span class="co">#inspect = TRUE,</span>
                                  <span class="kw">retrieveFOI</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="fu"><a href="../reference/OmObservation.html">sosResult</a></span>(<span class="no">discharge29808</span>)
-<span class="co">#&gt;             timestamp    value</span>
-<span class="co">#&gt; 1 2020-04-16 14:00:00 1.823063</span></pre></body></html></div>
+<span class="co">#&gt;             timestamp   value</span>
+<span class="co">#&gt; 1 2020-04-17 15:45:00 8.78768</span></pre></body></html></div>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"># service offline - HTTP 503
 #niwaClimate &lt;- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 #sosContents(niwaClimate)</pre></body></html></div>

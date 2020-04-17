@@ -330,7 +330,127 @@
     <div class='dont-index'><p>See also creation function <code>SOS</code> and the package vignette for general description of use.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"SOS"</span>)</div><div class='output co'>#&gt; Virtual Class "SOS" [package "sos4R"]
+#&gt; 
+#&gt; Slots:
+#&gt;                                                                   
+#&gt; Name:              version        capabilities             parsers
+#&gt; Class:           character     OwsCapabilities                list
+#&gt;                                                                   
+#&gt; Name:             encoders dataFieldConverters          timeFormat
+#&gt; Class:                list                list           character
+#&gt;                                                                   
+#&gt; Name:        verboseOutput   switchCoordinates             useDCPs
+#&gt; Class:             logical             logical             logical
+#&gt;                                                                   
+#&gt; Name:            dcpFilter      additionalKVPs          namespaces
+#&gt; Class:                list                list           character
+#&gt; 
+#&gt; Known Subclasses: "SOS_Test", "SOS_1.0.0", "SOS_2.0.0"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"SOS_2.0.0"</span>)</div><div class='output co'>#&gt; Class "SOS_2.0.0" [package "sos4R"]
+#&gt; 
+#&gt; Slots:
+#&gt;                                                                   
+#&gt; Name:                  url             binding             version
+#&gt; Class:           character           character           character
+#&gt;                                                                   
+#&gt; Name:         capabilities             parsers            encoders
+#&gt; Class:     OwsCapabilities                list                list
+#&gt;                                                                   
+#&gt; Name:  dataFieldConverters          timeFormat       verboseOutput
+#&gt; Class:                list           character             logical
+#&gt;                                                                   
+#&gt; Name:    switchCoordinates             useDCPs           dcpFilter
+#&gt; Class:             logical             logical                list
+#&gt;                                               
+#&gt; Name:       additionalKVPs          namespaces
+#&gt; Class:                list           character
+#&gt; 
+#&gt; Extends: "SOS", "SOS_versioned"</div><div class='input'>
+<span class='co'># create a SOS connection</span>
+<span class='no'>mySOS</span> <span class='kw'>&lt;-</span> <span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)
+
+<span class='co'># create the URL to a GET request for GetCapabilities</span>
+<span class='fu'>sosCapabilitiesUrl</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; [1] "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&amp;request=GetCapabilities&amp;acceptVersions=1.0.0&amp;sections=All&amp;acceptFormats=text%2Fxml"</div><div class='input'>
+<span class='co'># access details of the SOS connection and it's metadata</span>
+<span class='fu'>sosContents</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; Object of class SosContents with observation offerings (names):
+#&gt; 	 ws2500, ws2500-internal, wwu-ws-kli-hsb, wxt520 </div><div class='input'><span class='fu'>sosTime</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; $ws2500
+#&gt; $ws2500$begin
+#&gt; [1] "2015-05-18 08:35:00 UTC"
+#&gt; 
+#&gt; $ws2500$end
+#&gt; [1] "2018-01-06 05:45:00 UTC"
+#&gt; 
+#&gt; 
+#&gt; $`ws2500-internal`
+#&gt; $`ws2500-internal`$begin
+#&gt; [1] "2015-05-18 08:35:00 UTC"
+#&gt; 
+#&gt; $`ws2500-internal`$end
+#&gt; [1] "2018-01-06 05:45:00 UTC"
+#&gt; 
+#&gt; 
+#&gt; $`wwu-ws-kli-hsb`
+#&gt; $`wwu-ws-kli-hsb`$begin
+#&gt; [1] "2015-03-29 22:00:00 UTC"
+#&gt; 
+#&gt; $`wwu-ws-kli-hsb`$end
+#&gt; [1] "2018-03-08 14:10:00 UTC"
+#&gt; 
+#&gt; 
+#&gt; $wxt520
+#&gt; $wxt520$begin
+#&gt; [1] "2015-05-18 08:50:45 UTC"
+#&gt; 
+#&gt; $wxt520$end
+#&gt; [1] "2018-07-10 12:00:00 UTC"
+#&gt; 
+#&gt; </div><div class='input'><span class='fu'>sosFeaturesOfInterest</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; $ws2500
+#&gt; $ws2500[[1]]
+#&gt; [1] "ELV-WS2500"
+#&gt; 
+#&gt; 
+#&gt; $`ws2500-internal`
+#&gt; $`ws2500-internal`[[1]]
+#&gt; [1] "http://52north.org/fac/internal/it-is/srv-01"
+#&gt; 
+#&gt; 
+#&gt; $`wwu-ws-kli-hsb`
+#&gt; $`wwu-ws-kli-hsb`[[1]]
+#&gt; [1] "wwu-ws-kli-hsb"
+#&gt; 
+#&gt; 
+#&gt; $wxt520
+#&gt; $wxt520[[1]]
+#&gt; [1] "Vaisala-WXT520"
+#&gt; 
+#&gt; $wxt520[[2]]
+#&gt; [1] "Vaisala_WXT520"
+#&gt; 
+#&gt; </div><div class='input'><span class='fu'>sosBinding</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; [1] "KVP"</div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># create a SOS connetion with a specific connection method and time format</span>
+<span class='no'>mysos</span> <span class='kw'>&lt;-</span> <span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://mysos.org/sos"</span>,
+    <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d"</span>)
+
+<span class='co'># turn on verbose output for all methods and functions</span>
+<span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://mysos.org/sos"</span>, <span class='kw'>verboseOutput</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># get the meaning of an exception code</span>
+<span class='fu'>sosExceptionCodeMeaning</span>(<span class='no'>ex</span>@<span class='kw'>exceptionCode</span>)
+
+<span class='co'># create a CRS object from a URN CRS string</span>
+<span class='fu'>sosGetCRS</span>(<span class='st'>"urn:ogc:def:crs:EPSG:4217"</span>)
+
+<span class='co'># create a SOS for a specific binding at a specific endpoint</span>
+<span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://localhost:8080/52n-sos/sos/pox"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"POX"</span>,
+                <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='co'># create a SOS using only the DCPs from the capabilities that match a specific</span>
+<span class='co'># pattern with the default binding</span>
+<span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://localhost:8080/52n-sos/sos/service"</span>,
+                <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"POX"</span> <span class='kw'>=</span> <span class='st'>"/pox"</span>))
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

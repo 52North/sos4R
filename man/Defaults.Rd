@@ -146,10 +146,11 @@ myEncoding <- function(object, v) {
 sos = SOS(url = "http://mysos.com/sos",
 		encoders = SosEncodingFunctions("POST" = myPostEncoding))
 
+
 # Use custom converting function and connection method. This mechanism works the
 # same for encoders and decoders.
 myConverters <- SosDataFieldConvertingFunctions(
-	"myNumericUnit" = sosConvertDouble,
+	"myNumericUnit" = sosConvertDouble)
 mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)
 
@@ -159,12 +160,11 @@ describeSensor(sos, sosProcedures(sos)[[1]])
 
 # replace the parsing functions with the default ones
 sos <- SosResetParsingFunctions(sos)
+
 }
 
-\dontrun{
 # a named list of all defaults
 SosDefaults()
-}
 
 # parsing options used by xml2
 SosDefaultParsingOptions()

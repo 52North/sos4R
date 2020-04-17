@@ -144,7 +144,7 @@
     <p>For given sites and phenomena, a SOS is queried and the data returned as data.frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getData</span>(<span class='no'>sos</span>, <span class='no'>phenomena</span>, <span class='no'>sites</span>, <span class='kw'>spatialBBox</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)</pre>
+    <pre class="usage"><span class='fu'>getData</span>(<span class='no'>sos</span>, <span class='no'>phenomena</span>, <span class='no'>sites</span>, <span class='kw'>spatialBBox</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,8 +166,16 @@
       <td><p>A 2-by-2 matrix with <code>x</code> and <code>y</code> in the rows and <code>min</code> and <code>max</code> in the columns. See <code><a href='https://rdrr.io/pkg/sp/man/Spatial-class.html'>Spatial</a></code> for details. If <code>sites</code> is set, this argument is ignored.</p></td>
     </tr>
     <tr>
-      <th>timeInterval</th>
-      <td><p>A character defining an ISO-String (ISO 8601), see also <a href='https://rdrr.io/pkg/xts/man/xts.html'>xts</a>.</p></td>
+      <th>begin</th>
+      <td><p>Object of class <code>POSIXt</code>. Note that creating timestamps with <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
+    </tr>
+    <tr>
+      <th>end</th>
+      <td><p>Object of class <code>POSIXt</code>. Note that creating timestamps with <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Named arguments forwarded to other wrapper functions internally.</p></td>
     </tr>
     </table>
 
@@ -177,7 +185,8 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+<span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
 
 <span class='no'>observationData</span> <span class='kw'>&lt;-</span> <span class='fu'>getData</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>,
                            <span class='kw'>phenomena</span> <span class='kw'>=</span> <span class='no'>phenomena</span>[<span class='fl'>18</span>,<span class='fl'>1</span>],

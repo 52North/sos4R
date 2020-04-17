@@ -187,7 +187,7 @@
 <span class='fu'>parseTimeInstantProperty</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseTimePeriod</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
 <span class='fu'>parseTimePosition</span>(<span class='no'>obj</span>, <span class='no'>sos</span>)
-<span class='fu'>parseTimeObject</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>timeObjectMap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>parseTimeObject</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseTruthObservation</span>(<span class='no'>obj</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>parseValues</span>(<span class='no'>values</span>, <span class='no'>fields</span>, <span class='no'>encoding</span>, <span class='no'>sos</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
@@ -225,10 +225,6 @@
     <tr>
       <th>encoding</th>
       <td><p>Encoding information in <code>parseValues(...)</code>, an object of class <code>SweTextBlock</code>.</p></td>
-    </tr>
-    <tr>
-      <th>timeObjectMap</th>
-      <td><p>A named list of time objects passed on during parsing (name is the id) to resolve in-document references.</p></td>
     </tr>
     <tr>
       <th>...</th>

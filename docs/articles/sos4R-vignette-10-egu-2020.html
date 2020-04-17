@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EGU 2020 blog post: 'Accessing environmental time series data in R from Sensor Observation Services with ease' • sos4R</title>
+<title>EGU2020 blog post: 'Accessing environmental time series data in R from Sensor Observation Services with ease' • sos4R</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="EGU 2020 blog post: 'Accessing environmental time series data in R from Sensor Observation Services with ease'">
+<script src="../pkgdown.js"></script><meta property="og:title" content="EGU2020 blog post: 'Accessing environmental time series data in R from Sensor Observation Services with ease'">
 <meta property="og:description" content="sos4R">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -94,7 +94,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>EGU 2020 blog post: ‘Accessing environmental time series data in R from Sensor Observation Services with ease’</h1>
+      <h1 data-toc-skip>EGU2020 blog post: ‘Accessing environmental time series data in R from Sensor Observation Services with ease’</h1>
                         <h4 class="author">Daniel Nüst¹, Eike H. Jürrens², Benedikt Gräler², and Simon Jirka²</h4>
             <address class="author_afil">
       ¹: University of Münster, Institute for Geoinformatics, Opening Reproducible Research (o2r), Münster, Germany (<a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>); ²: Institute for Geoinformatics, University of Münster, Germany. 52°North GmbH, Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>, <a href="mailto:e.h.juerrens@52north.org" class="email">e.h.juerrens@52north.org</a>, <a href="mailto:b.graeler@52north.org" class="email">b.graeler@52north.org</a>, and <a href="mailto:s.jirka@52north.org" class="email">s.jirka@52north.org</a>
@@ -126,7 +126,7 @@
 <div id="access-sensor-data-with-sos4r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#access-sensor-data-with-sos4r" class="anchor"></a>Access sensor data with sos4R</h2>
-<p>sos4R comprises a client that can connect to an SOS server. The user can use it to query data from SOS instances using simple R function calls. The following example demonstrates some core operations: connect to an SOS, requesting data availability information and sensor metadata, and retrieving the acdtual data:</p>
+<p>sos4R comprises a client that can connect to an SOS server. The user can use it to query data from SOS instances using simple R function calls. The following example demonstrates some core operations: connect to an SOS, requesting data availability information and sensor metadata, and retrieving the actual data:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"sos4R"</span>)
 <span class="no">fluggs</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(
   <span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://fluggs.wupperverband.de/sos2/service"</span>,
@@ -148,19 +148,19 @@
 <span class="no">fluggs_data_availability</span>[<span class="fl">1</span>:<span class="fl">2</span>]
 <span class="co">## [[1]]</span>
 <span class="co">## Object of class DataAvailabilityMember: </span>
-<span class="co">##   Procedure            :  2m_Tiefe </span>
-<span class="co">##   Observed Property    :  Wassertemperatur </span>
-<span class="co">##   Features Of Interest :  Lingese-Talsperre_Absperrbauwerk </span>
-<span class="co">##   Phenomenon Time      :  GmlTimePeriod: [ GmlTimePosition [ time: 2008-07-09 23:00:00 ]</span>
-<span class="co">##  --&gt; GmlTimePosition [ time: 2020-04-14 11:00:00 ] ] </span>
+<span class="co">##   Procedure            :  Stundensumme </span>
+<span class="co">##   Observed Property    :  Niederschlagshoehe </span>
+<span class="co">##   Features Of Interest :  Unterpilghausen </span>
+<span class="co">##   Phenomenon Time      :  GmlTimePeriod: [ GmlTimePosition [ time: 2010-09-01 07:00:00 ]</span>
+<span class="co">##  --&gt; GmlTimePosition [ time: 2013-09-16 10:00:00 ] ] </span>
 <span class="co">## </span>
 <span class="co">## [[2]]</span>
 <span class="co">## Object of class DataAvailabilityMember: </span>
-<span class="co">##   Procedure            :  2m_Tiefe </span>
-<span class="co">##   Observed Property    :  Wassertemperatur </span>
-<span class="co">##   Features Of Interest :  Schevelinger-Talsperre_Absperrbauwerk </span>
-<span class="co">##   Phenomenon Time      :  GmlTimePeriod: [ GmlTimePosition [ time: 1998-01-01 11:00:00 ]</span>
-<span class="co">##  --&gt; GmlTimePosition [ time: 2020-04-13 11:00:00 ] ]</span></pre></body></html></div>
+<span class="co">##   Procedure            :  Stundensumme </span>
+<span class="co">##   Observed Property    :  Niederschlagshoehe </span>
+<span class="co">##   Features Of Interest :  Hangbergermuehle </span>
+<span class="co">##   Phenomenon Time      :  GmlTimePeriod: [ GmlTimePosition [ time: 2010-04-16 23:00:00 ]</span>
+<span class="co">##  --&gt; GmlTimePosition [ time: 2013-04-28 ] ]</span></pre></body></html></div>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">fluggs_offerings</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">sosOfferings</a></span>(<span class="no">fluggs</span>)
 <span class="no">fluggs_obs_jan_2019</span> <span class="kw">=</span> <span class="fu"><a href="../reference/GetObservation.html">getObservation</a></span>(<span class="no">fluggs</span>, <span class="kw">offering</span> <span class="kw">=</span> <span class="no">fluggs_offerings</span><span class="kw">[[</span><span class="fl">1</span>]],
                <span class="kw">eventTime</span> <span class="kw">=</span> <span class="fu"><a href="../reference/sosCreate.html">sosCreateTime</a></span>(<span class="no">fluggs</span>, <span class="st">"2019-01-01::2019-01-31"</span>),
@@ -891,7 +891,7 @@ timestamp
 <span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapshot.html">mapshot</a></span>(<span class="no">sites_map</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="no">map_file</span>)
 <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">map_file</span>)</pre></body></html></div>
 <div class="figure" style="text-align: center">
-<img src="../../../../../tmp/RtmpMd4hYZ/file6cc95a915385.png" alt="Map ofx" width="496"><p class="caption">
+<img src="../../../../../tmp/RtmpmYeyVh/file4f7251ddf98.png" alt="Map ofx" width="496"><p class="caption">
 Map ofx
 </p>
 </div>
@@ -913,18 +913,18 @@ Map ofx
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">tsFluggs</span>,
      <span class="kw">main</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"Water temperature ("</span>, <span class="no">unitOfMeasurement</span>, <span class="st">")"</span>),
      <span class="kw">sub</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="no">observationData</span><span class="kw">[[</span><span class="no">dataColumn</span>]])$<span class="no">defaultPointMetadata</span>@<span class="kw">interpolationType</span>@<span class="kw">href</span>,
-     <span class="kw">yaxis.right</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">legend.loc</span> <span class="kw">=</span> <span class="st">'topleft'</span>)</pre></body></html></div>
+     <span class="kw">yaxis.right</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">legend.loc</span> <span class="kw">=</span> <span class="st">"topleft"</span>)</pre></body></html></div>
 <p><img src="sos4R-vignette-10-egu-2020_files/figure-html/getData_timeseries_plot-1.png" width="576"></p>
 <p>It is now straightforward to show the same data together with data from another SOS. In this demonstrative example, we’ll just combine water temperature from Germany and New Zealand.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">niwa</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">niwa</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(
   <span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://climate-sos.niwa.co.nz/"</span>,
   <span class="kw">binding</span> <span class="kw">=</span> <span class="st">"KVP"</span>,
   <span class="kw">useDCPs</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
   <span class="kw">version</span> <span class="kw">=</span> <span class="st">"2.0.0"</span>)
-<span class="no">siteList</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/siteList.html">siteList</a></span>(<span class="kw">sos</span> <span class="kw">=</span> <span class="no">niwa</span>)
-<span class="no">phenomenaNiwa</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/phenomena.html">phenomena</a></span>(<span class="kw">sos</span> <span class="kw">=</span> <span class="no">niwa</span>)
+<span class="no">siteList</span> <span class="kw">=</span> <span class="fu"><a href="../reference/siteList.html">siteList</a></span>(<span class="kw">sos</span> <span class="kw">=</span> <span class="no">niwa</span>)
+<span class="no">phenomenaNiwa</span> <span class="kw">=</span> <span class="fu"><a href="../reference/phenomena.html">phenomena</a></span>(<span class="kw">sos</span> <span class="kw">=</span> <span class="no">niwa</span>)
 
-<span class="no">observationDataNiwa</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getData.html">getData</a></span>(<span class="kw">sos</span> <span class="kw">=</span> <span class="no">niwa</span>,
+<span class="no">observationDataNiwa</span> <span class="kw">=</span> <span class="fu"><a href="../reference/getData.html">getData</a></span>(<span class="kw">sos</span> <span class="kw">=</span> <span class="no">niwa</span>,
   <span class="kw">phenomena</span> <span class="kw">=</span> <span class="no">phenomenaNiwa</span>[<span class="fl">18</span>, <span class="fl">1</span>],
   <span class="kw">sites</span> <span class="kw">=</span> <span class="no">siteList</span>$<span class="no">siteID</span>[<span class="fl">1</span>],
   <span class="kw">begin</span> <span class="kw">=</span> <span class="no">timeBegin</span>,
@@ -1205,8 +1205,8 @@ timestamp
 </td>
 </tr></tbody>
 </table>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">ts1056</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xts/man/xts.html">xts</a></span>(<span class="no">observationDataNiwa</span>[<span class="no">observationDataNiwa</span>$<span class="no">siteID</span> <span class="kw">==</span> <span class="st">'1056'</span>, <span class="fl">3</span>], <span class="no">observationDataNiwa</span>[<span class="no">observationDataNiwa</span>$<span class="no">siteID</span> <span class="kw">==</span> <span class="st">'1056'</span>,<span class="st">"timestamp"</span>])
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">ts1056</span>) <span class="kw">&lt;-</span> <span class="st">"Station#1056 @ NIWA"</span>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">ts1056</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/xts/man/xts.html">xts</a></span>(<span class="no">observationDataNiwa</span>[<span class="no">observationDataNiwa</span>$<span class="no">siteID</span> <span class="kw">==</span> <span class="st">'1056'</span>, <span class="fl">3</span>], <span class="no">observationDataNiwa</span>[<span class="no">observationDataNiwa</span>$<span class="no">siteID</span> <span class="kw">==</span> <span class="st">'1056'</span>,<span class="st">"timestamp"</span>])
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">ts1056</span>) <span class="kw">=</span> <span class="st">"Station#1056 @ NIWA"</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(
   <span class="kw">x</span> <span class="kw">=</span> <span class="fu">na.fill</span>(<span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(<span class="no">tsFluggs</span>, <span class="no">ts1056</span>), <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fl">NA</span>, <span class="st">"extend"</span>, <span class="fl">NA</span>)),
   <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Incomparable temperatures"</span>,
@@ -1217,8 +1217,11 @@ timestamp
 <div id="shiny-application" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shiny-application" class="anchor"></a>Shiny application</h2>
-<p>TODO: short description</p>
-<p>TODO: screenshot of shiny app</p>
+<p>The use of the sos4R package has also been illustrated in a simple, yet easily extensible <a href="https://shiny.rstudio.com/">Shiny</a> web application. By default, the application queries a SOS service operated by the Wupperverband (see <code>fluggs</code> SOS above). This SOS provides various hydrological time series. On start-up, all measurement stations reporting data in a given time window are shown on a map (see screenshot below). The user can interactively change this time window in the sidebar on the left hand side of the user interface. After selecting a single station on the map, a list with available phenomena appears in the sidebar and the data is downloaded for the given period. The retrieved data is converted into an <a href="https://cran.r-project.org/package=xts"><code>xts</code> object</a> and shown as plot beneath the map window. From the available phenomena, one or more can be selected and the plot will automatically be updated with newly retrieved data.</p>
+<p>You can try out the app online at <strong><a href="http://pilot.52north.org/shinyApps/sos4R/">http://pilot.52north.org/shinyApps/sos4R/</a></strong>. The app’s source code, merely three function calls of sos4R wrapped in a simple graphical user interface, is <a href="https://github.com/52North/sos4R/tree/master/inst/shiny">part of the sos4R package</a>.</p>
+<div class="figure">
+<img src="sos4R-vignette-10-egu-2020_shiny-app.jpg" alt="Shiny sos4R app screenshot"><p class="caption">Shiny sos4R app screenshot</p>
+</div>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">

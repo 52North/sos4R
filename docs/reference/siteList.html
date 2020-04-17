@@ -144,9 +144,14 @@
     <p>Information about the registered sites in a SOS can be queried using this function. This function allows for different levels of detail and returns a vector or data.frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>siteList</span>(<span class='no'>sos</span>, <span class='kw'>empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-         <span class='kw'>listPhenomena</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-         <span class='kw'>phenomena</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+    <pre class="usage"><span class='fu'>siteList</span>(<span class='no'>sos</span>,
+         <span class='kw'>empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+         <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+         <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+         <span class='kw'>phenomena</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+         <span class='kw'>includePhenomena</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+         <span class='kw'>includeTemporalBBox</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+         <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,20 +165,28 @@
       <td><p>Whether also empty sites shall be included in the response.</p></td>
     </tr>
     <tr>
-      <th>timeInterval</th>
-      <td><p>A character defining an ISO-String (ISO 8601), see also <a href='https://rdrr.io/pkg/xts/man/xts.html'>xts</a>. Only sites with data within this interval will be retrieved.</p></td>
+      <th>begin</th>
+      <td><p>Object of class <code>POSIXt</code>. Note that creating timestamps with <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
     </tr>
     <tr>
-      <th>listPhenomena</th>
-      <td><p>Whether the phenomena shall be listed per location that can be observed.</p></td>
+      <th>end</th>
+      <td><p>Object of class <code>POSIXt</code>. Note that creating timestamps with <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct(..)</a></code> will use your local timezone.</p></td>
+    </tr>
+    <tr>
+      <th>phenomena</th>
+      <td><p>A list, vector or one-column data.frame with characters identifying the relevant phenomena.</p></td>
+    </tr>
+    <tr>
+      <th>includePhenomena</th>
+      <td><p>Whether the phenomena shall also be reported in the result.</p></td>
     </tr>
     <tr>
       <th>includeTemporalBBox</th>
       <td><p>Whether the observation containing timespan of each phenomenon shall also be reported.</p></td>
     </tr>
     <tr>
-      <th>phenomena</th>
-      <td><p>A list, vector or one-column data.frame with characters identifying the relevant phenomena; only sites where these phenomena can be observed are retrieved.</p></td>
+      <th>...</th>
+      <td><p>Named parameters passed on to other wrapper functions.</p></td>
     </tr>
     </table>
 
@@ -184,7 +197,8 @@
 <p>If <code>includeTemporalBBox = TRUE</code>, the data.frame also contains two character columns <code>beginTime</code> and <code>endTime</code> indicating per site id and phenomenon its earliest and latest observation time point.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
+    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>,
+             <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
 
 <span class='fu'>siteList</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)</div><div class='output co'>#&gt;    siteID
 #&gt; 1    1056
