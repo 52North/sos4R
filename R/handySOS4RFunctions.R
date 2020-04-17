@@ -28,21 +28,11 @@
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
 ############################################################################## #
-## handy top level sos functions
-#
-#
-#
-#
-#
-#
-#
-#
-#
+
 #
 # phenomena ----
 #
-#
-#
+
 # ~ us.1.1 ----
 # What phenomena are available from a SOS?
 #   phenomena(sos)
@@ -220,18 +210,9 @@ setMethod(f = "phenomena",
 }
 
 #
-#
-#
-#
-#
-#
-#
-#
-#
-#
 # siteList ----
 #
-#
+
 #
 # ~ us.2.1: List all sites (containing data) ----
 #   siteList(sos)
@@ -495,20 +476,11 @@ setMethod(f = "siteList",
   }
   return(filteredDams)
 }
-#
-#
-#
-#
-#
-#
-#
-#
-#
+
 #
 # sites ----
 #
-#
-#
+
 # ~ us.2.1: List all sites (containing data) ----
 # sites(sos)
 # → SpatialPointsDataFrame[siteID] + coords
@@ -768,6 +740,7 @@ setMethod(f = "sites",
   options(stringsAsFactors = tmpStringsAsFactors)
   return(newDataFrame)
 }
+
 #
 #
 #
@@ -809,6 +782,7 @@ setMethod(f = "sites",
   options(stringsAsFactors = tmpStringsAsFactors)
   return(newDataFrame)
 }
+
 #
 #
 #
@@ -844,18 +818,11 @@ setMethod(f = "sites",
                                 match.ID = FALSE,
                                 proj4string = proj4string))
 }
-#
-#
-#
-#
-#
-#
-#
-#
-#
+
 #
 # getData ----
 #
+
 # ~ us.3.1: Retrieve sensor values by phenomenon/a and single site/list of sites ----
 # getData(sos, phenomena=[List of phenomena], sites=[List of sites])
 # →
