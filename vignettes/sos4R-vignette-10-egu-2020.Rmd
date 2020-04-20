@@ -65,13 +65,13 @@ clipr::write_clip(post)
 # NOTE: need to handle images manually!
 ```
 
-## Preface
+# Preface
 
 With EGU 2020 cancelled, this blog post elaborates on the abstract submitted by the 52°North software project `sos4R` development team.
 See the program entry for the abstract [EGU2020-19453 in the official programme](https://meetingorganizer.copernicus.org/EGU2020/EGU2020-19453.html).
 Please refer to this work by citing the DOI [`https://doi.org/10.5194/egusphere-egu2020-19453`](https://doi.org/10.5194/egusphere-egu2020-19453).
 
-## Introduction
+# Introduction
 
 Time series data of in-situ measurements are the key to many environmental studies.
 The first challenge in any analysis typically arises when the data needs to be imported into the analysis framework.
@@ -81,7 +81,7 @@ One standard to provide access to environmental time series data is the Sensor O
   
 The R package [sos4R](https://52north.github.io/sos4R/) (Nüst et al., 2011) is an extension package for the R environment for statistical computing and visualization (https://www.r-project.org/), which has been demonstrated as a powerful tool for conducting and communicating geospatial research (cf. Pebesma et al., 2012).
 
-## Access sensor data with sos4R
+# Access sensor data with sos4R
 
 sos4R comprises a client that can connect to an SOS server.
 The user can use it to query data from SOS instances using simple R function calls.
@@ -189,7 +189,7 @@ mapshot(sites_map, file = map_file)
 knitr::include_graphics(map_file)
 ```
 
-## Integrated data analysis
+# Integrated data analysis
 
 The abstraction provided by sos4R makes sensor observation data easily accessible across multiple SOS instances.
 It seamlessly integrates distributed observations data, i.e., across organizational boundaries, into transparent and reproducible data analysis workflows.
@@ -244,7 +244,7 @@ plot(
   legend.loc = 'topleft')
 ```
 
-## Shiny application
+# Shiny application
 
 We also illustrate the use of the sos4R package in a simple, yet easily extensible [Shiny](https://shiny.rstudio.com/) web application.
 By default, the application queries a SOS service operated by the Wupperverband (see `fluggs` SOS above).
@@ -260,7 +260,7 @@ The app's source code, merely three function calls of sos4R wrapped in a simple 
 
 ![Shiny sos4R app screenshot](sos4R-vignette-10-egu-2020_shiny-app.jpg)
 
-## References
+# References
 
 Nüst D., Stasch C., Pebesma E. (2011) Connecting R to the Sensor Web. In: Geertman S., Reinhardt W., Toppen F. (eds) Advancing Geoinformation Science for a Changing World. Lecture Notes in Geoinformation and Cartography, Springer. doi:[10.1007/978-3-642-19789-5_12](https://doi.org/10.1007/978-3-642-19789-5_12)
 
