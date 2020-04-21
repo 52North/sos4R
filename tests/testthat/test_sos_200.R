@@ -46,7 +46,7 @@ test_that("sosFeaturesOfInterest(SOS_2.0.0) returns a list of features if the SO
       body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  
+
   sos <- SOS(version = sos200_version, url = "http://example.com/sos", binding = "KVP")
   features <- sosFeaturesOfInterest(sos)
   expect_type(features, "list")
@@ -71,7 +71,7 @@ test_that("sosFeaturesOfInterest(SOS_2.0.0) returns an empty list if the SOS is 
       body = readr::read_file("../responses/Capabilities_200_Example.com_empty.xml"),
       headers = list("Content-Type" = "application/xml")
     )
-  
+
   sos <- SOS(version = sos200_version, url = "http://example.com/sos", binding = "KVP")
   features <- sosFeaturesOfInterest(sos)
   expect_type(features, "list")

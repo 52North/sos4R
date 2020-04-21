@@ -99,17 +99,17 @@ test_that("KVP (2.0.0)", {
                useDCPs = FALSE,
                version = sos200_version)
 
-  obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/1")
+  obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/2")
 
   expect_s4_class(obs, "OmOM_Observation")
   expect_length(sosFeatureIds(obs), 1)
   foi <- sosFeaturesOfInterest(obs)@feature
   expect_equal(sosName(foi), "con terra")
-  expect_equal(foi@identifier, "http://www.52north.org/test/featureOfInterest/1")
+  expect_equal(foi@sampledFeature, "http://www.52north.org/test/featureOfInterest/world")
 
   result <- sosResult(obs)
   expect_named(result, c("test_unit_1"))
-  expect_equal(result[1,1], 1)
+  expect_equal(result[1,1], 1.1)
   coords <- sosCoordinates(obs)
   expect_named(coords, c("lon", "lat", "SRS"))
   expect_true((coords$lat - 51.88391) < 0.00000000001)
@@ -127,13 +127,13 @@ test_that("POX (SOS 1.0.0)", {
 
   mySOS <- SOS(url = "http://sensorweb.demo.52north.org/52n-sos-webapp/service/pox",
                binding = "POX", useDCPs = FALSE)
-  obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/1")
+  obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/2")
 
   expect_s4_class(obs, "OmObservationCollection")
   expect_length(obs, 1)
   expect_s4_class(obs[[1]], "OmMeasurement")
   expect_s3_class(sosResult(obs), "data.frame")
-  expect_equal(sosResult(obs)[1,1], 1)
+  expect_equal(sosResult(obs)[1,1], 1.1)
 })
 
 test_that("POX (2.0.0)", {
@@ -144,11 +144,11 @@ test_that("POX (2.0.0)", {
                useDCPs = FALSE,
                version = sos200_version)
 
-  obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/1")
+  obs <- getObservationById(sos = mySOS, observationId = "http://www.52north.org/test/observation/2")
   expect_s4_class(obs, "OmOM_Observation")
   expect_length(obs, 1)
   expect_s3_class(sosResult(obs), "data.frame")
-  expect_equal(sosResult(obs)[1,1], 1)
+  expect_equal(sosResult(obs)[1,1], 1.1)
 })
 
 test_that("file saving works (2.0.0)", {
@@ -162,7 +162,7 @@ test_that("file saving works (2.0.0)", {
   tempfile <- tempfile(fileext = ".xml")
   expect_output(
     obs <- getObservationById(sos = mySOS,
-                              observationId = "http://www.52north.org/test/observation/1",
+                              observationId = "http://www.52north.org/test/observation/2",
                               saveOriginal = tempfile),
     paste0("document saved:(.*)", tempfile))
   expect_s4_class(obs, "OmOM_Observation")
