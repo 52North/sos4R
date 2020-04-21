@@ -146,8 +146,8 @@ watertemp_phenomena = subset(phenomena,
                              phenomenon == "Wassertemperatur")
 
 # function takes R date/time objects as input
-timeBegin = as.POSIXct("1999-01-01")
-timeEnd = parsedate::parse_iso_8601("1999-02-28")
+timeBegin = as.POSIXct("2018-01-01")
+timeEnd = as.POSIXct("2018-03-01")
 
 observationData = getData(
   sos = fluggs,
