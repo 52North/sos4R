@@ -146,8 +146,8 @@ watertemp_phenomena = subset(phenomena,
                              phenomenon == "Wassertemperatur")
 
 # function takes R date/time objects as input
-timeBegin = as.POSIXct("1999-01-01")
-timeEnd = parsedate::parse_iso_8601("1999-02-28")
+timeBegin = as.POSIXct("2018-01-01")
+timeEnd = as.POSIXct("2018-03-01")
 
 observationData = getData(
   sos = fluggs,
@@ -213,12 +213,12 @@ plot(x = tsFluggs,
      yaxis.right = FALSE, legend.loc = "topleft")
 ```
 
-It is now straightforward to show the same data together with data from another SOS. ????? (I don't understand what you want to say with this sentence)
+It is now straightforward to combine and visualize data from two diffrent SOS servers.
 In this example, we'll just combine water temperature from Germany and New Zealand.
 
 ```{r niwa_data}
 niwa = SOS(
-  url = "https://climate-sos.niwa.co.nz/",
+  url = "https://hydro-sos.niwa.co.nz/",
   binding = "KVP",
   useDCPs = FALSE,
   version = "2.0.0")
@@ -226,8 +226,8 @@ siteList = siteList(sos = niwa)
 phenomenaNiwa = phenomena(sos = niwa)
 
 observationDataNiwa = getData(sos = niwa,
-  phenomena = phenomenaNiwa[18, 1],
-  sites = siteList$siteID[1],
+  phenomena = phenomenaNiwa[25, 1],
+  sites = siteList$siteID[40],
   begin = timeBegin,
   end = timeEnd)
 attributes(observationDataNiwa[[3]])
@@ -235,8 +235,8 @@ skimr::skim(observationDataNiwa)
 ```
 
 ```{r multiple_timeseries_plot, fig.width=6}
-ts1056 = xts(observationDataNiwa[observationDataNiwa$siteID == '1056', 3], observationDataNiwa[observationDataNiwa$siteID == '1056',"timestamp"])
-names(ts1056) = "Station#1056 @ NIWA"
+ts1056 = xts(observationDataNiwa[observationDataNiwa$siteID == 'AK1', 3], observationDataNiwa[observationDataNiwa$siteID == 'AK1',"timestamp"])
+names(ts1056) = "Station#AK1 @ NIWA"
 plot(
   x = na.fill(merge(tsFluggs, ts1056), list(NA, "extend", NA)),
   main = "Incomparable temperatures",
