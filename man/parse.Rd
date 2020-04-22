@@ -84,6 +84,10 @@
 \alias{parseEnvelope}
 \alias{parseGetObservationByIdResponse}
 
+\alias{sosIsListFieldAvailable}
+\alias{gmlGetReferencedNode}
+\alias{gmlIsNodeReferenced}
+
 \title{Parsing Functions for XML Documents and Elements}
 
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}
@@ -135,6 +139,11 @@ parseTimePosition(obj, sos)
 parseTimeObject(obj, sos, verbose = FALSE)
 parseTruthObservation(obj, sos, verbose = FALSE)
 parseValues(values, fields, encoding, sos, verbose = FALSE)
+
+sosIsListFieldAvailable(listField)
+
+gmlGetReferencedNode(sos, doc, node, verbose = FALSE)
+gmlIsNodeReferenced(sos, node)
 }
 
 \arguments{
@@ -147,6 +156,9 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
   \item{file}{Name of the file to be parsed in \code{sosParse(...)}.}
   \item{encoding}{Encoding information in \code{parseValues(...)}, an object of class \code{SweTextBlock}.}
   \item{...}{Additional arguments that are parsed to \code{xml2::read_xml(..)}.}
+  \item{listField}{Object checked to be of type \code{list} and at least one item long.}
+  \item{doc}{XML document.}
+  \item{node}{XML node.}
 }
 
 \details{

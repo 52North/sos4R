@@ -1,5 +1,9 @@
 \name{phenomena}
+
 \alias{phenomena}
+\alias{phenomena-methods}
+\alias{phenomena,SOS_2.0.0-method}
+
 \title{Function retrieve phenomena of a SOS v2.0}
 \description{
 This function queries a SOS v2.0 for all its phenomena

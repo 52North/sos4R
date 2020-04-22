@@ -8,6 +8,8 @@
 \alias{sosCheatSheet}
 \alias{release_questions}
 
+\alias{cacheVariables}
+
 \title{A client for the OGC Sensor Observation Service}
 
 \description{
@@ -18,8 +20,8 @@
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
-	Version: \tab 0.3.1\cr
-	Date: \tab 2019-07-09\cr
+	Version: \tab 0.4.0\cr
+	Date: \tab 2020-04-21\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr
@@ -44,7 +46,7 @@ To stay updated on all matters around \pkg{sos4R} go to the development blog at 
 
 If you want to ask questions about using the software, please go to the to the issue tracker at \url{https://github.com/52North/sos4R/issues}.
 
-The most extensive documenation is contained in the \strong{package vignette}.
+The most extensive documenation is contained in the \strong{package vignettes}.
 }
 
 \examples{
@@ -92,8 +94,11 @@ myConverters <- SosDataFieldConvertingFunctions(
 mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)
 
-# get the cheat sheet
+# where to find the cheat sheet
 sosCheatSheet()
+
+# global objects caching objects during parsing of XML documents
+cacheVariables
 }
 
 }

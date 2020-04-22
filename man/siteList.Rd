@@ -1,5 +1,9 @@
 \name{siteList}
+
 \alias{siteList}
+\alias{siteList-methods}
+\alias{siteList,SOS_2.0.0-method}
+
 \title{
 This function queries a SOS v2.0 for its sites and returns them as data.frame
 }

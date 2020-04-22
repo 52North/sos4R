@@ -116,7 +116,6 @@ These comprise spatial and temporal operations and operators which can be encode
 
 The \verb{...OrNULL} classes are used to model optional slots.
 
-% TODO describe class hierarchy here.
 }
 
 \references{Vretanos, Panagiotis A. (Ed.), OpenGIS(R) Filter Encoding Implementation Specification, OGC 04-095, Version: 1.1.0

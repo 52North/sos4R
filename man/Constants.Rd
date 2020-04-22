@@ -24,6 +24,7 @@
 \alias{gmlTimePeriodName}
 \alias{gmlTimePositionName}
 \alias{gmlUpperCornerName}
+\alias{gmlResultTypeAttributeName}
 \alias{ogcBBOXName}
 \alias{ogcArithmeticOperatorsName}
 \alias{ogcComparisonOpBetweenName}
@@ -211,6 +212,7 @@
 \alias{mimeTypeSML}
 \alias{mimeTypeXML}
 \alias{mimeSubtypeOM}
+\alias{mimeTypeOM20}
 
 \alias{smlSensorMLName}
 
@@ -263,8 +265,12 @@
 
 % Version 2.0.0
 \alias{sos200ContentsName}
-\alias{sos200FilterCapabilitiesName}
+\alias{sos200SpatialFilterName}
+\alias{sos200TemporalFilterName}
 
+\alias{sosKVPParamNameNamespaces}
+\alias{sosKVPParamNameSpatialFilter}
+\alias{sosKVPParamNameTemporalFilter}
 \alias{sosGetObservationByIdResponseName}
 
 \alias{om20ResultMeasureTypeName}
@@ -283,6 +289,9 @@
 \alias{sosResultTimeName}
 
 \alias{sweTextEncodingName}
+\alias{swe20Namespace}
+\alias{swe20DataArrayName}
+\alias{swe20NamespacePrefix}
 
 \alias{swesDescribeSensorName}
 \alias{swesDescribeSensorResponseName}
@@ -327,6 +336,7 @@
 \alias{sos200ResponseModeName}
 \alias{sos200ResultTimeName}
 \alias{sos200contentsName}
+\alias{sos200FilterCapabilitiesName}
 \alias{sosGDAMemberName}
 \alias{sosGetDataAvailabilityName}
 \alias{sosGetDataAvailabilityResponse}
@@ -345,6 +355,10 @@
 \alias{gdaPhenomenonTimeName}
 \alias{gdaPrefix}
 \alias{gdaProcedureName}
+
+\alias{fesDuringName}
+\alias{fesNamespacePrefix}
+\alias{fesValueReferenceName}
 
 % Internal constants
 \alias{owsDcpContentTypeIndex}

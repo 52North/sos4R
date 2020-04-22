@@ -33,6 +33,10 @@
 \alias{SosDefaults2}
 \alias{SosDefaultParsingOptions}
 
+\alias{sos200DefaultGetObsResponseFormat}
+
+\alias{sosConvertFactor}
+\alias{sosConvertInteger}
 
 \title{Default Parameter Settings and Handling Functions}
 

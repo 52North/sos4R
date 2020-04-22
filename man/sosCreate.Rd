@@ -14,6 +14,7 @@
 \alias{sosCreateEventTime}
 \alias{sosCreateEventTime-methods}
 \alias{sosCreateEventTime,GmlTimeGeometricPrimitive-method}
+\alias{sosCreateEventTime,GmlTimeObject-method}
 \alias{sosCreateFeatureOfInterest}
 \alias{sosCreateFeatureOfInterest-methods}
 \alias{sosCreateFeatureOfInterest,ANY-method}
