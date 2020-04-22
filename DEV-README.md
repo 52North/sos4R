@@ -101,14 +101,17 @@ The vignettes should build as part of the docs website or package check process.
 To build single vingettes manually you can use
 
 ```r
-rmarkdown::render("vignettes/sos4R-vignette-01-quickstart.Rmd")
+rmarkdown::render("vignettes/sos4R.Rmd")
 ```
 
 or
 
 ```r
-pkgdown::build_article("sos4R-vignette-01-quickstart")
+pkgdown::build_article("sos4R-vignette-04-extensions")
 ```
+  
+Note that some of the vignettes are not build as part of the package check since there are timeout problems, but only as part of the `pkgdown` website.
+These vignettes do not have a `vignette:` element in the Rmd document header and are ignored via `.Rbuildignore`.
 
 ------
 

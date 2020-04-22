@@ -22,10 +22,6 @@ abstract: >
 
   In our presentation, we illustrate use cases and examples building upon sos4R easing the access of time series data in an R and Shiny (https://shiny.rstudio.com/) context.
   We demonstrate how the abstraction provided in the client library makes sensor observation data accessible and further show how sos4R allows the seamless integration of distributed observations data, i.e., across organisational boundaries, into transparent and reproducible data analysis workflows.
-vignette: >
-  %\VignetteIndexEntry{6. EGU2020 Blog Post}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
