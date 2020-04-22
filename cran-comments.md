@@ -1,10 +1,11 @@
 # Test environments
 
-* local R 3.6.1
-* Ubuntu 14.04 (Trusty) on Travis CI
+* local R 3.6.2
+* R-release, R-devel, R-oldrel on Travis CI (Ubuntu 14.04 Trusty)
 * Windows on Appveyor
+* R-devel and R 3.6.3 on CircleCI (using rocker/geospatial image)
 * R-Hub
-* [skipped because xml2 not latest version] win-builder (using devtools)
+* win-builder (using devtools) for R-release and R-devel
 
 ## R CMD check results
 
@@ -14,4 +15,4 @@ No notes.
 
 ## Other
 
-This is a bugfix release following the publication of xml2 version 1.2.2.
+This is a re-release following a CRAN takedown earlier this year. The package is only released now as new feature implementations were pending.
