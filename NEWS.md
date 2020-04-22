@@ -15,6 +15,9 @@ title: sos4R News
 - Drop "Created SOS for URL" message after creation
 - Drop `checkRequest` methods, they were 90% "TODO" comments; actually existing checks preserved in functions where sensible
 - Drop support for KML (Keyhole Markup Language), because it is not a data format, the parsing was never implemented, and the only SOS using it provided it specifically for display in Google Earth
+- Store the caches for parsing in an environment, not in global variables
+- Add CircleCI continuous integration tests
+- Restructure vignettes (and render problematic ones only locally with pgkdown website)
 
 # sos4R 0.3.1
 

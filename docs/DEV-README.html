@@ -261,9 +261,10 @@
 <h3 class="hasAnchor">
 <a href="#build-vignettes" class="anchor"></a>Build vignettes</h3>
 <p>The vignettes should build as part of the docs website or package check process. To build single vingettes manually you can use</p>
-<div class="sourceCode" id="cb2"><html><pre class="r"><span class="kw pkg">rmarkdown</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"vignettes/sos4R-vignette-01-quickstart.Rmd"</span>)</pre></html></div>
+<div class="sourceCode" id="cb2"><html><pre class="r"><span class="kw pkg">rmarkdown</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"vignettes/sos4R.Rmd"</span>)</pre></html></div>
 <p>or</p>
-<div class="sourceCode" id="cb3"><html><pre class="r"><span class="kw pkg">pkgdown</span><span class="kw ns">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_articles.html">build_article</a></span>(<span class="st">"sos4R-vignette-01-quickstart"</span>)</pre></html></div>
+<div class="sourceCode" id="cb3"><html><pre class="r"><span class="kw pkg">pkgdown</span><span class="kw ns">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_articles.html">build_article</a></span>(<span class="st">"sos4R-vignette-04-extensions"</span>)</pre></html></div>
+<p>Note that some of the vignettes are not build as part of the package check since there are timeout problems, but only as part of the <code>pkgdown</code> website. These vignettes do not have a <code>vignette:</code> element in the Rmd document header and are ignored via <code>.Rbuildignore</code>.</p>
 <hr>
 </div>
 </div>
@@ -449,7 +450,8 @@ You can start and stop the container by its name <code>sos4r-dev</code>.</li>
 <li>Push changes to <code>dev</code> branch</li>
 <li>Read and follow <a href="http://cran.r-project.org/web/packages/policies.html" class="uri">http://cran.r-project.org/web/packages/policies.html</a> and <a href="http://r-pkgs.had.co.nz/release.html#release-check" class="uri">http://r-pkgs.had.co.nz/release.html#release-check</a> again, make necessary changes</li>
 <li>Merge the PR</li>
-<li>Update your local <code>master</code> to upstream’s <code>master</code> branch -_ Do the actual release_ with <code><a href="https://devtools.r-lib.org//reference/release.html">devtools::release()</a></code> (which will ask you again if you did many of the steps before)</li>
+<li>Update your local <code>master</code> to upstream’s <code>master</code> branch</li>
+<li>_ Do the actual release_ with <code><a href="https://devtools.r-lib.org//reference/release.html">devtools::release()</a></code> (which will ask you again if you did many of the steps before)</li>
 <li>Wait for the good news, check where the package is in the queue with <code><a href="https://rdrr.io/pkg/foghorn/man/cran_incoming.html">foghorn::cran_incoming(pkg = "sos4R")</a></code>
 </li>
 <li>When available on CRAN:
