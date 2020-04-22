@@ -149,8 +149,6 @@ accuracy(bakeA.ar.fcast) # check goodness of fit
 # looks interesting! save figure1.png
 savePlot(type = "png", filename = "figure1.png")
 
-# TODO add filtered lines
-
 # try out ets
 bakeA.ets <- ets(bakeA)
 bakeA.ets.fcast <- forecast(bakeA.ets, h = 60 * 24) # 12 hrs
@@ -435,7 +433,6 @@ ise.rain3 <- getObservation(sos = ise,
 
 ############################################################################## #
 # .NET implementation from http://ogc.codeplex.com/ (http://sensordatabus.org/)
-# TODO
 ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP", verboseOutput = TRUE)
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
 # Seems not to work with additional request parameters...
@@ -443,7 +440,6 @@ ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP", verboseOu
 
 ############################################################################## #
 # Renaissance Computing Institute
-# TODO
 renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP")
 # does not support sections parameter, capabilities are empty if it's given
 
@@ -516,7 +512,6 @@ sosOfferings(istraw)
 
 ############################################################################## #
 # ENVISION SOS
-# TODO
 brgm <- SOS(url = "http://swe.brgm.fr/constellation-envision/WS/sos-discovery",
 #		verboseOutput = TRUE,
 		binding = "KVP")
@@ -537,11 +532,10 @@ sosProcedures(brgm.all)
 # Center for Coastal Margin Observation & Prediction
 # http://www.stccmop.org/, http://www.stccmop.org/sos
 
-# TODO implement parsing of om:resultDefinition
+# Would need to implement parsing of om:resultDefinition
 # BUT do not do it because the referenced schemas are not available for download
 # and the response does not validate with http://schemas.opengis.net/om/1.0.0/observation.xsd
 
-# TODO impmlement method to return data frame
 stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 	if(verbose) {
 		cat("[stccmopParseResult]\n")
@@ -685,7 +679,7 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 
 ############################################################################## #
 # some services from the AGILE 2011 paper "Empirical Study ..."
-# TODO test, create demos if interesting data
+# > test, create demos if interesting data
 # use time series analysis like presented at
 # http://www.r-bloggers.com/time-series-analysis-and-mining-with-r/
 
@@ -693,12 +687,10 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 weatherflow <- SOS(url = "http://www.weatherflow.com/sos/sos.pl")
 
 # offering network-all
-# TODO make demo with weatherflow
 
 # WAVCIS (part of MMI)
 # http://www.wavcis.lsu.edu/SOS/server.asp?request=GetCapabilities
 wavcis <- SOS(url = "http://www.wavcis.lsu.edu/SOS/server.asp")
-
 
 # Sensor Data Bus
 # http://www.sensordatabus.org/Pages/SOS.aspx

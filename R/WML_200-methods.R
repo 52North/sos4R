@@ -56,6 +56,7 @@ parseWmlMonitoringPoint <- function(obj, sos, verbose = FALSE) {
 
   return(mp)
 }
+
 #
 # <wml2:metadata>
 #   <wml2:MeasurementTimeseriesMetadata>
@@ -94,6 +95,7 @@ parseWmlMeasurementTimeseriesMetadata <- function(obj, sos, verbose = FALSE) {
   }
   return(WmlMeasurementTimeseriesMetadata(temporalExtent = temporalExtent))
 }
+
 #
 # <wml2:interpolationType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/continuous" xlink:title="Instantaneous"/>
 #
@@ -104,6 +106,7 @@ parseWmlInterpolationType <- function(obj, sos, verbose = FALSE) {
   stopifnot(is(title, "character"), nchar(title) > 0)
   return(WmlInterpolationType(href = href, title = title))
 }
+
 #
 # <wml2:defaultPointMetadata>
 #   <wml2:DefaultTVPMeasurementMetadata>
@@ -121,6 +124,7 @@ parseWmlDefaultTVPMeasurementMetadata <- function(obj, sos, verbose = FALSE) {
   stopifnot(isS4(interpolationType), is(interpolationType, "WmlInterpolationType"))
   return(WmlDefaultTVPMeasurementMetadata(uom = uom, interpolationType = interpolationType))
 }
+
 #
 # <wml2:point>
 #   <wml2:MeasurementTVP>
@@ -137,9 +141,7 @@ parseWmlMeasurementTVP <- function(obj, sos, verbose = FALSE) {
   value <- xml2::xml_double(valueNode)
   return(WmlMeasurementTVP(time = time, value = value))
 }
-#
-#
-#
+
 parseWmlMeasurementTimeseries <- function(obj, sos, verbose = FALSE) {
   id <- xml2::xml_attr(x = obj, attr = "gml:id", ns = sos@namespaces)
   #
@@ -201,9 +203,11 @@ setAs(from = "WmlMeasurementTimeseries", to = "data.frame",
         as.data.frame.WmlMeasurementTimeseries(from)
       }
 )
+
 #
 # accessor methods ----
 #
+
 #
 # sosTime(WmlMeasurementTVP) ----
 #
@@ -212,6 +216,7 @@ setMethod(f = "sosTime",
           definition = function(obj) {
             return(as(obj@time, "POSIXct"))
           })
+
 #
 # sosResult(WmlMeasurementTVP) ----
 #
@@ -221,6 +226,7 @@ setMethod(f = "sosResult",
             result <- sosResult(obj@value)
             return(result)
           })
+
 #
 # sosResult(WmlMeasurementTimeseries) ----
 #
@@ -246,6 +252,7 @@ setMethod(f = "sosResult", signature = signature(obj = "WmlMeasurementTimeseries
 
             return(result)
           })
+
 #
 # sosFeatureIds(WmlMonitoringPoint) ----
 #
