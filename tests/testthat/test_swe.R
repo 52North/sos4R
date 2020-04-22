@@ -439,13 +439,9 @@ observationXml20 <- '<sos:observation xmlns:sos="http://www.opengis.net/sos/2.0"
 # test parsing: SWE 2.0 DataArray can be parsed ----
 #
 test_that("SWEv2.0: data array can be parsed", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml20),
                                       sos = SOS_Test(name = "test_swe_200", version = sos200_version),
                                       retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
   obsProps <- sosObservedProperties(observation)
   expect_length(obsProps, 1)
   expect_equal(obsProps, "Discharge")

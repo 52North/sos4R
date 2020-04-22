@@ -63,26 +63,19 @@ observationXml <- '<sos:observation xmlns:sos="http://www.opengis.net/sos/2.0" x
   </sos:observation>'
 
 testsos <- SOS_Test(name = "omresult", version = sos200_version)
+
 #
 # correct class is returned ----
 #
 test_that("correct class is returned", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
   expect_s4_class(observation, "OmOM_Observation")
 })
 #
 # time parsing works #####
 #
 test_that("time parsing works", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
 
   times <- sosTime(observation)
   expect_equal(times$resultTime, times$phenomenonTime)
@@ -95,11 +88,7 @@ test_that("time parsing works", {
 # coordinates are not available without FOI with a warning ----
 #
 test_that("coordinates are not available without FOI with a warning", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
 
   expect_warning(coords <- sosCoordinates(observation),
                  "contains a feature")
@@ -135,11 +124,7 @@ test_that("coordinates are available with retrieved FOI", {
                binding = "KVP",
                useDCPs = FALSE,
                version = sos200_version)
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = mySOS)
-  featureCache <<- list()
-  timeObjectCache <<- list()
 
   coords <- sosCoordinates(observation)
   expect_named(coords, c("lon", "lat", "SRS"))
@@ -151,11 +136,7 @@ webmockr::disable("httr")
 # result parsed from observation ----
 #
 test_that("result parsed from observation", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
   result <- sosResult(observation)
 
   expect_equal(dim(result), c(1, 1))
@@ -166,11 +147,7 @@ test_that("result parsed from observation", {
 # observation metadata is in result ----
 #
 test_that("observation metadata is in result", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
   result <- sosResult(observation)
 
   expect_named(result, c("test_unit_1"))
@@ -182,11 +159,7 @@ test_that("observation metadata is in result", {
 # feature ID parsed from observation ----
 #
 test_that("feature ID parsed from observation", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
   fid <- sosFeatureIds(observation)
 
   expect_length(fid, 1)
@@ -196,11 +169,8 @@ test_that("feature ID parsed from observation", {
 # observed property parsed from observation ----
 #
 test_that("observed property parsed from observation", {
-  featureCache <<- list()
-  timeObjectCache <<- list()
   observation <- parseObservation_2.0(obj = xml2::read_xml(x = observationXml), sos = testsos, retrieveFOI = FALSE)
-  featureCache <<- list()
-  timeObjectCache <<- list()
+
   obsProps <- sosObservedProperties(observation)
 
   expect_length(obsProps, 1)

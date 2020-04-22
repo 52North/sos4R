@@ -33,6 +33,10 @@
 parseObservation_2.0 <- function(obj, sos, verbose = FALSE, retrieveFOI = TRUE) {
   if (verbose) cat("[parseObservation_2.0] Parsing", xml2::xml_name(obj), "\n")
 
+  if (verbose) cat("[parseObservation_2.0] Clearing caches\n")
+  assign(x = "featureCache", value = list(), envir = get("sos4R_caches"))
+  assign(x = "timeObjectCache", value = list(), envir = get("sos4R_caches"))
+
   observationXml <- xml2::xml_child(x = obj, search = om20OM_Observation, ns = sos@namespaces)
 
   id <- xml2::xml_attr(x = observationXml, attr = "id", default = NA_character_)
@@ -63,11 +67,13 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE, retrieveFOI = TRUE) 
     if (!is.null(featureOfInterest@href)) {
       if (verbose) cat("[parseObservation_2.0] resolving referenced featureOfInterest\n")
 
+      featureCache <- get(x = "featureCache", envir = get("sos4R_caches"))
       if (startsWith("#", featureOfInterest@href)) {
         cachedFeature <- featureCache[[substring(text = featureOfInterest@href, first = 2)]]
       } else {
         cachedFeature <- featureCache[[featureOfInterest@href]]
       }
+
       if (is.null(cachedFeature)) {
         if (retrieveFOI) {
           if (verbose) cat("[parseObservation_2.0] referenced featureOfInterest is not cached, retrieving... \n")
@@ -76,10 +82,22 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE, retrieveFOI = TRUE) 
           # should return only one featureOfInterest
           if (length(foiList) == 1) {
             featureOfInterest <- foiList[[1]]
-            if (!is.na(featureOfInterest@href)) featureCache[[featureOfInterest@href]] <<- featureOfInterest
-            if (!is.na(featureOfInterest@feature@identifier)) featureCache[[featureOfInterest@feature@identifier]] <<- featureOfInterest
+
+            featureCache <- get(x = "featureCache", envir = get("sos4R_caches"))
+
+            if (!is.na(featureOfInterest@href)) {
+              featureCache[[featureOfInterest@href]] <- featureOfInterest
+            }
+            if (!is.na(featureOfInterest@feature@identifier)) {
+              featureCache[[featureOfInterest@feature@identifier]] <- featureOfInterest
+            }
             # in-document use gml:id =: id as href
-            if (!is.na(featureOfInterest@feature@id)) featureCache[[featureOfInterest@feature@id]] <<- featureOfInterest
+            if (!is.na(featureOfInterest@feature@id)) {
+              featureCache[[featureOfInterest@feature@id]] <- featureOfInterest
+            }
+
+            assign(x = "featureCache", value = featureCache, envir = get("sos4R_caches"))
+
             if (verbose) cat("[parseObservation_2.0] Retrieved FOI: ", toString(featureOfInterest), "\n")
           } else {
             stop("Retrieved multiple FOIs for ", featureOfInterest@href, " - cannot resolve FOI for observation.")
@@ -126,6 +144,10 @@ parseObservation_2.0 <- function(obj, sos, verbose = FALSE, retrieveFOI = TRUE) 
                            featureOfInterest = featureOfInterest,
                            result = result)
 
+  if (verbose) cat("[parseObservation_2.0] Clearing caches\n")
+  assign(x = "featureCache", value = list(), envir = get("sos4R_caches"))
+  assign(x = "timeObjectCache", value = list(), envir = get("sos4R_caches"))
+
   return(obs)
 }
 
@@ -140,15 +162,17 @@ parseTimeObject <- function(obj, sos, verbose = FALSE) {
   timeReference <- xml2::xml_attr(x = obj, attr = "href")
   timeObject <- NULL
 
+  timeObjectCache <- get(x = "timeObjectCache", envir = get("sos4R_caches"))
+
   if (!is.na(tiXML)) {
     if (verbose) cat("[parseTimeObject] time instant.\n")
     timeObject <- parseTimeInstant(obj = tiXML, sos = sos)
-    timeObjectCache[[timeObject@id]] <<- timeObject
+    timeObjectCache[[timeObject@id]] <- timeObject
   }
   else if (!is.na(tpXML)) {
     if (verbose) cat("[parseTimeObject] time period.\n")
     timeObject <- parseTimePeriod(obj = tpXML, sos = sos)
-    timeObjectCache[[timeObject@id]] <<- timeObject
+    timeObjectCache[[timeObject@id]] <- timeObject
   }
   else if (!is.na(timeReference)) {
     if (verbose) cat("[parseTimeObject] referenced time.\n")
@@ -163,6 +187,8 @@ parseTimeObject <- function(obj, sos, verbose = FALSE) {
     timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
       time = parsedate::parse_iso_8601(NA)))
   }
+
+  assign(x = "timeObjectCache", value = timeObjectCache, envir = get("sos4R_caches"))
 
   return(timeObject)
 }

@@ -218,11 +218,15 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = ns)
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(gdaMembers), "element(s).\n")
-  phenTimeCache <<- list()
+
+  assign("phenTimeCache", list(), envir = get("sos4R_caches"))
+
   parsedGDAMembers <- lapply(gdaMembers, .parseGDAMember, sos, verbose)
   if (verbose) cat("[parseGetDataAvailabilityResponse] Done. Processed", length(parsedGDAMembers),
                    "elements")
-  phenTimeCache <<- list()
+
+  assign("phenTimeCache", list(), envir = get("sos4R_caches"))
+
   return(parsedGDAMembers)
 }
 
@@ -241,16 +245,21 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   if (is.na(ptNode)) {
     stop(paste0("[parseGDAMember] ", gdaPhenomenonTimeName, " not found!"))
   }
+
+  phenTimeCache <- get(x = "phenTimeCache", envir = get("sos4R_caches"))
+
   # if href is in <gda:phenomenonTime xlink:href="#tp_2"/> then in-document reference starting with "#" and than the GML:id of the referenced element
   if (gmlIsNodeReferenced(sos, ptNode)) {
     phenTime <- phenTimeCache[[substring(text = xml2::xml_attr(ptNode, "xlink:href", ns = ns), first = 2)]]
+
     if (is.null(phenTime)) {
       ptNode <- gmlGetReferencedNode(sos, gdaMember, ptNode, verbose = verbose)
       phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
                                                        xpath = gmlTimePeriodName,
                                                        ns = ns),
                                   sos = sos)
-      phenTimeCache[[phenTime@id]] <<- phenTime
+
+      phenTimeCache[[phenTime@id]] <- phenTime
     }
   } else {
     phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
@@ -258,9 +267,12 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
                                                      ns = ns),
                                 sos = sos)
     if (!is.na(phenTime@id)) {
-      phenTimeCache[[phenTime@id]] <<- phenTime
+      phenTimeCache[[phenTime@id]] <- phenTime
     }
   }
+
+  assign(x = "phenTimeCache", value = phenTimeCache, envir = get("sos4R_caches"))
+
   if (is.null(phenTime)) {
     stop("[parseGDAMember] could NOT parse phenomenon time.")
   }

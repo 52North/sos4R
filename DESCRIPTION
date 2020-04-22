@@ -70,8 +70,8 @@ ByteCompile: TRUE
 BugReports: https://github.com/52North/sos4R/issues
 VignetteBuilder: knitr
 Collate:
-    globals.R
     Constants.R
+    caches.R
     R-Helper.R
     Class-OWS.R Class-GML.R Class-SWE.R Class-OM.R Class-SA.R Class-SAMS.R Class-WML_200.R Class-OM_20.R
     Class-OGC.R Class-SOS.R Class-SOS_100.R Class-SOS_200.R Class-SOS_200_GDA.R Class-SML.R
