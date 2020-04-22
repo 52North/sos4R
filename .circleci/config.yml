@@ -11,8 +11,6 @@ jobs:
           keys:
             # use R version in cache, cannot automate, see https://ideas.circleci.com/ideas/CCI-I-1017
             - deps1-{{ .Branch }}-{{ checksum "DESCRIPTION" }}-{{ "3.6.2" }}
-            - deps1-{{ .Branch }}
-            - deps1-
       - run:
           command: |
             R -e 'devtools::install_deps(dependencies = TRUE)'
