@@ -16,6 +16,7 @@ addons:
       - libgeos-dev
       - libgdal-dev
       - libudunits2-dev
+      - ghostscript
 
 r:
   - release
