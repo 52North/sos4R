@@ -88,6 +88,8 @@
 \alias{gmlGetReferencedNode}
 \alias{gmlIsNodeReferenced}
 
+\alias{sos4R_caches}
+
 \title{Parsing Functions for XML Documents and Elements}
 
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}
@@ -162,7 +164,7 @@ gmlIsNodeReferenced(sos, node)
 }
 
 \details{
-The naming of the functions follow the following rule: parse[optional: namespace prefix][name of the XML element to be parsed]
+The naming of the functions follow the following rule: \code{parse[optional: namespace prefix][name of the XML element to be parsed]}
 
 Not all parsing function that have a \code{SOS} object or \code{verbose} in their signature, but few actually use it at this points of development. Some of the parsing functions are \strong{exchangeable} when creating a new SOS connection. Please see the examples!
 
@@ -173,6 +175,8 @@ Functions parsing time rely on the slot \code{timeFormat} of \code{SOS} objects.
 \code{parseNoParsing} is a convenience function that directly returns the object without any changes.
 
 \code{sosParse} allows parsing of files for all elements that have a parsers registered with the given SOS.
+
+The parsing uses an internal cache to store within-document references to other nodes.
 }
 
 \value{An objects of a specific class depending on the parsing method and the passed object, possibly even lists or named character vectors.}
@@ -208,6 +212,9 @@ obsId <- getObservationById(sos = mySOS, observationId = "o_3508493",
 .observationFiles <- subset(.files, .startWithO_)
 
 obsId <- parseFile(sos = mySOS, file = .observationFiles[[1]])
+
+# list caches
+ls(get("sos4R_caches"))
 }
 
 }
