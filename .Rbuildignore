@@ -27,3 +27,4 @@ docker
 ^\.circleci$
 ^vignettes/sos4R-vignette-10-egu-2020\.Rmd$
 ^vignettes/sos4R-vignette-99-services\.Rmd$
+^\.binder$
