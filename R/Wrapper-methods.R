@@ -895,7 +895,7 @@ getData <- function(sos,
   }
   # TODO document that we use the phentime or phentime.end
   if (ncol(observations[[1]]@result) == 1) {
-    observations[[1]]@result <- cbind("timestamp" = sosTimeStamp(observations[[1]]), observations[[1]]@result)
+    observations[[1]]@result <- cbind("timestamp" = .sosTimeStamp(observations[[1]]), observations[[1]]@result)
   }
   obsAttributes <- attributes(observations[[1]]@result)
   obsAttributes <- obsAttributes[names(obsAttributes) %in% c("names", "row.names", "class") == FALSE]
@@ -910,7 +910,7 @@ getData <- function(sos,
   #
   for (observation in observations[-1]) {
     if (ncol(observation@result) == 1) {
-      observation@result <- cbind("timestamp" = sosTimeStamp(observation), observation@result)
+      observation@result <- cbind("timestamp" = .sosTimeStamp(observation), observation@result)
     }
     obsAttributes <- attributes(observation@result)
     obsAttributes <- obsAttributes[names(obsAttributes) %in% c("names", "row.names", "class") == FALSE]
@@ -937,7 +937,7 @@ getData <- function(sos,
   return(result)
 }
 
-sosTimeStamp <- function(observation = NULL) {
+.sosTimeStamp <- function(observation = NULL) {
   stopifnot(!is.null(observation))
   if (inherits(observation@phenomenonTime, "GmlTimeInstant")) {
     timestamp <- observation@phenomenonTime@timePosition@time
