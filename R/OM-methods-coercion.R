@@ -35,7 +35,7 @@ as.data.frame.OmObservation = function(x, row.names, optional, ...) {
 }
 setAs(from = "OmObservation", to = "data.frame",
       def = function(from) {
-        as.data.frame.OmObservation(from)
+        as.data.frame.OmObservation(x = from)
       }
 )
 
@@ -47,7 +47,7 @@ as.data.frame.OmMeasurement = function(x, row.names, optional, ...) {
 }
 setAs(from = "OmMeasurement", to = "data.frame",
       def = function(from) {
-        as.data.frame.OmMeasurement(from)
+        as.data.frame.OmMeasurement(x = from)
       }
 )
 

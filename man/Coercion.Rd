@@ -25,6 +25,9 @@
 \alias{as.SpatialPolygons.SosObservationOffering}
 
 \alias{as.data.frame.OmMeasurement}
+\alias{as.data.frame.OmObservation}
+
+\alias{as.data.frame.WmlMeasurementTimeseries}
 
 \title{Coercion of SOS objects to Spatial classes}
 

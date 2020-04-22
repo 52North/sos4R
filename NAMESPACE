@@ -162,6 +162,7 @@ exportClasses(
 
 S3method(as.data.frame, OmMeasurement)
 S3method(as.data.frame, OmObservation)
+S3method(as.data.frame, WmlMeasurementTimeseries)
 S3method(as.list, OmObservationCollection)
 S3method(length, OmObservationCollection)
 S3method(names, OmMeasurement)

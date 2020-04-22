@@ -183,24 +183,22 @@ setAs(from = "WmlMonitoringPoint", to = "Spatial",
         as.SpatialPoints.WmlMonitoringPoint(from)
       }
 )
-#
-#
-#
-as.data.frame.WmlMeasurementTimeseries <- function(from) {
+
+as.data.frame.WmlMeasurementTimeseries <- function(x, row.names, optional, ...) {
   # cols: timestamp, value <- should be renamed afterwards
   df <- data.frame("timestamp" = double(0), "value" = double(0), stringsAsFactors = FALSE)
-  for (wmlMTVP in from@points) {
+  for (wmlMTVP in x@points) {
     df <- rbind(df, data.frame("timestamp" = wmlMTVP@time,
                                       "value" = wmlMTVP@value,
                                       stringsAsFactors = FALSE))
   }
-  attr(df, "metadata") <- from@metadata
-  attr(df, "defaultPointMetadata") <- from@defaultPointMetadata
+  attr(df, "metadata") <- x@metadata
+  attr(df, "defaultPointMetadata") <- x@defaultPointMetadata
   return(df)
 }
 setAs(from = "WmlMeasurementTimeseries", to = "data.frame",
       def = function(from) {
-        as.data.frame.WmlMeasurementTimeseries(from)
+        as.data.frame.WmlMeasurementTimeseries(x = from)
       }
 )
 
