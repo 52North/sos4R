@@ -73,7 +73,8 @@ remotes::install_github("52North/sos4R", ref = "dev")
   - [@bpross-52n](https://github.com/bpross-52n)
   - [@EHJ-52n](https://github.com/EHJ-52n)
 
-sos4R is a project of [52°North](https://52north.org).
+sos4R is a project of [52°North Initiative for Geospatial Open Source
+Software](https://52north.org).
 
 [![](https://52north.org/wp-content/uploads/2016/06/logo-main.png)](https://52north.org)
 
