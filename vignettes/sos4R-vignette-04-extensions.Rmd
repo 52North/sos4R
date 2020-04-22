@@ -1,5 +1,5 @@
 ---
-title: "sos4R: Extending package functions and advanced configuration"
+title: "Extending sos4R and advanced configuration"
 author:
   name: "Daniel Nüst"
   affiliation: Institute for Geoinformatics, University of Münster, Germany.

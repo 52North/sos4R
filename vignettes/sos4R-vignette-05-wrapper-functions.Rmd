@@ -1,5 +1,5 @@
 ---
-title: "sos4R: Wrapper Functions for easier SOS access"
+title: "Wrapper Functions for easier SOS access"
 author:
   name: "Daniel Nüst , Eike Hinderk Jürrens, and Benedikt Gräler"
   affiliation: Institute for Geoinformatics, University of Münster, Germany. 52°North GmbH, Münster, Germany.

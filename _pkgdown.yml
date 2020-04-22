@@ -22,14 +22,18 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: 'sos4R: Accessing Sensor Observation Services from R -- Quickstart'
-        href: articles/sos4R-vignette-01-quickstart.html
-      - text: 'sos4R: OGC SWE and SOS'
+      - text: 'OGC SWE and SOS'
         href: articles/sos4R-vignette-02-ogc-sos.html
-      - text: 'sos4R: SOS Operations'
+      - text: 'SOS Operations'
         href: articles/sos4R-vignette-03-sos-operations.html
-      - text: 'sos4R: Extending package functions and advanced configuration'
+      - text: 'Extending sos4R and advanced configuration'
         href: articles/sos4R-vignette-04-extensions.html
+      - text: 'Wrapper Functions for easier SOS access'
+        href: articles/sos4R-vignette-05-wrapper-functions.html
+      - text: 'EGU2020 Blog Post'
+        href: articles/sos4R-vignette-10-egu-2020.html
+      - text: 'List of SOS services'
+        href: articles/sos4R-vignette-99-services.html
     news:
       text: Changelog
       href: news/index.html

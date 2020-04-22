@@ -1,5 +1,5 @@
 ---
-title: "EGU2020 blog post: 'Accessing environmental time series data in R from Sensor Observation Services with ease'"
+title: "Accessing environmental time series data in R from Sensor Observation Services with ease"
 author:
   name: "Daniel Nüst¹, Eike H. Jürrens², Benedikt Gräler², and Simon Jirka²"
   affiliation: "¹: University of Münster, Institute for Geoinformatics, Opening Reproducible Research (o2r), Münster, Germany (daniel.nuest@uni-muenster.de); ²: Institute for Geoinformatics, University of Münster, Germany. 52°North GmbH, Münster, Germany."
