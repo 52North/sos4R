@@ -50,25 +50,25 @@ test_that("addional KVPs are concatenated correctly", {
 test_that("can get CRS from URN", {
   obj <- sosGetCRS("urn:ogc:def:crs:EPSG::4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 test_that("can get CRS from lowercase URN", {
   obj <- sosGetCRS("urn:ogc:def:crs:epsg::4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 test_that("can get CRS from URN with version", {
   obj <- sosGetCRS("urn:ogc:def:crs:EPSG:99:4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 test_that("can get CRS from URL", {
   obj <- sosGetCRS("http://www.opengis.net/def/crs/EPSG/0/4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 library("webmockr")

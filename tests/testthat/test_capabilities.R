@@ -140,7 +140,7 @@ test_that("title", {
 
 test_that("CRS from boundedBy", {
   expect_s4_class(sosGetCRS(mapserver), "CRS")
-  expect_match(sosGetCRS(mapserver)@projargs, "init=epsg:4326")
+  expect_equal(slotNames(sosGetCRS(mapserver)), "projargs")
 })
 
 test_that("time accessor function for SOS", {
