@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -84,6 +84,9 @@
   </a>
 </li>
 <li>
+  <a href="articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -94,16 +97,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
+    </li>
+    <li>
+      <a href="articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -263,7 +272,7 @@
 <a href="#package-structure" class="anchor"></a>Package structure</h2>
 <p>sos4R follows the regular R extension package structure. General documentation about R package development can be found at the following two websites.</p>
 <ul>
-<li>R extension packages by Hadley: <a href="http://r-pkgs.had.co.nz/" class="uri">http://r-pkgs.had.co.nz/</a> (well written with tight coupling to devtools and RStudio)</li>
+<li>R extension packages by Hadley Wickham: <a href="http://r-pkgs.had.co.nz/" class="uri">http://r-pkgs.had.co.nz/</a> (well written with tight coupling to devtools and RStudio)</li>
 <li>R extension manual: <a href="http://cran.r-project.org/doc/manuals/R-exts.html" class="uri">http://cran.r-project.org/doc/manuals/R-exts.html</a> (generic, extensive)</li>
 </ul>
 <div id="r" class="section level3">
@@ -315,6 +324,8 @@
 <code>SOS-methods-plotting.R</code> contains plotting functions.</li>
 <li>
 <code>PrintShowStructureSummary-methods.R</code> contains functions to override <code>print</code>, <code>str</code>, <code>summary</code> functions and the like; these may go in this file or also into the file where the respective class is defined.</li>
+<li>
+<code>Wrapper-methods.R</code> contains methods and functions for the convenience wrapper functions for easier data access.</li>
 </ul>
 </div>
 <div id="sandbox" class="section level3">
@@ -355,7 +366,7 @@
 <a href="#classes" class="anchor"></a>Classes</h3>
 <p>Data models, i.e. requests and responses, are modelled as <strong>S4 classes</strong>. Documentation can be found at the following sites (and others):</p>
 <ul>
-<li>The S4 object system: <a href="http://adv-r.had.co.nz/S4.html" class="uri">http://adv-r.had.co.nz/S4.html</a> (short, must read)</li>
+<li>The S4 object system: <a href="http://adv-r.had.co.nz/S4.html" class="uri">http://adv-r.had.co.nz/S4.html</a> (short, <em>must read</em>)</li>
 <li>A (Not So) Short Introduction to S4: <a href="https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf" class="uri">https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf</a> (not so short)</li>
 <li>Classes and Methods in the S Language by Chambers: <a href="http://www.omegahat.org/RSMethods/Intro.pdf" class="uri">http://www.omegahat.org/RSMethods/Intro.pdf</a>
 </li>
@@ -373,26 +384,24 @@
 <div id="tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tests" class="anchor"></a>Tests</h2>
-<p>Tests are implemented with <a href="http://testthat.r-lib.org/"><code>testthat</code></a>. Run them with</p>
+<p>Tests are implemented with <a href="http://testthat.r-lib.org/"><code>testthat</code></a>. Run them with “Ctrl + Alt + T” in RStudio, with the RStudio UI via <code>Build &amp;rarr; More &amp;rarr; Test Package</code>, or with</p>
 <div class="sourceCode" id="cb4"><html><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/test.html">test</a></span>()</pre></html></div>
-<p>or by clicking the “Check” button in RStudio (which does more than just running the tests!).</p>
 </div>
 <div id="using-docker" class="section level2">
 <h2 class="hasAnchor">
-<a href="#using-docker" class="anchor"></a>Using docker</h2>
-<p>In the <a href="docker/">docker</a> folder, a Dockerfile is provided that can be used to set-up an isolated container just for sos4R development. This includes all required dependencies, RStudio as webapplication, and devtools. The current size of the image is ~4.02GB.</p>
+<a href="#using-docker" class="anchor"></a>Using Docker</h2>
+<p>The <a href="docker/"><code>docker</code></a> folder contains a Dockerfile that can be used to set-up an isolated container just for sos4R development. This includes all required dependencies, RStudio as webapplication, and devtools.</p>
 <ol>
-<li><p>Clone this repository.</p></li>
-<li><p>Change to the <code>docker</code> subfolder in any terminal of your choice.</p></li>
-<li><p>Perform the following command to build the image locally:<br><code>docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .</code>.<br><em>On windows</em>, you need to replace <code>$(date +%Y-%m-%d)</code> with something useful, like <code>2019-02-27</code>.</p></li>
-<li>Start the image as new container using the following command:</li>
-</ol>
-<pre><code>docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d sos4r-rstudio-dev:2019-02-27</code></pre>
-<p>You can start and stop the container by its name <code>sos4r-dev</code>.</p>
-<ol>
-<li><p>Point your browser to <a href="http://localhost:8787/">http://localhost:8787/</a>.</p></li>
-<li><p>Login with <strong>Username</strong> <code>rstudio</code> and <strong>Password</strong> <code>r</code>.<br> If the password is not secure enough, please delete the container via <code>docker stop sos4r-dev; docker rm sos4r-dev</code> and re-run the above <code>docker run ...</code> with a different value for <code>PASSWORD</code>.</p></li>
-<li><p>Open the sos4R project via menu <code>File</code> → <code>Open Project</code> → open folder <code>sos4R</code> → select <code>sos4R.Rproj</code>.</p></li>
+<li>Clone this repository.</li>
+<li>Change to the <code>docker</code> subfolder in any terminal of your choice.</li>
+<li>Perform the following command to build the image locally:<br><code>docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .</code>.<br><em>On windows</em>, you need to replace <code>$(date +%Y-%m-%d)</code> with something useful, like <code>2019-02-27</code>.</li>
+<li>
+<p>Start the image as new container using the following command:</p>
+<pre><code>docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d    sos4r-rstudio-dev:2019-02-27</code></pre>
+You can start and stop the container by its name <code>sos4r-dev</code>.</li>
+<li>Point your browser to <a href="http://localhost:8787/">http://localhost:8787/</a>.</li>
+<li>Login with <strong>Username</strong> <code>rstudio</code> and <strong>Password</strong> <code>r</code>.<br> If the password is not secure enough, please delete the container via <code>docker stop sos4r-dev; docker rm sos4r-dev</code> and re-run the above <code>docker run ...</code> with a different value for <code>PASSWORD</code>.</li>
+<li>Open the sos4R project via menu <code>File</code> → <code>Open Project</code> → open folder <code>sos4R</code> → select <code>sos4R.Rproj</code>.</li>
 <li><p>Start developing.</p></li>
 </ol>
 </div>
@@ -408,21 +417,21 @@
 <ul>
 <li>Install the current version of the package from source</li>
 <li>Run the <a href="#tests">tests</a> locally and resolve all problems</li>
-<li>Run a check locally, e.g. <code><a href="https://devtools.r-lib.org//reference/check.html">devtools::check(document = FALSE)</a></code> and fix errors, warnings, and notes</li>
-<li>Update NEWS file based on latest commits, add missing changes/updates/notable things</li>
+<li>Run a check locally, e.g., <code><a href="https://devtools.r-lib.org//reference/check.html">devtools::check(document = FALSE)</a></code> or “Build → Check” in RStudio; fix all errors, warnings, and notes</li>
+<li>Update <code>NEWS.md</code> file based on latest commits, add missing changes/updates/notable things</li>
 <li>Update the <code>Date</code> field in the <code>DESCRIPTION</code> file to match the release date</li>
+<li>Update version and date in <code>man/sos4R-package.Rd</code>
+</li>
+<li>Update version in <code>DESCRIPTION</code>
+</li>
+<li>Update version number in <code>NEWS.md</code>
+</li>
 <li>Create a PR from <code>dev</code> to <code>master</code> and check the CI status, fix all problems
 <ul>
 <li><a href="https://travis-ci.org/52North/sos4R" class="uri">https://travis-ci.org/52North/sos4R</a></li>
 <li><a href="https://ci.appveyor.com/project/52North/sos4r" class="uri">https://ci.appveyor.com/project/52North/sos4r</a></li>
 <li>If there are problems with the <code>devel</code> release of R, you can use a local Docker container to run the checks while fixing them (from the path of the parten folder of <code>sos4R</code>): <code>docker run --rm -it -v $(pwd)/sos4R:/home/sos4R rocker/geospatial:devel bash</code>, switch to <code>/home</code>, then run the commands below (<code>R CMD build</code> &amp; <code>check</code>)</li>
 </ul>
-</li>
-<li>Update version and date in <code>man/sos4R-package.Rd</code>
-</li>
-<li>Update version in <code>DESCRIPTION</code>
-</li>
-<li>Update version number in <code>NEWS.md</code>
 </li>
 <li>Run <strong>checks</strong> again and fix all problems
 <ul>

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -85,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -95,16 +98,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -151,8 +160,8 @@
     <p></p><table class='table'>
 <tr><td>Package:</td><td>sos4R</td></tr>
 <tr><td>Type:</td><td>Package</td></tr>
-<tr><td>Version:</td><td>0.3.1</td></tr>
-<tr><td>Date:</td><td>2019-07-09</td></tr>
+<tr><td>Version:</td><td>0.4.0</td></tr>
+<tr><td>Date:</td><td>2020-04-21</td></tr>
 <tr><td>License:</td><td>GPL-2</td></tr>
 <tr><td>LazyLoad:</td><td>yes</td></tr>
 <tr><td>ByteCompile:</td><td>yes</td></tr>
@@ -171,7 +180,7 @@
     <p>The development of this software was gratefully supported by the 52North Student Innovation Prize for Geoinformatics 2010.</p>
 <p>To stay updated on all matters around <span class="pkg">sos4R</span> go to the development blog at <a href='http://www.nordholmen.net/sos4r/'>http://www.nordholmen.net/sos4r/</a>.</p>
 <p>If you want to ask questions about using the software, please go to the to the issue tracker at <a href='https://github.com/52North/sos4R/issues'>https://github.com/52North/sos4R/issues</a>.</p>
-<p>The most extensive documenation is contained in the <strong>package vignette</strong>.</p>
+<p>The most extensive documenation is contained in the <strong>package vignettes</strong>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -218,8 +227,11 @@
 <span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='no'>sos.url</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>dataFieldConverters</span> <span class='kw'>=</span> <span class='no'>myConverters</span>)
 <span class='fu'><a href='SOS.html'>sosDataFieldConverters</a></span>(<span class='no'>mySos</span>)
 
-<span class='co'># get the cheat sheet</span>
+<span class='co'># where to find the cheat sheet</span>
 <span class='fu'>sosCheatSheet</span>()
+
+<span class='co'># global objects caching objects during parsing of XML documents</span>
+<span class='no'>cacheVariables</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

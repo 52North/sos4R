@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Classes and Construction Functions from the GML Namespace — GmlDirectPosition-class • sos4R</title>
+<title>Classes and Construction Functions from the GML Namespace — GML • sos4R</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Classes and Construction Functions from the GML Namespace — GmlDirectPosition-class" />
+<meta property="og:title" content="Classes and Construction Functions from the GML Namespace — GML" />
 <meta property="og:description" content="Classes for GML elements and their respective construction functions. See the referenced specification for details." />
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -85,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -95,16 +98,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -310,8 +319,7 @@
     <p>Objects can be created by calling the according construction functions. e.g. in the form <code>GmlPoint(...)</code>.</p>
     <h2 class="hasAnchor" id="extends"><a class="anchor" href="#extends"></a>Extends</h2>
 
-    <p><!-- % TODO: Describe class hierarchy. --></p>
-<p>GmlFeature:
+    <p>GmlFeature:
 Class <code>"GmlFeatureOrNULL"</code>, directly.</p>
 <p>GmlFeatureCollection:
 Class <code>"GmlFeature"</code>, directly.
@@ -702,8 +710,8 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='no'>aWeekAgo</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
 <span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())
 <span class='no'>now</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
-<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-10 18:13:20 ]
-#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-17 18:13:20 ] ] </div></pre>
+<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-15 13:21:42 ]
+#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-22 13:21:42 ] ] </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

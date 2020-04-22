@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -84,6 +84,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -94,16 +97,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -250,7 +259,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="SAMS.html">SamsSamplingFeature-class</a></code> </p>
+          <p><code><a href="SAMS.html">SAMS</a></code> </p>
         </td>
         <td><p>Classes and creation functions for Sampling Features</p></td>
       </tr><tr>
@@ -340,6 +349,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="WML.html">WML</a></code> </p>
+        </td>
+        <td><p>Classes, creation, and parsing functions for WaterML</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="encodeKVP-methods.html">encodeKVP-methods</a></code> </p>
         </td>
         <td><p>Encode Classes as KVP</p></td>
@@ -388,7 +403,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="parse.html">parseCSV()</a></code> <code><a href="parse.html">parseFile()</a></code> <code><a href="parse.html">parseCategoryObservation()</a></code> <code><a href="parse.html">parseComplexObservation()</a></code> <code><a href="parse.html">parseComponent()</a></code> <code><a href="parse.html">parseCompositePhenomenon()</a></code> <code><a href="parse.html">parseCountObservation()</a></code> <code><a href="parse.html">parseDataArray()</a></code> <code><a href="parse.html">parseElementType()</a></code> <code><a href="parse.html">parseEncoding()</a></code> <code><a href="parse.html">parseEnvelope()</a></code> <code><a href="parse.html">parseFeatureCollection()</a></code> <code><a href="parse.html">parseField()</a></code> <code><a href="parse.html">parseFOI()</a></code> <code><a href="parse.html">parseGeometryObservation()</a></code> <code><a href="parse.html">parseMeasure()</a></code> <code><a href="parse.html">parseMeasurement()</a></code> <code><a href="parse.html">parseNoParsing()</a></code> <code><a href="parse.html">parseObservation()</a></code> <code><a href="parse.html">parseObservationCollection()</a></code> <code><a href="parse.html">parseOM()</a></code> <code><a href="parse.html">parseOwsException()</a></code> <code><a href="parse.html">parseOwsExceptionReport()</a></code> <code><a href="parse.html">parseOwsOperation()</a></code> <code><a href="parse.html">parseOwsRange()</a></code> <code><a href="parse.html">parseOwsServiceIdentification()</a></code> <code><a href="parse.html">parseOwsServiceProvider()</a></code> <code><a href="parse.html">parsePhenomenonProperty()</a></code> <code><a href="parse.html">parsePoint()</a></code> <code><a href="parse.html">parsePosition()</a></code> <code><a href="parse.html">parseResult()</a></code> <code><a href="parse.html">parseSamplingPoint()</a></code> <code><a href="parse.html">parseSensorML()</a></code> <code><a href="parse.html">parseSosCapabilities()</a></code> <code><a href="parse.html">parseSosFilter_Capabilities()</a></code> <code><a href="parse.html">parseSosObservationOffering()</a></code> <code><a href="parse.html">parseTemporalObservation()</a></code> <code><a href="parse.html">parseTextBlock()</a></code> <code><a href="parse.html">parseTimeGeometricPrimitiveFromParent()</a></code> <code><a href="parse.html">parseTimeInstant()</a></code> <code><a href="parse.html">parseTimeInstantProperty()</a></code> <code><a href="parse.html">parseTimePeriod()</a></code> <code><a href="parse.html">parseTimePosition()</a></code> <code><a href="parse.html">parseTimeObject()</a></code> <code><a href="parse.html">parseTruthObservation()</a></code> <code><a href="parse.html">parseValues()</a></code> </p>
+          <p><code><a href="parse.html">parseCSV()</a></code> <code><a href="parse.html">parseFile()</a></code> <code><a href="parse.html">parseCategoryObservation()</a></code> <code><a href="parse.html">parseComplexObservation()</a></code> <code><a href="parse.html">parseComponent()</a></code> <code><a href="parse.html">parseCompositePhenomenon()</a></code> <code><a href="parse.html">parseCountObservation()</a></code> <code><a href="parse.html">parseDataArray()</a></code> <code><a href="parse.html">parseElementType()</a></code> <code><a href="parse.html">parseEncoding()</a></code> <code><a href="parse.html">parseEnvelope()</a></code> <code><a href="parse.html">parseFeatureCollection()</a></code> <code><a href="parse.html">parseField()</a></code> <code><a href="parse.html">parseFOI()</a></code> <code><a href="parse.html">parseGeometryObservation()</a></code> <code><a href="parse.html">parseMeasure()</a></code> <code><a href="parse.html">parseMeasurement()</a></code> <code><a href="parse.html">parseNoParsing()</a></code> <code><a href="parse.html">parseObservation()</a></code> <code><a href="parse.html">parseObservationCollection()</a></code> <code><a href="parse.html">parseOM()</a></code> <code><a href="parse.html">parseOwsException()</a></code> <code><a href="parse.html">parseOwsExceptionReport()</a></code> <code><a href="parse.html">parseOwsOperation()</a></code> <code><a href="parse.html">parseOwsRange()</a></code> <code><a href="parse.html">parseOwsServiceIdentification()</a></code> <code><a href="parse.html">parseOwsServiceProvider()</a></code> <code><a href="parse.html">parsePhenomenonProperty()</a></code> <code><a href="parse.html">parsePoint()</a></code> <code><a href="parse.html">parsePosition()</a></code> <code><a href="parse.html">parseResult()</a></code> <code><a href="parse.html">parseSamplingPoint()</a></code> <code><a href="parse.html">parseSensorML()</a></code> <code><a href="parse.html">parseSosCapabilities()</a></code> <code><a href="parse.html">parseSosFilter_Capabilities()</a></code> <code><a href="parse.html">parseSosObservationOffering()</a></code> <code><a href="parse.html">parseTemporalObservation()</a></code> <code><a href="parse.html">parseTextBlock()</a></code> <code><a href="parse.html">parseTimeGeometricPrimitiveFromParent()</a></code> <code><a href="parse.html">parseTimeInstant()</a></code> <code><a href="parse.html">parseTimeInstantProperty()</a></code> <code><a href="parse.html">parseTimePeriod()</a></code> <code><a href="parse.html">parseTimePosition()</a></code> <code><a href="parse.html">parseTimeObject()</a></code> <code><a href="parse.html">parseTruthObservation()</a></code> <code><a href="parse.html">parseValues()</a></code> <code><a href="parse.html">sosIsListFieldAvailable()</a></code> <code><a href="parse.html">gmlGetReferencedNode()</a></code> <code><a href="parse.html">gmlIsNodeReferenced()</a></code> </p>
         </td>
         <td><p>Parsing Functions for XML Documents and Elements</p></td>
       </tr><tr>
@@ -439,12 +454,6 @@
           <p><code><a href="sosRequest-methods.html">sosRequest-methods</a></code> </p>
         </td>
         <td><p>Send Request to SOS</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="xml.html">xml_document-class</a></code> </p>
-        </td>
-        <td><p>Classes to model S3 classes of package <code>xml2</code></p></td>
       </tr>
     </tbody>
     </table>

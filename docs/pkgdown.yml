@@ -2,12 +2,12 @@ pandoc: '2.5'
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
-  sos4R-vignette-01-quickstart: sos4R-vignette-01-quickstart.html
   sos4R-vignette-02-ogc-sos: sos4R-vignette-02-ogc-sos.html
   sos4R-vignette-03-sos-operations: sos4R-vignette-03-sos-operations.html
   sos4R-vignette-04-extensions: sos4R-vignette-04-extensions.html
   sos4R-vignette-05-wrapper-functions: sos4R-vignette-05-wrapper-functions.html
   sos4R-vignette-10-egu-2020: sos4R-vignette-10-egu-2020.html
   sos4R-vignette-99-services: sos4R-vignette-99-services.html
-last_built: 2020-04-17T16:13Z
+  sos4R: sos4R.html
+last_built: 2020-04-22T11:21Z
 

@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>sos4R: List of SOSs • sos4R</title>
+<title>List of SOS services • sos4R</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="sos4R: List of SOSs">
+<script src="../pkgdown.js"></script><meta property="og:title" content="List of SOS services">
 <meta property="og:description" content="sos4R">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -44,6 +44,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -54,16 +57,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -94,13 +103,13 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>sos4R: List of SOSs</h1>
+      <h1 data-toc-skip>List of SOS services</h1>
                         <h4 class="author">Daniel Nüst</h4>
             <address class="author_afil">
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2020-04-17</h4>
+            <h4 class="date">2020-04-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-99-services.Rmd"><code>vignettes/sos4R-vignette-99-services.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-99-services.Rmd</code></div>
@@ -134,22 +143,7 @@
                       <span class="kw">offering</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">sosName</a></span>(<span class="no">ioos.off</span><span class="kw">[[</span><span class="fl">100</span>]]),
                       <span class="kw">responseFormat</span> <span class="kw">=</span> <span class="st">"text/csv"</span>,
                       <span class="kw">observedProperty</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">sosObservedProperties</a></span>(<span class="no">ioos.off</span><span class="kw">[[</span><span class="fl">100</span>]])[<span class="fl">1</span>])
-<span class="co">#&gt; Parsed with column specification:</span>
-<span class="co">#&gt; cols(</span>
-<span class="co">#&gt;   station_id = col_character(),</span>
-<span class="co">#&gt;   sensor_id = col_character(),</span>
-<span class="co">#&gt;   `latitude (degree)` = col_double(),</span>
-<span class="co">#&gt;   `longitude (degree)` = col_double(),</span>
-<span class="co">#&gt;   date_time = col_datetime(format = ""),</span>
-<span class="co">#&gt;   `depth (m)` = col_double(),</span>
-<span class="co">#&gt;   `air_temperature (C)` = col_double()</span>
-<span class="co">#&gt; )</span>
-<span class="no">obs</span>
-<span class="co">#&gt; # A tibble: 1 x 7</span>
-<span class="co">#&gt;   station_id sensor_id `latitude (degr… `longitude (deg… date_time          </span>
-<span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;                &lt;dbl&gt;            &lt;dbl&gt; &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1 urn:ioos:… urn:ioos…             23.8            -68.4 2020-04-17 16:00:00</span>
-<span class="co">#&gt; # … with 2 more variables: `depth (m)` &lt;dbl&gt;, `air_temperature (C)` &lt;dbl&gt;</span></pre></body></html></div>
+<span class="no">obs</span></pre></body></html></div>
 </div>
 <div id="noaa-national-data-buoy-center" class="section level2">
 <h2 class="hasAnchor">
@@ -157,7 +151,6 @@
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">ndbc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(<span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://sdf.ndbc.noaa.gov/sos/server.php"</span>,
             <span class="kw">binding</span> <span class="kw">=</span> <span class="st">"KVP"</span>)
 <span class="no">ndbc</span>
-<span class="co">#&gt; Object of class SOS_1.0.0 [KVP, https://sdf.ndbc.noaa.gov/sos/server.php, National Data Buoy Center SOS]</span>
 <span class="co">#sosContents(ndbc)</span></pre></body></html></div>
 </div>
 <div id="wsv-pegelonline" class="section level2">
@@ -170,17 +163,14 @@
 <span class="co">#&gt; Object of class SOS_1.0.0 [POX, http://pegelonline.wsv.de/webservices/gis/gdi-sos, PegelOnline SOS]</span>
 <span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">pegel</span>)
 <span class="co">#&gt; Object of class SosContents with observation offerings (names):</span>
-<span class="co">#&gt;   DURCHFAHRTSHOEHE, ELEKTRISCHE_LEITFAEHIGKEIT_ROHDATEN, WASSERSTAND_ROHDATEN, WASSERTEMPERATUR_ROHDATEN, WINDGESCHWINDIGKEIT, ABFLUSS, CHLORID, WINDRICHTUNG, ABFLUSS_ROHDATEN, LUFTTEMPERATUR, LUFTFEUCHTE, PH-WERT, WASSERTEMPERATUR, SAUERSTOFFGEHALT, FLIESSGESCHWINDIGKEIT, LUFTTEMPERATUR_ROHDATEN</span></pre></body></html></div>
+<span class="co">#&gt;   LUFTTEMPERATUR, WINDRICHTUNG, DURCHFAHRTSHOEHE, WASSERSTAND_ROHDATEN, LUFTFEUCHTE, ABFLUSS_ROHDATEN, ABFLUSS, SAUERSTOFFGEHALT, WINDGESCHWINDIGKEIT, ELEKTRISCHE_LEITFAEHIGKEIT_ROHDATEN, LUFTTEMPERATUR_ROHDATEN, FLIESSGESCHWINDIGKEIT, WASSERTEMPERATUR, WASSERTEMPERATUR_ROHDATEN, CHLORID, PH-WERT</span></pre></body></html></div>
 </div>
 <div id="axiom-data-science-demo-sos" class="section level2">
 <h2 class="hasAnchor">
 <a href="#axiom-data-science-demo-sos" class="anchor"></a>Axiom Data Science Demo SOS</h2>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">axiom</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(<span class="kw">url</span> <span class="kw">=</span> <span class="st">"http://dev.demo.i52nsos.axiomdatascience.com/sos"</span>, <span class="kw">binding</span> <span class="kw">=</span> <span class="st">"KVP"</span>)
 <span class="no">axiom</span>
-<span class="co">#&gt; Object of class SOS_1.0.0 [KVP, http://dev.demo.i52nsos.axiomdatascience.com/sos, IOOS 52N SOS]</span>
-<span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">axiom</span>)
-<span class="co">#&gt; Object of class SosContents with observation offerings (names):</span>
-<span class="co">#&gt;   urn_ioos_network_test_all, urn_ioos_station_test_0, urn_ioos_station_test_1, urn_ioos_station_test_2, urn_ioos_station_test_3, urn_ioos_station_test_4, urn_ioos_station_test_5, urn_ioos_station_test_6, urn_ioos_station_test_7, urn_ioos_station_test_8, urn_ioos_station_test_9</span></pre></body></html></div>
+<span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">axiom</span>)</pre></body></html></div>
 </div>
 <div id="belgian-interregional-environment-agency-ircel---celine" class="section level2">
 <h2 class="hasAnchor">
@@ -237,9 +227,7 @@
 <p>SOS by <a href="http://www.monalisa-project.eu/en/home/Pages/default.aspx">MONALISA</a> project, operated by <a href="http://www.eurac.edu/">eurac research</a>.</p>
 <p>About: <a href="http://monalisasos.eurac.edu/sos/" class="uri">http://monalisasos.eurac.edu/sos/</a></p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">monalisa</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(<span class="kw">url</span> <span class="kw">=</span> <span class="st">"http://monalisasos.eurac.edu/sos/service"</span>, <span class="kw">binding</span> <span class="kw">=</span> <span class="st">"KVP"</span>, <span class="kw">version</span> <span class="kw">=</span> <span class="st">"2.0.0"</span>)
-<span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">monalisa</span>)
-<span class="co">#&gt; Object of class SosContents with observation offerings (names):</span>
-<span class="co">#&gt;   CO2H2O_KalternEddyCov, EDCOV_KalternEddyCov, Meteo_Algund2, Meteo_Girlan1Lamm, Meteo_Gries2NeufeldGreifensteinerweg, Meteo_Lana6, Meteo_Nals2OberauCarli, Meteo_NeumarktStiermoos, Meteo_Terlan3, Meteo_Terlan3a, Meteo_Tramin13er, Meteo_Unterrain2FuchsangerEppan, NDVI_KalternEddyCov, NDVI_domef1500, NDVI_domef2000, NDVI_nemef1500, NDVI_nemef2000, NDVI_vimef2000, NDVI_vimes1500, PAR_KalternEddyCov, PAR_domef1500, PAR_domef2000, PAR_domes1500, PAR_domes2000, PAR_dopas2000, PAR_nemef1500, PAR_nemef2000, PAR_nemes1500, PAR_nemes2000, PAR_nepas2000, PAR_vimef1500, PAR_vimef2000, PAR_vimes1500, PAR_vimes2000, PAR_vipas2000, PREC_KalternEddyCov, PRI_KalternEddyCov, PRI_domef1500, PRI_domef2000, PRI_nemef1500, PRI_nemef2000, PRI_vimef2000, PRI_vimes1500, SH_KalternEddyCov, ST_Algund2, ST_Eppanberg, ST_Eppanberg_matrix, ST_Girlan1Lamm, ST_Gries2NeufeldGreifensteinerweg, ST_Kaltern, ST_Kaltern_matrix, ST_Laimburg, ST_Lana6, ST_Nals2OberauCarli, ST_NeumarktStiermoos, ST_StPaulsFeld, ST_StPaulsFeld_matrix, ST_Terlan3, ST_Terlan3a, ST_Tramin13er, ST_Unterrain2FuchsangerEppan, ST_domef1500, ST_domef2000, ST_domes1500, ST_domes2000, ST_dopas2000, ST_nemef1500, ST_nemef2000, ST_nemes1500, ST_nemes2000, ST_nepas2000, ST_vimef1500, ST_vimef2000, ST_vimes1500, ST_vimes2000, ST_vipas2000, SWC_Algund2, SWC_Eppanberg, SWC_Girlan1Lamm, SWC_Gries2NeufeldGreifensteinerweg, SWC_Kaltern, SWC_KalternEddyCov, SWC_Laimburg, SWC_Lana6, SWC_Nals2OberauCarli, SWC_NeumarktStiermoos, SWC_StPaulsFeld, SWC_Terlan3, SWC_Terlan3a, SWC_Tramin13er, SWC_Unterrain2FuchsangerEppan, SWC_domef1500, SWC_domef2000, SWC_domes1500, SWC_domes2000, SWC_dopas2000, SWC_nemef1500, SWC_nemef2000, SWC_nemes1500, SWC_nemes2000, SWC_nepas2000, SWC_vimef1500, SWC_vimef2000, SWC_vimes1500, SWC_vimes2000, SWC_vipas2000, SWP_Eppanberg, SWP_Kaltern, SWP_StPaulsFeld, TEMPHUM_KalternEddyCov, WIND_KalternEddyCov, WR_KalternEddyCov, daily_LaimburgProvince, min10_LaimburgProvince, min5_LaimburgProvince</span></pre></body></html></div>
+<span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">monalisa</span>)</pre></body></html></div>
 </div>
 <div id="niwa" class="section level2">
 <h2 class="hasAnchor">
@@ -260,9 +248,13 @@
                                  <span class="co">#responseFormat = "http://www.opengis.net/waterml/2.0",</span>
                                  <span class="co">#inspect = TRUE,</span>
                                  <span class="kw">retrieveFOI</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="co">#&gt; Formal class 'WmlMeasurementTVP' [package "sos4R"] with 2 slots</span>
+<span class="co">#&gt;   ..@ time : POSIXct[1:1], format: "2020-04-22 11:00:00"</span>
+<span class="co">#&gt;   ..@ value: num 2.55</span>
+<span class="co">#&gt; NULL</span>
 <span class="fu"><a href="../reference/OmObservation.html">sosResult</a></span>(<span class="no">discharge29808</span>)
-<span class="co">#&gt;             timestamp   value</span>
-<span class="co">#&gt; 1 2020-04-17 15:45:00 8.78768</span></pre></body></html></div>
+<span class="co">#&gt;             timestamp    value</span>
+<span class="co">#&gt; 1 2020-04-22 11:00:00 2.547205</span></pre></body></html></div>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"># service offline - HTTP 503
 #niwaClimate &lt;- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 #sosContents(niwaClimate)</pre></body></html></div>
@@ -274,7 +266,7 @@
 <h3 class="hasAnchor">
 <a href="#ucar-unidata" class="anchor"></a>UCAR unidata</h3>
 <p><a href="https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS">https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS</a></p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"># TODO</pre></body></html></div>
+<div class="sourceCode" id="cb16"><html><body><pre class="r">#</pre></body></html></div>
 </div>
 <div id="applied-science-associates" class="section level3">
 <h3 class="hasAnchor">
