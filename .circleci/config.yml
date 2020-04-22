@@ -12,12 +12,12 @@ commands:
       - checkout
       - restore_cache:
           keys:
-            - deps-{{ .Branch }}-{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
+            - rpkgs-{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
       - run:
           command: |
             R -e 'devtools::install_deps(dependencies = TRUE)'
       - save_cache:
-          key: deps-{{ .Branch }}-{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
+          key: rpkgs--{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
           paths:
             - "/usr/local/lib/R/site-library"
       - run:
