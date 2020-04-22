@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/main
     docker:
-      - image: rocker/geospatial:3.6.2
+      - image: rocker/geospatial:<< matrix.rversion >>
     steps:
       - checkout
       - restore_cache:
@@ -24,3 +24,6 @@ jobs:
 #      - store_artifacts:
 #          path: man/
 #          destination: man
+    matrix:
+      parameters:
+        rversion: ["3.6.3", "devel"]
