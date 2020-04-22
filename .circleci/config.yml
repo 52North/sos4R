@@ -12,13 +12,12 @@ commands:
       - checkout
       - restore_cache:
           keys:
-            # use R version in cache, cannot automate, see https://ideas.circleci.com/ideas/CCI-I-1017
-            - deps1-{{ .Branch }}-{{ checksum "DESCRIPTION" }}-{{ parameters.rversion }}
+            - deps-{{ .Branch }}-{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
       - run:
           command: |
             R -e 'devtools::install_deps(dependencies = TRUE)'
       - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "DESCRIPTION" }}-{{ parameters.rversion }}
+          key: deps-{{ .Branch }}-{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
           paths:
             - "/usr/local/lib/R/site-library"
       - run:
@@ -29,17 +28,25 @@ commands:
 #          destination: man
 
 jobs:
-  build-devel:
+  devel:
     working_directory: ~/main
     docker:
+      # cannot reuse variable from below, see https://ideas.circleci.com/ideas/CCI-I-1017
       - image: rocker/geospatial:devel
     steps:
       - devtoolscheck:
           rversion: "devel"
-  build-release:
+  release:
     working_directory: ~/main
     docker:
       - image: rocker/geospatial:3.6.3
     steps:
       - devtoolscheck:
           rversion: "3.6.3"
+
+workflows:
+  version: 2
+  check:
+    jobs:
+      - devel
+      - release
