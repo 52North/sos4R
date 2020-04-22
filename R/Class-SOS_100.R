@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,13 +25,14 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
-#
+# SOS_1.0.0 ----
 #
 setClass("SOS_1.0.0",
-         representation(url = "character", binding = "character"),
+         representation(url = "character",
+                        binding = "character"),
          prototype = list(
            url = as.character(NA),
            binding = as.character(NA),
@@ -40,13 +41,13 @@ setClass("SOS_1.0.0",
          validity = function(object) {
            #print("Entering validation: SOS")
 
-           if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+           if (!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
              return(paste("Binding has to be one of",
                           toString(SosSupportedBindings()),
                           "- given:", object@binding))
            }
 
-           if(object@version != sos100_version)
+           if (object@version != sos100_version)
              return(paste0("Version must be 1.0.0 but is", object@version))
 
            # url has to match an URL pattern
@@ -73,10 +74,13 @@ setClassUnion(name = "SOS_versioned",	members = "SOS_1.0.0")
 #
 #
 setClass("SosFilter_Capabilities",
-         representation(spatial = "list", temporal = "list", scalar = "list",
+         representation(spatial = "list",
+                        temporal = "list",
+                        scalar = "list",
                         id = "list"),
          prototype = list(spatial = list(NA_character_),
-                          temporal = list(NA_character_), scalar = list(NA_character_),
+                          temporal = list(NA_character_),
+                          scalar = list(NA_character_),
                           id = list(NA_character_)),
          validity = function(object) {
            #print("Entering validation: SosFilter_Capabilities")
@@ -121,8 +125,10 @@ setClass("SosObservationOffering",
                         resultModel = "character",
                         responseMode = "character",
                         boundedBy = "list"),
-         prototype = list(id = as.character(NA), time = NULL,
-                          procedure = as.character(NA), observedProperty = list(NA),
+         prototype = list(id = as.character(NA),
+                          time = NULL,
+                          procedure = as.character(NA),
+                          observedProperty = list(NA),
                           featureOfInterest = list(NA),
                           responseFormat =  as.character(NA)),
          validity = function(object) {
@@ -202,8 +208,9 @@ setClass("SosFeatureOfInterest",
 setClassUnion(name = "SosFeatureOfInterestOrNULL",
               members = c("SosFeatureOfInterest", "NULL"))
 
-################################################################################
-# See SOS specification, OGC 06-009r6, section 10.1
+############################################################################## #
+# See OGC 06-009r6, section 10.1
+# See OGC 12-006, section 9.2.1
 #
 setClass("SosGetObservationById",
          representation(
@@ -221,13 +228,13 @@ setClass("SosGetObservationById",
            # TODO implement validity function
 
            # service, version, observationId, and responseFormat are mandatory
-           if(is.na(object@service))
+           if (is.na(object@service))
              return("service parameter must be given")
-           if(is.na(object@version))
+           if (is.na(object@version))
              return("version must be given")
-           if(is.na(object@observationId))
+           if (any(is.na(object@observationId)))
              return("observationId parameter must be given")
-           if(is.na(object@responseFormat))
+           if (object@version == sos100_version && is.na(object@responseFormat))
              return("responseFormat parameter must be given")
 
            # if version is there, it hast to be in a certain format, see ows common

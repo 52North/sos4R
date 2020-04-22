@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -23,9 +23,9 @@
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2018-11-23                                                          #
-# Project: sos4R - visit project web page https://52north.org/geostatistics    #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 #
 # SosGetDataAvailability_1.0.0 ----
 #

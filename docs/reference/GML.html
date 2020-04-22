@@ -6,23 +6,31 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Classes and Construction Functions from the GML Namespace — GmlDirectPosition-class • sos4R</title>
+<title>Classes and Construction Functions from the GML Namespace — GML • sos4R</title>
+
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +38,10 @@
 
 
 
-<meta property="og:title" content="Classes and Construction Functions from the GML Namespace — GmlDirectPosition-class" />
 
+<meta property="og:title" content="Classes and Construction Functions from the GML Namespace — GML" />
 <meta property="og:description" content="Classes for GML elements and their respective construction functions. See the referenced specification for details." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -76,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -86,16 +98,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -106,7 +124,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -121,6 +138,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -132,39 +150,37 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Classes for <code>GML</code> elements and their respective construction functions. See the referenced specification for details.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>GmlDirectPosition</span>(<span class='no'>pos</span>, <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
-                  <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>GmlDirectPositionLatLon</span>(<span class='no'>lat</span>, <span class='no'>lon</span>, <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
+    <pre class="usage"><span class='fu'>GmlDirectPosition</span>(<span class='no'>pos</span>, <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
+                  <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>GmlDirectPositionLatLon</span>(<span class='no'>lat</span>, <span class='no'>lon</span>, <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
                         <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>,
-                        <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                        <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>GmlEnvelope</span>(<span class='no'>lowerCorner</span>, <span class='no'>upperCorner</span>, <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-            <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-            <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>GmlFeatureCollection</span>(<span class='no'>featureMembers</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>GmlPoint</span>(<span class='no'>pos</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-         <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-         <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>GmlPointProperty</span>(<span class='kw'>href</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>point</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-<span class='fu'>GmlFeatureProperty</span>(<span class='kw'>href</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>feature</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-<span class='fu'>GmlTimeInstant</span>(<span class='no'>timePosition</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>relatedTimes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>NA</span>),
-               <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>href</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+                        <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                        <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>GmlEnvelope</span>(<span class='no'>lowerCorner</span>, <span class='no'>upperCorner</span>, <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+            <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+            <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>GmlFeatureCollection</span>(<span class='no'>featureMembers</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>GmlPoint</span>(<span class='no'>pos</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+         <span class='kw'>srsDimension</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>axisLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+         <span class='kw'>uomLabels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>GmlPointProperty</span>(<span class='kw'>href</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>point</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>GmlFeatureProperty</span>(<span class='kw'>href</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>feature</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>GmlTimeInstant</span>(<span class='no'>timePosition</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>relatedTimes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>NA</span>),
+               <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>href</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 <span class='fu'>GmlTimeInterval</span>(<span class='no'>interval</span>, <span class='no'>unit</span>, <span class='kw'>radix</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>factor</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
 <span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>beginPosition</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-              <span class='kw'>endPosition</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-              <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-              <span class='kw'>relatedTimes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='fl'>NA</span>), <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
-<span class='fu'>GmlTimePosition</span>(<span class='no'>time</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                <span class='kw'>calendarEraName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>),
-                <span class='kw'>indeterminatePosition</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='fl'>NA</span>))
+              <span class='kw'>endPosition</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>duration</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+              <span class='kw'>timeInterval</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+              <span class='kw'>relatedTimes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fl'>NA</span>), <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
+<span class='fu'>GmlTimePosition</span>(<span class='no'>time</span>, <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                <span class='kw'>calendarEraName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>),
+                <span class='kw'>indeterminatePosition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fl'>NA</span>))
 <span class='fu'>GmlMeasure</span>(<span class='no'>value</span>, <span class='no'>uom</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -297,15 +313,13 @@
       <td><p>See slot description.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="objects-from-this-classes"><a class="anchor" href="#objects-from-this-classes"></a>Objects from this classes</h2>
 
     <p>Objects can be created by calling the according construction functions. e.g. in the form <code>GmlPoint(...)</code>.</p>
-    
     <h2 class="hasAnchor" id="extends"><a class="anchor" href="#extends"></a>Extends</h2>
 
-    <p><!-- % TODO: Describe class hierarchy. --></p>
-<p>GmlFeature:
+    <p>GmlFeature:
 Class <code>"GmlFeatureOrNULL"</code>, directly.</p>
 <p>GmlFeatureCollection:
 Class <code>"GmlFeature"</code>, directly.
@@ -337,14 +351,12 @@ Class <code>"GmlTimeObjectOrNULL"</code>, directly.</p>
 <p>GmlTimePrimitive:
 Class <code>"GmlTimeObject"</code>, directly.
 Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.</p>
-    
     <h2 class="hasAnchor" id="virtual-classes"><a class="anchor" href="#virtual-classes"></a>Virtual Classes</h2>
 
     <p>No objects may be created from the following virtual classes: <code>GmlFeature</code>, <code>GmlTimeObject</code>, <code>GmlTimePrimitive</code>, <code>GmlTimeGeometricPrimitive</code>, <code>GmlGeometry</code>, all <code>...OrNULL</code> classes.</p>
-    
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p><dl class='dl-horizontal'>
+    <p></p><dl'>
     <dt><code>axisLabels</code>:</dt><dd><p>Object of class <code>"character"</code>: An character vector of labels for all the axes of this CRS.</p></dd>
     <dt><code>begin</code>:</dt><dd><p>Object of class <code>"GmlTimeInstantPropertyOrNULL"</code>: An object of class <code>GmlTimeInstantProperty-class</code>, the start time of a <code>GmlTimePeriod-class</code>.</p></dd>
     <dt><code>beginPosition</code>:</dt><dd><p>Object of class <code>"GmlTimePositionOrNULL"</code>: An object of class <code>GmlTimePosition-class</code>, the start time of a <code>GmlTimePeriod-class</code>.</p></dd>
@@ -380,26 +392,25 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
     <dt><code>upperCorner</code>:</dt><dd><p>Object of class <code>"GmlDirectPosition"</code>: Object of class <code>GmlDirectPosition-class</code>, the upper (right) corner of an <code>GmlEnvelope-class</code>.</p></dd><dt><code>uom</code>:</dt><dd><p>Object of class <code>"character"</code>: The unit of measurement in a <code>OmMeasure</code> object.</p></dd>
     <dt><code>uom</code>:</dt><dd><p>Object of class <code>"character"</code>: The unit of measurement in a <code>GmlMeasure</code> object.</p></dd>
     <dt><code>value</code>:</dt><dd><p>Object of class <code>"numeric"</code>: The actual value in a <code>GmlMeasure</code> object.</p></dd>
-  </dl>
-    
+  
+</dl>
+
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
-    <p></p><dl class='dl-horizontal'>
+    <p></p><dl'>
     <dt>encodeXML</dt><dd><p><code>signature(obj = "GmlDirectPosition", sos = "SOS")</code> or <code>signature(obj = "GmlEnvelope", sos = "SOS")</code> and more: Convert the given element to an XML respresentaion, and XML &#8220;encoding&#8221;.</p></dd>
-	 </dl>
-    
+	 
+</dl>
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The construction functions return an object of the respective class.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>"...OrNULL"</code> classes are used to model optional slots.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>GML specification at <a href='https://www.opengeospatial.org/standards/gml'>https://www.opengeospatial.org/standards/gml</a>.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlDirectPosition"</span>)</div><div class='output co'>#&gt; Class "GmlDirectPosition" [package "sos4R"]
@@ -424,13 +435,10 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 #&gt; Name:         id
 #&gt; Class: character
 #&gt; 
-#&gt; Extends: 
-#&gt; Class "GmlFeatureOrNULL", directly
-#&gt; Class "GmlFeatureOrGmlFeaturePropertyOrNULL", directly
-#&gt; Class "FoiOrNULL", by class "GmlFeatureOrGmlFeaturePropertyOrNULL", distance 2
+#&gt; Extends: "GmlFeatureOrNULL", "GmlFeatureOrGmlFeaturePropertyOrNULL"
 #&gt; 
 #&gt; Known Subclasses: "GmlFeatureCollection", "SaSamplingPoint", "SaSamplingSurface", 
-#&gt; "SamsSamplingFeature", "MonitoringPoint"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlFeatureCollection"</span>)</div><div class='output co'>#&gt; Class "GmlFeatureCollection" [package "sos4R"]
+#&gt; "SamsSamplingFeature", "WmlMonitoringPoint"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlFeatureCollection"</span>)</div><div class='output co'>#&gt; Class "GmlFeatureCollection" [package "sos4R"]
 #&gt; 
 #&gt; Slots:
 #&gt;                                     
@@ -454,9 +462,7 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 #&gt; Name:              href          feature
 #&gt; Class:        character GmlFeatureOrNULL
 #&gt; 
-#&gt; Extends: 
-#&gt; Class "GmlFeatureOrGmlFeaturePropertyOrNULL", directly
-#&gt; Class "FoiOrNULL", by class "GmlFeatureOrGmlFeaturePropertyOrNULL", distance 2</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlGeometry"</span>)</div><div class='output co'>#&gt; Virtual Class "GmlGeometry" [package "sos4R"]
+#&gt; Extends: "GmlFeatureOrGmlFeaturePropertyOrNULL"</div><div class='input'><span class='fu'>showClass</span>(<span class='st'>"GmlGeometry"</span>)</div><div class='output co'>#&gt; Virtual Class "GmlGeometry" [package "sos4R"]
 #&gt; 
 #&gt; Slots:
 #&gt;                                                                        
@@ -649,12 +655,19 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='co'># create envelope</span>
 <span class='no'>env1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlEnvelope</span>(<span class='kw'>upperCorner</span> <span class='kw'>=</span> <span class='no'>pos1</span>,
                     <span class='kw'>lowerCorner</span> <span class='kw'>=</span> <span class='fu'>GmlDirectPosition</span>(<span class='st'>"6.0 51.0"</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>env1</span>)</div><div class='output co'>#&gt; Object of class GmlEnvelope; srsName: NA, srsDimension: NA, srsDimension: NA, uomLabels: NA;
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>env1</span>)</div><div class='output co'>#&gt; Object of class GmlEnvelope; srsName: NA, srsDimension: NA, srsDimension: NA, uomLabels: NA;
 #&gt; 	lowerCorner: Object of class GmlDirectPosition; pos: 6.0 51.0; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA;
 #&gt; 	upperCorner: Object of class GmlDirectPosition; pos: 7.0 52.0; srsName: NA, srsDimension: NA, srsAxisLabels: NA, uomLabels: NA </div><div class='input'>
+<span class='co'># create envelope with CRS and access it</span>
+<span class='no'>env1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlEnvelope</span>(<span class='kw'>upperCorner</span> <span class='kw'>=</span> <span class='no'>pos1</span>,
+                    <span class='kw'>lowerCorner</span> <span class='kw'>=</span> <span class='fu'>GmlDirectPosition</span>(<span class='st'>"6.0 51.0"</span>),
+                    <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='st'>"http://www.opengis.net/def/crs/EPSG/0/4326"</span>)
+<span class='fu'><a href='SOS.html'>sosGetCRS</a></span>(<span class='no'>env1</span>)</div><div class='output co'>#&gt; CRS arguments:
+#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
+#&gt; +towgs84=0,0,0 </div><div class='input'>
 <span class='co'># wrap elements in feature collection</span>
-<span class='fu'>GmlFeatureCollection</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"001"</span>, <span class='kw'>featureMembers</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>pos1</span>, <span class='no'>env1</span>))</div><div class='output co'>#&gt; Object of class GmlFeatureCollection; id: 001;
-#&gt; 	2 featureMember(s): new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), new("GmlEnvelope", lowerCorner = new("GmlDirectPosition", pos = "6.0 51.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), upperCorner = new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA) </div><div class='input'>
+<span class='fu'>GmlFeatureCollection</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"001"</span>, <span class='kw'>featureMembers</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>pos1</span>, <span class='no'>env1</span>))</div><div class='output co'>#&gt; Object of class GmlFeatureCollection; id: 001;
+#&gt; 	2 featureMember(s): new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), new("GmlEnvelope", lowerCorner = new("GmlDirectPosition", pos = "6.0 51.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), upperCorner = new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), srsName = "http://www.opengis.net/def/crs/EPSG/0/4326", srsDimension = NA, axisLabels = NA, uomLabels = NA) </div><div class='input'>
 <span class='co'># create point with ID</span>
 <span class='no'>point1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlPoint</span>(<span class='kw'>pos</span> <span class='kw'>=</span> <span class='no'>pos1</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"002"</span>)
 
@@ -666,7 +679,7 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='co'># referenced feature</span>
 <span class='fu'>GmlFeatureProperty</span>(<span class='kw'>href</span> <span class='kw'>=</span> <span class='st'>"http://link.to/feature"</span>)</div><div class='output co'>#&gt; Object of class GmlFeatureProperty, href: http://link.to/feature, feature:  </div><div class='input'>
 <span class='co'># create a time position and wrap it into a time instant</span>
-<span class='no'>timePos1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010-01-01"</span>))
+<span class='no'>timePos1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='st'>"2010-01-01"</span>))
 
 <span class='co'># create direct or referenced time instant</span>
 <span class='no'>timeInst1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>timePosition</span> <span class='kw'>=</span> <span class='no'>timePos1</span>)
@@ -693,55 +706,37 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
               <span class='kw'>endPosition</span> <span class='kw'>=</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos1</span>@<span class='kw'>time</span>+<span class='fl'>3600</span>))</div><div class='output co'>#&gt; GmlTimePeriod: [ GmlTimePosition [ time: 2010-01-01 ]
 #&gt; 	--&gt; GmlTimePosition [ time: 2010-01-01 01:00:00 ] ] </div><div class='input'>
 <span class='co'># one week backwards from now</span>
-<span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>()-(<span class='fl'>3600</span>*<span class='fl'>24</span>*<span class='fl'>7</span>))
+<span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>()-(<span class='fl'>3600</span>*<span class='fl'>24</span>*<span class='fl'>7</span>))
 <span class='no'>aWeekAgo</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
-<span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())
+<span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())
 <span class='no'>now</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
-<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-08-02 15:07:23 ]
-#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2019-08-09 15:07:23 ] ] </div></pre>
+<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-15 13:21:42 ]
+#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-22 13:21:42 ] ] </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#objects-from-this-classes">Objects from this classes</a></li>
-
-      <li><a href="#extends">Extends</a></li>
-
-      <li><a href="#virtual-classes">Virtual Classes</a></li>
-
-      <li><a href="#slots">Slots</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Daniel Nuest <a href='mailto:daniel.nuest@uni-muenster.de'>daniel.nuest@uni-muenster.de</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:GetObservationResponse
+  xmlns:sos="http://www.opengis.net/sos/2.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/om/2.0 http://schemas.opengis.net/om/2.0/observation.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd">
+  <sos:observationData>
+    <om:OM_Observation xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="o_1">
+      <om:type xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement"/>
+      <om:phenomenonTime>
+        <gml:TimePeriod xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="phenomenonTime_1">
+          <gml:beginPosition>1999-01</gml:beginPosition>
+          <gml:endPosition>2000-01</gml:endPosition>
+        </gml:TimePeriod>
+      </om:phenomenonTime>
+      <om:resultTime>
+        <gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="ti_57d32d5e1877a92e43b7eeaa4f3e868dc9548a0dadf9dfaf5025eaa659613adb">
+          <gml:timePosition>2000-01-15T00:00:00.000+12:00</gml:timePosition>
+        </gml:TimeInstant>
+      </om:resultTime>
+      <om:procedure xlink:href="C"/>
+      <om:observedProperty xlink:href="MTHLY_STATS: EXTREME MAXIMUM TEMPERATURE (MTHLY: EXTR MAX TEMP)" xlink:title="MTHLY: EXTR MAX TEMP"/>
+      <om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="1056" xlink:title="KERIKERI EWS"/>
+      <om:result>
+        <swe:DataArray xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <swe:elementCount>
+            <swe:Count>
+              <swe:value>13</swe:value>
+            </swe:Count>
+          </swe:elementCount>
+          <swe:elementType name="Components">
+            <swe:DataRecord xmlns:ns="http://www.opengis.net/swe/2.0">
+              <ns:field name="phenomenonTime">
+                <ns:Time definition="http://www.opengis.net/def/property/OGC/0/PhenomenonTime">
+                  <ns:uom xlink:href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"/>
+                </ns:Time>
+              </ns:field>
+              <ns:field name="MTHLY_STATS__EXTREME_MAXIMUM_TEMPERATURE__MTHLY__EXTR_MAX_TEMP_">
+                <ns:Quantity definition="MTHLY_STATS: EXTREME MAXIMUM TEMPERATURE (MTHLY: EXTR MAX TEMP)">
+                  <ns:uom code="DEGREE_CELSIUS"/>
+                </ns:Quantity>
+              </ns:field>
+            </swe:DataRecord>
+          </swe:elementType>
+          <swe:encoding>
+            <swe:TextEncoding xmlns:ns="http://www.opengis.net/swe/2.0" blockSeparator="@@" decimalSeparator="." tokenSeparator=","/>
+          </swe:encoding>
+          <swe:values>1999-01,29@@1999-02,26.89999999999999857891452847979962825775146484375@@1999-03,25.300000000000000710542735760100185871124267578125@@1999-04,25.5@@1999-05,21.89999999999999857891452847979962825775146484375@@1999-06,20.699999999999999289457264239899814128875732421875@@1999-07,19.89999999999999857891452847979962825775146484375@@1999-08,18.60000000000000142108547152020037174224853515625@@1999-09,21.800000000000000710542735760100185871124267578125@@1999-10,22.800000000000000710542735760100185871124267578125@@1999-11,23.10000000000000142108547152020037174224853515625@@1999-12,25.39999999999999857891452847979962825775146484375@@2000-01,25.89999999999999857891452847979962825775146484375</swe:values>
+        </swe:DataArray>
+      </om:result>
+    </om:OM_Observation>
+  </sos:observationData>
+  <sos:observationData>
+    <om:OM_Observation xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="o_2">
+      <om:type xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement"/>
+      <om:phenomenonTime>
+        <gml:TimePeriod xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="phenomenonTime_2">
+          <gml:beginPosition>1999-01</gml:beginPosition>
+          <gml:endPosition>2000-01</gml:endPosition>
+        </gml:TimePeriod>
+      </om:phenomenonTime>
+      <om:resultTime>
+        <gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="ti_314352284928d153ca6f9fe979fd5148af457459cbd16855fad49925aded48db">
+          <gml:timePosition>2000-01-15T00:00:00.000+12:00</gml:timePosition>
+        </gml:TimeInstant>
+      </om:resultTime>
+      <om:procedure xlink:href="C"/>
+      <om:observedProperty xlink:href="MTHLY_STATS: EXTREME MAXIMUM TEMPERATURE (MTHLY: EXTR MAX TEMP)" xlink:title="MTHLY: EXTR MAX TEMP"/>
+      <om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="11234" xlink:title="HANMER FOREST EWS"/>
+      <om:result>
+        <swe:DataArray xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <swe:elementCount>
+            <swe:Count>
+              <swe:value>13</swe:value>
+            </swe:Count>
+          </swe:elementCount>
+          <swe:elementType name="Components">
+            <swe:DataRecord xmlns:ns="http://www.opengis.net/swe/2.0">
+              <ns:field name="phenomenonTime">
+                <ns:Time definition="http://www.opengis.net/def/property/OGC/0/PhenomenonTime">
+                  <ns:uom xlink:href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"/>
+                </ns:Time>
+              </ns:field>
+              <ns:field name="MTHLY_STATS__EXTREME_MAXIMUM_TEMPERATURE__MTHLY__EXTR_MAX_TEMP_">
+                <ns:Quantity definition="MTHLY_STATS: EXTREME MAXIMUM TEMPERATURE (MTHLY: EXTR MAX TEMP)">
+                  <ns:uom code="DEGREE_CELSIUS"/>
+                </ns:Quantity>
+              </ns:field>
+            </swe:DataRecord>
+          </swe:elementType>
+          <swe:encoding>
+            <swe:TextEncoding xmlns:ns="http://www.opengis.net/swe/2.0" blockSeparator="@@" decimalSeparator="." tokenSeparator=","/>
+          </swe:encoding>
+          <swe:values>1999-01,33.7999999999999971578290569595992565155029296875@@1999-02,31.60000000000000142108547152020037174224853515625@@1999-03,29.800000000000000710542735760100185871124267578125@@1999-04,26.699999999999999289457264239899814128875732421875@@1999-05,22.300000000000000710542735760100185871124267578125@@1999-06,18.39999999999999857891452847979962825775146484375@@1999-07,15.699999999999999289457264239899814128875732421875@@1999-08,18.39999999999999857891452847979962825775146484375@@1999-09,23.5@@1999-10,24.199999999999999289457264239899814128875732421875@@1999-11,26.10000000000000142108547152020037174224853515625@@1999-12,26.5@@2000-01,29.199999999999999289457264239899814128875732421875</swe:values>
+        </swe:DataArray>
+      </om:result>
+    </om:OM_Observation>
+  </sos:observationData>
+</sos:GetObservationResponse>

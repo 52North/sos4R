@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Requested at 25.06.2019 10:45 UTC via:
+
+  https://hydro-sos.niwa.co.nz?service=SOS&version=2.0.0&request=GetObservation&observedProperty=Height%20of%20Gauge%20%28River%20Stage%29&featureOfInterest=95102,40810&temporalFilter=om%3AphenomenonTime%2C2019-05-01T12%3A00%3A00%2B12%3A00%2F2019-05-01T13%3A00%3A00%2B12%3A00&namespaces=xmlns%28om%2Chttp%3A%2F%2Fwww.opengis.net%2Fom%2F2.0%29
+
+-->
+<sos:GetObservationResponse xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/waterml/2.0 http://schemas.opengis.net/waterml/2.0/waterml2.xsd http://www.opengis.net/waterml/2.0 http://schemas.opengis.net/waterml/2.0/timeseries.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd">
+    <sos:observationData>
+        <om:OM_Observation xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:wml2="http://www.opengis.net/waterml/2.0" gml:id="o_1">
+            <om:type xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement"/>
+            <om:phenomenonTime>
+                <gml:TimePeriod xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="phenomenonTime_1">
+                    <gml:beginPosition>2019-05-01T12:00:00.000+12:00</gml:beginPosition>
+                    <gml:endPosition>2019-05-01T13:00:00.000+12:00</gml:endPosition>
+                </gml:TimePeriod>
+            </om:phenomenonTime>
+            <om:resultTime>
+                <gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="ti_66c04403bccca2c01ba3287f83ab65bcadf9ac4db1c00fa954080e0512db4124">
+                    <gml:timePosition>2019-05-01T13:00:00.000+12:00</gml:timePosition>
+                </gml:TimeInstant>
+            </om:resultTime>
+            <om:procedure xlink:href="Hydrometric_Station"/>
+            <om:parameter>
+                <om:NamedValue xmlns:om="http://www.opengis.net/om/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <om:name xlink:href="offering"/>
+                    <om:value xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">HG.Master@95102</om:value>
+                </om:NamedValue>
+            </om:parameter>
+            <om:observedProperty xlink:href="Height of Gauge (River Stage)" xlink:title="Height of Gauge (River Stage)"/>
+            <om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="95102" xlink:title="Karamea at Gorge"/>
+            <om:result>
+                <wml2:MeasurementTimeseries gml:id="timeseries.1">
+                    <wml2:metadata>
+                        <wml2:MeasurementTimeseriesMetadata>
+                            <wml2:temporalExtent xlink:href="#phenomenonTime_1"/>
+                        </wml2:MeasurementTimeseriesMetadata>
+                    </wml2:metadata>
+                    <wml2:defaultPointMetadata>
+                        <wml2:DefaultTVPMeasurementMetadata>
+                            <wml2:uom code="m"/>
+                            <wml2:interpolationType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/continuous" xlink:title="Instantaneous"/>
+                        </wml2:DefaultTVPMeasurementMetadata>
+                    </wml2:defaultPointMetadata>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:00:00.000+12:00</wml2:time>
+                            <wml2:value>1.267</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:05:00.000+12:00</wml2:time>
+                            <wml2:value>1.267</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:10:00.000+12:00</wml2:time>
+                            <wml2:value>1.266</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:15:00.000+12:00</wml2:time>
+                            <wml2:value>1.267</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:20:00.000+12:00</wml2:time>
+                            <wml2:value>1.264</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:25:00.000+12:00</wml2:time>
+                            <wml2:value>1.264</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:30:00.000+12:00</wml2:time>
+                            <wml2:value>1.264</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:35:00.000+12:00</wml2:time>
+                            <wml2:value>1.264</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:40:00.000+12:00</wml2:time>
+                            <wml2:value>1.263</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:45:00.000+12:00</wml2:time>
+                            <wml2:value>1.263</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:50:00.000+12:00</wml2:time>
+                            <wml2:value>1.263</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:55:00.000+12:00</wml2:time>
+                            <wml2:value>1.263</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T13:00:00.000+12:00</wml2:time>
+                            <wml2:value>1.263</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                </wml2:MeasurementTimeseries>
+            </om:result>
+        </om:OM_Observation>
+    </sos:observationData>
+    <sos:observationData>
+        <om:OM_Observation xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:wml2="http://www.opengis.net/waterml/2.0" gml:id="o_2">
+            <om:type xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement"/>
+            <om:phenomenonTime>
+                <gml:TimePeriod xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="phenomenonTime_2">
+                    <gml:beginPosition>2019-05-01T12:00:00.000+12:00</gml:beginPosition>
+                    <gml:endPosition>2019-05-01T13:00:00.000+12:00</gml:endPosition>
+                </gml:TimePeriod>
+            </om:phenomenonTime>
+            <om:resultTime>
+                <gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="ti_ca49292ca98fd163df1e3de9562091e9bfc5a200d47939889eedc62e9b1e0df8">
+                    <gml:timePosition>2019-05-01T13:00:00.000+12:00</gml:timePosition>
+                </gml:TimeInstant>
+            </om:resultTime>
+            <om:procedure xlink:href="Hydrometric_Station"/>
+            <om:parameter>
+                <om:NamedValue xmlns:om="http://www.opengis.net/om/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <om:name xlink:href="offering"/>
+                    <om:value xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">HG.Master@40810</om:value>
+                </om:NamedValue>
+            </om:parameter>
+            <om:observedProperty xlink:href="Height of Gauge (River Stage)" xlink:title="Height of Gauge (River Stage)"/>
+            <om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="40810" xlink:title="Awakino at Gorge"/>
+            <om:result>
+                <wml2:MeasurementTimeseries gml:id="timeseries.2">
+                    <wml2:metadata>
+                        <wml2:MeasurementTimeseriesMetadata>
+                            <wml2:temporalExtent xlink:href="#phenomenonTime_2"/>
+                        </wml2:MeasurementTimeseriesMetadata>
+                    </wml2:metadata>
+                    <wml2:defaultPointMetadata>
+                        <wml2:DefaultTVPMeasurementMetadata>
+                            <wml2:uom code="m"/>
+                            <wml2:interpolationType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/continuous" xlink:title="Instantaneous"/>
+                        </wml2:DefaultTVPMeasurementMetadata>
+                    </wml2:defaultPointMetadata>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:00:00.000+12:00</wml2:time>
+                            <wml2:value>1.931</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:05:00.000+12:00</wml2:time>
+                            <wml2:value>1.93</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:10:00.000+12:00</wml2:time>
+                            <wml2:value>1.929</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:15:00.000+12:00</wml2:time>
+                            <wml2:value>1.928</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:20:00.000+12:00</wml2:time>
+                            <wml2:value>1.928</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:25:00.000+12:00</wml2:time>
+                            <wml2:value>1.927</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:30:00.000+12:00</wml2:time>
+                            <wml2:value>1.926</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:35:00.000+12:00</wml2:time>
+                            <wml2:value>1.926</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:40:00.000+12:00</wml2:time>
+                            <wml2:value>1.924</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:45:00.000+12:00</wml2:time>
+                            <wml2:value>1.924</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:50:00.000+12:00</wml2:time>
+                            <wml2:value>1.924</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T12:55:00.000+12:00</wml2:time>
+                            <wml2:value>1.923</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05-01T13:00:00.000+12:00</wml2:time>
+                            <wml2:value>1.922</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                </wml2:MeasurementTimeseries>
+            </om:result>
+        </om:OM_Observation>
+    </sos:observationData>
+</sos:GetObservationResponse>

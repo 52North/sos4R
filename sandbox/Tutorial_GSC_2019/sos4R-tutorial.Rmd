@@ -1,0 +1,355 @@
+---
+title: "sos4R: New Wrapper Functions for Easier SOS Access"
+date: "2019-09-02"
+output:
+   beamer_presentation:
+    includes:
+      in_header: "./talk-style.tex"
+classoption: "aspectratio=169,8pt"
+always_allow_html: yes
+---
+
+```{r, include = FALSE}
+str(knitr::opts_chunk$get())
+
+knitr::opts_chunk$set(
+  comment="",
+  collapse = FALSE,
+  echo = TRUE,
+  cache = TRUE)
+```
+
+# Overview
+
+## getting started - SOS4R
+
+R is a statistical tool and programming language tailored for data analysis including spatial data.
+
+It allows to **query data** from standard conform **SOS instances** using simple **R function calls** and does no require any knowledge about the Sensor Web. It is easily extendible for new data models and **opens** the huge amount of analysis and visualization **features of the R environment for the Sensor Web**.
+https://52north.github.io/sos4R/
+
+`sos4R` includes a collection of convenience functions which wrap the complex SOS interface with its specific terms (e.g. FOI, procedure).
+
+The wrapper function use more generic terms easily accessible for all users, especially without a strong knowledge of the OGC standards of the Sensor Web Enablement (see ["OGC SWE and SOS"](sos4R-vignette-02-ogc-sos.html) vignette for details).
+
+## SOS4R - project facts
+
+In a [nutshell](https://www.openhub.net/p/sos4R) , sos4R...
+
+- has had 589 commits made by 9 contributors representing 12,680 lines of code
+- is mostly written in R with a well-commented source code
+- has a well established, mature codebase maintained by a average size development team with increasing Y-O-Y commits
+- took an estimated 13 years of effort (COCOMO model) starting with its first commit in May, 2013 ending with its most recent commit about three weeks ago
+
+- CRAN: https://cran.r-project.org/package=sos4R
+
+Sponsors
+
+- NIWA: National Institute of Water and Atmospheric Research, New Zealand
+- MuDak-WRM: Multidisciplinary data acquisition as the key for a globally applicable water resource management, funded by BMBF
+- TaMIS: Talsperren-Mess-Informations-System, funded by BMBF
+- ifgi: student contributions, initial version by Daniel Nüst
+
+<!-- Überblick SOS-Sprech zu Convenience? -->
+
+## sos4R - convenience API
+
+  The key functions of the convenience API are:
+  
+  - **SOS()** initializes the connection with an SOS endpoint
+  - **phenomena()** returns a list of phenomena that the SOS provides. It can also provide details on the recording period and the stations providing this phenomenon
+  - **sites()** retrieves details on the feature of interests/measurement stations. This can include their locations, observed phenomena and temporal extent of each time series.
+  - **getData()** fetches the desired time series data from the SOS.
+
+The convenience API wraps and combines the default API reusing the available functions in sos4R.
+
+# Phenomena
+
+## Setting up the SOS
+
+```{r setup}
+library("sos4R")
+
+niwaHydro <- SOS(url = "https://climate-sos.niwa.co.nz/",
+                 binding = "KVP", 
+                 useDCPs = FALSE, 
+                 version = "2.0.0")
+```
+
+## Phenomena{.allowframebreaks}
+
+The function `phenomena(..)` provides information about observed phenomena and time periods of data.
+
+```{r phenomena}
+phenomena <- phenomena(sos = niwaHydro)
+str(phenomena)
+```
+
+```{r phenomena_table}
+head(phenomena)
+```
+
+\framebreak 
+
+The retrieved data can be extended by time intervals and site identifier for which data is available.
+
+```{r phenomena_include_time}
+head(phenomena(sos = niwaHydro, includeTemporalBBox = TRUE))
+```
+
+\framebreak 
+
+```{r phenomena_include_siteid}
+head(phenomena(sos = niwaHydro, includeSiteId = TRUE))
+```
+
+\framebreak 
+
+One can also add both temporal extent and sites.
+
+```{r phenomena_include_all}
+head(phenomena(sos = niwaHydro, includeTemporalBBox = TRUE, includeSiteId = TRUE))
+```
+
+# Sites
+
+## List sites {.allowframebreaks}
+
+The function `sites(..)` provides information about sites where observations are made, including metadata about the sites (e.g. location).
+The returned object is a `SpatialPointsDataFrame`.
+
+```{r sites}
+sites <- sites(sos = niwaHydro)
+head(sites)
+```
+
+<!-- \framebreak -->
+
+<!-- To see all sites, even the ones without any data, use the `empty` parameter. -->
+
+<!-- ```{r sites_empty, eval=TRUE} -->
+<!-- sitesEmpty <- sites(sos = niwaHydro, empty = TRUE) -->
+<!-- as.data.frame(sitesEmpty)[10:13,] -->
+<!-- ``` -->
+
+\framebreak
+
+One can retrieve additional metadata about the phenomena and the time period for which data is available.
+Including temporal extent implies inclusion of phenomena.
+In the next chunks the object is coerced to a `date.frame` to get a tabular view.
+
+```{r sites_metadata_phen}
+sitesPhen <- sites(sos = niwaHydro, includePhenomena = TRUE)
+head(colnames(sitesPhen@data))
+
+colnames(sitesPhen@data)[c(1,3,80)] <- c("ID", "FOG", "RAIN")
+```
+
+\framebreak
+
+```{r sites_metadata_phen_2}
+sitesPhen[,c(1,3,80)]
+```
+
+\framebreak
+
+```{r sites_metadata_temporal}
+sitesTempBB <- sites(sos = niwaHydro, 
+                     includeTemporalBBox = TRUE, includePhenomena = TRUE)
+str(sitesTempBB[1:3,c(1,3,80)]@data)
+```
+
+## Filter Sites {.allowframebreaks}
+
+One can filter sites using phenomena and temporal extent.
+
+```{r sites_phenomena}
+head(sites(sos = niwaHydro, phenomena = phenomena[3,]))
+```
+
+\framebreak
+
+```{r sites_time}
+head(sites(sos = niwaHydro, 
+           begin = as.POSIXct("1904-01-01"), 
+           end = as.POSIXct("1905-12-31")))
+```
+
+\framebreak
+
+The `SpatialPointsDataFrame` allows access to coordinates with coordinate reference system (CRS).
+
+```{r sites_coords}
+library(sp)
+coordinates(sites)[1:3,]
+```
+
+```{r sites_projection}
+sites@proj4string
+```
+
+```{r sites_bbox}
+bbox(sites)
+```
+
+\framebreak
+
+One way of plotting and exploring the sites is:
+
+```{r sites_map, fig.height=4}
+library("mapview")
+mapview(sites[-16,], legend=FALSE, col.regions="#65c6e4")
+```
+
+## Sites as List
+
+The function `siteList(..)` is an analogue, but the result is a list rather than a spatial object.
+
+```{r siteList}
+siteList <- siteList(sos = niwaHydro)
+str(siteList)
+head(siteList)
+```
+
+<!-- \framebreak -->
+
+<!-- One can extend the information returned with these parameters: -->
+
+<!-- - `empty` to also show sites without data -->
+<!-- - `includePhenomena` to add phenomena to the table (boolean) -->
+<!-- - `includeTemporalBBox` to also show the time when data is available (boolean) -->
+
+<!-- ```{r siteList_empty, eval=TRUE} -->
+<!-- head(siteList(sos = niwaHydro, empty = TRUE)) -->
+<!-- ``` -->
+
+<!-- \framebreak -->
+
+<!-- One can reduce the results with these parameters: -->
+
+<!-- - `phenomena` is a vector of phenomena which must be measured at the sites -->
+<!-- - `begin` and `end` define a time interval (date and time class objects) for which some data must be available (sites may have data outside the given interval) -->
+
+<!-- ```{r siteList_phenomena_time} -->
+<!-- siteList(sos = niwaHydro, -->
+<!--          phenomena = phenomena$phenomenon[80], -->
+<!--          begin = as.POSIXct("1950-01-01"),  -->
+<!--          end = as.POSIXct("1960-12-31")) -->
+<!-- ``` -->
+
+# getData
+
+## Data download {.allowframebreaks}
+
+The function `getData(..)` retrieves data and returns them in a long form 'data.frame' that is ready-to-use for the [`xts`](https://cran.r-project.org/package=xts) or [`spacetime`](https://cran.r-project.org/package=spacetime) package.
+
+The returned data can be limited by thematic, spatial, and temporal filters.
+Thematic filtering (phenomena) support the values of the previous functions as inputs.
+Spatial filters are either sites, or a bounding box.
+Temporal filter is a time period during which observations are made.
+
+Without a temporal extent, the used SOS only returns the last measurement.
+\footnotesize
+```{r getData_single}
+obsData <- getData(sos = niwaHydro,
+                   phenomena = phenomena[18,1],
+                   sites = siteList[1:2,1]
+)
+str(obsData,1)
+```
+\normalsize
+\framebreak 
+
+The result `data.frame` includes additional metadata.
+
+```{r getData_attributes}
+attributes(obsData[[3]])
+```
+
+Request more data with a temporal extent for all sites.
+
+<!-- **Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local time zone and creates a time object in UTC. -->
+
+```{r getData_temporal}
+obsData <- getData(sos = niwaHydro,
+                   phenomena = phenomena[18,1],
+                   sites = siteList[1,1],
+                   begin = parsedate::parse_iso_8601("1970-01-01T12:00:00+12:00"),
+                   end = parsedate::parse_iso_8601(Sys.time()))
+```
+\footnotesize
+```{r getData_temporal_2}
+str(obsData, 2)
+```
+\normalsize
+
+# Plotting and Analytics
+
+## Time Series Plotting {.allowframebreaks}
+
+Plot received data as time series:
+
+```{r getData_timeseries_plot, fig.width=6, fig.height=3.2}
+library(xts)
+ts1056 <- xts(obsData[obsData$siteID == '1056',3],
+              obsData[obsData$siteID == '1056', "timestamp"])
+plot(x = ts1056, 
+     main = "Monthly: Extreme max. Temp. (°C)")
+```
+
+## Analytics {.allowframebreaks}
+
+Conversion of the time series:
+
+```{r timeseries_decompose, results="hide", warning=FALSE, message=FALSE}
+extTs <- merge(ts1056, as.xts(ts(start = c(1981,10), end = c(2018, 8), frequency = 12)))
+smplTs <- ts(as.numeric(extTs[,1]), c(1981, 10), frequency = 12)
+smplTsFill <- imputeTS::na.interpolation(smplTs)
+decTs <- decompose(smplTsFill)
+```
+\framebreak
+
+```{r timeseries_decompose_2, fig.height=5}
+plot(decTs)
+lm(y~x, data.frame(y=as.numeric(decTs$trend), x=1:length(decTs$trend)))
+```
+
+```{r timeseries_decompose_3, fig.height=5}
+plot(decTs$trend,xlim=c(1981, 2020), main="Simple linear trend of monthly maxima")
+abline(22.96-(1981+9/12)*0.0022*12, 0.0022*12, col="red")
+```
+
+## Multiple Time Series {.allowframebreaks}
+
+You can also retrieve data for phenomena from multiple sites.
+
+```{r getData_multipleB, fig.width=6, fig.height=3.2}
+multipleSites <- siteList$siteID[35:38]
+obsData <- getData(sos = niwaHydro,
+                   phenomena = phenomena[18,1],
+                   sites = sites[1:2,]$siteID, # siteList[1:2,1]
+                   begin = parsedate::parse_iso_8601(Sys.time()-5.5*365*24*60*60),
+                   end = parsedate::parse_iso_8601(Sys.time())
+)
+
+
+ts1056 <- xts(obsData[obsData$siteID == '1056',3],
+              obsData[obsData$siteID == '1056',"timestamp"])
+names(ts1056) <- "Station__1056"
+ts11234 <- xts(obsData[obsData$siteID == '11234',3],
+               obsData[obsData$siteID == '11234',"timestamp"])
+names(ts11234) <- "Station_11234"
+p <- plot(x = na.fill(merge(ts1056, ts11234), list(NA, "extend", NA)), 
+     main = "Monthly: Extreme max. Temp. (°C)", 
+     ylim=c(14,41))
+addLegend("topleft", ncol=2, col = c("black", "red"), lty=1)
+plot(p)
+```
+
+\framebreak
+
+```{r, fig.height=5}
+library(sp)
+mapview(sites[1:2,], map.types="OpenTopoMap")
+```
+

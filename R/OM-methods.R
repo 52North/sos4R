@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-09-08                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # construction methods
@@ -61,7 +61,7 @@ OmMeasurement <- function(samplingTime, procedure, observedProperty,
 }
 
 
-################################################################################
+############################################################################## #
 #
 # Some problem with this function: Could not find function "getGeneric" ...
 #setMethod(f = "length", signature = signature(x = "OmObservationCollection"),
@@ -173,7 +173,7 @@ setMethod(f = "[", signature = signature(x= "OmObservationCollection",
           }
 )
 
-################################################################################
+############################################################################## #
 #
 names.OmObservation <- function(x) {
   .name <- paste(sosProcedures(x), sosObservedProperties(x), sosFeatureIds(x),

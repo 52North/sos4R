@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,9 +25,9 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
-################################################################################
+############################################################################## #
 # ACTUAL TO STRING AND PRINTING FUNCTIONS
 
 .toString.OwsServiceOperation <- function(x, ...) {
@@ -312,16 +312,16 @@
   invisible(x)
 }
 
-.toString.MonitoringPoint <- function(x, ...) {
-  .mp <- paste("Object of class MonitoringPoint; ",
+.toString.WmlMonitoringPoint <- function(x, ...) {
+  .mp <- paste("Object of class WmlMonitoringPoint; ",
                "id: ", x@id, ", names: ", toString(paste(x@names)),
                "\n\tidentifier: ", x@identifier,
                "\n\tshape: ", (toString(x@shape)))
   return(.mp)
 }
 
-.print.MonitoringPoint <- function(x, ...) {
-  cat(.toString.MonitoringPoint(x, ...), "\n")
+.print.WmlMonitoringPoint <- function(x, ...) {
+  cat(.toString.WmlMonitoringPoint(x, ...), "\n")
   invisible(x)
 }
 
@@ -357,7 +357,8 @@
               "\n\tname:", sosName(x),
               "\n\tdescription:", sosAbstract(x),
               "\n\tcoords:", toString(sosCoordinates(x)),
-              "\n\tboundedBy:", toString(sosBoundedBy(x)))
+              "\n\tboundedBy:", toString(sosBoundedBy(x)),
+              "\n\tvalidTime:", toString(sosTime(x)))
   return(.s)
 }
 
@@ -411,7 +412,7 @@
               ", version: ",
               x@version,
               "\nObsvervation ID: ",
-              x@observationId,
+              toString(x@observationId),
               "\nResponseFormat(s): ",
               x@responseFormat,
               ", responseMode(s): ",
@@ -439,7 +440,11 @@
               ", outputFormat: ",
               x@outputFormat,
               "\nProcedure: ",
-              x@procedure)
+              x@procedure,
+              "\nprocedureDescriptionFormat: ",
+              x@procedureDescriptionFormat,
+              "\nvalidTime: ",
+              toString(x@validTime))
   return(.s)
 }
 
@@ -996,7 +1001,7 @@
   invisible(x)
 }
 
-################################################################################
+############################################################################## #
 # PRINT FUNCTIONS
 setMethod("print", "OwsServiceOperation", function(x, ...) .print.OwsServiceOperation(x, ...))
 setMethod("print", "OwsGetCapabilities", function(x, ...) .print.OwsGetCapabilities(x, ...))
@@ -1019,7 +1024,7 @@ setMethod("print", "SOS_2.0.0", function(x, ...) .print.SOS_2.0.0(x, ...))
 setMethod("print", "SosFilter_Capabilities", function(x, ...) .print.SosFilter_Capabilities(x, ...))
 setMethod("print", "SosObservationOffering", function(x, ...) .print.SosObservationOffering(x, ...))
 setMethod("print", "SosObservationOffering_2.0.0", function(x, ...) .print.SosObservationOffering_2.0.0(x, ...))
-setMethod("print", "MonitoringPoint", function(x, ...) .print.MonitoringPoint(x, ...))
+setMethod("print", "WmlMonitoringPoint", function(x, ...) .print.WmlMonitoringPoint(x, ...))
 setMethod("print", "SosContents", function(x, ...) .print.SosContents(x, ...))
 setMethod("print", "SosFeatureOfInterest", function(x, ...) .print.SosFeatureOfInterest(x, ...))
 setMethod("print", "SensorML", function(x, ...) .print.SensorML(x, ...))
@@ -1058,7 +1063,7 @@ setMethod("print", "OgcContains", function(x, ...) .print.OgcContains(x, ...))
 setMethod("print", "OgcIntersects", function(x, ...) .print.OgcIntersects(x, ...))
 setMethod("print", "OgcOverlaps", function(x, ...) .print.OgcOverlaps(x, ...))
 
-################################################################################
+############################################################################## #
 # TO STRING FUNCTIONS
 setMethod("toString", "OwsServiceOperation", function(x, ...) .toString.OwsServiceOperation(x, ...))
 setMethod("toString", "OwsGetCapabilities", function(x, ...) .toString.OwsGetCapabilities(x, ...))
@@ -1081,7 +1086,7 @@ setMethod("toString", "SOS_2.0.0", function(x, ...) .toString.SOS_2.0.0(x, ...))
 setMethod("toString", "SosFilter_Capabilities", function(x, ...) .toString.SosFilter_Capabilities(x, ...))
 setMethod("toString", "SosObservationOffering", function(x, ...) .toString.SosObservationOffering(x, ...))
 setMethod("toString", "SosObservationOffering_2.0.0", function(x, ...) .toString.SosObservationOffering_2.0.0(x, ...))
-setMethod("toString", "MonitoringPoint", function(x, ...) .toString.MonitoringPoint(x, ...))
+setMethod("toString", "WmlMonitoringPoint", function(x, ...) .toString.WmlMonitoringPoint(x, ...))
 setMethod("toString", "SosContents", function(x, ...) .toString.SosContents(x, ...))
 setMethod("toString", "SosFeatureOfInterest", function(x, ...) .toString.SosFeatureOfInterest(x, ...))
 setMethod("toString", "SensorML", function(x, ...) .toString.SensorML(x, ...))
@@ -1120,7 +1125,7 @@ setMethod("toString", "OgcContains", function(x, ...) .toString.OgcContains(x, .
 setMethod("toString", "OgcIntersects", function(x, ...) .toString.OgcIntersects(x, ...))
 setMethod("toString", "OgcOverlaps", function(x, ...) .toString.OgcOverlaps(x, ...))
 
-################################################################################
+############################################################################## #
 # SHOW FUNCTIONS
 setMethod("show", "OwsServiceOperation", function(object) .print.OwsServiceOperation(object))
 setMethod("show", "OwsGetCapabilities", function(object) .print.OwsGetCapabilities(object))
@@ -1143,7 +1148,7 @@ setMethod("show", "SOS_2.0.0", function(object) .print.SOS_2.0.0(object))
 setMethod("show", "SosFilter_Capabilities", function(object) .print.SosFilter_Capabilities(object))
 setMethod("show", "SosObservationOffering", function(object) .print.SosObservationOffering(object))
 setMethod("show", "SosObservationOffering_2.0.0", function(object) .print.SosObservationOffering_2.0.0(object))
-setMethod("show", "MonitoringPoint", function(object) .print.MonitoringPoint(object))
+setMethod("show", "WmlMonitoringPoint", function(object) .print.WmlMonitoringPoint(object))
 setMethod("show", "SosContents", function(object) .print.SosContents(object))
 setMethod("show", "SosFeatureOfInterest", function(object) .print.SosFeatureOfInterest(object))
 setMethod("show", "SensorML", function(object) .print.SensorML(object))
@@ -1181,7 +1186,7 @@ setMethod("show", "OgcContains", function(object) .print.OgcContains(object))
 setMethod("show", "OgcIntersects", function(object) .print.OgcIntersects(object))
 setMethod("show", "OgcOverlaps", function(object) .print.OgcOverlaps(object))
 
-################################################################################
+############################################################################## #
 # SUMMARY FUNCTIONS
 summary.SOS_versioned = function(object, ...) {
   obj = list()
@@ -1412,7 +1417,7 @@ print.summary.OmObservationCollection = function(x, ...) {
 }
 
 
-################################################################################
+############################################################################## #
 # utils
 .addTabIndent <- function(str) {
   .s <- gsub(pattern = "\t",  replacement = "\t\t", x = str)

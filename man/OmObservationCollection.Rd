@@ -16,6 +16,7 @@
 \alias{length.OmObservationCollection}
 \alias{names.OmObservationCollection}
 \alias{sosBoundedBy,OmObservationCollection-method}
+\alias{sosBoundedBy,SosObservationOffering_2.0.0-method}
 
 \alias{sosCoordinates,OmObservationCollection-method}
 \alias{sosProcedures,OmObservationCollection-method}
@@ -25,7 +26,6 @@
 \alias{sosFeaturesOfInterest,OmObservationCollection}
 \alias{sosFeaturesOfInterest,OmObservationCollection-method}
 
-\alias{as.SpatialPointsDataFrame.OmObservationCollection}
 \alias{sosGetCRS,OmObservationCollection-method}
 
 \alias{sosUOM,OmObservationCollection-method}

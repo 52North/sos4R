@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,9 +25,9 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
-################################################################################
+############################################################################## #
 # construction functions
 #
 OwsGetCapabilities <- function(
@@ -159,40 +159,11 @@ OwsRange <- function(minimumValue = as.character(NA),
       rangeClosure = rangeClosure, spacing = spacing)
 }
 
-
-
-################################################################################
-# checking of operations before they are sent out
 #
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS",
-                                operation = "OwsGetCapabilities_1.1.0",
-                                verbose = "logical"),
-          def = function(service, operation, verbose) {
-
-            # TODO implement checkRequest for OwsGetCapabilities
-
-            return(TRUE)
-          })
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS",
-                                operation = "OwsGetCapabilities_2.0.0",
-                                verbose = "logical"),
-          def = function(service, operation, verbose) {
-
-            # TODO implement checkRequest for OwsGetCapabilities
-
-            return(TRUE)
-          })
-
-
-################################################################################
-# helper methods
+# KVP helper methods ----
 #
 
-#
 # to add (possible) multiple values in kvp
-#
 .kvpKeyAndValues <- function(key, values) {
   if (is(values, "vector")) {
     .values <- sapply(values, .kvpEscapeSpecialCharacters)
@@ -215,12 +186,12 @@ setMethod(f = "checkRequest",
 # and http://www.degraeve.com/reference/urlencoding.php
 #
 # Special character  	Escaped encoding
-# :					 	%3A
-# / 					%2F
-# # 					%23
-# ? 					%3F
-# = 					%3D
-#   (space)             %20
+# :					 	        %3A
+# / 					        %2F
+# # 					        %23
+# ? 					        %3F
+# = 					        %3D
+# (space)             %20
 #
 .kvpEscapeSpecialCharacters <- function(x) {
   if (is.list(x) && length(x) == 1 && isS4(x[[1]])) {
@@ -233,10 +204,10 @@ setMethod(f = "checkRequest",
 }
 
 #
-# kvp encoding ----
+# KVP encoding ----
 #
 setMethod(f = "encodeRequestKVP", "OwsGetCapabilities",
-          def = function(obj, sos, verbose = FALSE) {
+          definition = function(obj, sos, verbose = FALSE) {
             .sosEncodeRequestKVPGetCapabilities(obj, verbose)
           })
 
@@ -309,8 +280,8 @@ setMethod(f = "encodeRequestKVP", "OwsGetCapabilities_2.0.0",
   return(.kvpString)
 }
 
-################################################################################
-# XML encoding
+#
+# XML encoding ----
 #
 setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
           function(obj, sos, verbose = FALSE) {
@@ -318,10 +289,11 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
-            return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj))
+            return(.sosEncodeRequestXMLOwsGetCapabilities_1.1.0(obj = obj, sos = sos))
           }
 )
-.sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj) {
+
+.sosEncodeRequestXMLOwsGetCapabilities_1.1.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
   xml2::xml_set_attrs(x = xmlDoc,
                       value = c(xmlns = sos100Namespace,
@@ -329,7 +301,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
                                 service = obj@service,
                                 "xmlns:ows" = owsNamespace,
                                 "xmlns:ogc" = ogcNamespace),
-                      ns = SosAllNamespaces())
+                      ns = sos@namespaces)
 
   # optional:
   if (!is.na(obj@acceptVersions)) {
@@ -360,19 +332,17 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_1.1.0",
   return(xmlDoc)
 }
 
-#
-#
-#
 setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
           function(obj, sos, verbose = FALSE) {
             if (verbose) {
               cat("[encodeRequestXML]", class(obj), "\n")
             }
 
-            return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj))
+            return(.sosEncodeRequestXMLOwsGetCapabilities_2.0.0(obj = obj, sos = sos))
           }
 )
-.sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj) {
+
+.sosEncodeRequestXMLOwsGetCapabilities_2.0.0 <- function(obj, sos) {
   xmlDoc <- xml2::xml_new_root(sosGetCapabilitiesName)
   xml2::xml_set_attrs(x = xmlDoc,
                       value = c(xmlns = sos200Namespace,
@@ -380,7 +350,7 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
                                 service = obj@service,
                                 "xmlns:ows" = owsNamespace,
                                 "xmlns:ogc" = ogcNamespace),
-                      ns = SosAllNamespaces())
+                      ns = sos@namespaces)
 
   # optional:
   if (!is.na(obj@acceptVersions)) {
@@ -418,9 +388,9 @@ setMethod("encodeRequestXML", "OwsGetCapabilities_2.0.0",
   return(xmlDoc)
 }
 
-
-################################################################################
-# SOAP encoding
+#
+# SOAP encoding ----
+#
 setMethod("encodeRequestSOAP", "OwsGetCapabilities",
           function(obj, sos, verbose = FALSE) {
             if (verbose) {

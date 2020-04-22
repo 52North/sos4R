@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,27 +25,62 @@
 # Created: 2010-09-09                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
-# construction methods
+# construction methods ----
 #
-SaSamplingPoint <- function(sampledFeatures, position,
-                            relatedObservation = list(NA), relatedSamplingFeature = list(NA),
-                            surveyDetails = NA, id = NA_character_) {
+SaSamplingPoint <- function(sampledFeatures,
+                            position,
+                            relatedObservation = list(NA),
+                            relatedSamplingFeature = list(NA),
+                            surveyDetails = NA,
+                            id = NA_character_) {
   new("SaSamplingPoint", sampledFeatures = sampledFeatures,
       position = position, relatedObservation = relatedObservation,
       surveyDetails = surveyDetails, id = id)
 }
 
-#
-#
-#
-SaSamplingSurface <- function(sampledFeatures, shape,
-                              relatedObservation = list(NA), relatedSamplingFeature = list(NA),
-                              surveyDetails = NA, position = NA) {
+SaSamplingSurface <- function(sampledFeatures,
+                              shape,
+                              relatedObservation = list(NA),
+                              relatedSamplingFeature = list(NA),
+                              surveyDetails = NA,
+                              position = NA) {
   new("SaSamplingSurface", sampledFeatures = sampledFeatures,
       shape = shape, relatedObservation = relatedObservation,
-      relatedSamplingFeature = relatedSamplingFeature, 
+      relatedSamplingFeature = relatedSamplingFeature,
       surveyDetails = surveyDetails, position = position)
 }
+
+#
+# parsing ----
+#
+parseSamplingPoint <- function(obj, sos) {
+  sampledFeatures <- as.list(xml2::xml_text(
+    xml2::xml_find_first(x = obj, xpath = gmlNameName, ns = sos@namespaces))
+  )
+  positionXml <- xml2::xml_child(x = obj, search = saPositionName, ns = sos@namespaces)
+  position <- parsePosition(positionXml, sos = sos)
+  id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
+
+  sp <- SaSamplingPoint(sampledFeatures = sampledFeatures, position = position, id = id)
+  return(sp)
+}
+
+#
+# coercion methods ----
+#
+as.SpatialPoints.SaSamplingPoint = function(from) {
+  as(from@position, "SpatialPoints")
+}
+setAs(from = "SaSamplingPoint", to = "SpatialPoints",
+      def = function(from) {
+        as.SpatialPoints.SaSamplingPoint(from)
+      }
+)
+setAs(from = "SaSamplingPoint", to = "Spatial",
+      def = function(from) {
+        as.SpatialPoints.SaSamplingPoint(from)
+      }
+)

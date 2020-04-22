@@ -2,6 +2,7 @@
 # Load dev version of sos4R ----
 #
 devtools::load_all()
+webmockr::disable()
 #
 # VARIABLES----
 #
@@ -30,7 +31,7 @@ devtools::load_all()
 #
 # https://climate-sos.niwa.co.nz/?service=SOS&version=2.0.0&request=GetCapabilities
 #.sos <- "https://climate-sos.niwa.co.nz/"
-#.foi <- 
+#.foi <-
 #.temporalFilter <- "2018-12-27T00:00:00+00:00/2018-12-28T02:30:00+00:00"
 #
 # Set-Up SOS object----
@@ -39,33 +40,21 @@ sos <- SOS(url = .sos, version = .version, verboseOutput = .verbose, binding = .
 #
 # GetCapabilities::Contents----
 #
-myContents <- sosContents(sos)
-#
-# GetFeatureOfInterest----
-#
-myFeature <- getFeatureOfInterest(sos, featureOfInterest = .foi, verbose = .verbose, saveOriginal = .saveOriginal)
-myFeatures <- getFeatureOfInterest(sos, verbose = .verbose, saveOriginal = .saveOriginal)
+phenomena(sos, includeTemporalBBox = TRUE, includeSiteId = FALSE)
+
 #
 # GetDataAvailability----
 #
 myGDA <- getDataAvailability(sos = sos, verbose = verbose, saveOriginal = saveOriginal)
 myGDA[1]
+
 #
 # Metadata exploration----
 #
 # cat("\nNames of offerings:\n")
 # print(names(sosOfferings(sos)))
 # print(sosProcedures(sos)[[.procedure]])
-#
-# GetObservation----
-#
-myGetObservation <- getObservation(sos = sos,
-                                   offering = sosOfferings(sos)[[.procedure]],
-                                   observedProperty = .observedProperty,
-                                   responseFormat = .responseFormat,
-                                   eventTime = sosCreateTime(sos = sos, time = .temporalFilter),
-                                   verbose = .verbose,
-                                   saveOriginal = .saveOriginal)
+
 
 # Playground----
 #
@@ -78,3 +67,6 @@ myGetObservation <- getObservation(sos = sos,
 # toString(sosTime)
 # cat(paste0(sosTime))
 # .kvpEscapeSpecialCharacters(sosTime)
+
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service", version = sos100_version, binding = "KVP")
+S <- describeSensor(mySOS, unique(unlist(sosProcedures(mySOS)))[[1]])

@@ -8,21 +8,29 @@
 
 <title>Changelog • sos4R</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,7 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Changelog" />
+
 
 
 
@@ -44,9 +54,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -60,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -73,6 +84,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -83,16 +97,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R -- Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
+    </li>
+    <li>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -103,7 +123,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -118,26 +137,50 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/52North/sos4R/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sos4r-0-3-1" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-3-1" class="anchor"></a>sos4R 0.3.1<small> Unreleased </small>
+    <div id="sos4r-040" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.0">
+<a href="#sos4r-040" class="anchor"></a>sos4R 0.4.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)</li>
+<li>Add <strong>wrapper functions</strong> for more convenient access to phenomena, stations and data without OGC SWE terms and SOS specifics, see <a href="../vignettes/sos4R-vignette-05-wrapper-functions.html">new vignette</a>
+</li>
+<li>Give warnings if time cannot be parsed with the format provided in the SOS object</li>
+<li>Do not save file name as attribute of returned object anymore (adds complexity, not documented/widely used)</li>
+<li>Manage namespaces as part of the SOS object (allows user manipulation via <code>sos@namespaces</code>)</li>
+<li>Accessor functions return lists only if the content is complex: <code><a href="../reference/SOS.html">sosName()</a></code>, <code><a href="../reference/SOS.html">sosObservedProperties()</a></code>, <code><a href="../reference/SOS.html">sosProcedures()</a></code> <code><a href="../reference/SOS.html">sosFeatureIds()</a></code>, <code><a href="../reference/SOS.html">sosUOM()</a></code> now return character vectors if applied to collections or lists</li>
+<li>Add help page for coercion functions, see <code><a href="../reference/Coercion.html">?`coerce-sos4R`</a></code>
+</li>
+<li>
+<code><a href="../reference/SOS.html">sosTime(..)</a></code> now always returns base R classes, i.e. a list with <code>begin</code> and <code>end</code> based on <code>POSIXct</code> (change default for <code>convert</code> parameter to <code>TRUE</code>).</li>
+<li>
+<code><a href="../reference/GetObservation.html">getObservation(..)</a></code> now supports multiple offerings for SOS 2.0.0 (in conformance with the specfication)</li>
+<li>Drop “Created SOS for URL” message after creation</li>
+<li>Drop <code>checkRequest</code> methods, they were 90% “TODO” comments; actually existing checks preserved in functions where sensible</li>
+<li>Drop support for KML (Keyhole Markup Language), because it is not a data format, the parsing was never implemented, and the only SOS using it provided it specifically for display in Google Earth</li>
+</ul>
+</div>
+    <div id="sos4r-031" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#sos4r-031" class="anchor"></a>sos4R 0.3.1<small> 2019-08-09 </small>
 </h1>
 <ul>
 <li>Bugfix release: don’t set classes for <code>xml2</code> (requires version <code>1.2.2</code>, see <a href='https://github.com/52North/sos4R/issues/148'>#148</a>)</li>
 </ul>
 </div>
-    <div id="sos4r-0-3-0" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-3-0" class="anchor"></a>sos4R 0.3.0<small> 2019-04-13 </small>
+    <div id="sos4r-030" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.0">
+<a href="#sos4r-030" class="anchor"></a>sos4R 0.3.0<small> 2019-04-13 </small>
 </h1>
 <ul>
 <li>Switch from <code>XML</code> to <code>xml2</code>
@@ -155,9 +198,9 @@
 <li>Drop support for non-standard “latest” time request</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-12" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-12" class="anchor"></a>sos4R 0.2-12<small> Unreleased </small>
+    <div id="sos4r-02-12" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-12">
+<a href="#sos4r-02-12" class="anchor"></a>sos4R 0.2-12<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added ‘additionalKVPs’ to SOS(…) to add specific key-value-pairs for KVP requests</li>
@@ -165,7 +208,7 @@
 <li>Added handling of multiple DCPs for the same operation type using a regex list dcpFilter and parameter ‘useDCPs’ as a switch</li>
 <li>Added handling for time instances to sosCreateTime</li>
 <li>Added feature of interest for GET URL, using sosKVPParamNameFoi for naming the parameter</li>
-<li>Added support for “latest” time request in GET using sosDefaultGetBindingParamLatest (e.g. “time=latest” or “latest”)</li>
+<li>Added support for “latest” time request in GET using sosDefaultGetBindingParamLatest (e.g. “time=latest” or “latest”)</li>
 <li>Fixed bug in getObservation, improved handling for saveOriginal (if not provided for getObservation(byId))</li>
 <li>Fixed usage of .find.package, which is deprecated, for loading the cheat sheet and news/changes file (now using find.package)</li>
 <li>Fixed bug in mimeType definition with subtypes which were incorrectly encoded by RCurl by using different quotation: “text/xml;subtype=”sensorML/1.0.1"" &gt; changed to: ‘text/xml;subtype=“sensorML/1.0.1”’ (and similar for OM)</li>
@@ -174,9 +217,9 @@
 <li>Added parsing of CompositePhenomenon</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-11" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-11" class="anchor"></a>sos4R 0.2-11<small> 2013-05-14 </small>
+    <div id="sos4r-02-11" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-11">
+<a href="#sos4r-02-11" class="anchor"></a>sos4R 0.2-11<small> 2013-05-14 </small>
 </h1>
 <ul>
 <li>Fixed line lengths of \example and \usage sections in .Rd files</li>
@@ -184,9 +227,9 @@
 <li>Changed minimum R version to 2.15.0 since older ones will not be tested anymore, and increased version of important dependencies RCurl and XML</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-10" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-10" class="anchor"></a>sos4R 0.2-10<small> 2012-11-19 </small>
+    <div id="sos4r-02-10" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-10">
+<a href="#sos4r-02-10" class="anchor"></a>sos4R 0.2-10<small> 2012-11-19 </small>
 </h1>
 <ul>
 <li>Added function sosCapabilitiesUrl to generate a capabilities request URL in KVP encoding to include in Documentation, e.g. Sweave</li>
@@ -196,9 +239,9 @@
 <li>EXTENDED documentation: added reference to cheat sheet in Vignette, added subsection “Quick Start” to Introduction</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-9" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-9" class="anchor"></a>sos4R 0.2-9<small> 2012-08-08 </small>
+    <div id="sos4r-02-9" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-9">
+<a href="#sos4r-02-9" class="anchor"></a>sos4R 0.2-9<small> 2012-08-08 </small>
 </h1>
 <ul>
 <li>Added error handling for plotting methods so that plot(sos) does not break if one offering cannot be coerced to spatial</li>
@@ -212,9 +255,9 @@
 <li><p>Added function to reset the parsers to default: sos &lt;- SosResetParsingFunctions(sos)</p></li>
 </ul>
 </div>
-    <div id="sos4r-0-2-7" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-7" class="anchor"></a>sos4R 0.2-7<small> 2011-12-02 </small>
+    <div id="sos4r-02-7" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-7">
+<a href="#sos4r-02-7" class="anchor"></a>sos4R 0.2-7<small> 2011-12-02 </small>
 </h1>
 <ul>
 <li>Added describeSensor can now handle a character vector of procedures, will return a list with the sensor descriptions</li>
@@ -224,9 +267,9 @@
 <li>Added demo with EO2Heaven SOS, called “eo2heaven”, deals with data download and plotting and some analysis</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-6" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-6" class="anchor"></a>sos4R 0.2-6<small> 2011-10-08 </small>
+    <div id="sos4r-02-6" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-6">
+<a href="#sos4r-02-6" class="anchor"></a>sos4R 0.2-6<small> 2011-10-08 </small>
 </h1>
 <ul>
 <li>Changed documentation of changes from CHANGES to this NEWS file</li>
@@ -238,9 +281,9 @@
 <li>Change in encodeKVP: Specific function for objects of class POSIXt, see above.</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-5" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-5" class="anchor"></a>sos4R 0.2-5<small> 2011-07-25 </small>
+    <div id="sos4r-02-5" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-5">
+<a href="#sos4r-02-5" class="anchor"></a>sos4R 0.2-5<small> 2011-07-25 </small>
 </h1>
 <ul>
 <li>Changed name Nuest again in citation file, one directly using the umlaut, another using N\uest.</li>
@@ -250,18 +293,18 @@
 <li>Fix in latex file, misplaced “&amp;”</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-3" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-3" class="anchor"></a>sos4R 0.2-3<small> 2011-05-02 </small>
+    <div id="sos4r-02-3" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-3">
+<a href="#sos4r-02-3" class="anchor"></a>sos4R 0.2-3<small> 2011-05-02 </small>
 </h1>
 <ul>
 <li>Bug in sosGetCRS, returns NULL and prints error if the EPSG code is not recognized</li>
 <li>Fixed non-ASCII characters, Umlaute, and incomplete last lines (when using readLines(…)) throughout the package</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-2" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-2" class="anchor"></a>sos4R 0.2-2<small> 2011-04-03 </small>
+    <div id="sos4r-02-2" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-2">
+<a href="#sos4r-02-2" class="anchor"></a>sos4R 0.2-2<small> 2011-04-03 </small>
 </h1>
 <ul>
 <li>Added rudimentary support for KML responses (no parsing)</li>
@@ -270,9 +313,9 @@
 <li>Added %\VignetteDepends{xtable} to vignette and depedency xtable as well - got NOTEd for that in R 2.13 checks</li>
 </ul>
 </div>
-    <div id="sos4r-0-2-1" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2-1" class="anchor"></a>sos4R 0.2-1<small> Unreleased </small>
+    <div id="sos4r-02-1" class="section level1">
+<h1 class="page-header" data-toc-text="0.2-1">
+<a href="#sos4r-02-1" class="anchor"></a>sos4R 0.2-1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fixed in sosGetCRS(…) which breaks if there is no bounding box given in an offering, broke even plot funktion.</li>
@@ -282,9 +325,9 @@
 <li>Based vignette completely on dowloaded files for releases</li>
 </ul>
 </div>
-    <div id="sos4r-0-2" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-2" class="anchor"></a>sos4R 0.2<small> 2011-03-20 </small>
+    <div id="sos4r-02" class="section level1">
+<h1 class="page-header" data-toc-text="0.2">
+<a href="#sos4r-02" class="anchor"></a>sos4R 0.2<small> 2011-03-20 </small>
 </h1>
 <ul>
 <li>Bugfix in coordinate order in coercion function for SpatialPointsDataFrame</li>
@@ -295,9 +338,9 @@
 <li>Added summary methods for OmObservation and OmObservationCollection</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-17" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-17" class="anchor"></a>sos4R 0.1-17<small> 2011-03-14 </small>
+    <div id="sos4r-01-17" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-17">
+<a href="#sos4r-01-17" class="anchor"></a>sos4R 0.1-17<small> 2011-03-14 </small>
 </h1>
 <ul>
 <li>Added saveOriginal to describeSensor</li>
@@ -306,9 +349,9 @@
 <li>Fixes with exports and documentation to adhere to changes for R 2.13.0</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-16" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-16" class="anchor"></a>sos4R 0.1-16<small> Unreleased </small>
+    <div id="sos4r-01-16" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-16">
+<a href="#sos4r-01-16" class="anchor"></a>sos4R 0.1-16<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added file to create demo for Coastlab SOS</li>
@@ -323,9 +366,9 @@
 <li>Testing istSOS and fixing bugs</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-15" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-15" class="anchor"></a>sos4R 0.1-15<small> 2011-03-04 </small>
+    <div id="sos4r-01-15" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-15">
+<a href="#sos4r-01-15" class="anchor"></a>sos4R 0.1-15<small> 2011-03-04 </small>
 </h1>
 <ul>
 <li>Fixes in airquality demo due to new names of observed properties.</li>
@@ -333,9 +376,9 @@
 <li>Fix because of missing dependency for cacheSchweave -&gt; removed caching from vignette.</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-14" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-14" class="anchor"></a>sos4R 0.1-14<small> Unreleased </small>
+    <div id="sos4r-01-14" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-14">
+<a href="#sos4r-01-14" class="anchor"></a>sos4R 0.1-14<small> Unreleased </small>
 </h1>
 <ul>
 <li>Minor improvements with metadata information for sosCoordinates(SensorML)</li>
@@ -344,9 +387,9 @@
 <li>Work on demos (airquality, ioos, and others)</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-13" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-13" class="anchor"></a>sos4R 0.1-13<small> 2011-03-03 </small>
+    <div id="sos4r-01-13" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-13">
+<a href="#sos4r-01-13" class="anchor"></a>sos4R 0.1-13<small> 2011-03-03 </small>
 </h1>
 <ul>
 <li>Added sosGetCRS() for SosObservationOffering based on bounding box</li>
@@ -366,9 +409,9 @@
 <li>Updates in Vignette for new features</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-11" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-11" class="anchor"></a>sos4R 0.1-11<small> 2011-01-17 </small>
+    <div id="sos4r-01-11" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-11">
+<a href="#sos4r-01-11" class="anchor"></a>sos4R 0.1-11<small> 2011-01-17 </small>
 </h1>
 <ul>
 <li>Changed title and citation</li>
@@ -376,9 +419,9 @@
 <li>Maintenance release to re-trigger generation of vignette with v-swe running</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-10" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-10" class="anchor"></a>sos4R 0.1-10<small> 2011-01-16 </small>
+    <div id="sos4r-01-10" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-10">
+<a href="#sos4r-01-10" class="anchor"></a>sos4R 0.1-10<small> 2011-01-16 </small>
 </h1>
 <p>2011-01-17</p>
 <ul>
@@ -387,9 +430,9 @@
 <li>Fixed error when retrieving no data as CSV</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-09" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-09" class="anchor"></a>sos4R 0.1-09<small> Unreleased </small>
+    <div id="sos4r-01-09" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-09">
+<a href="#sos4r-01-09" class="anchor"></a>sos4R 0.1-09<small> Unreleased </small>
 </h1>
 <ul>
 <li>Changed required R version to 2.11.1 as 2.10 causes error on install</li>
@@ -397,9 +440,9 @@
 <li>Added parsing based on MIME type (rudimentary)</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-08" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-08" class="anchor"></a>sos4R 0.1-08<small> Unreleased </small>
+    <div id="sos4r-01-08" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-08">
+<a href="#sos4r-01-08" class="anchor"></a>sos4R 0.1-08<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added package vignette</li>
@@ -421,9 +464,9 @@
 <li>Added more options to getCapabilities, which can also be passed on using the “…” argument when creating a SOS</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-07" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-07" class="anchor"></a>sos4R 0.1-07<small> Unreleased </small>
+    <div id="sos4r-01-07" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-07">
+<a href="#sos4r-01-07" class="anchor"></a>sos4R 0.1-07<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added more units of measurement to default list based on <a href="http://aurora.regenstrief.org/~ucum/ucum.html" class="uri">http://aurora.regenstrief.org/~ucum/ucum.html</a>
@@ -439,9 +482,9 @@
 <li>Added <a href='https://github.com/boundedBy'>@boundedBy</a> for OmObservationCollection</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-06" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-06" class="anchor"></a>sos4R 0.1-06<small> Unreleased </small>
+    <div id="sos4r-01-06" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-06">
+<a href="#sos4r-01-06" class="anchor"></a>sos4R 0.1-06<small> Unreleased </small>
 </h1>
 <ul>
 <li>added sosFeatureIds(…)</li>
@@ -451,9 +494,9 @@
 <li>changed behaviour of sosResult(…) for OmObservationCollection, now binds the data.frames of the contained observations</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-05" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-05" class="anchor"></a>sos4R 0.1-05<small> Unreleased </small>
+    <div id="sos4r-01-05" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-05">
+<a href="#sos4r-01-05" class="anchor"></a>sos4R 0.1-05<small> Unreleased </small>
 </h1>
 <p>2010-11-04</p>
 <ul>
@@ -465,9 +508,9 @@
 <li>Added sosCoordinates(…)</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-04" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-04" class="anchor"></a>sos4R 0.1-04<small> Unreleased </small>
+    <div id="sos4r-01-04" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-04">
+<a href="#sos4r-01-04" class="anchor"></a>sos4R 0.1-04<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fixed sosContents(…)</li>
@@ -477,9 +520,9 @@
 <li>Renamed sosEventTimePeriod(…) to sosTime(…)</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-03" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-03" class="anchor"></a>sos4R 0.1-03<small> Unreleased </small>
+    <div id="sos4r-01-03" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-03">
+<a href="#sos4r-01-03" class="anchor"></a>sos4R 0.1-03<small> Unreleased </small>
 </h1>
 <ul>
 <li>Some fixes in toString methods (errorenous recursive paste calls)</li>
@@ -503,17 +546,17 @@
 <li>Renamed functions from SosSpec to SosDescribeSensor, SosGetObservation and SosGetObservationById and moved according files to SOS-class.R and SOS-methods.R</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-02" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-02" class="anchor"></a>sos4R 0.1-02<small> Unreleased </small>
+    <div id="sos4r-01-02" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-02">
+<a href="#sos4r-01-02" class="anchor"></a>sos4R 0.1-02<small> Unreleased </small>
 </h1>
 <ul>
 <li>Finished documentation</li>
 </ul>
 </div>
-    <div id="sos4r-0-1-1" class="section level1">
-<h1 class="page-header">
-<a href="#sos4r-0-1-1" class="anchor"></a>sos4R 0.1-1<small> Unreleased </small>
+    <div id="sos4r-01-1" class="section level1">
+<h1 class="page-header" data-toc-text="0.1-1">
+<a href="#sos4r-01-1" class="anchor"></a>sos4R 0.1-1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Initial release of version 0.1-01</li>
@@ -521,58 +564,31 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#sos4r-0-3-1">0.3.1</a></li>
-        <li><a href="#sos4r-0-3-0">0.3.0</a></li>
-        <li><a href="#sos4r-0-2-12">0.2-12</a></li>
-        <li><a href="#sos4r-0-2-11">0.2-11</a></li>
-        <li><a href="#sos4r-0-2-10">0.2-10</a></li>
-        <li><a href="#sos4r-0-2-9">0.2-9</a></li>
-        <li><a href="#sos4r-0-2-7">0.2-7</a></li>
-        <li><a href="#sos4r-0-2-6">0.2-6</a></li>
-        <li><a href="#sos4r-0-2-5">0.2-5</a></li>
-        <li><a href="#sos4r-0-2-3">0.2-3</a></li>
-        <li><a href="#sos4r-0-2-2">0.2-2</a></li>
-        <li><a href="#sos4r-0-2-1">0.2-1</a></li>
-        <li><a href="#sos4r-0-2">0.2</a></li>
-        <li><a href="#sos4r-0-1-17">0.1-17</a></li>
-        <li><a href="#sos4r-0-1-16">0.1-16</a></li>
-        <li><a href="#sos4r-0-1-15">0.1-15</a></li>
-        <li><a href="#sos4r-0-1-14">0.1-14</a></li>
-        <li><a href="#sos4r-0-1-13">0.1-13</a></li>
-        <li><a href="#sos4r-0-1-11">0.1-11</a></li>
-        <li><a href="#sos4r-0-1-10">0.1-10</a></li>
-        <li><a href="#sos4r-0-1-09">0.1-09</a></li>
-        <li><a href="#sos4r-0-1-08">0.1-08</a></li>
-        <li><a href="#sos4r-0-1-07">0.1-07</a></li>
-        <li><a href="#sos4r-0-1-06">0.1-06</a></li>
-        <li><a href="#sos4r-0-1-05">0.1-05</a></li>
-        <li><a href="#sos4r-0-1-04">0.1-04</a></li>
-        <li><a href="#sos4r-0-1-03">0.1-03</a></li>
-        <li><a href="#sos4r-0-1-02">0.1-02</a></li>
-        <li><a href="#sos4r-0-1-1">0.1-1</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

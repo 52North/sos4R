@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -23,17 +23,18 @@
 #                                                                              #
 # Author: Eike Hinderk Jürrens (e.h.juerrens@52north.org)                      #
 # Created: 2018-11-23                                                          #
+# Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 #
 # Helper function to check if the given list field is available.
 #
 # Returns TRUE in the case of not NULL and a list with min 1 element
 #
-.isListFieldAvailable <- function(listField) {
-  !is.null(listField) &&
-    is.list(listField) &&
+sosIsListFieldAvailable <- function(listField) {
+  is(listField, "list") &&
     length(listField) > 0 &&
-    !length(listField) == 1 &&
-    !is.na(listField[[1]])
+    !any(sapply(listField, is.na)) &&
+    all(sapply(listField, is, "character")) &&
+    all(sapply(listField, nchar) > 0)
 }

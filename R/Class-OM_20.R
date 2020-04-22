@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # The layer for swe:TimeObjectProperty for om:resultTime and om:samplingTime is
@@ -84,7 +84,3 @@ setClass("OmMeasurement",
            return(TRUE)
          }
 )
-
-setClassUnion(name = "FoiOrNULL",
-              members = c("GmlFeatureOrGmlFeaturePropertyOrNULL", "MonitoringPoint", "NULL"))
-

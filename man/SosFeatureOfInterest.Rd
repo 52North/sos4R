@@ -16,7 +16,7 @@
 \section{Objects from the Class}{
 Objects can be created by calls to the construction function of the form \code{SosFeatureOfInterest(...)}.
 
-\code{SosFeatureOfInterestOrNULL} is a virtual class to model optional slots of containing elements: No objects may be created from it.
+\code{SosFeatureOfInterestOrNULL} is a virtual class to model optional slots of containing elements: No objects may be created from them.
 }
 
 \usage{

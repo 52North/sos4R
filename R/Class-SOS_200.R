@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,14 +25,15 @@
 # Created: 2013-08-28                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 
 #
 # SOS_2.0.0 ----
 #
 setClass("SOS_2.0.0",
-         representation(url = "character", binding = "character"),
+         representation(url = "character",
+                        binding = "character"),
          prototype = list(
            url = as.character(NA),
            binding = as.character(NA),
@@ -41,13 +42,13 @@ setClass("SOS_2.0.0",
          validity = function(object) {
            #print("Entering validation: SOS")
 
-           if(!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
+           if (!any(sapply(SosSupportedBindings(), "==", object@binding), na.rm = TRUE)) {
              return(paste("Binding has to be one of",
                           toString(SosSupportedBindings()),
                           "- given:", object@binding))
            }
 
-           if(object@version != sos200_version)
+           if (object@version != sos200_version)
              return(paste0("Version must be 2.0.0 but is", object@version))
 
            # url has to match an URL pattern
@@ -92,7 +93,8 @@ setClass("SosCapabilities_2.0.0",
 # represented by character strings.
 # TODO: FeatureRelationship
 setClass("SosObservationOffering_2.0.0",
-         representation(id = "character", name = "character",
+         representation(id = "character",
+                        name = "character",
                         resultTime = "GmlTimeGeometricPrimitive",
                         phenomenonTime = "GmlTimeGeometricPrimitive",
                         procedure = "character",
@@ -110,7 +112,7 @@ setClass("SosObservationOffering_2.0.0",
                           observableProperty = list(NA),
                           featureOfInterestType = list(NA),
                           observationType = list(NA),
-                          observedArea=NULL,
+                          observedArea = NULL,
                           procedureDescriptionFormat = list(NA),
                           responseFormat = list(NA)),
          validity = function(object) {
@@ -130,57 +132,27 @@ setClass("SosObservationOffering_2.0.0",
 #
 setClass("SosGetObservation_2.0.0",
          representation(
-           offering = "character",
+           offering = "list",
            observedProperty = "list",
            responseFormat = "character",
-           srsName = "character",
-           eventTime = "list",
-           procedure = "character",
-           featureOfInterest = "SosFeatureOfInterestOrNULL",
-           result = "OgcComparisonOpsOrXMLOrNULL",
-           resultModel = "character",
-           responseMode = "character",
-           BBOX = "character"),
+           temporalFilter = "list",
+           procedure = "list",
+           featureOfInterest = "list",
+           spatialFilter = "SamsShapeOrNULL",
+           valueReferenceTemporalFilter = "character"),
          prototype = list(
            service = as.character(NA),
-           version = as.character(NA),
-           offering = as.character(NA),
-           observedProperty = list(NA),
-           responseFormat = as.character(NA)),
+           version = as.character(NA)
+           ),
          contains = "OwsServiceOperation",
          validity = function(object) {
-           #print("Entering validation: SosGetObservation")
-           # TODO implement validity function
-
-           # service, version, offering, observedProperty, and responseFormat are mandatory
            if (is.na(object@service))
              return("service parameter must be given")
            if (is.na(object@version))
              return("version must be given")
-           if (is.na(object@offering))
-             return("offering parameter must be given")
-           # responseFormat is optional for GET
-           #if(is.na(object@responseFormat))
-           #	return("responseFormat parameter must be given")
-           if(length(object@observedProperty) < 1)
-             return("at least one observedProperty is mandatory")
 
-           # if version is there, it has to be in a certain format, see ows common
-           # srsName, offering, procedure, observedProperty are anyURIs
-           # eventTime is a list of ogc:temporalOps
-           # featureOfInterest is null or a SosFeatureOfInterest element
+           # all temporalFilter items must be GmlTimeObject
 
-           # result is null or an ogc:comparisonOps element
-           cls <- class(slot(object, "result"))
-           #			print(paste("class of result slot: ", cls))
-           if ( !any(cls %in% c("OgcComparisonOps", "xml_document",
-                                "xml_node"))) {
-             return("'response' argument does not have allowed class!")
-           }
-
-           # responseFormat must be MIME content type
-           # resultModel must be a QName
-           # responseMode must be one of inline, out-of-band, attached, or resultTemplate
            return(TRUE)
          }
 )
@@ -199,16 +171,11 @@ setClass("SosGetFeatureOfInterest_2.0.0",
            featureOfInterest = as.character(NA)),
          contains = "OwsServiceOperation",
          validity = function(object) {
-           #print("Entering validation: SosGetObservation")
-           # TODO implement validity function
-
-           # service, version, offering, observedProperty, and identifier are mandatory
-           if(is.na(object@service))
+           # service, version are mandatory
+           if (is.na(object@service))
              return("service parameter must be given")
-           if(is.na(object@version))
+           if (is.na(object@version))
              return("version must be given")
-           if(is.na(object@featureOfInterest))
-             return("featureOfInterest parameter must be given")
 
            return(TRUE)
          }

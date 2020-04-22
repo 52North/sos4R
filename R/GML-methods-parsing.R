@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-09-15                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # position parsing ----
@@ -41,7 +41,7 @@ parsePosition <- function(obj, sos) {
   }
   else {
     # must be point
-    pointXml <- xml2::xml_child(x = obj, search = gmlPointName, ns = SosAllNamespaces())
+    pointXml <- xml2::xml_child(x = obj, search = gmlPointName, ns = sos@namespaces)
     position <- GmlPointProperty(point = parsePoint(pointXml, sos = sos))
   }
 
@@ -50,8 +50,9 @@ parsePosition <- function(obj, sos) {
 
 parsePoint <- function(obj, sos) {
   point <- NA
-  pos <- xml2::xml_child(x = obj, search = gmlPosName)
+  pos <- xml2::xml_child(x = obj, search = gmlPosName, ns = SosAllNamespaces(sos@version))
   posString <- xml2::xml_text(x = pos)
+  id <- xml2::xml_attr(x = obj, attr = "id")
 
   if (sosSwitchCoordinates(sos)) {
     warning("Switching coordinates in Point!")
@@ -70,7 +71,7 @@ parsePoint <- function(obj, sos) {
                            srsDimension = as.integer(srsDimension),
                            axisLabels = axisLabels,
                            uomLabels = uomLabels)
-  point <- GmlPoint(pos = pos)
+  point <- GmlPoint(id = id, pos = pos)
 
   return(point)
 }
@@ -80,7 +81,7 @@ parsePoint <- function(obj, sos) {
 #
 parseTimeInstant <- function(obj, sos) {
   .timePosXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePositionName,
-                                      ns = SosAllNamespaces())
+                                      ns = sos@namespaces)
   .timePos <- parseTimePosition(obj = .timePosXML, sos = sos)
 
   # optionals
@@ -114,12 +115,14 @@ parseTimeInstantProperty <- function(obj, sos) {
 }
 
 parseTimePosition <- function(obj, sos) {
-  .time <- sosConvertTime(xml2::xml_text(x = obj), sos = sos)
+  .indeterminatePosition <- xml2::xml_attr(x = obj, attr = "indeterminatePosition", default = NA_character_)
+  if (is.na(.indeterminatePosition))
+    .time <- sosConvertTime(xml2::xml_text(x = obj), sos = sos)
+  else .time <- parsedate::parse_iso_8601(NA)
 
   # optional:
   .frame <- xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
   .calendarEraName <- xml2::xml_attr(x = obj, attr = "calendarEraName", default = NA_character_)
-  .indeterminatePosition <- xml2::xml_attr(x = obj, attr = "indeterminatePosition", default = NA_character_)
 
   .timePosition <- GmlTimePosition(time = .time, frame = .frame,
                                    calendarEraName = .calendarEraName,
@@ -133,7 +136,7 @@ parseTimePeriod <- function(obj, sos) {
   # optionals
   .id = xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
   .frame = xml2::xml_attr(x = obj, attr = "frame", default = NA_character_)
-  .relatedTimes <- xml2::xml_find_all(x = obj, xpath = gmlRelatedTimeName, ns = SosAllNamespaces())
+  .relatedTimes <- xml2::xml_find_all(x = obj, xpath = gmlRelatedTimeName, ns = sos@namespaces)
   if (length(.relatedTimes) < 1)
     .relatedTimes <- list()
 
@@ -142,13 +145,13 @@ parseTimePeriod <- function(obj, sos) {
   .timeInterval <- NULL
 
   # begin and end
-  if (!is.na(xml2::xml_child(x = obj, search = gmlBeginName, ns = SosAllNamespaces())) ||
-      !is.na(xml2::xml_child(x = obj, search = gmlEndName, ns = SosAllNamespaces()))) {
+  if (!is.na(xml2::xml_child(x = obj, search = gmlBeginName, ns = sos@namespaces)) ||
+      !is.na(xml2::xml_child(x = obj, search = gmlEndName, ns = sos@namespaces))) {
     .begin <- parseTimeInstantProperty(obj = xml2::xml_child(x = obj,
                                                              search = gmlBeginName,
-                                                             ns = SosAllNamespaces()),
+                                                             ns = sos@namespaces),
                                        sos = sos)
-    .end <- parseTimeInstantProperty(xml2::xml_child(x = obj, search = gmlEndName, ns = SosAllNamespaces()),
+    .end <- parseTimeInstantProperty(xml2::xml_child(x = obj, search = gmlEndName, ns = sos@namespaces),
                                      sos = sos)
 
     .timeObject <- GmlTimePeriod(begin = .begin, end = .end, duration = .duration,
@@ -174,34 +177,30 @@ parseTimePeriod <- function(obj, sos) {
   return(.timeObject)
 }
 
-#
-#
-#
 parseTimeGeometricPrimitiveFromParent <- function(obj, sos) {
-  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
-  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
-  .timeObject <- NULL
-  if (!is.na(.tiXML)) {
-    .timeObject <- parseTimeInstant(obj = .tiXML, sos = sos)
+  tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName)
+  tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName)
+  timeObject <- NULL
+  if (!is.na(tiXML)) {
+    timeObject <- parseTimeInstant(obj = tiXML, sos = sos)
   }
-  else if (!is.na(.tpXML)) {
-    .timeObject <- parseTimePeriod(obj = .tpXML, sos = sos)
+  else if (!is.na(tpXML)) {
+    timeObject <- parseTimePeriod(obj = tpXML, sos = sos)
   }
   else {
-    #		warning(paste("Could not create time from given samplingTime,",
-    #						" require gml:TimeInstant or gml:TimePeriod as children."))
-    .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
+    timeObject <- GmlTimeInstant(
+      timePosition = GmlTimePosition(
+        time = parsedate::parse_iso_8601(NA)))
   }
 
-  return(.timeObject)
+  return(timeObject)
 }
 
 #
-#
+# feature collection parsing ----
 #
 parseFeatureCollection <- function(obj, sos) {
-  .members <- xml2::xml_find_all(x = obj, xpath = gmlFeatureMemberName, ns = SosAllNamespaces())
+  .members <- xml2::xml_find_all(x = obj, xpath = gmlFeatureMemberName, ns = sos@namespaces)
 
   .id <- xml2::xml_attr(x = obj, attr = "id", default = NA_character_)
 
@@ -218,7 +217,7 @@ parseFeatureCollection <- function(obj, sos) {
 }
 .parseFeatureMember <- function(obj, sos) {
   .member <- xml2::xml_child(x = obj)
-  .name <- xml2::xml_name(x = .member, ns = SosAllNamespaces())
+  .name <- xml2::xml_name(x = .member, ns = sos@namespaces)
 
   if (.name == saSamplingPointName) {
     .sp <- parseSamplingPoint(.member, sos = sos)
@@ -234,7 +233,7 @@ parseFeatureCollection <- function(obj, sos) {
 }
 
 #
-#
+# value parsing ----
 #
 parseMeasure <- function(obj) {
   .value <- as.numeric(xml2::xml_text(x = obj))
@@ -243,3 +242,32 @@ parseMeasure <- function(obj) {
   return(.result)
 }
 
+
+#
+# spatial parsing ----
+#
+parseEnvelope <- function(obj, sos, namespaces = xml2::xml_ns(obj), verbose = FALSE) {
+  env <- list(
+    srsName = xml2::xml_attr(x = obj, attr = "srsName"),
+    lowerCorner = xml2::xml_text(x = xml2::xml_child(x = obj,
+                                                     search = gmlLowerCornerName,
+                                                     ns = namespaces)),
+    upperCorner = xml2::xml_text(x = xml2::xml_child(x = obj,
+                                                     search = gmlUpperCornerName,
+                                                     ns = namespaces))
+  )
+
+  if (verbose) cat("[parseObservationCollection] Parsed envelope:", toString(env), "\n")
+
+  if (sosSwitchCoordinates(sos)) {
+    warning("Switching coordinates in envelope!")
+    .origLC <- strsplit(x = env[["lowerCorner"]], split = " ")
+    .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
+    .origUC <- strsplit(x = env[["upperCorner"]], split = " ")
+    .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
+    env <- list(srsName = xml2::xml_attr(x = obj, attr = "srsName"),
+                lowerCorner = .lC, upperCorner = .uC)
+  }
+
+  return(env)
+}

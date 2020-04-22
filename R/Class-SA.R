@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,16 +25,16 @@
 # Created: 2010-09-08                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # Classes are based on Observations & Measurements - Part 2 - Sampling Features
-# 
+#
 # http://www.opengeospatial.org/standards/om
 #
 
 #
-# 
+# SamplingPoint ----
 #
 setClass("SaSamplingPoint",
          representation(sampledFeatures = "list",
@@ -55,7 +55,7 @@ setClass("SaSamplingPoint",
 )
 
 #
-#
+# SamplingSurface ----
 #
 setClass("SaSamplingSurface",
          representation(sampledFeatures = "list",
@@ -75,4 +75,3 @@ setClass("SaSamplingSurface",
            return(TRUE)
          }
 )
-

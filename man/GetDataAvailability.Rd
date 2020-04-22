@@ -7,6 +7,10 @@
 \alias{print,DataAvailabilityMember-method}
 \alias{show,DataAvailabilityMember-method}
 \alias{toString,DataAvailabilityMember-method}
+\alias{sosFeaturesOfInterest,DataAvailabilityMember-method}
+\alias{sosObservedProperties,DataAvailabilityMember-method}
+\alias{sosProcedures,DataAvailabilityMember-method}
+\alias{sosTime,DataAvailabilityMember-method}
 \alias{SosGetDataAvailability_1.0.0}
 \alias{SosGetDataAvailability_1.0.0-class}
 
@@ -17,6 +21,8 @@
 \alias{getDataAvailability,SOS_2.0.0-method}
 \alias{getDataAvailability}
 \alias{parseGetDataAvailabilityResponse}
+
+\alias{sosFeatureIds,DataAvailabilityMember-method}
 
 \title{Class and construction function for \code{"GetDataAvailability"} operation}
 \description{
@@ -49,12 +55,8 @@ Objects can be created by calls to construction functions:
 
 \section{Methods}{
   \describe{
-    \item{print}{\code{signature(x = "DataAvailabilityMember")}: ... }
-    \item{show}{\code{signature(object = "DataAvailabilityMember")}: ... }
-    \item{toString}{\code{signature(x = "DataAvailabilityMember")}: ... }
-    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetDataAvailability_1.0.0", verbose = "logical")}: ... }
-    \item{encodeRequestKVP}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: ... }
-    \item{sosName}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: ... }
+    \item{encodeRequestKVP}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: encode object as URL request string.}
+    \item{sosName}{\code{signature(obj = "SosGetDataAvailability_1.0.0")}: access to a name (for human display) of the object.}
     \item{toString}{\code{signature(x = "SosGetDataAvailability_1.0.0")}: ... }
 	 }
 }

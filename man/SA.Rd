@@ -19,6 +19,7 @@
 \alias{SaSamplingPoint}
 \alias{sosCoordinates,SaSamplingPoint-method}
 \alias{sosFeatureIds,SaSamplingPoint-method}
+\alias{sosFeaturesOfInterest,SaSamplingPoint-method}
 
 \title{Classes of the Namespace sa}
 
@@ -53,6 +54,9 @@ Class \code{"\linkS4class{GmlFeatureOrNULL}"}, by class "GmlFeature", distance 2
   \describe{
     \item{show}{\code{signature(object = "SaSamplingPoint")}: ... }
     \item{show}{\code{signature(object = "SaSamplingSurface")}: ... }
+    \item{sosCoordinates}{\code{signature(object = "SaSamplingPoint")}: access to the coordinates of the feature.}
+    \item{sosFeatureIds}{\code{signature(object = "SaSamplingPoint")}: access to the identifier of the feature.}
+    \item{sosFeaturesOfInterest}{\code{signature(object = "SaSamplingPoint")}: access to the feature of interest, i.e. the point itself.}
   }
 }
 

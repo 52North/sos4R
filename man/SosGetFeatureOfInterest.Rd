@@ -27,7 +27,6 @@ Class \code{"\linkS4class{OwsServiceOperation}"}, directly.
 }
 \section{Methods}{
   \describe{
-    \item{checkRequest}{\code{signature(service = "SOS_2.0.0", operation = "SosGetFeatureOfInterest_2.0.0", verbose = "logical")}: ... }
     \item{encodeRequestKVP}{\code{signature(obj = "SosGetFeatureOfInterest_2.0.0")}: ... }
     \item{sosName}{\code{signature(obj = "SosGetFeatureOfInterest_2.0.0")}: ... }
 	 }

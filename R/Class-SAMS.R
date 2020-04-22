@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -23,9 +23,9 @@
 #                                                                              #
 # Author: Benjamin Pross (b.pross@52north.org)                                 #
 # Created: 2016-01-27                                                          #
-# Project: sos4R - visit the project web page,                                 #
-#      http://52north.org/communities/sensorweb/clients/sos4R/                 #
-################################################################################
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
+############################################################################## #
 
 #
 # Classes are based on Observations & Measurements - Part X - Spatial Sampling Features
@@ -41,6 +41,8 @@ setClass("SamsShape",
          # TODO is this class inheritence required? Fields of GmlGeometry are contained in GmlPoint.
          contains = "GmlGeometry"
 )
+setClassUnion(name = "SamsShapeOrNULL",
+              members = c("SamsShape", "NULL"))
 
 SamsShape <- function(point) {
   new("SamsShape", point = point)

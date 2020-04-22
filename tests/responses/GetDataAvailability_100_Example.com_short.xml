@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gda:GetDataAvailabilityResponse xmlns:gda="http://www.opengis.net/sosgda/1.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sosgda/1.0 http://waterml2.org/schemas/gda/1.0/gda.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+  <gda:dataAvailabilityMember gml:id="dam_1">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="phen-1" xlink:title="phen-1"/>
+    <gda:featureOfInterest xlink:href="station-1" xlink:title="ELV WS2500"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_1">
+        <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_2">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-1" xlink:title="phen-1"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_2">
+        <gml:beginPosition>2019-03-01T00:10:00.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-28T23:50:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_3">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-2" xlink:title="phen-2"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_4">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-3" xlink:title="phen-3"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_5">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="phen-3" xlink:title="phen-3"/>
+    <gda:featureOfInterest xlink:href="station-1" xlink:title="ELV WS2500"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_6">
+    <gda:procedure xlink:href="ws2500-internal" xlink:title="ws2500-internal"/>
+    <gda:observedProperty xlink:href="phen-3" xlink:title="phen-3"/>
+    <gda:featureOfInterest xlink:href="station-4" xlink:title="52n-serverroom"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_7">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="phen-3" xlink:title="phen-3"/>
+    <gda:featureOfInterest xlink:href="station-3" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_3">
+        <gml:beginPosition>2019-03-01T00:16:55.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-28T23:46:46.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_8">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-4" xlink:title="phen-4"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_9">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-5" xlink:title="phen-5"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_10">
+    <gda:procedure xlink:href="wxt520" xlink:title="wxt520"/>
+    <gda:observedProperty xlink:href="phen-6" xlink:title="phen-6"/>
+    <gda:featureOfInterest xlink:href="station-3" xlink:title="Vaisala WXT 520"/>
+    <gda:phenomenonTime xlink:href="#tp_3"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_11">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-6" xlink:title="phen-6"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_12">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="phen-6" xlink:title="phen-6"/>
+    <gda:featureOfInterest xlink:href="station-1" xlink:title="ELV WS2500"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_13">
+    <gda:procedure xlink:href="ws2500-internal" xlink:title="ws2500-internal"/>
+    <gda:observedProperty xlink:href="phen-6" xlink:title="phen-6"/>
+    <gda:featureOfInterest xlink:href="station-4" xlink:title="52n-serverroom"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_14">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-7" xlink:title="phen-7"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_15">
+    <gda:procedure xlink:href="station-2" xlink:title="station-2"/>
+    <gda:observedProperty xlink:href="phen-8" xlink:title="phen-8"/>
+    <gda:featureOfInterest xlink:href="station-2" xlink:title="Kli_WS_Heisenberg-Strasse"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+</gda:GetDataAvailabilityResponse>

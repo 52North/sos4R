@@ -13,16 +13,19 @@
 \alias{SwePhenomenonPropertyOrNULL-class}
 \alias{SweTextBlock-class}
 \alias{show,SweTextBlock-method}
+\alias{show,SweTextEncoding-method}
 
 \alias{print,SweCompositePhenomenon-method}
 \alias{print,SwePhenomenon-method}
 \alias{print,SwePhenomenonProperty-method}
 \alias{print,SweTextBlock-method}
+\alias{print,SweTextEncoding-method}
 
 \alias{toString,SweCompositePhenomenon-method}
 \alias{toString,SwePhenomenon-method}
 \alias{toString,SwePhenomenonProperty-method}
 \alias{toString,SweTextBlock-method}
+\alias{toString,SweTextEncoding-method}
 
 \alias{SweCompositePhenomenon}
 \alias{SwePhenomenon}
@@ -30,6 +33,8 @@
 \alias{SweTextBlock}
 \alias{sosObservedProperties,SweCompositePhenomenon-method}
 \alias{sosObservedProperties,SwePhenomenonProperty-method}
+
+\alias{switchSweNamespace}
 
 \title{Classes and Construction Functions for the SWE Namespace}
 
@@ -120,6 +125,12 @@ showClass("SwePhenomenon")
 showClass("SwePhenomenonProperty")
 showClass("SwePhenomenonPropertyOrNULL")
 showClass("SweTextBlock")
+
+\dontrun{
+sos <- SOS(...)
+obj <- parseX(...)
+switchSweNamespace(xml2::xml_ns(obj), sos)
+}
 }
 
 \keyword{classes}
