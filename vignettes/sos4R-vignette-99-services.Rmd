@@ -48,7 +48,7 @@ More information: https://sdf.ndbc.noaa.gov/sos/
 
 This SOS supports **CSV** as a response format.
 
-```{r ioos}
+```{r ioos, eval=FALSE}
 ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
               useDCPs = FALSE,
               timeFormat = "%Y-%m-%dT%H:%M:%SZ")
@@ -62,7 +62,7 @@ obs
 
 ## NOAA National Data Buoy Center
 
-```{r ndbc}
+```{r ndbc, eval=FALSE}
 ndbc <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
             binding = "KVP")
 ndbc
@@ -82,7 +82,7 @@ sosContents(pegel)
 
 ## Axiom Data Science Demo SOS
 
-```{r}
+```{r, eval=FALSE}
 axiom <- SOS(url = "http://dev.demo.i52nsos.axiomdatascience.com/sos", binding = "KVP")
 axiom
 sosContents(axiom)
@@ -183,7 +183,7 @@ sosResult(discharge29808)
 [https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS](https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS)
 
 ```{r unidata}
-# TODO
+#
 ```
 
 ### Applied Science Associates
