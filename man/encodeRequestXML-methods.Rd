@@ -20,7 +20,7 @@
 \title{Methods for Encoding Requests to SOS in XML Format}
 
 \description{
-These methods encode objects representing requests to a Sensor Observation Service into a XML format wich can be used in the POST binding, see \code{\link{SosBindings}}.
+These methods encode objects representing requests to a Sensor Observation Service into a XML format which can be used in the POST binding, see \code{\link{SosBindings}}.
 }
 
 \section{Methods}{

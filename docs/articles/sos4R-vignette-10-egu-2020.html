@@ -130,7 +130,7 @@
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>Time series data of in-situ measurements are the key to many environmental studies. The first challenge in any analysis typically arises when the data needs to be imported into the analysis framework. Standardization is one way to lighten this burden. Unfortunately, relevant interoperability standards might be challenging for non-IT experts as long as they are not dealt with behind the scenes of a client application. One standard to provide access to environmental time series data is the Sensor Observation Service (<a href="https://en.wikipedia.org/wiki/Sensor_Observation_Service">SOS</a>) specification published by the Open Geospatial Consortium (<a href="https://www.ogc.org/">OGC</a>). SOS instances are currently used in a broad range of applications such as hydrology, air quality monitoring, and ocean sciences. Data sets provided via an SOS interface can be found around the globe from Europe to New Zealand.</p>
-<p>The R package <a href="https://52north.github.io/sos4R/">sos4R</a> (Nüst et al., 2011) is an extension package for the R environment for statistical computing and visualization (<a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>), which has been demonstrated as a powerful tool for conducting and communicating geospatial research (cf. Pebesma et al., 2012).</p>
+<p>The R package <a href="https://52north.github.io/sos4R/">sos4R</a> (Nüst et al., 2011) is an extension package for the R environment for statistical computing and visualization (<a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>), which has been demonstrated as a powerful tool for conducting and communicating geospatial research (cf. Pebesma et al., 2012). The features presented in this article are available in the new release version <code>0.4</code> <a href="https://cran.r-project.org/package=sos4R">on CRAN</a>.</p>
 </div>
 <div id="access-sensor-data-with-sos4r" class="section level1">
 <h1 class="hasAnchor">
@@ -157,19 +157,19 @@
 <span class="no">fluggs_data_availability</span>[<span class="fl">1</span>:<span class="fl">2</span>]
 <span class="co">## [[1]]</span>
 <span class="co">## Object of class DataAvailabilityMember: </span>
-<span class="co">##   Procedure            :  Einzelwerte </span>
-<span class="co">##   Observed Property    :  Abfluss </span>
-<span class="co">##   Features Of Interest :  Rutenbeck </span>
-<span class="co">##   Phenomenon Time      :  GmlTimePeriod: [ GmlTimePosition [ time: 2019-12-23 04:00:00 ]</span>
-<span class="co">##  --&gt; GmlTimePosition [ time: 2020-04-22 17:00:00 ] ] </span>
+<span class="co">##   Procedure            :  Stundensumme </span>
+<span class="co">##   Observed Property    :  Niederschlagshoehe </span>
+<span class="co">##   Features Of Interest :  Unterpilghausen </span>
+<span class="co">##   Phenomenon Time      :  GmlTimePeriod: [ GmlTimePosition [ time: 2010-09-01 07:00:00 ]</span>
+<span class="co">##  --&gt; GmlTimePosition [ time: 2013-09-16 10:00:00 ] ] </span>
 <span class="co">## </span>
 <span class="co">## [[2]]</span>
 <span class="co">## Object of class DataAvailabilityMember: </span>
-<span class="co">##   Procedure            :  Einzelwerte </span>
-<span class="co">##   Observed Property    :  Lufttemperatur </span>
-<span class="co">##   Features Of Interest :  Neumuehle </span>
+<span class="co">##   Procedure            :  Stundensumme </span>
+<span class="co">##   Observed Property    :  Niederschlagshoehe </span>
+<span class="co">##   Features Of Interest :  Hangbergermuehle </span>
 <span class="co">##   Phenomenon Time      :  GmlTimePeriod: [ GmlTimePosition [ time: 2010-04-21 23:00:00 ]</span>
-<span class="co">##  --&gt; GmlTimePosition [ time: 2013-07-05 02:37:30 ] ]</span></pre></body></html></div>
+<span class="co">##  --&gt; GmlTimePosition [ time: 2013-04-28 ] ]</span></pre></body></html></div>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">fluggs_offerings</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">sosOfferings</a></span>(<span class="no">fluggs</span>)
 <span class="no">fluggs_obs_jan_2019</span> <span class="kw">=</span> <span class="fu"><a href="../reference/GetObservation.html">getObservation</a></span>(<span class="no">fluggs</span>, <span class="kw">offering</span> <span class="kw">=</span> <span class="no">fluggs_offerings</span><span class="kw">[[</span><span class="fl">1</span>]],
                <span class="kw">eventTime</span> <span class="kw">=</span> <span class="fu"><a href="../reference/sosCreate.html">sosCreateTime</a></span>(<span class="no">fluggs</span>, <span class="st">"2019-01-01::2019-01-31"</span>),
@@ -900,7 +900,7 @@ timestamp
 <span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapshot.html">mapshot</a></span>(<span class="no">sites_map</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="no">map_file</span>)
 <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">map_file</span>)</pre></body></html></div>
 <div class="figure" style="text-align: center">
-<img src="../../../../../tmp/RtmpKce291/file4b85421e8a4.png" alt="Map ofx" width="496"><p class="caption">
+<img src="../../../../../tmp/RtmpQ0VcOr/file3f8e73cc01b1.png" alt="Map ofx" width="496"><p class="caption">
 Map ofx
 </p>
 </div>
@@ -924,7 +924,7 @@ Map ofx
      <span class="kw">sub</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="no">observationData</span><span class="kw">[[</span><span class="no">dataColumn</span>]])$<span class="no">defaultPointMetadata</span>@<span class="kw">interpolationType</span>@<span class="kw">href</span>,
      <span class="kw">yaxis.right</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">legend.loc</span> <span class="kw">=</span> <span class="st">"topleft"</span>)</pre></body></html></div>
 <p><img src="sos4R-vignette-10-egu-2020_files/figure-html/getData_timeseries_plot-1.png" width="576"></p>
-<p>It is now straightforward to combine and visualize data from two diffrent SOS servers. In this example, we’ll just combine water temperature from Germany and New Zealand.</p>
+<p>It is now straightforward to combine and visualize data from two different SOS servers. In this example, we’ll just combine water temperature from Germany and New Zealand.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">niwa</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(
   <span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://hydro-sos.niwa.co.nz/"</span>,
   <span class="kw">binding</span> <span class="kw">=</span> <span class="st">"KVP"</span>,

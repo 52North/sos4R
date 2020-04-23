@@ -1098,7 +1098,7 @@ sosFeaturesOfInterest(nwis) # > GetFeature request on WFS...
 
 .sos4Rpath <- "D:/workspace-R/sos4R";
 source("D:/workspace-R/sos4R/sandbox/loadSources.R")
-# send a funtion to R again to use the debug points in StatET
+# send a function to R again to use the debug points in StatET
 
 #
 # POST

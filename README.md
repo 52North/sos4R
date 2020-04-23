@@ -18,6 +18,8 @@ checks](https://cranchecks.info/badges/summary/sos4R)](https://cran.r-project.or
 Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/sos4R)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/52North/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/52North/sos4R)
+[![CircleCI build
+status](https://circleci.com/gh/52North/sos4R.svg?style=svg)](https://circleci.com/gh/52North/sos4R)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -80,7 +82,7 @@ Software](https://52north.org).
 
 ### Contact
 
-Do you have a question that is not anwsered in the links above? Contact
+Do you have a question that is not answered in the links above? Contact
 Daniel: [daniel.nuest@uni-muenster.de](daniel.nuest@uni-muenster.de)
 
 ## License

@@ -7440,19 +7440,19 @@ Nevertheless, let me show you a little code snippet on how I use it, and that is
 #
 parseOwsExceptionReport <- function(document) {
 #	print("parsing er!")
-	
+
 	.docRoot <- xmlRoot(document)
 	## print(.docRoot)
-	
+
 	.attrs <- xmlAttrs(.docRoot)
 	.version <- .attrs["version"]
 	if(!is.null(.attrs["lang"]) &amp;amp;amp;amp;&amp;amp;amp;amp; !is.na(.attrs["lang"]))
 		.lang <- .attrs["lang"]
 	else .lang <- as.character(NA)
-	
+
 	# remove all elements from docRoot that are not 'Exception'
 	# could probably be done nicer with subsetting, but indexing with wildcards or similar (... xmlChildren()[[]] ...) did not work.
-	.children <- xmlChildren(.docRoot)(OGC Web Services Common) 
+	.children <- xmlChildren(.docRoot)(OGC Web Services Common)
 	.exceptionsXML <- list()
 	for (x in .children) {
 		if(xmlName(x) == "Exception")
@@ -7460,10 +7460,10 @@ parseOwsExceptionReport <- function(document) {
 		else
 			print(xmlName(x))
 	}
-	
+
 	.exceptions = sapply(.exceptionsXML, parseOwsException)
 	.report <- OwsExceptionReport(version = .version, lang = .lang, exceptions = .exceptions)
-	
+
 	return(.report)
 }
 
@@ -7472,21 +7472,21 @@ parseOwsExceptionReport <- function(document) {
 #
 parseOwsException <- function(node) {
 #	print("parsing e!")
-	
+
 	.attrs <- xmlAttrs(node)
 	.code <- .attrs[["exceptionCode"]]
 	if(!is.null(.attrs["locator"]) &amp;amp;amp;amp;&amp;amp;amp;amp; !is.na(.attrs["locator"]))
 		.locator <- .attrs[["locator"]]
 	else .locator <- as.character(NA)
-	
+
 	if(!is.na(xmlChildren(node)["ExceptionText"]))
 		.text <- xmlValue(xmlChildren(node)[["ExceptionText"]])
 	else .text <- as.character(NA)
-	
-	.exception <- OwsException(exceptionCode = .code, 
+
+	.exception <- OwsException(exceptionCode = .code,
 			exceptionText = .text,
 			locator = .locator)
-	
+
 	return(.exception)
 }
 [/sourcecode]
@@ -7505,13 +7505,13 @@ So far I've been using the (undocumented) GET encoding (more on that soon in ano
 #
 # encode as XML
 #
-setMethod("encode", "GetCapabilities_1.1.0", 
+setMethod("encode", "GetCapabilities_1.1.0",
 		function(obj) {
 			print("encode gc 1.1.0")
-			
+
 			print(obj)
 			class(obj)
-			
+
 			xmlDoc <- xmlNode(name = "GetCapabilities", namespace = "sos",
 					namespaceDefinitions = c(
 							"sos" = "http://www.opengis.net/sos/1.0",
@@ -7520,7 +7520,7 @@ setMethod("encode", "GetCapabilities_1.1.0",
 							"xsi" = "http://www.w3.org/2001/XMLSchema-instance"),
 					attrs=c("xsi:schemaLocation" = "http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosGetCapabilities.xsd",
 							service=obj@service))
-			
+
 			# optional:
 			if( !is.na(obj@acceptVersions)) {
 				acceptVersions <- xmlNode(name = "AcceptVersions", namespace = "ows")
@@ -7528,24 +7528,24 @@ setMethod("encode", "GetCapabilities_1.1.0",
 						gc@acceptVersions, "xmlNode", name="ows:Version")
 				xmlDoc$children[[1]] <- acceptVersions
 			}
-			
+
 			if(!any(sapply(obj@sections, "is.na"), na.rm = TRUE)) {
 				sections <- xmlNode("ows:Sections")
 				sections$children <- lapply(gc@sections, "xmlNode", name="Section", namespace="ows")
 				xmlDoc$children[[2]] <- sections
 			}
-			
+
 			if( !is.na(obj@updateSequence)) {
 				xmlDoc <- addAttributes(xmlDoc, updateSequence = obj@updateSequence)
 			}
-			
+
 			if(!any(sapply(obj@acceptFormats, "is.na"), na.rm = TRUE)) {
 				acceptFormats <- xmlNode(name = "AcceptFormats", namespace = "ows")
 				acceptFormats$children <- lapply(
 						gc@acceptFormats, "xmlNode", name="ows:OutputFormat")
 				xmlDoc$children[[3]] <- acceptFormats
 			}
-			
+
 			return(xmlDoc)
 		}
 )
@@ -10077,7 +10077,7 @@ So, eventually I just compile my releases on Windows. I will also try to publish
 			<wp:comment_author_IP><![CDATA[217.191.89.207]]></wp:comment_author_IP>
 			<wp:comment_date><![CDATA[2010-10-24 13:10:33]]></wp:comment_date>
 			<wp:comment_date_gmt><![CDATA[2010-10-24 11:10:33]]></wp:comment_date_gmt>
-			<wp:comment_content><![CDATA[Files that the makefile wants to download are not available: 
+			<wp:comment_content><![CDATA[Files that the makefile wants to download are not available:
 
 http://www.stats.ox.ac.uk/pub/Rtools/i586-cross-tools.tar.bz2 and http://www.stats.ox.ac.uk/pub/Rtools/R_Tcl.zip]]></wp:comment_content>
 			<wp:comment_approved><![CDATA[1]]></wp:comment_approved>
@@ -12072,7 +12072,7 @@ http://geostatistics.forum.52north.org/sos4R-demo-packages-Air-Quality-failure-t
 			<wp:comment_content><![CDATA[Hello there...
 Is it something wrong with the demo airquality....
 Today I was trying to use it but I got the following answer
-Error in .sosRequest_1.0.0(sos = sos, request = request, verbose = verbose,  : 
+Error in .sosRequest_1.0.0(sos = sos, request = request, verbose = verbose,  :
   [sos4R] ERROR: Got HTML response!:
  Apache Tomcat/6.0.24 - Error report<!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--> HTTP Status 404 - /AQE/sos<b>type</b> Status report<b>message</b> /AQE/sos<b>description</b> The requested resource (/AQE/sos) is not available.Apache Tomcat/6.0
 Iguess is something wrong with the service.....
@@ -12738,7 +12738,7 @@ The changes:
 But of course there also was a bug introduced with some changes that were supposed to beÂ  bug fixes in version 0.2 and 0.2-01 ... anyway, here is an updated package: <strong>release 0.2-2</strong>, now on CRAN. I am very glad to actually have <a title="sos4R check results" href="http://cran.r-project.org/web/checks/check_results_sos4R.html">decent results in the checks</a> across several systems.
 
 From the CHANGES file:<code>
-* Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot funktion.
+* Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot function.
 * Extended saveOrginal parameter, now it also accepts file names to be used for the document to be saved.
 * Extended parsing of SensorML, adding slots for all parsed elements
 * Added parsing of exception reports to parseFile(...)
@@ -12749,7 +12749,7 @@ From the CHANGES file:<code>
 <code>* Added rudimentary support for KML responses (no parsing)
 * Changed parser detection, now uses mime type, too. This changes parser exchangeability for known mime types!
 * Added attribute to observations (if response is saved) with file name (sosAttributeFileName)
-* Added %\VignetteDepends{xtable} to vignette and depedency xtable as well - got NOTEd for that in R 2.13 checks</code>]]></content:encoded>
+* Added %\VignetteDepends{xtable} to vignette and dependency xtable as well - got NOTEd for that in R 2.13 checks</code>]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
 		<wp:post_id>794</wp:post_id>
 		<wp:post_date><![CDATA[2011-04-04 12:13:14]]></wp:post_date>
