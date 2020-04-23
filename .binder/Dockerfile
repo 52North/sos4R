@@ -1,4 +1,4 @@
-FROM rocker/binder:3.6.3
+FROM rocker/binder:3.6.2
 LABEL maintainer='Daniel Nüst <daniel.nuest@uni-muenster.de>'
 USER root
 COPY . ${HOME}
