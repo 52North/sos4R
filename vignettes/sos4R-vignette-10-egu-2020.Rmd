@@ -73,9 +73,12 @@ Time series data of in-situ measurements are the key to many environmental studi
 The first challenge in any analysis typically arises when the data needs to be imported into the analysis framework.
 Standardization is one way to lighten this burden.
 Unfortunately, relevant interoperability standards might be challenging for non-IT experts as long as they are not dealt with behind the scenes of a client application.
-One standard to provide access to environmental time series data is the Sensor Observation Service ([SOS](https://en.wikipedia.org/wiki/Sensor_Observation_Service)) specification published by the Open Geospatial Consortium ([OGC](https://www.ogc.org/)). SOS instances are currently used in a broad range of applications such as hydrology, air quality monitoring, and ocean sciences. Data sets provided via an SOS interface can be found around the globe from Europe to New Zealand.
+One standard to provide access to environmental time series data is the Sensor Observation Service ([SOS](https://en.wikipedia.org/wiki/Sensor_Observation_Service)) specification published by the Open Geospatial Consortium ([OGC](https://www.ogc.org/)).
+SOS instances are currently used in a broad range of applications such as hydrology, air quality monitoring, and ocean sciences.
+Data sets provided via an SOS interface can be found around the globe from Europe to New Zealand.
   
 The R package [sos4R](https://52north.github.io/sos4R/) (Nüst et al., 2011) is an extension package for the R environment for statistical computing and visualization (https://www.r-project.org/), which has been demonstrated as a powerful tool for conducting and communicating geospatial research (cf. Pebesma et al., 2012).
+The features presented in this article are available in the new release version `0.4` [on CRAN](https://cran.r-project.org/package=sos4R).
 
 # Access sensor data with sos4R
 
@@ -209,7 +212,7 @@ plot(x = tsFluggs,
      yaxis.right = FALSE, legend.loc = "topleft")
 ```
 
-It is now straightforward to combine and visualize data from two diffrent SOS servers.
+It is now straightforward to combine and visualize data from two different SOS servers.
 In this example, we'll just combine water temperature from Germany and New Zealand.
 
 ```{r niwa_data}

@@ -374,7 +374,7 @@ The package \pkg{sos4R} comes with a set of constant character strings and fixed
 \details{
 Most of these variables should be pretty self-explanatory.
 
-Constants for names of XML elements start with a lowercase character string of the namespace prefix (e.g. "gml"), a unique name of the element (where parts like "type" and special characters may be left out, and other descripte elements may be added for clarity), and end with "Name".
+Constants for names of XML elements start with a lowercase character string of the namespace prefix (e.g. "gml"), a unique name of the element (where parts like "type" and special characters may be left out, and other descriptive elements may be added for clarity), and end with "Name".
 
 Examples: code{gmlEnvelopeName}, \code{ogcGeometryOperandLineStringName}, \code{ogcTempOpTMEqualsName}.
 

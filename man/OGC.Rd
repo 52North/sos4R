@@ -106,7 +106,7 @@ Arguments for the construction functions are as follows.
 
   \item{propertyName}{The value for the propertyName attribute.}
   \item{geometry}{The geometry to be used in a spatial filter.}
-  \item{envelope}{The geometry to be used in a sptial filter.}
+  \item{envelope}{The geometry to be used in a spatial filter.}
 }
 
 \value{The value of the construction functions is an object of the respective class.}

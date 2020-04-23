@@ -19,7 +19,7 @@
 \title{Retrieve Sensor Descriptions from a SOS}
 
 \description{
-The DescribeSensor Operatiosn of a Sensor Observation Service can be used to retrieve metadata of procedures that are available from a SOS. This sensor description is normally encoded in \verb{SensorML}.
+The DescribeSensor operation of a Sensor Observation Service can be used to retrieve metadata of procedures that are available from a SOS. This sensor description is normally encoded in \verb{SensorML}.
 
 The method \code{describeSensor(..)} sends a DescribeSensor request for a description of the given procedure to the given Sensor Observation Service instance. If the procedure is a vector, the method will send multiple requests and combine the results in a list.
 

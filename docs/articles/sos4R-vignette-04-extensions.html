@@ -109,7 +109,7 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2020-04-22</h4>
+            <h4 class="date">2020-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-04-extensions.Rmd"><code>vignettes/sos4R-vignette-04-extensions.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-04-extensions.Rmd</code></div>
@@ -180,14 +180,14 @@
 <p>A complete list of the existing encoders names:</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="../reference/SOS.html">sosEncoders</a></span>(<span class="no">mySOS</span>))</pre></body></html></div>
 <pre><code>## [1] "SOAP" "POX"  "KVP"</code></pre>
-<p>Here the idea of organizing the encoding functions becomes clear: One base encoding function is given, which is a generic method that must exist for alle elements that need to be encoded.</p>
+<p>Here the idea of organizing the encoding functions becomes clear: One base encoding function is given, which is a generic method that must exist for all elements that need to be encoded.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">myPostEncoding</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">object</span>, <span class="no">sos</span>, <span class="no">verbose</span>) {
     <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="kw pkg">utils</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">object</span>))
 }
 <span class="co"># Connection will not be established because of mising objects</span>
 <span class="no">mySOS2</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(<span class="fu"><a href="../reference/SOS.html">sosUrl</a></span>(<span class="no">mySOS</span>),
     <span class="kw">encoders</span> <span class="kw">=</span> <span class="fu"><a href="../reference/Defaults.html">SosEncodingFunctions</a></span>(<span class="st">"POST"</span> <span class="kw">=</span> <span class="no">myPostEncoding</span>))</pre></body></html></div>
-<p>Encoding functions can be overriden for many specific objects. The signature of the encoding function consists of the object, <code>obj</code>, a SOS object, <code>sos</code>, and the optional <code>verbose</code> parameter.</p>
+<p>Encoding functions can be overridden for many specific objects. The signature of the encoding function consists of the object, <code>obj</code>, a SOS object, <code>sos</code>, and the optional <code>verbose</code> parameter.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu">showMethods</span>(<span class="st">"encodeXML"</span>)</pre></body></html></div>
 <pre><code>## Function: encodeXML (package sos4R)
 ## obj="character", sos="SOS"
@@ -292,7 +292,7 @@
 <pre><code>## [1] "GetCapabilities"     "DescribeSensor"      "GetObservation"     
 ## [4] "GetObservationById"  "ows:ExceptionReport"</code></pre>
 <p>This is also the recommended way to start if you want to set-up your own parsers (given you have responses in XML) and an alternative to debugging if you want to inspect responses directly.</p>
-<p>The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class <code>xml_document</code>:</p>
+<p>The next example shows how the response (in this case the request is intentionally incorrect and triggers an exception) is passed through as an object of class <code>xml_document</code>:</p>
 <div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="no">disabledParserSOS</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(<span class="fu"><a href="../reference/SOS.html">sosUrl</a></span>(<span class="no">mySOS</span>),
                          <span class="kw">parsers</span> <span class="kw">=</span> <span class="fu"><a href="../reference/Defaults.html">SosDisabledParsers</a></span>(),
                          <span class="kw">binding</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">sosBinding</a></span>(<span class="no">mySOS</span>),
@@ -436,9 +436,9 @@
 ## [3] &lt;sos:responseFormat&gt;text/xml;subtype="om/1.0.0"&lt;/sos:responseFormat&gt;
 ## [.getObservation_1.0.0] RESPONSE DOC:
 ## {xml_document}
-## &lt;ObservationCollection id="oc_1587577831862" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
+## &lt;ObservationCollection id="oc_1587625106583" schemaLocation="http://www.opengis.net/om/1.0 http://schemas.opengis.net/om/1.0.0/om.xsd http://www.opengis.net/sampling/1.0 http://schemas.opengis.net/sampling/1.0.0/sampling.xsd http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/swe/1.0.1 http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd" xmlns:om="http://www.opengis.net/om/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1"&gt;
 ## [1] &lt;gml:boundedBy&gt;\n  &lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"&gt;\n  ...
-## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1587577831862"&gt;\n    &lt;om:samplin ...</code></pre>
+## [2] &lt;om:member&gt;\n  &lt;om:Observation gml:id="o_1587625106583"&gt;\n    &lt;om:samplin ...</code></pre>
 <pre><code>## Object of class OmObservationCollection with 1 members.</code></pre>
 <p>Converters may be matched by XML properties <code>swe:Quantity[@definition]</code> or <code>swe:uom[@code]</code>.</p>
 <div class="sourceCode" id="cb45"><html><body><pre class="r"><span class="no">testconverters</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/Defaults.html">SosDataFieldConvertingFunctions</a></span>(
@@ -454,19 +454,19 @@
 <p>Then retrieve the data with the correct type.</p>
 <div class="sourceCode" id="cb46"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../reference/OmObservation.html">sosResult</a></span>(<span class="no">data</span>))</pre></body></html></div>
 <pre><code>##                        phenomenonTime
-## o_1587577832361.1 2012-11-19 13:01:00
-## o_1587577832361.2 2012-11-19 13:02:00
-## o_1587577832361.3 2012-11-19 13:03:00
-## o_1587577832361.4 2012-11-19 13:04:00
-## o_1587577832361.5 2012-11-19 13:05:00
-## o_1587577832361.6 2012-11-19 13:06:00
+## o_1587625106912.1 2012-11-19 13:01:00
+## o_1587625106912.2 2012-11-19 13:02:00
+## o_1587625106912.3 2012-11-19 13:03:00
+## o_1587625106912.4 2012-11-19 13:04:00
+## o_1587625106912.5 2012-11-19 13:05:00
+## o_1587625106912.6 2012-11-19 13:06:00
 ##                   http://www.52north.org/test/observableProperty/1
-## o_1587577832361.1                                              1.1
-## o_1587577832361.2                                              1.2
-## o_1587577832361.3                                              1.3
-## o_1587577832361.4                                              1.4
-## o_1587577832361.5                                              1.5
-## o_1587577832361.6                                              1.6</code></pre>
+## o_1587625106912.1                                              1.1
+## o_1587625106912.2                                              1.2
+## o_1587625106912.3                                              1.3
+## o_1587625106912.4                                              1.4
+## o_1587625106912.5                                              1.5
+## o_1587625106912.6                                              1.6</code></pre>
 <p>The metadata of the observed property is also accessible.</p>
 <div class="sourceCode" id="cb48"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span>(<span class="fu"><a href="../reference/OmObservation.html">sosResult</a></span>(<span class="no">data</span>)<span class="kw">[[</span><span class="fl">1</span>]])</pre></body></html></div>
 <pre><code>## $class
@@ -536,7 +536,7 @@ No converter found! Skipping field S/m</code></pre>
 <h2 class="hasAnchor">
 <a href="#exception-handling" class="anchor"></a>Exception Handling</h2>
 <p>When working with <code>sos4R</code>, two kinds of errors must be handled: service exceptions and errors within the package. The former can occur when a request is invalid or a service encounters internal exceptions. The latter can mean a bug or illegal settings within the package.</p>
-<p>To understand both types of errorenous states, this sections explains the contents of the exception reports returned by the service and the functionalities to investigate the inner workings of the package.</p>
+<p>To understand both types of erroneous states, this sections explains the contents of the exception reports returned by the service and the functionalities to investigate the inner workings of the package.</p>
 <div id="ows-service-exceptions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ows-service-exceptions" class="anchor"></a>OWS Service Exceptions</h3>

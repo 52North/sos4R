@@ -37,7 +37,7 @@ knitr::opts_chunk$set(
 
 The `sos4R` package provides classes and methods for retrieving data from an Open Geospatial Consortium ([OGC](http://opengeospatial.org/)) Sensor Observation Service in version 1.0.0 (Na, 2007) and 2.0 (Bröring, 2010).
 The goal of this package is to provide easy access with a low entry threshold for everyone to information available via SOSs.
-The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possiblities for advanced users.
+The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possibilities for advanced users.
 The output is a standard `data.frame` with attributed columns for the rich metadata provided by the SOS API.
 This package uses S4 classes and methods style (Chambers, 1998).
 

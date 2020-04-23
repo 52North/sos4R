@@ -19,7 +19,7 @@ sosConvertLogical(x, sos)
 
 \arguments{
   \item{x}{The object to be converted.}
-  \item{sos}{An object of class \code{SOS}, whose settings, like formating information, can be utilitzed.}
+  \item{sos}{An object of class \code{SOS}, whose settings, like formating information, can be utilized.}
 }
 
 \details{

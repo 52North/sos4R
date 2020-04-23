@@ -41,7 +41,7 @@
 \title{Default Parameter Settings and Handling Functions}
 
 \description{
-These values are default parameters and handling functions for connections and requests to, as well as response processing of ansers from, Sensor Observation Services. These allow to simplify a SOS connection for the most common use cases and non-expert users.
+These values are default parameters and handling functions for connections and requests to, as well as response processing of answers from, Sensor Observation Services. These allow to simplify a SOS connection for the most common use cases and non-expert users.
 }
 
 \usage{
@@ -63,9 +63,9 @@ SosDefaultParsingOptions()
 }
 
 \arguments{
-  \item{\dots}{Named references to functions to be used for the respective element during parsing, encoding oder conversion, e.g. \code{"myUnit" = myUnitParser}.}
+  \item{\dots}{Named references to functions to be used for the respective element during parsing, encoding or conversion, e.g. \code{"myUnit" = myUnitParser}.}
   \item{include}{A list of names of elements whose functions shall be included in the returned list, e.g. \code{include = c("GetObservation", "DescribeSensor")}. This inclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
-  \item{exclude}{A list of names of elements whose functions shall be excluced in the returned list, e.g. \code{exclude = c("DescribeSensor")}. This exclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
+  \item{exclude}{A list of names of elements whose functions shall be excluded in the returned list, e.g. \code{exclude = c("DescribeSensor")}. This exclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
   \item{sos}{An object of class \code{SOS}.}
 }
 

@@ -46,7 +46,7 @@ To stay updated on all matters around \pkg{sos4R} go to the development blog at 
 
 If you want to ask questions about using the software, please go to the to the issue tracker at \url{https://github.com/52North/sos4R/issues}.
 
-The most extensive documenation is contained in the \strong{package vignettes}.
+The most extensive documentation is contained in the \strong{package vignettes}.
 }
 
 \examples{

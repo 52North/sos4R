@@ -182,7 +182,7 @@ This document also describes classes (and their construction functions) for the 
     </tr>
     <tr>
       <th>observationId</th>
-      <td><p>The value of the <code>ObservationId</code> element in the request, e.g. <samp>o_12345</samp>, which is to be optained. This could have been obtained by the client via a URL in a feed, alert, or some other notification.</p></td>
+      <td><p>The value of the <code>ObservationId</code> element in the request, e.g. <samp>o_12345</samp>, which is to be obtained. This could have been obtained by the client via a URL in a feed, alert, or some other notification.</p></td>
     </tr>
     <tr>
       <th>offering</th>
@@ -230,7 +230,7 @@ This document also describes classes (and their construction functions) for the 
     </tr>
     <tr>
       <th>valueReferenceTemporalFilter</th>
-      <td><p>The property name used in a temporal filter for SOS 2.0 KVP reuests, ignore for SOS 1.0.0.</p></td>
+      <td><p>The property name used in a temporal filter for SOS 2.0 KVP requests, ignore for SOS 1.0.0.</p></td>
     </tr>
     </table>
 
@@ -258,12 +258,12 @@ This document also describes classes (and their construction functions) for the 
     <dt><code>procedure</code>:</dt><dd><p>Object of class <code>"list"</code>, procedure parameter specifies the sensor system(s) for which observations are requested.</p></dd>
     <dt><code>request</code>:</dt><dd><p>Object of class <code>"character"</code>, the name of the request.</p></dd>
     <dt><code>responseFormat</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies the desired resultFormat MIME content type for transport of the results.</p></dd>
-    <dt><code>responseMode</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies whether results are requested in-line, outof-band, as an attachment, or if this is a request for an observation template that will be used for subsequent calls to GetResult.</p></dd>
+    <dt><code>responseMode</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies whether results are requested in-line, out-of-band, as an attachment, or if this is a request for an observation template that will be used for subsequent calls to GetResult.</p></dd>
     <dt><code>resultModel</code>:</dt><dd><p>Object of class <code>"character"</code>, specifies the QName of the root element of an O&amp;M Observation or element in the appropriate substitution group.</p></dd>
     <dt><code>result</code>:</dt><dd><p>Object of class <code>"ANY"</code>, provides a place to put in OGC filter expressions based on property values. This instructs the SOS to only return observations where the result matches this expression.</p></dd>
     <dt><code>service</code>:</dt><dd><p>Object of class <code>"character"</code>, service type identifier.</p></dd>
     <dt><code>srsName</code>:</dt><dd><p>Object of class <code>"character"</code>, defines the spatial reference system that should be used for any geometries that are returned in the response. This must be one of the advertised values in the offering specified in gml:srsName elements.</p></dd>
-    <dt><code>valueReferenceTemporalFilter</code>:</dt><dd><p>Object of class <code>"character"</code>, the property name used in a temporal filter for SOS 2.0 KVP reuests.</p></dd>
+    <dt><code>valueReferenceTemporalFilter</code>:</dt><dd><p>Object of class <code>"character"</code>, the property name used in a temporal filter for SOS 2.0 KVP requests.</p></dd>
     <dt><code>version</code>:</dt><dd><p>Object of class <code>"character"</code>, specification version for operation.</p></dd>
   
 </dl>

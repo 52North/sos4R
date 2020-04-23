@@ -84,7 +84,7 @@ Objects can be created by calls to the creation functions:
     \item{\code{uom}:}{Object of class \code{"character"} ~~ }
     \item{\code{metadata}:}{Object of class \code{"ANY"} ~~ }
     \item{\code{defaultPointMetadata}:}{Object of class \code{"ANY"} ~~ }
-    \item{\code{point}:}{Object of class \code{"ANY"} for \code{WmlTimeseries}, of clas \code{"list"} for \code{WmlMeasurementTimeseries}}
+    \item{\code{point}:}{Object of class \code{"ANY"} for \code{WmlTimeseries}, of class \code{"list"} for \code{WmlMeasurementTimeseries}}
   }
 }
 
