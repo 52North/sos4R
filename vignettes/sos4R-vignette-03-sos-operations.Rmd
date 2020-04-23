@@ -58,7 +58,7 @@ SosSupportedResponseFormats()
 
 The response format `"text/csv"` is not standard conform, but used by services as an alternative to XML encodings.
 The package `readr` must be installed to parse responses in this format.
-See the _IOOS_ example in the [Services Vignette](sos4R-vignette-99-services.html).
+See the _IOOS_ example in the [services vignette](https://52north.github.io/sos4R/articles/sos4R-vignette-99-services.html) (online only).
 
 ```{r supported03}
 SosSupportedResponseModes()

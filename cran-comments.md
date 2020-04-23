@@ -15,4 +15,6 @@ No notes.
 
 ## Other
 
+Resubmission after being informed about invalid file URIs (Uwe Ligges).
+
 This is a re-release following a CRAN takedown earlier this year. The package is only released now as new feature implementations were pending.
