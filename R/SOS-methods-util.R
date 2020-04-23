@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,14 +25,16 @@
 # Created: 2010-09-21                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
-
+############################################################################## #
 #
 # conversion methods ----
 #
 sosConvertTime <- function(x, sos) {
-  .t <- as.POSIXct(x = strptime(x = x, format = sosTimeFormat(sos = sos)))
-  return(.t)
+  parsedTimestamp <- parsedate::parse_iso_8601(x)
+  if (any(is.na(parsedTimestamp)))
+    warning("Error converting string '", x, "' to 'ISO8601' format! Returning 'NA'")
+  attributes(parsedTimestamp) <- c(attributes(parsedTimestamp), "original_value" = x)
+  return(parsedTimestamp)
 }
 
 sosConvertDouble <- function(x, sos) {
@@ -47,6 +49,14 @@ sosConvertLogical <- function(x, sos) {
   return(as.logical(x = x))
 }
 
+sosConvertInteger <- function(x, sos) {
+  return(as.integer(x = x))
+}
+
+sosConvertFactor <- function(x, sos) {
+  return(as.factor(x = x))
+}
+
 
 #
 # convenience functions time class creation ----
@@ -54,10 +64,8 @@ sosConvertLogical <- function(x, sos) {
 setMethod(f = "sosCreateTimeInstant",
           signature = signature(sos = "SOS", time = "POSIXt"),
           definition = function(sos, time, frame, calendarEraName,
-                         indeterminatePosition) {
-            #			.time <- format(time, sosTimeFormat(sos))
+                                indeterminatePosition) {
             .timePos <- GmlTimePosition(
-              #					time = strptime(.time, sosTimeFormat(sos)),
               time = time,
               frame = frame, calendarEraName = calendarEraName,
               indeterminatePosition = indeterminatePosition)
@@ -69,7 +77,7 @@ setMethod(f = "sosCreateTimeInstant",
 setMethod(f = "sosCreateTimePeriod",
           signature = signature(sos = "SOS", begin = "POSIXt", end = "POSIXt"),
           definition = function(sos, begin, end, frame, calendarEraName,
-                         indeterminatePosition, duration, timeInterval) {
+                                indeterminatePosition, duration, timeInterval) {
             .beginPos <- GmlTimePosition(
               time = begin,
               frame = frame, calendarEraName = calendarEraName,
@@ -82,7 +90,7 @@ setMethod(f = "sosCreateTimePeriod",
             )
             .tp <- GmlTimePeriod(beginPosition = .beginPos,
                                  endPosition = .endPos,
-                                  duration = duration,
+                                 duration = duration,
                                  timeInterval = timeInterval)
             return(.tp)
           }
@@ -104,10 +112,6 @@ setMethod(f = "sosCreateTime",
               .l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
                                                       operator = operator, seperator = "::")
             }
-            else if (regexpr(pattern = "P", text = time) > -1) {
-              .l <- .sosCreateEventTimeListFromISOPeriod(sos = sos,
-                                                         time = time, operator = operator)
-            }
             else if (regexpr(pattern = "/", text = time) > -1) {
               .l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
                                                       operator = operator, seperator = "/")
@@ -124,12 +128,9 @@ setMethod(f = "sosCreateTime",
           }
 )
 
-#
-# test: encodeXML(.sosCreateEventTimeListFromInstance(sos = sos, time = "2011-01-01", operator = SosSupportedTemporalOperators()[["TM_Equals"]])[[1]], sos = sos)
-#
 .sosCreateEventTimeListFromInstance <- function(sos, time,
                                                 operator = SosSupportedTemporalOperators()[["TM_Equals"]]) {
-  .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(time))
+  .ti <- sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601(time))
   .l <- sosCreateEventTimeList(time = .ti,
                                operator = SosSupportedTemporalOperators()[[operator]])
 
@@ -150,18 +151,18 @@ setMethod(f = "sosCreateTime",
   else {
     if (is.null(.end)) {
       # no end time:
-      .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.start))
+      .ti <- sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601(.start))
       .l <- sosCreateEventTimeList(time = .ti,
                                    operator = SosSupportedTemporalOperators()[[ogcTempOpTMAfterName]])
     }
     else if (nchar(.start) > 0) {
-      .tp <- sosCreateTimePeriod(sos = sos, begin = as.POSIXct(.start),
-                                 end = as.POSIXct(.end))
+      .tp <- sosCreateTimePeriod(sos = sos, begin = parsedate::parse_iso_8601(.start),
+                                 end = parsedate::parse_iso_8601(.end))
       .l <- sosCreateEventTimeList(.tp)
     }
     else if (nchar(.start) < 1) {
       # no start time:
-      .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.end))
+      .ti <- sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601(.end))
       .l <- sosCreateEventTimeList(time = .ti,
                                    operator = SosSupportedTemporalOperators()[[ogcTempOpTMBeforeName]])
     }
@@ -169,22 +170,8 @@ setMethod(f = "sosCreateTime",
   return(.l)
 }
 
-.sosCreateEventTimeListFromISOPeriod <- function(sos, time, operator) {
-  #	* 2005-08-09T18:31:42P3Y6M4DT12H30M17S: bestimmt eine Zeitspanne von 3 Jahren, 6 Monaten, 4 Tagen 12 Stunden, 30 Minuten und 17 Sekunden ab dem 9. August 2005 "kurz nach halb sieben Abends".
-  #	* P1D: "Bis morgen zur jetzigen Uhrzeit." Es koennte auch "PT24H" verwendet werden, doch erstens waeren es zwei Zeichen mehr, und zweitens wuerde es bei der Zeitumstellung nicht mehr zutreffen.
-  #	* P0003-06-04T12:30:17
-  #	* P3Y6M4DT12H30M17S: gleichbedeutend mit dem ersten Beispiel, allerdings ohne ein bestimmtes Startdatum zu definieren
-  #	* PT72H: "Bis in 72 Stunden ab jetzt."
-  #	* 2005-08-09P14W: "Die 14 Wochen nach dem 9. August 2005."
-  #	* 2005-08-09/2005-08-30
-  #	* 2005-08-09--30
-  #	* 2005-08-09/30: "Vom 9. bis 30. August 2005."
-
-  warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
-}
-
 setMethod(f = "sosCreateEventTime",
-          signature = signature(time = "GmlTimeGeometricPrimitive"),
+          signature = signature(time = "GmlTimeObject"),
           definition = function(time, operator) {
 
             if (operator == ogcTempOpTMAfterName) {
@@ -288,24 +275,24 @@ setMethod(f = "sosCreateBBoxMatrix",
 setMethod(f = "sosCapabilitiesDocumentOriginal",
           signature = signature(sos = "SOS"),
           definition = function(sos, verbose = FALSE) {
-            .verbose <- sos@verboseOutput || verbose
-            .gc <- OwsGetCapabilities(service = sosService,
-                                      acceptVersions = c(sos@version))
-            .response = sosRequest(sos = sos,
-                                   request = .gc,
-                                   verbose = .verbose,
-                                   inspect = FALSE)
-            return(.response)
+            verbose <- sos@verboseOutput || verbose
+            gc <- OwsGetCapabilities(service = sosService,
+                                     acceptVersions = c(sos@version))
+            response = sosRequest(sos = sos,
+                                  request = gc,
+                                  verbose = verbose,
+                                  inspect = FALSE)
+            return(response)
           }
 )
 
 setMethod(f = "sosCapabilitiesUrl",
           signature = signature(sos = "SOS"),
           definition = function(sos) {
-            .gc <- OwsGetCapabilities(service = sosService,
-                                      acceptVersions = c(sos@version))
-            .request <- paste0(sosUrl(sos), "?", encodeRequestKVP(.gc, sos))
-            return(.request)
+            gc <- OwsGetCapabilities(service = sosService,
+                                     acceptVersions = c(sos@version))
+            request <- paste0(sosUrl(sos), "?", encodeRequestKVP(gc, sos))
+            return(request)
           }
 )
 
@@ -317,8 +304,11 @@ setMethod(f = "sosCapabilitiesUrl",
     name <- xml2::xml_name(x = xml2::xml_root(x = obj)) # intentionally without namespaces
     return(owsExceptionReportNameOnly == name)
   }
+  else if (is.raw(obj) && startsWith(rawToChar(obj), "<?xml")) {
+    return(grepl("ExceptionReport", rawToChar(obj), fixed = TRUE))
+  }
   else if (is.character(obj) && startsWith(obj, "<?xml")) {
-    return(grepl(obj, "ExceptionReport"))
+    return(grepl("ExceptionReport", obj, fixed = TRUE))
   }
   else if (is.list(obj)) {
     return(!is.null(obj[["exceptions"]]))
@@ -329,7 +319,7 @@ setMethod(f = "sosCapabilitiesUrl",
 .handleExceptionReport <- function(sos, obj) {
   if (sos@verboseOutput) warning("Received ExceptionReport!")
   .parsingFunction <- sosParsers(sos)[[owsExceptionReportName]]
-  .er <- .parsingFunction(obj)
+  .er <- .parsingFunction(obj, sos = sos)
   if (any(class(.er) == "OwsExceptionReport"))
     warning(toString(.er))
   return(.er)
@@ -340,7 +330,7 @@ setMethod(f = "sosExceptionCodeMeaning",
           definition = function(exceptionCode) {
             .meaning <- as.character(
               .owsStandardExceptions[
-                .owsStandardExceptions$exceptionCode==exceptionCode,
+                .owsStandardExceptions$exceptionCode == exceptionCode,
                 2])
             return(.meaning)
           }
@@ -411,9 +401,9 @@ setMethod(f = "sosGetCRS",
             else
               if (verbose) cat("[sosGetCRS] rgdal loaded! \n")
 
-            .crs <- NULL
+            crs <- NULL
             tryCatch({
-              .crs <- CRS(.initString)
+              crs <- sp::CRS(.initString)
             }, error = function(err) {
               warning("[sosGetCRS] error was detected, probably the ",
                       "EPSG code ", .epsg, " is not recognized ",
@@ -423,10 +413,10 @@ setMethod(f = "sosGetCRS",
 
             if (verbose) {
               cat("[sosGetCRS] found: ")
-              show(.crs)
+              show(crs)
             }
 
-            return(.crs)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
@@ -443,15 +433,15 @@ setMethod(f = "sosGetCRS",
 setMethod(f = "sosGetCRS",
           signature = c(obj = "OmObservation"),
           definition = function(obj, verbose = FALSE) {
-            .crs <- .getCRSfromOM(obj)
-            return(.crs)
+            crs <- .getCRSfromOM(obj)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "OmMeasurement"),
           definition = function(obj, verbose = FALSE) {
-            .crs <- .getCRSfromOM(obj)
-            return(.crs)
+            crs <- .getCRSfromOM(obj)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
@@ -459,29 +449,56 @@ setMethod(f = "sosGetCRS",
           definition = function(obj, verbose = FALSE) {
             .srsName <- sosBoundedBy(obj)[["srsName"]]
             if (is.null(.srsName))
-              .crs <- NULL
-            else .crs <- sosGetCRS(.srsName, verbose = verbose)
-            return(.crs)
+              crs <- NULL
+            else crs <- sosGetCRS(.srsName, verbose = verbose)
+            return(crs)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "SOS"),
           definition = function(obj, verbose = FALSE) {
             .offs <- sosOfferings(obj)
-            .crss <- lapply(.offs, sosGetCRS, verbose = verbose)
-            if (length(.crss) == 1)
-              return(.crss[[1]])
-            return(.crss)
+            crss <- lapply(.offs, sosGetCRS, verbose = verbose)
+            if (length(crss) == 1)
+              return(crss[[1]])
+            return(crss)
           }
 )
 setMethod(f = "sosGetCRS",
           signature = c(obj = "list"),
           definition = function(obj, verbose = FALSE) {
-            .crs <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
-            return(.crs)
+            crs <- lapply(X = obj, FUN = sosGetCRS, verbose = verbose)
+            return(crs)
           }
 )
-
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlDirectPosition"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@srsName)
+            return(crs)
+          }
+)
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlPoint"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@pos)
+            return(crs)
+          }
+)
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlPointProperty"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@point)
+            return(crs)
+          }
+)
+setMethod(f = "sosGetCRS",
+          signature = c(obj = "GmlEnvelope"),
+          definition = function(obj, verbose = FALSE) {
+            crs <- sosGetCRS(obj = obj@srsName)
+            return(crs)
+          }
+)
 .getCRSfromOM <- function(obj) {
   .char <- as.vector(sosCoordinates(obj)[[sosDefaultColumnNameSRS]])
   .l <- sapply(X = .char, FUN = sosGetCRS)
@@ -527,10 +544,8 @@ setMethod(f = "sosGetCRS",
 }
 
 .sosFilterDCPs <- function(dcp, pattern, verbose = FALSE) {
-
   if (length(pattern) == 0) {
-    if (verbose)
-      cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
+    if (verbose) cat("[.sosFilterDCPs] Pattern is empty (for this binding), returning DCPs unchanged.\n")
     return(dcp)
   }
 
@@ -540,9 +555,11 @@ setMethod(f = "sosGetCRS",
 
   .idx <- grep(pattern = pattern, x = dcp)
   .filtered <- dcp[.idx]
-  if (verbose)
-    cat("[.sosFilterDCPs] Filtered from\n\t", toString(dcp), "\n\tto\n\t",
-        toString(.filtered), "\n")
+  if (verbose) cat("[.sosFilterDCPs] Filtered from\n\t",
+                   toString(dcp), "\n\tto\n\t", toString(.filtered), "\n")
+
+  if (length(.filtered) != 1) warnings("DCP filtering did not lead to unique result: ",
+                                       toString(.filtered))
 
   return(.filtered)
 }
@@ -564,13 +581,9 @@ setMethod(f = "sosGetCRS",
 # cheat sheet ----
 #
 sosCheatSheet <- function() {
-  .path <- file.path(find.package("sos4R", lib.loc = NULL),
-                     .sosCheatSheetDocumentName)
+  path <- file.path(find.package("sos4R", lib.loc = NULL),
+                    "sos4r_cheat-sheet.pdf")
 
-  # see code of 'vignette' function
-  .z <- list(file = .sosCheatSheetDocumentName, PDF = .path)
-  .z$topic <- "sos4R Cheat Sheet"
-  class(.z) <- "vignette"
-
-  return(.z)
+  cat("Cheat sheet file available at ", path,"\n")
+  return(path)
 }

@@ -1,5 +1,5 @@
 ---
-title: "sos4R: SOS Operations"
+title: "SOS Operations"
 author:
   name: "Daniel Nüst"
   affiliation: Institute for Geoinformatics, University of Münster, Germany.
@@ -46,27 +46,32 @@ This section only lists the possibilities.
 Explanations follow in this document or can be found in the SOS specification.
 
 ```{r supported01}
-SosSupportedOperations()
+SosSupportedOperations(version = "1.0.0")
+SosSupportedOperations(version = "2.0.0")
 SosSupportedServiceVersions()
 SosSupportedBindings()
+```
+
+```{r supported02}
 SosSupportedResponseFormats()
 ```
 
-The response format `"text/csv"` is not standard conform, but used by services as a well established alternative to XML encodings.
+The response format `"text/csv"` is not standard conform, but used by services as an alternative to XML encodings.
 The package `readr` must be installed to parse responses in this format.
+See the _IOOS_ example in the [Services Vignette](sos4R-vignette-99-services.html).
 
-```{r supported02}
+```{r supported03}
 SosSupportedResponseModes()
 SosSupportedResultModels()
 ```
 
 The output of the following calls are named lists (the name being the same as the value).
 
-```{r supported03}
+```{r supported04}
 SosSupportedSpatialOperators()
 ```
 
-```{r supported04}
+```{r supported05}
 toString(SosSupportedTemporalOperators())
 ```
 
@@ -288,13 +293,13 @@ data(worldHiresMapEnv)
 crs <- sosGetCRS(mySOS)[[1]]
 worldHigh <- pruneMap(
 		map(database = "worldHires",
-			region = c("Germany", "Austria", "Netherlands"),
+			region = c("Germany"),
 			plot = FALSE))
 worldHigh.lines <- map2SpatialLines(worldHigh, proj4string = crs)
 
 # the plot:
 plot(worldHigh.lines, col = "grey50")
-plot(mySOS, add = TRUE, lwd = 3)
+plot(mySOS, add = TRUE, lwd = 10, col = "red")
 title(main = paste("Offerings by '", sosTitle(mySOS), "'", sep = ""),
 		sub = toString(names(sosOfferings(mySOS))))
 ```
@@ -472,31 +477,30 @@ The optional attribute `bbox` can be used to obtain a bounding box matrix as use
 sosBoundedBy(myOffering, bbox = TRUE)
 ```
 
-The **temporal extend** is modeled as an object of the respective class of the element in the offering description, which normally is a gml:TimePeriod, but does not have to be.
+The **temporal extent** is modeled as an object of the respective class of the element in the offering description, which normally is a `gml:TimePeriod`, but does not have to be.
 
 ```{r metadataExtraction7a}
-myOffering.time <- sosTime(myOffering)
-str(myOffering.time)
+class(myOffering@time)
+cat("------\n")
+myOffering@time@beginPosition
 ```
 
-You can also access the actual timestamps, which is a bit cumbersome.
+You can also access the actual timestamps with an accessor function `sosTime()`.
 
 ```{r metadataExtraction7b}
-myOffering.time@beginPosition@time
-myOffering.time@endPosition@time
-class(myOffering.time@endPosition@time)
+myOffering.time <- sosTime(myOffering)
+utils::str(myOffering.time)
 ```
 
 The structure of these elements is very flexible (with some of optional elements) and not self-explanatory.
-Therefore the parameter `convert` can be used to try to create R objects and return these instead.
-Please be aware that this might not work for temporal elements returned by all service.
+Therefore the parameter `convert` can be used to disable attempts to create R objects and return the raw parsed objects instead.
 
 ```{r metadataExtraction8}
-myOffering.time.converted <- sosTime(myOffering, convert = TRUE)
-str(myOffering.time.converted)
+myOffering.time.unconverted <- sosTime(myOffering, convert = FALSE)
+utils::str(myOffering.time.unconverted)
 ```
 
-Furthermore the offering comprises **lists of procedures, **observed properties**, and **features of interest**.
+Furthermore the offering comprises lists of _procedures_, _observed properties_, and _features of interest_.
 In our example the feature and procedure identifiers are the same - this does not have to be the case.
 
 **Important Note:** The order of these lists is not guaranteed to be the same upon every connection to a service.
@@ -608,7 +612,7 @@ The response `myObservationData` of this request is the base for the next sectio
 
 ```{r getObs1a}
 class(myObservationData)
-str(myObservationData, max.level = 2)
+utils::str(myObservationData, max.level = 2)
 ```
 
 #### Response Subsetting
@@ -725,7 +729,7 @@ If the name of the feature identifier attribute in the data table matches (which
 
 ```{r getObsSpatial3, eval=FALSE}
 myObservationData.data <- merge(x = myObservationData.result.2, y = myObservationData.coords)
-str(myObservationData.data, max.level = 2)
+utils::str(myObservationData.data, max.level = 2)
 ```
 
 And in that case, you can even save that step by specifying the attribute `coordinates` of the function `sosResult` which includes the merge of data values and coordinates as shown above.
@@ -744,6 +748,8 @@ lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = (Sys.time() - 3600 * 24 * 7),
 	end = Sys.time())
 
+# when creating timestamps from strings note that `as.POSIXct`
+# are in the locally configured timezone (see `Sys.timezone`)
 period <- sosCreateTimePeriod(sos = mySOS,
 		begin = as.POSIXct("2015/11/01"),
 		end = as.POSIXct("2015/11/02"))
@@ -755,7 +761,7 @@ Please note that the create function `sosCreateEventTimeList()` wraps the create
 
 The most comfortable creation function for event times is `sosCreateTime()`.
 It supports time intervals with starttime and endtime as character strings seperated by `::` or `/` as defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), section Time intervals}.
-The respective time stamps have to be parsable by `as.POSIXct()`.
+The respective time stamps have to be parsable by `parsedate::parse_iso_8601(..)`.
 If either one of the time stamps is missing, a `GmlTimePosition` wrapped in the appropriate relative temporal operator, e.g. `"before"`.
 
 ```{r temporalFiltering1b}
@@ -799,8 +805,8 @@ Another example workflow, using a `KVP`-based connection.
 
 ```{r temporalFiltering4}
 sept15.period <- sosCreateTimePeriod(sos = mySOS,
-                                     begin = as.POSIXct("2015-09-01 00:00"),
-                                     end = as.POSIXct("2015-09-30 00:00"))
+                                     begin = parsedate::parse_iso_8601("2015-09-01 00:00"),
+                                     end = parsedate::parse_iso_8601("2015-09-30 00:00"))
 sept15.eventTimeList <- sosCreateEventTimeList(sept15.period)
 obs.sept15 <- getObservation(sos = mySOS,
 	offering = myOffering,
@@ -828,8 +834,16 @@ Unfiltered versus spatially filtered coordinates of the responses (spatial filte
 
 ```{r spatialFiltering1b}
 summary(sosCoordinates(obs.sept15))
-cat("--------\n")
-sosCoordinates(obs.sept15.bbox)
+```
+
+The returned object matches the structure of the coordinates table, but contains `NA`, and a warning is issued.
+
+```{r spatialFiltering1c}
+naCoords <- sosCoordinates(obs.sept15.bbox)
+```
+
+```{r spatialFiltering1d}
+naCoords
 ```
 
 More advanced spatial filtering, for example based on arbitrary shapes et cetera, is currently not implemented.
@@ -942,7 +956,7 @@ coords <- sosCoordinates(obs.oneWeek[[1]])
 crs <- sosGetCRS(obs.oneWeek[[1]])
 spdf <- SpatialPointsDataFrame(coords = coords[,1:2],
 	data = data.frame(coords[,4]), proj4string = crs)
-str(spdf)
+utils::str(spdf)
 ```
 
 #### Spatial Reference Systems

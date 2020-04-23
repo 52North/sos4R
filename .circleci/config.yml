@@ -1,0 +1,52 @@
+# https://appsilon.com/continuous-integration-for-your-private-r-projects-with-circleci/
+version: 2.1
+
+commands:
+  devtoolscheck:
+    description: "Run devtools::check() on R package"
+    parameters:
+      rversion:
+        type: string
+        default: "devel"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - rpkgs-{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
+      - run:
+          command: |
+            R -e 'devtools::install_deps(dependencies = TRUE)'
+      - save_cache:
+          key: rpkgs--{{ checksum "DESCRIPTION" }}-<< parameters.rversion >>
+          paths:
+            - "/usr/local/lib/R/site-library"
+      - run:
+          command: |
+            R -e 'devtools::check()'
+#      - store_artifacts:
+#          path: man/
+#          destination: man
+
+jobs:
+  devel:
+    working_directory: ~/main
+    docker:
+      # cannot reuse variable from below, see https://ideas.circleci.com/ideas/CCI-I-1017
+      - image: rocker/geospatial:devel
+    steps:
+      - devtoolscheck:
+          rversion: "devel"
+  release:
+    working_directory: ~/main
+    docker:
+      - image: rocker/geospatial:3.6.3
+    steps:
+      - devtoolscheck:
+          rversion: "3.6.3"
+
+workflows:
+  version: 2
+  check:
+    jobs:
+      - devel
+      - release

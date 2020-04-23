@@ -1,6 +1,8 @@
 import("methods")
 importFrom("graphics", "plot")
-importFrom("utils", "object.size", "str", "write.csv")
+importFrom("stats", "setNames")
+importFrom("utils", "object.size", "str", "write.csv", "URLencode")
+importFrom("uuid", "UUIDgenerate")
 import("sp")
 import("httr")
 import("xml2")
@@ -9,7 +11,6 @@ exportPattern("^[[:alpha:]]+")
 # export all who start with a letter (i.e. not .) except 'print.' or 'toString.'
 #exportPattern("(^[^(print\\.|toString\\.|\\.)][[:alpha:]]+)")
 exportMethods(
-    "checkRequest",
     "describeSensor",
     "encodeKVP",
     "encodeRequestKVP",
@@ -21,7 +22,7 @@ exportMethods(
     "getObservation",
     "getFeatureOfInterest",
     "plot",
-	  "print",
+    "print",
     "show",
     "sosAbstract",
     "sosCapabilitiesDocumentOriginal",
@@ -161,6 +162,7 @@ exportClasses(
 
 S3method(as.data.frame, OmMeasurement)
 S3method(as.data.frame, OmObservation)
+S3method(as.data.frame, WmlMeasurementTimeseries)
 S3method(as.list, OmObservationCollection)
 S3method(length, OmObservationCollection)
 S3method(names, OmMeasurement)

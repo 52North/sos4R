@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2013-03-06                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 .sos4Rpath <- "D:/workspace-R/sos4R";
 source("D:/workspace-R/sos4R/sandbox/loadSources.R")
@@ -37,7 +37,7 @@ summary(twozero)
 sosCapabilitiesDocumentOriginal(twozero, verbose = TRUE)
 
 
-################################################################################
+############################################################################## #
 # http://hydro-sos.niwa.co.nz/KiWIS/KiWIS
 #
 # Capabilities: http://hydro-sos.niwa.co.nz/KiWIS/KiWIS?SERVICE=SOS&Version=2.0.0&request=getcapabilities&datasource=0&observedProperty=http://hydro-sos.niwa.co.nz/parameters/Stage/Flow%20rating

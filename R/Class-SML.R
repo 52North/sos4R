@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # See OWS Common, OGC 06-121r9
@@ -36,13 +36,16 @@ setClass("SensorML",
                         id = "character",
                         name = "character",
                         description = "character",
-                        boundedBy = "matrix"),
+                        boundedBy = "matrix",
+                        # SOS 2.0.0: validTime is part of the response (not of the SensorML)
+                        validTime = "GmlTimeObjectOrNULL"),
          prototype = list(xml = xml2::xml_missing(),
                           coords = data.frame(),
                           id = NA_character_,
                           name = NA_character_,
                           description = NA_character_,
-                          boundedBy = matrix()),
+                          boundedBy = matrix(),
+                          validTime = NULL),
          validity = function(object) {
            #print("Entering validation: SensorML")
            return(TRUE)

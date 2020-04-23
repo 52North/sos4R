@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,34 +25,34 @@
 # Created: 2011-02-11                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 #
 #
-as.SensorML.SpatialPointsDataFrame = function(from) {
+as.SpatialPointsDataFrame.SensorML = function(from) {
   .coords <- sosCoordinates(from, handleNames = TRUE)
   .coordsNames <- names(.coords)
-  
-  if(all(dim(.coords) > 0, any(.coordsNames == "y"),
+
+  if (all(dim(.coords) > 0, any(.coordsNames == "y"),
          any(.coordsNames == "x"))) {
     .crds <- .coords[,c("x", "y")]
     .crs <- sosGetCRS(from)
-    
-    if(is.null(.crs)) {
-      warning("[as.SensorML.SpatialPointsDataFrame] No CRS from sensor ",
+
+    if (is.null(.crs)) {
+      warning("[as.SpatialPointsDataFrame.SensorML] No CRS from sensor ",
               "description (using sosGetCRS(...), using default.")
       .crs <- sosGetCRS(sosDefaultReferenceFrameSensorDescription)
     }
-    
-    .notCoordCols <- !colnames(.coords)%in%c("x", "y")
+
+    .notCoordCols <- !colnames(.coords) %in% c("x", "y")
     .otherData <- data.frame(.coords[,.notCoordCols])
     colnames(.otherData) <- colnames(.coords)[.notCoordCols]
-    
-    .sp <- SpatialPointsDataFrame(coords = .crds,
+
+    .sp <- sp::SpatialPointsDataFrame(coords = .crds,
                                   data = .otherData,
                                   proj4string = .crs)
-    
+
     return(.sp)
   }
   else {
@@ -60,18 +60,23 @@ as.SensorML.SpatialPointsDataFrame = function(from) {
                    " because no coordinates found for object. Check that ",
                    " sosCoordinates(obj) returns a matrix with colum ",
                    "names 'x' and 'y'."))
-    return(SpatialPointsDataFrame(data.frame(0,0),
+    return(sp::SpatialPointsDataFrame(data.frame(0,0),
                                   data = data.frame(NA_character_)))
   }
 }
-setAs("SensorML", "SpatialPointsDataFrame", 
+setAs(from = "SensorML", to = "SpatialPointsDataFrame",
       function(from) {
-        as.SensorML.SpatialPointsDataFrame(from)
+        as.SpatialPointsDataFrame.SensorML(from)
       }
 )
-setAs("SensorML", "Spatial", 
+setAs(from = "SensorML", to = "SpatialPoints",
       function(from) {
-        as.SensorML.SpatialPointsDataFrame(from)
+        as.SpatialPointsDataFrame.SensorML(from)
+      }
+)
+setAs(from = "SensorML", to = "Spatial",
+      function(from) {
+        as.SpatialPointsDataFrame.SensorML(from)
       }
 )
 

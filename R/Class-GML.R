@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-09-08                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # Classes are based on GML
@@ -92,7 +92,7 @@ setClass("GmlTimePosition",
                         calendarEraName = "character",
                         indeterminatePosition = "character"
          ),
-         prototype = list(time = as.POSIXct(NA)),
+         prototype = list(time = parsedate::parse_iso_8601(NA)),
          validity = function(object) {
            #print("Entering validation: GmlTimePosition")
            # TODO implement validity function
@@ -213,7 +213,6 @@ setClass("GmlFeatureProperty",
 )
 setClassUnion(name = "GmlFeatureOrGmlFeaturePropertyOrNULL",
               members = c("GmlFeatureProperty", "GmlFeature", "NULL"))
-
 
 #
 # GmlFeatureCollection ----

@@ -1,4 +1,4 @@
-\name{SamsSamplingFeature-class}
+\name{SAMS}
 \Rdversion{1.1}
 \docType{class}
 
@@ -7,12 +7,19 @@
 
 \alias{print,SamsSamplingFeature-method}
 \alias{show,SamsSamplingFeature-method}
-\alias{sosCoordinates,SamsSamplingFeature-method}
 \alias{toString,SamsSamplingFeature-method}
+
+\alias{sosCoordinates,SamsSamplingFeature-method}
+\alias{sosFeatureIds,SamsSamplingFeature-method}
+\alias{sosFeaturesOfInterest,SamsSamplingFeature-method}
+\alias{sosName,SamsSamplingFeature-method}
+
 \alias{parseSams200SamplingFeature}
 
 \alias{SamsShape-class}
 \alias{SamsShape}
+\alias{SamsShapeOrNULL}
+\alias{SamsShapeOrNULL-class}
 \alias{print,SamsShape-method}
 \alias{show,SamsShape-method}
 \alias{toString,SamsShape-method}
@@ -62,13 +69,10 @@ Objects can be created by calls to the creation functions:
 
 \section{Methods}{
   \describe{
-    \item{print}{\code{signature(x = "SamsSamplingFeature")}: ... }
-    \item{show}{\code{signature(object = "SamsSamplingFeature")}: ... }
-    \item{sosCoordinates}{\code{signature(obj = "SamsSamplingFeature")}: ... }
-    \item{toString}{\code{signature(x = "SamsSamplingFeature")}: ... }
-    \item{print}{\code{signature(x = "SamsShape")}: ... }
-    \item{show}{\code{signature(object = "SamsShape")}: ... }
-    \item{toString}{\code{signature(x = "SamsShape")}: ... }
+    \item{sosCoordinates}{\code{signature(obj = "SamsSamplingFeature")}: access to the coordinates of the feature.}
+    \item{sosFeatureIds}{\code{signature(obj = "SamsSamplingFeature")}: access to the identifier of the feature.}
+    \item{sosFeaturesOfInterest}{\code{signature(obj = "SamsSamplingFeature")}: access the feature itself.}
+    \item{sosName}{\code{signature(obj = "SamsSamplingFeature")}: access a human-readable name of the feature.}
 	 }
 }
 

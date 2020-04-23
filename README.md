@@ -10,6 +10,8 @@ knowledge about the Sensor Web. It is easily extendible for new data
 models and opens the huge amount of analysis and visualization features
 of the R environment for the Sensor Web.
 
+<!-- badges: start -->
+
 [![cran
 checks](https://cranchecks.info/badges/summary/sos4R)](https://cran.r-project.org/web/checks/check_results_sos4R.html)
 [![Build
@@ -19,6 +21,9 @@ status](https://ci.appveyor.com/api/projects/status/github/52North/sos4R?branch=
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Launch Rstudio
+Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/52North/sos4R/master?urlpath=rstudio)
+<!-- badges: end -->
 
 ## Documentation & Links
 
@@ -29,7 +34,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
     https://gitter.im/52North/sos4R](https://badges.gitter.im/52North/sos4R.svg)](https://gitter.im/52North/sos4R)
   - **Developer documentation:**
     <https://52north.github.io/sos4R/DEV-README.html>
-  - Ohloh: <https://www.ohloh.net/p/sos4R>
+  - Open Hub: <https://www.openhub.net/p/sos4R>
 
 ## Development
 
@@ -56,9 +61,8 @@ You can install the current development version (= the next release for
 CRAN) directly from GitHub with the following commands.
 
 ``` r
-install.packages("devtools")
-devtools::install_github("52North/sos4R", ref = "dev")
-# To also install the vignettes run: devtools::install_github("52North/sos4R", build_vignettes = TRUE)
+#install.packages("remotes")
+remotes::install_github("52North/sos4R", ref = "dev")
 ```
 
 ### Contributors
@@ -69,8 +73,8 @@ devtools::install_github("52North/sos4R", ref = "dev")
   - [@bpross-52n](https://github.com/bpross-52n)
   - [@EHJ-52n](https://github.com/EHJ-52n)
 
-sos4R is a project of
-[52°North](https://52north.org).
+sos4R is a project of [52°North Initiative for Geospatial Open Source
+Software](https://52north.org).
 
 [![](https://52north.org/wp-content/uploads/2016/06/logo-main.png)](https://52north.org)
 

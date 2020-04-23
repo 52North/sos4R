@@ -173,8 +173,6 @@ Capabilities:
 }
 
 \section{Extends}{
-% TODO explain class hierarchy
-
 \bold{OwsCapabilities_1.1.0:}
 Class \code{"\linkS4class{OwsCapabilities}"}, directly.
 
@@ -202,7 +200,6 @@ Class \code{"\linkS4class{OwsServiceProviderOrNULL}"}, directly.
 \section{Methods}{
   \describe{
     \item{show}{\code{signature(object = "<NAME OF CLASS>")}: Shows a human readable version of the object.}
-    \item{checkRequest}{\code{signature(service = "SOS", operation = "OwsGetCapabilities_1.1.0", verbose = "logical")} or \code{signature(service = "SOS", operation = "OwsGetCapabilities_2.0.0", verbose = "logical")}: Check the given operation for validity and for compliance with the metadata of the given SOS.}
     \item{encodeRequestKVP}{\code{signature(obj = "OwsGetCapabilities")}: See \code{link{encodeRequestKVP}}.}
     \item{encodeRequestSOAP}{\code{signature(obj = "OwsGetCapabilities")}: See \code{link{encodeRequestSOAP}}.}
     \item{encodeRequestXML}{\code{signature(obj = "OwsGetCapabilities")}: See \code{link{encodeRequestXML}}.}

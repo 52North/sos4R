@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,12 +25,11 @@
 # Created: 2010-06-20                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
-################################################################################
+############################################################################## #
 # PegelOnlineSOS
 pegelsos <- SOS(url = "http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos")
-print(object.size(pegelsos), units = c("Mb"))
 # works so far... :-)
 
 sosFeaturesOfInterest(pegelsos)
@@ -80,7 +79,7 @@ plot(x = pegelObs[[1]]@result[,1], y = pegelObs[[1]]@result[,3], type = "l")
 # Good data?
 # Felix's tip: look at the coastal stations, much more interesting!
 
-################################################################################
+############################################################################## #
 # Elsterhochwasser, 30.09.2010
 procedure <- "Wasserstand-Elster_501390"
 offering = sosOfferings(pegelsos)[[2]]
@@ -94,7 +93,7 @@ plot(x = elster[[1]]@result$Time, y = elster[[1]]@result$Wasserstand, ylim = c(1
 		type = "l")
 
 
-################################################################################
+############################################################################## #
 # pegelonlinesos
 # not so nice: not exactly reproducible because data is only stored for 30 days!
 
@@ -150,8 +149,6 @@ accuracy(bakeA.ar.fcast) # check goodness of fit
 # looks interesting! save figure1.png
 savePlot(type = "png", filename = "figure1.png")
 
-# TODO add filtered lines
-
 # try out ets
 bakeA.ets <- ets(bakeA)
 bakeA.ets.fcast <- forecast(bakeA.ets, h = 60 * 24) # 12 hrs
@@ -163,7 +160,7 @@ bakeA.arma <- arma(bakeA)
 plot(bakeA.arma)
 
 
-################################################################################
+############################################################################## #
 # weathersos
 #library("sos4R")
 
@@ -220,7 +217,7 @@ accuracy(fcastArima) # check goodness of fit
 plot(fcastArima)
 
 
-################################################################################
+############################################################################## #
 # one year
 # create connection to SOS
 weathersos = SOS("http://v-swe.uni-muenster.de:8080/WeatherSOS/sos")
@@ -279,24 +276,24 @@ plot(temp2009AR)
 
 # data is apparently not period enough...
 stl(tempSeries2009)
-#Fehler in stl(tempSept) : 
+#Fehler in stl(tempSept) :
 #  Zeitreihe ist nicht periodisch oder umfasst weniger als zwei Perioden
 
 
-################################################################################
+############################################################################## #
 # MoodSOS
 #
 # offerings worth checking out: SummerVillerest, PatientCondition,
 # WaterColourNormal, FoamPresence, Microcystin
 moodsos <- SOS("http://giv-genesis.uni-muenster.de:8080/52nSOSv3-MoodSOS/sos")
 
-################################################################################
+############################################################################## #
 # Umweltbundesamt SOS
 umweltsos <- SOS(url = "https://develop.umweltbundesamt.at/SOSsrv/sos")
 # https://develop.umweltbundesamt.at/SOSsrv/sos?service=SOS&request=GetCapabilities
 # --> 503 Service temporarily unavailable
 
-################################################################################
+############################################################################## #
 # Ocean Process Analysis Laboratory, Institute for the Study of Earth, Oceans,
 # and Space, University of New Hampshire SOS
 COOA_UNH <- SOS("http://www.cooa.unh.edu/cgi-bin/sos/oostethys_sos")
@@ -304,19 +301,19 @@ COOA_UNH <- SOS("http://www.cooa.unh.edu/cgi-bin/sos/oostethys_sos")
 # --> Capabilities are shown when opening the link above in a browser, but it
 # has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
 
-################################################################################
+############################################################################## #
 # Gulf of Maine Ocean Observing System SOS
 GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 		version = "0.0.31", verboseOutput = TRUE)
 # --> Capabilities are shown when opening the link above in a browser, but it
 # has a strange version: <ows:ServiceTypeVersion>0.0.31</ows:ServiceTypeVersion>
-# 
+#
 # --> Object of class OwsExceptionReport; version: 1.0.0, lang: NA,  1 exceptions (code @ locator : text):
-#	MissingParamterValue @ service : No input parameters 
+#	MissingParamterValue @ service : No input parameters
 
-################################################################################
+############################################################################## #
 # others:
-################################################################################
+############################################################################## #
 #
 # TAMU <- SOS("http://vastserver.nsstc.uah.edu/vastGC/adcp", verboseOutput = TRUE)
 # --> no response
@@ -325,7 +322,7 @@ GoMOOS <- SOS("http://www.gomoos.org/cgi-bin/sos/oostethys_sos.cgi",
 # --> seems almost empty
 
 
-################################################################################
+############################################################################## #
 # OCEAN STUFF, a lot of interesting data!
 #
 # http://www.openioos.org/real_time_data/gm_sos.html
@@ -335,13 +332,13 @@ oceanwatch <- SOS("http://oceanwatch.pfeg.noaa.gov/pysos/sos_mysql2.py",
 ww6 <- SOS("http://ww6.geoenterpriselab.com:8080/SOS_Weather/sos")
 
 sos-ws <- SOS("http://sos-ws.tamu.edu/tethys/tabs")
-# takes forever...		
+# takes forever...
 
-################################################################################
+############################################################################## #
 # some french sos, 52N, but just one week of data....
 sandre <- SOS("http://services.sandre.eaufrance.fr/52nSOSv3/sos")
 
-################################################################################
+############################################################################## #
 # various
 var01.converters <- SosDataFieldConvertingFunctions("urn:terrestris:foss4g:temperature" = sosConvertDouble)
 var01 <- SOS(":8280/52nSOSv3_WAR/sos", dataFieldConverters = var01.converters)
@@ -363,7 +360,7 @@ var02 <- SOS(":82/cgi-bin/mapserv?map=/tmp/umn/umn_sos.map",
 # no getcapabilities possible:
 # 1. url already contains a "?", so if "GET" the error is --- msEvalRegex(): Regular expression error. String failed expression test.
 #	-> fixed that case, but then the same error as with "POST"...
-# 2. error with "POST" gives HTML page --- Unable to access file. (/tmp/umn/umn_sos.map) 
+# 2. error with "POST" gives HTML page --- Unable to access file. (/tmp/umn/umn_sos.map)
 
 var03.converters <- SosDataFieldConvertingFunctions(
 		"urn:terrestris:foss4g:temperature" = sosConvertDouble,
@@ -394,7 +391,7 @@ plot(x = result995[["timestamp"]], y = result995[["val"]], type = "l")
 #  -> ist exception report --- Unable to determine the subcontroller for request type <sos:GetCapabilities...
 
 
-################################################################################
+############################################################################## #
 # SOS at ISE, Verbania, Italy
 
 # add a conversion function for the field definition "...temp"
@@ -434,17 +431,15 @@ ise.rain3 <- getObservation(sos = ise,
 		featureOfInterest = SosFeatureOfInterest(spatialOps = bbox),
 		inspect = TRUE)
 
-################################################################################
+############################################################################## #
 # .NET implementation from http://ogc.codeplex.com/ (http://sensordatabus.org/)
-# TODO
 ws <- SOS("http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP", verboseOutput = TRUE)
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
 # Seems not to work with additional request parameters...
 
 
-################################################################################
+############################################################################## #
 # Renaissance Computing Institute
-# TODO
 renci <- SOS(url = "http://ws.sensordatabus.org/Ows/Swe.svc/", binding = "KVP")
 # does not support sections parameter, capabilities are empty if it's given
 
@@ -460,7 +455,7 @@ length(renci.off)
 
 sosName(renci.off)
 
-################################################################################
+############################################################################## #
 # istSOS
 # - NO stress tests!
 # - Maximum of one month of data!
@@ -488,7 +483,7 @@ ist.obs <- getObservation(sos = ist.get, verbose = TRUE,
 		observedProperty = list("urn:ogc:def:parameter:x-ist::meteo:air:temperature"),
 		eventTime = ist.timeperiod)
 # names of observed properties in capabilities do not match available names:
-#Parameter "observedProperty" sent with invalid value: 
+#Parameter "observedProperty" sent with invalid value:
 #	['urn:ogc:def:property:x-ist::urn:ogc:def:parameter:x-ist::meteo:air:humidity']
 # - available options: ['urn:ogc:def:parameter:x-ist::lake:water:height',
 #	'urn:ogc:def:parameter:x-ist::meteo:air:humidity',
@@ -515,9 +510,8 @@ ist.obs.post <- getObservation(sos = ist.post, verbose = TRUE,
 istraw <- SOS(url = "http://geoservice.ist.supsi.ch/sosraw")
 sosOfferings(istraw)
 
-################################################################################
+############################################################################## #
 # ENVISION SOS
-# TODO
 brgm <- SOS(url = "http://swe.brgm.fr/constellation-envision/WS/sos-discovery",
 #		verboseOutput = TRUE,
 		binding = "KVP")
@@ -533,22 +527,21 @@ sosObservedProperties(brgm.all)
 
 sosProcedures(brgm.all)
 
-################################################################################
+############################################################################## #
 # OOSTethys PySOS
 # Center for Coastal Margin Observation & Prediction
 # http://www.stccmop.org/, http://www.stccmop.org/sos
 
-# TODO implement parsing of om:resultDefinition
+# Would need to implement parsing of om:resultDefinition
 # BUT do not do it because the referenced schemas are not available for download
 # and the response does not validate with http://schemas.opengis.net/om/1.0.0/observation.xsd
 
-# TODO impmlement method to return data frame
 stccmopParseResult <- function(obj, sos, verbose = FALSE) {
 	if(verbose) {
 		cat("[stccmopParseResult]\n")
 		print(obj)
 	}
-	
+
 	.val <- xml2::xml_text(x = obj)
 	return(.val)
 }
@@ -578,11 +571,11 @@ getObservation(sos = stccmop, inspect = TRUE, verbose = TRUE,
 		offering = "saturn04")
 # not time given returns last observation, fixes in parsing required, see above!
 
-################################################################################
+############################################################################## #
 # TODO try out "util" sos @ http://data.stccmop.org/ws/util/sos.py
 stccmoputil <- SOS(url = "http://data.stccmop.org/ws/util/sos.py")
 
-################################################################################
+############################################################################## #
 # AQE inapplicable error
 aqe.converters <- SosDataFieldConvertingFunctions(
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
@@ -608,7 +601,7 @@ str(obs)
 # ist auch bei mir mir inapplicable
 
 
-################################################################################
+############################################################################## #
 # EDC Backup SOS
 edc.converters <- SosDataFieldConvertingFunctions(
 		"http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration[PM10]" = sosConvertDouble,
@@ -627,7 +620,7 @@ obs <- getObservation(edc, sosOfferings(edc)[[1]])
 result <- sosResult(obs)
 summary(result)
 
-################################################################################
+############################################################################## #
 # Profiling!
 setwd("D:/")
 Rprof("EDCprof.out")
@@ -636,7 +629,7 @@ Rprof(NULL)
 summaryRprof("EDCprof.out")
 # not really useful information
 
-################################################################################
+############################################################################## #
 # FH Kaernten
 # Contact: Hecke Andreas <A.Hecke@fh-kaernten.at>
 cti <- SOS("http://weatherstation.cti.ac.at:8080/52NSOS_CUAS/sos")
@@ -659,8 +652,8 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 		eventTime = time)
 #[.sosRequest_1.0.0] response:
 #raw(0)
-#raw as char:   
-#Error in if (regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) { : 
+#raw as char:
+#Error in if (regexpr("(<html>|<HTML>|<!DOCTYPE HTML)", .response) > 0) { :
 #  argument is of length zero
 
 # Same request pasted in to basic test client gives result!
@@ -674,7 +667,7 @@ getObservation(ctiget, cti.off.cuas, verbose = TRUE,
 #Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 #1 exception(s) (code @ locator : text):
 #		InvalidRequest @ REQUEST :
-#		The GET request GetObservation is not supported by this SOS. 
+#		The GET request GetObservation is not supported by this SOS.
 
 #
 #
@@ -684,9 +677,9 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 		procedure = sosProcedures(cti.off.cuas)[[1]],
 		eventTime = time)
 
-################################################################################
+############################################################################## #
 # some services from the AGILE 2011 paper "Empirical Study ..."
-# TODO test, create demos if interesting data
+# > test, create demos if interesting data
 # use time series analysis like presented at
 # http://www.r-bloggers.com/time-series-analysis-and-mining-with-r/
 
@@ -694,14 +687,12 @@ cuas.lastHour <- getObservation(cti, cti.off.cuas, verbose = TRUE,
 weatherflow <- SOS(url = "http://www.weatherflow.com/sos/sos.pl")
 
 # offering network-all
-# TODO make demo with weatherflow
 
 # WAVCIS (part of MMI)
 # http://www.wavcis.lsu.edu/SOS/server.asp?request=GetCapabilities
 wavcis <- SOS(url = "http://www.wavcis.lsu.edu/SOS/server.asp")
 
-
-# Sensor Data Bus 
+# Sensor Data Bus
 # http://www.sensordatabus.org/Pages/SOS.aspx
 # http://ogc.codeplex.com/
 # http://ws.sensordatabus.org/Ows/Swe.svc/?service=SOS&request=GetCapabilities
@@ -750,7 +741,7 @@ footprint <- SOS(url = "http://rtmm2.nsstc.nasa.gov/SOS/footprint")
 nadir <- SOS(url = "http://rtmm2.nsstc.nasa.gov/SOS/nadir")
 
 
-################################################################################
+############################################################################## #
 # http://sensorweb.forum.52north.org/52-North-thin-client-and-istSOS-tp3370604p3370604.html
 # TODO check it out!
 #
@@ -758,7 +749,7 @@ sadco.url <- "http://ict4eo.meraka.csir.co.za/sadcosos/sos.py"
 sadco <- SOS(url = sadco.url, verboseOutput = TRUE)
 # problem: missing elements in one ObservationOffering so the object cannot be
 # created:
-#Error in validObject(.Object) : 
+#Error in validObject(.Object) :
 #		invalid class "SosObservationOffering" object: invalid object for slot "procedure" in class "SosObservationOffering": got class "list", should be or extend class "character"
 #In addition: Warning messages:
 #		1: In FUN(X[[1L]], ...) :
@@ -803,13 +794,13 @@ getObservation(sadco, offering = sosOfferings(sadco)[[2]],
 #Object of class OwsExceptionReport; version: 1.0.0; lang: NA;
 #1 exception(s) (code @ locator : text):
 #		1 @ service :
-#		
+#
 #		Parameter "offering" is mandatory with multiplicity 1
 #
 # but there is an offering in the request!
 # TODO check getting data from service again
 
-################################################################################
+############################################################################## #
 # Spatial Data Infrastructure of the CNR-Institute for Atmospheric Pollution
 # - http://sdi.iia.cnr.it/geoint/
 # - is a 52N SOS
@@ -822,16 +813,14 @@ sosOfferings(iia)
 # check out offering "SEA CRUISE 2003"
 seacruise <- sosOfferings(iia)["SEA CRUISE 2003"]
 
-# TODO plot it, use spacetime classes
 
-
-################################################################################
+############################################################################## #
 # TODO check out SOSs in ERDDAP
 # these are NOAA SOSs, but maybe new ones, you never know...
 #
 # http://coastwatch.pfeg.noaa.gov/erddap/info/index.html
 
-################################################################################
+############################################################################## #
 # TODO check out Wupperverband SOS
 #
 library("sos4R")
@@ -843,9 +832,9 @@ sosProcedures(fluggs)
 sosObservedProperties(fluggs)
 
 
-################################################################################
+############################################################################## #
 # TODO try out new CO-OPS SOSs
-# 
+#
 #CO-OPS has expanded its SOS services with an addition of the following 7 new services.
 #
 #One Minute Water Level Data
@@ -874,9 +863,9 @@ ioos_testing <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos-test/
 sosObservedProperties(ioos_testing)[["network-All"]]
 unique(unlist(sosObservedProperties(ioos_testing)))
 
-################################################################################
-# TODO check out SOS from Sandre, French National Service for Water Data and 
-#                         Common Repositories Management 
+############################################################################## #
+# TODO check out SOS from Sandre, French National Service for Water Data and
+#                         Common Repositories Management
 #                         http://sandre.eaufrance.fr/
 #
 # WaterML response format!
@@ -981,11 +970,11 @@ obs <- getObservation(sos = sandre, verbose = TRUE,
 		offering = myOffering, inspect = TRUE,
 		eventTime = myTime)
 #######
-# Error in match.names(clabs, names(xi)) : 
+# Error in match.names(clabs, names(xi)) :
 #  names do not match previous names
 # FIXME
 
-################################################################################
+############################################################################## #
 # TODO check out SOS from Spain with environmental data
 # http://elcano.dlsi.uji.es:8082/SOSM2/sos?request=GetCapabilities&service=SOS
 elcano <- SOS(url = "http://elcano.dlsi.uji.es:8082/SOSM2/sos")
@@ -994,7 +983,7 @@ sosContents(elcano)
 
 sosOfferings(elcano)
 
-################################################################################
+############################################################################## #
 # TODO check out SOS from Sensors4All Framework, FH Kärnten
 sensors4all <- SOS(url = "http://weatherstation.cti.ac.at:8080/52nSOSv3_CUAS/sos")
 
@@ -1016,9 +1005,8 @@ plot(worldHigh_Lines, col = "grey50")
 plot(sensors4all_off, add = TRUE, lwd = 3)
 
 
-################################################################################
+############################################################################## #
 # TODO check out VITO SOS with air quality data (live data planned) for Antwerp
-library(sos4R)
 idea <- SOS(url = "http://sensorweb.vito.be:8080/IDEA_52nSOSv3.2/sos")
 
 idea_offs <- sosOfferings(idea)
@@ -1033,27 +1021,21 @@ alix5_observation <- getObservation(sos = idea, offering = idea_offs$alix5,
 alix5_result <- sosResult(alix5_observation)
 
 
-################################################################################
+############################################################################## #
 # TODO check out IRCEL - CELINE SOS with air quality data
-library(sos4R)
 ircel <- SOS(url = "http://sos.irceline.be/sos")
 
 sosOfferings(ircel)
 
 
-################################################################################
+############################################################################## #
 # TODO check out NZ groundwater data: https://geier.gns.cri.nz/ngmp-sos/
-library(sos4R)
-
 gwl.converters <- SosDataFieldConvertingFunctions(
 	"http://data.gns.cri.nz/ggwdata/phenomenon/groundwaterlevel" = sosConvertDouble,
 	"http://www.opengis.net/def/property/OGC/0/SamplingTime" = sosConvertTime,
 	"http://www.opengis.net/def/property/OGC/0/    /FeatureOfInterest" = sosConvertString)
 
-myopts <- curlOptions(ssl.verifyhost=FALSE, ssl.verifypeer=FALSE, followlocation=TRUE)
-handle <- getCurlHandle( .opts= myopts)
-
-gwl <- SOS(url = "https://geier.gns.cri.nz/ngmp-sos/sos" , dataFieldConverters = gwl.converters, curlHandle=handle)
+gwl <- SOS(url = "https://geier.gns.cri.nz/ngmp-sos/sos" , dataFieldConverters = gwl.converters)
 
 sosOfferings(gwl)
 sosObservedProperties(gwl)
@@ -1075,31 +1057,30 @@ summary(result)
 getObservation(sos = gwl, offering = off, eventTime = sosCreateTime(sos = gwl, time = "2010-07-10::2010-07-17"), verbose = TRUE)
 
 
-################################################################################
+############################################################################## #
 # TODO check out USGS SOS used in WPS-R script at
 # https://github.com/USGS-CIDA/WaterSMART/blob/master/watersmart-wps/src/main/webapp/R/r_scripts/stats_compare_wps.R
-library(sos4R)
 
 sos_url_temp="http://waterservices.usgs.gov/nwis/dv/?format=waterml,1.1&sites="
 offering_temp='00003'
 property_temp='00060'
 
-################################################################################
+############################################################################## #
 # USGS/CIDA NWIS SOS
 # Environmental Data Discovery and Transformation - Beta Service Version
 # About: http://nwisvaws02.er.usgs.gov/ogc-swie/index.jsp
 
 # GetObservation - featureID(required), observedProperty(required), offering (required), beginPosition(optional), endPosition(optional), Interval(optional)
 #
-# observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400 
-# - corresponds to: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH 
+# observedProperty: 00060, 00065, 00010, 00045, 63680, 00300, 00400
+# - corresponds to: Discharge, GageHeight, Temperature, Precipitation, Turbidity, DO, pH
 # beginPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to earliest record)
 # endPostion: YYYY-MM-DD, YYYY-MM, YYYY (defaults to most recent record)
 # Interval: Today, ThisWeek Future plan to implement ISO-8601 Duration option
 # offering: UNIT (defaults to UNIT)
 #
 # Gage height observation by feature ID and begin time:
-# 	http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=2013-01-25 
+# 	http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos?request=GetObservation&featureId=01446500&offering=UNIT&observedProperty=00065t&beginPosition=2013-01-25
 nwis <- SOS(url = "http://nwisvaws02.er.usgs.gov/ogc-swie/wml2/uv/sos",
 						binding = "KVP",
 						parsers = SosParsingFunctions( # disable parsing of getobs responses
@@ -1145,10 +1126,10 @@ sosGetDCP(four, "GetCapabilities")
 
 sosCapabilitiesDocumentOriginal(four, verbose = TRUE)
 # FIXME
-#Fehler in .postForm(curl, .opts, .params, style) : 
+#Fehler in .postForm(curl, .opts, .params, style) :
 #		Unhandled case for the value of curl_easy_setopt (R type = 19, option 10002)
 
-# 
+#
 four_offerings <- sosOfferings(four.test)
 fout_off_no6 <- four_offerings[["test_offering_6"]]
 observ <- getObservation(sos = four.test, offering = sosOfferings(four)[[1]],

@@ -1,4 +1,65 @@
+############################################################################## #
+# Copyright (C) 2019 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.                                                    #
+#                                                                              #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.                                     #
+#                                                                              #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+# Created: 2015-01-27                                                          #
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
+############################################################################## #
+
 context("capabilities: composite phenomenon")
+
+compositePhenomenon <- '<swe:CompositePhenomenon xmlns:gml="http://www.opengis.net/gml"
+xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+gml:id="WaterQuality" dimension="4">
+<gml:name>WaterQuality</gml:name>
+<swe:component xlink:href="urn:ogc:def:property:OGC-SWE:1:ID"/>
+<swe:component xlink:href="urn:ogc:def:property:OGC-SWE:2:ID"/>
+</swe:CompositePhenomenon>'
+
+testsos <- SOS_Test("compphen")
+
+test_that("composite phenomenon name is parsed from snippet", {
+    .doc <- xml2::read_xml(x = compositePhenomenon)
+    .phen <- parseCompositePhenomenon(obj = .doc, sos = testsos)
+    expect_that(.phen@name, equals("WaterQuality"))
+})
+test_that("composite phenomenon id is parsed from snippet", {
+    .doc <- xml2::read_xml(x = compositePhenomenon)
+    .phen <- parseCompositePhenomenon(obj = .doc, sos = testsos)
+    expect_that(.phen@id, equals("WaterQuality"))
+})
+test_that("composite phenomenon dimension is parsed from snippet", {
+    .doc <- xml2::read_xml(x = compositePhenomenon)
+    .phen <- parseCompositePhenomenon(obj = .doc, sos = testsos)
+    expect_that(.phen@dimension, equals(4))
+})
+test_that("composite phenomenon components are parsed from snippet", {
+    .doc <- xml2::read_xml(x = compositePhenomenon)
+    .phen <- parseCompositePhenomenon(obj = .doc, sos = testsos)
+    expect_that(length(.phen@components), equals(2))
+    expect_that(.phen@components[[2]]@href, equals("urn:ogc:def:property:OGC-SWE:2:ID"))
+})
 
 compositePhenOffering <- '<sos:ObservationOffering gml:id="Water"
 xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:gml="http://www.opengis.net/gml"
@@ -23,7 +84,7 @@ xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999
 
 test_that("composite phenomenon offering is parsed correctly from snippet", {
   doc <-  xml2::read_xml(x = compositePhenOffering)
-  obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName)) #, verbose = TRUE)
+  obs_prop <- parseSosObservedProperty(obj = xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName), sos = testsos)
 
   expect_length(obs_prop, 2)
   expect_equal(obs_prop, list("WaterQuality", "AirQuality"))
@@ -39,7 +100,8 @@ mapserver@capabilities <- parsedCaps
 test_that("observed properties are parsed correctly from capabilities", {
   obs_prop <- sosObservedProperties(mapserver)
   expect_length(obs_prop, 1)
-  expect_equal(obs_prop[[1]], list("WaterQuality"))
+  expect_equal(obs_prop[[1]], c("WaterQuality"))
+  expect_named(obs_prop, c("Water"))
   # or should the components be listed?
   #expect_equal(obs_prop[[1]], "urn:ogc:def:property:OGC-SWE:1:STN_ID")
 })
@@ -58,8 +120,8 @@ test_that("offering id", {
 })
 
 test_that("procedures", {
-  expect_length(sosProcedures(mapserver)[[1]], 3)
-  expect_equal(sosProcedures(mapserver)[[1]][1], "urn:ogc:def:procedure:35")
+  expect_length(sosProcedures(mapserver), 3)
+  expect_equal(sosProcedures(mapserver)[1], c(Water = "urn:ogc:def:procedure:35"))
 })
 
 test_that("result models", {
@@ -78,46 +140,58 @@ test_that("title", {
 
 test_that("CRS from boundedBy", {
   expect_s4_class(sosGetCRS(mapserver), "CRS")
-  expect_match(sosGetCRS(mapserver)@projargs, "init=epsg:4326")
+  expect_equal(slotNames(sosGetCRS(mapserver)), "projargs")
 })
 
-test_that("time accessor function", {
+test_that("time accessor function for SOS", {
   time <- sosTime(mapserver)
   expect_true(is.list(time))
-  expect_s4_class(time[["Water"]], "GmlTimePeriod")
-
-  offeringTime <- sosTime(sosOfferings(mapserver))
-  expect_true(is.list(offeringTime))
-  expect_s4_class(offeringTime[["Water"]], "GmlTimePeriod")
-  expect_match(toString(offeringTime[["Water"]]), "--> GmlTimePosition \\[ time: 2007-10-30 08")
-
-  offeringTimeConv <- sosTime(sosOfferings(mapserver), convert = TRUE)
-  expect_true(is.list(offeringTimeConv))
-  expect_true(is.list(offeringTimeConv[["Water"]]))
-  expect_named(offeringTimeConv[["Water"]], c("begin", "end"))
-  expect_s3_class(offeringTimeConv[["Water"]][["begin"]], "POSIXlt")
-
-  # applying sosTime to GmlTimePeriod results in conversion
-  expect_equal(sosTime(sosTime(mapserver)), sosTime(sosOfferings(mapserver), convert = TRUE))
+  expect_named(time, "Water")
+  expect_s3_class(time[["Water"]]$begin, "POSIXt")
+  expect_s3_class(time[["Water"]]$end, "POSIXt")
 })
 
-test_that("offerings", {
+test_that("time accessor function for offerings", {
+  offeringTime <- sosTime(sosOfferings(mapserver))
+  expect_true(is.list(offeringTime))
+  expect_named(offeringTime, c("Water"))
+  expect_true(is.list(offeringTime[["Water"]]))
+  expect_named(offeringTime[["Water"]], c("begin", "end"))
+  expect_s3_class(offeringTime[["Water"]][["begin"]], "POSIXt")
+
+  offeringTimeUnconv <- sosTime(sosOfferings(mapserver), convert = FALSE)
+  expect_true(is.list(offeringTimeUnconv))
+  expect_s4_class(offeringTimeUnconv[["Water"]], "GmlTimePeriod")
+  expect_match(toString(offeringTimeUnconv$Water), "--> GmlTimePosition \\[ time: 2007-10-30 08")
+})
+
+test_that("with only one offering, time for SOS and offerings are equal", {
+  expect_equal(sosTime(mapserver), sosTime(sosOfferings(mapserver)))
+})
+
+test_that("offerings can be accessed", {
   offs <- sosOfferings(mapserver)
   expect_length(offs, 1)
   expect_named(offs, c("Water"))
-  expect_equal(sosName(sosOfferings(mapserver)), list(Water = "Water"))
+  expect_equal(sosName(sosOfferings(mapserver)), c(Water = "Water"))
 })
 
-test_that("bounds of offering", {
+test_that("bounds of offerings can be accessed", {
   bounds <- sosBoundedBy(sosOfferings(mapserver))
   expect_true(is.list(bounds))
   expect_true(is.list(bounds[["Water"]]))
   expect_named(bounds[["Water"]], c("srsName", "lowerCorner", "upperCorner"))
 })
 
-test_that("time of offering", {
+test_that("time of single offering can be accessed", {
   offs <- sosOfferings(mapserver)
-  expect_s4_class(sosTime(offs)[[1]], "GmlTimePeriod")
+  expect_s3_class(sosTime(offs[[1]])[["begin"]], "POSIXt")
+  expect_s3_class(sosTime(offs[[1]])[["end"]], "POSIXt")
+})
+
+test_that("time of single offering can be accessed unconverted", {
+  offs <- sosOfferings(mapserver)
+  expect_s4_class(sosTime(offs[[1]], convert = FALSE), "GmlTimePeriod")
 })
 
 context("capabilities: Axiom")
@@ -155,7 +229,7 @@ xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSche
 
 test_that("offering id is parsed correctly", {
   doc <- xml2::read_xml(x = axiomOffering)
-  obsProp <- parseSosObservedProperty(xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName))
+  obsProp <- parseSosObservedProperty(xml2::xml_find_all(x = doc, xpath = sosObservedPropertyName), sos = testsos)
   expect_equal(obsProp[[1]], "http://mmisw.org/ont/cf/parameter/air_temperature")
   expect_equal(length(obsProp), 2)
 })
@@ -169,10 +243,9 @@ test_that("can extract bbox from bounds of offering", {
   expect_equal(toString(box), "-44.7159634789651, -171.370441435668, 67.972129750194, 142.92375463033")
 })
 
-testsos <- SOS_Test(name = "testcaps",version = sos100_version) #, verboseOutput = TRUE)
-axiomCaps <- parseSosCapabilities(xml2::read_xml(x = "../responses/Capabilities_100_Example.xml"), testsos)
-
 context("parsing: operations metadata")
+
+testsos <- SOS_Test(name = "testcaps",version = sos100_version)
 
 rangeXml <- '<ows:Range xmlns:ows="http://www.opengis.net/ows/1.1">
 <ows:MinimumValue>2005-12-03T00:00:00.000+01:00</ows:MinimumValue>
@@ -221,32 +294,34 @@ operationXml <- '<ows:Operation name="GetCapabilities" xmlns:ows="http://www.ope
 
 test_that("name", {
   doc <- xml2::read_xml(x = operationXml)
-  operation <- parseOwsOperation(obj = doc)
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_equal(sosName(operation), "GetCapabilities")
 })
 
 test_that("DCP", {
   doc <- xml2::read_xml(x = operationXml)
-  operation <- parseOwsOperation(obj = doc)
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_named(operation@DCPs, c("ows:Get", "ows:Post"))
-  expect_equal(operation@DCPs[[2]], "http://sos/POST")
+  expect_equal(operation@DCPs[[2]][[owsDcpUrlIndex]], "http://sos/POST")
+  expect_equal(operation@DCPs[[2]][[owsDcpContentTypeIndex]], NA)
+  expect_equal(operation@DCPs[[2]][[owsDcpHttpMethodIndex]], "ows:Post")
 })
 
 test_that("parameter names", {
   doc <- xml2::read_xml(x = operationXml)
-  operation <- parseOwsOperation(obj = doc)
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_named(operation@parameters, c("updateSequence", "AcceptVersions", "Sections", "AcceptFormats"))
 })
 
 test_that("parameter any value", {
   doc <- xml2::read_xml(x = operationXml)
-  operation <- parseOwsOperation(obj = doc)
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_equal(operation@parameters[["updateSequence"]], list(owsAnyValueName))
 })
 
 test_that("parameter allowed values", {
   doc <- xml2::read_xml(x = operationXml)
-  operation <- parseOwsOperation(obj = doc)
+  operation <- parseOwsOperation(obj = doc, sos = testsos)
   expect_length(operation@parameters[["Sections"]], 6)
   expect_equal(operation@parameters[["AcceptFormats"]], list("text/xml", "application/zip"))
 })
@@ -386,27 +461,27 @@ serviceIdentXml <- '<ows:ServiceIdentification xmlns:ows="http://www.opengis.net
 
 test_that("title and abstract", {
   doc <- xml2::read_xml(x = serviceIdentXml)
-  serviceIdent <- parseOwsServiceIdentification(obj = doc)
+  serviceIdent <- parseOwsServiceIdentification(obj = doc, sos = testsos)
   expect_equal(serviceIdent@title, "SOStitle")
   expect_equal(serviceIdent@abstract, "SOSabstract")
 })
 
 test_that("keywords", {
   doc <- xml2::read_xml(x = serviceIdentXml)
-  serviceIdent <- parseOwsServiceIdentification(obj = doc)
+  serviceIdent <- parseOwsServiceIdentification(obj = doc, sos = testsos)
   expect_equal(length(serviceIdent@keywords), 1)
   expect_match(serviceIdent@keywords, "air temperature, air pressure")
 })
 
 test_that("fees", {
   doc <- xml2::read_xml(x = serviceIdentXml)
-  serviceIdent <- parseOwsServiceIdentification(obj = doc)
+  serviceIdent <- parseOwsServiceIdentification(obj = doc, sos = testsos)
   expect_equal(serviceIdent@fees, "NONE")
 })
 
 test_that("access constraints", {
   doc <- xml2::read_xml(x = serviceIdentXml)
-  serviceIdent <- parseOwsServiceIdentification(obj = doc)
+  serviceIdent <- parseOwsServiceIdentification(obj = doc, sos = testsos)
   expect_match(serviceIdent@accessConstraints, "http://open.data/sos.pdf")
 })
 
@@ -437,7 +512,7 @@ serviceProviderXml <- '<ows:ServiceProvider xmlns:ows="http://www.opengis.net/ow
 
 test_that("name and site", {
   doc <- xml2::read_xml(x = serviceProviderXml)
-  serviceProv <- parseOwsServiceProvider(obj = doc)
+  serviceProv <- parseOwsServiceProvider(obj = doc, sos = testsos)
   expect_match(serviceProv@providerName, "the_name")
   expect_match(serviceProv@providerSite, "http://www.de")
   expect_s3_class(serviceProv@serviceContact, "xml_node")
@@ -450,7 +525,7 @@ testsos <- SOS_Test(name = "testgetcap10")
 test_that("default for POX", {
   obj <- OwsGetCapabilities(service = sosService,
                             acceptVersions = c(sosVersion(testsos)),
-                            )
+  )
   encoded <- encodeRequestXML(obj = obj, sos = testsos)
   expect_match(toString(encoded), '<GetCapabilities')
   expect_match(toString(encoded), 'service="SOS"')
@@ -461,7 +536,7 @@ test_that("update sequence in POX", {
   obj <- OwsGetCapabilities(service = sosService,
                             acceptVersions = c(sosVersion(testsos)),
                             updateSequence = "test_seq"
-                            )
+  )
   encoded <- encodeRequestXML(obj = obj, sos = testsos)
   expect_match(toString(encoded), 'updateSequence="test_seq"')
 })
@@ -502,4 +577,77 @@ test_that("accept language is set", {
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
   expect_match(encodedString, '<ows:Language>DE</ows:Language>')
   expect_match(encodedString, '<ows:Language>EN</ows:Language></ows:AcceptLanguages>')
+})
+
+context("GetCapabilities: integration tests\n")
+
+test_that("a SOS connection can be created (KVP 1.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_1.0.0")
+})
+
+test_that("a SOS connection can be created (POX 1.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+               binding = "POX",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_1.0.0")
+})
+
+test_that("a SOS connection can be created (KVP 2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               version = "2.0.0",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_2.0.0")
+})
+
+test_that("a SOS connection can be created (POX 2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/pox",
+               binding = "POX",
+               version = "2.0.0",
+               useDCPs = FALSE)
+
+  expect_s4_class(mySOS, "SOS_2.0.0")
+})
+
+test_that("the original Capabilities document can be retrieved (KVP 1.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               useDCPs = FALSE)
+
+  caps <- sosCapabilitiesDocumentOriginal(mySOS)
+
+  expect_s3_class(caps, "xml_document")
+  expect_equal(xml2::xml_name(caps), "Capabilities")
+  expect_equal(xml2::xml_attr(caps, "version"), "1.0.0")
+})
+
+test_that("the original Capabilities document can be retrieved (KVP 2.0.0)", {
+  skip_on_cran()
+
+  mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
+               binding = "KVP",
+               version = "2.0.0",
+               useDCPs = FALSE)
+
+  caps <- sosCapabilitiesDocumentOriginal(mySOS)
+
+  expect_s3_class(caps, "xml_document")
+  expect_equal(xml2::xml_name(caps), "Capabilities")
+  expect_equal(xml2::xml_attr(caps, "version"), "2.0.0")
 })

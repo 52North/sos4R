@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # virtual parent class for all service requests etc., loosely based on
@@ -36,7 +36,8 @@ setClass("OwsServiceOperation",
            service = "character",	# service type identifier, e.g. "WMS"
            request = "character",	# operation name, e.g. "GetMap"
            version = "character"),	# version of the operation
-         prototype = list(service = as.character(NA), request= as.character(NA),
+         prototype = list(service = as.character(NA),
+                          request= as.character(NA),
                           version = as.character(NA)),
          contains = "VIRTUAL",
          validity = function(object) {
@@ -133,7 +134,7 @@ setClass("OwsGetCapabilities_2.0.0",
          }
 )
 
-################################################################################
+############################################################################## #
 # Capabilities Content:
 
 #
@@ -168,7 +169,8 @@ setClass("OwsOperation",
          representation(name = "character", DCPs = "list",
                         parameters = "list", constraints = "list",
                         metadata = "list"),
-         prototype = list(name = as.character(NA), DCPs = list(NA)),
+         prototype = list(name = as.character(NA),
+                          DCPs = list(NA)),
          validity = function(object) {
            #print("Entering validation: OwsOperation")
            # TODO implement validity function
@@ -244,7 +246,7 @@ setClass("OwsContents",
 setClassUnion(name = "OwsContentsOrNULL",
               members = c("OwsContents", "NULL"))
 
-################################################################################
+############################################################################## #
 # Capabilities documents:
 
 #
@@ -310,7 +312,7 @@ setClass("OwsCapabilities_2.0.0",
 )
 
 
-################################################################################
+############################################################################## #
 # Service Exceptions:
 
 #

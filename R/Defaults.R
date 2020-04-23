@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,46 +25,32 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # This class is inspired by a suggestion from Duncan Murdoch
 # (https://stat.ethz.ch/pipermail/r-help/2010-July/245480.html)
 #
 
-#
-# defaults for SOS creation ----
-#
-sosDefaultServiceVersion <- sos100_version
-
-#
-# A short list of some example services, no guarantee about compatibility with
-# sos4R or quality of data, accessible using accessor/getter function.
-#
-.sosExampleServices <- list(
-  "https://sdf.ndbc.noaa.gov/sos/server.php",
-  "www.pegelonline.wsv.de/webservices/gis/sos"
-)
-names(.sosExampleServices) <- list(
-  "NOAA National Data Buoy Center",
-  "WSV PegelOnline"
-)
-SosExampleServices <- function() {
-  return(.sosExampleServices)
-}
-
 # List of the default parsing functions. The names of the list are the
 # names of the respective XML documents set in Constants.R.
+# For SOS 1.0.0, the matching is done via operation name.
+# For SOS 2.0.0, the matching is done via root name of the response document.
 .createDefaultParsers <- function() {
   .defP <- list(
     parseSosCapabilities,
-    parseSensorML,
-    parseOM,
-    parseGetObservationResponse,
-    parseGetFeatureOfInterestResponse,
-    parseOM,
     parseOwsExceptionReport,
+    #
+    parseSensorML,
+    parseDescribeSensorResponse,
+    #
+    parseOM,
+    parseOM,
+    #
     parseGetDataAvailabilityResponse,
+    parseGetFeatureOfInterestResponse,
+    parseGetObservationByIdResponse,
+    parseGetObservationResponse,
     #
     parseMeasurement,
     parseObservationProperty,
@@ -87,21 +73,26 @@ SosExampleServices <- function() {
     parseTemporalObservation,
     parseComplexObservation,
     #
+    parseWmlMeasurementTimeseries,
+    #
     parseCSV,
     parseOM,
-    parseKML,
-    parseKML,
     parseOM)
 
   names(.defP) <- list(
     sosGetCapabilitiesName,
-    sosDescribeSensorName,
-    sosGetObservationName,
-    sosGetObservationResponseName,
-    sosGetFeatureOfInterestResponseName,
-    sosGetObservationByIdName,
     owsExceptionReportName,
-    sosGetDataAvailabilityResponse,
+    #
+    sosDescribeSensorName,
+    swesDescribeSensorResponseName,
+    #
+    sosGetObservationName,
+    sosGetObservationByIdName,
+    #
+    gdaGetDataAvailabilityResponseName,
+    sosGetFeatureOfInterestResponseName,
+    sosGetObservationByIdResponseName,
+    sosGetObservationResponseName,
     #
     omMeasurementName,
     omMemberName,
@@ -124,10 +115,10 @@ SosExampleServices <- function() {
     omTemporalObservationName,
     omComplexObservationName,
     #
+    wmlMeasurementTimeseriesName,
+    #
     mimeTypeCSV,
     mimeTypeOM,
-    mimeTypeKML,
-    kmlName,
     mimeTypeXML)
 
   return(.defP)
@@ -152,7 +143,7 @@ names(.sosDefaultEncoders) <- list(
 #
 #
 .sosDefaultFieldConverters <- list(
-  sosConvertString,
+  sosConvertDouble, # fallback <- numeric values exptected more often than character values!
   sosConvertTime,
   sosConvertTime,
   sosConvertTime,
@@ -160,6 +151,7 @@ names(.sosDefaultEncoders) <- list(
   sosConvertTime,
   sosConvertTime,
   sosConvertTime,
+  sosConvertDouble,
   sosConvertDouble,
   sosConvertDouble,
   sosConvertDouble,
@@ -229,6 +221,13 @@ names(.sosDefaultEncoders) <- list(
   sosConvertDouble,
   sosConvertDouble,
   # 52N SOS 4.x
+  sosConvertTime,
+  # R classes
+  sosConvertFactor,
+  sosConvertDouble,
+  sosConvertInteger,
+  sosConvertString,
+  sosConvertLogical,
   sosConvertTime
 )
 names(.sosDefaultFieldConverters) <- list(
@@ -243,6 +242,7 @@ names(.sosDefaultFieldConverters) <- list(
   "m", # meter
   "m2", # square meter
   "m3", # cubic meter
+  "m^3/s", # cubic meter per second
   "s", # second
   "ms", # millisecond
   "us", # microsecond
@@ -309,7 +309,14 @@ names(.sosDefaultFieldConverters) <- list(
   "degC", # degree celsius
   "\u00B0C", # degree Celsius
   # 52N SOS 4.x
-  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
+  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime",
+  # convert R classes
+  "factor",
+  "numeric",
+  "integer",
+  "character",
+  "logical",
+  "POSIXct"
 )
 
 
@@ -377,7 +384,8 @@ SosParsingFunctions <- function (..., include = character(0),
 # This works for all but capabilities, as these need to be requested on creating
 # a new SOS instance.
 #
-parseNoParsing <- function(obj) {
+parseNoParsing <- function(obj, sos) {
+  # sos parameter is not used!
   return(obj)
 }
 .sosDisabledParsers <- list(
@@ -415,12 +423,14 @@ sosDefaultGetCapSections <- c("All")
 sosDefaultGetCapAcceptFormats <- c("text/xml")
 sosDefaultGetCapOwsVersion <- "1.1.0"
 sosDefaultGetObsResponseFormat <- SosSupportedResponseFormats()[[1]]
-sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS"
+sosDefaultTimeFormat <- "%Y-%m-%dT%H:%M:%OS%z"
 sosDefaultFilenameTimeFormat <- "%Y-%m-%d_%H-%M-%OS"
 sosDefaultTempOpPropertyName <- "om:samplingTime"
 sosDefaultTemporalOperator <- SosSupportedTemporalOperators()[[ogcTempOpTMDuringName]]
 sosDefaultTemporalValueReference <- "om:phenomenonTime"
 sosDefaultSpatialOpPropertyName <- "urn:ogc:data:location"
+
+sos200DefaultGetObsResponseFormat <- mimeTypeOM20
 
 # use for the names created data.frames
 sosDefaultColumnNameFeatureIdentifier <- "feature"
@@ -487,7 +497,7 @@ SosDefaultDCPs <- function() {
   .names <- list()
   for (.x in SosSupportedBindings()) {
     .names <- c(.names, .x)
-    .defaults <- c(.defaults, "*")
+    .defaults <- c(.defaults, .getDcpDefaultPattern(.x))
   }
   names(.defaults) <- .names
   return(.defaults)
@@ -496,7 +506,17 @@ SosDefaultDCPs <- function() {
 .sosDefaultParsingOptions <- c(
   #"NOERROR",
   "RECOVER"
-  )
+)
 SosDefaultParsingOptions <- function() {
   return(.sosDefaultParsingOptions)
+}
+
+.getDcpDefaultPattern <- function(dcp) {
+  pattern <- switch(dcp,
+                    "GET" = "application/x-kvp",
+                    "POST" = "application/xml",
+                    "KVP" = "application/x-kvp",
+                    "POX" = "application/xml",
+                    "*"
+  )
 }

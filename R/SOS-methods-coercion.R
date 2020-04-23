@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,42 +25,41 @@
 # Created: 2011-02-09                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 #
 #
-as.SosObservationOffering.SpatialPolygons = function(from) {
+as.SpatialPolygons.SosObservationOffering = function(from) {
   # create bounding polygon from offering bounding box
-  .bbox <- sosBoundedBy(from, bbox = TRUE)
-  .llat <- .bbox["coords.lat","min"]
-  .llon <- .bbox["coords.lon","min"]
-  .ulat <- .bbox["coords.lat","max"]
-  .ulon <- .bbox["coords.lon","max"]
-  
-  .crs <- sosGetCRS(from)
-  if(is.null(.crs)) {
-    warning(paste("Cannot coerce offering", sosId(from),
-                  "to SpatialPolygons -- no CRS given."))
+  bbox <- sosBoundedBy(from, bbox = TRUE)
+  llat <- bbox["coords.lat","min"]
+  llon <- bbox["coords.lon","min"]
+  ulat <- bbox["coords.lat","max"]
+  ulon <- bbox["coords.lon","max"]
+
+  crs <- sosGetCRS(from)
+  if (is.null(crs)) {
+    warning(paste("Cannot coerce offering", sosId(from), "to SpatialPolygons -- no CRS given."))
     return(NULL)
   }
-  
+
   # beginning at lower left corner:
-  .poly <- Polygon(cbind(c(.llon, .llon, .ulon, .ulon, .llon),
-                         c(.llat, .ulat, .ulat, .llat, .llat)))
-  .spPoly <- SpatialPolygons(list(
-    Polygons(list(.poly), sosName(from))),
-    proj4string = .crs)
-  
-  return(.spPoly)
+  poly <- sp::Polygon(cbind(c(llon, llon, ulon, ulon, llon),
+                         c(llat, ulat, ulat, llat, llat)))
+  spPoly <- sp::SpatialPolygons(list(
+    sp::Polygons(list(poly), sosName(from))),
+    proj4string = crs)
+
+  return(spPoly)
 }
-setAs("SosObservationOffering", "SpatialPolygons", 
+setAs(from = "SosObservationOffering", to = "SpatialPolygons",
       function(from) {
-        as.SosObservationOffering.SpatialPolygons(from)
+        as.SpatialPolygons.SosObservationOffering(from)
       }
 )
-setAs("SosObservationOffering", "Spatial", 
+setAs(from = "SosObservationOffering", to = "Spatial",
       function(from) {
-        as.SosObservationOffering.SpatialPolygons(from)
+        as.SpatialPolygons.SosObservationOffering(from)
       }
 )

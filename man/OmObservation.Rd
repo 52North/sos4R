@@ -23,15 +23,12 @@
 \alias{sosResult,OmObservationProperty-method}
 \alias{sosResult,OmObservation-method}
 
-\alias{as.data.frame.OmObservation}
 \alias{sosCoordinates,OmObservation-method}
 \alias{sosFeaturesOfInterest,OmObservation-method}
 \alias{sosFeatureIds,OmObservation-method}
 \alias{sosObservedProperties,OmObservation-method}
 
 \alias{sosGetCRS,OmObservation-method}
-
-\alias{as.SpatialPointsDataFrame.OmObservation}
 
 \alias{sosUOM,OmObservation-method}
 \alias{print.summary.OmObservation}

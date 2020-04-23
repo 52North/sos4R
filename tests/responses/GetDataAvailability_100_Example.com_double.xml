@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gda:GetDataAvailabilityResponse xmlns:gda="http://www.opengis.net/sosgda/1.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sosgda/1.0 http://waterml2.org/schemas/gda/1.0/gda.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+  <gda:dataAvailabilityMember gml:id="dam_1">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="elv-ws2500" xlink:title="ELV WS2500"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_1">
+        <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-14T23:45:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_2">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="elv-ws2500-2" xlink:title="ELV WS2500"/>
+    <gda:phenomenonTime xlink:href="#tp_1"/>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_3">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="elv-ws2500" xlink:title="ELV WS2500"/>
+    <gda:phenomenonTime>
+      <gml:TimePeriod gml:id="tp_2">
+        <gml:beginPosition>2019-03-15T00:30:00.000Z</gml:beginPosition>
+        <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
+      </gml:TimePeriod>
+    </gda:phenomenonTime>
+  </gda:dataAvailabilityMember>
+  <gda:dataAvailabilityMember gml:id="dam_4">
+    <gda:procedure xlink:href="ws2500" xlink:title="ws2500"/>
+    <gda:observedProperty xlink:href="WindDirection" xlink:title="WindDirection"/>
+    <gda:featureOfInterest xlink:href="elv-ws2500-2" xlink:title="ELV WS2500"/>
+    <gda:phenomenonTime xlink:href="#tp_2"/>
+  </gda:dataAvailabilityMember>
+</gda:GetDataAvailabilityResponse>

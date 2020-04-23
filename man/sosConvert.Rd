@@ -40,7 +40,7 @@ There are functions to access the converters of a SOS (\code{\link{sosDataFieldC
 \examples{
 
 \dontrun{
-sos <- SOS(url = SosExampleServices()[[2]])
+sos <- SOS_Test()
 one <- sosConvertDouble("1", sos)
 class(one)
 

@@ -11,6 +11,10 @@
 \alias{sosCoordinates,OmOM_Observation-method}
 \alias{sosFeatureIds,OmOM_Observation-method}
 \alias{sosFeaturesOfInterest,OmOM_Observation-method}
+\alias{sosObservedProperties,OmOM_Observation-method}
+\alias{sosProcedures,OmOM_Observation-method}
+\alias{sosResult,OmOM_Observation-method}
+\alias{sosTime,OmOM_Observation-method}
 
 \title{Class \code{"OmOM_Observation"}}
 \description{Classes and construction functions for objects from the OGC Observations and Measurements specification, version 2.0.}
@@ -35,9 +39,13 @@ Class \code{"\linkS4class{OmOM_ObservationOrNULL}"}, directly.
 }
 \section{Methods}{
   \describe{
-    \item{sosCoordinates}{\code{signature(obj = "OmOM_Observation")}: ... }
-    \item{sosFeatureIds}{\code{signature(obj = "OmOM_Observation")}: ... }
-    \item{sosFeaturesOfInterest}{\code{signature(obj = "OmOM_Observation")}: ... }
+    \item{sosCoordinates}{\code{signature(obj = "OmOM_Observation")}: Accessor to the spatial cooridinates of an observation.}
+    \item{sosFeatureIds}{\code{signature(obj = "OmOM_Observation")}: Accessor to the feature identifiers.}
+    \item{sosFeaturesOfInterest}{\code{signature(obj = "OmOM_Observation")}: Accessor to the feature objects.}
+    \item{sosObservedProperties}{\code{signature(obj = "OmOM_Observation")}: Accessor to the observed properties in the observation.}
+    \item{sosProcedures}{\code{signature(obj = "OmOM_Observation")}: Accessor to the procedures in the observation.}
+    \item{sosResult}{\code{signature(obj = "OmOM_Observation")}: Extract the data from the observation as a \code{data.frame}.}
+    \item{sosTime}{\code{signature(obj = "OmOM_Observation")}: Accessor to the time period of the observation.}
 	 }
 }
 \examples{

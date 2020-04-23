@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2013-03-06                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # sosRequest ----
@@ -33,7 +33,7 @@
 setMethod(f = "sosRequest",
           signature = signature(sos = "SOS_2.0.0", request = "OwsServiceOperation",
                                 verbose = "logical", inspect = "logical"),
-          def = function(sos, request, verbose, inspect) {
+          definition = function(sos, request, verbose, inspect) {
             .sosRequest_2.0.0(sos = sos, request = request, verbose = verbose,
                               inspect = inspect)
           }
@@ -43,7 +43,7 @@ setMethod(f = "sosRequest",
 # getCapabilities ----
 #
 setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0.0"),
-          def = function(sos, verbose, inspect, sections, acceptFormats,
+          definition = function(sos, verbose, inspect, sections, acceptFormats,
                          updateSequence, owsVersion,	acceptLanguages) {
             return(.getCapabilities_2.0.0(sos = sos, verbose = verbose,
                                           inspect = inspect, sections = sections,
@@ -59,9 +59,20 @@ setMethod(f = "getCapabilities", signature = signature(sos = "SOS_2.0.0"),
 #
 setMethod(f = "describeSensor",
           signature = signature(sos = "SOS_2.0.0", procedure  = "character"),
-          def = function(sos, procedure, outputFormat, verbose, inspect,
-                         saveOriginal) {
-            stop("describeSensor for SOS_2.0.0 not implemented yet!")
+          definition = function(sos,
+                                procedure,
+                                outputFormat,
+                                validTime,
+                                verbose,
+                                inspect,
+                                saveOriginal) {
+            return(.describeSensor_2.0.0(sos = sos,
+                                         procedure = procedure,
+                                         procedureDescriptionFormat = outputFormat,
+                                         validTime = validTime,
+                                         verbose = verbose,
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal))
           }
 )
 
@@ -69,12 +80,105 @@ setMethod(f = "describeSensor",
 #
 # getObservationById ----
 #
-#
 setMethod(f = "getObservationById",
           signature = signature(sos = "SOS_2.0.0", observationId = "character"),
-          def = function(sos, observationId, responseFormat, srsName,
-                         resultModel, responseMode, verbose, inspect, saveOriginal) {
-            stop("getObservationById for SOS_2.0.0 not implemented yet!")
+          definition = function(sos,
+                                observationId,
+                                responseFormat,
+                                srsName,
+                                resultModel,
+                                responseMode,
+                                verbose,
+                                inspect,
+                                saveOriginal) {
+            if (verbose) cat("[getObservationById 2.0.0] ID", observationId, "\n")
+
+            filename <- NULL
+            if (!is.null(saveOriginal)) {
+              if (is.character(saveOriginal)) {
+                filename <- saveOriginal
+              }
+              else if (is.logical(saveOriginal) && saveOriginal) {
+                filename <- paste(observationId,
+                                  format(Sys.time(), sosDefaultFilenameTimeFormat),
+                                  ".xml",
+                                  sep = "_")
+
+              }
+              if (verbose) cat("[getObservationById 2.0.0] Saving original to file", filename, "\n")
+            }
+
+            go <- SosGetObservationById(service = sosService,
+                                        version = sos@version,
+                                        observationId = observationId,
+                                        responseFormat =  responseFormat,
+                                        srsName = srsName,
+                                        resultModel = resultModel,
+                                        responseMode = responseMode)
+
+            response = sosRequest(sos = sos,
+                                  request = go,
+                                  verbose = verbose,
+                                  inspect = inspect)
+
+            if (!is.null(filename)) {
+              xml2::write_xml(x = response, file = filename)
+              cat("[sos4R] Original document saved:", filename, "\n")
+            }
+
+            if (.isExceptionReport(response)) {
+              return(.handleExceptionReport(sos, response))
+            }
+            else {
+              parsingFunction <- sosParsers(sos)[[sosGetObservationByIdResponseName]]
+              obs <- parsingFunction(obj = response,
+                                     sos = sos,
+                                     verbose = verbose)
+
+              # remove list if only one element
+              if (is.list(obs) && length(obs) == 1)
+                obs <- obs[[1]]
+
+              if (verbose) {
+                cat("[getObservationById 2.0.0] PARSED RESPONSE:\n")
+                print(obs)
+              }
+
+              return(obs)
+            }
+          }
+)
+
+#
+# getObservation: no parameters ----
+#
+setMethod(f = "getObservation",
+          signature = signature(sos = "SOS_2.0.0"),
+          definition = function(sos,
+                                offering,
+                                observedProperty,
+                                responseFormat,
+                                eventTime,
+                                procedure,
+                                featureOfInterest,
+                                BBOX,
+                                verbose,
+                                inspect,
+                                saveOriginal,
+                                retrieveFOI = TRUE) {
+            if (verbose) cat("[getObservation] Requesting observations without offering\n")
+            return(.getObservation_2.0.0(sos = sos,
+                                         offerings = offering,
+                                         observedProperty = observedProperty,
+                                         responseFormat = responseFormat,
+                                         eventTime = eventTime,
+                                         procedure = procedure,
+                                         featureOfInterest = featureOfInterest,
+                                         BBOX = BBOX,
+                                         verbose = verbose,
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal,
+                                         retrieveFOI = retrieveFOI))
           }
 )
 
@@ -84,22 +188,31 @@ setMethod(f = "getObservationById",
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_2.0.0",
                                 offering = "SosObservationOffering_2.0.0"),
-          def = function(sos, offering, observedProperty, responseFormat, srsName,
-                         eventTime,	procedure, featureOfInterest, result, resultModel,
-                         responseMode, BBOX, verbose, inspect, saveOriginal) {
-            .offeringId <- offering@id
-            if (verbose)	cat("[getObservation] Requesting offering", .offeringId,
-                            "by SosObservationOffering.\n")
-            return(.getObservation_2.0.0(sos = sos, offeringId = .offeringId,
+          definition = function(sos,
+                                offering,
+                                observedProperty,
+                                responseFormat,
+                                eventTime,
+                                procedure = list(),
+                                featureOfInterest,
+                                BBOX,
+                                verbose,
+                                inspect,
+                                saveOriginal,
+                                retrieveFOI = TRUE) {
+            if (verbose) cat("[getObservation] Requesting offering", offering@id, "with object\n")
+            return(.getObservation_2.0.0(sos = sos,
+                                         offerings = list(offering),
                                          observedProperty = observedProperty,
                                          responseFormat = responseFormat,
-                                         srsName = srsName, eventTime = eventTime,
+                                         eventTime = eventTime,
                                          procedure = procedure,
                                          featureOfInterest = featureOfInterest,
-                                         result = result, resultModel = resultModel,
-                                         responseMode = responseMode, BBOX = BBOX,
+                                         BBOX = BBOX,
                                          verbose = verbose,
-                                         inspect = inspect, saveOriginal = saveOriginal))
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal,
+                                         retrieveFOI = retrieveFOI))
           }
 )
 
@@ -109,404 +222,149 @@ setMethod(f = "getObservation",
 setMethod(f = "getObservation",
           signature = signature(sos = "SOS_2.0.0",
                                 offering = "character"),
-          def = function(sos, offering, observedProperty = list(), responseFormat,
-                         srsName, eventTime,	procedure, featureOfInterest, result,
-                         resultModel, responseMode, BBOX, verbose, inspect,
-                         saveOriginal) {
-            if (verbose)	cat("[getObservation] Requesting offering", offering,
-                            "by name.\n")
+          definition = function(sos,
+                                offering,
+                                observedProperty = list(),
+                                responseFormat,
+                                eventTime,
+                                procedure = list(),
+                                featureOfInterest,
+                                BBOX,
+                                verbose,
+                                inspect,
+                                saveOriginal,
+                                retrieveFOI = TRUE) {
+            if (verbose)	cat("[getObservation] Requesting offering", offering, "\n")
 
-            .off <- sosOfferings(sos)[[offering]]
-
-            if (length(observedProperty) == 0) {
-              .obsProps <- sosObservableProperties(.off)
-              if (verbose) cat("[getObservation] Got observation(s) from offering because none given:",
-                              toString(.obsProps), "\n")
-            }
-            else {
-              .obsProps <- observedProperty
-            }
-
-            return(.getObservation_2.0.0(sos = sos, offeringId = offering,
-                                         observedProperty = .obsProps,
+            return(.getObservation_2.0.0(sos = sos,
+                                         offerings = list(offering),
+                                         observedProperty = observedProperty,
                                          responseFormat = responseFormat,
-                                         srsName = srsName, eventTime = eventTime,
+                                         eventTime = eventTime,
                                          procedure = procedure,
                                          featureOfInterest = featureOfInterest,
-                                         result = result, resultModel = resultModel,
-                                         responseMode = responseMode, BBOX = BBOX,
+                                         BBOX = BBOX,
                                          verbose = verbose,
-                                         inspect = inspect, saveOriginal = saveOriginal))
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal,
+                                         retrieveFOI = retrieveFOI))
+          }
+)
+
+#
+# getObservation: offering list ----
+#
+setMethod(f = "getObservation",
+          signature = signature(sos = "SOS_2.0.0",
+                                offering = "list"),
+          definition = function(sos,
+                                offering,
+                                observedProperty,
+                                responseFormat,
+                                eventTime,
+                                procedure,
+                                featureOfInterest,
+                                BBOX,
+                                verbose,
+                                inspect,
+                                saveOriginal,
+                                retrieveFOI = TRUE) {
+            if (verbose)	cat("[getObservation] Requesting list of offerings:", toString(offering), "\n")
+
+            return(.getObservation_2.0.0(sos = sos,
+                                         offerings = offering,
+                                         observedProperty = observedProperty,
+                                         responseFormat = responseFormat,
+                                         eventTime = eventTime,
+                                         procedure = procedure,
+                                         featureOfInterest = featureOfInterest,
+                                         BBOX = BBOX,
+                                         verbose = verbose,
+                                         inspect = inspect,
+                                         saveOriginal = saveOriginal,
+                                         retrieveFOI = retrieveFOI))
           }
 )
 
 #
 # getFeatureOfInterest ----
 #
-setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", featureOfInterest = "character"),
-          def = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
-            return(.getFeatureOfInterest_2.0.0(sos = sos, featureOfInterest = featureOfInterest,
-                                               verbose = verbose, inspect = inspect, saveOriginal=saveOriginal))
+setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
+          definition = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
+            return(.getFeatureOfInterest_2.0.0(sos = sos,
+                                               featureOfInterest = NA_character_,
+                                               verbose = verbose, inspect = inspect, saveOriginal = saveOriginal))
           }
 )
 
 #
 # getFeatureOfInterest - without filter ----
 #
-setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0"),
-          def = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
+setMethod(f = "getFeatureOfInterest", signature = signature(sos = "SOS_2.0.0", featureOfInterest = "character"),
+          definition = function(sos, featureOfInterest, verbose, inspect, saveOriginal) {
             return(.getFeatureOfInterest_2.0.0(sos = sos,
-                                               featureOfInterest = as.character(NA), # TODO better way possible?
-                                               verbose = verbose, inspect = inspect, saveOriginal=saveOriginal))
+                                               featureOfInterest = featureOfInterest,
+                                               verbose = verbose, inspect = inspect, saveOriginal = saveOriginal))
           }
 )
 
-#
-#
-#
-.getFeatureOfInterest_2.0.0 <- function(sos, featureOfInterest, verbose, inspect,
-                                        saveOriginal){
-
-  .filename <- NULL
-  #
-  #   if (!is.null(saveOriginal)) {
-  #     if (is.character(saveOriginal)) {
-  #       .filename <- paste(saveOriginal, ".xml", sep = "")
-  #       if (verbose) cat("Using saveOriginal parameter for file name:",
-  #                       .filename, "\n")
-  #     }
-  #     else if (is.logical(saveOriginal)) {
-  #       if (saveOriginal) .filename <- paste(.cleanupFileName(featureOfInterest),
-  #                                           ".xml", sep = "")
-  #       if (verbose) cat("Generating file name:", .filename, "\n")
-  #     }
-  #   }
-
-  if (verbose)
-    cat("[.getFeatureOfInterest_2.0.0] to ", sos@url, " with featureOfInterest ",
-        featureOfInterest, "\n")
-
-  .gfoi <- SosGetFeatureOfInterest_2.0.0(sosService, sos@version, featureOfInterest)
-
-  if (verbose)
-    cat("[.getFeatureOfInterest_2.0.0] REQUEST:\n\n", toString(.gfoi), "\n")
-
-  .response = sosRequest(sos = sos,
-                         request = .gfoi,
-                         verbose = verbose,
-                         inspect = inspect)
-
-  if (verbose) cat("[sos4R] Received response (size:", object.size(.response), "bytes), parsing ...\n")
-
-  if (!is.null(.filename)) {
-    xml2::write_xml(x = .response, file = .filename)
-    if (verbose) cat("[.getFeatureOfInterest_2.0.0] Saved original document:", .filename, "\n")
-  }
-
-  if (.isExceptionReport(.response)) {
-    return(.handleExceptionReport(sos, .response))
-  }
-
-  .parsingFunction <- sosParsers(sos)[[sosGetFeatureOfInterestName]]
-
-  if (verbose) {
-    cat("[.getFeatureOfInterest_2.0.0] Parsing with function ")
-    print(.parsingFunction)
-  }
-
-  .obs <- .parsingFunction(obj = .response, sos = sos,
-                           verbose = verbose)
-
-  .msg <- paste("[sos4R] Finished getFeatureOfInterest to", sos@url, "\n")
-
-  if (!is.null(.filename)) {
-    .msg <- paste(.msg,
-                  "[sos4R] Original document saved:", .filename, "\n")
-
-    .oldAttrs <- attributes(.obs)
-    .newAttrs <- list(.filename)
-    names(.newAttrs) <- list(sosAttributeFileName)
-    if (verbose) cat("[.getObservationById_1.0.0] Appending new attributes",
-                    toString(.newAttrs), "(names",
-                    toString(names(.newAttrs)), ")\n")
-
-    attributes(.obs) <- c(.oldAttrs, .newAttrs)
-  }
-  cat(.msg)
-
-  return(.obs)
-}
-
-#
-# getObservation function ----
-#
-# TODO: Remove/handle obsolete parameters: resultModel, responseMode, eventTime -> temporalFilter
-#
-.getObservation_2.0.0 <- function(sos, offeringId, observedProperty,
-                                  responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                  result, resultModel, responseMode, BBOX,
-                                  valueReferenceTemporalFilter = sosDefaultTemporalValueReference,
-                                  verbose,
-                                  inspect,
-                                  saveOriginal) {
-
-  .filename <- NULL
-  if (!is.null(saveOriginal)) {
-    if (is.character(saveOriginal)) {
-      .filename <- saveOriginal
-      if (verbose) cat("[.getObservation_2.0.0] Using saveOriginal parameter for file name:",
-                      .filename, "\n")
-    }
-    else if (is.logical(saveOriginal) && saveOriginal) {
-      .filename <- paste(.cleanupFileName(offeringId),
-                         format(Sys.time(), sosDefaultFilenameTimeFormat),
-                         ".xml",
-                         sep = "_")
-      if (verbose) cat("[.getObservation_2.0.0] Generated file name:", .filename, "\n")
-    }
-  }
-
-  if (verbose) cat("[.getObservation_2.0.0] to ", sos@url, " with offering ", offeringId, "\n")
-
-  .go <- .createGetObservation_2.0.0(sos, offeringId, observedProperty,
-                                     responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                     result, resultModel, responseMode, BBOX,
-                                     valueReferenceTemporalFilter,
-                                     verbose, inspect,
-                                     saveOriginal)
-
-  if (verbose)cat("[.getObservation_2.0.0] REQUEST:\n\n", toString(.go), "\n")
-
-  .response = sosRequest(sos = sos,
-                         request = .go,
-                         verbose = verbose,
-                         inspect = inspect)
-
-  if (verbose) cat("[.getObservation_2.0.0] Received response (size:", object.size(.response), "bytes), parsing ...\n")
-
-  if (!is.null(.filename)) {
-    xml2::write_xml(x = .response, file = .filename)
-    if (verbose) cat("[.getObservation_2.0.0] Saved original document:", .filename, "\n")
-  }
-
-  if (.isExceptionReport(.response)) {
-    return(.handleExceptionReport(sos, .response))
-  }
-
-  if (inherits(.response, "xml_document")) {
-    if (verbose) cat("[.getObservation_1.0.0] Got XML document as response.\n")
-    if ( !is.na(responseFormat) &&
-        isTRUE(grep(pattern = "text/xml", x = responseFormat) != 1)) {
-      warning("Got XML string, but request did not require text/xml (or subtype).")
-    }
-
-    .parsingFunction <- sosParsers(sos)[[sosGetObservationName]]
-
-    if (verbose) {
-      cat("[.getObservation_2.0.0] Parsing with function ")
-      print(.parsingFunction)
-    }
-
-    .obs <- .parsingFunction(obj = .response, sos = sos,
-                             verbose = verbose)
-
-    # calculate result length vector
-    if (inherits(.obs, "OmObservationCollection")) {
-      if (verbose) cat("[.getObservation_2.0.0] Got OmObservationCollection",
-                      "... calculating length with sosResult()")
-
-      .result <- sosResult(.obs, bind = FALSE, coordinates = FALSE)
-      if (verbose) cat("[.getObservation_2.0.0] result: ", toString(.result))
-
-      .resultLength <- sapply(.result, nrow)
-      if (length(.resultLength) == 0){
-        # nothing
-        .resultLength <- 0
-      }
-    }
-    else if (is.list(.obs) && all(sapply(.obs, function(o) { class(o) == "OmOM_Observation"}))) {
-      .resultLength <- sum(sapply(.obs, function(o){ !is.null(o@result)}))
-    }
-    else .resultLength <- NA
-
-    if (verbose) {
-      cat("[.getObservation_2.0.0] PARSED RESPONSE:",
-          class(.obs), "\n")
-      cat("[.getObservation_2.0.0] Result length(s): ",
-          toString(.resultLength), "\n")
-    }
-
-    if (is.list(.obs) && any(sapply(.obs, is.null))) {
-      .countInfo <- paste("NO DATA, turn on 'verbose' for more information.")
-    }
-    else {
-      .countInfo <- paste(sum(.resultLength), "result values")
-      if (verbose) .countInfo <- paste0(.countInfo,  " [",
-                          toString(.resultLength), "].")
-    }
-
-    .msg <- paste("[sos4R] Finished getObservation to", sos@url,
-                  "\n\t--> received", length(.obs), "observation(s) having",
-                  .countInfo , "\n")
-    if (!is.null(.filename)) {
-      .msg <- paste(.msg,
-                    "[sos4R] Original document saved:", .filename, "\n")
-
-      .oldAttrs <- attributes(.obs)
-      .newAttrs <- list(.filename)
-      names(.newAttrs) <- list(sosAttributeFileName)
-      if (verbose) cat("[.getObservation_2.0.0] Appending new attributes",
-                      toString(.newAttrs), "(names",
-                      toString(names(.newAttrs)), ")\n")
-
-      attributes(.obs) <- c(.oldAttrs, .newAttrs)
-    }
-    cat(.msg)
-
-    return(.obs)
-  }
-  else {# response is NOT an XML document:
-    if (verbose)
-      cat("[.getObservation_2.0.0] Did NOT get XML document as response, trying to parse with",
-          responseFormat, "\n")
-
-    if (mimeTypeCSV == responseFormat) {
-      if (inspect) {
-        cat("[.getObservation_2.0.0] CSV RESPONSE:\n")
-        print(.response)
-      }
-
-      .parsingFunction <- sosParsers(sos)[[mimeTypeCSV]]
-      .csv <- .parsingFunction(obj = .response, verbose = verbose)
-
-      if (!is.null(.filename)) {
-        .filename <- paste(file = .filename, ".csv", sep = "")
-        write.csv(.csv, .filename)
-      }
-
-      .msg <- paste("[sos4R] Finished getObservation to", sos@url, "\n\t",
-                    "--> received observations with dimensions",
-                    toString(dim(.csv)), "\n")
-      if (!is.null(.filename)) {
-        .msg <- paste(.msg,
-                      "[sos4R] Original document saved:", .filename, "\n")
-
-        .oldAttrs <- attributes(.csv)
-        .newAttrs <- list(.filename)
-        names(.newAttrs) <- list(sosAttributeFileName)
-        if (verbose) cat("[.getObservation_2.0.0] Appending new attributes",
-                        toString(.newAttrs), "(names",
-                        toString(names(.newAttrs)), ")\n")
-
-        attributes(.csv) <- c(.oldAttrs, .newAttrs)
-      }
-      cat(.msg)
-
-      # RETURN ###
-      return(.csv)
-    } # grep(pattern = mimeTypeCSV...
-
-    # TODO Add other non-XML encodings here.
-  } # else
-
-  # not xml nor csv nore otherwise handled
-  if (inspect) {
-    cat("[.getObservation_2.0.0] UNKNOWN RESPONSE FORMAT; Response string: \n'")
-    print(.response)
-    warning("Unknown response format!")
-  }
-
-  if (!is.null(.filename)) {
-    save(.response, file = .filename)
-    cat("[sos4R] Saved original document:", .filename)
-  }
-
-  return(.response)
-}
-
-#
-#
-#
-.createGetObservation_2.0.0 <- function(sos, offeringId, observedProperty,
-                                        responseFormat, srsName, eventTime,	procedure, featureOfInterest,
-                                        result, resultModel, responseMode, BBOX,
-                                        valueReferenceTemporalFilter,
-                                        verbose, inspect,
-                                        saveOriginal) {
-  .go <- SosGetObservation_2.0.0(service = sosService,
-                                 version = sos@version,
-                                 offering = offeringId,
-                                 observedProperty = observedProperty,
-                                 responseFormat =  responseFormat,
-                                 srsName = srsName,
-                                 eventTime = eventTime,
-                                 procedure = procedure,
-                                 featureOfInterest = featureOfInterest,
-                                 result = result,
-                                 resultModel = resultModel,
-                                 responseMode = responseMode,
-                                 BBOX = BBOX,
-                                 valueReferenceTemporalFilter = valueReferenceTemporalFilter)
-  if (verbose)
-    cat("[.createGetObservation_2.0.0] Done:\n", toString(.go), "\n")
-
-  return(.go)
-}
-#
-# checkRequest - GetObservation ----
-#
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0",
-                                operation = "SosGetObservation",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is GetObservation
-            if (!(operation@service == sosService &&
-                 operation@request == sosGetObservationName)) {
-              stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetObservation' as operation.")
-              return(FALSE)
-            }
-
-            # TODO implement checkRequest for GetObservation
-
-            # check if given responseFormat is supported by the service
-
-            # check if temporal operator and operand are a valid combination according to filter capabilities
-
-            return(TRUE)
-          }
-)
-#
-# checkRequest - GetFeatureOfInterest ----
-#
-setMethod(f = "checkRequest",
-          signature = signature(service = "SOS_2.0.0",
-                                operation = "SosGetFeatureOfInterest_2.0.0",
-                                verbose = "logical"),
-          definition = function(service, operation, verbose) {
-            # check if operation is for SOS and operation is DescribeSensor
-            if (!(operation@service == sosService &&
-                 operation@request == sosGetFeatureOfInterestName)) {
-              stop("Wrong input! Require classes 'SOS_2.0.0' as service and 'GetFeatureOfInterest' as operation.")
-              return(FALSE)
-            }
-
-            # TODO implement checkRequest for GetObservation
-
-            # check if given responseFormat is supported by the service
-
-            # check if temporal operator and operand are a valid combination according to filter capabilities
-
-            return(TRUE)
-          }
-)
 #
 # encodeRequest - KVP - GetObservation ----
 #
 setMethod("encodeRequestKVP", "SosGetObservation_2.0.0",
           function(obj, sos, verbose = FALSE) {
             if (obj@version == sos200_version) {
-              return(.sosEncodeRequestKVPGetObservation_2.0.0(obj, sos,
+              return(.sosEncodeRequestKVPGetObservation_2.0.0(obj, sos, verbose))
+            }
+            else {
+              stop("Version not supported!")
+            }
+          }
+)
+
+#
+# encodeRequest - KVP - GetFeatureOfInterest ----
+#
+setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
+          function(obj, sos, verbose = FALSE) {
+            if (obj@version == sos200_version) {
+              if (verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0] encoding",
+                               toString(obj), "\n")
+
+              # required:
+              requestBase <- .kvpBuildRequestBase(sos, sosGetFeatureOfInterestName)
+
+              # optionals
+              optionals <- ""
+              if (!all(is.na(obj@featureOfInterest))) {
+                escapedIds <-  sapply(X = obj@featureOfInterest, FUN = .kvpEscapeSpecialCharacters)
+                optionals <- paste(sosKVPParamNameFoi, paste(escapedIds, collapse = .kvpEscapeSpecialCharacters(",")), sep = "=")
+              }
+
+              #TODO Implement procedure or a spatial filter
+              if (is.character(optionals)  && stringr::str_length(optionals) > 0) {
+                kvpString <- paste(requestBase, optionals, sep = "&")
+              } else {
+                kvpString <- requestBase
+              }
+              if (verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0]",
+                               "with request: ", kvpString, "\n")
+
+              return(kvpString)
+            }
+            else {
+              stop("Version not supported!")
+            }
+          }
+)
+
+#
+# encodeRequest - XML - GetObservation ----
+#
+setMethod("encodeRequestXML", "SosGetObservation_2.0.0",
+          function(obj, sos, verbose = FALSE) {
+            if (obj@version == sos200_version) {
+              return(.sosEncodeRequestXMLGetObservation_2.0.0(obj, sos,
                                                               verbose))
             }
             else {
@@ -514,14 +372,28 @@ setMethod("encodeRequestKVP", "SosGetObservation_2.0.0",
             }
           }
 )
+
 #
-# encodeRequest - KVP - GetFeatureOfInterest ----
+# encodeRequest - XML - GetFeatureOfInterest ----
 #
-setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
+setMethod("encodeRequestXML", "SosGetFeatureOfInterest_2.0.0",
           function(obj, sos, verbose = FALSE) {
             if (obj@version == sos200_version) {
-              return(.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0(obj, sos,
-                                                                    verbose))
+              if (verbose) cat("[encodeRequestXML GetFeatureOfInterest] encoding",
+                               toString(obj), "\n")
+              xmlDoc <- xml2::xml_new_root(sosGetFeatureOfInterestName)
+              xml2::xml_set_attrs(x = xmlDoc,
+                                  value = c(xmlns = sos200Namespace,
+                                            service = obj@service,
+                                            version = obj@version,
+                                            "xmlns:xsi" = xsiNamespace,
+                                            "xmlns:sos20" = sos200Namespace))
+
+              for (i in 1:length(obj@featureOfInterest)) {
+                xml2::xml_add_child(xmlDoc, sos200FeatureOfInterestName, obj@featureOfInterest[[i]])
+              }
+
+              return(xmlDoc)
             }
             else {
               stop("Version not supported!")
@@ -529,193 +401,63 @@ setMethod("encodeRequestKVP", "SosGetFeatureOfInterest_2.0.0",
           }
 )
 
-.sosEncodeRequestKVPGetObservation_2.0.0 <- function(obj, sos, verbose = FALSE) {
-  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] encoding", toString(obj), "\n")
-
-  # required:
-  .requestBase <- .kvpBuildRequestBase(sos, sosGetObservationName)
-  .offering <- paste(sosKVPParamNameOffering,
-                     .kvpEscapeSpecialCharacters(x = obj@offering), sep = "=")
-  .observedProperty <- .kvpKeyAndValues(sosKVPParamNameObsProp,
-                                        obj@observedProperty)
-
-  .mandatory <- paste(.requestBase, .offering,
-                      .observedProperty, sep = "&")
-
-  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
-                  "mandatory elements: ", .mandatory, "\n")
-
-  # optional:
-  .optionals = ""
-  # is optional for GET
-  if (!is.na(obj@srsName)) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding SRS name ",
-                    obj@srsName, "\n")
-    .optionals <- paste(.optionals, paste(sosKVPParamNameSrsName,
-                                          .kvpEscapeSpecialCharacters(x = obj@srsName),
-                                          sep = "="),
-                        sep = "&")
-  }
-
-  if ( !length(obj@eventTime) == 0) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding event time",
-                    toString(obj@eventTime), " with valueReference ", toString(obj@valueReferenceTemporalFilter), "\n")
-    if (length(obj@eventTime) > 1)
-      warning("Only first event time in the list is used for KVP!")
-
-    .timeString <- encodeKVP(obj = obj@eventTime[[1]],
-                             sos = sos, verbose = verbose)
-
-    # if the eventTime is a latest request, it returns NA, the GET binding
-    # says for the latest observation eventTime is omitted
-    if (!is.na(.timeString)) {
-      # http://www.opengis.net/spec/SOS/2.0/req/kvp-core/go-temporalFilter-encoding
-      if (!is.na(obj@valueReferenceTemporalFilter))
-        .timeString <- paste0(obj@valueReferenceTemporalFilter, ",", .timeString)
-
-      .optionals <- paste(.optionals, paste("temporalFilter",
-                                            .kvpEscapeSpecialCharacters(x = .timeString),
-                                            sep = "="),
-                          sep = "&")
-      .optionals <- paste(.optionals,
-                          paste0(
-                            "namespaces=",
-                            # TODO make namespace configurable (use this as default value)
-                            .kvpEscapeSpecialCharacters("xmlns(om,http://www.opengis.net/om/2.0)")
-                            ),
-                          sep = "&")
-    }
-    else {
-      if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] ",
-                      "encodeKVP returned NA for eventTime, omitting",
-                      "parameter for request for latest observation.")
-    }
-  }
-
-  if ( !any(sapply(obj@procedure, "is.na"), na.rm = TRUE)) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding procedures ",
-                    obj@procedure, "\n")
-    .optionals <- paste(.optionals,
-                        .kvpKeyAndValues(sosKVPParamNameProcedure, obj@procedure),
-                        sep = "&")
-  }
-
-  if ( !is.null(obj@featureOfInterest)) {
-    .foiIDs <- obj@featureOfInterest@objectIDs
-
-    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding features ",
-                    toString(obj@featureOfInterest), "by IDs ", toString(.foiIDs), "\n")
-
-    .optionals <- paste(.optionals,
-                        .kvpKeyAndValues(sosKVPParamNameFoi, .foiIDs),
-                        sep = "&")
-  }
-
-  if ( !is.null(obj@result)) {
-    warning("'result' is not supported for 'GET' - parameter is discarded, use another method to include it!")
-  }
-
-  if ( !is.na(obj@resultModel)) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding result model ",
-                    obj@resultModel, "\n")
-    .optionals <- paste(.optionals, paste(sosKVPParamNameResultModel,
-                                          .kvpEscapeSpecialCharacters(x = obj@resultModel),
-                                          sep = "="),
-                        sep = "&")
-  }
-
-  if ( !is.na(obj@responseMode)) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding response mode ",
-                    obj@responseMode, "\n")
-    .optionals <- paste(.optionals, paste(sosKVPParamNameResponseMode,
-                                          .kvpEscapeSpecialCharacters(x = obj@responseMode),
-                                          sep = "="),
-                        sep = "&")
-  }
-
-  if ( !is.na(obj@BBOX)) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0] Adding BBOX ",
-                    obj@BBOX, "\n")
-    .optionals <- paste(.optionals, paste(sosKVPParamNameBBOX,
-                                          .kvpEscapeSpecialCharacters(x = obj@BBOX), sep = "="),
-                        sep = "&")
-  }
-
-  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
-                  "optional elements: ", .optionals, "\n")
-
-  .kvpString <- paste(.mandatory, .optionals, sep = "")
-
-  if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]",
-                  "Finished KVP string creation:\n", .kvpString, "\n")
-
-  return(.kvpString)
-}
-
-.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0 <- function(obj, sos,
-                                                           verbose = FALSE) {
-  if (verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0] encoding",
-                  toString(obj), "\n")
-
-  # required:
-  .requestBase <- .kvpBuildRequestBase(sos, sosGetFeatureOfInterestName)
-
-  # optionals
-  .optionals <- ""
-  if (!is.na(obj@featureOfInterest)) {
-    .optionals <- paste(sosKVPParamNameFoi,
-                                .kvpEscapeSpecialCharacters(x = obj@featureOfInterest), sep = "=")
-  }
-
-  #TODO Implement procedure or a spatial filter
-  if (is.character(.optionals)  && stringr::str_length(.optionals) > 0) {
-    .kvpString <- paste(.requestBase, .optionals, sep = "&")
-  } else {
-    .kvpString <- .requestBase
-  }
-  if (verbose) cat("[.sosEncodeRequestKVPGetFeatureOfInterest_2.0.0]",
-                  "with request: ", .kvpString, "\n")
-
-  return(.kvpString)
-}
-
+#
+# sosFeaturesOfInterest("SOS_2.0.0") ----
+#
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SOS_2.0.0"),
+          definition = function(obj, offerings = sosOfferingIds(obj)) {
+            return(sosOperations(obj)$GetFeatureOfInterest@parameters$featureOfInterest)
+          }
+)
 
 #
-#
+# construction functions ----
 #
 SosGetObservation_2.0.0 <- function(
   service,
   version,
-  offering,
-  observedProperty,
-  responseFormat,
-  srsName = as.character(NA),
-  eventTime = list(NA),
-  procedure = as.character(NA),
-  featureOfInterest = NULL,
-  result = NULL,
-  resultModel = as.character(NA),
-  responseMode = as.character(NA),
-  BBOX = as.character(NA),
-  valueReferenceTemporalFilter = NA) {
+  offering = list(),
+  observedProperty = list(),
+  responseFormat = as.character(NA),
+  temporalFilter = list(),
+  procedure = list(),
+  featureOfInterest = list(),
+  spatialFilter = NULL,
+  valueReferenceTemporalFilter = as.character(NA)) {
+
+  offeringIDs <- lapply(X = offering, FUN = function(o) {
+    if (is.character(o))
+      return(o)
+    else if (inherits(o, "SosObservationOffering_2.0.0"))
+      return(o@id)
+    else {
+      stop("Unsupported object in offering list (only character or SosObservationOffering_2.0.0): ", toString(o))
+    }
+  })
+
+  featureIDs <- lapply(X = featureOfInterest, FUN = function(o) {
+    if (is.character(o))
+      return(o)
+    else if (inherits(o, "GmlFeatureProperty"))
+      return(sosFeatureIds(o))
+    else {
+      stop("Unsupported object in offering list (only character or SosObservationOffering_2.0.0): ", toString(o))
+    }
+  })
+
   new("SosGetObservation_2.0.0",
       request = sosGetObservationName,
       service = service,
       version = version,
-      offering = offering,
+      offering = offeringIDs,
       observedProperty = observedProperty,
       responseFormat = responseFormat,
-      srsName = srsName,
-      eventTime = eventTime,
+      temporalFilter = temporalFilter,
       procedure = procedure,
-      featureOfInterest = featureOfInterest,
-      result = result,
-      resultModel = resultModel,
-      responseMode = responseMode,
-      BBOX = BBOX,
+      featureOfInterest = featureIDs,
+      spatialFilter = spatialFilter,
       valueReferenceTemporalFilter = valueReferenceTemporalFilter)
 }
-
 
 SosObservationOffering_2.0.0 <- function(id, name = as.character(NA),
                                          resultTime, phenomenonTime, procedure, observableProperty,
@@ -731,9 +473,6 @@ SosObservationOffering_2.0.0 <- function(id, name = as.character(NA),
       observedArea = observedArea)
 }
 
-#
-#
-#
 SosGetFeatureOfInterest_2.0.0 <- function(
   service,
   version,

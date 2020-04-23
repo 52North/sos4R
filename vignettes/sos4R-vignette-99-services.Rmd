@@ -1,0 +1,207 @@
+---
+title: "List of SOS services"
+author:
+  name: "Daniel Nüst"
+  affiliation: Institute for Geoinformatics, University of Münster, Germany.
+  email: daniel.nuest@uni-muenster.de
+  url: https://www.nordholmen.net
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+A list of SOS instances in production.
+A listing here does not imply extensive testing with `sos4R`.
+Contributions of demos welcome!
+
+Do you **know about an SOS instance not on this list**?
+Open an [issue](https://github.com/52North/sos4R/issues) or a pull request.
+
+```{r setup}
+library("sos4R")
+```
+
+## NOAA Center for Operational Oceanographic Products and Services (CO-OPS)
+
+```{r coops}
+ioosdif <- SOS(url = "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS",
+               binding = "KVP")
+ioosdif
+#sosContents(ioosdif)
+```
+
+## Integrated Ocean Observing System (IOOS)
+
+More information: https://sdf.ndbc.noaa.gov/sos/
+
+This SOS supports **CSV** as a response format.
+
+```{r ioos, eval=FALSE}
+ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
+              useDCPs = FALSE,
+              timeFormat = "%Y-%m-%dT%H:%M:%SZ")
+ioos.off <- sosOfferings(ioos)
+obs <- getObservation(sos = ioos,
+                      offering = sosName(ioos.off[[100]]),
+                      responseFormat = "text/csv",
+                      observedProperty = sosObservedProperties(ioos.off[[100]])[1])
+obs
+```
+
+## NOAA National Data Buoy Center
+
+```{r ndbc, eval=FALSE}
+ndbc <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
+            binding = "KVP")
+ndbc
+#sosContents(ndbc)
+```
+
+## WSV PegelOnline
+
+About: https://www.pegelonline.wsv.de/gast/start
+
+```{r pegelonline}
+pegel <- SOS(url = "http://pegelonline.wsv.de/webservices/gis/gdi-sos",
+                version = "1.0.0")
+pegel
+sosContents(pegel)
+```
+
+## Axiom Data Science Demo SOS
+
+```{r, eval=FALSE}
+axiom <- SOS(url = "http://dev.demo.i52nsos.axiomdatascience.com/sos", binding = "KVP")
+axiom
+sosContents(axiom)
+```
+
+## Belgian Interregional Environment Agency (IRCEL - CELINE)
+
+```{r irceline}
+irceline <- SOS(url = "http://geo.irceline.be/sos/service",
+                version = sos200_version)
+irceline
+#sosContents(irceline)
+```
+
+## PANGAEA
+
+About: http://sos.dataportals.pangaea.de/
+
+**Loch Etive, Scotland; Scottish Association for Marine Science**
+
+```{r lochetive}
+lochetive <- SOS(url = "http://sos.dataportals.pangaea.de/lochEtive_SOS/sos")
+lochetive
+sosContents(lochetive)
+```
+
+**Koljoefjord observatory, Sweden; University of Gothenburg**
+
+```{r koljoefjord}
+koljoefjord <- SOS(url = "http://sos.dataportals.pangaea.de/koljoefjord_SOS/sos")
+koljoefjord
+sosContents(koljoefjord)
+#summary(koljoefjord)
+```
+
+## Marthas Vineyard Coastal Observatory SOS
+
+```{r mvco}
+MVCO_WHOI <- SOS("http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos")
+sosContents(MVCO_WHOI)
+```
+
+## Wupperverband FLUGSS
+
+About: https://fluggs.wupperverband.de/v2p/web/fluggs
+
+```{r fluggs}
+fluggs <- SOS(url = "https://fluggs.wupperverband.de/sos2/service", binding = "KVP",
+              version = "2.0.0")
+sosContents(fluggs)
+```
+
+## MONALISA
+
+SOS by [MONALISA](http://www.monalisa-project.eu/en/home/Pages/default.aspx) project, operated by [eurac research](http://www.eurac.edu/).
+
+About: http://monalisasos.eurac.edu/sos/
+
+```{r monalisa, eval=FALSE}
+monalisa <- SOS(url = "http://monalisasos.eurac.edu/sos/service", binding = "KVP", version = "2.0.0")
+sosContents(monalisa)
+```
+
+## NIWA
+
+Two SOS by New Zealands [National Institute of Water and Atmospheric Research](https://www.niwa.co.nz/about/our-company) (NIWA) for hydrometric and climate data, see https://teamwork.niwa.co.nz/display/NEDA/Access+to+Sensor+Data.
+
+```{r niwa_hydro}
+niwaHydro <- SOS(url = "https://hydro-sos.niwa.co.nz/",
+                  binding = "POX", useDCPs = FALSE,
+                  #binding = "KVP",
+                  version = "2.0.0")
+sosContents(niwaHydro)
+```
+
+```{r niwa_hydro_data}
+#sosResponseFormats(niwaHydro)
+discharge29808 <- getObservation(sos = niwaHydro,
+                                 observedProperty = list("Discharge"), # phenomena
+                                 featureOfInterest = list("29808"), # sites
+                                 #saveOriginal = "../tests/responses/hydro-sos.niwa.co.nz_Discharge_29808.xml",
+                                 #responseFormat = "http://www.opengis.net/waterml/2.0",
+                                 #inspect = TRUE,
+                                 retrieveFOI = FALSE)
+sosResult(discharge29808)
+```
+
+```{r niwa_climate}
+# service offline - HTTP 503
+#niwaClimate <- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+#sosContents(niwaClimate)
+```
+
+## ncSOS
+
+### UCAR unidata
+
+[https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS](https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS)
+
+```{r unidata}
+#
+```
+
+### Applied Science Associates
+
+[https://github.com/asascience-open/ncSOS/](https://github.com/asascience-open/ncSOS/)
+
+```{r asascience}
+# MARACOOS, http://sos.maracoos.org/dev/catalog.html?dataset=wflow700-agg
+# http://sos.maracoos.org/dev/sos/wflow700-agg.ncml
+
+# http://sos.maracoos.org/pre/catalog/nerrs_ag/soschwq/catalog.html?dataset=nerrs_ag/soschwq/soschwq.ncml
+#http://sos.maracoos.org/pre/sos/nerrs_ag/soschwq/soschwq.ncml
+
+# http://sos.maracoos.org/thredds/catalog/mddnr_ag/Jug_Bay/catalog.html?dataset=mddnr_ag/Jug_Bay/Jug_Bay.ncml
+# Capabilities document: http://sos.maracoos.org/stable/sos/mddnr_ag/Jug_Bay/Jug_Bay.ncml
+jugbay <- SOS(url = "http://sos.maracoos.org/stable/sos/mddnr_ag/Jug_Bay/Jug_Bay.ncml", binding = "KVP")
+jugbay
+sosContents(jugbay)
+
+jugbay_observations <- getObservation(jugbay,
+                                      offering = sosOfferings(jugbay)[[1]],
+                                      procedure = sosProcedures(jugbay)[[1]],
+                                      eventTime = sosCreateTime(jugbay, "2020-01-01::2020-01-31"))
+str(jugbay_observations)
+```

@@ -1,0 +1,1558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:Capabilities xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fes="http://www.opengis.net/fes/2.0" xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sosGetCapabilities.xsd http://www.opengis.net/swes/2.0 http://schemas.opengis.net/swes/2.0/swes.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title xml:lang="eng">52N SOS</ows:Title>
+    <ows:Abstract xml:lang="eng">52North Sensor Observation Service - Data Access for the Sensor Web</ows:Abstract>
+    <ows:ServiceType>OGC:SOS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+    <ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+    <ows:Profile>http://www.opengis.net/extension/SOSDO/1.0/observationDeletion</ows:Profile>
+    <ows:Profile>http://www.opengis.net/extension/SOSDO/2.0/observationDeletion</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/1.0/conf/categoryObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/1.0/conf/countObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/1.0/conf/geometryObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/1.0/conf/measurement</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/1.0/conf/textObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/1.0/conf/truthObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/categoryObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/complexObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/countObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/geometryObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/measurement</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/samplingCurve</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/samplingPoint</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/samplingSurface</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/spatialSampling</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/textObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/OMXML/2.0/conf/truthObservation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/1.0/conf/core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/1.0/conf/enhanced</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/daRetrieval</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/exi</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/foi</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/foiRetrieval</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/insertionCap</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/json</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/kvp-core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/obsByIdRetrieval</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/obsInsertion</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/pox</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/rest</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/resultInsertion</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/resultRetrieval</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/sensorDeletion</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/sensorInsertion</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/soap</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SOS/2.0/conf/updateSensorDescription</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/general-encoding-rules</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/text-encoding-rules</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-block-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-record-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-simple-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/uml-simple-encodings</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-block-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-record-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-simple-components</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/SWE/2.0/conf/xsd-simple-encodings</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/sosrf/1.0/conf/rf</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/sosrf/1.0/conf/xml</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/sossf/1.0/conf/sf</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/sossf/1.0/conf/xml</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/uml-measurement-timeries-tvp-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/uml-timeseries-tvp-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-measurement-timeseries-tvp</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-timeseries-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-timeseries-tvp-observation</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/waterml/2.0/conf/xsd-xml-rules</ows:Profile>
+    <ows:Fees>NONE</ows:Fees>
+    <ows:AccessConstraints>NONE</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>52North</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://52north.org/swe"/>
+    <ows:ServiceContact>
+      <ows:IndividualName>TBA</ows:IndividualName>
+      <ows:PositionName>TBA</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+49(0)251/396 371-0</ows:Voice>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Martin-Luther-King-Weg 24</ows:DeliveryPoint>
+          <ows:City>Münster</ows:City>
+          <ows:AdministrativeArea>North Rhine-Westphalia</ows:AdministrativeArea>
+          <ows:PostalCode>48155</ows:PostalCode>
+          <ows:Country>Germany</ows:Country>
+          <ows:ElectronicMailAddress>info@52north.org</ows:ElectronicMailAddress>
+        </ows:Address>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="Batch">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DeleteObservation">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="observation">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DeleteResultTemplate">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DeleteSensor">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeSensor">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedureDescriptionFormat">
+        <ows:AllowedValues>
+          <ows:Value>http://inspire.ec.europa.eu/schemas/ompr/3.0</ows:Value>
+          <ows:Value>http://www.opengis.net/sensorML/1.0.1</ows:Value>
+          <ows:Value>http://www.opengis.net/sensorml/2.0</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml/2.0/observationProcess</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="validTime">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptFormats">
+        <ows:AllowedValues>
+          <ows:Value>application/xml</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptVersions">
+        <ows:AllowedValues>
+          <ows:Value>1.0.0</ows:Value>
+          <ows:Value>2.0.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="Sections">
+        <ows:AllowedValues>
+          <ows:Value>All</ows:Value>
+          <ows:Value>Contents</ows:Value>
+          <ows:Value>FilterCapabilities</ows:Value>
+          <ows:Value>InsertionCapabilities</ows:Value>
+          <ows:Value>OperationsMetadata</ows:Value>
+          <ows:Value>ServiceIdentification</ows:Value>
+          <ows:Value>ServiceProvider</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="updateSequence">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetDataAvailability">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>elv-ws2500</ows:Value>
+          <ows:Value>elv-ws2500-internal</ows:Value>
+          <ows:Value>vaisala-wxt520</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>AirTemperature</ows:Value>
+          <ows:Value>AthmosphericPressure</ows:Value>
+          <ows:Value>Dewpoint</ows:Value>
+          <ows:Value>HailAccumulated</ows:Value>
+          <ows:Value>HailDuration</ows:Value>
+          <ows:Value>HailIntensity</ows:Value>
+          <ows:Value>HailPeakIntensity</ows:Value>
+          <ows:Value>Humidity</ows:Value>
+          <ows:Value>InSystemTemperature</ows:Value>
+          <ows:Value>Luminance</ows:Value>
+          <ows:Value>RainfallAccumulated</ows:Value>
+          <ows:Value>RainfallDuration</ows:Value>
+          <ows:Value>RainfallIntensity</ows:Value>
+          <ows:Value>RainfallPeakIntensity</ows:Value>
+          <ows:Value>ShortwaveRadiation</ows:Value>
+          <ows:Value>Sunshine</ows:Value>
+          <ows:Value>Visibility</ows:Value>
+          <ows:Value>WeatherCode</ows:Value>
+          <ows:Value>WeatherCodeText</ows:Value>
+          <ows:Value>WindDirection</ows:Value>
+          <ows:Value>WindDirectionAverage</ows:Value>
+          <ows:Value>WindDirectionMaximum</ows:Value>
+          <ows:Value>WindDirectionMinimum</ows:Value>
+          <ows:Value>WindDirectionText</ows:Value>
+          <ows:Value>WindMaxGust</ows:Value>
+          <ows:Value>WindSpeed</ows:Value>
+          <ows:Value>WindSpeedAverage</ows:Value>
+          <ows:Value>WindSpeedBft</ows:Value>
+          <ows:Value>WindSpeedKmh</ows:Value>
+          <ows:Value>WindSpeedMaximum</ows:Value>
+          <ows:Value>WindSpeedMinimum</ows:Value>
+          <ows:Value>WindSpeedMperSec</ows:Value>
+          <ows:Value>Windchill</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="resultFilter">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="spatialFilter">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>51.9347763061523 7.59587907791138</ows:MinimumValue>
+            <ows:MaximumValue>51.9692611694336 7.652428150177</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeatureOfInterest">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>elv-ws2500</ows:Value>
+          <ows:Value>elv-ws2500-internal</ows:Value>
+          <ows:Value>vaisala-wxt520</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>AirTemperature</ows:Value>
+          <ows:Value>AthmosphericPressure</ows:Value>
+          <ows:Value>Dewpoint</ows:Value>
+          <ows:Value>HailAccumulated</ows:Value>
+          <ows:Value>HailDuration</ows:Value>
+          <ows:Value>HailIntensity</ows:Value>
+          <ows:Value>HailPeakIntensity</ows:Value>
+          <ows:Value>Humidity</ows:Value>
+          <ows:Value>InSystemTemperature</ows:Value>
+          <ows:Value>Luminance</ows:Value>
+          <ows:Value>RainfallAccumulated</ows:Value>
+          <ows:Value>RainfallDuration</ows:Value>
+          <ows:Value>RainfallIntensity</ows:Value>
+          <ows:Value>RainfallPeakIntensity</ows:Value>
+          <ows:Value>ShortwaveRadiation</ows:Value>
+          <ows:Value>Sunshine</ows:Value>
+          <ows:Value>Visibility</ows:Value>
+          <ows:Value>WeatherCode</ows:Value>
+          <ows:Value>WeatherCodeText</ows:Value>
+          <ows:Value>WindDirection</ows:Value>
+          <ows:Value>WindDirectionAverage</ows:Value>
+          <ows:Value>WindDirectionMaximum</ows:Value>
+          <ows:Value>WindDirectionMinimum</ows:Value>
+          <ows:Value>WindDirectionText</ows:Value>
+          <ows:Value>WindMaxGust</ows:Value>
+          <ows:Value>WindSpeed</ows:Value>
+          <ows:Value>WindSpeedAverage</ows:Value>
+          <ows:Value>WindSpeedBft</ows:Value>
+          <ows:Value>WindSpeedKmh</ows:Value>
+          <ows:Value>WindSpeedMaximum</ows:Value>
+          <ows:Value>WindSpeedMinimum</ows:Value>
+          <ows:Value>WindSpeedMperSec</ows:Value>
+          <ows:Value>Windchill</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="spatialFilter">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>51.9347763061523 7.59587907791138</ows:MinimumValue>
+            <ows:MaximumValue>51.9692611694336 7.652428150177</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetObservation">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>elv-ws2500</ows:Value>
+          <ows:Value>elv-ws2500-internal</ows:Value>
+          <ows:Value>vaisala-wxt520</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>AirTemperature</ows:Value>
+          <ows:Value>AthmosphericPressure</ows:Value>
+          <ows:Value>Dewpoint</ows:Value>
+          <ows:Value>HailAccumulated</ows:Value>
+          <ows:Value>HailDuration</ows:Value>
+          <ows:Value>HailIntensity</ows:Value>
+          <ows:Value>HailPeakIntensity</ows:Value>
+          <ows:Value>Humidity</ows:Value>
+          <ows:Value>InSystemTemperature</ows:Value>
+          <ows:Value>Luminance</ows:Value>
+          <ows:Value>RainfallAccumulated</ows:Value>
+          <ows:Value>RainfallDuration</ows:Value>
+          <ows:Value>RainfallIntensity</ows:Value>
+          <ows:Value>RainfallPeakIntensity</ows:Value>
+          <ows:Value>ShortwaveRadiation</ows:Value>
+          <ows:Value>Sunshine</ows:Value>
+          <ows:Value>Visibility</ows:Value>
+          <ows:Value>WeatherCode</ows:Value>
+          <ows:Value>WeatherCodeText</ows:Value>
+          <ows:Value>WindDirection</ows:Value>
+          <ows:Value>WindDirectionAverage</ows:Value>
+          <ows:Value>WindDirectionMaximum</ows:Value>
+          <ows:Value>WindDirectionMinimum</ows:Value>
+          <ows:Value>WindDirectionText</ows:Value>
+          <ows:Value>WindMaxGust</ows:Value>
+          <ows:Value>WindSpeed</ows:Value>
+          <ows:Value>WindSpeedAverage</ows:Value>
+          <ows:Value>WindSpeedBft</ows:Value>
+          <ows:Value>WindSpeedKmh</ows:Value>
+          <ows:Value>WindSpeedMaximum</ows:Value>
+          <ows:Value>WindSpeedMinimum</ows:Value>
+          <ows:Value>WindSpeedMperSec</ows:Value>
+          <ows:Value>Windchill</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="responseFormat">
+        <ows:AllowedValues>
+          <ows:Value>application/json</ows:Value>
+          <ows:Value>application/netcdf</ows:Value>
+          <ows:Value>application/netcdf; profile=OceanSITES</ows:Value>
+          <ows:Value>application/netcdf; version=3</ows:Value>
+          <ows:Value>application/netcdf; version=3; profile=OceanSITES</ows:Value>
+          <ows:Value>application/netcdf; version=4</ows:Value>
+          <ows:Value>application/netcdf; version=4; profile=OceanSITES</ows:Value>
+          <ows:Value>application/uvf</ows:Value>
+          <ows:Value>application/uvf; lineending=Mac</ows:Value>
+          <ows:Value>application/uvf; lineending=Unix</ows:Value>
+          <ows:Value>application/uvf; lineending=Windows</ows:Value>
+          <ows:Value>application/zip; subtype=netcdf</ows:Value>
+          <ows:Value>application/zip; subtype=netcdf; profile=OceanSITES</ows:Value>
+          <ows:Value>application/zip; subtype=netcdf; version=3</ows:Value>
+          <ows:Value>application/zip; subtype=netcdf; version=3; profile=OceanSITES</ows:Value>
+          <ows:Value>application/zip; subtype=netcdf; version=4</ows:Value>
+          <ows:Value>application/zip; subtype=netcdf; version=4; profile=OceanSITES</ows:Value>
+          <ows:Value>http://dd.eionet.europa.eu/schemaset/id2011850eu-1.0</ows:Value>
+          <ows:Value>http://inspire.ec.europa.eu/schemas/omso/3.0</ows:Value>
+          <ows:Value>http://www.opengis.net/gwml/2.2</ows:Value>
+          <ows:Value>http://www.opengis.net/om/2.0</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml-dr/2.0</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml/2.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="resultFilter">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="spatialFilter">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>51.9347763061523 7.59587907791138</ows:MinimumValue>
+            <ows:MaximumValue>51.9692611694336 7.652428150177</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="temporalFilter">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>2019-03-01T00:10:00.000Z</ows:MinimumValue>
+            <ows:MaximumValue>2019-03-28T23:50:00.000Z</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetObservationById">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="observation">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetResult">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetResultTemplate">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://example.com/sos-list-phenomena?">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/x-kvp</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="observedProperty">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="InsertFeatureOfInterest">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="InsertObservation">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="observation">
+        <ows:AnyValue/>
+        <ows:DataType ows:reference="http://schemas.opengis.net/om/2.0/observation.xsd#OM_Observation"/>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="InsertResult">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="resultValues">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="template">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="InsertResultTemplate">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="proposedTemplate">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="InsertSensor">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="metadata">
+        <ows:AnyValue/>
+        <ows:DataType ows:reference="http://schemas.opengis.net/sos/2.0/sosInsertionCapabilities.xsd#InsertionCapabilities"/>
+      </ows:Parameter>
+      <ows:Parameter name="observableProperty">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="procedureDescription">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="procedureDescriptionFormat">
+        <ows:AllowedValues>
+          <ows:Value>http://www.opengis.net/sensorML/1.0.1</ows:Value>
+          <ows:Value>http://www.opengis.net/sensorml/2.0</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml/2.0/observationProcess</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="UpdateSensorDescription">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/exi</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/json</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/xml</ows:Value>
+                <ows:Value>text/xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+          <ows:Post xlink:href="http://example.com/sos-list-phenomena">
+            <ows:Constraint name="Content-Type">
+              <ows:AllowedValues>
+                <ows:Value>application/soap+xml</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="description">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>ws2500</ows:Value>
+          <ows:Value>ws2500-internal</ows:Value>
+          <ows:Value>wwu-ws-kli-hsb</ows:Value>
+          <ows:Value>wxt520</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedureDescriptionFormat">
+        <ows:AllowedValues>
+          <ows:Value>http://www.opengis.net/sensorML/1.0.1</ows:Value>
+          <ows:Value>http://www.opengis.net/sensorml/2.0</ows:Value>
+          <ows:Value>http://www.opengis.net/waterml/2.0/observationProcess</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Parameter name="crs">
+      <ows:AllowedValues>
+        <ows:Value>http://www.opengis.net/def/crs/EPSG/0/31466</ows:Value>
+        <ows:Value>http://www.opengis.net/def/crs/EPSG/0/31467</ows:Value>
+        <ows:Value>http://www.opengis.net/def/crs/EPSG/0/4258</ows:Value>
+        <ows:Value>http://www.opengis.net/def/crs/EPSG/0/4326</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <ows:Parameter name="language">
+      <ows:AllowedValues>
+        <ows:Value>eng</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <ows:Parameter name="service">
+      <ows:AllowedValues>
+        <ows:Value>SOS</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <ows:Parameter name="version">
+      <ows:AllowedValues>
+        <ows:Value>1.0.0</ows:Value>
+        <ows:Value>2.0.0</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+  </ows:OperationsMetadata>
+  <sos:extension>
+    <sos:InsertionCapabilities>
+      <sos:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</sos:procedureDescriptionFormat>
+      <sos:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</sos:procedureDescriptionFormat>
+      <sos:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</sos:procedureDescriptionFormat>
+      <sos:featureOfInterestType>SamplingCurve</sos:featureOfInterestType>
+      <sos:featureOfInterestType>SamplingPoint</sos:featureOfInterestType>
+      <sos:featureOfInterestType>SamplingSurface</sos:featureOfInterestType>
+      <sos:featureOfInterestType>http://www.opengis.net/def/nil/OGC/0/unknown</sos:featureOfInterestType>
+      <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingCurve</sos:featureOfInterestType>
+      <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
+      <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingSurface</sos:featureOfInterestType>
+      <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_Specimen</sos:featureOfInterestType>
+      <sos:observationType>http://inspire.ec.europa.eu/featureconcept/MultiPointObservation</sos:observationType>
+      <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointObservation</sos:observationType>
+      <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointTimeSeriesObservation</sos:observationType>
+      <sos:observationType>http://inspire.ec.europa.eu/featureconcept/ProfileObservation</sos:observationType>
+      <sos:observationType>http://inspire.ec.europa.eu/featureconcept/TrajectoryObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-GWML/2.2/GW_GeologyLog</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CategoryObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ComplexObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_CountObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_GeometryObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ProfileObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_ReferenceObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TruthObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/waterml/2.0/MeasurementTimeseriesTVPObservation</sos:observationType>
+      <sos:observationType>http://www.opengis.net/def/observationType/waterml/2.0/measurementDRTimeseriesObservation</sos:observationType>
+      <sos:supportedEncoding>http://www.opengis.net/swe/2.0/TextEncoding</sos:supportedEncoding>
+    </sos:InsertionCapabilities>
+  </sos:extension>
+  <sos:filterCapabilities>
+    <fes:Filter_Capabilities>
+      <fes:Conformance>
+        <fes:Constraint name="ImplementsQuery">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsAdHocQuery">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsFunctions">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsResourceld">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinStandardFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsStandardFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinSpatialFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsSpatialFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinTemporalFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsTemporalFilter">
+          <ows:NoValues/>
+          <ows:DefaultValue>true</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsVersionNav">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsSorting">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsExtendedOperators">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsMinimumXPath">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+        <fes:Constraint name="ImplementsSchemaElementFunc">
+          <ows:NoValues/>
+          <ows:DefaultValue>false</ows:DefaultValue>
+        </fes:Constraint>
+      </fes:Conformance>
+      <fes:Scalar_Capabilities>
+        <fes:ComparisonOperators>
+          <fes:ComparisonOperator name="PropertyIsEqualTo"/>
+          <fes:ComparisonOperator name="PropertyIsLessThan"/>
+          <fes:ComparisonOperator name="PropertyIsGreaterThan"/>
+          <fes:ComparisonOperator name="PropertyIsLessThanOrEqualTo"/>
+          <fes:ComparisonOperator name="PropertyIsGreaterThanOrEqualTo"/>
+          <fes:ComparisonOperator name="PropertyIsLike"/>
+          <fes:ComparisonOperator name="PropertyIsBetween"/>
+        </fes:ComparisonOperators>
+      </fes:Scalar_Capabilities>
+      <fes:Spatial_Capabilities>
+        <fes:GeometryOperands>
+          <fes:GeometryOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:Envelope"/>
+        </fes:GeometryOperands>
+        <fes:SpatialOperators>
+          <fes:SpatialOperator name="BBOX">
+            <fes:GeometryOperands>
+              <fes:GeometryOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:Envelope"/>
+            </fes:GeometryOperands>
+          </fes:SpatialOperator>
+        </fes:SpatialOperators>
+      </fes:Spatial_Capabilities>
+      <fes:Temporal_Capabilities>
+        <fes:TemporalOperands>
+          <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+          <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+        </fes:TemporalOperands>
+        <fes:TemporalOperators>
+          <fes:TemporalOperator name="Before">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="After">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="Begins">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="Ends">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="EndedBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="BegunBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="During">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="TEquals">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="TContains">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="TOverlaps">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="Meets">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="MetBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+          <fes:TemporalOperator name="OverlappedBy">
+            <fes:TemporalOperands>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimeInstant"/>
+              <fes:TemporalOperand xmlns:ns="http://www.opengis.net/gml/3.2" name="ns:TimePeriod"/>
+            </fes:TemporalOperands>
+          </fes:TemporalOperator>
+        </fes:TemporalOperators>
+      </fes:Temporal_Capabilities>
+    </fes:Filter_Capabilities>
+  </sos:filterCapabilities>
+  <sos:contents>
+    <sos:Contents>
+      <swes:offering>
+        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+          <swes:identifier>ws2500</swes:identifier>
+          <swes:procedure>ws2500</swes:procedure>
+          <swes:procedureDescriptionFormat>http://inspire.ec.europa.eu/schemas/ompr/3.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>AirTemperature</swes:observableProperty>
+          <swes:observableProperty>AthmosphericPressure</swes:observableProperty>
+          <swes:observableProperty>Dewpoint</swes:observableProperty>
+          <swes:observableProperty>Humidity</swes:observableProperty>
+          <swes:observableProperty>Luminance</swes:observableProperty>
+          <swes:observableProperty>RainfallAccumulated</swes:observableProperty>
+          <swes:observableProperty>Sunshine</swes:observableProperty>
+          <swes:observableProperty>WindDirection</swes:observableProperty>
+          <swes:observableProperty>WindSpeed</swes:observableProperty>
+          <swes:observableProperty>Windchill</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+              <gml:lowerCorner>51.934814453125 7.652428150177</gml:lowerCorner>
+              <gml:upperCorner>51.934814453125 7.652428150177</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_1">
+              <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_1">
+              <gml:beginPosition>2019-03-28T23:59:00.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:59:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://inspire.ec.europa.eu/schemas/omso/3.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointObservation</sos:observationType>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointTimeSeriesObservation</sos:observationType>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+          <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+          <swes:identifier>ws2500-internal</swes:identifier>
+          <swes:procedure>ws2500-internal</swes:procedure>
+          <swes:procedureDescriptionFormat>http://inspire.ec.europa.eu/schemas/ompr/3.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>AirTemperature</swes:observableProperty>
+          <swes:observableProperty>Humidity</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+              <gml:lowerCorner>51.934814453125 7.65234184265137</gml:lowerCorner>
+              <gml:upperCorner>51.934814453125 7.65234184265137</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_2">
+              <gml:beginPosition>2019-03-01T00:30:00.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:45:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_2">
+              <gml:beginPosition>2019-03-28T23:59:00.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:59:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://inspire.ec.europa.eu/schemas/omso/3.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointObservation</sos:observationType>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointTimeSeriesObservation</sos:observationType>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+          <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+          <swes:identifier>wwu-ws-kli-hsb</swes:identifier>
+          <swes:procedure>wwu-ws-kli-hsb</swes:procedure>
+          <swes:procedureDescriptionFormat>http://inspire.ec.europa.eu/schemas/ompr/3.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>AirTemperature</swes:observableProperty>
+          <swes:observableProperty>AthmosphericPressure</swes:observableProperty>
+          <swes:observableProperty>Humidity</swes:observableProperty>
+          <swes:observableProperty>ShortwaveRadiation</swes:observableProperty>
+          <swes:observableProperty>Visibility</swes:observableProperty>
+          <swes:observableProperty>WeatherCode</swes:observableProperty>
+          <swes:observableProperty>WeatherCodeText</swes:observableProperty>
+          <swes:observableProperty>WindDirection</swes:observableProperty>
+          <swes:observableProperty>WindDirectionText</swes:observableProperty>
+          <swes:observableProperty>WindMaxGust</swes:observableProperty>
+          <swes:observableProperty>WindSpeedBft</swes:observableProperty>
+          <swes:observableProperty>WindSpeedKmh</swes:observableProperty>
+          <swes:observableProperty>WindSpeedMperSec</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+              <gml:lowerCorner>51.9692611694336 7.59587907791138</gml:lowerCorner>
+              <gml:upperCorner>51.9692611694336 7.59587907791138</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_3">
+              <gml:beginPosition>2019-03-01T00:10:00.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:50:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_3">
+              <gml:beginPosition>2019-03-28T23:59:00.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:59:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://inspire.ec.europa.eu/schemas/omso/3.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/gwml/2.2</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointObservation</sos:observationType>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointTimeSeriesObservation</sos:observationType>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_TextObservation</sos:observationType>
+          <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
+        </sos:ObservationOffering>
+      </swes:offering>
+      <swes:offering>
+        <sos:ObservationOffering xmlns:ns="http://www.opengis.net/sos/2.0">
+          <swes:identifier>wxt520</swes:identifier>
+          <swes:procedure>wxt520</swes:procedure>
+          <swes:procedureDescriptionFormat>http://inspire.ec.europa.eu/schemas/ompr/3.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorML/1.0.1</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/sensorml/2.0</swes:procedureDescriptionFormat>
+          <swes:procedureDescriptionFormat>http://www.opengis.net/waterml/2.0/observationProcess</swes:procedureDescriptionFormat>
+          <swes:observableProperty>AirTemperature</swes:observableProperty>
+          <swes:observableProperty>AthmosphericPressure</swes:observableProperty>
+          <swes:observableProperty>HailAccumulated</swes:observableProperty>
+          <swes:observableProperty>HailDuration</swes:observableProperty>
+          <swes:observableProperty>HailIntensity</swes:observableProperty>
+          <swes:observableProperty>HailPeakIntensity</swes:observableProperty>
+          <swes:observableProperty>Humidity</swes:observableProperty>
+          <swes:observableProperty>InSystemTemperature</swes:observableProperty>
+          <swes:observableProperty>RainfallAccumulated</swes:observableProperty>
+          <swes:observableProperty>RainfallDuration</swes:observableProperty>
+          <swes:observableProperty>RainfallIntensity</swes:observableProperty>
+          <swes:observableProperty>RainfallPeakIntensity</swes:observableProperty>
+          <swes:observableProperty>WindDirectionAverage</swes:observableProperty>
+          <swes:observableProperty>WindDirectionMaximum</swes:observableProperty>
+          <swes:observableProperty>WindDirectionMinimum</swes:observableProperty>
+          <swes:observableProperty>WindSpeedAverage</swes:observableProperty>
+          <swes:observableProperty>WindSpeedMaximum</swes:observableProperty>
+          <swes:observableProperty>WindSpeedMinimum</swes:observableProperty>
+          <sos:observedArea>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+              <gml:lowerCorner>51.9347763061523 7.65237522125244</gml:lowerCorner>
+              <gml:upperCorner>51.9347763061523 7.65237522125244</gml:upperCorner>
+            </gml:Envelope>
+          </sos:observedArea>
+          <sos:phenomenonTime>
+            <gml:TimePeriod gml:id="phenomenonTime_4">
+              <gml:beginPosition>2019-03-01T00:16:55.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:46:46.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:phenomenonTime>
+          <sos:resultTime>
+            <gml:TimePeriod gml:id="resultTime_4">
+              <gml:beginPosition>2019-03-28T23:59:00.000Z</gml:beginPosition>
+              <gml:endPosition>2019-03-28T23:59:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </sos:resultTime>
+          <sos:responseFormat>http://inspire.ec.europa.eu/schemas/omso/3.0</sos:responseFormat>
+          <sos:responseFormat>http://www.opengis.net/om/2.0</sos:responseFormat>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointObservation</sos:observationType>
+          <sos:observationType>http://inspire.ec.europa.eu/featureconcept/PointTimeSeriesObservation</sos:observationType>
+          <sos:observationType>http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement</sos:observationType>
+          <sos:featureOfInterestType>http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint</sos:featureOfInterestType>
+        </sos:ObservationOffering>
+      </swes:offering>
+    </sos:Contents>
+  </sos:contents>
+</sos:Capabilities>

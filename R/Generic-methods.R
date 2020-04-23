@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -26,7 +26,7 @@
 # Created: 2010-09-20                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # sosRequest ----
@@ -44,7 +44,9 @@ if (!isGeneric("sosRequest"))
 if (!isGeneric("getCapabilities"))
   setGeneric(name = "getCapabilities",
              signature = signature("sos", "verbose", "inspect"),
-             def = function(sos, verbose = sos@verboseOutput, inspect = FALSE,
+             def = function(sos,
+                            verbose = sos@verboseOutput,
+                            inspect = FALSE,
                             sections = sosDefaultGetCapSections,
                             acceptFormats = sosDefaultGetCapAcceptFormats,
                             updateSequence = c(as.character(NA)),
@@ -60,9 +62,12 @@ if (!isGeneric("describeSensor"))
   setGeneric(name = "describeSensor",
              signature = signature("sos", "procedure", "outputFormat", "verbose",
                                    "inspect", "saveOriginal"),
-             def = function(sos, procedure,
-                            outputFormat = sosDefaultDescribeSensorOutputFormat,
-                            verbose = sos@verboseOutput, inspect = FALSE,
+             def = function(sos,
+                            procedure,
+                            outputFormat = sosDefaultDescribeSensorOutputFormat, # mapped to procedureDescriptionFormat for SOS 2.0.0
+                            validTime = NULL, # SOS 2.0.0 only
+                            verbose = sos@verboseOutput,
+                            inspect = FALSE,
                             saveOriginal = NULL) {
                standardGeneric("describeSensor")
              })
@@ -75,11 +80,14 @@ if (!isGeneric("getObservationById"))
              signature = signature("sos", "observationId", "responseFormat",
                                    "srsName", "resultModel", "responseMode", "verbose",
                                    "inspect", "saveOriginal"),
-             def = function(sos, observationId,
+             def = function(sos,
+                            observationId,
                             responseFormat = sosDefaultGetObsResponseFormat,
-                            srsName = as.character(NA), resultModel = as.character(NA),
+                            srsName = as.character(NA),
+                            resultModel = as.character(NA),
                             responseMode = as.character(NA),
-                            verbose = sos@verboseOutput, inspect = FALSE,
+                            verbose = sos@verboseOutput,
+                            inspect = FALSE,
                             saveOriginal = NULL) {
                standardGeneric("getObservationById")
              })
@@ -89,18 +97,30 @@ if (!isGeneric("getObservationById"))
 #
 if (!isGeneric("getObservation"))
   setGeneric(name = "getObservation",
-             signature = signature("sos", "offering", "observedProperty",
-                                   "responseFormat", "srsName", "eventTime", "procedure",
-                                   "featureOfInterest", "result", "resultModel",
-                                   "responseMode", "BBOX", "verbose", "inspect",
+             signature = signature("sos",
+                                   "offering",
+                                   "observedProperty",
+                                   "responseFormat",
+                                   "srsName",
+                                   "eventTime",
+                                   "procedure",
+                                   "featureOfInterest",
+                                   "result",
+                                   "resultModel",
+                                   "responseMode",
+                                   "BBOX",
+                                   "verbose",
+                                   "inspect",
                                    "saveOriginal"),
-             def = function(sos, offering,
-                            observedProperty = sosObservedProperties(obj = offering),
-                            responseFormat = sosDefaultGetObsResponseFormat,
+             def = function(sos,
+                            # mandatory for SOS 1.0.0, different defaults set in the method for SOS_1.0.0:
+                            offering = list(),
+                            observedProperty = list(),
+                            responseFormat = as.character(NA),
                             # optional:
                             srsName = as.character(NA),
                             eventTime = list(), # sosCreateEventTimeList(time = sosTime(obj = offering))
-                            procedure = as.character(NA), # sosProcedures(obj = offering),
+                            procedure = list(), # sosProcedures(obj = offering),
                             featureOfInterest = NULL,
                             result = NULL,
                             resultModel = as.character(NA),
@@ -108,7 +128,8 @@ if (!isGeneric("getObservation"))
                             BBOX = as.character(NA),
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
-                            saveOriginal = NULL) {
+                            saveOriginal = NULL,
+                            ...) {
                standardGeneric("getObservation")
              })
 
@@ -143,19 +164,11 @@ if (!isGeneric("getDataAvailability")) {
                             offerings = list(NA),
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
-                            saveOriginal = NULL) {
+                            saveOriginal = NULL,
+                            ...) {
                standardGeneric("getDataAvailability")
              })
 }
-
-#
-# checkRequest ----
-#
-if (!isGeneric("checkRequest"))
-  setGeneric(name = "checkRequest",
-             def = function(service, operation, verbose) {
-               standardGeneric("checkRequest")
-             })
 
 #
 # encodeRequestKVP ----
@@ -233,7 +246,7 @@ if (!isGeneric("parseFile"))
 #
 if (!isGeneric("sosGetDCP"))
   setGeneric(name = "sosGetDCP",
-             def = function(sos, operation, type = NA) {
+             def = function(sos, operation, type = NA, verbose = FALSE) {
                standardGeneric("sosGetDCP")
              })
 

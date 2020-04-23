@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,28 +25,28 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # Dispatch function for all exchangeable parsers for OM elements.
 #
 parseOM <- function(obj, sos, verbose = FALSE) {
-  .om <- NULL
+  om <- NULL
 
   # switch submethods based on name (needs prefix)
-  .name <- xml2::xml_name(x = obj, ns = SosAllNamespaces())
+  name <- xml2::xml_name(x = obj, ns = sos@namespaces)
 
-  .parsingFunction <- sosParsers(sos)[[.name]]
-  if (!is.null(.parsingFunction)) {
-    if (verbose) cat("[parseOM] Matched name for parser is", .name, "\n")
-    .om <- .parsingFunction(obj = obj, sos = sos, verbose = verbose)
+  parsingFunction <- sos4R::sosParsers(sos)[[name]]
+  if (!is.null(parsingFunction)) {
+    if (verbose) cat("[parseOM] Matched name for parser is", name, "\n")
+    om <- parsingFunction(obj = obj, sos = sos, verbose = verbose)
     if (verbose) cat("[parseOM] Done parsing\n")
   }
   else {
-    warning(paste("[parseOM] No parsing function for given element", .name))
+    warning(paste("[parseOM] No parsing function for given element", name))
   }
 
-  return(.om)
+  return(om)
 }
 
 #
@@ -57,7 +57,7 @@ parseObservationProperty <- function(obj, sos, verbose = FALSE) {
   if (xml2::xml_length(x = obj) >= 1) {
     .child <- xml2::xml_child(obj)
     if (verbose) cat("[parseObservationProperty] Parsing child of member:",
-                     xml2::xml_name(x = .child, ns = SosAllNamespaces()), "\n")
+                     xml2::xml_name(x = .child, ns = sos@namespaces), "\n")
     .mResult <- parseOM(.child, sos, verbose)
   }
   else {
@@ -86,22 +86,22 @@ parseMeasurement <- function(obj, sos, verbose = FALSE) {
 
   .samplingTimeXml <- xml2::xml_child(x = obj,
                                       search = omSamplingTimeName,
-                                      ns = SosAllNamespaces())
+                                      ns = sos@namespaces)
   .samplingTime <- parseTime(obj = .samplingTimeXml,
-                             format = sosTimeFormat(sos),
+                             sos = sos,
                              verbose = verbose)
 
   # 52N SOS only returns om:Measurements (!) with procedure ids and observed
   # properties in xlink:href
-  .procedure <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = omProcedureName, ns = SosAllNamespaces()), attr = "href")
+  .procedure <- xml2::xml_attr(x = xml2::xml_child(x = obj, search = omProcedureName, ns = sos@namespaces), attr = "href")
   .observedProperty <- SwePhenomenonProperty(
-    href = xml2::xml_attr(x = xml2::xml_child(x = obj, search = omObservedPropertyName, ns = SosAllNamespaces()), attr = "href"))
+    href = xml2::xml_attr(x = xml2::xml_child(x = obj, search = omObservedPropertyName, ns = sos@namespaces), attr = "href"))
 
-  .featureOfInterest <- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()), sos = sos,
+  .featureOfInterest <- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = sos@namespaces), sos = sos,
                                  verbose = verbose)
 
   # must be GmlMeasure
-  .result <- parseMeasure(xml2::xml_child(x = obj, search = omResultName, ns = SosAllNamespaces()))
+  .result <- parseMeasure(xml2::xml_child(x = obj, search = omResultName, ns = sos@namespaces))
 
   # TODO optionals elements for OmMeasurement
   #.metadata
@@ -124,44 +124,46 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseObservation]", .id, "\n")
 
   # 52N SOS only returns om:Observation with procedure ids xlink:href
-  .procedure <- xml2::xml_attr(x = xml2::xml_child(x = obj,
+  procedure <- xml2::xml_attr(x = xml2::xml_child(x = obj,
                                                    search = omProcedureName,
-                                                   ns = SosAllNamespaces()),
+                                                   ns = sos@namespaces),
                                attr = "href",
                                default = NA_character_)
 
-  .observedProperty <- parsePhenomenonProperty(xml2::xml_child(x = obj, search = omObservedPropertyName, ns = SosAllNamespaces()),
+  observedProperty <- parsePhenomenonProperty(xml2::xml_child(x = obj, search = omObservedPropertyName, ns = sos@namespaces),
                                                verbose = verbose)
 
-  if (!is.na(xml2::xml_child(x = obj, search = omSamplingTimeName, ns = SosAllNamespaces()))) {
-    .samplingTime <- parseTime(obj = xml2::xml_child(x = obj,
-                                                     search = omSamplingTimeName,
-                                                     ns = SosAllNamespaces()),
-                               format = sosTimeFormat(sos = sos), verbose = verbose)
+  if (!is.na(xml2::xml_child(x = obj, search = omSamplingTimeName, ns = sos@namespaces))) {
+    samplingTime <- parseTime(obj = xml2::xml_child(x = obj,
+                                                    search = omSamplingTimeName,
+                                                    ns = sos@namespaces),
+                              sos = sos,
+                              verbose = verbose)
   } else {
     warning("om:samplingTime is mandatory in om:Observation, but is missing!")
-    .samplingTime <- NULL
+    samplingTime <- NULL
   }
 
-  if (!is.na(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()))) {
-    .featureOfInterest <- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = SosAllNamespaces()),
+  if (!is.na(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = sos@namespaces))) {
+    featureOfInterest <- parseFOI(xml2::xml_child(x = obj, search = omFeatureOfInterestName, ns = sos@namespaces),
                                    sos = sos, verbose = verbose)
   } else {
     warning("om:featureOfInterest is mandatory in om:Observation, but is missing!")
-    .featureOfInterest <- NULL
+    featureOfInterest <- NULL
   }
 
   # result parser is exchangeable
-  .resultParsingFunction <- sosParsers(sos)[[omResultName]]
-  .result <- .resultParsingFunction(xml2::xml_child(x = obj, search = omResultName, ns = SosAllNamespaces()), sos, verbose)
+  resultParsingFunction <- sosParsers(sos)[[omResultName]]
+  result <- resultParsingFunction(xml2::xml_child(x = obj, search = omResultName, ns = sos@namespaces), sos, verbose)
 
   # optional elements
-  if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()))) {
-    .resultTime <- parseTime(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = SosAllNamespaces()),
-                             format = sosTimeFormat(sos = sos), verbose = verbose)
+  if (!is.na(xml2::xml_child(x = obj, search = omResultTimeName, ns = sos@namespaces))) {
+    resultTime <- parseTime(obj = xml2::xml_child(x = obj, search = omResultTimeName, ns = sos@namespaces),
+                            sos = sos,
+                            verbose = verbose)
   }
   else {
-    .resultTime <- NULL
+    resultTime <- NULL
   }
 
   # TODO optionals elements for OmObservation
@@ -170,49 +172,34 @@ parseObservation <- function(obj, sos, verbose = FALSE) {
   #.parameter
   #.metadata
 
-  .obs <- OmObservation(samplingTime = .samplingTime,
-                        procedure = .procedure,
-                        observedProperty = .observedProperty,
-                        featureOfInterest = .featureOfInterest,
-                        result = .result)
+  obs <- OmObservation(samplingTime = samplingTime,
+                        procedure = procedure,
+                        observedProperty = observedProperty,
+                        featureOfInterest = featureOfInterest,
+                        result = result)
 
-  return(.obs)
+  return(obs)
 }
 
 #
 #
 #
 parseObservationCollection <- function(obj, sos, verbose = FALSE) {
-  .members <- xml2::xml_find_all(x = obj, xpath = omMemberName, ns = SosAllNamespaces())
+  members <- xml2::xml_find_all(x = obj, xpath = omMemberName, ns = sos@namespaces)
 
-  if (verbose) cat("[parseObservationCollection] with ", length(.members), "element(s).\n")
+  if (verbose) cat("[parseObservationCollection] with ", length(members), "element(s).\n")
 
-  .env <- xml2::xml_child(x = obj, search = paste0(gmlBoundedByName, "/", gmlEnvelopeName))
-  if (!is.na(.env)) {
-    .boundedBy <- list(
-      srsName = xml2::xml_attr(x = .env, attr = "srsName", ns = SosAllNamespaces()),
-      lowerCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlLowerCornerName, ns = SosAllNamespaces())),
-      upperCorner = xml2::xml_text(x = xml2::xml_child(x = .env, search = gmlUpperCornerName, ns = SosAllNamespaces())))
-
-    if (verbose) cat("[parseObservationCollection] Parsed envelope:", toString(.boundedBy), "\n")
-
-    if (sosSwitchCoordinates(sos)) {
-      warning("Switching coordinates in envelope of ObservationCollection!")
-      .origLC <- strsplit(x = .boundedBy[["lowerCorner"]], split = " ")
-      .lC <- paste(.origLC[[1]][[2]], .origLC[[1]][[1]])
-      .origUC <- strsplit(x = .boundedBy[["upperCorner"]], split = " ")
-      .uC <- paste(.origUC[[1]][[2]], .origUC[[1]][[1]])
-      .boundedBy <- list(srsName = xml2::xml_attr(x = .env, attr = "srsName"),
-                         lowerCorner = .lC, upperCorner = .uC)
-    }
+  env <- xml2::xml_child(x = obj, search = paste0(gmlBoundedByName, "/", gmlEnvelopeName))
+  if (!is.na(env)) {
+    boundedBy <- parseEnvelope(obj = env, sos = sos, verbose = verbose, namespaces = sos@namespaces)
   }
   else {
     if (verbose) cat("[parseObservationCollection] Empty envelope!\n")
-    .boundedBy <- list()
+    boundedBy <- list()
   }
 
-  .resultList <- lapply(X = .members, FUN = parseOM, sos = sos, verbose = verbose)
-  names(.resultList) <- lapply(X = .members, FUN = function(member) {
+  resultList <- lapply(X = members, FUN = parseOM, sos = sos, verbose = verbose)
+  names(resultList) <- lapply(X = members, FUN = function(member) {
     children <- xml2::xml_children(member)
     idOrName <- xml2::xml_attr(children, attr = "id", default = xml2::xml_name(children))
     if (length(idOrName) < 1) {
@@ -222,20 +209,18 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
     }
   })
 
-  if (is.list(.resultList)) {
-    .obsColl <- OmObservationCollection(members = .resultList,
-                                        boundedBy = .boundedBy)
+  if (is.list(resultList)) {
+    obsColl <- OmObservationCollection(members = resultList,
+                                       boundedBy = boundedBy)
   }
   else {
-    .obsColl <- OmObservationCollection(members = list(.resultList),
-                                        boundedBy = .boundedBy)
+    obsColl <- OmObservationCollection(members = list(resultList),
+                                       boundedBy = boundedBy)
   }
 
-  if (verbose)
-    cat("[parseObservationCollection] Done. Processed", length(.obsColl),
-        "elements:", names(.obsColl), "\n")
+  if (verbose) cat("[parseObservationCollection] Done. Processed", length(obsColl), "elements:", names(obsColl), "\n")
 
-  return(.obsColl)
+  return(obsColl)
 }
 
 #
@@ -243,69 +228,83 @@ parseObservationCollection <- function(obj, sos, verbose = FALSE) {
 #
 parseResult <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseResult] Starting ...\n")
-  .result <- NULL
+  result <- NA
 
-  .children <- xml2::xml_children(x = obj)
-  if (verbose) cat("[parseResult]", length(.children), " non-text nodes, names:", xml2::xml_name(.children), "\n")
+  children <- xml2::xml_children(x = obj)
+  if (verbose) cat("[parseResult]", length(children), " non-text nodes, names:", xml2::xml_name(children), "\n")
 
   # Check if remaining element is there
-  if (length(.children) == 0) {
-    .children <- xml2::xml_children(x = obj)
-    stop("Continue implementation here: OM-methods-parsing.R")
-    cat("[parseResult] No non-text nodes in result, returning NULL.\n")
+  if (length(children) == 0) {
+    if (verbose) cat("[parseResult] No non-text nodes in result, returning content.\n")
 
-    #in O&M 2.0 there can be (literal) results of type MeasurementType
-    .typeAttributValue <- xml2::xml_attr(x = obj, attr = om20ResultTypeAttributeName, default = NA_character_)
+    # in O&M 2.0 there can be (literal) results of type MeasurementType
+    omTypeAttribute <- xml2::xml_attr(x = obj, attr = gmlResultTypeAttributeName, ns = sos@namespaces)
+    xsiType <- xml2::xml_attr(x = obj, attr = xsiTypeName, ns = sos@namespaces)
+    uom <- xml2::xml_attr(x = obj, attr = "uom")
 
-    .typeWithQualifiedname <- strsplit(.typeAttributValue, ":")
+    if (!is.na(xsiType)) {
+      value <- xml2::xml_text(x = obj)
 
-    .type <- NA_character_
+      if (grepl(pattern = "MeasureType", x = xsiType)) {
+        value <- sosConvertDouble(value, sos = sos)
+      }
 
-    if (length(.typeWithQualifiedname) > 0) {
+      result <- data.frame(value)
+      oldAttrs <- attributes(result[,1])
+      attributes(result[,1]) <- c(as.list(oldAttrs), list("unit of measurement" = uom))
+      names(result) <- uom
+    } else if (!is.na(omTypeAttribute)) {
+      typeWithQualifiedName <- strsplit(omTypeAttribute, ":")
+      type <- NA_character_
+      if (length(typeWithQualifiedName) > 0) {
+        if (length(typeWithQualifiedName[[1]]) > 1) {
+          type <- typeWithQualifiedName[[1]][2]
+        }
+      }
 
-      if (length(.typeWithQualifiedname[[1]]) > 1) {
-        .type <- .typeWithQualifiedname[[1]][2]
+      if (!is.na(type)) {
+        if (type == om20ResultMeasureTypeName) {
+          result <- xml2::xml_text(x = obj)
+        }
+      }
+    } else {
+      warning("Could not extract value from result with text content.")
+    }
+  } else {
+    name <- xml2::xml_name(x = children[[1]], ns = sos@namespaces)
+    if (name %in% c(sweDataArrayName, swe20DataArrayName)) {
+      if (verbose) cat("[parseResult] Parsing result with swe:DataArray.\n")
+
+      # data array parser is exchangeable
+      dataArrayParsingFunction <- sosParsers(sos)[[sweDataArrayName]]
+      result <- dataArrayParsingFunction(children[[1]], sos, verbose)
+    }
+    else if (name == xmlTextNodeName) {
+      result <- as.numeric(xml2::xml_text(x = children))
+      if (is.na(result)) {
+        result <- xml2::xml_text(x = children, trim = TRUE)
       }
     }
-
-    if (!is.na(.type)) {
-      if (.type == om20ResultMeasureTypeName) {
-        return(xml2::xml_text(x = obj))
-      }
+    else if (name == wmlMeasurementTimeseriesName) {
+      parsingFunction <- sosParsers(sos)[[wmlMeasurementTimeseriesName]]
+      result <- parsingFunction(children[[1]], sos, verbose)
     }
-
-    return(NULL)
-  }
-
-  .name <- xml2::xml_name(x = .children[[1]], ns = SosAllNamespaces())
-  if (.name == sweDataArrayName) {
-    if (verbose) cat("[parseResult] Parsing result with swe:DataArray.\n")
-
-    # data array parser is exchangeable
-    .dataArrayParsingFunction <- sosParsers(sos)[[sweDataArrayName]]
-    .result <- .dataArrayParsingFunction(.children[[1]], sos, verbose)
-  }
-  else if (.name == xmlTextNodeName) {
-    .result <- as.numeric(xml2::xml_text(x = .children))
-    if (is.na(.result)) {
-      .result <- xml2::xml_text(x = .children, trim = TRUE)
+    else {
+      warning(paste("[parseResult] Parsing of given result is NOT supported:",
+                    xml2::xml_name(x = children[[1]], ns = sos@namespaces),
+                    "-- only", sweDataArrayName,
+                    " or text nodes containing strings or numbers can be parsed."))
     }
   }
-  else {
-    warning(paste("[parseResult] Parsing of given result is NOT supported:",
-                  xml2::xml_name(x = .children[[1]], ns = SosAllNamespaces()),
-                  "-- only", sweDataArrayName,
-                  " or text nodes containing strings or numbers can be parsed."))
-  }
 
-  if (is.null(.result)) {
-    stop("[parseResult] result is null! Given result:\n")
+  if (is.null(result)) {
+    stop("[parseResult] Result is null! Given input:\n")
     print(obj)
   }
 
-  if (verbose) cat("[parseResult] Done\n")
+  if (verbose) cat("[parseResult] Done.\n")
 
-  return(.result)
+  return(result)
 }
 
 parseGeometryObservation <- function(obj, sos, verbose = FALSE) {
@@ -339,89 +338,86 @@ parseComplexObservation <- function(obj, sos, verbose = FALSE) {
 }
 
 #
-# parseFOI ----
+# parseFOI
 # (not exchangeable)
 # parse sos:featureOfInterest to according Element of GML or SA
 #
 parseFOI <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseFOI] starting...\n")
-  .foi <- NULL
+  foi <- NULL
 
   # has href attribute? if yes, use it!
-  .href <- xml2::xml_attr(x = obj, attr = "href")
-  if (!is.na(.href)) {
-    if (verbose) cat("[parseFOI] referenced FOI:", .href, "\n")
+  href <- xml2::xml_attr(x = obj, attr = "href")
+  if (!is.na(href)) {
+    if (verbose) cat("[parseFOI] referenced FOI:", href, "\n")
     # feature is referenced
-    .foi <- GmlFeatureProperty(href = .href)
+    foi <- GmlFeatureProperty(href = href)
   }
   else {
     # feature is available in the element
-    .feature <- xml2::xml_child(x = obj)
-    .name <- xml2::xml_name(x = .feature, ns = SosAllNamespaces())
+    feature <- xml2::xml_child(x = obj)
+    name <- xml2::xml_name(x = feature, ns = sos@namespaces)
 
-    if (verbose) cat("[parseFOI] inline FOI:", .name, "\n")
+    if (verbose) cat("[parseFOI] inline FOI:", name, "\n")
 
     # cannot use switch here, because it does not work with a ':' in the expresssion
-    if (.name == saSamplingPointName) {
-      .sp <- parseSamplingPoint(.feature, sos = sos)
-      .foi <- GmlFeatureProperty(feature = .sp)
+    if (name == saSamplingPointName) {
+      sp <- parseSamplingPoint(feature, sos = sos)
+      foi <- GmlFeatureProperty(feature = sp)
     }
-    else if (.name == gmlFeatureCollectionName) {
-      .foi <- parseFeatureCollection(.feature, sos = sos)
+    else if (name == gmlFeatureCollectionName) {
+      foi <- parseFeatureCollection(feature, sos = sos)
     }
-    else if (.name == wmlMonitoringPointName) {
-      .foi <- parseMonitoringPoint(.feature, sos = sos)
+    else if (name == wmlMonitoringPointName) {
+      foi <- parseWmlMonitoringPoint(feature, sos = sos)
     }
-    else if (.name == samsSamplingFeatureName) {
-      .foi <- parseSams200SamplingFeature(.feature, sos = sos)
+    else if (name == samsSamplingFeatureName) {
+      foi <- parseSams200SamplingFeature(feature, sos = sos)
     }
-    else if (.name == saSamplingSurface) {
+    else if (name == saSamplingSurface) {
       warning("[parseFOI] No parsing for sa:SamplingSurface implemented!")
-      GmlFeatureProperty(href = .name)
+      GmlFeatureProperty(href = name)
     }
     else {
       warning("[parseFOI] No parsing for given feature implemented!")
-      GmlFeatureProperty(href = .name)
+      GmlFeatureProperty(href = name)
     }
   }
 
-  return(.foi)
+  return(foi)
 }
 
 
 #
-# parseTime ----
+# parseTime
 # (not exchangeable)
 # handles time instant, time period, and time reference
 #
-parseTime <- function(obj, format, verbose = FALSE) {
+parseTime <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseTime] Entering\n")
 
-  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName, ns = SosAllNamespaces())
-  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName, ns = SosAllNamespaces())
-  .timeReference <- xml2::xml_attr(x = obj, attr = "xlink:href", ns = SosAllNamespaces())
+  .tiXML <- xml2::xml_find_first(x = obj, xpath = gmlTimeInstantName, ns = sos@namespaces)
+  .tpXML <- xml2::xml_find_first(x = obj, xpath = gmlTimePeriodName, ns = sos@namespaces)
+  .timeReference <- xml2::xml_attr(x = obj, attr = "xlink:href", ns = sos@namespaces)
   .timeObject <- NULL
 
   if (!is.na(.tiXML)) {
     if (verbose) cat("[parseTime] Found time instant\n")
-    .timeObject <- parseTimeInstant(obj = .tiXML, format = format)
+    .timeObject <- parseTimeInstant(obj = .tiXML, sos = sos)
   }
   else if (!is.na(.tpXML)) {
     if (verbose) cat("[parseTime] Found time period\n")
-    .timeObject <- parseTimePeriod(obj = .tpXML, format = format)
+    .timeObject <- parseTimePeriod(obj = .tpXML, sos = sos)
   }
   else if (!is.na(.timeReference)) {
     if (verbose) cat("[parseTime] Found referenced time\n")
     .timeObject <- GmlTimeInstantProperty(href = .timeReference)
-    #if (is.null(.timeObject)) {
-    #  stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
-    #}
   }
   else {
     warning("Could not create GmlTimeObject from given O&M time object.
             Require gml:TimeInstant or gml:TimePeriod as children.")
     .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
+      time = parsedate::parse_iso_8601(NA)))
   }
 
   if (verbose) cat("[parseTime] Done:", toString(.timeObject), "\n")

@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,23 +25,31 @@
 # Created: 2013-08-28                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # SOS ----
 #
 setClass("SOS",
          representation(version = "character",
-                        capabilities = "OwsCapabilities", parsers = "list",
-                        encoders = "list", dataFieldConverters = "list",
-                        timeFormat = "character", verboseOutput = "logical",
-                        switchCoordinates = "logical", useDCPs = "logical",
-                        dcpFilter = "list", additionalKVPs = "list"),
+                        capabilities = "OwsCapabilities",
+                        parsers = "list",
+                        encoders = "list",
+                        dataFieldConverters = "list",
+                        timeFormat = "character",
+                        verboseOutput = "logical",
+                        switchCoordinates = "logical",
+                        useDCPs = "logical",
+                        dcpFilter = "list",
+                        additionalKVPs = "list",
+                        namespaces = "character"),
          contains = c("VIRTUAL"))
 
 #
 # SOS_Test ----
 # class for local testing, i.e. without an URL and default verbose output
+#
+# i.e. without an URL and default verbose output
 #
 setClass("SOS_Test",
          representation(name = "character", binding = "character"),
@@ -65,6 +73,7 @@ SOS_Test <- function(name = "test",
                      useDCPs = TRUE,
                      dcpFilter = SosDefaultDCPs(),
                      additionalKVPs = list(),
+                     namespaces = SosAllNamespaces(version = version),
                      ...) {
 
   .sos <- new("SOS_Test",
@@ -82,9 +91,10 @@ SOS_Test <- function(name = "test",
               switchCoordinates = switchCoordinates,
               useDCPs = useDCPs,
               dcpFilter = dcpFilter,
-              additionalKVPs = additionalKVPs)
+              additionalKVPs = additionalKVPs,
+              namespaces = namespaces)
 
-  if(verboseOutput) cat("[SOS] Created new SOS_Test:\n", toString(.sos), "\n")
+  if (verboseOutput) cat("[SOS] Created new SOS_Test:\n", toString(.sos), "\n")
   return(.sos)
 }
 
@@ -112,19 +122,52 @@ setClassUnion(name = "SosFeatureOfInterestOrNULL",
 
 #
 # SosDescribeSensor ----
-# See OGC 06-009r6
+# See OGC 06-009r6 for SOS 1.0.0
+# See OGC 12-006 for SOS 2.0.0, which references OGC OGC 09-001 section 11
 #
 setClass("SosDescribeSensor",
-         representation(procedure = "character", outputFormat = "character"),
-         prototype = list(service = as.character(NA), version = as.character(NA),
-                          procedure = as.character(NA), outputFormat = as.character(NA)),
+         representation(procedure = "character",
+                        outputFormat = "character",
+                        procedureDescriptionFormat = "character",
+                        validTime = "GmlTimeObjectOrNULL"),
+         prototype = list(service = as.character(NA),
+                          version = as.character(NA),
+                          procedure = as.character(NA),
+                          outputFormat = as.character(NA),
+                          # SOS 2.0.0:
+                          procedureDescriptionFormat = as.character(NA),
+                          # validTime can be time period or time instant
+                          validTime = NULL
+                          ),
          contains = "OwsServiceOperation",
          validity = function(object) {
            #print("Entering validation: sosDescribeSensor")
-           # TODO implement validity function
-           # check format of version, sensorid and outputformat?!
-           if(length(object@procedure) > 1)
+           if (length(object@procedure) > 1)
              return("can only request one procedure at a time!")
+
+           if (object@version == sos100_version) {
+             if (!is.na(object@procedureDescriptionFormat)) {
+               return("procedureDescriptionFormat option not supported for SOS 1.0.0")
+             }
+             if (is.na(object@outputFormat)) {
+               return("outputFormat missing")
+             }
+             if (!is.null(object@validTime)) {
+               return("validTime option not supported for SOS 1.0.0")
+             }
+           }
+
+           if (object@version == sos200_version) {
+             if (!is.na(object@outputFormat)) {
+               return("outputFormat option not supported for SOS 2.0.0")
+             }
+             if (is.na(object@procedureDescriptionFormat)) {
+               return("procedureDescriptionFormat missing")
+             }
+             cls <- class(object@validTime)
+             if (!any(cls %in% c("GmlTimeInstant", "GmlTimePeriod", "NULL")))
+               return("'validTime' argument does not have allowed class!")
+           }
 
            return(TRUE)
          }
@@ -162,16 +205,16 @@ setClass("SosGetObservation",
            # TODO implement validity function
 
            # service, version, offering, observedProperty, and responseFormat are mandatory
-           if(is.na(object@service))
+           if (is.na(object@service))
              return("service parameter must be given")
-           if(is.na(object@version))
+           if (is.na(object@version))
              return("version must be given")
-           if(is.na(object@offering))
+           if (is.na(object@offering))
              return("offering parameter must be given")
            # responseFormat is optional for GET
            #if(is.na(object@responseFormat))
            #	return("responseFormat parameter must be given")
-           if(length(object@observedProperty) < 1)
+           if (length(object@observedProperty) < 1)
              return("at least one observedProperty is mandatory")
 
            # if version is there, it hast to be in a certain format, see ows common
@@ -185,7 +228,7 @@ setClass("SosGetObservation",
            # result is null or an ogc:comparisonOps element
            cls <- class(slot(object, "result"))
            #			print(paste("class of result slot: ", cls))
-           if ( !any(cls %in% c("OgcComparisonOps", "xml_document", "xml_node", "NULL"))) {
+           if (!any(cls %in% c("OgcComparisonOps", "xml_document", "xml_node", "NULL"))) {
              return("'response' argument does not have allowed class!")
            }
 

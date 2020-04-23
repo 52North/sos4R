@@ -1,0 +1,302 @@
+---
+title: "Wrapper Functions for easier SOS access"
+author:
+  name: "Daniel Nüst , Eike Hinderk Jürrens, and Benedikt Gräler"
+  affiliation: Institute for Geoinformatics, University of Münster, Germany. 52°North GmbH, Münster, Germany.
+  email: daniel.nuest@uni-muenster.de, e.h.juerrens@52north.org, and b.graeler@52north.org
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{5. Convenient wrapper functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+`sos4R` includes a collection of convenience functions which wrap the complex SOS interface with its specific terms (e.g. FOI, procedure).
+The wrapper function use more generic terms easily accessible for all users, especially without a strong knowledge of the OGC standards of the Sensor Web Enablement (see ["OGC SWE and SOS"](sos4R-vignette-02-ogc-sos.html) vignette for details).
+
+In general, these functions always return an object of class `data.frame`, even if the result is only a list, in which case the `data.frame` has one column.
+
+```{r setup}
+library("sos4R")
+mySos <- SOS(url = "https://climate-sos.niwa.co.nz/",
+             binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+maxOutputRowsPerExample <- 5
+maxOutputColumnsPerExample <- 3
+```
+
+## Shiny Demo App
+
+A minimal [Shiny](https://shiny.rstudio.com/) app demonstrating the convenience functions is included in the package.
+Run it with
+
+```{r shiny_app, eval=FALSE}
+shiny::runApp(appDir = file.path(path.package("sos4R"), "shiny"))
+```
+
+## Phenomena
+
+The function `phenomena(..)` provides information about observed phenomena, time periods of data, and sites observing these phenomena.
+
+```{r phenomena}
+phenomena <- phenomena(sos = mySos)
+str(phenomena)
+```
+
+```{r phenomena_table}
+phenomena[1:maxOutputRowsPerExample,]
+```
+
+The retrieved data can be extended to the time intervals and site identifier for which data is available. The next example shows the overall temporal availability of the phenomena in the SOS instance:
+
+```{r phenomena_include_time}
+phenomena(sos = mySos, includeTemporalBBox = TRUE)[1:maxOutputRowsPerExample,]
+```
+
+This example shows at which site the phenomena are available:
+
+```{r phenomena_include_siteid}
+phenomena(sos = mySos, includeSiteId = TRUE)[1:maxOutputRowsPerExample,]
+```
+
+You can also add both temporal extent and sites:
+
+```{r phenomena_include_all}
+phenomena(sos = mySos, includeTemporalBBox = TRUE, includeSiteId = TRUE)[1:maxOutputRowsPerExample,]
+```
+
+## Sites With Coordinates
+
+The function `sites(..)` provides information about sites where observations are performed, including metadata about the sites (e.g. location).
+The returned object is a `SpatialPointsDataFrame`.
+
+```{r sites}
+sites <- sites(sos = mySos)
+sites[1:maxOutputRowsPerExample,]
+```
+
+To see all sites, even the ones without any data, use the `empty` parameter.
+
+```{r sites_empty}
+sites_with_empty <- sites(sos = mySos, empty = TRUE)
+sites_with_empty[1:maxOutputRowsPerExample,]
+```
+
+You can retrieve additional metadata about the phenomena and the time period for which data is available.
+Including temporal extent implies inclusion of phenomena.
+In the next chunks the object is coerced to a `date.frame` to get a tabular view.
+
+```{r sites_metadata_phen}
+sites_with_phenomena <- sites(sos = mySos, includePhenomena = TRUE)
+sites_with_phenomena[1:maxOutputRowsPerExample, 1:maxOutputColumnsPerExample]
+```
+
+The next section show how to retrieve spatial information about the sites and temporal information about the available phenomena:
+
+```{r sites_metadata_temporal}
+sites_with_temporal_bbox <- sites(sos = mySos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+tail(sites_with_temporal_bbox, n = 3)[,1:maxOutputColumnsPerExample]
+```
+
+The following chunk shows how to get a better representation:
+
+```{r sites_with_temporal_bbox_structure}
+str(tail(sites_with_temporal_bbox, n = 3)[,1:maxOutputColumnsPerExample])
+```
+
+## Filter Sites With Coordinates
+
+You can filter sites using phenomena and temporal extent.
+
+**Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
+
+```{r sites_filtered_by_phenomena}
+sites_filtered_by_phenomena <- sites(sos = mySos, phenomena = phenomena[3,])
+nrow(sites_filtered_by_phenomena@data)
+nrow(sites@data)
+str(sites_filtered_by_phenomena)
+```
+
+Use the parameter `includeTemporalBBox` for including additional metadata:
+```{r sites_filtered_by_phenomena_with_metadata}
+sites_filtered_by_phenomena_with_metadata <- sites(sos = mySos, phenomena = phenomena[3,], includePhenomena = TRUE, includeTemporalBBox = TRUE)
+str(sites_filtered_by_phenomena_with_metadata)
+```
+
+```{r sites_filtered_by_time}
+# under development - no github issue atm
+#sites_filtered_by_time <- sites(sos = mySos, begin = parsedate::parse_iso_8601("1904-01-01"), end = parsedate::parse_iso_8601("1905-12-31"))
+#nrow(sites_filtered_by_time@data)
+#str(sites_filtered_by_time)
+```
+
+The `SpatialPointsDataFrame` allows access to coordinates with coordinate reference system (CRS).
+
+```{r sites_coords}
+sp::coordinates(sites)[1:maxOutputRowsPerExample,]
+```
+
+```{r sites_projection}
+sites@proj4string
+```
+
+```{r sites_bbox}
+sp::bbox(sites)
+```
+
+This object can be directly used as input for various mapping libraries, e.g. `mapview`.
+
+```{r sites_map}
+suppressPackageStartupMessages(library("mapview"))
+
+mapview(sites, legend = FALSE, col.regions = "blue")
+```
+
+## Site Listings
+
+The function `siteList(..)` provides information about observed phenomena at sites and the time periods when data is available.
+
+```{r siteList}
+siteList <- siteList(sos = mySos)
+str(siteList)
+```
+
+You can extend the information returned with these parameters:
+
+- `empty` to also show sites without data
+- `includePhenomena` to add phenomena to the table (boolean)
+- `includeTemporalBBox` to also show the time when data is available (boolean)
+
+```{r siteList_empty}
+siteList_with_empty <- siteList(sos = mySos, empty = TRUE)
+siteList_with_empty[1:maxOutputRowsPerExample,]
+```
+
+```{r siteList_includes}
+# under development - https://github.com/52North/sos4R/issues/90
+#siteListe_with_metadata <- siteList(sos = mySos, includePhenomena = TRUE, includeTemporalBBox = TRUE)
+#siteListe_with_metadata[1:maxOutputRowsPerExample,]
+```
+
+## Filter Site Listings
+
+You can filter the results with these parameters:
+
+- `phenomena` is a vector of phenomena which must be measured at the sites
+- `begin` and `end` define a time interval (date and time class objects) for which some data must be available (sites may have data outside the given interval)
+
+**Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
+
+```{r siteList_phenomena_time}
+siteList_filtered_by_time_and_phenomenon <- siteList(sos = mySos,
+         phenomena = phenomena$phenomenon[1:2],
+         begin = as.POSIXct("1950-01-01"), end = as.POSIXct("1960-12-31")
+         )
+siteList_filtered_by_time_and_phenomenon
+```
+
+## Data download
+
+The function `getData(..)` retrieves the actual data and returns them in ready-to-use data structures from the [`spacetime`](https://cran.r-project.org/package=spacetime) package.
+
+The returned data can be limited by thematical, spatial, and temporal filters.
+Thematical filtering (phenomena) support the values of the previous functions as inputs.
+Spatial filters are either sites, or a bounding box.
+Temporal filter is a time period during which observations are made.
+
+Without a temporal extent, the used SOS only returns the last measurement.
+
+```{r getData_single}
+observationData <- getData(sos = mySos,
+                           phenomena = phenomena[18,1],
+                           sites = siteList[1:2,1])
+str(observationData)
+```
+
+The result `data.frame` includes additional metadata.
+
+```{r getData_attributes}
+attributes(observationData[[3]])
+```
+
+Request more data with a temporal extent for all sites.
+
+**Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
+
+```{r getData_temporal}
+observationData <- getData(sos = mySos,
+                           phenomena = phenomena[18,1],
+                           sites = siteList[1,1],
+                           begin = parsedate::parse_iso_8601("1970-01-01T12:00:00+12:00"),
+                           end = parsedate::parse_iso_8601("2000-01-02T12:00:00+12:00")
+                           )
+
+str(observationData)
+```
+
+Get an overview of the data using the `summary` function:
+```{r getData_summary}
+summary(observationData)
+```
+
+## Timeseries Plotting
+
+Plot received data as time series:
+
+```{r getData_timeseries_plot}
+suppressPackageStartupMessages(library(xts))
+ts1056 <- xts(observationData[observationData$siteID == '1056',3], observationData[observationData$siteID == '1056',"timestamp"])
+names(ts1056) <- "#1056"
+plot(x = ts1056, main = "Monthly: Extreme max. Temp. (°C)", yaxis.right = FALSE, legend.loc = 'topleft')
+```
+
+The next example gets data for two phenomena a site.
+
+```{r getData_multipleA}
+# TO BE IMPLEMENTED: merge different observation types - see https://github.com/52North/sos4R/issues/96#issuecomment-493424151
+observationData <- getData(sos = mySos,
+       phenomena = phenomena$phenomenon[1:2],
+       sites = siteList$siteID[c(1,58)],
+       begin = parsedate::parse_iso_8601("1994-12-31T12:00:00+12:00"),
+       end = parsedate::parse_iso_8601("1995-12-31T12:00:00+12:00")
+       )
+str(observationData)
+```
+
+You can also retrieve data for phenomena from multiple sites.
+
+```{r getData_multipleB}
+multipleSites <- siteList$siteID[1:2]
+observationData <- getData(sos = mySos,
+                           phenomena = phenomena[18, 1],
+                           sites = multipleSites,
+                           begin = parsedate::parse_iso_8601("1997-01-01T12:00:00+12:00"),
+                           end = parsedate::parse_iso_8601("2000-01-02T12:00:00+12:00")
+                           )
+
+
+ts1056 <- xts(observationData[observationData$siteID == '1056', 3], observationData[observationData$siteID == '1056',"timestamp"])
+names(ts1056) <- "Station#1056"
+ts11234 <- xts(observationData[observationData$siteID == '11234', 3], observationData[observationData$siteID == '11234',"timestamp"])
+names(ts11234) <- "Station#11234"
+plot(x = na.fill(merge(ts1056, ts11234), list(NA, "extend", NA)), main = "Monthly: Extreme max. Temp. (°C)", yaxis.right = FALSE, legend.loc = 'topleft')
+```
+
+Map of the according sites:
+
+```{r map_of_sites_of_timeseries}
+sites_of_timeseries <- sites[sites$siteID == "1056" | sites$siteID == "11234",]
+mapview(sites_of_timeseries, legend = FALSE, col.regions = "blue")
+```

@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,16 @@
 # Created: 2010-09-24                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
-
+############################################################################## #
+#
+# http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf
+# or
+# http://r-pkgs.had.co.nz/tests.html
+#
+# Do not execute this script manually! Use devtools::test()!
+#
 library("testthat")
+library("webmockr")
+library("sos4R")
+
 test_check("sos4R")

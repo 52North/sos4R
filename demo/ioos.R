@@ -1,11 +1,35 @@
-# Copyright (C) 2019 by 52 North Initiative for Geospatial Open Source Software GmbH, Contact: info@52north.org
-# This program is free software; you can redistribute and/or modify it under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program (see gpl-2.0.txt). If not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the Free Software Foundation web page, http://www.fsf.org.
-# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)
-# Project: sos4R - visit the project web page: https://github.com/52North/sos4R
+############################################################################## #
+# Copyright (C) 2019 by 52 North                                               #
+# Initiative for Geospatial Open Source Software GmbH                          #
+#                                                                              #
+# Contact: Andreas Wytzisk                                                     #
+# 52 North Initiative for Geospatial Open Source Software GmbH                 #
+# Martin-Luther-King-Weg 24                                                    #
+# 48155 Muenster, Germany                                                      #
+# info@52north.org                                                             #
+#                                                                              #
+# This program is free software; you can redistribute and/or modify it under   #
+# the terms of the GNU General Public License version 2 as published by the    #
+# Free Software Foundation.                                                    #
+#                                                                              #
+# This program is distributed WITHOUT ANY WARRANTY; even without the implied   #
+# WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU #
+# General Public License for more details.                                     #
+#                                                                              #
+# You should have received a copy of the GNU General Public License along with #
+# this program (see gpl-2.0.txt). If not, write to the Free Software           #
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or #
+# visit the Free Software Foundation web page, http://www.fsf.org.             #
+#                                                                              #
+# Author: Daniel Nuest (daniel.nuest@uni-muenster.de)                          #
+# Project: sos4R - https://github.com/52North/sos4R                            #
+#                                                                              #
+############################################################################## #
+
 library("sos4R")
 
 
-################################################################################
+############################################################################## #
 # IOOS/NDBC
 #
 # Service Description: http://sdf.ndbc.noaa.gov/sos/
@@ -48,7 +72,7 @@ ioos.procedures <- unique(unlist(sosProcedures(ioos)))
 length(ioos.procedures); length(ioos.off)
 # seems like one offering per sensor
 
-################################################################################
+############################################################################## #
 # get data:
 
 # offerings in pacific?
@@ -79,7 +103,7 @@ names(obs.wmo52[[1]])
 
 obs.wmo52.all <- sosResult(obs.wmo52)
 summary(obs.wmo52.all)
-str(obs.wmo52.all)
+utils::str(obs.wmo52.all)
 # columns are all factors, convert!
 obs.wmo52.all[["sea_water_temperature (C)"]] <- as.numeric(obs.wmo52.all[["sea_water_temperature (C)"]])
 obs.wmo52.all[["latitude (degree)"]] <- as.numeric(obs.wmo52.all[["latitude (degree)"]])
@@ -106,7 +130,7 @@ plot(world.lines, col = "grey50")
 plot(spdf, add = TRUE)
 
 
-################################################################################
+############################################################################## #
 # describe sensor:
 # requires SensorML 1.0.0
 describeSensorOp <- sosOperation(ioos, sosDescribeSensorName)
@@ -135,15 +159,6 @@ obs.001 <- getObservation(sos = ioos,
 		inspect = TRUE, verbose = TRUE)
 
 plot(x = obs.001$date_time, y = obs.001$`sea_floor_depth_below_sea_surface (m)`)
-
-################################################################################
-# KML
-kml <- getObservation(ioos, offering = "urn:ioos:network:noaa.nws.ndbc:all",
-#		verbose = TRUE,
-#		saveOriginal = TRUE,
-		responseFormat = "application/vnd.google-earth.kml+xml",
-		observedProperty = list("http://mmisw.org/ont/cf/parameter/air_temperature"))
-kml
 
 ###################################
 # Demo finished, try another one! #

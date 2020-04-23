@@ -1,5 +1,5 @@
 ---
-title: "sos4R: OGC SWE and SOS"
+title: "Introduction to OGC SWE and SOS"
 author:
   name: "Daniel Nüst"
   affiliation: Institute for Geoinformatics, University of Münster, Germany.

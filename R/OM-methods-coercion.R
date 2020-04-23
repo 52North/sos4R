@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-10-19                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 #
@@ -35,7 +35,7 @@ as.data.frame.OmObservation = function(x, row.names, optional, ...) {
 }
 setAs(from = "OmObservation", to = "data.frame",
       def = function(from) {
-        as.data.frame.OmObservation(from)
+        as.data.frame.OmObservation(x = from)
       }
 )
 
@@ -47,7 +47,7 @@ as.data.frame.OmMeasurement = function(x, row.names, optional, ...) {
 }
 setAs(from = "OmMeasurement", to = "data.frame",
       def = function(from) {
-        as.data.frame.OmMeasurement(from)
+        as.data.frame.OmMeasurement(x = from)
       }
 )
 
@@ -67,17 +67,22 @@ setAs(from = "OmObservationCollection", to = "list",
 #
 #
 as.SpatialPointsDataFrame.OmObservationCollection = function(x, ...) {
-  .result <- sosResult(x, coordinates = TRUE)
-  .crs <- sosGetCRS(x)
-  
-  if(length(.crs) > 1)
+  result <- sosResult(x, coordinates = TRUE)
+  crs <- sosGetCRS(x)
+
+  if (length(crs) > 1)
     stop("Spatial Reference System is not unambiguous, cannot convert.")
-  
-  .spdf <- .resultDataFrameToSpatialPointsDataFrame(result = .result,
-                                                    crs = .crs)
-  return(.spdf)
+
+  spdf <- .resultDataFrameToSpatialPointsDataFrame(result = result,
+                                                   crs = crs)
+  return(spdf)
 }
 setAs(from = "OmObservationCollection", to = "SpatialPointsDataFrame",
+      def = function(from) {
+        as.SpatialPointsDataFrame.OmObservationCollection(from)
+      }
+)
+setAs(from = "OmObservationCollection", to = "Spatial",
       def = function(from) {
         as.SpatialPointsDataFrame.OmObservationCollection(from)
       }
@@ -87,14 +92,19 @@ setAs(from = "OmObservationCollection", to = "SpatialPointsDataFrame",
 #
 #
 as.SpatialPointsDataFrame.OmObservation = function(x, ...) {
-  .crs <- sosGetCRS(x)
-  .result <- sosResult(x, coordinates = TRUE)
-  
-  .spdf <- .resultDataFrameToSpatialPointsDataFrame(result = .result,
-                                                    crs = .crs)
-  return(.spdf)
+  crs <- sosGetCRS(x)
+  result <- sosResult(x, coordinates = TRUE)
+
+  spdf <- .resultDataFrameToSpatialPointsDataFrame(result = result,
+                                                   crs = crs)
+  return(spdf)
 }
 setAs(from = "OmObservation", to = "SpatialPointsDataFrame",
+      def = function(from) {
+        as.SpatialPointsDataFrame.OmObservation(from)
+      }
+)
+setAs(from = "OmObservation", to = "Spatial",
       def = function(from) {
         as.SpatialPointsDataFrame.OmObservation(from)
       }
@@ -104,31 +114,35 @@ setAs(from = "OmObservation", to = "SpatialPointsDataFrame",
 #
 #
 as.SpatialPointsDataFrame.OmMeasurement = function(x, ...) {
-  .crs <- sosGetCRS(x)
-  .result <- sosResult(x, coordinates = TRUE)
-  
-  .spdf <- .resultDataFrameToSpatialPointsDataFrame(result = .result,
-                                                    crs = .crs)
-  return(.spdf)
+  crs <- sosGetCRS(x)
+  result <- sosResult(x, coordinates = TRUE)
+
+  spdf <- .resultDataFrameToSpatialPointsDataFrame(result = result,
+                                                   crs = crs)
+  return(spdf)
 }
 setAs(from = "OmObservation", to = "SpatialPointsDataFrame",
       def = function(from) {
         as.SpatialPointsDataFrame.OmObservation(from)
       }
 )
+setAs(from = "OmObservation", to = "Spatial",
+      def = function(from) {
+        as.SpatialPointsDataFrame.OmObservation(from)
+      }
+)
 
-################################################################################
+############################################################################## #
 #
 .resultDataFrameToSpatialPointsDataFrame <- function(result, crs) {
-  # TODO fix column order, which is x~y according to ?coordinates
-  .coordCols <- match(c(sosDefaultColumnNameLat, sosDefaultColumnNameLon),
-                      colnames(result))
-  
-  .spdf <- SpatialPointsDataFrame(
-    coords = result[, .coordCols],
-    data = result[, -.coordCols],
-    proj4string = crs)
-  
-  return(.spdf)
-}
+  coordCols <- match(c(sosDefaultColumnNameLon,
+                       sosDefaultColumnNameLat),
+                     colnames(result))
 
+  spdf <- sp::SpatialPointsDataFrame(
+    coords = result[, coordCols],
+    data = result[, -coordCols],
+    proj4string = crs)
+
+  return(spdf)
+}
