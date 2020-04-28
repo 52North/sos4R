@@ -240,7 +240,10 @@ test_that("can extract bbox from bounds of offering", {
   offering <- parseSosObservationOffering(obj = doc, sos = testsos)
 
   box <- sosBoundedBy(offering, bbox = TRUE)
-  expect_equal(toString(box), "-44.7159634789651, -171.370441435668, 67.972129750194, 142.92375463033")
+  expect_equal(box[1,1], -44.7159634)
+  expect_equal(box[2,1], -171.370441)
+  expect_equal(box[1,2],  67.9721297)
+  expect_equal(box[2,2], 142.9237546)
 })
 
 context("parsing: operations metadata")
