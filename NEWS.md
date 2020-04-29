@@ -4,7 +4,7 @@ title: sos4R News
 # sos4R 0.4.0
 
 - Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)
-- Add **wrapper functions** for more convenient access to phenomena, stations and data without OGC SWE terms and SOS specifics, see [new vignette](../vignettes/sos4R-vignette-05-wrapper-functions.html)
+- Add **wrapper functions** for more convenient access to phenomena, stations and data without OGC SWE terms and SOS specifics, see new vignette "Wrapper Functions for easier SOS access"
 - Give warnings if time cannot be parsed with the format provided in the SOS object
 - Do not save file name as attribute of returned object anymore (adds complexity, not documented/widely used)
 - Manage namespaces as part of the SOS object (allows user manipulation via `sos@namespaces`)
