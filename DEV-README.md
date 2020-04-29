@@ -67,6 +67,7 @@ You can also dive right in and join the chat room: [![Join the chat at https://g
   - Bugfix versions can be used extensively (for several, or even just one bug) to show users that errors are resolved.
   - Minor versions shall include several major bug fixes or a considerable addition of tested and working functionality.
   - Code changes that possibly break existing code shall only be released with a major version change and should be discussed in the developer community beforehand.
+- You can inspect the changes between releases very comfortably on the CRAN GitHub organization: [https://github.com/cran/sos4R/commits/master](https://github.com/cran/sos4R/commits/master)
 
 Users may install the current development version or local branches using respective functions of [`devtools`](https://devtools.r-lib.org/).
 
@@ -185,6 +186,7 @@ Data models, i.e. requests and responses, are modelled as **S4 classes**. Docume
 ## Troubleshooting
 
 - "non-ASCII characters" in a file > find them with `tools::showNonASCIIfile()`
+- If there are problems with specific test environments, see the [CRAN Package Check Flavors](https://cran.r-project.org/web/checks/check_flavors.html) and the [list of R-Hub and CRAN platforms](https://docs.r-hub.io/#rhub-cran-platforms) if you must investigate or recreate on of these system configurations more closely
 
 ## Tests
 
