@@ -1,27 +1,34 @@
 ---
 title: "Accessing environmental time series data in R from Sensor Observation Services with ease"
 author:
-  name: "Daniel Nüst¹, Eike H. Jürrens², Benedikt Gräler², and Simon Jirka²"
-  affiliation: "¹: University of Münster, Institute for Geoinformatics, Opening Reproducible Research (o2r), Münster, Germany (daniel.nuest@uni-muenster.de); ²: Institute for Geoinformatics, University of Münster, Germany. 52°North GmbH, Münster, Germany."
-  email: "daniel.nuest@uni-muenster.de, e.h.juerrens@52north.org, b.graeler@52north.org, and s.jirka@52north.org"
+  - "Daniel Nüst, Institute for Geoinformatics, Münster, Germany (d.n@wwu.de)"
+  - "Eike H. Jürrens, 52°North GmbH, Münster, Germany (e.h.juerrens@52north.org)"
+  - "Benedikt Gräler, 52°North GmbH, Münster, Germany (b.graeler@52north.org)"
+  - "Simon Jirka, 52°North GmbH, Münster, Germany (s.jirka@52north.org)"
 output:
-  rmarkdown::html_vignette
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    df_print: kable
+classoption: a4paper
+#output:
+#  rmarkdown::html_vignette
 abstract: >
   Time series data of in-situ measurements are the key to many environmental studies.
   The first challenge in any analysis typically arises when the data needs to be imported into the analysis framework.
   Standardization is one way to lighten this burden.
   Unfortunately, relevant interoperability standards might be challenging for non-IT experts as long as they are not dealt with behind the scenes of a client application.
-  One standard to provide access to environmental time series data is the Sensor Observation Service ([SOS](https://en.wikipedia.org/wiki/Sensor_Observation_Service)) specification published by the Open Geospatial Consortium ([OGC](https://www.ogc.org/)). SOS instances are currently used in a broad range of applications such as hydrology, air quality monitoring, and ocean sciences. Data sets provided via an SOS interface can be found around the globe from Europe to New Zealand.
   
-  The R package sos4R (Nüst et al., 2011) is an extension package for the R environment for statistical computing and visualization (https://www.r-project.org/), which has been demonstrated as a powerful tool for conducting and communicating geospatial research (cf. Pebesma et al., 2012; ).
   sos4R comprises a client that can connect to an SOS server.
   The user can use it to query data from SOS instances using simple R function calls.
   A convenience layer enables R users to integrate observation data from data access servers compliant with the SOS standard without any knowledge about the underlying technical standards.
   To further improve the usability for non-SOS experts, a recent sos4R update includes a set of wrapper functions, which remove complexity and technical language specific to OGC specifications.
   This update also features specific consideration of the OGC SOS 2.0 Hydrology Profile and thereby opens up a new scientific domain.
-
-  In our presentation, we illustrate use cases and examples building upon sos4R easing the access of time series data in an R and Shiny (https://shiny.rstudio.com/) context.
+  One standard to provide access to environmental time series data is the Sensor Observation Service ([SOS](https://en.wikipedia.org/wiki/Sensor_Observation_Service)) specification published by the Open Geospatial Consortium ([OGC](https://www.ogc.org/)). SOS instances are currently used in a broad range of applications such as hydrology, air quality monitoring, and ocean sciences. Data sets provided via an SOS interface can be found around the globe from Europe to New Zealand.
+  The R package sos4R (Nüst et al., 2011) is an extension package for the R environment for statistical computing and visualization (https://www.r-project.org/), which has been demonstrated as a powerful tool for conducting and communicating geospatial research (cf. Pebesma et al., 2012; ).
   We demonstrate how the abstraction provided in the client library makes sensor observation data accessible and further show how sos4R allows the seamless integration of distributed observations data, i.e., across organisational boundaries, into transparent and reproducible data analysis workflows.
+  In our presentation, we illustrate use cases and examples building upon sos4R easing the access of time series data in an R and Shiny (https://shiny.rstudio.com/) context.
 ---
 
 ```{r, include = FALSE}
@@ -66,6 +73,10 @@ clipr::write_clip(post)
 With EGU 2020 cancelled, this blog post elaborates on the abstract submitted by the 52°North software project `sos4R` development team.
 See the program entry for the abstract [EGU2020-19453 in the official programme](https://meetingorganizer.copernicus.org/EGU2020/EGU2020-19453.html).
 Please refer to this work by citing the DOI [`https://doi.org/10.5194/egusphere-egu2020-19453`](https://doi.org/10.5194/egusphere-egu2020-19453).
+
+This document is distributed under the Creative Commons Attribution 4.0 International License.
+
+![CC-BY 4.0](MO_16.png)
 
 # Introduction
 
@@ -114,8 +125,7 @@ fluggs_obs_jan_2019 = getObservation(fluggs, offering = fluggs_offerings[[1]],
                responseFormat = "http://www.opengis.net/om/2.0")
 result = sosResult(fluggs_obs_jan_2019)
 
-library("skimr")
-skimr::skim(result)
+summary(result)
 ```
 
 However, these functions use terms and operations specific to the OGC services and the SOS standard.
@@ -155,7 +165,7 @@ observationData = getData(
   begin = timeBegin,
   end = timeEnd)
 
-skimr::skim(observationData)
+summary(observationData)
 ```
 
 The result `data.frame` includes additional metadata.
@@ -179,12 +189,12 @@ fluggs_sites@proj4string
 sp::bbox(fluggs_sites)
 ```
 
-```{r sites_map, fig.width=6, fig.align='center', fig.cap = paste0("Map of", "x")}
+```{r sites_map, fig.width=5, fig.align='center', fig.cap = paste0("Map of sites of ", sosTitle(fluggs))}
 suppressPackageStartupMessages(library("mapview"))
 sites_map = mapview(fluggs_sites)
 map_file = tempfile(fileext = ".png") #here::here("map.png")
 # requires phantomjs, webshot::install_phantomjs()
-mapshot(sites_map, file = map_file)
+mapshot(sites_map, file = map_file, delay = 10)
 knitr::include_graphics(map_file)
 ```
 
@@ -208,7 +218,9 @@ unitOfMeasurement = sosUOM(
   attributes(observationData[[dataColumn]])$defaultPointMetadata)
 plot(x = tsFluggs,
      main = paste0("Water temperature (", unitOfMeasurement, ")"),
-     sub = attributes(observationData[[dataColumn]])$defaultPointMetadata@interpolationType@href,
+     sub = attributes(
+       observationData[[dataColumn]]
+       )$defaultPointMetadata@interpolationType@href,
      yaxis.right = FALSE, legend.loc = "topleft")
 ```
 
@@ -230,11 +242,13 @@ observationDataNiwa = getData(sos = niwa,
   begin = timeBegin,
   end = timeEnd)
 attributes(observationDataNiwa[[3]])
-skimr::skim(observationDataNiwa)
+
+summary(observationDataNiwa)
 ```
 
 ```{r multiple_timeseries_plot, fig.width=6}
-ts1056 = xts(observationDataNiwa[observationDataNiwa$siteID == 'AK1', 3], observationDataNiwa[observationDataNiwa$siteID == 'AK1',"timestamp"])
+ts1056 = xts(observationDataNiwa[observationDataNiwa$siteID == 'AK1', 3],
+             observationDataNiwa[observationDataNiwa$siteID == 'AK1',"timestamp"])
 names(ts1056) = "Station#AK1 @ NIWA"
 plot(
   x = na.fill(merge(tsFluggs, ts1056), list(NA, "extend", NA)),
@@ -261,6 +275,6 @@ The app's source code, merely three function calls of sos4R wrapped in a simple 
 
 # References
 
-Nüst D., Stasch C., Pebesma E. (2011) Connecting R to the Sensor Web. In: Geertman S., Reinhardt W., Toppen F. (eds) Advancing Geoinformation Science for a Changing World. Lecture Notes in Geoinformation and Cartography, Springer. doi:[10.1007/978-3-642-19789-5_12](https://doi.org/10.1007/978-3-642-19789-5_12)
+Nüst D., Stasch C., Pebesma E. (2011) Connecting R to the Sensor Web. In: Geertman S., Reinhardt W., Toppen F. (eds) Advancing Geoinformation Science for a Changing World. Lecture Notes in Geoinformation and Cartography, Springer. doi: [10.1007/978-3-642-19789-5_12](https://doi.org/10.1007/978-3-642-19789-5_12)
 
-Pebesma, E., Nüst, D., & Bivand, R. (2012). The R software environment in reproducible geoscientific research. Eos, Transactions American Geophysical Union, 93(16), 163–163. doi:[10.1029/2012EO160003](https://doi.org/10.1029/2012EO160003)
+Pebesma, E., Nüst, D., & Bivand, R. (2012). The R software environment in reproducible geoscientific research. Eos, Transactions American Geophysical Union, 93(16), 163–163. doi: [10.1029/2012EO160003](https://doi.org/10.1029/2012EO160003)
