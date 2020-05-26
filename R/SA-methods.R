@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-09-09                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # construction methods ----
@@ -74,13 +74,13 @@ parseSamplingPoint <- function(obj, sos) {
 as.SpatialPoints.SaSamplingPoint = function(from) {
   as(from@position, "SpatialPoints")
 }
-setAs("SaSamplingPoint", "SpatialPoints",
-      function(from) {
+setAs(from = "SaSamplingPoint", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.SaSamplingPoint(from)
       }
 )
-setAs("SaSamplingPoint", "Spatial",
-      function(from) {
+setAs(from = "SaSamplingPoint", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.SaSamplingPoint(from)
       }
 )

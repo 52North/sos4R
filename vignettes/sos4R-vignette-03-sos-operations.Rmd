@@ -1,5 +1,5 @@
 ---
-title: "sos4R: SOS Operations"
+title: "SOS Operations"
 author:
   name: "Daniel Nüst"
   affiliation: Institute for Geoinformatics, University of Münster, Germany.
@@ -58,7 +58,7 @@ SosSupportedResponseFormats()
 
 The response format `"text/csv"` is not standard conform, but used by services as an alternative to XML encodings.
 The package `readr` must be installed to parse responses in this format.
-See the _IOOS_ example in the [Services Vignette](sos4R-vignette-99-services.html).
+See the _IOOS_ example in the [services vignette](https://52north.github.io/sos4R/articles/sos4R-vignette-99-services.html) (online only).
 
 ```{r supported03}
 SosSupportedResponseModes()
@@ -154,7 +154,7 @@ summary(mySOS)
 ## SOS Operations
 
 `sos4R` implements the SOS core profile of version 1.0.0 comprising the operations GetCapabilities, DescribeSensor and GetObservation.
-This document focusses on the practical usage of the operations, so the reader is refered to the specification document for details.
+This document focusses on the practical usage of the operations, so the reader is referred to the specification document for details.
 
 The methods mirroring the SOS operations all contain debugging parameters `inspect` and `verbose` as described in the "Quickstart" vignette.
 
@@ -203,7 +203,7 @@ sosContents(mySOS)
 ```
 
 The first three functions extract clearly structured, self-explanatory parts of the document.
-You can use this to add proper accredetation to your figures, for example.
+You can use this to add proper accreditation to your figures, for example.
 
 The _contents_ part however is described in detail in section [Metadata Extraction](#metadata-extraction-for-request-building), as it can (and should) be used to extract query parameters.
 
@@ -259,7 +259,7 @@ unlist(sosResponseFormats(mySOS)[[sosGetObservationName]])
 #### Spatial Reference Systems
 
 For future analyses, but also for correct plotting, one must know the coordinate reference system (CRS) or spatial reference system ([SRS](https://en.wikipedia.org/wiki/Spatial_referencing_system)) or the returned data.
-You can get this information using the method `sosGetCRS()` from variuos objects.
+You can get this information using the method `sosGetCRS()` from various objects.
 
 The function utilizes the [EPSG code](http://www.epsg-registry.org/) in GML attributes like `srsName="urn:ogc:def:crs:EPSG:4326"` to initialize an object of class `CRS` from the package `sp`.
 For `SOS` and `SosObservationOffering` objects these are taken from the bounding box given in the `gml:boundedBy` element.
@@ -391,14 +391,14 @@ title(main = paste("Sensors of", sosTitle(mySOS)))
 The GetObservation operation is specified in clause 8.4 of the SOS specification.
 In this section, all matters around requesting data are explained - from extracting query parameters from metadata, and sending the request, till finally extracting data values and coordinates from the response.
 
-A few utility functions exist to minize a user's amount of work to create usual requests.
+A few utility functions exist to minimize a user's amount of work to create usual requests.
 They accept normal R types as input and return the respective class from `sos4R` with useful default settings.
 These function's names follow the pattern with `sosCreate[name of object]()` and exist for spatial and temporal filters.
 
 #### Metadata Extraction for Request Building
 
 It is recommended to extract the identifiers of procedures et cetera that are to be used for queries from the metadata description provided by the service, the capabilities document.
-This often ensures forward compatiblity and minimizes typing errors.
+This often ensures forward compatibility and minimizes typing errors.
 The offerings are the "index" of the service and therefore we concentrate on the contents section of the capabilities here.
 
 The class `SosContents` simply contains a list of objects of the class `SosObservationOffering` which one can get directly from the connection object and also by name of the :
@@ -606,7 +606,7 @@ myObservationData <- getObservation(sos = mySOS,
 
 The logging output above starting with `[sos4R]` informs the user when the download of data is complete and when the parsing has finished.
 It even contains some information about the data, if possible.
-In following requests, this ouput is **not** included for brevity.
+In following requests, this output is **not** included for brevity.
 
 The response `myObservationData` of this request is the base for the next sections.
 
@@ -748,6 +748,8 @@ lastWeek.period <- sosCreateTimePeriod(sos = mySOS,
 	begin = (Sys.time() - 3600 * 24 * 7),
 	end = Sys.time())
 
+# when creating timestamps from strings note that `as.POSIXct`
+# are in the locally configured timezone (see `Sys.timezone`)
 period <- sosCreateTimePeriod(sos = mySOS,
 		begin = as.POSIXct("2015/11/01"),
 		end = as.POSIXct("2015/11/02"))
@@ -759,7 +761,7 @@ Please note that the create function `sosCreateEventTimeList()` wraps the create
 
 The most comfortable creation function for event times is `sosCreateTime()`.
 It supports time intervals with starttime and endtime as character strings seperated by `::` or `/` as defined by [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), section Time intervals}.
-The respective time stamps have to be parsable by `as.POSIXct()`.
+The respective time stamps have to be parsable by `parsedate::parse_iso_8601(..)`.
 If either one of the time stamps is missing, a `GmlTimePosition` wrapped in the appropriate relative temporal operator, e.g. `"before"`.
 
 ```{r temporalFiltering1b}
@@ -803,8 +805,8 @@ Another example workflow, using a `KVP`-based connection.
 
 ```{r temporalFiltering4}
 sept15.period <- sosCreateTimePeriod(sos = mySOS,
-                                     begin = as.POSIXct("2015-09-01 00:00"),
-                                     end = as.POSIXct("2015-09-30 00:00"))
+                                     begin = parsedate::parse_iso_8601("2015-09-01 00:00"),
+                                     end = parsedate::parse_iso_8601("2015-09-30 00:00"))
 sept15.eventTimeList <- sosCreateEventTimeList(sept15.period)
 obs.sept15 <- getObservation(sos = mySOS,
 	offering = myOffering,
@@ -981,6 +983,6 @@ obsId <- getObservationById(sos = mySOSpox, observationId = "http://www.52north.
 sosResult(obsId, coordinates = TRUE)
 ```
 
-Just as for `getObservation()` you can **save the orginal** response document with an automatically generated name or a selected one.
+Just as for `getObservation()` you can **save the original** response document with an automatically generated name or a selected one.
 It is saved into the current working directory and the name starts with the observation identifier.
 You can also read it back using the function `sosParse()`.

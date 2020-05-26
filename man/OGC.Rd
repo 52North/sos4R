@@ -106,7 +106,7 @@ Arguments for the construction functions are as follows.
 
   \item{propertyName}{The value for the propertyName attribute.}
   \item{geometry}{The geometry to be used in a spatial filter.}
-  \item{envelope}{The geometry to be used in a sptial filter.}
+  \item{envelope}{The geometry to be used in a spatial filter.}
 }
 
 \value{The value of the construction functions is an object of the respective class.}
@@ -116,7 +116,6 @@ These comprise spatial and temporal operations and operators which can be encode
 
 The \verb{...OrNULL} classes are used to model optional slots.
 
-% TODO describe class hierarchy here.
 }
 
 \references{Vretanos, Panagiotis A. (Ed.), OpenGIS(R) Filter Encoding Implementation Specification, OGC 04-095, Version: 1.1.0

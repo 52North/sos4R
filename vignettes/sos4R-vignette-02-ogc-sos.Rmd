@@ -1,5 +1,5 @@
 ---
-title: "sos4R: OGC SWE and SOS"
+title: "Introduction to OGC SWE and SOS"
 author:
   name: "Daniel Nüst"
   affiliation: Institute for Geoinformatics, University of Münster, Germany.
@@ -46,7 +46,7 @@ All bindings can return responses using different encodings, but most common are
 Other OGC Standards that are referenced and used, by the SOS standard are as follows.
 
 - **Observations and Measurements (O\&M)** O\&M (Cox, 2007) defines the markup of sensor measurements results.
-An observation consists of information about the observerd geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result. Different versions are used in the different [SOS specifications](https://www.opengeospatial.org/standards/om).
+An observation consists of information about the observed geographic feature, the time of observation, the sensor, the observed phenomenon, and the observation's actual result. Different versions are used in the different [SOS specifications](https://www.opengeospatial.org/standards/om).
 - **Sensor Model Language ([SensorML](https://www.opengeospatial.org/standards/sensorml))** (Botts, 2007) is used for sensor metadata descriptions (calibration information, inputs and outputs, maintainer).
 - **Geography Markup Language ([GML](https://www.opengeospatial.org/standards/gml))** (Portele, 2003) defines markup for geographical features (points, lines, polygons, \ldots).
 - **SWE Common** defines data markup. Version 1 is contained in the SensorML specification (see above), version 2.0 is an independent specification.
@@ -61,7 +61,7 @@ The most important are as follows and are based on https://en.wikipedia.org/wiki
 
 - **Feature of Interest (FOI)**: The FOI represents the geo-object, for which measurements are made by sensors.
 It is ordinarily used for the spatial referencing of measuring points, i.e. the geoobject has coordinates like latitude, longitude and height. The feature is project specific and can be anything from a point (e.g. the position of a measuring station) or a real-world object (e.g. the region that is observed).
-- **Observation**: The observation delivers a measurement (result) for a property (phenomenon) of an observed object (FOI). The actual value is created by a sensor or procedure. The phenomenon was measured at a specific time (sampling time) and the value was generated at a specific point in time (result time). These often coincide so in practice the sampling time is often used as the point in time of an obsrevation.
+- **Observation**: The observation delivers a measurement (result) for a property (phenomenon) of an observed object (FOI). The actual value is created by a sensor or procedure. The phenomenon was measured at a specific time (sampling time) and the value was generated at a specific point in time (result time). These often coincide so in practice the sampling time is often used as the point in time of an observation.
 - **Offering**: The offering is a logical collection of related observations (similar to a layer in mapping applications) which a service offers together.
 - **Phenomenon**: A phenomenon is a property (physical value) of a geographical object, e.g. air temperature, wind speed, concentration of a pollutant in the atmosphere, reflected radiation in a specific frequency band (colours).
 - **Procedure**: A procedure creates the measurement value of an observation. The source can be a reading from a sensor, simulation or a numerical process.

@@ -17,7 +17,7 @@
 \description{Methods for function \code{sosObservableProperties} in package \pkg{sos4R}. The function allows to retrieve observable properties, e.g. air temperature, wind speed, etc., listed in the capabilities of a Sensor Observation Service and other classes.}
 \section{Methods}{
   \describe{
-    \item{\code{signature(obj = "list")}}{List of objects to retreive properties from.}
+    \item{\code{signature(obj = "list")}}{List of objects to retrieve properties from.}
     \item{\code{signature(obj = "OmObservation")}}{Get observable properties from an object of class \code{OmObservation}.}
     \item{\code{signature(obj = "OmObservationCollection")}}{Get observable properties from an object of class \code{OmObservationCollection}, namely the items in the collection.}
     \item{\code{signature(obj = "SOS")}}{Get observable properties for a whole connection to an SOS.}

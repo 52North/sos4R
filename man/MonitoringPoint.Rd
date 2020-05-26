@@ -36,7 +36,6 @@ Objects can be created by calls of the form \code{new("WmlMonitoringPoint", ...)
 
 \section{Extends}{
 Class \code{"\linkS4class{GmlFeature}"}, directly.
-Class \code{"\linkS4class{FoiOrNULL}"}, directly.
 Class \code{"\linkS4class{GmlFeatureOrNULL}"}, by class "GmlFeature", distance 2.
 Class \code{"\linkS4class{GmlFeatureOrGmlFeaturePropertyOrNULL}"}, by class "GmlFeature", distance 2.
 }

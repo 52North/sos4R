@@ -1,0 +1,269 @@
+---
+title: "sos4R"
+author:
+  name: "Daniel Nüst"
+  affiliation: Institute for Geoinformatics, University of Münster, Germany.
+  email: daniel.nuest@uni-muenster.de
+  url: https://www.nordholmen.net
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+abstract: |
+  The sos4R package provides simple yet powerful access to OGC Sensor Observation Service instances.
+  The package supports both encapsulation and abstraction from the service interface for novice users as well as powerful request building for specialists.
+  sos4R is motivated by the idea to close the gap between the Sensor Web and tools for (geo-)statistical analyses.
+  It implements the core profile of the SOS specification and supports temporal, spatial, and thematical filtering of observations.
+  
+  This document gives a brief overview and demo.
+  Other vignettes dive deeper into the SOS specification and the package's features are explained extensively: exploration of service metadata, request building with filters, function exchangeability, result data transformation.
+  
+  The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
+vignette: >
+  %\VignetteIndexEntry{1. sos4R Quickstart}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  concordance = TRUE
+)
+```
+
+## Introduction
+
+The `sos4R` package provides classes and methods for retrieving data from an Open Geospatial Consortium ([OGC](http://opengeospatial.org/)) Sensor Observation Service in version 1.0.0 (Na, 2007) and 2.0 (Bröring, 2010).
+The goal of this package is to provide easy access with a low entry threshold for everyone to information available via SOSs.
+The complexity of the service interface shall be shielded from the user as much as possible, while still leaving enough possibilities for advanced users.
+The output is a standard `data.frame` with attributed columns for the rich metadata provided by the SOS API.
+This package uses S4 classes and methods style (Chambers, 1998).
+
+The package was born out of perceiving a missing link between the Sensor Web community (known as [Sensor Web Enablement (SWE) Initiative](https://www.opengeospatial.org/projects/groups/sensorwebdwg) in the OGC realm) and the community of (geo-)statisticians (Nüst, 2011). While the relatively young SWE standards get adopted more by data owners (like governmental organizations), we see a high but unused potential for more open data and spatio-temporal analyses based on it.
+`sos4R` can help enabling this.
+
+The project is part of the [geostatistics community](https://52north.org/research/rd-communities/geostatistics/) of the [52°North Initiative for Geospatial Open Source Software](https://52north.org/).
+`sos4R` is available on [CRAN](https://cran.r-project.org/).
+
+On the package home page, [https://52north.github.io/sos4R](https://52north.github.io/sos4R), you can stay updated with the developments and find example code and services.
+
+This software is released under a [GPL 2 license](https://www.gnu.org/licenses/gpl-2.0.html) and contributions are very welcome---please see the file `DEV-README.md` in the [package code repository](https://github.com/52North/sos4R).
+
+
+```{r loadLibrary}
+library("sos4R")
+```
+
+## Getting started
+
+### Cheat sheet
+
+The package comes with a one page **quick reference card**, also known as a "cheat sheet", which shows everything that you need to know in an extremely concise manner.
+You can open the document by loading the package and calling
+
+```{r cheatsheet, eval=FALSE}
+sosCheatSheet()
+```
+
+The most useful functions are highlighted in **bold font**.
+
+### Demos and services
+
+The **demos** are a good way to get started with the package.
+Please be aware that you need an internet connection for these demos, the used SOSs might be temporarily unavailable or not available anymore.
+
+```{r demos, eval=FALSE}
+# list available demos:
+demo(package = "sos4R")
+# run a demo:
+demo("airquality")
+```
+
+- **ioos**: Example using SOS by the Integrated Ocean Observing System which provides data in different formats (CSV)
+- **oceanwatch**: SOS by NOAA Center for Operational Oceanographic Products and Services (CO-OPS) - _under construction_.
+- **pegel**: Water gauge data in Germany by Pegelonline, shows how to create an xyplot of a set of variables.
+
+There also is an incomplete **list of services** that have been tested or are currently evaluated on in a vignette.
+If you find or can provide new SOS with data useful to others, please do not hesitate to [open an issue](https://github.com/52North/sos4R/issues) to have it added.
+Please note that the `sos4R` team of this document does not control these services and does not guarantee for any factors like correctness of data or availability.
+
+### Creating a SOS connection
+
+The method `SOS()` is a construction method for classes encapsulating a connection to a SOS.
+It prints out a short statement when the connection was successfully established (i.e. the capabilities document was received) and returns an object of class `SOS`.
+
+```{r mySOS}
+mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp", binding = "KVP")
+```
+
+To create a SOS connection you only need the URL of the service (i.e. the URL endpoint which can be used for HTTP requests).
+The service connection created above is used for all examples throughout this document.
+
+All parameters except the service endpoint are optional and use default settings:
+
+- `method`: The transport protocol. Currently available are `r toString(names(SosSupportedBindings()))`; the default is `r SosDefaultBinding()`. `GET` is less powerful, especially regarding filtering operations.
+- `version`: The service version. Currently available version(s) is/are `r SosSupportedServiceVersions()`.
+- `parsers`: The list of parsing functions. See vignette "Extending".
+- `encoders`: The list of encoding functions. See vignette "Extending".
+- `dataFieldConverters`:  The list of conversion functions. See vignette "Extending".
+- `timeFormat`: The time format to be used or decoding and encoding time character strings to and from `POSIXt` classes, the default is `r sosDefaultTimeFormat`.
+- `verboseOutput`: Trigger parameter for extensive debugging information on the console for all requests made to this SOS instance.
+- `switchCoordinates`: Switches all coordinates that are encountered during the parsing phase, such as in an element like `<gml:lowerCorner>117.3 -41.5</gml:lowerCorner>`.
+
+There are accessor methods for the slots of the class.
+The encoders, parsers and converters are described extensively in the vignette "Extending".
+
+```{r connDetails1}
+cat("URL:", sosUrl(mySOS), "\n")
+cat("Title:", sosTitle(mySOS), "\n")
+cat("Abstract:", sosAbstract(mySOS), "\n")
+cat("Version:", sosVersion(mySOS), "\n")
+cat("Time format:", sosTimeFormat(mySOS), "\n")
+cat("Binding:", sosBinding(mySOS), "\n")
+```
+
+You can also access the used encoding, decoding, and conversion functions (extensive output not included here).
+
+```{r connDetails2,eval=FALSE}
+sosEncoders(mySOS)
+sosParsers(mySOS)
+sosDataFieldConverters(mySOS)
+```
+
+Print and summary methods are available for important classes, like `SOS`.
+
+```{r connDetails3}
+mySOS
+summary(mySOS)
+```
+
+## Get Data
+
+The `GetObservation` operation is the main data download request of the SOS, and the package's functional equivalent is `getObservation(..)`.
+You can build a request using the information from the offerings, as they are extracted from the capabilities document when a new connection is created.
+
+```{r offering}
+off.1 <- sosOfferings(mySOS)[["wwu-ws-kli-hsb"]]
+summary(off.1)
+```
+
+```{r procedures}
+sosProcedures(off.1)
+```
+
+```{r obsprops}
+sosObservedProperties(off.1)
+```
+
+```{r fois}
+sosFeaturesOfInterest(off.1)
+```
+
+Not all combinations of procedure, observed property, feature of interest, and event time will deliver a result, but the following one should.
+
+```{r download}
+obs.1 <- getObservation(sos = mySOS,
+  offering = off.1,
+  procedure = sosProcedures(off.1)[[1]],
+	observedProperty = sosObservedProperties(off.1)[1],
+	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-01::2017-12-31"))
+```
+
+You can then access the result data with the helper function `sosResult(..)`.
+
+```{r data}
+#sosResult(data)
+summary(sosResult(obs.1))
+```
+
+## Spatial Data
+
+Classes with spatial information, i.e. coordinates, have coercion functions to matching `sp` classes and can therefore be easily rendered on a map, e.g. using [`leaflet`](https://rstudio.github.io/leaflet/).
+
+```{r leftlet}
+library("leaflet")
+
+obs.1.spatial <- as(obs.1, "Spatial")
+leaflet::leaflet(obs.1.spatial) %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers() %>%
+  addMiniMap()
+```
+
+Using the [`mapview`](https://r-spatial.github.io/mapview/) package you can quickly add plots into pop-up windows.
+
+```{r mapview}
+library("mapview")
+library("leafpop")
+
+plotfile <- tempfile(fileext = ".png")
+png(filename = plotfile)
+plot(x = obs.1.spatial$phenomenonTime, y = obs.1.spatial$AirTemperature,
+     pch = 20,
+     main = sosId(off.1), xlab = "Time", ylab = "Air Temperature")
+
+#FIXME:mapview(obs.1.spatial, popup = leafpop::popupImage(plotfile, embed = TRUE))
+mapview(obs.1.spatial)
+```
+
+For more details on the coercion functions see `` ?`coerce-sos4R` ``.
+
+## Inspect Requests and Verbose Printing
+
+The package offers two levels of inspection of the ongoing operations indicated by two boolean parameters, `inspect` and `verbose`.
+These are available in all service operation calls.
+
+- **`inspect`** prints the raw requests and responses to the console.
+- **`verbose`** prints not only the requests, but also debugging and processing statements (e.g. intermediate steps during parsing).
+
+The option `verboseOutput` when using the method `SOS()` turns on the verbose setting for all subsequent requests made to the created connection unless deactivated in an operation call.
+
+```{r inspect}
+obs.1 <- getObservation(sos = mySOS, offering = off.1,
+	procedure = sosProcedures(off.1)[[1]],
+	observedProperty = sosObservedProperties(off.1)[1],
+	eventTime = sosCreateTime(sos = mySOS, time = "2017-12-19::2017-12-20"),
+	inspect = TRUE)
+```
+
+```{r verbose}
+getObservation(sos = mySOS, offering = off.1,
+	procedure = sosProcedures(off.1)[[1]],
+	observedProperty = sosObservedProperties(off.1)[2],
+	eventTime = sosCreateTime(sos = mySOS, time = "2018-01-01::2018-01-03"),
+	verbose = TRUE)
+```
+
+By using `verboseOutput` you can also debug the automatic GetCapabilities operation when creating a new SOS connection.
+That output is too extensive to show within this document.
+
+```{r verbose_global, eval=FALSE}
+verboseSOS <- SOS(sosUrl(mySOS),
+                  verboseOutput = TRUE,
+                  binding = sosBinding(mySOS),
+                  dcpFilter = mySOS@dcpFilter)
+```
+
+## Support
+
+Feel free to ask **questions** about using the software or **report a bug** at the project issue tracker: [https://github.com/52North/sos4R/issues](https://github.com/52North/sos4R/issues).
+There you can also find existing bug reports and planned features.
+
+## Acknowledgements
+
+The start of the project was generously supported by the [52°North Student Innovation Prize for Geoinformatics 2010](https://52north.org/research/student-innovation-prize/archive/#winners2010).
+Thanks go also to Edzer Pebesma for contributing analyses to the demos at an early stage.
+
+## Outlook
+
+In future releases a tighter integration is planned with the `sf` package regarding output data structures and classes.
+
+## References
+
+- Botts, M., 2007, OGC Implementation Specification 07-000: OpenGIS Sensor Model Language (SensorML)- Open Geospatial Consortium, Tech. Rep.
+- Bröring, A., C. Stasch, and J. Echterhoff. "OGC Interface Standard 10-037: SOS 2.0 Interface Standard." Open Geospatial Consortium (2010).
+- Chambers, J.M., 2008, Software for Data Analysis, Programming with R. Springer, New York.
+- Na, A., Priest, M., Niedzwiadek, H. and Davidson, J., 2007, OGC Implementation Specification 06-009r6: Sensor Observation Service, [http://portal.opengeospatial.org/files/?artifact_id=26667](http://portal.opengeospatial.org/files/?artifact_id=26667), Open Geospatial Consortium, Tech. Rep.
+- Nüst, D., Stasch, C. and Pebesma, E. J., 2011, Connecting R to the Sensor Web in Geertman, S., Reinhardt, W. and Toppen, F. (Eds.) Advancing Geoinformation Science for a Changing World, Springer Lecture Notes in Geoinformation and Cartography, doi: [10.1007/978-3-642-19789-5_12](https://doi.org/10.1007/978-3-642-19789-5_12).

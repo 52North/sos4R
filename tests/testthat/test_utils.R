@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52°North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2013-03-06                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 context("utils")
 
@@ -50,54 +50,30 @@ test_that("addional KVPs are concatenated correctly", {
 test_that("can get CRS from URN", {
   obj <- sosGetCRS("urn:ogc:def:crs:EPSG::4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 test_that("can get CRS from lowercase URN", {
   obj <- sosGetCRS("urn:ogc:def:crs:epsg::4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 test_that("can get CRS from URN with version", {
   obj <- sosGetCRS("urn:ogc:def:crs:EPSG:99:4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 test_that("can get CRS from URL", {
   obj <- sosGetCRS("http://www.opengis.net/def/crs/EPSG/0/4326")
   expect_s4_class(obj, "CRS")
-  expect_match(obj@projargs, "init=epsg:4326")
+  expect_equal(slotNames(obj), "projargs")
 })
 
 library("webmockr")
 webmockr::enable("httr")
 webmockr::httr_mock()
-
-test_that("can encode POSIXct for XML and KVP using SOS time format", {
-  skip("SOS time format support unclear")
-  webmockr::stub_registry_clear()
-  webmockr::stub_request("get", uri = "http://example.com/sos-utils?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
-    webmockr::wi_th(
-      headers = list("Accept" = "application/xml")
-    ) %>%
-    webmockr::to_return(
-      status = 200,
-      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
-      headers = list("Content-Type" = "application/xml")
-    )
-
-  expect_warning(sos <- SOS(url = "http://example.com/sos-utils", binding = "KVP", version = sos200_version,
-             timeFormat = "%H-%M %m %Y"),
-             "Error converting string")
-
-  xmlTime <- encodeXML(as.POSIXct("2019-01-01 01:01:01"), sos = sos)
-  expect_equal(xmlTime, "01-01 01 2019")
-
-  kvpTime <- encodeKVP(as.POSIXct("2019-01-01 01:01:01"), sos = sos)
-  expect_equal(kvpTime, "01-01 01 2019")
-})
 
 test_that("can create time instant from POSIXct and encode as XML", {
   webmockr::stub_registry_clear()
@@ -112,7 +88,7 @@ test_that("can create time instant from POSIXct and encode as XML", {
     )
 
   sos <- SOS(url = "http://example.com/sos-utils", binding = "KVP", version = sos200_version)
-  instant <- sosCreateTimeInstant(sos = sos, time = as.POSIXct("2019-01-01 01:01:01"))
+  instant <- sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601("2019-01-01 01:01:01"))
 
   expect_s4_class(instant, "GmlTimeObject")
   xml <- encodeXML(instant, sos = sos)
@@ -133,8 +109,8 @@ test_that("can create time period from POSIXct objects and encode as XML", {
 
   sos <- SOS(url = "http://example.com/sos-utils", binding = "KVP", version = sos200_version)
   period <- sosCreateTimePeriod(sos = sos,
-                                 begin = as.POSIXct("2019-01-01 01:01:01"),
-                                 end = as.POSIXct("2019-01-01 02:02:02"))
+                                 begin = parsedate::parse_iso_8601("2019-01-01 01:01:01"),
+                                 end = parsedate::parse_iso_8601("2019-01-01 02:02:02"))
 
   expect_s4_class(period, "GmlTimeObject")
   xml <- encodeXML(period, sos = sos)

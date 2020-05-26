@@ -33,6 +33,8 @@
 % Version 2.0.0
 \alias{getObservation,SOS_2.0.0,SosObservationOffering_2.0.0-method}
 \alias{getObservation,SOS_2.0.0,character-method}
+\alias{getObservation,SOS_2.0.0,ANY-method}
+\alias{getObservation,SOS_2.0.0,list-method}
 \alias{getObservationById,SOS_2.0.0,character-method}
 
 \alias{SosGetObservation_2.0.0}
@@ -84,12 +86,12 @@ Objects can be created by calls to the construction functions of the form \code{
     \item{\code{procedure}:}{Object of class \code{"list"}, procedure parameter specifies the sensor system(s) for which observations are requested.}
     \item{\code{request}:}{Object of class \code{"character"}, the name of the request.}
     \item{\code{responseFormat}:}{Object of class \code{"character"}, specifies the desired resultFormat MIME content type for transport of the results.}
-    \item{\code{responseMode}:}{Object of class \code{"character"}, specifies whether results are requested in-line, outof-band, as an attachment, or if this is a request for an observation template that will be used for subsequent calls to GetResult.}
+    \item{\code{responseMode}:}{Object of class \code{"character"}, specifies whether results are requested in-line, out-of-band, as an attachment, or if this is a request for an observation template that will be used for subsequent calls to GetResult.}
     \item{\code{resultModel}:}{Object of class \code{"character"}, specifies the QName of the root element of an O&M Observation or element in the appropriate substitution group.}
     \item{\code{result}:}{Object of class \code{"ANY"}, provides a place to put in OGC filter expressions based on property values. This instructs the SOS to only return observations where the result matches this expression.}
     \item{\code{service}:}{Object of class \code{"character"}, service type identifier.}
     \item{\code{srsName}:}{Object of class \code{"character"}, defines the spatial reference system that should be used for any geometries that are returned in the response. This must be one of the advertised values in the offering specified in gml:srsName elements.}
-    \item{\code{valueReferenceTemporalFilter}:}{Object of class \code{"character"}, the property name used in a temporal filter for SOS 2.0 KVP reuests.}
+    \item{\code{valueReferenceTemporalFilter}:}{Object of class \code{"character"}, the property name used in a temporal filter for SOS 2.0 KVP requests.}
     \item{\code{version}:}{Object of class \code{"character"}, specification version for operation.}
   }
 }
@@ -97,7 +99,7 @@ Objects can be created by calls to the construction functions of the form \code{
 \arguments{
   \item{service}{The \verb{service} attribute of the request, e.g. \samp{SOS}.}
   \item{version}{The \verb{version} attribute of the request, e.g. \samp{1.0.0}.}
-  \item{observationId}{The value of the \verb{ObservationId} element in the request, e.g. \samp{o_12345}, which is to be optained. This could have been obtained by the client via a URL in a feed, alert, or some other notification.}
+  \item{observationId}{The value of the \verb{ObservationId} element in the request, e.g. \samp{o_12345}, which is to be obtained. This could have been obtained by the client via a URL in a feed, alert, or some other notification.}
   \item{offering}{The \verb{offering} element value in the request, e.g. \samp{"temperatures"}. All other parameters are depending on the selected offering. This must be a character string for an object of class \link{SosObservationOffering-class} obtained by \code{sosOfferings(..)}; can be a list for \bold{SOS 2.0.0} with both character strings and objects.}
   \item{observedProperty}{A list of values for \verb{observedProperty} elements in the request, e.g. \samp{"urn:property:AirTemperature"}. IDs of phenomena are advertised in capabilities document.}
   \item{responseFormat}{The \verb{responseFormat} element value in the request, e.g. \samp{text/xml;subtype="om/1.0.0"}. ID of the output format to be used for the requested data. The supported output formats are listed in the selected offering capabilities.}
@@ -109,7 +111,7 @@ Objects can be created by calls to the construction functions of the form \code{
   \item{resultModel}{The \verb{resultModel} element of the request, e.g. \samp{om:Measurement}, which is an identifier of the result model to be used for the requested data. The resultModel values supported by a service are listed in the contents section of the service metadata, identified as QName values.}
   \item{responseMode}{The \verb{responseMode} element of the request, e.g. \samp{inline}, which allows the client to request the form of the response.}
   \item{BBOX}{A bounding box to be used only with \verb{KVP} encoding in request via \verb{HTTP GET}, in the format \samp{minlon,minlat,maxlon,maxlat,srsURI?}, with the spatial reference system being optional. This element is ignored for \verb{POST} requests, use the parameter \code{featureOfInterest} instead, see \code{\link{SosBindings}}.}
-    \item{valueReferenceTemporalFilter}{The property name used in a temporal filter for SOS 2.0 KVP reuests, ignore for SOS 1.0.0.}
+    \item{valueReferenceTemporalFilter}{The property name used in a temporal filter for SOS 2.0 KVP requests, ignore for SOS 1.0.0.}
 }
 
 \section{Extends}{

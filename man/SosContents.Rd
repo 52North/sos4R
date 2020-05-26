@@ -17,7 +17,7 @@
 }
 
 \section{Objects from the Class}{
-Objects can be created by calls to the construction funtion in the form \code{SosContents(...)}.
+Objects can be created by calls to the construction function in the form \code{SosContents(...)}.
 
 The virtual class \code{SosContentsOrNULL} is used to model optional slots in classes containing \code{SosContents}: No objects may be created from it.
 }

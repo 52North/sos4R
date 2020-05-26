@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2018-11-23                                                          #
 # Project: sos4R - visit project web page https://52north.org/geostatistics    #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # helper functions ----
@@ -37,7 +37,8 @@
                                        offerings,
                                        verbose,
                                        inspect,
-                                       saveOriginal) {
+                                       saveOriginal,
+                                       ...) {
   filename <- NULL
   if (!is.null(saveOriginal)) {
     if (is.character(saveOriginal)) {
@@ -110,7 +111,8 @@ setMethod(f = "getDataAvailability",
                          offerings,
                          verbose,
                          inspect = FALSE,
-                         saveOriginal = NULL) {
+                         saveOriginal = NULL,
+                         ...) {
             if (verbose) {
               cat("[getDataAvailability] Requesting metadata via procedures: '",
                   paste0(procedures, collapse = ", "),
@@ -129,7 +131,8 @@ setMethod(f = "getDataAvailability",
                                               offerings = offerings,
                                               verbose = verbose,
                                               inspect = inspect,
-                                              saveOriginal = saveOriginal))
+                                              saveOriginal = saveOriginal,
+                                              ...))
           }
 )
 
@@ -161,30 +164,30 @@ setMethod("encodeRequestKVP", "SosGetDataAvailability_1.0.0",
 
   # optional
   .optionals <- ""
-  if (.isListFieldAvailable(obj@procedures)) {
+  if (sosIsListFieldAvailable(obj@procedures)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding procedures ",
-                     obj@procedures, "\n")
+                     paste0("'", unlist(obj@procedures), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameProcedure, obj@procedures),
                         sep = "&")
   }
-  if (.isListFieldAvailable(obj@observedProperties)) {
-    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties ",
-                     obj@observedProperties, "\n")
+  if (sosIsListFieldAvailable(obj@observedProperties)) {
+    if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding observed properties: ",
+                     paste0("'", unlist(obj@observedProperties), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameObsProp, obj@observedProperties),
                         sep = "&")
   }
-  if (.isListFieldAvailable(obj@featuresOfInterest)) {
+  if (sosIsListFieldAvailable(obj@featuresOfInterest)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding features of interest ",
-                     obj@featuresOfInterest, "\n")
+                     paste0("'", unlist(obj@featuresOfInterest), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameFoi, obj@featuresOfInterest),
                         sep = "&")
   }
-  if (.isListFieldAvailable(obj@offerings)) {
+  if (sosIsListFieldAvailable(obj@offerings)) {
     if (verbose) cat("[.sosEncodeRequestKVPGetDataAvailability_1.0.0] Adding offerings ",
-                     obj@offerings, "\n")
+                     paste0("'", unlist(obj@offerings), "'", collapse = ", "), "\n")
     .optionals <- paste(.optionals,
                         .kvpKeyAndValues(key = sosKVPParamNameOffering, obj@offerings),
                         sep = "&")
@@ -209,18 +212,28 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
     stop(paste0("[parseGetDataAvailabilityResponse] SOS version 2.0 required! Received '",
                 sos@version, "'"))
   }
+  ns <- sos@namespaces
+  ns["gda"] <- xml2::xml_ns(obj)["gda"][[1]]
 
-  gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = sos@namespaces)
+  gdaMembers <- xml2::xml_find_all(x = obj, xpath = gdaDataAvailabilityMemberName, ns = ns)
 
   if (verbose) cat("[parseGetDataAvailabilityResponse] with", length(gdaMembers), "element(s).\n")
+
+  assign("phenTimeCache", list(), envir = get("sos4R_caches"))
+
   parsedGDAMembers <- lapply(gdaMembers, .parseGDAMember, sos, verbose)
   if (verbose) cat("[parseGetDataAvailabilityResponse] Done. Processed", length(parsedGDAMembers),
                    "elements")
+
+  assign("phenTimeCache", list(), envir = get("sos4R_caches"))
+
   return(parsedGDAMembers)
 }
 
 .parseGDAMember <- function(gdaMember, sos, verbose = FALSE) {
-  id <- xml2::xml_attr(x = gdaMember, attr = "gml:id", ns = sos@namespaces)
+  ns <- sos@namespaces
+  ns["gda"] <- xml2::xml_ns(gdaMember)["gda"][[1]]
+  id <- xml2::xml_attr(x = gdaMember, attr = "gml:id", ns = ns)
   if (verbose) cat("[parseGDAMember]", id, "\n")
 
   procedure <- .parseGDAReferencedElement(gdaMember, sos, gdaProcedureName, verbose)
@@ -228,20 +241,38 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
   featureOfInterest <- .parseGDAReferencedElement(gdaMember, sos, gdaFeatureOfInterestName, verbose)
 
   phenTime <- NULL
-  ptNode <- xml2::xml_find_first(x = gdaMember, xpath = gdaPhenomenonTimeName, ns = sos@namespaces)
+  ptNode <- xml2::xml_find_first(x = gdaMember, xpath = gdaPhenomenonTimeName, ns = ns)
   if (is.na(ptNode)) {
     stop(paste0("[parseGDAMember] ", gdaPhenomenonTimeName, " not found!"))
   }
 
+  phenTimeCache <- get(x = "phenTimeCache", envir = get("sos4R_caches"))
+
   # if href is in <gda:phenomenonTime xlink:href="#tp_2"/> then in-document reference starting with "#" and than the GML:id of the referenced element
   if (gmlIsNodeReferenced(sos, ptNode)) {
-    ptNode <- gmlGetReferencedNode(sos, gdaMember, ptNode, verbose = verbose)
+    phenTime <- phenTimeCache[[substring(text = xml2::xml_attr(ptNode, "xlink:href", ns = ns), first = 2)]]
+
+    if (is.null(phenTime)) {
+      ptNode <- gmlGetReferencedNode(sos, gdaMember, ptNode, verbose = verbose)
+      phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
+                                                       xpath = gmlTimePeriodName,
+                                                       ns = ns),
+                                  sos = sos)
+
+      phenTimeCache[[phenTime@id]] <- phenTime
+    }
+  } else {
+    phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
+                                                     xpath = gmlTimePeriodName,
+                                                     ns = ns),
+                                sos = sos)
+    if (!is.na(phenTime@id)) {
+      phenTimeCache[[phenTime@id]] <- phenTime
+    }
   }
 
-  phenTime <- parseTimePeriod(xml2::xml_find_first(x = ptNode,
-                                                   xpath = gmlTimePeriodName,
-                                                   ns = sos@namespaces),
-                              sos = sos)
+  assign(x = "phenTimeCache", value = phenTimeCache, envir = get("sos4R_caches"))
+
   if (is.null(phenTime)) {
     stop("[parseGDAMember] could NOT parse phenomenon time.")
   }
@@ -253,11 +284,13 @@ parseGetDataAvailabilityResponse <- function(obj, sos, verbose = FALSE) {
 }
 
 .parseGDAReferencedElement <- function(gdaMember, sos, elementName, verbose = FALSE) {
-  .nodes <- xml2::xml_find_all(x = gdaMember, xpath = elementName, ns = sos@namespaces)
-  if (is.na(.nodes) || length(.nodes) != 1) {
+  ns <- sos@namespaces
+  ns["gda"] <- xml2::xml_ns(gdaMember)["gda"][[1]]
+  node <- xml2::xml_find_first(x = gdaMember, xpath = elementName, ns = ns)
+  if (is.na(node)) {
     stop(paste0("[parseGDAMember] no element found for '", elementName, "'."))
   }
-  .element <- xml2::xml_attr(x = .nodes[[1]], attr = "href")
+  .element <- xml2::xml_attr(x = node, attr = "href")
   if (is.na(.element) || stringr::str_length(.element) < 1) {
     stop(paste0("[parseGDAMember] element found for '", elementName, "' misses href attribute. Found '",
                 .element, "'."))

@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,15 +25,14 @@
 # Created: 2019-03-20                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 context("parsing: observation collection")
 
 testsos <- SOS_Test(name = "testobscoll")
 
 test_that("bounded by is parsed from collection", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-
-  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
+  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "Error converting string")
   expect_false(is.null(collection@boundedBy))
   expect_named(collection@boundedBy, c("srsName", "lowerCorner", "upperCorner"))
   expect_equal(collection@boundedBy$srsName, "http://www.opengis.net/def/crs/EPSG/0/4326")
@@ -41,33 +40,33 @@ test_that("bounded by is parsed from collection", {
 
 test_that("all members are parsed from collection", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
+  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "Error converting string")
   expect_equal(length(collection), 2)
   expect_equal(length(collection@members), 2)
 })
 
 test_that("all collection members have the same result columns", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
+  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "Error converting string")
   expect_equal(names(collection[[1]]@result), names(collection[[2]]@result))
 })
 
 test_that("name available for first observation, but not for second", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
+  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "Error converting string")
   expect_named(collection@members, c("1234", "Observation"))
 })
 
 test_that("procedures are parsed from both members", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
+  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "Error converting string")
   expect_equal(collection[[1]]@procedure, "urn:ogc:object:Sensor:MyOrg:12349")
   expect_equal(collection[[2]]@procedure, "urn:ogc:object:Sensor:MyOrg:12350")
 })
 
 test_that("all fields are parsed from both members", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
-  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "No converter found")
+  expect_warning(collection <- parseObservationCollection(obj = doc, sos = testsos), "Error converting string")
   expect_named(collection[[1]]@result, c("time", "longitude", "latitude", "DPM", "MS"))
   expect_named(collection[[2]]@result, c("time", "longitude", "latitude", "DPM", "MS"))
 })
@@ -139,11 +138,7 @@ test_that("parse category field", {
 test_that("parse data array finds all data", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray")
-
-  expect_warning(
-    dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos),
-    "test_unit_6"
-  )
+  dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos)
 
   expect_s3_class(dataArray, "data.frame")
   expect_named(dataArray, c("time", "longitude", "latitude", "DPM", "MS"))
@@ -153,13 +148,11 @@ test_that("parse data array finds all data", {
 test_that("parse data array has correct classes for fields", {
   doc <- xml2::read_xml(x = "../responses/sosObservationCollection1.xml")
   dataArrayXml <- xml2::xml_find_first(x = doc, xpath = "//swe:DataArray")
+  dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos)
 
-  expect_warning(
-    dataArray <- parseDataArray(obj = dataArrayXml, sos = testsos),
-    "test_unit_6"
-  )
-
+  # TODO uncomment test depending on our environment ;-)
   expect_equivalent(lapply(dataArray, class), list(c("POSIXct", "POSIXt"), "numeric", "numeric", "numeric", "factor"))
+  #expect_equivalent(lapply(dataArray, class), list(c("POSIXct", "POSIXt"), "numeric", "numeric", "numeric", "character"))
 })
 
 context("parsing: composite phenomenon")
@@ -351,9 +344,9 @@ test_that("observation metadata is in result", {
   obs <- parseObservation(obj = doc, sos = testsos)
   result <- sosResult(obs)
 
-  expect_named(attributes(result[,2]), c("name", "definition", "unit of measurement"))
-  expect_equivalent(sosUOM(result), c("ppm"))
-  expect_named(sosUOM(result), c("http://www.52north.org/test/observableProperty/6"))
+  expect_named(attributes(result[,2]), c("name", "definition", "unit of measurement", "R class of values"))
+  expect_equivalent(sosUOM(result), c("http://www.opengis.net/def/uom/ISO-8601/0/Gregorian", "ppm"))
+  expect_named(sosUOM(result), c("phenomenonTime", "http://www.52north.org/test/observableProperty/6"))
 })
 
 test_that("feature ID parsed from observation", {

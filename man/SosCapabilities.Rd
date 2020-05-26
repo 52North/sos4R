@@ -55,7 +55,7 @@ SosCapabilities(version, updateSequence = NA, owsVersion = "1.1.0",
   \item{identification}{The identification section of a capabilities document, object of class \code{OwsServiceIdentification}.}
   \item{provider}{The provider section of a capabilities document, object of class \code{OwsServiceProvider}.}
   \item{operations}{A list of objects of class \code{OwsOperation} in a \code{OperationsMetadata} object. The provider section of a capabilities document.}
-  \item{filterCapabilities}{An object of class \code{SosFilter_Capabilities} contaning the filter capabilities of a service.}
+  \item{filterCapabilities}{An object of class \code{SosFilter_Capabilities} containing the filter capabilities of a service.}
   \item{contents}{The provider section of a capabilities document, object of class \code{SosContents}.}
 }
 

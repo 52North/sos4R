@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -26,7 +26,7 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 #
 # SOS ----
 #
@@ -342,7 +342,7 @@ gmlDurationName <- paste0(gmlNamespacePrefix, ":duration")
 gmlTimeIntervalName <- paste0(gmlNamespacePrefix, ":timeInterval")
 gmlFeatureMemberName <- paste0(gmlNamespacePrefix, ":featureMember")
 gmlIdentifierName <- paste0(gmlNamespacePrefix, ":identifier")
-
+gmlResultTypeAttributeName <- paste0(gmlNamespacePrefix, ":type")
 #
 # SWE ----
 #
@@ -638,5 +638,3 @@ gdaGetDataAvailabilityResponseName <- paste0(gdaPrefix, ":GetDataAvailabilityRes
 # others ----
 #
 xmlTextNodeName <- "text"
-
-.sosCheatSheetDocumentName <- "sos4r_cheat-sheet.pdf"

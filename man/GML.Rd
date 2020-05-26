@@ -1,4 +1,4 @@
-\name{GmlDirectPosition-class}
+\name{GML}
 \Rdversion{1.1}
 
 \alias{GmlDirectPosition-class}
@@ -93,6 +93,7 @@
 \alias{sosCoordinates,GmlPointProperty-method}
 \alias{sosFeatureIds,GmlFeatureCollection-method}
 \alias{sosFeatureIds,GmlFeatureProperty-method}
+\alias{sosFeatureIds,GmlTimeObject-method}
 \alias{sosFeaturesOfInterest,GmlFeatureCollection-method}
 \alias{sosFeaturesOfInterest,GmlFeatureProperty-method}
 \alias{sosGetCRS,GmlDirectPosition-method}
@@ -112,8 +113,6 @@
 
 \alias{summary.GmlTimePeriod}
 \alias{print.summary.GmlTimePeriod}
-
-
 
 \title{Classes and Construction Functions from the GML Namespace}
 
@@ -156,8 +155,6 @@ GmlMeasure(value, uom)
 }
 
 \section{Extends}{
-% TODO: Describe class hierarchy.
-
 GmlFeature:
 Class \code{"\linkS4class{GmlFeatureOrNULL}"}, directly.
 

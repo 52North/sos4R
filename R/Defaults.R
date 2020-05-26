@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # This class is inspired by a suggestion from Duncan Murdoch
@@ -73,7 +73,7 @@
     parseTemporalObservation,
     parseComplexObservation,
     #
-    parseMeasurementTimeseries,
+    parseWmlMeasurementTimeseries,
     #
     parseCSV,
     parseOM,
@@ -143,7 +143,7 @@ names(.sosDefaultEncoders) <- list(
 #
 #
 .sosDefaultFieldConverters <- list(
-  sosConvertString,
+  sosConvertDouble, # fallback <- numeric values exptected more often than character values!
   sosConvertTime,
   sosConvertTime,
   sosConvertTime,
@@ -221,6 +221,13 @@ names(.sosDefaultEncoders) <- list(
   sosConvertDouble,
   sosConvertDouble,
   # 52N SOS 4.x
+  sosConvertTime,
+  # R classes
+  sosConvertFactor,
+  sosConvertDouble,
+  sosConvertInteger,
+  sosConvertString,
+  sosConvertLogical,
   sosConvertTime
 )
 names(.sosDefaultFieldConverters) <- list(
@@ -302,7 +309,14 @@ names(.sosDefaultFieldConverters) <- list(
   "degC", # degree celsius
   "\u00B0C", # degree Celsius
   # 52N SOS 4.x
-  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime"
+  "http://www.opengis.net/def/property/OGC/0/PhenomenonTime",
+  # convert R classes
+  "factor",
+  "numeric",
+  "integer",
+  "character",
+  "logical",
+  "POSIXct"
 )
 
 

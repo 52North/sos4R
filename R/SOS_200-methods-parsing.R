@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2013-03-06                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 parseSosCapabilities200 <- function(obj, sos) {
   if (sos@verboseOutput) cat("[parseSosCapabilities200] entered... \n")
@@ -163,7 +163,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
     if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(resultTime), "\n")
   }
   else {
-    resultTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
+    resultTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = parsedate::parse_iso_8601(NA)))
   }
 
   phenomenonTimeXml <- xml2::xml_child(x = sosOffering, search = sos200PhenomenonTimeName, ns = sos@namespaces)
@@ -172,7 +172,7 @@ parseSosObservationOffering_200 <- function(obj, sos) {
     if (sos@verboseOutput) cat("[parseSosObservationOffering_200] resultTime: ", toString(resultTime), "\n")
   }
   else {
-    phenomenonTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct(x = NA)))
+    phenomenonTime <- GmlTimeInstant(timePosition = GmlTimePosition(time = parsedate::parse_iso_8601(NA)))
   }
 
   env <- xml2::xml_find_first(x = sosOffering,
@@ -219,11 +219,9 @@ parseGetObservationResponse <- function(obj, sos, verbose = FALSE, retrieveFOI =
     return(list())
   }
 
-  featureCache <- list()
   observations <- sapply(observationsXML,
                          parseObservation_2.0,
                          sos = sos,
-                         featureCache = featureCache,
                          verbose = verbose,
                          retrieveFOI = retrieveFOI)
 
@@ -241,11 +239,9 @@ parseGetObservationByIdResponse <- function(obj, sos, verbose = FALSE) {
                                         ns = sos@namespaces)
   if (verbose) cat("[parseGetObservationByIdResponse] Parsing ", length(observationsXML), " observations\n")
 
-  featureCache <- list()
   observations <- sapply(X = observationsXML,
                          parseObservation_2.0,
                          sos = sos,
-                         featureCache = featureCache,
                          verbose = verbose)
 
   return(observations)

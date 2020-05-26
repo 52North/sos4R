@@ -32,7 +32,7 @@ Documentation for users can be found in the package's vignette (see `browseVigne
     * libgeos-dev
     * texinfo
     * texinfo-doc-nonfree
-    * texlive
+    * texlive ([TinyTex is recommended!](https://yihui.org/tinytex/))
     * texlive-base
     * texlive-fonts-recommended
     * texlive-fonts-recommended-doc
@@ -98,17 +98,20 @@ pkgdown::build_site()
 ### Build vignettes
 
 The vignettes should build as part of the docs website or package check process.
-To build single vingettes manually you can use
+To build single vignettes manually you can use
 
 ```r
-rmarkdown::render("vignettes/sos4R-vignette-01-quickstart.Rmd")
+rmarkdown::render("vignettes/sos4R.Rmd")
 ```
 
 or
 
 ```r
-pkgdown::build_article("sos4R-vignette-01-quickstart")
+pkgdown::build_article("sos4R-vignette-04-extensions")
 ```
+  
+Note that some of the vignettes are not build as part of the package check since there are timeout problems, but only as part of the `pkgdown` website.
+These vignettes do not have a `vignette:` element in the Rmd document header and are ignored via `.Rbuildignore`.
 
 ------
 
@@ -117,7 +120,7 @@ pkgdown::build_article("sos4R-vignette-01-quickstart")
 sos4R follows the regular R extension package structure.
 General documentation about R package development can be found at the following two websites.
 
-* R extension packages by Hadley: http://r-pkgs.had.co.nz/ (well written with tight coupling to devtools and RStudio)
+* R extension packages by Hadley Wickham: http://r-pkgs.had.co.nz/ (well written with tight coupling to devtools and RStudio)
 * R extension manual: http://cran.r-project.org/doc/manuals/R-exts.html (generic, extensive)
 
 ### /R
@@ -146,7 +149,8 @@ The actual source files in the ``/R`` directory follow a naming schema:
 * `SOS-methods-accessor.R` contains accessor functions.
 * `SOS-methods-util.R` contains a lot of convenience and accessor functions, and should be used to keep the file `SOS-methods.R` lucid.
 * `SOS-methods-plotting.R` contains plotting functions.
-* ``PrintShowStructureSummary-methods.R`` contains functions to override `print`, `str`, `summary` functions and the like; these may go in this file or also into the file where the respective class is defined.
+* `PrintShowStructureSummary-methods.R` contains functions to override `print`, `str`, `summary` functions and the like; these may go in this file or also into the file where the respective class is defined.
+* `Wrapper-methods.R` contains methods and functions for the convenience wrapper functions for easier data access.
 
 ### `/sandbox`
 
@@ -174,7 +178,7 @@ Please also browse through the code files before starting to develop new functio
 
 Data models, i.e. requests and responses, are modelled as **S4 classes**. Documentation can be found at the following sites (and others):
 
-* The S4 object system: http://adv-r.had.co.nz/S4.html (short, must read)
+* The S4 object system: http://adv-r.had.co.nz/S4.html (short, _must read_)
 * A (Not So) Short Introduction to S4: https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf (not so short)
 * Classes and Methods in the S Language by Chambers: http://www.omegahat.org/RSMethods/Intro.pdf
 
@@ -185,45 +189,32 @@ Data models, i.e. requests and responses, are modelled as **S4 classes**. Docume
 ## Tests
 
 Tests are implemented with [`testthat`](http://testthat.r-lib.org/).
-Run them with
+Run them with "Ctrl + Alt + T" in RStudio, with the RStudio UI via `Build &rarr; More &rarr; Test Package`, or with
 
 ```r
 devtools::test()
 ```
 
-or by clicking the "Check" button in RStudio (which does more than just running the tests!).
+## Using Docker
 
-## Using docker
-
-In the [docker](docker/) folder, a Dockerfile is provided that can be used to
-set-up an isolated container just for sos4R development. This includes all
-required dependencies, RStudio as webapplication, and devtools. The current
-size of the image is ~4.02GB.
+The [`docker`](docker/) folder contains a Dockerfile that can be used to set-up an isolated container just for sos4R development.
+This includes all required dependencies, RStudio as webapplication, and devtools.
 
 1. Clone this repository.
-
 1. Change to the `docker` subfolder in any terminal of your choice.
-
 1. Perform the following command to build the image locally:<br />
    `docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .`.<br />
    *On windows*, you need to replace `$(date +%Y-%m-%d)` with something useful,
    like `2019-02-27`.
-
 1. Start the image as new container using the following command:
-```
-docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d sos4r-rstudio-dev:2019-02-27
-```
-You can start and stop the container by its name `sos4r-dev`.
-
+   ```
+   docker run --name=sos4r-dev --env PASSWORD=r --publish 8787:8787 --volume /YOUR_PATH_TO/sos4R/:/home/rstudio/sos4R -d    sos4r-rstudio-dev:2019-02-27
+   ```
+   You can start and stop the container by its name `sos4r-dev`.
 1. Point your browser to [http://localhost:8787/](http://localhost:8787/).
-
 1. Login with **Username** `rstudio` and **Password** `r`.<br />
-   If the password is not secure enough, please delete the container
-  via `docker stop sos4r-dev; docker rm sos4r-dev` and re-run the
-  above `docker run ...` with a different value for `PASSWORD`.
-
+   If the password is not secure enough, please delete the container via `docker stop sos4r-dev; docker rm sos4r-dev` and re-run the above `docker run ...` with a different value for `PASSWORD`.
 1. Open the sos4R project via menu `File` &rarr; `Open Project` &rarr; open folder `sos4R` &rarr; select `sos4R.Rproj`.
-
 1. Start developing.
 
 ## Add features
@@ -238,16 +229,16 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 
 - Install the current version of the package from source
 - Run the [tests](#tests) locally and resolve all problems
-- Run a check locally, e.g. `devtools::check(document = FALSE)` and fix errors, warnings, and notes
-- Update NEWS file based on latest commits, add missing changes/updates/notable things
+- Run a check locally, e.g., `devtools::check(document = FALSE)` or "Build &rarr; Check" in RStudio; fix all errors, warnings, and notes
+- Update `NEWS.md` file based on latest commits, add missing changes/updates/notable things
 - Update the `Date` field in the `DESCRIPTION` file to match the release date
+- Update version and date in `man/sos4R-package.Rd`
+- Update version in `DESCRIPTION`
+- Update version number in `NEWS.md`
 - Create a PR from `dev` to `master` and check the CI status, fix all problems
   - https://travis-ci.org/52North/sos4R
   - https://ci.appveyor.com/project/52North/sos4r
   - If there are problems with the `devel` release of R, you can use a local Docker container to run the checks while fixing them (from the path of the parten folder of `sos4R`): `docker run --rm -it -v $(pwd)/sos4R:/home/sos4R rocker/geospatial:devel bash`, switch to `/home`, then run the commands below (`R CMD build` & `check`)
-- Update version and date in `man/sos4R-package.Rd`
-- Update version in `DESCRIPTION`
-- Update version number in `NEWS.md`
 - Run **checks** again and fix all problems
   - In the parent directory of the project: `R CMD build sos4R; R CMD check --as-cran sos4R_<version number>.tar.gz` should have no errors, warnings, or notes
   - `revdepcheck::revdep_check()` for checking reverse dependencies
@@ -259,7 +250,8 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again, make necessary changes
 - Merge the PR
 - Update your local `master` to upstream's `master` branch
--_ Do the actual release_ with `devtools::release()` (which will ask you again if you did many of the steps before)
+- _Do the actual release_ with `devtools::release()` (which will ask you again if you did many of the steps before)
+- Wait for the confirmation link (via email) and fill in the online submission form
 - Wait for the good news, check where the package is in the queue with `foghorn::cran_incoming(pkg = "sos4R")`
 - When available on CRAN:
   - Create a git tag with the version number using the letter `v` followed by the version number (see above, must match `DESCRIPTION`), e.g. `v1.2.3`, and push it to the main repository

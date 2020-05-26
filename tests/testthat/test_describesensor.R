@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-05-03                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 context("DescribeSensor: request encoding")
 
 testsos <- SOS_Test(name = "testsensor", version = sos100_version)
@@ -89,7 +89,7 @@ test_that("errors if procedureDescriptionFormat, validTime, or outputFormat are 
                "outputFormat option not supported")
   expect_error(SosDescribeSensor(service = "dstest", version = sos200_version,
                                  procedure = "better_procedure",
-                                 validTime = GmlTimeInstant(GmlTimePosition(as.POSIXct("2019-01-01")))),
+                                 validTime = GmlTimeInstant(GmlTimePosition(parsedate::parse_iso_8601("2019-01-01")))),
                "procedureDescriptionFormat missing")
 })
 
@@ -145,7 +145,7 @@ test_that("validTime instant for KVP (2.0.0)", {
   ds <- SosDescribeSensor(service = sosService, version = sos@version,
                           procedure = "b",
                           procedureDescriptionFormat = "f",
-                          validTime = sosCreateTimeInstant(sos = sos, time = as.POSIXct("2019-01-01")))
+                          validTime = sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601("2019-01-01")))
 
   kvp <- encodeRequestKVP(obj = ds, sos = sos)
   expect_match(kvp, "validTime=2019-01-01T00%3A00%3A00")
@@ -168,8 +168,8 @@ test_that("validTime period for KVP (2.0.0)", {
                           procedure = "b",
                           procedureDescriptionFormat = "f",
                           validTime = sosCreateTimePeriod(sos = sos,
-                                                          begin = as.POSIXct("2019-01-01"),
-                                                          end = as.POSIXct("2019-02-02 02:22:00")))
+                                                          begin = parsedate::parse_iso_8601("2019-01-01"),
+                                                          end = parsedate::parse_iso_8601("2019-02-02 02:22:00")))
 
   kvp <- encodeRequestKVP(obj = ds, sos = sos)
   expect_match(kvp, "validTime=2019-01-01T00%3A00%3A00%2B00%3A00%2F2019-02-02T02%3A22%3A00%2B00%3A00")
@@ -186,7 +186,7 @@ test_that("procedure and description format for POX (2.0.0)", {
 test_that("validTime instant for POX (2.0.0)", {
   sos <- SOS_Test(name = "sensor20", version = sos200_version)
   ds <- SosDescribeSensor(service = sosService, version = sos@version, procedure = "great_procedure", procedureDescriptionFormat = "format",
-                          validTime = sosCreateTimeInstant(sos = sos, time = as.POSIXct("2019-05-05 05:05:05")))
+                          validTime = sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601("2019-05-05 05:05:05")))
   xml <- encodeRequestXML(obj = ds, sos = sos)
   encodedString <- stringr::str_replace_all(toString(xml), ">\\s*<", "><")
   expect_match(encodedString, "2019-05-05T05:05:05\\+00:00</gml:timePosition></gml:TimeInstant></swes:validTime>")
@@ -196,8 +196,8 @@ test_that("validTime period for POX (2.0.0)", {
   sos <- SOS_Test(name = "sensor20", version = sos200_version)
   ds <- SosDescribeSensor(service = sosService, version = sos@version, procedure = "great_procedure", procedureDescriptionFormat = "format",
                           validTime = sosCreateTimePeriod(sos = sos,
-                                                          begin = as.POSIXct("2019-04-04 04:04:04"),
-                                                          end = as.POSIXct("2019-05-05 05:05:05")))
+                                                          begin = parsedate::parse_iso_8601("2019-04-04 04:04:04"),
+                                                          end = parsedate::parse_iso_8601("2019-05-05 05:05:05")))
   xml <- encodeRequestXML(obj = ds, sos = sos)
   encodedString <- stringr::str_replace_all(toString(xml), ">\\s*<", "><")
   expect_match(encodedString, "2019-04-04T04:04:04\\+00:00</gml:beginPosition>")

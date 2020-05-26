@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-06-18                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # Dispatch function for all exchangeable parsers for OM elements.
@@ -238,7 +238,7 @@ parseResult <- function(obj, sos, verbose = FALSE) {
     if (verbose) cat("[parseResult] No non-text nodes in result, returning content.\n")
 
     # in O&M 2.0 there can be (literal) results of type MeasurementType
-    omTypeAttribute <- xml2::xml_attr(x = obj, attr = om20ResultTypeAttributeName, ns = sos@namespaces)
+    omTypeAttribute <- xml2::xml_attr(x = obj, attr = gmlResultTypeAttributeName, ns = sos@namespaces)
     xsiType <- xml2::xml_attr(x = obj, attr = xsiTypeName, ns = sos@namespaces)
     uom <- xml2::xml_attr(x = obj, attr = "uom")
 
@@ -284,6 +284,10 @@ parseResult <- function(obj, sos, verbose = FALSE) {
       if (is.na(result)) {
         result <- xml2::xml_text(x = children, trim = TRUE)
       }
+    }
+    else if (name == wmlMeasurementTimeseriesName) {
+      parsingFunction <- sosParsers(sos)[[wmlMeasurementTimeseriesName]]
+      result <- parsingFunction(children[[1]], sos, verbose)
     }
     else {
       warning(paste("[parseResult] Parsing of given result is NOT supported:",
@@ -334,58 +338,58 @@ parseComplexObservation <- function(obj, sos, verbose = FALSE) {
 }
 
 #
-# parseFOI ----
+# parseFOI
 # (not exchangeable)
 # parse sos:featureOfInterest to according Element of GML or SA
 #
 parseFOI <- function(obj, sos, verbose = FALSE) {
   if (verbose) cat("[parseFOI] starting...\n")
-  .foi <- NULL
+  foi <- NULL
 
   # has href attribute? if yes, use it!
-  .href <- xml2::xml_attr(x = obj, attr = "href")
-  if (!is.na(.href)) {
-    if (verbose) cat("[parseFOI] referenced FOI:", .href, "\n")
+  href <- xml2::xml_attr(x = obj, attr = "href")
+  if (!is.na(href)) {
+    if (verbose) cat("[parseFOI] referenced FOI:", href, "\n")
     # feature is referenced
-    .foi <- GmlFeatureProperty(href = .href)
+    foi <- GmlFeatureProperty(href = href)
   }
   else {
     # feature is available in the element
-    .feature <- xml2::xml_child(x = obj)
-    .name <- xml2::xml_name(x = .feature, ns = sos@namespaces)
+    feature <- xml2::xml_child(x = obj)
+    name <- xml2::xml_name(x = feature, ns = sos@namespaces)
 
-    if (verbose) cat("[parseFOI] inline FOI:", .name, "\n")
+    if (verbose) cat("[parseFOI] inline FOI:", name, "\n")
 
     # cannot use switch here, because it does not work with a ':' in the expresssion
-    if (.name == saSamplingPointName) {
-      .sp <- parseSamplingPoint(.feature, sos = sos)
-      .foi <- GmlFeatureProperty(feature = .sp)
+    if (name == saSamplingPointName) {
+      sp <- parseSamplingPoint(feature, sos = sos)
+      foi <- GmlFeatureProperty(feature = sp)
     }
-    else if (.name == gmlFeatureCollectionName) {
-      .foi <- parseFeatureCollection(.feature, sos = sos)
+    else if (name == gmlFeatureCollectionName) {
+      foi <- parseFeatureCollection(feature, sos = sos)
     }
-    else if (.name == wmlMonitoringPointName) {
-      .foi <- parseWmlMonitoringPoint(.feature, sos = sos)
+    else if (name == wmlMonitoringPointName) {
+      foi <- parseWmlMonitoringPoint(feature, sos = sos)
     }
-    else if (.name == samsSamplingFeatureName) {
-      .foi <- parseSams200SamplingFeature(.feature, sos = sos)
+    else if (name == samsSamplingFeatureName) {
+      foi <- parseSams200SamplingFeature(feature, sos = sos)
     }
-    else if (.name == saSamplingSurface) {
+    else if (name == saSamplingSurface) {
       warning("[parseFOI] No parsing for sa:SamplingSurface implemented!")
-      GmlFeatureProperty(href = .name)
+      GmlFeatureProperty(href = name)
     }
     else {
       warning("[parseFOI] No parsing for given feature implemented!")
-      GmlFeatureProperty(href = .name)
+      GmlFeatureProperty(href = name)
     }
   }
 
-  return(.foi)
+  return(foi)
 }
 
 
 #
-# parseTime ----
+# parseTime
 # (not exchangeable)
 # handles time instant, time period, and time reference
 #
@@ -408,15 +412,12 @@ parseTime <- function(obj, sos, verbose = FALSE) {
   else if (!is.na(.timeReference)) {
     if (verbose) cat("[parseTime] Found referenced time\n")
     .timeObject <- GmlTimeInstantProperty(href = .timeReference)
-    #if (is.null(.timeObject)) {
-    #  stop(paste0("XML document invalid. Time reference '", .timeReference ,"' not in document."))
-    #}
   }
   else {
     warning("Could not create GmlTimeObject from given O&M time object.
             Require gml:TimeInstant or gml:TimePeriod as children.")
     .timeObject <- GmlTimeInstant(timePosition = GmlTimePosition(
-      time = as.POSIXct(x = NA)))
+      time = parsedate::parse_iso_8601(NA)))
   }
 
   if (verbose) cat("[parseTime] Done:", toString(.timeObject), "\n")

@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-03-27                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 context("encoding GML: spatial")
 
 testsos <- SOS_Test(name = "testgml")
@@ -81,7 +81,7 @@ testsos <- SOS_Test(name = "testgml")
 # time position minimal ----
 #
 test_that("time position minimal", {
-  tpos <- GmlTimePosition(time = as.POSIXct("2019-01-01"))
+  tpos <- GmlTimePosition(time = parsedate::parse_iso_8601("2019-01-01"))
 
   encoded <- encodeXML(obj = tpos, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
@@ -93,7 +93,7 @@ test_that("time position minimal", {
 # time position all ----
 #
 test_that("time position all", {
-  tpos <- GmlTimePosition(time = as.POSIXct("2019-01-01"),
+  tpos <- GmlTimePosition(time = parsedate::parse_iso_8601("2019-01-01"),
                           frame = "the_frame",
                           calendarEraName = "the_era",
                           indeterminatePosition = "yes")
@@ -110,7 +110,7 @@ test_that("time position all", {
 # time instant ----
 #
 test_that("time instant", {
-  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
+  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = parsedate::parse_iso_8601("2019-01-01")))
   encoded <- encodeXML(obj = instant, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
@@ -124,7 +124,7 @@ test_that("time instant", {
 test_that("GML namespace of SOS is used", {
   sos1 <- SOS_Test(version = sos100_version)
   sos2 <- SOS_Test(version = sos200_version)
-  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
+  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = parsedate::parse_iso_8601("2019-01-01")))
 
   encoded1 <- encodeXML(obj = instant, sos = sos1)
   encoded2 <- encodeXML(obj = instant, sos = sos2)
@@ -136,7 +136,7 @@ test_that("GML namespace of SOS is used", {
 # time period ----
 #
 test_that("time period", {
-  period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
+  period <- sosCreateTimePeriod(sos = testsos, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-02-03"))
   encoded <- encodeXML(obj = period, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
 
@@ -148,7 +148,7 @@ test_that("time period", {
 # time interval ----
 #
 test_that("time interval", {
-  interval <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"),
+  interval <- sosCreateTimePeriod(sos = testsos, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-02-03"),
                                   timeInterval = GmlTimeInterval(interval = "everyother", unit = "hr", radix = as.integer(17), factor = as.integer(2)))
   encoded <- encodeXML(obj = interval, sos = testsos)
   encodedString <- stringr::str_replace_all(toString(encoded), ">\\s*<", "><")
@@ -187,7 +187,7 @@ context("encoding GML: temporal classes to KVP")
 # time instant ----
 #
 test_that("time instant", {
-  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = as.POSIXct("2019-01-01")))
+  instant <- GmlTimeInstant(timePosition = GmlTimePosition(time = parsedate::parse_iso_8601("2019-01-01")))
   encodedString <- encodeKVP(obj = instant, sos = testsos)
   expect_equal(encodedString, '2019-01-01T00:00:00+00:00')
 })
@@ -195,7 +195,7 @@ test_that("time instant", {
 # time period (SOS 1.0.0) ----
 #
 test_that("time period (SOS 1.0.0)", {
-  period <- sosCreateTimePeriod(sos = testsos, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
+  period <- sosCreateTimePeriod(sos = testsos, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-02-03"))
   encodedString <- encodeKVP(obj = period, sos = testsos)
   expect_equal(encodedString, '2019-01-01T00:00:00+00:00::2019-02-03T00:00:00+00:00')
 })
@@ -204,7 +204,7 @@ test_that("time period (SOS 1.0.0)", {
 #
 test_that("time period (SOS 2.0.0)", {
   testsos20 <- SOS_Test(name = "testgml20", version = sos200_version)
-  period <- sosCreateTimePeriod(sos = testsos20, begin = as.POSIXct("2019-01-01"), end = as.POSIXct("2019-02-03"))
+  period <- sosCreateTimePeriod(sos = testsos20, begin = parsedate::parse_iso_8601("2019-01-01"), end = parsedate::parse_iso_8601("2019-02-03"))
   encodedString <- encodeKVP(obj = period, sos = testsos20)
   expect_equal(encodedString, '2019-01-01T00:00:00+00:00/2019-02-03T00:00:00+00:00')
 })

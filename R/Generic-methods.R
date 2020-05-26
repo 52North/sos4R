@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -26,7 +26,7 @@
 # Created: 2010-09-20                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # sosRequest ----
@@ -164,7 +164,8 @@ if (!isGeneric("getDataAvailability")) {
                             offerings = list(NA),
                             verbose = sos@verboseOutput,
                             inspect = FALSE,
-                            saveOriginal = NULL) {
+                            saveOriginal = NULL,
+                            ...) {
                standardGeneric("getDataAvailability")
              })
 }

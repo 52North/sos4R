@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,9 +25,9 @@
 # Created: 2011-03-03                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
-################################################################################
+############################################################################## #
 # accessor functions
 if (!isGeneric("sosCaps"))
   setGeneric(name = "sosCaps", def = function(sos) {
@@ -464,60 +464,51 @@ setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SOS"),
             wantedOfferings <- lapply(offs, slot, name = "featureOfInterest")
             return(wantedOfferings)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "SosObservationOffering"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SosObservationOffering"),
           definition = function(obj) {
             return(obj@featureOfInterest)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmObservation"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmObservation"),
           definition = function(obj) {
             .foi <- obj@featureOfInterest
             if (is.list(.foi) && length(.foi) == 1)
               return(.foi[[1]])
             return(.foi)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmOM_Observation"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmOM_Observation"),
           definition = function(obj) {
             .foi <- obj@featureOfInterest
             if (is.list(.foi) && length(.foi) == 1)
               return(.foi[[1]])
             return(.foi)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmMeasurement"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmMeasurement"),
           definition = function(obj) {
             .foi <- obj@featureOfInterest
             if (is.list(.foi) && length(.foi) == 1)
               return(.foi[[1]])
             return(.foi)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "OmObservationCollection"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "OmObservationCollection"),
           definition = function(obj) {
             fois <- lapply(obj@members, sosFeaturesOfInterest)
             return(fois)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "list"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "list"),
           definition = function(obj) {
             fois <- lapply(obj, sosFeaturesOfInterest)
             return(fois)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "GmlFeatureCollection"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "GmlFeatureCollection"),
           definition = function(obj) {
             fois <- lapply(obj@featureCollection, sosFeaturesOfInterest)
             return(fois)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "DataAvailabilityMember"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "DataAvailabilityMember"),
           definition = function(obj) {
             return(obj@featureOfInterest)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "GmlFeatureProperty"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "GmlFeatureProperty"),
           definition = function(obj) {
             if (!is.null(obj@feature)) {
               return(sosFeaturesOfInterest(obj@feature))
@@ -526,13 +517,11 @@ setMethod(f = "sosFeaturesOfInterest",
               return(obj@href)
             }
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "SaSamplingPoint"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SaSamplingPoint"),
           definition = function(obj) {
             return(obj)
           })
-setMethod(f = "sosFeaturesOfInterest",
-          signature = signature(obj = "SamsSamplingFeature"),
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SamsSamplingFeature"),
           definition = function(obj) {
             return(obj)
           })
@@ -742,6 +731,18 @@ setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering"),
             warning("Could not convert time to R objects.")
             return(obj@time)
           })
+setMethod(f = "sosTime", signature = signature(obj = "SosObservationOffering_2.0.0"),
+          definition = function(obj, convert = TRUE) {
+            if (!convert)
+              return(data.frame("resultTime" = obj@resultTime, "phenomenonTime" = obj@phenomenonTime))
+
+            if (is(obj@resultTime, "GmlTimePeriod") && is(obj@phenomenonTime, "GmlTimePeriod")) {
+              return(data.frame("resultTime" = sosTime(obj@resultTime), "phenomenonTime" = sosTime(obj@phenomenonTime)))
+            }
+
+            warning("Could not convert time to R objects.")
+            return(data.frame("resultTime" = obj@resultTime, "phenomenonTime" = obj@phenomenonTime))
+          })
 setMethod(f = "sosTime", signature = signature(obj = "GmlTimePeriod"),
           definition = function(obj, ...) {
             start <- NA
@@ -850,10 +851,19 @@ setMethod(f = "sosResult", signature = signature(obj = "OmOM_Observation"),
           definition = function(obj, coordinates = FALSE) {
             if (coordinates){
               coords <- sosCoordinates(obj)
-              data <- merge(x = obj@result, y = coords)
-              return(data)
+              if (is.data.frame(obj@result)) {
+                data <- merge(x = obj@result, y = coords)
+                return(data)
+              } else {
+                stop("Unsupported result object, cannot retrieve coordinates: ",
+                     toString(obj@result))
+              }
             }
-            return(obj@result)
+            if (is.data.frame(obj@result)) {
+              return(obj@result)
+            } else {
+              return(sosResult(obj@result))
+            }
           })
 setMethod(f = "sosResult", signature = signature(obj = "OmMeasurement"),
           definition = function(obj, coordinates = FALSE) {
@@ -1227,6 +1237,12 @@ setMethod(f = "sosUOM",
           definition = function(obj) {
             uom <- sosUOM(obj@members)
             return(uom)
+          }
+)
+setMethod(f = "sosUOM",
+          signature = c(obj = "WmlDefaultTVPMeasurementMetadata"),
+          definition = function(obj) {
+            return(obj@uom)
           }
 )
 setMethod(f = "sosUOM",

@@ -28,7 +28,7 @@
 
 \title{Classes and Related Functions for "SosObservationOffering"}
 
-\description{\code{SosObservationOffering}s collect all metadata about a specific offerign in a Sensor Observation Service.}
+\description{\code{SosObservationOffering}s collect all metadata about a specific offering in a Sensor Observation Service.}
 
 \section{Objects from the Class}{
 Objects can be created by calls to the construction functions of the form \code{SosObservationOffering(...)}.

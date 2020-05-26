@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2013-03-06                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # sosRequest ----
@@ -402,6 +402,15 @@ setMethod("encodeRequestXML", "SosGetFeatureOfInterest_2.0.0",
 )
 
 #
+# sosFeaturesOfInterest("SOS_2.0.0") ----
+#
+setMethod(f = "sosFeaturesOfInterest", signature = signature(obj = "SOS_2.0.0"),
+          definition = function(obj, offerings = sosOfferingIds(obj)) {
+            return(sosOperations(obj)$GetFeatureOfInterest@parameters$featureOfInterest)
+          }
+)
+
+#
 # construction functions ----
 #
 SosGetObservation_2.0.0 <- function(
@@ -436,18 +445,13 @@ SosGetObservation_2.0.0 <- function(
     }
   })
 
-  if (is.na(responseFormat))
-    format <- sos200DefaultGetObsResponseFormat
-  else
-    format <- responseFormat
-
   new("SosGetObservation_2.0.0",
       request = sosGetObservationName,
       service = service,
       version = version,
       offering = offeringIDs,
       observedProperty = observedProperty,
-      responseFormat = format,
+      responseFormat = responseFormat,
       temporalFilter = temporalFilter,
       procedure = procedure,
       featureOfInterest = featureIDs,

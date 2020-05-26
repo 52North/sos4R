@@ -14,6 +14,7 @@
 \alias{sosCreateEventTime}
 \alias{sosCreateEventTime-methods}
 \alias{sosCreateEventTime,GmlTimeGeometricPrimitive-method}
+\alias{sosCreateEventTime,GmlTimeObject-method}
 \alias{sosCreateFeatureOfInterest}
 \alias{sosCreateFeatureOfInterest-methods}
 \alias{sosCreateFeatureOfInterest,ANY-method}
@@ -32,6 +33,12 @@
 
 \description{
 These methods can be seen as convenience functions or shortcuts to regularly used parameters in GetObservation requests to a Sensor Observation Service. The remove some complexity and target the most common cases, but also limit flexibility.
+
+NOTE: Whenever time objects are created from characters, note that functions may use your local timezone.
+All R time objects are UTC-based.
+All SOS queries use UTC timestamps.
+This can be confusing when you query data from an SOS located a different timezone or if the time stamp encoded in the request seems to mismatch your input at first glance.
+Therefore always check if the time period you retrieve matches what you need, and in general stick to using UTC time.
 }
 
 \usage{
@@ -66,13 +73,13 @@ sosCreateTime(sos, time, operator = sosDefaultTemporalOperator)
   \item{objectIDs}{Identifiers of a feature of interest list.}
   \item{spatialOps}{An object of class \code{\link{OgcSpatialOps-class}} which is inserted into the feature of interest element.}
   \item{bbox}{Shortcut to add a feature of interest with a \code{\link{GmlEnvelope-class}}, object must be a \code{matrix} as created by \code{sosCreateBBoxMatrix(...)}.}
-  \item{time}{Object of class \code{"GmlTimeGeometricPrimitive"} for \code{sosCreateEventTimeList}, or an object of class \code{POSIXt} for \code{sosCreateTimePeriod},or an object of class \code{character} for \code{sosCreateTime}.}
+  \item{time}{Object of class \code{"GmlTimeGeometricPrimitive"} for \code{sosCreateEventTimeList}, or an object of class \code{POSIXt} for \code{sosCreateTimePeriod},or an object of class \code{character} for \code{sosCreateTime}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
   \item{operator}{The operator to be used for the time in \code{sosCreateEventTimeList}, e.g. \samp{"TM_During"}.}
   \item{sos}{An object of class \code{SOS-class} for which the element is created. The \code{SOS} might for example be required for formatting settings.}
   \item{frame}{Provides a URI reference that identifies a description of the reference system.}
   \item{calendarEraName}{The name of the calendar era.}
-  \item{begin}{Object of class \code{POSIXt}.}
-  \item{end}{Object of class \code{POSIXt}.}
+  \item{begin}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
+  \item{end}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
   \item{indeterminatePosition}{Inexact temporal positions may be expressed using the optional indeterminatePosition parameter. This takes one of the following values: after, before, now, unknown.}
   \item{duration}{Duration of an interval using ISO 8601 syntax for temporal length.}
   \item{timeInterval}{An object of class \code{"GmlTimeIntervalOrNULL"} to be used in a \code{GmlTimePeriod-class}.}

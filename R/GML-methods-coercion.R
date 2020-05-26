@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-04-29                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 as.SpatialPolygons.GmlEnvelope = function(from) {
   # create clockwise, first row equals last row
@@ -57,13 +57,13 @@ as.SpatialPolygons.GmlEnvelope = function(from) {
                                               ID = "env1")),
                       proj4string = crs)
 }
-setAs("GmlEnvelope", "SpatialPolygons",
-      function(from) {
+setAs(from = "GmlEnvelope", to = "SpatialPolygons",
+      def = function(from) {
         as.SpatialPolygons.GmlEnvelope(from)
       }
 )
-setAs("GmlEnvelope", "Spatial",
-      function(from) {
+setAs(from = "GmlEnvelope", to = "Spatial",
+      def = function(from) {
         as.SpatialPolygons.GmlEnvelope(from)
       }
 )
@@ -71,13 +71,13 @@ setAs("GmlEnvelope", "Spatial",
 as.SpatialPoints.GmlPoint = function(from) {
   as(from@pos, "SpatialPoints")
 }
-setAs("GmlPoint", "SpatialPoints",
-      function(from) {
+setAs(from = "GmlPoint", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.GmlPoint(from)
       }
 )
-setAs("GmlPoint", "Spatial",
-      function(from) {
+setAs(from = "GmlPoint", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.GmlPoint(from)
       }
 )
@@ -88,13 +88,13 @@ as.SpatialPoints.GmlPointProperty = function(from) {
 
   as(from@point, "SpatialPoints")
 }
-setAs("GmlPointProperty", "SpatialPoints",
-      function(from) {
+setAs(from = "GmlPointProperty", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.GmlPointProperty(from)
       }
 )
-setAs("GmlPointProperty", "Spatial",
-      function(from) {
+setAs(from = "GmlPointProperty", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.GmlPointProperty(from)
       }
 )
@@ -106,13 +106,13 @@ as.SpatialPoints.GmlDirectPosition = function(from) {
   coords <- sosCoordinates(obj = from)
   sp::SpatialPoints(coords = cbind(lon = coords$lon, lat = coords$lat), proj4string = crs)
 }
-setAs("GmlDirectPosition", "SpatialPoints",
-      function(from) {
+setAs(from = "GmlDirectPosition", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.GmlDirectPosition(from)
       }
 )
-setAs("GmlDirectPosition", "Spatial",
-      function(from) {
+setAs(from = "GmlDirectPosition", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.GmlDirectPosition(from)
       }
 )
@@ -123,13 +123,13 @@ as.SpatialPoints.GmlFeatureProperty = function(from) {
 
   as(from@feature, "SpatialPoints")
 }
-setAs("GmlFeatureProperty", "SpatialPoints",
-      function(from) {
+setAs(from = "GmlFeatureProperty", to = "SpatialPoints",
+      def = function(from) {
         as.SpatialPoints.GmlFeatureProperty(from)
       }
 )
-setAs("GmlFeatureProperty", "Spatial",
-      function(from) {
+setAs(from = "GmlFeatureProperty", to = "Spatial",
+      def = function(from) {
         as.SpatialPoints.GmlFeatureProperty(from)
       }
 )

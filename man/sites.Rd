@@ -1,38 +1,36 @@
 \name{sites}
-\alias{sites}
 
+\alias{sites}
+\alias{sites-methods}
 \alias{sites,SOS_2.0.0-method}
 
 \title{
 This function queries a SOS v2.0 for its sites and returns them as SpatialPointsDataFrame
 }
+
 \description{
 Information about the registered sites in a SOS can be queried using this function. This function allows for different levels of detail and returns a SpatialPointsDataFrame.
 }
 \usage{
-sites(sos, empty = FALSE, timeInterval = NA_character_, includePhenomena = FALSE,
-      includeTemporalBBox = FALSE, phenomena = list())
+sites(sos,
+      begin = NA,
+      end = NA,
+      phenomena = list(),
+      empty = FALSE,
+      includePhenomena = FALSE,
+      includeTemporalBBox = FALSE,
+      ...)
 }
 
 \arguments{
-  \item{sos}{
-A SOS object from a call to \code{\link[sos4R]{SOS}} containing the URL of a SOS.
-}
-  \item{empty}{
-Whether also empty sites shall be included in the response.
-}
-  \item{timeInterval}{
-A character defining an ISO-String (ISO 8601), see also \link[xts]{xts}. Only sites with data within this interval will be retrieved.
-}
-  \item{includePhenomena}{
-Whether the phenomena shall be listed per location that can be observed.
-}
-  \item{includeTemporalBBox}{
-Whether the observation containing timespan of each phenomenon shall also be reported.
-}
-  \item{phenomena}{
-A list, vector or one-column data.frame with characters identifying the relevant phenomena; only sites where these phenomena can be observed are retrieved.
-}
+  \item{sos}{A SOS object from a call to \code{\link[sos4R]{SOS}} containing the URL of a SOS.}
+  \item{begin}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
+  \item{end}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
+  \item{phenomena}{A list, vector or one-column data.frame with characters identifying the relevant phenomena.}
+  \item{empty}{Whether also empty sites shall be included in the response.}
+  \item{includePhenomena}{Whether the phenomena shall also be reported in the result.}
+  \item{includeTemporalBBox}{Whether the observation containing timespan of each phenomenon shall also be reported.}
+  \item{...}{Named parameters passed on to other wrapper functions.}
 }
 
 \value{
@@ -44,20 +42,8 @@ Benedikt Graeler, Eike Hinderk Juerrens
 }
 
 \examples{
-## The function is currently defined as
-function (sos, empty = FALSE, timeInterval = NA_character_, listPhenomena = FALSE,
-    includeTemporalBBox = FALSE, phenomena = list())
-{
-    stopifnot(inherits(sos, "SOS_2.0.0"))
-    stopifnot(is.logical(empty))
-    stopifnot(is.character(timeInterval))
-    stopifnot(is.logical(listPhenomena))
-    stopifnot(is.logical(includeTemporalBBox))
-    phenomena <- .validateListOrDfColOfStrings(phenomena, "phenomena")
-    if (includeTemporalBBox && !listPhenomena) {
-        listPhenomena <- TRUE
-        warning("'listPhenomena' has been set to 'TRUE' as this is required for
-        'includeTemporalBBox'.")
-    }
-  }
+mySos <- SOS(url = "https://climate-sos.niwa.co.nz/",
+             binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+
+sites(sos = mySos)
 }

@@ -12,7 +12,7 @@
 
 \title{Bindings and Connecition Methods of OGC Sensor Observation Service}
 \description{
-The SOS comes with three possible methods of transfering data, HTTP GET, HTTP POST and SOAP.}
+The SOS comes with three possible methods of transferring data, HTTP GET, HTTP POST and SOAP.}
 
 \details{
 The \strong{POST} binding is described in the official SOS specification and should be the default method.

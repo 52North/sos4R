@@ -1,27 +1,21 @@
 \name{phenomena}
 
 \alias{phenomena}
-
+\alias{phenomena-methods}
 \alias{phenomena,SOS_2.0.0-method}
 
 \title{Function retrieve phenomena of a SOS v2.0}
-
 \description{
 This function queries a SOS v2.0 for all its phenomena
 }
 \usage{
-phenomena(sos, includeTemporalBBox = FALSE, includeSiteId = FALSE)
+phenomena(sos, includeTemporalBBox = FALSE, includeSiteId = FALSE, ...)
 }
 \arguments{
-  \item{sos}{
-  An SOS object from a call to \code{\link[sos4R]{SOS}} containing the URL of a SOS.
-}
-  \item{includeTemporalBBox}{
-Whether the observation containing timespan of each phenomenon shall also be reported.
-}
-  \item{includeSiteId}{
-Whether the sites shall be reported at which each phenomenon has been observed.
-}
+  \item{sos}{An SOS object from a call to \code{\link[sos4R]{SOS}} containing the URL of a SOS.}
+  \item{includeTemporalBBox}{Whether the observation containing timespan of each phenomenon shall also be reported.}
+  \item{includeSiteId}{Whether the sites shall be reported at which each phenomenon has been observed.}
+  \item{...}{Named arguments forwarded to other wrapper functions internally.}
 }
 \value{
 If only the argument \code{sos} is provided, this function returns a character vector with the phenomenon ids.
@@ -36,11 +30,8 @@ Benedikt Graeler, Eike Hinderk Juerrens
 }
 
 \examples{
-## The function is currently defined as
-function (sos, includeTemporalBBox = FALSE, listSites = FALSE)
-{
-    stopifnot(inherits(sos, "SOS_2.0.0"))
-    stopifnot(is.logical(timeInfo))
-    stopifnot(is.logical(sites))
-  }
+mySos <- SOS(url = "https://climate-sos.niwa.co.nz/",
+             binding = "KVP", useDCPs = FALSE, version = "2.0.0")
+
+phenomena(sos = mySos)
 }

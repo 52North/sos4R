@@ -1,36 +1,20 @@
 # Test environments
 
-* local R 3.5.3
-* Ubuntu 14.04 (Trusty) on Travis CI
+* local R 3.6.2
+* R-release, R-devel, R-oldrel on Travis CI (Ubuntu 14.04 Trusty)
 * Windows on Appveyor
+* R-devel and R 3.6.3 on CircleCI (using rocker/geospatial image)
 * R-Hub
-* win-builder (using devtools)
+* win-builder (using devtools) for R-release and R-devel
 
 ## R CMD check results
 
 No errors.
 No warnings.
-
-1 NOTE:
-
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Daniel Nuest <daniel.nuest@uni-muenster.de>'
-
-New submission
-
-Package was archived on CRAN
-
-Possibly mis-spelled words in DESCRIPTION:
-  Geospatial (36:31)
-  OGC (3:67, 36:54)
-
-CRAN repository db overrides:
-  X-CRAN-Comment: Archived on 2018-06-17 as check problems were not
-    corrected despite reminders.
+No notes.
 
 ## Other
 
-The package was "archived on 2018-06-17 as check problems were not corrected despite reminders."
-Issues could now finally be resolved with a complete overhaul of implementation (switching from XML to xml2) and we kindly request re-publication on CRAN.
+Resubmission after being informed about (i) invalid file URIs and (ii) failures on platforms without support for long doubles (both by Uwe Ligges).
 
-Comments during manual inspection were handled with this resubmission.
+This is a re-release following a CRAN takedown earlier this year. The package is only released now as new feature implementations were pending.

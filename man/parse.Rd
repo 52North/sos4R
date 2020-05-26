@@ -84,6 +84,12 @@
 \alias{parseEnvelope}
 \alias{parseGetObservationByIdResponse}
 
+\alias{sosIsListFieldAvailable}
+\alias{gmlGetReferencedNode}
+\alias{gmlIsNodeReferenced}
+
+\alias{sos4R_caches}
+
 \title{Parsing Functions for XML Documents and Elements}
 
 \description{The functions decode a given XML object to an \R representation, which can be an object of a specific class, a list, a named character vector, \ldots}
@@ -132,9 +138,14 @@ parseTimeInstant(obj, sos)
 parseTimeInstantProperty(obj, sos)
 parseTimePeriod(obj, sos)
 parseTimePosition(obj, sos)
-parseTimeObject(obj, sos, timeObjectMap = list(), verbose = FALSE)
+parseTimeObject(obj, sos, verbose = FALSE)
 parseTruthObservation(obj, sos, verbose = FALSE)
 parseValues(values, fields, encoding, sos, verbose = FALSE)
+
+sosIsListFieldAvailable(listField)
+
+gmlGetReferencedNode(sos, doc, node, verbose = FALSE)
+gmlIsNodeReferenced(sos, node)
 }
 
 \arguments{
@@ -146,12 +157,14 @@ parseValues(values, fields, encoding, sos, verbose = FALSE)
   \item{fields}{Field information  in \code{parseValues(...)}, a named list.}
   \item{file}{Name of the file to be parsed in \code{sosParse(...)}.}
   \item{encoding}{Encoding information in \code{parseValues(...)}, an object of class \code{SweTextBlock}.}
-  \item{timeObjectMap}{A named list of time objects passed on during parsing (name is the id) to resolve in-document references.}
   \item{...}{Additional arguments that are parsed to \code{xml2::read_xml(..)}.}
+  \item{listField}{Object checked to be of type \code{list} and at least one item long.}
+  \item{doc}{XML document.}
+  \item{node}{XML node.}
 }
 
 \details{
-The naming of the functions follow the following rule: parse[optional: namespace prefix][name of the XML element to be parsed]
+The naming of the functions follow the following rule: \code{parse[optional: namespace prefix][name of the XML element to be parsed]}
 
 Not all parsing function that have a \code{SOS} object or \code{verbose} in their signature, but few actually use it at this points of development. Some of the parsing functions are \strong{exchangeable} when creating a new SOS connection. Please see the examples!
 
@@ -162,6 +175,8 @@ Functions parsing time rely on the slot \code{timeFormat} of \code{SOS} objects.
 \code{parseNoParsing} is a convenience function that directly returns the object without any changes.
 
 \code{sosParse} allows parsing of files for all elements that have a parsers registered with the given SOS.
+
+The parsing uses an internal cache to store within-document references to other nodes.
 }
 
 \value{An objects of a specific class depending on the parsing method and the passed object, possibly even lists or named character vectors.}
@@ -197,6 +212,9 @@ obsId <- getObservationById(sos = mySOS, observationId = "o_3508493",
 .observationFiles <- subset(.files, .startWithO_)
 
 obsId <- parseFile(sos = mySOS, file = .observationFiles[[1]])
+
+# list caches
+ls(get("sos4R_caches"))
 }
 
 }

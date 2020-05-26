@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:GetObservationResponse xmlns:sos="http://www.opengis.net/sos/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/waterml/2.0 http://schemas.opengis.net/waterml/2.0/waterml2.xsd http://www.opengis.net/waterml/2.0 http://schemas.opengis.net/waterml/2.0/timeseries.xsd http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd">
+    <sos:observationData>
+        <om:OM_Observation xmlns:om="http://www.opengis.net/om/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:wml2="http://www.opengis.net/waterml/2.0" gml:id="o_1">
+            <om:type xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement"/>
+            <om:phenomenonTime>
+                <gml:TimePeriod xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="phenomenonTime_1">
+                    <gml:beginPosition>2019-01</gml:beginPosition>
+                    <gml:endPosition>2019-06</gml:endPosition>
+                </gml:TimePeriod>
+            </om:phenomenonTime>
+            <om:resultTime>
+                <gml:TimeInstant xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="ti_4447c0675943a71913f11f9c79b6fb4c21d5200b648acf65153b042d2cadac31">
+                    <gml:timePosition>2019-06-15T00:00:00.000+12:00</gml:timePosition>
+                </gml:TimeInstant>
+            </om:resultTime>
+            <om:procedure xlink:href="C"/>
+            <om:observedProperty xlink:href="MTHLY_EXTR_MAX_TEMP" xlink:title="MTHLY: EXTR MAX TEMP"/>
+            <om:featureOfInterest xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="1056" xlink:title="KERIKERI EWS"/>
+            <om:result>
+                <wml2:MeasurementTimeseries gml:id="timeseries.1">
+                    <wml2:metadata>
+                        <wml2:MeasurementTimeseriesMetadata>
+                            <wml2:temporalExtent xlink:href="#phenomenonTime_1"/>
+                        </wml2:MeasurementTimeseriesMetadata>
+                    </wml2:metadata>
+                    <wml2:defaultPointMetadata>
+                        <wml2:DefaultTVPMeasurementMetadata>
+                            <wml2:uom code="°C"/>
+                            <wml2:interpolationType xlink:href="http://www.opengis.net/def/timeseriesType/WaterML/2.0/continuous" xlink:title="Instantaneous"/>
+                        </wml2:DefaultTVPMeasurementMetadata>
+                    </wml2:defaultPointMetadata>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-01</wml2:time>
+                            <wml2:value>31.2</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-02</wml2:time>
+                            <wml2:value>29.4</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-03</wml2:time>
+                            <wml2:value>27.0</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-04</wml2:time>
+                            <wml2:value>23.5</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-05</wml2:time>
+                            <wml2:value>22.1</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                    <wml2:point>
+                        <wml2:MeasurementTVP>
+                            <wml2:time>2019-06</wml2:time>
+                            <wml2:value>20.2</wml2:value>
+                        </wml2:MeasurementTVP>
+                    </wml2:point>
+                </wml2:MeasurementTimeseries>
+            </om:result>
+        </om:OM_Observation>
+    </sos:observationData>
+</sos:GetObservationResponse>

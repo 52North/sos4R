@@ -233,12 +233,14 @@
 \alias{sosName,SosGetObservation_2.0.0-method}
 \alias{sosProcedures,SosObservationOffering_2.0.0-method}
 \alias{sosResponseFormats,SosObservationOffering_2.0.0-method}
+\alias{sosTime,SosObservationOffering_2.0.0-method}
 \alias{SOS_2.0.0-class}
 \alias{print,SOS_2.0.0-method}
 \alias{show,SOS_2.0.0-method}
 \alias{sosBinding,SOS_2.0.0-method}
 \alias{sosUrl,SOS_2.0.0-method}
 \alias{toString,SOS_2.0.0-method}
+\alias{sosFeaturesOfInterest,SOS_2.0.0-method}
 
 \title{Class, and Construction and Accessor Functions for "SOS"}
 
@@ -406,7 +408,7 @@ sosBinding(mySOS)
 \dontrun{
 # create a SOS connetion with a specific connection method and time format
 mysos <- SOS(url = "http://mysos.org/sos",
-    binding = "KVP", timeFormat = "%Y-%m-%d")
+    binding = "KVP", timeFormat = "\%Y-\%m-\%d")
 
 # turn on verbose output for all methods and functions
 SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)

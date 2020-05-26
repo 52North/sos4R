@@ -1,17 +1,27 @@
-# sos4R 0.4.0.9002
+---
+title: sos4R News
+---
+# sos4R 0.4.0
 
 - Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)
-- Add wrapper functions for more convenient access to phenomena, stations and data without OGC SWE terms and SOS specifics, see [new vignette](../vignettes/sos4R-vignette-05-wrapper-functions.html)
+- Add **wrapper functions** for more convenient access to phenomena, stations and data without OGC SWE terms and SOS specifics, see new vignette "Wrapper Functions for easier SOS access"
 - Give warnings if time cannot be parsed with the format provided in the SOS object
 - Do not save file name as attribute of returned object anymore (adds complexity, not documented/widely used)
 - Manage namespaces as part of the SOS object (allows user manipulation via `sos@namespaces`)
 - Accessor functions return lists only if the content is complex: `sosName()`, `sosObservedProperties()`, `sosProcedures()` `sosFeatureIds()`, `sosUOM()` now return character vectors if applied to collections or lists
 - Add help page for coercion functions, see `` ?`coerce-sos4R` ``
 - `sosTime(..)` now always returns base R classes, i.e. a list with `begin` and `end` based on `POSIXct` (change default for `convert` parameter to `TRUE`).
-- `getObservation(..)` now supports multiple offerings for SOS 2.0.0 (in conformance with the specfication)
+- `getObservation(..)` now supports multiple offerings for SOS 2.0.0 (in conformance with the specification)
 - Drop "Created SOS for URL" message after creation
 - Drop `checkRequest` methods, they were 90% "TODO" comments; actually existing checks preserved in functions where sensible
 - Drop support for KML (Keyhole Markup Language), because it is not a data format, the parsing was never implemented, and the only SOS using it provided it specifically for display in Google Earth
+- Store the caches for parsing in an environment, not in global variables
+- Add CircleCI continuous integration tests
+- Restructure vignettes (and render problematic ones only locally with pgkdown website)
+
+# sos4R 0.3.1
+
+- Bugfix release: don't set classes for `xml2` (requires version `1.2.2`, see #148)
 
 # sos4R 0.3.0
 
@@ -61,10 +71,10 @@
 - Added 'ug/m3' and 'http://www.opengis.net/def/property/OGC/0/FeatureOfInterest' to known list of fields > converted with sosConvertDouble and sosConvertString respectively
 - Fixed weathersos demo
 - Moved vignette to now suggested directory vignettes/, see http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes
-- Changed DESCRIPTION file: moved xtable to Suggests - section, set ByteCompile: TRUE, added Authors@R (http://journal.r-project.org/archive/2012-1/RJournal_2012-1_Hornik~et~al.pdf), changed minumum R version to 2.14.0
+- Changed DESCRIPTION file: moved xtable to Suggests - section, set ByteCompile: TRUE, added Authors@R (http://journal.r-project.org/archive/2012-1/RJournal_2012-1_Hornik~et~al.pdf), changed minimum R version to 2.14.0
 
 - Updated cheat sheet and vignette: added link to Bugzilla
-- Added minor improvements for sensor description parsing and coecion: sosCoordinates(SensorML) tries to handle 'easting'/'northing', 'longitude'/'latitude', and 'elevation'/'altitude' coordinates and subsequently plotting does not break if 'x'/'y' are not given.
+- Added minor improvements for sensor description parsing and coercion: sosCoordinates(SensorML) tries to handle 'easting'/'northing', 'longitude'/'latitude', and 'elevation'/'altitude' coordinates and subsequently plotting does not break if 'x'/'y' are not given.
 - Added function to reset the parsers to default: sos <- SosResetParsingFunctions(sos)
   
 # sos4R 0.2-7
@@ -102,12 +112,12 @@
 - Added rudimentary support for KML responses (no parsing)
 - Changed parser detection, now uses mime type, too. This changes parser exchangeability for known mime types!
 - Added attribute to observations (if response is saved) with file name (sosAttributeFileName)
-- Added %\VignetteDepends{xtable} to vignette and depedency xtable as well - got NOTEd for that in R 2.13 checks
+- Added %\VignetteDepends{xtable} to vignette and dependency xtable as well - got NOTEd for that in R 2.13 checks
 
 # sos4R 0.2-1
 
-- Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot funktion.
-- Extended saveOrginal parameter, now it also accepts file names to be used for the document to be saved.
+- Fixed in sosGetCRS(...) which breaks if there is no bounding box given in an offering, broke even plot function.
+- Extended saveOriginal parameter, now it also accepts file names to be used for the document to be saved.
 - Extended parsing of SensorML, adding slots for all parsed elements
 - Added parsing of exception reports to parseFile(...)
 - Based vignette completely on dowloaded files for releases
@@ -254,7 +264,7 @@
 
 # sos4R 0.1-03
 
-- Some fixes in toString methods (errorenous recursive paste calls)
+- Some fixes in toString methods (erroneous recursive paste calls)
 - Fixed bug in parsePoint, which returned a GmlDirectPosition
 - Fixed potential bug in parseSosCapabilities and getCapabilities (occured if no version attribute is given)
 - Fixed potential NULL access in parseSosObservationOffering(...)

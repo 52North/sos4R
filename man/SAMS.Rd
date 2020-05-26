@@ -1,4 +1,4 @@
-\name{SamsSamplingFeature-class}
+\name{SAMS}
 \Rdversion{1.1}
 \docType{class}
 
@@ -18,6 +18,8 @@
 
 \alias{SamsShape-class}
 \alias{SamsShape}
+\alias{SamsShapeOrNULL}
+\alias{SamsShapeOrNULL-class}
 \alias{print,SamsShape-method}
 \alias{show,SamsShape-method}
 \alias{toString,SamsShape-method}

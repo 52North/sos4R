@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-03-28                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 context("GetDataAvailability: parsing")
 library(webmockr)
 library(httr)
@@ -151,6 +151,38 @@ test_that("parseGetDataAvailabilityResponse() can handle in-document references 
   expect_equivalent(sosTime(dams[[3]]), tp2)
   expect_equivalent(sosTime(dams[[4]]), tp2)
   expect_equivalent(sosTime(dams[[5]]), tp1)
+})
+
+test_that("parseGetDataAvailabilityResponse() returns a correct parsed list of DataAvailabilityMembers if a response is received", {
+  webmockr::stub_registry_clear()
+  webmockr::stub_request("get", uri = "http://example.com/sos-list-phenomena?service=SOS&request=GetCapabilities&acceptVersions=2.0.0&sections=All&acceptFormats=text%2Fxml") %>%
+    webmockr::wi_th(
+      headers = list("Accept" = "application/xml")
+    ) %>%
+    webmockr::to_return(
+      status = 200,
+      body = readr::read_file("../responses/Capabilities_200_Example.com.xml"),
+      headers = list("Content-Type" = "application/xml")
+    )
+
+  sos <- SOS(version = sos200_version, url = "http://example.com/sos-list-phenomena", binding = "KVP")
+  doc <- xml2::read_xml("../responses/Issue-158.xml")
+  dams <- parseGetDataAvailabilityResponse(obj = doc, sos)
+
+  expect_false(is.null(dams))
+  expect_true(is.list(dams))
+  expect_length(dams, 4)
+
+  dam <- dams[[1]]
+
+  expect_equal(dam@procedure, "40458D_7ad6ee986167b4a706a6f791e8196cb4", info = "procedure")
+  expect_equal(dam@observedProperty, "https://example.com/vocab-service/Carbon_monoxide", info = "observedProperty")
+  expect_equal(dam@featureOfInterest, "40458D_IT_0e32b32a52a0cded425a4075afa65f93", info = "featureOfInterest")
+  expect_true(is.object(dam@phenomenonTime))
+  expect_true(isS4(dam@phenomenonTime))
+  expect_true(is(dam@phenomenonTime,"GmlTimePeriod"))
+  expect_equal(parsedate::format_iso_8601(dam@phenomenonTime@beginPosition@time), "2020-01-05T17:02:00+00:00", info = "phenomenonTime::start")
+  expect_equal(parsedate::format_iso_8601(dam@phenomenonTime@endPosition@time), "2020-01-30T14:01:00+00:00", info = "phenomenonTime::end")
 })
 
 webmockr::disable("httr")

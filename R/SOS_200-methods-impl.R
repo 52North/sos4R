@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2013-08-28                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 # main request method ----
@@ -118,7 +118,7 @@
         dcp <- unlist(dcp)
       }
 
-      if (is.null(dcp) || is.na(dcp) || !length(dcp)) {
+      if (any(is.null(dcp)) || any(is.na(dcp)) || !length(dcp)) {
         dcp <- list("Post", "application/xml", sos@url)
         if (verbose) cat("[.sosRequest_2.0.0] Could not get DCP from operation description. This is OK for first GetCapabilities request. Using", toString(dcp), "\n")
       }
@@ -299,7 +299,7 @@
   if (verbose)
     cat("[.getFeatureOfInterest_2.0.0] REQUEST:\n\n", toString(gfoi), "\n")
 
-  response = sosRequest(sos = sos,
+  response <- sosRequest(sos = sos,
                         request = gfoi,
                         verbose = verbose,
                         inspect = inspect)
@@ -376,7 +376,7 @@
                                 spatialFilter = filterShape,
                                 valueReferenceTemporalFilter = valueReferenceTemporalFilter)
 
-  response = sosRequest(sos = sos,
+  response <- sosRequest(sos = sos,
                         request = go,
                         verbose = verbose,
                         inspect = inspect)
@@ -594,7 +594,7 @@
   mandatory <- .kvpBuildRequestBase(sos, sosGetObservationName)
   if (verbose) cat("[.sosEncodeRequestKVPGetObservation_2.0.0]", "mandatory elements: ", mandatory, "\n")
 
-  optionals = c()
+  optionals <- c()
   namespaces <- c()
 
   if (length(obj@offering) > 0) {

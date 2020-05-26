@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-10-19                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 #
 #
@@ -35,7 +35,7 @@ as.data.frame.OmObservation = function(x, row.names, optional, ...) {
 }
 setAs(from = "OmObservation", to = "data.frame",
       def = function(from) {
-        as.data.frame.OmObservation(from)
+        as.data.frame.OmObservation(x = from)
       }
 )
 
@@ -47,7 +47,7 @@ as.data.frame.OmMeasurement = function(x, row.names, optional, ...) {
 }
 setAs(from = "OmMeasurement", to = "data.frame",
       def = function(from) {
-        as.data.frame.OmMeasurement(from)
+        as.data.frame.OmMeasurement(x = from)
       }
 )
 
@@ -132,7 +132,7 @@ setAs(from = "OmObservation", to = "Spatial",
       }
 )
 
-################################################################################
+############################################################################## #
 #
 .resultDataFrameToSpatialPointsDataFrame <- function(result, crs) {
   coordCols <- match(c(sosDefaultColumnNameLon,

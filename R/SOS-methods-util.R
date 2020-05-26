@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2010-09-21                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 #
 # conversion methods ----
 #
@@ -47,6 +47,14 @@ sosConvertString <- function(x, sos) {
 
 sosConvertLogical <- function(x, sos) {
   return(as.logical(x = x))
+}
+
+sosConvertInteger <- function(x, sos) {
+  return(as.integer(x = x))
+}
+
+sosConvertFactor <- function(x, sos) {
+  return(as.factor(x = x))
 }
 
 
@@ -104,10 +112,6 @@ setMethod(f = "sosCreateTime",
               .l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
                                                       operator = operator, seperator = "::")
             }
-            else if (regexpr(pattern = "P", text = time) > -1) {
-              .l <- .sosCreateEventTimeListFromISOPeriod(sos = sos,
-                                                         time = time, operator = operator)
-            }
             else if (regexpr(pattern = "/", text = time) > -1) {
               .l <- .sosCreateEventTimeListFromPeriod(sos = sos, time = time,
                                                       operator = operator, seperator = "/")
@@ -124,12 +128,9 @@ setMethod(f = "sosCreateTime",
           }
 )
 
-#
-# test: encodeXML(.sosCreateEventTimeListFromInstance(sos = sos, time = "2011-01-01", operator = SosSupportedTemporalOperators()[["TM_Equals"]])[[1]], sos = sos)
-#
 .sosCreateEventTimeListFromInstance <- function(sos, time,
                                                 operator = SosSupportedTemporalOperators()[["TM_Equals"]]) {
-  .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(time))
+  .ti <- sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601(time))
   .l <- sosCreateEventTimeList(time = .ti,
                                operator = SosSupportedTemporalOperators()[[operator]])
 
@@ -150,37 +151,23 @@ setMethod(f = "sosCreateTime",
   else {
     if (is.null(.end)) {
       # no end time:
-      .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.start))
+      .ti <- sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601(.start))
       .l <- sosCreateEventTimeList(time = .ti,
                                    operator = SosSupportedTemporalOperators()[[ogcTempOpTMAfterName]])
     }
     else if (nchar(.start) > 0) {
-      .tp <- sosCreateTimePeriod(sos = sos, begin = as.POSIXct(.start),
-                                 end = as.POSIXct(.end))
+      .tp <- sosCreateTimePeriod(sos = sos, begin = parsedate::parse_iso_8601(.start),
+                                 end = parsedate::parse_iso_8601(.end))
       .l <- sosCreateEventTimeList(.tp)
     }
     else if (nchar(.start) < 1) {
       # no start time:
-      .ti <- sosCreateTimeInstant(sos = sos, time = as.POSIXct(.end))
+      .ti <- sosCreateTimeInstant(sos = sos, time = parsedate::parse_iso_8601(.end))
       .l <- sosCreateEventTimeList(time = .ti,
                                    operator = SosSupportedTemporalOperators()[[ogcTempOpTMBeforeName]])
     }
   }
   return(.l)
-}
-
-.sosCreateEventTimeListFromISOPeriod <- function(sos, time, operator) {
-  #	* 2005-08-09T18:31:42P3Y6M4DT12H30M17S: bestimmt eine Zeitspanne von 3 Jahren, 6 Monaten, 4 Tagen 12 Stunden, 30 Minuten und 17 Sekunden ab dem 9. August 2005 "kurz nach halb sieben Abends".
-  #	* P1D: "Bis morgen zur jetzigen Uhrzeit." Es koennte auch "PT24H" verwendet werden, doch erstens waeren es zwei Zeichen mehr, und zweitens wuerde es bei der Zeitumstellung nicht mehr zutreffen.
-  #	* P0003-06-04T12:30:17
-  #	* P3Y6M4DT12H30M17S: gleichbedeutend mit dem ersten Beispiel, allerdings ohne ein bestimmtes Startdatum zu definieren
-  #	* PT72H: "Bis in 72 Stunden ab jetzt."
-  #	* 2005-08-09P14W: "Die 14 Wochen nach dem 9. August 2005."
-  #	* 2005-08-09/2005-08-30
-  #	* 2005-08-09--30
-  #	* 2005-08-09/30: "Vom 9. bis 30. August 2005."
-
-  warning("Function .sosCreateEventTimeListFromISOPeriod not implemented yet!")
 }
 
 setMethod(f = "sosCreateEventTime",
@@ -594,13 +581,9 @@ setMethod(f = "sosGetCRS",
 # cheat sheet ----
 #
 sosCheatSheet <- function() {
-  .path <- file.path(find.package("sos4R", lib.loc = NULL),
-                     .sosCheatSheetDocumentName)
+  path <- file.path(find.package("sos4R", lib.loc = NULL),
+                    "sos4r_cheat-sheet.pdf")
 
-  # see code of 'vignette' function
-  .z <- list(file = .sosCheatSheetDocumentName, PDF = .path)
-  .z$topic <- "sos4R Cheat Sheet"
-  class(.z) <- "vignette"
-
-  return(.z)
+  cat("Cheat sheet file available at ", path,"\n")
+  return(path)
 }

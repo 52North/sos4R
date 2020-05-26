@@ -8,21 +8,29 @@
 
 <title>Class, and Construction and Accessor Functions for "SOS" — SOS • sos4R</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +38,10 @@
 
 
 
-<meta property="og:title" content="Class, and Construction and Accessor Functions for "SOS" — SOS" />
 
+<meta property="og:title" content="Class, and Construction and Accessor Functions for "SOS" — SOS" />
 <meta property="og:description" content="Base class of a connection to a Sensor Observation Service." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -76,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -86,22 +98,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -112,7 +124,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -127,6 +138,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -138,9 +150,7 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Base class of a connection to a Sensor Observation Service.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>SOS</span>(<span class='no'>url</span>,
@@ -153,7 +163,7 @@
     <span class='kw'>switchCoordinates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultDCPs</a></span>(),
-    <span class='kw'>additionalKVPs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+    <span class='kw'>additionalKVPs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
     <span class='kw'>namespaces</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>SosAllNamespaces</a></span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>version</span>),
     <span class='no'>...</span>)
 
@@ -168,10 +178,10 @@
          <span class='kw'>switchCoordinates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
          <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
          <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'><a href='Defaults.html'>SosDefaultDCPs</a></span>(),
-         <span class='kw'>additionalKVPs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(),
+         <span class='kw'>additionalKVPs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
          <span class='kw'>namespaces</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>SosAllNamespaces</a></span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='no'>version</span>),
          <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -236,15 +246,14 @@
       <td><p>Additional parameters that are passed on to the <code><a href='GetObservation.html'>getObservation</a></code> call that is done within this function.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="objects-from-the-class"><a class="anchor" href="#objects-from-the-class"></a>Objects from the Class</h2>
 
     <p>Objects can be created by calls to the construction function of the form <code>SOS(...)</code>.</p>
 <p>Object from the class can be used in calls to function for metadata retrieval of sensors (<code>link{describeSensor-methods}</code>) and observation data queries (<code>link{getObservation-methods}</code> and <code>link{getObservationById-methods}</code>)</p>
-    
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p><dl class='dl-horizontal'>
+    <p></p><dl'>
     <dt><code>url</code>:</dt><dd><p>Object of class <code>"character"</code>: The endpoint of the service, e.g. <code>http://myUrl.org/SOS1/sos</code>.</p></dd>
     <dt><code>binding</code>:</dt><dd><p>Object of class <code>"character"</code>: The binding, or transport protocol, see <code><a href='Supported.html'>SosSupportedBindings</a></code> for available ones.</p></dd>
     <dt><code>version</code>:</dt><dd><p>Object of class <code>"character"</code>: The connected service's version, e.g. <code>"1.0.0"</code>.</p></dd>
@@ -258,11 +267,12 @@
     <dt><code>useDCPs</code>:</dt><dd><p>Object of class <code>"logical"</code>: Trigger for not using DCP endpoints from the capabilities but just the URL defined when creating the SOS connection. If there is a specific endpoint for a specific binding the user must make sure the configured binding and DCP match.</p></dd>
     <dt><code>dcpFilter</code>:</dt><dd><p>Object of class <code>"list"</code>: Named list of regular expressions to be applied (using <code>grep</code>) to DCPs if there is more than one for the chosen binding.</p></dd>
     <dt><code>addtionalKVPs</code>:</dt><dd><p>A nam of class <code>"list"</code>: Named list of key-value-pairs to be appended to an KVP request.</p></dd>
-  </dl>
-    
+  
+</dl>
+
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
-    <p></p><dl class='dl-horizontal'>
+    <p></p><dl'>
     <dt>sosAbstract</dt><dd><p><code>signature(obj = "SOS")</code>: ...</p></dd>
     <dt>sosBinding</dt><dd><p><code>signature(sos = "SOS")</code>: The protocol used for a connection to the service.</p></dd>
     <dt>sosCapabilitiesDocumentOriginal</dt><dd><p><code>signature(sos = "SOS")</code>: To retrieve the full original service metadata document.</p></dd>
@@ -311,25 +321,22 @@
     <dt>sosBinding</dt><dd><p><code>signature(sos = "SOS_2.0.0")</code>: ...</p></dd>
     <dt>sosRequest</dt><dd><p><code>signature(sos = "SOS_2.0.0", request = "OwsServiceOperation", verbose = "logical", inspect = "logical")</code>: ...</p></dd>
     <dt>sosUrl</dt><dd><p><code>signature(sos = "SOS_2.0.0")</code>: access the endpoint of the SOS object.</p></dd>
-	 </dl>
-    
+	 
+</dl>
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The construction functions returns an object of class <code>SOS-class</code>.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>From the introduction of the specification document: &#8220;The goal of SOS is to provide access to observations from sensors and sensor systems in a standard way that is consistent for all sensor systems including remote, in-situ, fixed and mobile sensors.&#8221;</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Na, A., Priest, M. (Eds.), Sensor Observation Service, Open Geospatial Consortium Inc., OGC 06-009r6, Version: 1.0</p>
 <p>The document is available for download at <a href='https://www.opengeospatial.org/standards/sos'>https://www.opengeospatial.org/standards/sos</a>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>See also creation function <code>SOS</code> and the package vignette for general description of use.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"SOS"</span>)</div><div class='output co'>#&gt; Virtual Class "SOS" [package "sos4R"]
@@ -378,34 +385,34 @@
 <span class='fu'>sosContents</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; Object of class SosContents with observation offerings (names):
 #&gt; 	 ws2500, ws2500-internal, wwu-ws-kli-hsb, wxt520 </div><div class='input'><span class='fu'>sosTime</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; $ws2500
 #&gt; $ws2500$begin
-#&gt; [1] "2015-05-18 08:35:00 CEST"
+#&gt; [1] "2015-05-18 08:35:00 UTC"
 #&gt; 
 #&gt; $ws2500$end
-#&gt; [1] "2018-01-06 05:45:00 CET"
+#&gt; [1] "2018-01-06 05:45:00 UTC"
 #&gt; 
 #&gt; 
 #&gt; $`ws2500-internal`
 #&gt; $`ws2500-internal`$begin
-#&gt; [1] "2015-05-18 08:35:00 CEST"
+#&gt; [1] "2015-05-18 08:35:00 UTC"
 #&gt; 
 #&gt; $`ws2500-internal`$end
-#&gt; [1] "2018-01-06 05:45:00 CET"
+#&gt; [1] "2018-01-06 05:45:00 UTC"
 #&gt; 
 #&gt; 
 #&gt; $`wwu-ws-kli-hsb`
 #&gt; $`wwu-ws-kli-hsb`$begin
-#&gt; [1] "2015-03-29 22:00:00 CEST"
+#&gt; [1] "2015-03-29 22:00:00 UTC"
 #&gt; 
 #&gt; $`wwu-ws-kli-hsb`$end
-#&gt; [1] "2018-03-08 14:10:00 CET"
+#&gt; [1] "2018-03-08 14:10:00 UTC"
 #&gt; 
 #&gt; 
 #&gt; $wxt520
 #&gt; $wxt520$begin
-#&gt; [1] "2015-05-18 08:50:45 CEST"
+#&gt; [1] "2015-05-18 08:50:45 UTC"
 #&gt; 
 #&gt; $wxt520$end
-#&gt; [1] "2018-07-10 12:00:00 CEST"
+#&gt; [1] "2018-07-10 12:00:00 UTC"
 #&gt; 
 #&gt; </div><div class='input'><span class='fu'>sosFeaturesOfInterest</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; $ws2500
 #&gt; $ws2500[[1]]
@@ -430,72 +437,54 @@
 #&gt; [1] "Vaisala_WXT520"
 #&gt; 
 #&gt; </div><div class='input'><span class='fu'>sosBinding</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; [1] "KVP"</div><div class='input'>
-</div># NOT RUN {
-# create a SOS connetion with a specific connection method and time format
-mysos <- SOS(url = "http://mysos.org/sos",
-    binding = "KVP", timeFormat = "<!-- %Y-%m-%d") -->
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># create a SOS connetion with a specific connection method and time format</span>
+<span class='no'>mysos</span> <span class='kw'>&lt;-</span> <span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://mysos.org/sos"</span>,
+    <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>timeFormat</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d"</span>)
 
-# turn on verbose output for all methods and functions
-SOS(url = "http://mysos.org/sos", verboseOutput = TRUE)
+<span class='co'># turn on verbose output for all methods and functions</span>
+<span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://mysos.org/sos"</span>, <span class='kw'>verboseOutput</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-# get the meaning of an exception code
-sosExceptionCodeMeaning(ex@exceptionCode)
+<span class='co'># get the meaning of an exception code</span>
+<span class='fu'>sosExceptionCodeMeaning</span>(<span class='no'>ex</span>@<span class='kw'>exceptionCode</span>)
 
-# create a CRS object from a URN CRS string
-sosGetCRS("urn:ogc:def:crs:EPSG:4217")
+<span class='co'># create a CRS object from a URN CRS string</span>
+<span class='fu'>sosGetCRS</span>(<span class='st'>"urn:ogc:def:crs:EPSG:4217"</span>)
 
-# create a SOS for a specific binding at a specific endpoint
-SOS(url = "http://localhost:8080/52n-sos/sos/pox", binding = "POX",
-		useDCPs = FALSE)
+<span class='co'># create a SOS for a specific binding at a specific endpoint</span>
+<span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://localhost:8080/52n-sos/sos/pox"</span>, <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"POX"</span>,
+                <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-# create a SOS using only the DCPs from the capabilities that match a specific
-# pattern with the default binding
-SOS(url = "http://localhost:8080/52n-sos/sos/service",
-		dcpFilter = list("POX" = "/pox"))
-# }
-<div class='input'>
-</div></pre>
+<span class='co'># create a SOS using only the DCPs from the capabilities that match a specific</span>
+<span class='co'># pattern with the default binding</span>
+<span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://localhost:8080/52n-sos/sos/service"</span>,
+                <span class='kw'>dcpFilter</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"POX"</span> <span class='kw'>=</span> <span class='st'>"/pox"</span>))
+}</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#objects-from-the-class">Objects from the Class</a></li>
-
-      <li><a href="#slots">Slots</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Daniel Nuest <a href='mailto:daniel.nuest@uni-muenster.de'>daniel.nuest@uni-muenster.de</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -9,8 +9,6 @@
 \alias{SosFeatureOfInterest}
 \alias{SosFeatureOfInterestOrNULL-class}
 
-\alias{FoiOrNULL-class}
-
 \title{Class and Construction Function for "SosFeatureOfInterest"}
 
 \description{Element in a GetObservation request to a Sensor Observation service to constrain the observations to be returned regarding the observed feature.}
@@ -18,7 +16,7 @@
 \section{Objects from the Class}{
 Objects can be created by calls to the construction function of the form \code{SosFeatureOfInterest(...)}.
 
-\code{SosFeatureOfInterestOrNULL} and \code{FoiOrNULL} are virtual classes to model optional slots of containing elements: No objects may be created from them.
+\code{SosFeatureOfInterestOrNULL} is a virtual class to model optional slots of containing elements: No objects may be created from them.
 }
 
 \usage{
@@ -61,8 +59,6 @@ See also \code{\linkS4class{SosGetObservation}}, and the convenience creation fu
 \examples{
 showClass("SosFeatureOfInterest")
 showClass("SosFeatureOfInterestOrNULL")
-
-showClass("FoiOrNULL")
 }
 
 \keyword{classes}

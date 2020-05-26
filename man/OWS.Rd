@@ -173,8 +173,6 @@ Capabilities:
 }
 
 \section{Extends}{
-% TODO explain class hierarchy
-
 \bold{OwsCapabilities_1.1.0:}
 Class \code{"\linkS4class{OwsCapabilities}"}, directly.
 

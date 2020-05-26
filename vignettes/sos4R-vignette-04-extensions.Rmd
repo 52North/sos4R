@@ -1,5 +1,5 @@
 ---
-title: "sos4R: Extending package functions and advanced configuration"
+title: "Extending sos4R and advanced configuration"
 author:
   name: "Daniel Nüst"
   affiliation: Institute for Geoinformatics, University of Münster, Germany.
@@ -106,7 +106,7 @@ names(sosEncoders(mySOS))
 ```
 
 Here the idea of organizing the encoding functions becomes clear:
-One base encoding function is given, which is a generic method that must exist for alle elements that need to be encoded.
+One base encoding function is given, which is a generic method that must exist for all elements that need to be encoded.
 
 ```{r encoders_own, eval=FALSE}
 myPostEncoding <- function(object, sos, verbose) {
@@ -117,7 +117,7 @@ mySOS2 = SOS(sosUrl(mySOS),
 	encoders = SosEncodingFunctions("POST" = myPostEncoding))
 ```
 
-Encoding functions can be overriden for many specific objects.
+Encoding functions can be overridden for many specific objects.
 The signature of the encoding function consists of the object, `obj`, a SOS object, `sos`, and the optional `verbose` parameter.
 
 ```{r encoders_show}
@@ -212,7 +212,7 @@ names(SosDisabledParsers())
 
 This is also the recommended way to start if you want to set-up your own parsers (given you have responses in XML) and an alternative to debugging if you want to inspect responses directly.
 
-The next example shows how the response (in this case the request is intentionally incorrent and triggers an exception) is passed through as an object of class `xml_document`:
+The next example shows how the response (in this case the request is intentionally incorrect and triggers an exception) is passed through as an object of class `xml_document`:
 
 ```{r reponse_passthrough}
 disabledParserSOS <- SOS(sosUrl(mySOS),
@@ -339,7 +339,7 @@ When working with `sos4R`, two kinds of errors must be handled: service exceptio
 The former can occur when a request is invalid or a service encounters internal exceptions.
 The latter can mean a bug or illegal settings within the package.
 
-To understand both types of errorenous states, this sections explains the contents of the exception reports returned by the service and the functionalities to investigate the inner workings of the package.
+To understand both types of erroneous states, this sections explains the contents of the exception reports returned by the service and the functionalities to investigate the inner workings of the package.
 
 ### OWS Service Exceptions
 

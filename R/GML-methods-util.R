@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2019-05-15                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 #
 # GML Utility Functions and methos
 #
@@ -33,8 +33,8 @@
 # Checks if the current node refers to another node by an in-documents reference
 #
 gmlIsNodeReferenced <- function(sos, node) {
-  return(!is.na(xml2::xml_attr(x = node, attr = "href")) &&
-           startsWith(xml2::xml_attr(x = node, attr = "xlink:href", ns = sos@namespaces), "#"))
+  href <- xml2::xml_attr(x = node, attr = "xlink:href", ns = sos@namespaces)
+  return(!is.na(href) && startsWith(href, "#"))
 }
 #
 # Returns the referenced node in doc that is referenced in node

@@ -1,4 +1,4 @@
-################################################################################
+############################################################################## #
 # Copyright (C) 2019 by 52 North                                               #
 # Initiative for Geospatial Open Source Software GmbH                          #
 #                                                                              #
@@ -25,7 +25,7 @@
 # Created: 2015-01-27                                                          #
 # Project: sos4R - https://github.com/52North/sos4R                            #
 #                                                                              #
-################################################################################
+############################################################################## #
 
 context("capabilities: composite phenomenon")
 
@@ -140,7 +140,7 @@ test_that("title", {
 
 test_that("CRS from boundedBy", {
   expect_s4_class(sosGetCRS(mapserver), "CRS")
-  expect_match(sosGetCRS(mapserver)@projargs, "init=epsg:4326")
+  expect_equal(slotNames(sosGetCRS(mapserver)), "projargs")
 })
 
 test_that("time accessor function for SOS", {
@@ -240,7 +240,10 @@ test_that("can extract bbox from bounds of offering", {
   offering <- parseSosObservationOffering(obj = doc, sos = testsos)
 
   box <- sosBoundedBy(offering, bbox = TRUE)
-  expect_equal(toString(box), "-44.7159634789651, -171.370441435668, 67.972129750194, 142.92375463033")
+  expect_equal(box[1,1], -44.7159634)
+  expect_equal(box[2,1], -171.370441)
+  expect_equal(box[1,2],  67.9721297)
+  expect_equal(box[2,2], 142.9237546)
 })
 
 context("parsing: operations metadata")

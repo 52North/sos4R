@@ -8,21 +8,29 @@
 
 <title>Classes and Construction Methods for Temporal Operator Classes — TM_Operators • sos4R</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +38,10 @@
 
 
 
-<meta property="og:title" content="Classes and Construction Methods for Temporal Operator Classes — TM_Operators" />
 
+<meta property="og:title" content="Classes and Construction Methods for Temporal Operator Classes — TM_Operators" />
 <meta property="og:description" content="Classes for temporal operators from OpenGIS(R) Filter Encoding used in filters in GetObservation requests." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -76,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sos4R.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -86,22 +98,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/sos4R-vignette-01-quickstart.html">sos4R: Accessing Sensor Observation Services from R - Quickstart</a>
+      <a href="../articles/sos4R-vignette-02-ogc-sos.html">OGC SWE and SOS</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-02-ogc-sos.html">sos4R: OGC SWE and SOS</a>
+      <a href="../articles/sos4R-vignette-03-sos-operations.html">SOS Operations</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-03-sos-operations.html">sos4R: SOS Operations</a>
+      <a href="../articles/sos4R-vignette-04-extensions.html">Extending sos4R and advanced configuration</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-04-extensions.html">sos4R: Extending package functions and advanced configuration</a>
+      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">Wrapper Functions for easier SOS access</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-05-wrapper-functions.html">sos4R: Wrapper Functions for easier SOS access</a>
+      <a href="../articles/sos4R-vignette-10-egu-2020.html">EGU2020 Blog Post</a>
     </li>
     <li>
-      <a href="../articles/sos4R-vignette-99-services.html">sos4R: List of SOSs</a>
+      <a href="../articles/sos4R-vignette-99-services.html">List of SOS services</a>
     </li>
   </ul>
 </li>
@@ -112,7 +124,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/52North/sos4R">
@@ -127,6 +138,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -138,16 +150,14 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Classes for temporal operators from OpenGIS(R) Filter Encoding used in filters in GetObservation requests.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>TM_After</span>(<span class='kw'>propertyName</span> <span class='kw'>=</span> <span class='no'>sosDefaultTempOpPropertyName</span>, <span class='no'>time</span>)
 <span class='fu'>TM_Before</span>(<span class='kw'>propertyName</span> <span class='kw'>=</span> <span class='no'>sosDefaultTempOpPropertyName</span>, <span class='no'>time</span>)
 <span class='fu'>TM_During</span>(<span class='kw'>propertyName</span> <span class='kw'>=</span> <span class='no'>sosDefaultTempOpPropertyName</span>, <span class='no'>time</span>)
 <span class='fu'>TM_Equals</span>(<span class='kw'>propertyName</span> <span class='kw'>=</span> <span class='no'>sosDefaultTempOpPropertyName</span>, <span class='no'>time</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -160,30 +170,28 @@
       <td><p>A time instant or period to be used as the temporal operand.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of the respective class, so <code>TM_After</code>, <code>TM_Before</code>, <code>TM_During</code> or <code>TM_Equals</code></p>
-    
     <h2 class="hasAnchor" id="objects-from-the-class"><a class="anchor" href="#objects-from-the-class"></a>Objects from the Class</h2>
 
     <p>Objects can be created by calls of the form <code>new("TM_After", ...)</code>.</p>
-    
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p><dl class='dl-horizontal'>
+    <p></p><dl'>
     <dt><code>time</code>:</dt><dd><p>Object of class <code>"GmlTimeInstant"</code></p></dd>
     <dt><code>propertyName</code>:</dt><dd><p>Object of class <code>"character"</code></p></dd>
-  </dl>
-    
+  
+</dl>
+
     <h2 class="hasAnchor" id="extends"><a class="anchor" href="#extends"></a>Extends</h2>
 
     <p>Class <code>"<a href='OGC.html'>OgcBinaryTemporalOp</a>"</code>, directly.
 Class <code>"<a href='OGC.html'>OgcBinaryTemporalOpOrNULL</a>"</code>, by class "OgcBinaryTemporalOp", distance 2.</p>
-    
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
-    <p></p><dl class='dl-horizontal'>
+    <p></p><dl'>
     <dt>encodeXML</dt><dd><p><code>signature(obj = "TM_After", sos = "SOS")</code>: ...</p></dd>
     <dt>show</dt><dd><p><code>signature(object = "TM_After")</code>: ...</p></dd>
     <dt>encodeXML</dt><dd><p><code>signature(obj = "TM_Before", sos = "SOS")</code>: ...</p></dd>
@@ -192,17 +200,16 @@ Class <code>"<a href='OGC.html'>OgcBinaryTemporalOpOrNULL</a>"</code>, by class 
     <dt>show</dt><dd><p><code>signature(object = "TM_During")</code>: ...</p></dd>
     <dt>encodeXML</dt><dd><p><code>signature(obj = "TM_Equals", sos = "SOS")</code>: ...</p></dd>
     <dt>show</dt><dd><p><code>signature(object = "TM_Equals")</code>: ...</p></dd>
-	 </dl>
-    
+	 
+</dl>
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Vretanos, Panagiotis A. (Ed.), OpenGIS(R) Filter Encoding Implementation Specification, OGC 04-095, Version: 1.1.0</p>
 <p>See the schema file: <a href='http://schemas.opengis.net/sos/1.0.0/ogc4sos.xsd'>http://schemas.opengis.net/sos/1.0.0/ogc4sos.xsd</a>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='GetObservation.html'>SosGetObservation</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>showClass</span>(<span class='st'>"TM_After"</span>)</div><div class='output co'>#&gt; Class "TM_After" [package "sos4R"]
@@ -242,62 +249,45 @@ Class <code>"<a href='OGC.html'>OgcBinaryTemporalOpOrNULL</a>"</code>, by class 
 #&gt; Extends: 
 #&gt; Class "OgcBinaryTemporalOp", directly
 #&gt; Class "OgcBinaryTemporalOpOrNULL", by class "OgcBinaryTemporalOp", distance 2</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># create times to use for operators</span>
-<span class='no'>t1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateTimeInstant</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>weathersos</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>())
-<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateTimePeriod</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>weathersos</span>, <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010-03-01 12:15"</span>),
-                          <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2010-03-02 12:15"</span>))
+<span class='no'>t1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateTimeInstant</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>weathersos</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())
+<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sosCreate.html'>sosCreateTimePeriod</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>weathersos</span>, <span class='kw'>begin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='st'>"2010-03-01 12:15"</span>),
+                          <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='st'>"2010-03-02 12:15"</span>))
 
 <span class='co'># create temporal operator</span>
 <span class='no'>afterNow</span> <span class='kw'>&lt;-</span> <span class='fu'>TM_After</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>t1</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>afterNow</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>afterNow</span>)
 <span class='fu'><a href='encodeXML-methods.html'>encodeXML</a></span>(<span class='no'>t1</span>, <span class='no'>sos</span>)
 
 <span class='no'>during</span> <span class='kw'>&lt;-</span> <span class='fu'>TM_During</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>p1</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>during</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>during</span>)
+}</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#objects-from-the-class">Objects from the Class</a></li>
-
-      <li><a href="#slots">Slots</a></li>
-
-      <li><a href="#extends">Extends</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Daniel Nuest <a href='mailto:daniel.nuest@uni-muenster.de'>daniel.nuest@uni-muenster.de</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daniel Nuest.</p>
+  <p>Developed by Daniel Nuest, Ben Graeler, Benjamin Pross, Eike Hinderk Juerrens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

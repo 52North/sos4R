@@ -1,5 +1,5 @@
 ---
-title: "sos4R: List of SOSs"
+title: "List of SOS services"
 author:
   name: "Daniel Nüst"
   affiliation: Institute for Geoinformatics, University of Münster, Germany.
@@ -9,10 +9,6 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: true
-vignette: >
-  %\VignetteIndexEntry{6. List of SOS instances}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -48,7 +44,7 @@ More information: https://sdf.ndbc.noaa.gov/sos/
 
 This SOS supports **CSV** as a response format.
 
-```{r ioos}
+```{r ioos, eval=FALSE}
 ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
               useDCPs = FALSE,
               timeFormat = "%Y-%m-%dT%H:%M:%SZ")
@@ -62,7 +58,7 @@ obs
 
 ## NOAA National Data Buoy Center
 
-```{r ndbc}
+```{r ndbc, eval=FALSE}
 ndbc <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
             binding = "KVP")
 ndbc
@@ -82,7 +78,7 @@ sosContents(pegel)
 
 ## Axiom Data Science Demo SOS
 
-```{r}
+```{r, eval=FALSE}
 axiom <- SOS(url = "http://dev.demo.i52nsos.axiomdatascience.com/sos", binding = "KVP")
 axiom
 sosContents(axiom)
@@ -125,13 +121,6 @@ MVCO_WHOI <- SOS("http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos")
 sosContents(MVCO_WHOI)
 ```
 
-## VITO SOS - Antwerp air quality
-
-```{r idea}
-idea <- SOS(url = "http://sensorweb.vito.be:8080/IDEA_52nSOSv3.2/sos")
-sosContents(idea)
-```
-
 ## Wupperverband FLUGSS
 
 About: https://fluggs.wupperverband.de/v2p/web/fluggs
@@ -148,7 +137,7 @@ SOS by [MONALISA](http://www.monalisa-project.eu/en/home/Pages/default.aspx) pro
 
 About: http://monalisasos.eurac.edu/sos/
 
-```{r monalisa}
+```{r monalisa, eval=FALSE}
 monalisa <- SOS(url = "http://monalisasos.eurac.edu/sos/service", binding = "KVP", version = "2.0.0")
 sosContents(monalisa)
 ```
@@ -181,4 +170,38 @@ sosResult(discharge29808)
 # service offline - HTTP 503
 #niwaClimate <- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 #sosContents(niwaClimate)
+```
+
+## ncSOS
+
+### UCAR unidata
+
+[https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS](https://www.unidata.ucar.edu/software/tds/current/reference/Services.html#SOS)
+
+```{r unidata}
+#
+```
+
+### Applied Science Associates
+
+[https://github.com/asascience-open/ncSOS/](https://github.com/asascience-open/ncSOS/)
+
+```{r asascience}
+# MARACOOS, http://sos.maracoos.org/dev/catalog.html?dataset=wflow700-agg
+# http://sos.maracoos.org/dev/sos/wflow700-agg.ncml
+
+# http://sos.maracoos.org/pre/catalog/nerrs_ag/soschwq/catalog.html?dataset=nerrs_ag/soschwq/soschwq.ncml
+#http://sos.maracoos.org/pre/sos/nerrs_ag/soschwq/soschwq.ncml
+
+# http://sos.maracoos.org/thredds/catalog/mddnr_ag/Jug_Bay/catalog.html?dataset=mddnr_ag/Jug_Bay/Jug_Bay.ncml
+# Capabilities document: http://sos.maracoos.org/stable/sos/mddnr_ag/Jug_Bay/Jug_Bay.ncml
+jugbay <- SOS(url = "http://sos.maracoos.org/stable/sos/mddnr_ag/Jug_Bay/Jug_Bay.ncml", binding = "KVP")
+jugbay
+sosContents(jugbay)
+
+jugbay_observations <- getObservation(jugbay,
+                                      offering = sosOfferings(jugbay)[[1]],
+                                      procedure = sosProcedures(jugbay)[[1]],
+                                      eventTime = sosCreateTime(jugbay, "2020-01-01::2020-01-31"))
+str(jugbay_observations)
 ```

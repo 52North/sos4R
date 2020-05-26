@@ -33,11 +33,15 @@
 \alias{SosDefaults2}
 \alias{SosDefaultParsingOptions}
 
+\alias{sos200DefaultGetObsResponseFormat}
+
+\alias{sosConvertFactor}
+\alias{sosConvertInteger}
 
 \title{Default Parameter Settings and Handling Functions}
 
 \description{
-These values are default parameters and handling functions for connections and requests to, as well as response processing of ansers from, Sensor Observation Services. These allow to simplify a SOS connection for the most common use cases and non-expert users.
+These values are default parameters and handling functions for connections and requests to, as well as response processing of answers from, Sensor Observation Services. These allow to simplify a SOS connection for the most common use cases and non-expert users.
 }
 
 \usage{
@@ -59,9 +63,9 @@ SosDefaultParsingOptions()
 }
 
 \arguments{
-  \item{\dots}{Named references to functions to be used for the respective element during parsing, encoding oder conversion, e.g. \code{"myUnit" = myUnitParser}.}
+  \item{\dots}{Named references to functions to be used for the respective element during parsing, encoding or conversion, e.g. \code{"myUnit" = myUnitParser}.}
   \item{include}{A list of names of elements whose functions shall be included in the returned list, e.g. \code{include = c("GetObservation", "DescribeSensor")}. This inclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
-  \item{exclude}{A list of names of elements whose functions shall be excluced in the returned list, e.g. \code{exclude = c("DescribeSensor")}. This exclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
+  \item{exclude}{A list of names of elements whose functions shall be excluded in the returned list, e.g. \code{exclude = c("DescribeSensor")}. This exclusion is done \bold{after} replacing the default functions based on the \code{...} argument.}
   \item{sos}{An object of class \code{SOS}.}
 }
 
@@ -146,10 +150,11 @@ myEncoding <- function(object, v) {
 sos = SOS(url = "http://mysos.com/sos",
 		encoders = SosEncodingFunctions("POST" = myPostEncoding))
 
+
 # Use custom converting function and connection method. This mechanism works the
 # same for encoders and decoders.
 myConverters <- SosDataFieldConvertingFunctions(
-	"myNumericUnit" = sosConvertDouble,
+	"myNumericUnit" = sosConvertDouble)
 mySos <- SOS(sos.url, binding = "KVP", dataFieldConverters = myConverters)
 sosDataFieldConverters(mySos)
 
@@ -159,12 +164,11 @@ describeSensor(sos, sosProcedures(sos)[[1]])
 
 # replace the parsing functions with the default ones
 sos <- SosResetParsingFunctions(sos)
+
 }
 
-\dontrun{
 # a named list of all defaults
 SosDefaults()
-}
 
 # parsing options used by xml2
 SosDefaultParsingOptions()
