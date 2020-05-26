@@ -624,7 +624,7 @@ test_that("POX with offering object in list and not in list (2.0.0)", {
 # FOI retrieval can be disabled (tested with POX, 2.0.0) ----
 #
 test_that("FOI retrieval can be disabled (tested with POX, 2.0.0)", {
-  #skip_on_cran()
+  skip_on_cran()
 
   mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service",
                version = sos200_version,
