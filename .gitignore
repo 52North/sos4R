@@ -34,3 +34,5 @@ vignettes/sos4R.toc
 cache/
 \.vscode/
 revdep/
+
+vignettes/figure/
