@@ -216,7 +216,7 @@ Thematical filtering (phenomena) support the values of the previous functions as
 Spatial filters are either sites, or a bounding box.
 Temporal filter is a time period during which observations are made.
 
-Without a temporal extent, the used SOS only returns the last measurement.
+<!-- Without a temporal extent, the used SOS only returns the last measurement.
 
 ```{r getData_single}
 observationData <- getData(sos = mySos,
@@ -232,7 +232,7 @@ attributes(observationData[[3]])
 ```
 
 Request more data with a temporal extent for all sites.
-
+-->
 **Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
 
 ```{r getData_temporal}
@@ -274,6 +274,7 @@ observationData <- getData(sos = mySos,
        )
 str(observationData)
 ```
+
 
 You can also retrieve data for phenomena from multiple sites.
 
