@@ -1,6 +1,11 @@
 ---
 title: sos4R News
 ---
+# sos4R 0.4.1
+
+- Bugfix release to fix checks on CRAN (after switch to R 4.0 and new projection strings from R-spatial packages)
+- Update README according to https://wiki.52north.org/Documentation/GitHubProjectDocumentation
+
 # sos4R 0.4.0
 
 - Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)

@@ -1,8 +1,8 @@
 Package: sos4R
 Type: Package
 Title: Client for OGC Sensor Observation Services
-Version: 0.4.0.9000
-Date: 2020-04-22
+Version: 0.4.1
+Date: 2020-06-09
 Authors@R:
   c(person(given = "Daniel",
            family = "Nuest",

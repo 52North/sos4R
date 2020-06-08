@@ -5,15 +5,15 @@ author:
   - "Eike H. Jürrens, 52°North GmbH, Münster, Germany (e.h.juerrens@52north.org)"
   - "Benedikt Gräler, 52°North GmbH, Münster, Germany (b.graeler@52north.org)"
   - "Simon Jirka, 52°North GmbH, Münster, Germany (s.jirka@52north.org)"
-output:
-  pdf_document:
-    toc: true
-    toc_depth: 2
-    fig_caption: true
-    df_print: kable
-classoption: a4paper
 #output:
-#  rmarkdown::html_vignette
+#  pdf_document:
+#    toc: true
+#    toc_depth: 2
+#    fig_caption: true
+#    df_print: kable
+#classoption: a4paper
+output:
+  rmarkdown::html_vignette
 abstract: >
   Time series data of in-situ measurements are the key to many environmental studies.
   The first challenge in any analysis typically arises when the data needs to be imported into the analysis framework.

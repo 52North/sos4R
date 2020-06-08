@@ -39,10 +39,10 @@ jobs:
   release:
     working_directory: ~/main
     docker:
-      - image: rocker/geospatial:3.6.3
+      - image: rocker/geospatial:4.0.0
     steps:
       - devtoolscheck:
-          rversion: "3.6.3"
+          rversion: "4.0.0"
 
 workflows:
   version: 2
