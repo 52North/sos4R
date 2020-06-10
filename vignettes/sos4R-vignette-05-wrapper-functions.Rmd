@@ -10,7 +10,7 @@ output:
     toc: true
     toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{5. Convenient wrapper functions}
+  %\VignetteIndexEntry{Wrapper Functions for easier SOS access}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -125,7 +125,6 @@ You can filter sites using phenomena and temporal extent.
 ```{r sites_filtered_by_phenomena}
 sites_filtered_by_phenomena <- sites(sos = mySos, phenomena = phenomena[3,])
 nrow(sites_filtered_by_phenomena@data)
-nrow(sites@data)
 str(sites_filtered_by_phenomena)
 ```
 

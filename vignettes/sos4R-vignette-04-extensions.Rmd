@@ -17,7 +17,7 @@ abstract: |
 
   The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
 vignette: >
-  %\VignetteIndexEntry{4. Extending sos4R}
+  %\VignetteIndexEntry{Extending sos4R and advanced configuration}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

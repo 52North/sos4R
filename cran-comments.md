@@ -1,9 +1,9 @@
 # Test environments
 
-* local R 3.6.2
+* local R 4.0.1
 * R-release, R-devel, R-oldrel on Travis CI (Ubuntu 14.04 Trusty)
 * Windows on Appveyor
-* R-devel and R 3.6.3 on CircleCI (using rocker/geospatial image)
+* R-devel and R 4.0.0 on CircleCI (using rocker/geospatial image)
 * R-Hub
 * win-builder (using devtools) for R-release and R-devel
 
@@ -15,6 +15,4 @@ No notes.
 
 ## Other
 
-Resubmission after being informed about (i) invalid file URIs and (ii) failures on platforms without support for long doubles (both by Uwe Ligges).
-
-This is a re-release following a CRAN takedown earlier this year. The package is only released now as new feature implementations were pending.
+Resubmission after being informed about (i) invalid unit tests errors. These errors could be traced back to changes in other packages and could be fixed.

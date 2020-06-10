@@ -19,7 +19,7 @@ abstract: |
 
   The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
 vignette: >
-  %\VignetteIndexEntry{2. OGC concepts and standards (SWE, SOS)}
+  %\VignetteIndexEntry{Introduction to OGC SWE and SOS}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
