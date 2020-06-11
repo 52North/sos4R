@@ -1,5 +1,8 @@
 # sos4R developer documentation
 
+[![Build Status](https://travis-ci.org/52North/sos4R.png?branch=dev)](https://travis-ci.org/52North/sos4R)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/52North/sos4R?branch=dev&svg=true)](https://ci.appveyor.com/project/52North/sos4R)
+
 <!-- TOC START min:2 max:4 link:true update:true -->
 - [Requirements](#requirements)
 - [Package structure](#package-structure)
@@ -20,11 +23,16 @@
 <!-- part of this page previously published at https://wiki.52north.org/Geostatistics/Sos4R -->
 
 This file contains information for developers of the [R](http://r-project.org/) package `sos4R`.
-Documentation for users can be found in the package's vignette (see `browseVignettes("sos4R")`).
+Documentation for users can be found in the package's vignettes (see `browseVignettes("sos4R")`).
+
+sos4R is developed on GitHub using the [fork & pull development model](https://help.github.com/articles/using-pull-requests/#fork--pull).
+The [main repository's issue tracker](https://github.com/52North/sos4R/issues) is used to coordinate development.
+
+The `master` branch represents the current version that is [published on CRAN](https://CRAN.R-project.org/package=sos4R), the `dev` branch is the current development version.
 
 ## Requirements
 
-* **System packages (e.g. on Ubuntu 18.04)**
+* **System packages (e.g., on Ubuntu 18.04)**
     * r-base-dev
     * libxml2-dev
     * libgdal-dev
@@ -237,7 +245,7 @@ A new release shall be uploaded to CRAN after testing and under the following pr
 - Update version and date in `man/sos4R-package.Rd`
 - Update version in `DESCRIPTION`
 - Update version number in `NEWS.md`
-- Create a PR from `dev` to `master` and check the CI status, fix all problems
+- Create a PR from `dev` to `master` and check the CI status, fix all problems (for quick bugfix releases, you may create a PR from your fork or a bugfix branch straight to `master`)
   - https://travis-ci.org/52North/sos4R
   - https://ci.appveyor.com/project/52North/sos4r
   - If there are problems with the `devel` release of R, you can use a local Docker container to run the checks while fixing them (from the path of the parten folder of `sos4R`): `docker run --rm -it -v $(pwd)/sos4R:/home/sos4R rocker/geospatial:devel bash`, switch to `/home`, then run the commands below (`R CMD build` & `check`)
@@ -247,7 +255,7 @@ A new release shall be uploaded to CRAN after testing and under the following pr
   - `devtools::check_win_release()` and `devtools::check_win_devel()` for testing Windows using CRAN infrastructure
   - `rhub::check_for_cran(email = <...>)` for testing for CRAN submissions using RHub infrastructure
   - (optional) `rhub::check(email = <...>)` for running checks on different operating systems
-- Regenerate the website with `pkgdown::build_site()` and re-knit `README.Rmd`, commit changes
+- Regenerate the website with `options(rmarkdown.html_vignette.check_title = FALSE); pkgdown::build_site()` and re-knit `README.Rmd`, commit changes
 - Push changes to `dev` branch
 - Read and follow http://cran.r-project.org/web/packages/policies.html and http://r-pkgs.had.co.nz/release.html#release-check again, make necessary changes
 - Merge the PR

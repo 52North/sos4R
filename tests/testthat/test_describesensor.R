@@ -350,12 +350,12 @@ test_that("sensor description can be requested with POX (1.0.0)", {
                              procedure = sosProcedures(obj = mySOS)[[1]][[1]],
                              outputFormat = 'text/xml; subtype="sensorML/1.0.1"')
 
-  expect_equal(sosName(mySensor), "adxl345")
-  expect_equal(sosId(mySensor), "adxl345")
+  expect_equal(sosName(mySensor), "con terra")
+  expect_equal(sosId(mySensor), sosProcedures(obj = mySOS)[[1]][[1]])
   expect_s3_class(mySensor@xml, "xml_document")
   expect_named(sosCoordinates(mySensor), c("x", "y", "z"))
   expect_length(sosCoordinates(mySensor), 3)
-  expect_match(toString(sp::bbox(sosBoundedBy(mySensor))), "7.5, 7.5, 52, 52")
+  expect_match(toString(sp::bbox(sosBoundedBy(mySensor))), "7.727958, 7.727958, 51.883906, 51.883906")
 })
 
 test_that("sensor description can be saved to file during request with POX (1.0.0)", {
@@ -390,8 +390,8 @@ test_that("sensor description can be requested with KVP (2.0.0)", {
                              procedure = sosProcedures(obj = mySOS)[[1]][[1]],
                              outputFormat = 'text/xml; subtype="sensorML/1.0.1"')
 
-  expect_equal(sosName(mySensor), "adxl345")
-  expect_equal(sosId(mySensor), "adxl345")
+  expect_equal(sosName(mySensor), "con terra")
+  expect_equal(sosId(mySensor), sosProcedures(obj = mySOS)[[1]][[1]])
   expect_s3_class(mySensor@xml, "xml_document")
 })
 
@@ -403,13 +403,14 @@ test_that("multiple sensor descriptions can be requested with KVP (2.0.0)", {
                binding = "KVP", useDCPs = FALSE)
 
   mySensors <- describeSensor(sos = mySOS,
-                             procedure = c("adxl345", "apu"),
+                             procedure = c("http://www.52north.org/test/procedure/5",
+                                           "http://www.52north.org/test/procedure/2"),
                              outputFormat = 'text/xml; subtype="sensorML/1.0.1"')
 
   expect_length(mySensors, 2)
   expect_true(is.list(mySensors))
-  expect_equal(sosId(mySensors[[1]]), "adxl345")
-  expect_equal(sosId(mySensors[[2]]), "apu")
+  expect_equal(sosId(mySensors[[1]]), "http://www.52north.org/test/procedure/5")
+  expect_equal(sosId(mySensors[[2]]), "http://www.52north.org/test/procedure/2")
 })
 
 test_that("sensor description can be requested with POX (2.0.0)", {
@@ -423,8 +424,8 @@ test_that("sensor description can be requested with POX (2.0.0)", {
                              procedure = sosProcedures(obj = mySOS)[[1]][[1]],
                              outputFormat = 'http://www.opengis.net/sensorML/1.0.1')
 
-  expect_equal(sosName(mySensor), "adxl345")
-  expect_equal(sosId(mySensor), "adxl345")
+  expect_equal(sosName(mySensor), "con terra")
+  expect_equal(sosId(mySensor), "http://www.52north.org/test/procedure/1")
   expect_s3_class(mySensor@xml, "xml_document")
   expect_false(is.null(sosTime(mySensor)))
   expect_true(is.na(sosTime(mySensor)$end))
@@ -470,5 +471,6 @@ test_that("sensor description can be requested in SensorML 2.0 manually", {
                              outputFormat = "http://www.opengis.net/sensorml/2.0")
 
   expect_equal(xml2::xml_name(mySensorXml), swesDescribeSensorResponseName)
-  expect_match(toString(mySensorXml), "<gml:identifier codeSpace=\"uniqueID\">adxl345</gml:identifier>")
+  expect_match(toString(mySensorXml),
+               paste0("<gml:identifier codeSpace=\"uniqueID\">", sosProcedures(obj = mySOS)[[1]][[1]], "</gml:identifier>"))
 })

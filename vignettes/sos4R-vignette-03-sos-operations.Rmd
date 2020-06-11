@@ -20,7 +20,7 @@ abstract: |
 
   The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
 vignette: >
-  %\VignetteIndexEntry{3. SOS operations}
+  %\VignetteIndexEntry{SOS operations}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

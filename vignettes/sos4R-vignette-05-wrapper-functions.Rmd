@@ -10,7 +10,7 @@ output:
     toc: true
     toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{5. Convenient wrapper functions}
+  %\VignetteIndexEntry{Wrapper Functions for easier SOS access}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -125,7 +125,6 @@ You can filter sites using phenomena and temporal extent.
 ```{r sites_filtered_by_phenomena}
 sites_filtered_by_phenomena <- sites(sos = mySos, phenomena = phenomena[3,])
 nrow(sites_filtered_by_phenomena@data)
-nrow(sites@data)
 str(sites_filtered_by_phenomena)
 ```
 
@@ -216,7 +215,7 @@ Thematical filtering (phenomena) support the values of the previous functions as
 Spatial filters are either sites, or a bounding box.
 Temporal filter is a time period during which observations are made.
 
-Without a temporal extent, the used SOS only returns the last measurement.
+<!-- Without a temporal extent, the used SOS only returns the last measurement.
 
 ```{r getData_single}
 observationData <- getData(sos = mySos,
@@ -232,7 +231,7 @@ attributes(observationData[[3]])
 ```
 
 Request more data with a temporal extent for all sites.
-
+-->
 **Note:** When creating time objects from strings, `as.POSIXct(..)` by default recognises the local timezone and creates a time object in UTC.
 
 ```{r getData_temporal}
@@ -274,6 +273,7 @@ observationData <- getData(sos = mySos,
        )
 str(observationData)
 ```
+
 
 You can also retrieve data for phenomena from multiple sites.
 
