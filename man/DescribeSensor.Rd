@@ -104,6 +104,7 @@ sos <- SOS_Test()
 encodeRequestXML(describeSensorRequest, sos)
 toString(encodeRequestXML(describeSensorRequest, sos))
 
+\dontrun{
 # request a sensor description
 mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
              binding = "KVP")
@@ -111,6 +112,8 @@ mySensor <- describeSensor(sos = mySOS,
 		procedure = sosProcedures(mySOS)[[1]],
 		outputFormat = 'text/xml; subtype="sensorML/1.0.1"', # space is needed!
 		)
+}
+
 }
 
 \keyword{classes}

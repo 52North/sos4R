@@ -66,6 +66,7 @@ Houbie, F., Skivee F., Robin A., Jirka S., Broering, A., Nuest D. (2009): OGC(R)
 \examples{
 showClass("SensorML")
 
+\dontrun{
 mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
              binding = "KVP")
 mySensor <- describeSensor(sos = mySOS,
@@ -91,7 +92,6 @@ mySensor2 <- describeSensor(sos = mySOS2,
 
 sosTime(mySensor2)
 
-\dontrun{
 plot(mySensor)
 }
 

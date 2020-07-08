@@ -42,8 +42,10 @@ Benedikt Graeler, Eike Hinderk Juerrens
 }
 
 \examples{
+\dontrun{
 mySos <- SOS(url = "https://climate-sos.niwa.co.nz/",
              binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 
 sites(sos = mySos)
+}
 }

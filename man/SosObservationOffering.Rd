@@ -96,6 +96,7 @@ See section 6.3, \dQuote{Observation Offerings}, of the SOS specification: Na, A
 showClass("SosObservationOffering")
 showClass("SosObservationOffering_2.0.0")
 
+\dontrun{
 # explore offerings of an SOS
 mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
              binding = "KVP")
@@ -105,6 +106,7 @@ sosId(offering1)
 sosName(offering1)
 sosTime(offering1)
 sosBoundedBy(offering1)
+}
 }
 
 \keyword{classes}

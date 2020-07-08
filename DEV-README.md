@@ -196,6 +196,12 @@ Data models, i.e. requests and responses, are modelled as **S4 classes**. Docume
 - "non-ASCII characters" in a file > find them with `tools::showNonASCIIfile()`
 - If there are problems with specific test environments, see the [CRAN Package Check Flavors](https://cran.r-project.org/web/checks/check_flavors.html) and the [list of R-Hub and CRAN platforms](https://docs.r-hub.io/#rhub-cran-platforms) if you must investigate or recreate on of these system configurations more closely
 
+## Examples
+
+Make sure that the examples, i.e., code in `.Rd` files, work without internet connections.
+sos4R has been called out for that a few times for breakign CRAN policy, which is not our intention.
+One way to make sure the examples work without internet connection is to run a container without network and `R CMD check` in there - see comments in `docker/Dockerfile` for instructions how to do that.
+
 ## Tests
 
 Tests are implemented with [`testthat`](http://testthat.r-lib.org/).

@@ -392,6 +392,7 @@ The document is available for download at \url{https://www.opengeospatial.org/st
 showClass("SOS")
 showClass("SOS_2.0.0")
 
+\dontrun{
 # create a SOS connection
 mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
              binding = "KVP")
@@ -404,6 +405,7 @@ sosContents(mySOS)
 sosTime(mySOS)
 sosFeaturesOfInterest(mySOS)
 sosBinding(mySOS)
+}
 
 \dontrun{
 # create a SOS connetion with a specific connection method and time format
