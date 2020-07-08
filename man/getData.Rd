@@ -17,7 +17,7 @@ getData(sos, phenomena, sites, spatialBBox = NA, begin = NA, end = NA, ...)
   \item{sos}{An SOS object from a call to \code{\link[sos4R]{SOS}} containing the URL of a SOS v2.0.}
   \item{phenomena}{A list, vector or one-column data.frame with characters identifying the relevant phenomena.}
   \item{sites}{A list, vector or one-column data.frame with characters identifying the relevant sites.}
-  \item{spatialBBox}{A 2-by-2 matrix with \code{x} and \code{y} in the rows and \code{min} and \code{max} in the columns. See \code{\link[sp]{Spatial}} for details. If \code{sites} is set, this argument is ignored.}
+  \item{spatialBBox}{A 2-by-2 matrix with \code{x} and \code{y} in the rows and \code{min} and \code{max} in the columns. See \code{\link{Spatial-class}} for details. If \code{sites} is set, this argument is ignored.}
   \item{begin}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
   \item{end}{Object of class \code{POSIXt}. Note that creating timestamps with \code{as.POSIXct(..)} will use your local timezone.}
   \item{...}{Named arguments forwarded to other wrapper functions internally.}

@@ -34,7 +34,7 @@ sites(sos,
 }
 
 \value{
-A \code{\link[sp]{SpatialPointsDataFrame}} containing all sites that match the filter conditions with corresponding metadata defined via the arguments. If \code{empty = TRUE}, the data slot contains a logical column 'empty' indicating whether any data has been observed for this site. If \code{listPhenomena = TRUE}, the data.frame contains a logical column per phenomenon indicating whether this specific phenomenon has been observed at that site. If \code{includeTemporalBBox = TRUE}, the data.frame contains a two column data.frame with \code{beginTime} and \code{endTime} per phenomenon.
+A \code{\link{SpatialPointsDataFrame-class}} containing all sites that match the filter conditions with corresponding metadata defined via the arguments. If \code{empty = TRUE}, the data slot contains a logical column 'empty' indicating whether any data has been observed for this site. If \code{listPhenomena = TRUE}, the data.frame contains a logical column per phenomenon indicating whether this specific phenomenon has been observed at that site. If \code{includeTemporalBBox = TRUE}, the data.frame contains a two column data.frame with \code{beginTime} and \code{endTime} per phenomenon.
 }
 
 \author{
