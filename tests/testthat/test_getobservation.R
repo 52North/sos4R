@@ -492,6 +492,7 @@ test_that("POX with spatial filter not matching anything (1.0.0)", {
 # CSV parsing works (1.0.0) ----
 #
 test_that("CSV parsing works (1.0.0)", {
+  skip("connection time outs to server sdf.ndbc.noaa.gov")
   skip_on_cran()
 
   ioos <- SOS(url = "https://sdf.ndbc.noaa.gov/sos/server.php",
