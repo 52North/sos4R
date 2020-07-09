@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -201,73 +201,15 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='https://rdrr.io/pkg/sp/man/SpatialPoints.html'>SpatialPointsDataFrame</a></code> containing all sites that match the filter conditions with corresponding metadata defined via the arguments. If <code>empty = TRUE</code>, the data slot contains a logical column 'empty' indicating whether any data has been observed for this site. If <code>listPhenomena = TRUE</code>, the data.frame contains a logical column per phenomenon indicating whether this specific phenomenon has been observed at that site. If <code>includeTemporalBBox = TRUE</code>, the data.frame contains a two column data.frame with <code>beginTime</code> and <code>endTime</code> per phenomenon.</p>
+    <p>A <code>SpatialPointsDataFrame-class</code> containing all sites that match the filter conditions with corresponding metadata defined via the arguments. If <code>empty = TRUE</code>, the data slot contains a logical column 'empty' indicating whether any data has been observed for this site. If <code>listPhenomena = TRUE</code>, the data.frame contains a logical column per phenomenon indicating whether this specific phenomenon has been observed at that site. If <code>includeTemporalBBox = TRUE</code>, the data.frame contains a two column data.frame with <code>beginTime</code> and <code>endTime</code> per phenomenon.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>,
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>,
              <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
 
-<span class='fu'>sites</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)</div><div class='output co'>#&gt;              coordinates siteID
-#&gt; 1     (173.926, -35.183)   1056
-#&gt; 2   (172.851, -42.53433)  11234
-#&gt; 3  (172.9716, -41.09798)  12429
-#&gt; 4  (173.9628, -41.49891)  12430
-#&gt; 5  (169.3148, -45.20724)  12431
-#&gt; 6  (174.9844, -40.90392)  12442
-#&gt; 7  (168.3305, -46.41727)  12444
-#&gt; 8     (167.275, -45.525)  12482
-#&gt; 9  (166.7612, -77.84935)  12740
-#&gt; 10 (170.5147, -45.90129)  15752
-#&gt; 11    (172.324, -41.805)  16826
-#&gt; 12  (175.735, -37.87683)  17030
-#&gt; 13 (173.2629, -35.13352)  17067
-#&gt; 14 (172.6111, -43.32858)  17244
-#&gt; 15     (171.672, -43.47)  17610
-#&gt; 16 (-176.475, -43.81687)  17840
-#&gt; 17    (170.096, -43.736)  18125
-#&gt; 18    (174.867, -41.407)  18234
-#&gt; 19 (170.1356, -45.51814)  18437
-#&gt; 20  (175.545, -39.19589)  18464
-#&gt; 21 (174.0727, -41.64724)  18468
-#&gt; 22 (170.1004, -45.12427)  18593
-#&gt; 23 (177.5294, -38.28566)   1905
-#&gt; 24 (174.8638, -37.20637)   2006
-#&gt; 25 (173.0948, -41.31727)  21937
-#&gt; 26 (175.3898, -41.25231)  21938
-#&gt; 27 (175.6092, -40.38195)  21963
-#&gt; 28 (174.7764, -36.96177)  22719
-#&gt; 29  (174.305, -39.33546)  23872
-#&gt; 30 (171.1916, -42.46022)  23934
-#&gt; 31 (172.6077, -43.53074)  24120
-#&gt; 32 (170.1343, -43.36548)  24926
-#&gt; 33 (177.9218, -38.62747)  24976
-#&gt; 34 (173.8532, -35.93145)  25119
-#&gt; 35  (169.267, -43.71882)  25506
-#&gt; 36 (174.7202, -38.62033)  25726
-#&gt; 37 (172.1557, -41.27058)  25777
-#&gt; 38 (171.5628, -42.94152)  25821
-#&gt; 39 (175.3052, -37.77389)  26117
-#&gt; 40 (169.7315, -46.29282)  26163
-#&gt; 41 (176.1103, -40.20812)  26958
-#&gt; 42 (175.4128, -39.41755)  31621
-#&gt; 43 (173.2241, -42.82722)  31832
-#&gt; 44 (175.8575, -40.68048)  31851
-#&gt; 45 (171.3108, -44.12476)  35704
-#&gt; 46 (169.3921, -45.25366)  36592
-#&gt; 47 (172.9657, -43.80938)  36593
-#&gt; 48     (175.58, -38.517)  37016
-#&gt; 49 (167.6825, -45.29644)  37047
-#&gt; 50 (177.1629, -38.33334)  37239
-#&gt; 51  (168.018, -44.97781)  37382
-#&gt; 52 (175.1967, -39.07486)  37850
-#&gt; 53 (174.7138, -36.74827)  37852
-#&gt; 54 (176.4489, -40.57728)  38057
-#&gt; 55 (175.9159, -40.50652)  38224
-#&gt; 56 (172.0943, -43.83207)  38866
-#&gt; 57 (172.0842, -43.47962)  39063
-#&gt; 58 (171.8601, -42.11578)   3925
-#&gt; 59 (169.3182, -45.20342)  39564
-#&gt; 60  (169.6842, -45.0401)   5535</div></pre>
+<span class='fu'>sites</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

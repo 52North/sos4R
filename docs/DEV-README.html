@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -388,6 +388,11 @@
 <li>If there are problems with specific test environments, see the <a href="https://cran.r-project.org/web/checks/check_flavors.html">CRAN Package Check Flavors</a> and the <a href="https://docs.r-hub.io/#rhub-cran-platforms">list of R-Hub and CRAN platforms</a> if you must investigate or recreate on of these system configurations more closely</li>
 </ul>
 </div>
+<div id="examples" class="section level2">
+<h2 class="hasAnchor">
+<a href="#examples" class="anchor"></a>Examples</h2>
+<p>Make sure that the examples, i.e., code in <code>.Rd</code> files, work without internet connections. sos4R has been called out for that a few times for breakign CRAN policy, which is not our intention. One way to make sure the examples work without internet connection is to run a container without network and <code>R CMD check</code> in there - see comments in <code>docker/Dockerfile</code> for instructions how to do that.</p>
+</div>
 <div id="tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tests" class="anchor"></a>Tests</h2>
@@ -461,7 +466,7 @@
 <li>
 <em>Do the actual release</em> with <code><a href="https://devtools.r-lib.org//reference/release.html">devtools::release()</a></code> (which will ask you again if you did many of the steps before)</li>
 <li>Wait for the confirmation link (via email) and fill in the online submission form</li>
-<li>Wait for the good news, check where the package is in the queue with <code>foghorn::cran_incoming(pkg = "sos4R")</code>
+<li>Wait for the good news, check where the package is in the queue with <code><a href="https://rdrr.io/pkg/foghorn/man/cran_incoming.html">foghorn::cran_incoming(pkg = "sos4R")</a></code>
 </li>
 <li>When available on CRAN:
 <ul>

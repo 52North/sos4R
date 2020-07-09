@@ -95,7 +95,7 @@ you have any questions.
 ## Demo
 
 sos4R can used to download observation data or build user interfaces for
-requesting and rendering time series observatoins. The screenshot below
+requesting and rendering time series observations. The screenshot below
 shows a demo Shiny application, which you can run locally with
 
 ``` r

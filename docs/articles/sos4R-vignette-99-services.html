@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="sos4R-vignette-99-services_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>List of SOS services</h1>
@@ -109,7 +109,7 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2020-04-23</h4>
+            <h4 class="date">2020-07-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-99-services.Rmd"><code>vignettes/sos4R-vignette-99-services.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-99-services.Rmd</code></div>
@@ -163,7 +163,7 @@
 <span class="co">#&gt; Object of class SOS_1.0.0 [POX, http://pegelonline.wsv.de/webservices/gis/gdi-sos, PegelOnline SOS]</span>
 <span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">pegel</span>)
 <span class="co">#&gt; Object of class SosContents with observation offerings (names):</span>
-<span class="co">#&gt;   LUFTTEMPERATUR, WINDRICHTUNG, DURCHFAHRTSHOEHE, WASSERSTAND_ROHDATEN, LUFTFEUCHTE, ABFLUSS_ROHDATEN, ABFLUSS, SAUERSTOFFGEHALT, WINDGESCHWINDIGKEIT, ELEKTRISCHE_LEITFAEHIGKEIT_ROHDATEN, LUFTTEMPERATUR_ROHDATEN, FLIESSGESCHWINDIGKEIT, WASSERTEMPERATUR, WASSERTEMPERATUR_ROHDATEN, CHLORID, PH-WERT</span></pre></body></html></div>
+<span class="co">#&gt;   LUFTTEMPERATUR_ROHDATEN, WINDRICHTUNG, WASSERSTAND_ROHDATEN, PH-WERT, DURCHFAHRTSHOEHE, ABFLUSS_ROHDATEN, WASSERTEMPERATUR, SAUERSTOFFGEHALT, WASSERTEMPERATUR_ROHDATEN, ABFLUSS, CHLORID, WINDGESCHWINDIGKEIT, LUFTTEMPERATUR, LUFTFEUCHTE, FLIESSGESCHWINDIGKEIT, ELEKTRISCHE_LEITFAEHIGKEIT_ROHDATEN</span></pre></body></html></div>
 </div>
 <div id="axiom-data-science-demo-sos" class="section level2">
 <h2 class="hasAnchor">
@@ -205,11 +205,7 @@
 <h2 class="hasAnchor">
 <a href="#marthas-vineyard-coastal-observatory-sos" class="anchor"></a>Marthas Vineyard Coastal Observatory SOS</h2>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">MVCO_WHOI</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/SOS.html">SOS</a></span>(<span class="st">"http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos"</span>)
-<span class="co">#&gt; Warning in FUN(X[[i]], ...): Mandatory element 'time' missing in offering12m-</span>
-<span class="co">#&gt; Node</span>
-<span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">MVCO_WHOI</span>)
-<span class="co">#&gt; Object of class SosContents with observation offerings (names):</span>
-<span class="co">#&gt;   12m-Node</span></pre></body></html></div>
+<span class="fu"><a href="../reference/SOS.html">sosContents</a></span>(<span class="no">MVCO_WHOI</span>)</pre></body></html></div>
 </div>
 <div id="wupperverband-flugss" class="section level2">
 <h2 class="hasAnchor">
@@ -250,7 +246,7 @@
                                  <span class="kw">retrieveFOI</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="fu"><a href="../reference/OmObservation.html">sosResult</a></span>(<span class="no">discharge29808</span>)
 <span class="co">#&gt;             timestamp    value</span>
-<span class="co">#&gt; 1 2020-04-23 15:45:00 2.183317</span></pre></body></html></div>
+<span class="co">#&gt; 1 2020-07-08 17:00:00 12.85598</span></pre></body></html></div>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"># service offline - HTTP 503
 #niwaClimate &lt;- SOS(url = "http://clidb-sos.niwa.co.nz/sos/kvp", binding = "KVP", useDCPs = FALSE, version = "2.0.0")
 #sosContents(niwaClimate)</pre></body></html></div>
