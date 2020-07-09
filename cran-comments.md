@@ -15,4 +15,5 @@ No notes.
 
 ## Other
 
-Resubmission after being informed about (i) invalid unit tests errors. These errors could be traced back to changes in other packages and could be fixed.
+Resubmission after being informed about CRAN policy violation: a few example codes in Rd files only worked when online services were available.
+As this is the final strike, I really hope to get it right this time.
