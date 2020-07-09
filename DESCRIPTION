@@ -54,7 +54,8 @@ Suggests:
     webmockr,
     kableExtra,
     skimr,
-    clipr
+    clipr,
+    units
 Description: A client for Sensor Observation Services (SOS, see
     <https://www.opengeospatial.org/standards/sos>) as specified by the
     Open Geospatial Consortium (OGC). With the package users can
