@@ -30,9 +30,9 @@
 # Build image  : docker pull rocker/geospatial:latest && \                     #
 #                docker build -t sos4r-rstudio-dev:$(date +%Y-%m-%d) .         #
 #                                                                              #
-# Run container: docker run --name=sos4r-dev --env PASSWORD=r \                #
+# Run container: docker run --name=sos4r-dev --env PASSWORD=sos \              #
 #                --publish 8787:8787 \                                         #
-#                --volume ~/Code/git/sos4R/:/home/rstudio/sos4R \              #
+#                --volume $(pwd):/home/rstudio/sos4R \                         #
 #                -d sos4r-rstudio-dev:$(date +%Y-%m-%d)                        #
 #                                                                              #
 # Start rstudio: chromium-browser --app=http://localhost:8787/                 #
@@ -42,20 +42,34 @@
 #                docker images | grep sos4r-rstudio-dev | awk '{print $3}' \   #
 #                | xargs docker rmi                                            #
 #                                                                              #
-#                                                                              #
-#                                                                              #
-#                                                                              #
 ################################################################################
 FROM rocker/geospatial:latest
 MAINTAINER "Jürrens, Eike Hinderk" e.h.juerrens@52north.org
 
-RUN install2.r --error --skipinstalled httr \
+RUN install2.r --error --skipinstalled \
+        dplyr \
+        parsedate \
+        uuid \
+        httr \
         methods \
         sp \
         stringr \
         xml2 \
         devtools \
+        kableExtra \
+        skimr \
         webmockr && \
     rm -rf /tmp/downloaded_packages && \
     rm -rf /tmp/repos_*.rds && \
     rm -rf /var/lib/apt/lists/*
+
+
+# Build:
+# docker build --tag sos4r:dev .
+# Run (in package base directory):
+# docker run -it --rm --volume $(pwd):/home/rstudio/sos4R --publish 8787:8787 -e PASSWORD=sos sos4r:dev
+# Run without network to ensure check works without network on CRAN (cannot use RStudio over port then!):
+# docker run -it --rm --volume $(pwd):/home/rstudio/sos4R -e PASSWORD=sos --network none sos4r:dev /bin/bash
+## Then:
+## R CMD build --no-build-vignettes sos4R
+## R CMD check --as-cran --no-manual --no-vignettes sos4R_<full tar.gz file name>
