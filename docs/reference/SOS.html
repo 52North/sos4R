@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -375,68 +375,21 @@
 #&gt; Class:                list           character
 #&gt; 
 #&gt; Extends: "SOS", "SOS_versioned"</div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># create a SOS connection</span>
 <span class='no'>mySOS</span> <span class='kw'>&lt;-</span> <span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
              <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)
 
 <span class='co'># create the URL to a GET request for GetCapabilities</span>
-<span class='fu'>sosCapabilitiesUrl</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; [1] "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp?service=SOS&amp;request=GetCapabilities&amp;acceptVersions=1.0.0&amp;sections=All&amp;acceptFormats=text%2Fxml"</div><div class='input'>
+<span class='fu'>sosCapabilitiesUrl</span>(<span class='no'>mySOS</span>)
+
 <span class='co'># access details of the SOS connection and it's metadata</span>
-<span class='fu'>sosContents</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; Object of class SosContents with observation offerings (names):
-#&gt; 	 ws2500, ws2500-internal, wwu-ws-kli-hsb, wxt520 </div><div class='input'><span class='fu'>sosTime</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; $ws2500
-#&gt; $ws2500$begin
-#&gt; [1] "2015-05-18 08:35:00 UTC"
-#&gt; 
-#&gt; $ws2500$end
-#&gt; [1] "2018-01-06 05:45:00 UTC"
-#&gt; 
-#&gt; 
-#&gt; $`ws2500-internal`
-#&gt; $`ws2500-internal`$begin
-#&gt; [1] "2015-05-18 08:35:00 UTC"
-#&gt; 
-#&gt; $`ws2500-internal`$end
-#&gt; [1] "2018-01-06 05:45:00 UTC"
-#&gt; 
-#&gt; 
-#&gt; $`wwu-ws-kli-hsb`
-#&gt; $`wwu-ws-kli-hsb`$begin
-#&gt; [1] "2015-03-29 22:00:00 UTC"
-#&gt; 
-#&gt; $`wwu-ws-kli-hsb`$end
-#&gt; [1] "2018-03-08 14:10:00 UTC"
-#&gt; 
-#&gt; 
-#&gt; $wxt520
-#&gt; $wxt520$begin
-#&gt; [1] "2015-05-18 08:50:45 UTC"
-#&gt; 
-#&gt; $wxt520$end
-#&gt; [1] "2018-07-10 12:00:00 UTC"
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>sosFeaturesOfInterest</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; $ws2500
-#&gt; $ws2500[[1]]
-#&gt; [1] "ELV-WS2500"
-#&gt; 
-#&gt; 
-#&gt; $`ws2500-internal`
-#&gt; $`ws2500-internal`[[1]]
-#&gt; [1] "http://52north.org/fac/internal/it-is/srv-01"
-#&gt; 
-#&gt; 
-#&gt; $`wwu-ws-kli-hsb`
-#&gt; $`wwu-ws-kli-hsb`[[1]]
-#&gt; [1] "wwu-ws-kli-hsb"
-#&gt; 
-#&gt; 
-#&gt; $wxt520
-#&gt; $wxt520[[1]]
-#&gt; [1] "Vaisala-WXT520"
-#&gt; 
-#&gt; $wxt520[[2]]
-#&gt; [1] "Vaisala_WXT520"
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'>sosBinding</span>(<span class='no'>mySOS</span>)</div><div class='output co'>#&gt; [1] "KVP"</div><div class='input'>
+<span class='fu'>sosContents</span>(<span class='no'>mySOS</span>)
+<span class='fu'>sosTime</span>(<span class='no'>mySOS</span>)
+<span class='fu'>sosFeaturesOfInterest</span>(<span class='no'>mySOS</span>)
+<span class='fu'>sosBinding</span>(<span class='no'>mySOS</span>)
+}
+
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># create a SOS connetion with a specific connection method and time format</span>
 <span class='no'>mysos</span> <span class='kw'>&lt;-</span> <span class='fu'>SOS</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://mysos.org/sos"</span>,

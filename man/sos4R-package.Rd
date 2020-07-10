@@ -20,12 +20,12 @@
 	\tabular{ll}{
 	Package: \tab sos4R\cr
 	Type: \tab Package\cr
-	Version: \tab 0.4.1\cr
-	Date: \tab 2020-06-09\cr
+	Version: \tab 0.4.2\cr
+	Date: \tab 2020-07-08\cr
 	License: \tab GPL-2\cr
 	LazyLoad: \tab yes\cr
 	ByteCompile: \tab yes\cr
-	Imports: \tab xml2, httr, sp, stringr, methods\cr
+	Imports: \tab xml2, httr, sp, uuid, methods, stats, utils, graphics\cr
 	}
 }
 

@@ -73,7 +73,7 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -202,27 +202,22 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
 #&gt;                           
 #&gt; Name:            validTime
 #&gt; Class: GmlTimeObjectOrNULL</div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='no'>mySOS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
              <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)
 <span class='no'>mySensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='DescribeSensor.html'>describeSensor</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
                 <span class='kw'>procedure</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>sosProcedures</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
                 <span class='kw'>outputFormat</span> <span class='kw'>=</span> <span class='st'>'text/xml; subtype="sensorML/1.0.1"'</span>, <span class='co'># space is needed!</span>
                 )
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; [1] "SensorML"
-#&gt; attr(,"package")
-#&gt; [1] "sos4R"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; Object of class SensorML (see @xml for full document).
-#&gt;  	ID:  ws2500 
-#&gt; 	name: 52n-elv-ws2500 
-#&gt; 	description: NA 
-#&gt; 	coords: 51.934814453125, 7.652428150177, -Inf 
-#&gt; 	boundedBy: 7.652428150177, 51.934814453125, 7.652428150177, 51.934814453125 
-#&gt; 	validTime:  </div><div class='input'>
-<span class='fu'><a href='SOS.html'>sosId</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; [1] "ws2500"</div><div class='input'><span class='fu'><a href='SOS.html'>sosName</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; [1] "52n-elv-ws2500"</div><div class='input'><span class='fu'><a href='SOS.html'>sosBoundedBy</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt;                  min       max
-#&gt; coords.lon  7.652428  7.652428
-#&gt; coords.lat 51.934814 51.934814
-#&gt; attr(,"referenceFrame")
-#&gt; [1] "4326"</div><div class='input'><span class='fu'><a href='SOS.html'>sosCoordinates</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt;               y        x    z
-#&gt; ws2500 51.93481 7.652428 -Inf</div><div class='input'><span class='fu'><a href='SOS.html'>sosGetCRS</a></span>(<span class='no'>mySensor</span>)</div><div class='output co'>#&gt; CRS arguments: +proj=longlat +datum=WGS84 +no_defs </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>mySensor</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>mySensor</span>)
+
+<span class='fu'><a href='SOS.html'>sosId</a></span>(<span class='no'>mySensor</span>)
+<span class='fu'><a href='SOS.html'>sosName</a></span>(<span class='no'>mySensor</span>)
+<span class='fu'><a href='SOS.html'>sosBoundedBy</a></span>(<span class='no'>mySensor</span>)
+<span class='fu'><a href='SOS.html'>sosCoordinates</a></span>(<span class='no'>mySensor</span>)
+<span class='fu'><a href='SOS.html'>sosGetCRS</a></span>(<span class='no'>mySensor</span>)
+
 <span class='co'># valid time from SOS 2.0.0</span>
 <span class='no'>mySOS2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
              <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>,
@@ -231,13 +226,8 @@ The only class at the moment is &quot;SensorML&quot; which wraps an &quot;XMLInt
                 <span class='kw'>procedure</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>sosProcedures</a></span>(<span class='no'>mySOS2</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
                 <span class='kw'>outputFormat</span> <span class='kw'>=</span> <span class='st'>'text/xml; subtype="sensorML/1.0.1"'</span>)
 
-<span class='fu'><a href='SOS.html'>sosTime</a></span>(<span class='no'>mySensor2</span>)</div><div class='output co'>#&gt; $begin
-#&gt; [1] "2015-05-18 13:42:42 UTC"
-#&gt; 
-#&gt; $end
-#&gt; [1] NA
-#&gt; </div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='SOS.html'>sosTime</a></span>(<span class='no'>mySensor2</span>)
+
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>mySensor</span>)
 }</div></pre>
   </div>

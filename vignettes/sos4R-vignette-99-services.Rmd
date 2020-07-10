@@ -116,7 +116,7 @@ sosContents(koljoefjord)
 
 ## Marthas Vineyard Coastal Observatory SOS
 
-```{r mvco}
+```{r mvco, eval=FALSE}
 MVCO_WHOI <- SOS("http://mvcodata.whoi.edu/cgi-bin/sos/oostethys_sos")
 sosContents(MVCO_WHOI)
 ```

@@ -89,7 +89,7 @@ You can also join the chat at [on Gitter](https://gitter.im/52North/sos4R) if yo
 
 ## Demo
 
-sos4R can used to download observation data or build user interfaces for requesting and rendering time series observatoins.
+sos4R can used to download observation data or build user interfaces for requesting and rendering time series observations.
 The screenshot below shows a demo Shiny application, which you can run locally with
 
 ```{r demo, eval=FALSE}
