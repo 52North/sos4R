@@ -119,6 +119,16 @@ sos4R is used in the following projects.
 
 ## Contribute
 
+### Funding
+
+| Project/Logo | Description |
+| :-------------: | :------------- |
+| <a target="_blank" href="https://bmbf.de/"><img alt="BMBF" align="middle" width="100" src="https://raw.githubusercontent.com/52North/sos/develop/spring/views/src/main/webapp/static/images/funding/bmbf_logo_neu_eng.png"/></a><a target="_blank" href="https://www.fona.de/"><img alt="FONA" align="middle" width="100" src="https://raw.githubusercontent.com/52North/sos/develop/spring/views/src/main/webapp/static/images/funding/fona.png"/></a><a target="_blank" href="http://www.mudak-wrm.kit.edu/"><img alt="Multidisciplinary data acquisition as the key for a globally applicable water resource management (MuDak-WRM)" align="middle" width="100" src="https://raw.githubusercontent.com/52North/sos/develop/spring/views/src/main/webapp/static/images/funding/mudak_wrm_logo.png"/></a> | The development of this version of sos4R was supported by the <a target="_blank" href="https://www.bmbf.de/"> German Federal Ministry of Education and Research</a> research project <a target="_blank" href="http://www.mudak-wrm.kit.edu/">MuDak-WRM</a> (co-funded by the German Federal Ministry of Education and Research, programme FONA) |
+
+### Contact
+
+Do you have a question that is not answered in the links above? Contact Daniel: [daniel.nuest@uni-muenster.de](daniel.nuest@uni-muenster.de)
+
 See file `DEV-README.md` for developer documentation or read the developer documentation online at [https://52north.github.io/sos4R/DEV-README.html](https://52north.github.io/sos4R/DEV-README.html).
 
 ## License
