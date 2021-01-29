@@ -73,7 +73,7 @@ For easy access to these coordinates, there are coercion functions to matching c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -165,71 +165,18 @@ For easy access to these coordinates, there are coercion functions to matching c
 <p>To just get the most fitting class, coerce to <code>"Spatial"</code> as shown in the examples.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># sensor location</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># sensor location</span>
 <span class='no'>mySOS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
              <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)
 <span class='no'>mySensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='DescribeSensor.html'>describeSensor</a></span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySOS</span>,
                 <span class='kw'>procedure</span> <span class='kw'>=</span> <span class='fu'><a href='SOS.html'>sosProcedures</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
                 <span class='kw'>outputFormat</span> <span class='kw'>=</span> <span class='st'>'text/xml; subtype="sensorML/1.0.1"'</span>)
-<span class='fu'>as</span>(<span class='no'>mySensor</span>, <span class='st'>"Spatial"</span>)</div><div class='output co'>#&gt;            coordinates    z
-#&gt; 1 (7.652428, 51.93481) -Inf</div><div class='input'>
+<span class='fu'>as</span>(<span class='no'>mySensor</span>, <span class='st'>"Spatial"</span>)
+
 <span class='co'># offering bounding box</span>
-<span class='fu'>as</span>(<span class='fu'><a href='SOS.html'>sosOfferings</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='fl'>1</span>]], <span class='st'>"Spatial"</span>)</div><div class='output co'>#&gt; An object of class "SpatialPolygons"
-#&gt; Slot "polygons":
-#&gt; [[1]]
-#&gt; An object of class "Polygons"
-#&gt; Slot "Polygons":
-#&gt; [[1]]
-#&gt; An object of class "Polygon"
-#&gt; Slot "labpt":
-#&gt; [1]  7.652428 51.934814
-#&gt; 
-#&gt; Slot "area":
-#&gt; [1] 0
-#&gt; 
-#&gt; Slot "hole":
-#&gt; [1] FALSE
-#&gt; 
-#&gt; Slot "ringDir":
-#&gt; [1] 1
-#&gt; 
-#&gt; Slot "coords":
-#&gt;          [,1]     [,2]
-#&gt; [1,] 7.652428 51.93481
-#&gt; [2,] 7.652428 51.93481
-#&gt; [3,] 7.652428 51.93481
-#&gt; [4,] 7.652428 51.93481
-#&gt; [5,] 7.652428 51.93481
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; Slot "plotOrder":
-#&gt; [1] 1
-#&gt; 
-#&gt; Slot "labpt":
-#&gt; [1]  7.652428 51.934814
-#&gt; 
-#&gt; Slot "ID":
-#&gt; [1] NA
-#&gt; 
-#&gt; Slot "area":
-#&gt; [1] 0
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; Slot "plotOrder":
-#&gt; [1] 1
-#&gt; 
-#&gt; Slot "bbox":
-#&gt;         min       max
-#&gt; x  7.652428  7.652428
-#&gt; y 51.934814 51.934814
-#&gt; 
-#&gt; Slot "proj4string":
-#&gt; CRS arguments:
-#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
-#&gt; +towgs84=0,0,0 
-#&gt; </div></pre>
+<span class='fu'>as</span>(<span class='fu'><a href='SOS.html'>sosOfferings</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='fl'>1</span>]], <span class='st'>"Spatial"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

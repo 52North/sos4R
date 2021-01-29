@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="sos4R-vignette-03-sos-operations_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>SOS Operations</h1>
@@ -109,7 +109,7 @@
       Institute for Geoinformatics, University of Münster, Germany.<br><a class="author_email" href="mailto:#"></a><a href="mailto:daniel.nuest@uni-muenster.de" class="email">daniel.nuest@uni-muenster.de</a>
       </address>
                   
-            <h4 class="date">2020-04-23</h4>
+            <h4 class="date">2020-07-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/52North/sos4R/blob/master/vignettes/sos4R-vignette-03-sos-operations.Rmd"><code>vignettes/sos4R-vignette-03-sos-operations.Rmd</code></a></small>
       <div class="hidden name"><code>sos4R-vignette-03-sos-operations.Rmd</code></div>
@@ -121,7 +121,7 @@
       <p class="abstract">Abstract</p>
       <p>The sos4R package provides simple yet powerful access to OGC Sensor Observation Service instances. The package supports both encapsulation and abstraction from the service interface for novice users as well as powerful request building for specialists. sos4R is motivated by the idea to close the gap between the Sensor Web and tools for (geo-)statistical analyses. It implements the core profile of the SOS specification and supports temporal, spatial, and thematical filtering of observations.</p>
       <p>This document describes which of the possible features and implementations of the rather generic standards are supported. It gives a detailed overview of the SOS operations and how to use them with <code>sos4R</code>.</p>
-      The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.
+      <p>The package is published under GPL 2 license within the geostatistics community of 52°North Initiative for Geospatial Open Source Software.</p>
     </div>
     
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"sos4R"</span>)</pre></body></html></div>
@@ -460,25 +460,17 @@
 <p>For future analyses, but also for correct plotting, one must know the coordinate reference system (CRS) or spatial reference system (<a href="https://en.wikipedia.org/wiki/Spatial_referencing_system">SRS</a>) or the returned data. You can get this information using the method <code><a href="../reference/SOS.html">sosGetCRS()</a></code> from various objects.</p>
 <p>The function utilizes the <a href="http://www.epsg-registry.org/">EPSG code</a> in GML attributes like <code>srsName="urn:ogc:def:crs:EPSG:4326"</code> to initialize an object of class <code>CRS</code> from the package <code>sp</code>. For <code>SOS</code> and <code>SosObservationOffering</code> objects these are taken from the bounding box given in the <code>gml:boundedBy</code> element.</p>
 <div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="../reference/SOS.html">sosGetCRS</a></span>(<span class="st">"urn:ogc:def:crs:EPSG::4326"</span>)
-<span class="co">#&gt; CRS arguments:</span>
-<span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span>
-<span class="co">#&gt; +towgs84=0,0,0</span></pre></body></html></div>
+<span class="co">#&gt; CRS arguments: +proj=longlat +datum=WGS84 +no_defs</span></pre></body></html></div>
 <div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="co"># returns the CRS of offering(s) based on the CRS</span>
 <span class="co"># used in the element gml:boundedBy:</span>
 <span class="fu"><a href="../reference/SOS.html">sosGetCRS</a></span>(<span class="no">mySOS</span>)[<span class="fl">1</span>:<span class="fl">2</span>]
 <span class="co">#&gt; $ws2500</span>
-<span class="co">#&gt; CRS arguments:</span>
-<span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span>
-<span class="co">#&gt; +towgs84=0,0,0 </span>
+<span class="co">#&gt; CRS arguments: +proj=longlat +datum=WGS84 +no_defs </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $`ws2500-internal`</span>
-<span class="co">#&gt; CRS arguments:</span>
-<span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span>
-<span class="co">#&gt; +towgs84=0,0,0</span></pre></body></html></div>
+<span class="co">#&gt; CRS arguments: +proj=longlat +datum=WGS84 +no_defs</span></pre></body></html></div>
 <div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="fu"><a href="../reference/SOS.html">sosGetCRS</a></span>(<span class="fu"><a href="../reference/SOS.html">sosOfferings</a></span>(<span class="no">mySOS</span>)<span class="kw">[[</span><span class="fl">1</span>]])
-<span class="co">#&gt; CRS arguments:</span>
-<span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span>
-<span class="co">#&gt; +towgs84=0,0,0</span></pre></body></html></div>
+<span class="co">#&gt; CRS arguments: +proj=longlat +datum=WGS84 +no_defs</span></pre></body></html></div>
 <p>Mre examples for <code>sosGetSRS()</code> can be found in section <a href="#spatial-reference-systems">Spatial Reference Systems</a>.</p>
 </div>
 <div id="plotting-sos-and-offerings" class="section level4">
@@ -498,8 +490,8 @@
 <span class="no">worldHigh.lines</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/maptools/man/map2SpatialPolygons.html">map2SpatialLines</a></span>(<span class="no">worldHigh</span>, <span class="kw">proj4string</span> <span class="kw">=</span> <span class="no">crs</span>)
 
 <span class="co"># the plot:</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">worldHigh.lines</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">"grey50"</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">mySOS</span>, <span class="kw">add</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">10</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">"red"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">worldHigh.lines</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">"grey50"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mySOS</span>, <span class="kw">add</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">10</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">"red"</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span>(<span class="kw">main</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Offerings by '"</span>, <span class="fu"><a href="../reference/SOS.html">sosTitle</a></span>(<span class="no">mySOS</span>), <span class="st">"'"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">""</span>),
         <span class="kw">sub</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/toString.html">toString</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="../reference/SOS.html">sosOfferings</a></span>(<span class="no">mySOS</span>))))</pre></body></html></div>
 <p><img src="sos4R-vignette-03-sos-operations_files/figure-html/sosPlot-1.png" width="700"></p>
@@ -572,9 +564,9 @@
                           <span class="kw">plot</span> <span class="kw">=</span> <span class="fl">FALSE</span>))
 <span class="no">worldHigh.lines</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/maptools/man/map2SpatialPolygons.html">map2SpatialLines</a></span>(<span class="no">worldHigh</span>, <span class="kw">proj4string</span> <span class="kw">=</span> <span class="no">sensors.crs</span>)
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">worldHigh.lines</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">"grey50"</span>, <span class="kw">ylim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">44.0</span>, <span class="fl">54.8</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">worldHigh.lines</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">"grey50"</span>, <span class="kw">ylim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">44.0</span>, <span class="fl">54.8</span>))
 <span class="kw">for</span>(<span class="no">x</span> <span class="kw">in</span> <span class="no">procs.descr</span>)
-    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">x</span>, <span class="kw">add</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">19</span>)
+    <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">x</span>, <span class="kw">add</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">19</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span>(<span class="fu"><a href="../reference/SOS.html">sosCoordinates</a></span>(<span class="no">procs.descr</span>)[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)],
         <span class="kw">labels</span> <span class="kw">=</span> <span class="fu"><a href="../reference/SOS.html">sosId</a></span>(<span class="no">procs.descr</span>), <span class="kw">pos</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">0.8</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span>(<span class="kw">main</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Sensors of"</span>, <span class="fu"><a href="../reference/SOS.html">sosTitle</a></span>(<span class="no">mySOS</span>)))</pre></body></html></div>
@@ -914,7 +906,7 @@
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: AirTemperature</span>
-<span class="co">#&gt;  foi: sf_571A96BE7F7CCA59A115BA73C5BBFE173676C0AD</span>
+<span class="co">#&gt;  foi: sf_0D8ADE3CB30142A0FB03DCA6ED5E661B975BE89B</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2</span></pre></body></html></div>
@@ -955,11 +947,11 @@
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"------\n"</span>)
 <span class="co">#&gt; ------</span>
 <span class="no">myObservationData</span>[<span class="no">index.obsProp</span>]
-<span class="co">#&gt; $o_1587659821039</span>
+<span class="co">#&gt; $o_1594227574045</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: AirTemperature</span>
-<span class="co">#&gt;  foi: sf_571A96BE7F7CCA59A115BA73C5BBFE173676C0AD</span>
+<span class="co">#&gt;  foi: sf_0D8ADE3CB30142A0FB03DCA6ED5E661B975BE89B</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2</span></pre></body></html></div>
@@ -972,83 +964,83 @@
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"------\n"</span>)
 <span class="co">#&gt; ------</span>
 <span class="no">myObservationData</span>[<span class="no">index.proc</span>]
-<span class="co">#&gt; $o_1587659821039</span>
+<span class="co">#&gt; $o_1594227574045</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: AirTemperature</span>
-<span class="co">#&gt;  foi: sf_571A96BE7F7CCA59A115BA73C5BBFE173676C0AD</span>
+<span class="co">#&gt;  foi: sf_0D8ADE3CB30142A0FB03DCA6ED5E661B975BE89B</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_1587659821043</span>
+<span class="co">#&gt; $o_1594227574057</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: RainfallAccumulated</span>
-<span class="co">#&gt;  foi: sf_1365D19070C7B717A9DEFBB59C1355A1B3EDC723</span>
+<span class="co">#&gt;  foi: sf_3F0C1A0A1B8D8D7F6D1343CA93DCE0076068E3AD</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_1587659821044</span>
+<span class="co">#&gt; $o_1594227574066</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: Humidity</span>
-<span class="co">#&gt;  foi: sf_07F05B8C4A3AB17ECFF406263C696A39835CAEFC</span>
+<span class="co">#&gt;  foi: sf_5688436F1768EBB27C7CCBCE99D76C105131D3B5</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_1587659821045</span>
+<span class="co">#&gt; $o_1594227574073</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: AthmosphericPressure</span>
-<span class="co">#&gt;  foi: sf_99F3F45E840BA9BB6193E2972F661C7A920D7547</span>
+<span class="co">#&gt;  foi: sf_BA089DF03484A767884441B75BFFE2B05E42E72C</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_1587659821046</span>
+<span class="co">#&gt; $o_1594227574081</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: WindDirection</span>
-<span class="co">#&gt;  foi: sf_7B3C12B7F565A8F3D54638C06CC39377033430FD</span>
+<span class="co">#&gt;  foi: sf_D75734E9D88325706B07053CE31658B161E0753E</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_15876598210461</span>
+<span class="co">#&gt; $o_1594227574090</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: Windchill</span>
-<span class="co">#&gt;  foi: sf_A05B8A689F69B6A3F43098E2BED2F4B11C18B06E</span>
+<span class="co">#&gt;  foi: sf_A165B6B821A2AFB96EBAA5557C20E7F5CC594F89</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_1587659821047</span>
+<span class="co">#&gt; $o_1594227574098</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: Dewpoint</span>
-<span class="co">#&gt;  foi: sf_A05B8A689F69B6A3F43098E2BED2F4B11C18B06E1</span>
+<span class="co">#&gt;  foi: sf_585D2635AF08D21A6D3065C96EFB93F645614E22</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_1587659821048</span>
+<span class="co">#&gt; $o_1594227574106</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: Luminance</span>
-<span class="co">#&gt;  foi: sf_250C526264394E271CBF9604580FF3ADF1803F69</span>
+<span class="co">#&gt;  foi: sf_867C378FAAA7362845934CED3810A94AEFF2ADE9</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $o_1587659821049</span>
+<span class="co">#&gt; $o_1594227574114</span>
 <span class="co">#&gt; Object of class OmObservation;</span>
 <span class="co">#&gt;  procedure: ws2500</span>
 <span class="co">#&gt;  observedProperty: WindSpeed</span>
-<span class="co">#&gt;  foi: sf_AAAA44A82BEE3CE2A9A8EC5E456BD82F64D155DF</span>
+<span class="co">#&gt;  foi: sf_111C99A1351FDD562D1C682468DC1655A38DD1FB</span>
 <span class="co">#&gt;  samplingTime: GmlTimePeriod: [ GmlTimePosition [ time: 2018-01-01 00:30:00 ]</span>
 <span class="co">#&gt;      --&gt; GmlTimePosition [ time: 2018-01-06 ] ]</span>
 <span class="co">#&gt;  result dimensions: 360, 2</span></pre></body></html></div>
@@ -1058,24 +1050,24 @@
 <a href="#result-extraction" class="anchor"></a>Result Extraction</h4>
 <p><strong>Data Values</strong> can be extracted from observations, measurements and observation collections with the function <code><a href="../reference/OmObservation.html">sosResult()</a></code>. The function returns an object of class <code>data.frame</code>. In the case of collections, it automatically binds the data frames (you can turn this off by adding <code>bind = FALSE</code> as a parameter).</p>
 <div class="sourceCode" id="cb74"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">myObservationData</span>)
-<span class="co">#&gt;                                        o_1587659821039.proc_obsProp_foiID </span>
-<span class="co">#&gt;       "ws2500_AirTemperature_sf_571A96BE7F7CCA59A115BA73C5BBFE173676C0AD" </span>
-<span class="co">#&gt;                                        o_1587659821043.proc_obsProp_foiID </span>
-<span class="co">#&gt;  "ws2500_RainfallAccumulated_sf_1365D19070C7B717A9DEFBB59C1355A1B3EDC723" </span>
-<span class="co">#&gt;                                        o_1587659821044.proc_obsProp_foiID </span>
-<span class="co">#&gt;             "ws2500_Humidity_sf_07F05B8C4A3AB17ECFF406263C696A39835CAEFC" </span>
-<span class="co">#&gt;                                        o_1587659821045.proc_obsProp_foiID </span>
-<span class="co">#&gt; "ws2500_AthmosphericPressure_sf_99F3F45E840BA9BB6193E2972F661C7A920D7547" </span>
-<span class="co">#&gt;                                        o_1587659821046.proc_obsProp_foiID </span>
-<span class="co">#&gt;        "ws2500_WindDirection_sf_7B3C12B7F565A8F3D54638C06CC39377033430FD" </span>
-<span class="co">#&gt;                                       o_15876598210461.proc_obsProp_foiID </span>
-<span class="co">#&gt;            "ws2500_Windchill_sf_A05B8A689F69B6A3F43098E2BED2F4B11C18B06E" </span>
-<span class="co">#&gt;                                        o_1587659821047.proc_obsProp_foiID </span>
-<span class="co">#&gt;            "ws2500_Dewpoint_sf_A05B8A689F69B6A3F43098E2BED2F4B11C18B06E1" </span>
-<span class="co">#&gt;                                        o_1587659821048.proc_obsProp_foiID </span>
-<span class="co">#&gt;            "ws2500_Luminance_sf_250C526264394E271CBF9604580FF3ADF1803F69" </span>
-<span class="co">#&gt;                                        o_1587659821049.proc_obsProp_foiID </span>
-<span class="co">#&gt;            "ws2500_WindSpeed_sf_AAAA44A82BEE3CE2A9A8EC5E456BD82F64D155DF"</span></pre></body></html></div>
+<span class="co">#&gt;                                        o_1594227574045.proc_obsProp_foiID </span>
+<span class="co">#&gt;       "ws2500_AirTemperature_sf_0D8ADE3CB30142A0FB03DCA6ED5E661B975BE89B" </span>
+<span class="co">#&gt;                                        o_1594227574057.proc_obsProp_foiID </span>
+<span class="co">#&gt;  "ws2500_RainfallAccumulated_sf_3F0C1A0A1B8D8D7F6D1343CA93DCE0076068E3AD" </span>
+<span class="co">#&gt;                                        o_1594227574066.proc_obsProp_foiID </span>
+<span class="co">#&gt;             "ws2500_Humidity_sf_5688436F1768EBB27C7CCBCE99D76C105131D3B5" </span>
+<span class="co">#&gt;                                        o_1594227574073.proc_obsProp_foiID </span>
+<span class="co">#&gt; "ws2500_AthmosphericPressure_sf_BA089DF03484A767884441B75BFFE2B05E42E72C" </span>
+<span class="co">#&gt;                                        o_1594227574081.proc_obsProp_foiID </span>
+<span class="co">#&gt;        "ws2500_WindDirection_sf_D75734E9D88325706B07053CE31658B161E0753E" </span>
+<span class="co">#&gt;                                        o_1594227574090.proc_obsProp_foiID </span>
+<span class="co">#&gt;            "ws2500_Windchill_sf_A165B6B821A2AFB96EBAA5557C20E7F5CC594F89" </span>
+<span class="co">#&gt;                                        o_1594227574098.proc_obsProp_foiID </span>
+<span class="co">#&gt;             "ws2500_Dewpoint_sf_585D2635AF08D21A6D3065C96EFB93F645614E22" </span>
+<span class="co">#&gt;                                        o_1594227574106.proc_obsProp_foiID </span>
+<span class="co">#&gt;            "ws2500_Luminance_sf_867C378FAAA7362845934CED3810A94AEFF2ADE9" </span>
+<span class="co">#&gt;                                        o_1594227574114.proc_obsProp_foiID </span>
+<span class="co">#&gt;            "ws2500_WindSpeed_sf_111C99A1351FDD562D1C682468DC1655A38DD1FB"</span></pre></body></html></div>
 <div class="sourceCode" id="cb75"><html><body><pre class="r"><span class="no">myObservationData.result.2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/OmObservation.html">sosResult</a></span>(<span class="no">myObservationData</span><span class="kw">[[</span><span class="fl">1</span>]])
 <span class="no">myObservationData.result.2</span>
 <span class="co">#&gt;          phenomenonTime AirTemperature</span>
@@ -2580,24 +2572,24 @@
 <span class="co">#&gt; [1] "numeric"</span></pre></body></html></div>
 <p><strong>Spatial Information</strong> can be stored in an observation in several ways: (i) as a usual data attribute which is directly contained in the result <code>data.frame</code>, (ii) within a feature collection in the observation. In the latter case the utility functions <code><a href="../reference/SOS.html">sosCoordinates()</a></code> and <code><a href="../reference/SOS.html">sosFeatureIds()</a></code> can be used to extract the coordinates respectively the identifiers from <code>OmObservationCollection</code> or <code>OmObservation</code> classes. A variety of feature types gml:Point or sa:SamplingPoint are supported by <code><a href="../reference/SOS.html">sosCoordinates()</a></code>.</p>
 <div class="sourceCode" id="cb79"><html><body><pre class="r"><span class="fu"><a href="../reference/SOS.html">sosFeatureIds</a></span>(<span class="no">myObservationData</span>)
-<span class="co">#&gt;                                o_1587659821039 </span>
-<span class="co">#&gt;  "sf_571A96BE7F7CCA59A115BA73C5BBFE173676C0AD" </span>
-<span class="co">#&gt;                                o_1587659821043 </span>
-<span class="co">#&gt;  "sf_1365D19070C7B717A9DEFBB59C1355A1B3EDC723" </span>
-<span class="co">#&gt;                                o_1587659821044 </span>
-<span class="co">#&gt;  "sf_07F05B8C4A3AB17ECFF406263C696A39835CAEFC" </span>
-<span class="co">#&gt;                                o_1587659821045 </span>
-<span class="co">#&gt;  "sf_99F3F45E840BA9BB6193E2972F661C7A920D7547" </span>
-<span class="co">#&gt;                                o_1587659821046 </span>
-<span class="co">#&gt;  "sf_7B3C12B7F565A8F3D54638C06CC39377033430FD" </span>
-<span class="co">#&gt;                               o_15876598210461 </span>
-<span class="co">#&gt;  "sf_A05B8A689F69B6A3F43098E2BED2F4B11C18B06E" </span>
-<span class="co">#&gt;                                o_1587659821047 </span>
-<span class="co">#&gt; "sf_A05B8A689F69B6A3F43098E2BED2F4B11C18B06E1" </span>
-<span class="co">#&gt;                                o_1587659821048 </span>
-<span class="co">#&gt;  "sf_250C526264394E271CBF9604580FF3ADF1803F69" </span>
-<span class="co">#&gt;                                o_1587659821049 </span>
-<span class="co">#&gt;  "sf_AAAA44A82BEE3CE2A9A8EC5E456BD82F64D155DF"</span></pre></body></html></div>
+<span class="co">#&gt;                               o_1594227574045 </span>
+<span class="co">#&gt; "sf_0D8ADE3CB30142A0FB03DCA6ED5E661B975BE89B" </span>
+<span class="co">#&gt;                               o_1594227574057 </span>
+<span class="co">#&gt; "sf_3F0C1A0A1B8D8D7F6D1343CA93DCE0076068E3AD" </span>
+<span class="co">#&gt;                               o_1594227574066 </span>
+<span class="co">#&gt; "sf_5688436F1768EBB27C7CCBCE99D76C105131D3B5" </span>
+<span class="co">#&gt;                               o_1594227574073 </span>
+<span class="co">#&gt; "sf_BA089DF03484A767884441B75BFFE2B05E42E72C" </span>
+<span class="co">#&gt;                               o_1594227574081 </span>
+<span class="co">#&gt; "sf_D75734E9D88325706B07053CE31658B161E0753E" </span>
+<span class="co">#&gt;                               o_1594227574090 </span>
+<span class="co">#&gt; "sf_A165B6B821A2AFB96EBAA5557C20E7F5CC594F89" </span>
+<span class="co">#&gt;                               o_1594227574098 </span>
+<span class="co">#&gt; "sf_585D2635AF08D21A6D3065C96EFB93F645614E22" </span>
+<span class="co">#&gt;                               o_1594227574106 </span>
+<span class="co">#&gt; "sf_867C378FAAA7362845934CED3810A94AEFF2ADE9" </span>
+<span class="co">#&gt;                               o_1594227574114 </span>
+<span class="co">#&gt; "sf_111C99A1351FDD562D1C682468DC1655A38DD1FB"</span></pre></body></html></div>
 <div class="sourceCode" id="cb80"><html><body><pre class="r"><span class="fu"><a href="../reference/SOS.html">sosCoordinates</a></span>(<span class="no">myObservationData</span>)
 <span class="fu"><a href="../reference/SOS.html">sosCoordinates</a></span>(<span class="no">myObservationData</span><span class="kw">[[</span><span class="fl">1</span>]])</pre></body></html></div>
 <p>An observation collection also contains a bounding box of the contained observations, which can be extracted with the function <code><a href="../reference/SOS.html">sosBoundedBy()</a></code>. The optional attribute <code>bbox</code> can be used to obtain a bounding box matrix as used by package <code>sp</code>.</p>
@@ -2685,7 +2677,7 @@
     <span class="kw">operator</span> <span class="kw">=</span> <span class="fu"><a href="../reference/Supported.html">SosSupportedTemporalOperators</a></span>()<span class="kw">[[</span><span class="st">"TM_After"</span>]])
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">lastDay.eventTime</span>)
 <span class="co">#&gt; Object of class SosEventTime:</span>
-<span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2020-04-22 18:37:10 ]</span></pre></body></html></div>
+<span class="co">#&gt;  TM_After: GmlTimePosition [ time: 2020-07-07 18:59:44 ]</span></pre></body></html></div>
 <p>Another example workflow, using a <code>KVP</code>-based connection.</p>
 <div class="sourceCode" id="cb90"><html><body><pre class="r"><span class="no">sept15.period</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sosCreate.html">sosCreateTimePeriod</a></span>(<span class="kw">sos</span> <span class="kw">=</span> <span class="no">mySOS</span>,
                                      <span class="kw">begin</span> <span class="kw">=</span> <span class="kw pkg">parsedate</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/parsedate/man/parse_iso_8601.html">parse_iso_8601</a></span>(<span class="st">"2015-09-01 00:00"</span>),
@@ -2712,20 +2704,13 @@
 <span class="co">#&gt; reference was returned:urn:ogc:def:nil:OGC:inapplicable</span></pre></body></html></div>
 <p>Unfiltered versus spatially filtered coordinates of the responses (spatial filter did not match anything):</p>
 <div class="sourceCode" id="cb92"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../reference/SOS.html">sosCoordinates</a></span>(<span class="no">obs.sept15</span>))
-<span class="co">#&gt;       lon             lat                                SRS    </span>
-<span class="co">#&gt;  Min.   :7.652   Min.   :51.93   urn:ogc:def:crs:EPSG::4326:10  </span>
-<span class="co">#&gt;  1st Qu.:7.652   1st Qu.:51.93                                  </span>
-<span class="co">#&gt;  Median :7.652   Median :51.93                                  </span>
-<span class="co">#&gt;  Mean   :7.652   Mean   :51.93                                  </span>
-<span class="co">#&gt;  3rd Qu.:7.652   3rd Qu.:51.93                                  </span>
-<span class="co">#&gt;  Max.   :7.652   Max.   :51.93                                  </span>
-<span class="co">#&gt;    feature         </span>
-<span class="co">#&gt;  Length:10         </span>
-<span class="co">#&gt;  Class :character  </span>
-<span class="co">#&gt;  Mode  :character  </span>
-<span class="co">#&gt;                    </span>
-<span class="co">#&gt;                    </span>
-<span class="co">#&gt; </span></pre></body></html></div>
+<span class="co">#&gt;       lon             lat            SRS              feature         </span>
+<span class="co">#&gt;  Min.   :7.652   Min.   :51.93   Length:10          Length:10         </span>
+<span class="co">#&gt;  1st Qu.:7.652   1st Qu.:51.93   Class :character   Class :character  </span>
+<span class="co">#&gt;  Median :7.652   Median :51.93   Mode  :character   Mode  :character  </span>
+<span class="co">#&gt;  Mean   :7.652   Mean   :51.93                                        </span>
+<span class="co">#&gt;  3rd Qu.:7.652   3rd Qu.:51.93                                        </span>
+<span class="co">#&gt;  Max.   :7.652   Max.   :51.93</span></pre></body></html></div>
 <p>The returned object matches the structure of the coordinates table, but contains <code>NA</code>, and a warning is issued.</p>
 <div class="sourceCode" id="cb93"><html><body><pre class="r"><span class="no">naCoords</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/SOS.html">sosCoordinates</a></span>(<span class="no">obs.sept15.bbox</span>)
 <span class="co">#&gt; Warning in .local(obj, ...): No coordinates in om:ObservationProperty urn:ogc:def:nil:OGC:inapplicable</span></pre></body></html></div>
@@ -2811,9 +2796,7 @@
 <a href="#spatial-reference-systems-1" class="anchor"></a>Spatial Reference Systems</h4>
 <p>For following analyses and plotting, the <strong>spatial reference system</strong> can be extracted with <code><a href="../reference/SOS.html">sosGetCRS(..)</a></code>.</p>
 <div class="sourceCode" id="cb105"><html><body><pre class="r"><span class="fu"><a href="../reference/SOS.html">sosGetCRS</a></span>(<span class="no">obs.oneWeek</span>)
-<span class="co">#&gt; CRS arguments:</span>
-<span class="co">#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84</span>
-<span class="co">#&gt; +towgs84=0,0,0</span></pre></body></html></div>
+<span class="co">#&gt; CRS arguments: +proj=longlat +datum=WGS84 +no_defs</span></pre></body></html></div>
 </div>
 </div>
 <div id="getobservationbyid" class="section level3">

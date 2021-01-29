@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -290,25 +290,17 @@
 #&gt;                                  
 #&gt; Name:              responseFormat
 #&gt; Class:                       list</div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># explore offerings of an SOS</span>
 <span class='no'>mySOS</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp"</span>,
              <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>)
 <span class='no'>offering1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>sosOfferings</a></span>(<span class='no'>mySOS</span>)<span class='kw'>[[</span><span class='fl'>1</span>]]
 
-<span class='fu'><a href='SOS.html'>sosId</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; [1] "ws2500"</div><div class='input'><span class='fu'><a href='SOS.html'>sosName</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='fu'><a href='SOS.html'>sosTime</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; $begin
-#&gt; [1] "2015-05-18 08:35:00 UTC"
-#&gt; 
-#&gt; $end
-#&gt; [1] "2018-01-06 05:45:00 UTC"
-#&gt; </div><div class='input'><span class='fu'><a href='SOS.html'>sosBoundedBy</a></span>(<span class='no'>offering1</span>)</div><div class='output co'>#&gt; $srsName
-#&gt; [1] "urn:ogc:def:crs:EPSG::4326"
-#&gt; 
-#&gt; $lowerCorner
-#&gt; [1] "51.934814453125 7.652428150177"
-#&gt; 
-#&gt; $upperCorner
-#&gt; [1] "51.934814453125 7.652428150177"
-#&gt; </div></pre>
+<span class='fu'><a href='SOS.html'>sosId</a></span>(<span class='no'>offering1</span>)
+<span class='fu'><a href='SOS.html'>sosName</a></span>(<span class='no'>offering1</span>)
+<span class='fu'><a href='SOS.html'>sosTime</a></span>(<span class='no'>offering1</span>)
+<span class='fu'><a href='SOS.html'>sosBoundedBy</a></span>(<span class='no'>offering1</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

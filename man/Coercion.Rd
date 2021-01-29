@@ -47,6 +47,7 @@ To just get the most fitting class, coerce to \code{"Spatial"} as shown in the e
 }
 
 \examples{
+\dontrun{
 # sensor location
 mySOS <- SOS(url = "http://sensorweb.demo.52north.org/sensorwebtestbed/service/kvp",
              binding = "KVP")
@@ -57,6 +58,7 @@ as(mySensor, "Spatial")
 
 # offering bounding box
 as(sosOfferings(mySOS)[[1]], "Spatial")
+}
 }
 
 \keyword{coercion}

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -183,94 +183,12 @@
 <p>If <code>sites = TRUE</code>, the result is a <code>data.frame</code> where the character vector of phenomena is combined with a character column <code>siteID</code>. Phenomena that have been observed at several sites will be replicated for each site. If also <code>timeInfo = TRUE</code>, the <code>data.frame</code> will have character columns <code>beginTime</code> and <code>endTime</code> per phenomenon and site. Note that these two columns indicate the very beginning and end of any time series recorded for each phenomenon <b>at each site</b>, but does still not imply to be continuous series.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>,
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>mySos</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='SOS.html'>SOS</a></span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"https://climate-sos.niwa.co.nz/"</span>,
              <span class='kw'>binding</span> <span class='kw'>=</span> <span class='st'>"KVP"</span>, <span class='kw'>useDCPs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"2.0.0"</span>)
 
-<span class='fu'>phenomena</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)</div><div class='output co'>#&gt;                                                                                              phenomenon
-#&gt; 1                         MTHLY_STATS: DAYS OF DEFICIT (WBal AWC=150mm) (MTHLY: DAYS OF DEFICIT (WBAL))
-#&gt; 2                                               MTHLY_STATS: DAYS OF OCCURRENCE (FOG) (MTHLY: FOG DAYS)
-#&gt; 3                                             MTHLY_STATS: DAYS OF OCCURRENCE (GALE) (MTHLY: GALE DAYS)
-#&gt; 4                             MTHLY_STATS: DAYS OF OCCURRENCE (GROUND FROST) (MTHLY: GROUND FROST DAYS)
-#&gt; 5                           MTHLY_STATS: DAYS OF OCCURRENCE (GUSTS over 23 knots) (MTHLY: GUST DAYS 24)
-#&gt; 6                           MTHLY_STATS: DAYS OF OCCURRENCE (GUSTS over 32 knots) (MTHLY: GUST DAYS 33)
-#&gt; 7                           MTHLY_STATS: DAYS OF OCCURRENCE (GUSTS over 50 knots) (MTHLY: GUST DAYS 51)
-#&gt; 8                                             MTHLY_STATS: DAYS OF OCCURRENCE (HAIL) (MTHLY: HAIL DAYS)
-#&gt; 9                                   MTHLY_STATS: DAYS OF OCCURRENCE (LIGHTNING) (MTHLY: LIGHTNING DAYS)
-#&gt; 10                            MTHLY_STATS: DAYS OF OCCURRENCE (SCREEN FROST) (MTHLY: SCREEN FROST DAYS)
-#&gt; 11                                MTHLY_STATS: DAYS OF OCCURRENCE (SNOW LYING) (MTHLY: SNOW LYING DAYS)
-#&gt; 12                                            MTHLY_STATS: DAYS OF OCCURRENCE (SNOW) (MTHLY: SNOW DAYS)
-#&gt; 13                                      MTHLY_STATS: DAYS OF OCCURRENCE (THUNDER) (MTHLY: THUNDER DAYS)
-#&gt; 14                          MTHLY_STATS: DAYS OF RUNOFF (WBal AWC=150mm) (MTHLY: DAYS OF RUNOFF (WBAL))
-#&gt; 15         MTHLY_STATS: DAYS WITH MAXIMUM AIR TEMPERATURE OVER 25.0 DEG C. (MTHLY: DAYS OVER 25 DEG C.)
-#&gt; 16                            MTHLY_STATS: EXTREME DAILY MAXIMUM UVI (MTHLY: EXTREME DAILY MAXIMUM UVI)
-#&gt; 17                               MTHLY_STATS: EXTREME GRASS-MINIMUM TEMPERATURE (MTHLY: EXTR GRASS-MIN)
-#&gt; 18                                      MTHLY_STATS: EXTREME MAXIMUM TEMPERATURE (MTHLY: EXTR MAX TEMP)
-#&gt; 19                            MTHLY_STATS: EXTREME MAXIMUM TOTAL OZONE (MTHLY: EXTREME MAX TOTAL OZONE)
-#&gt; 20                                      MTHLY_STATS: EXTREME MINIMUM TEMPERATURE (MTHLY: EXTR MIN TEMP)
-#&gt; 21                            MTHLY_STATS: EXTREME MINIMUM TOTAL OZONE (MTHLY: EXTREME MIN TOTAL OZONE)
-#&gt; 22                               MTHLY_STATS: HIGHEST DAILY MEAN TEMPERATURE (MTHLY: HIGHEST MEAN TEMP)
-#&gt; 23                                        MTHLY_STATS: HIGHEST MINIMUM TEMPERATURE (MTHLY: HIGHEST MIN)
-#&gt; 24                              MTHLY_STATS: LOWEST DAILY MAXIMUM TEMPERATURE (MTHLY: LOWEST DAILY MAX)
-#&gt; 25                                 MTHLY_STATS: LOWEST DAILY MEAN TEMPERATURE (MTHLY: LOWEST MEAN TEMP)
-#&gt; 26                                          MTHLY_STATS: MAXIMUM 1-DAY RAINFALL (MTHLY: MAX 1-DAY RAIN)
-#&gt; 27                                          MTHLY_STATS: MAXIMUM 1-hour rainfall (MTHLY: MAX 1-HR RAIN)
-#&gt; 28                                     MTHLY_STATS: MAXIMUM 10-minute rainfall (MTHLY: MAX 10-MIN RAIN)
-#&gt; 29                                        MTHLY_STATS: MAXIMUM 12-hour rainfall (MTHLY: MAX 12-HR RAIN)
-#&gt; 30                                          MTHLY_STATS: MAXIMUM 2-hour rainfall (MTHLY: MAX 2-HR RAIN)
-#&gt; 31                                     MTHLY_STATS: MAXIMUM 20-minute rainfall (MTHLY: MAX 20-MIN RAIN)
-#&gt; 32                                        MTHLY_STATS: MAXIMUM 24-hour rainfall (MTHLY: MAX 24-HR RAIN)
-#&gt; 33                                     MTHLY_STATS: MAXIMUM 30-minute rainfall (MTHLY: MAX 30-MIN RAIN)
-#&gt; 34                                        MTHLY_STATS: MAXIMUM 48-hour rainfall (MTHLY: MAX 48-HR RAIN)
-#&gt; 35                                          MTHLY_STATS: MAXIMUM 6-hour rainfall (MTHLY: MAX 6-HR RAIN)
-#&gt; 36                                        MTHLY_STATS: MAXIMUM 72-hour rainfall (MTHLY: MAX 72-HR RAIN)
-#&gt; 37                             MTHLY_STATS: MAXIMUM DAILY WIND RUN (km) (MTHLY: EXTR DLY WIND RUN (km))
-#&gt; 38           MTHLY_STATS: MAXIMUM DEFICIT OF SOIL MOISTURE (WBal AWC=150mm) (MTHLY: MAX DEFICIT (WBAL))
-#&gt; 39                           MTHLY_STATS: MAXIMUM GUST DIRECTION (for gust speed) (MTHLY: MAX GUST DIR)
-#&gt; 40                       MTHLY_STATS: MAXIMUM GUST SPEED (see 46 for direction) (MTHLY: MAX GUST SPEED)
-#&gt; 41                MTHLY_STATS: MAXIMUM SOIL MOISTURE Percent at 20cm depth (MTHLY: MAX SOIL MOISTURE %)
-#&gt; 42                                         MTHLY_STATS: MEAN 9AM RELATIVE HUMIDITY (MTHLY: MEAN 9AM RH)
-#&gt; 43                                             MTHLY_STATS: MEAN 9AM TEMPERATURE (MTHLY: MEAN 9AM TEMP)
-#&gt; 44                             MTHLY_STATS: MEAN AIR TEMPERATURE;   0.5* (MAX + MIN) (MTHLY: MEAN TEMP)
-#&gt; 45                                            MTHLY_STATS: MEAN CLOUD AMOUNT (MTHLY: MEAN CLOUD AMOUNT)
-#&gt; 46                      MTHLY_STATS: MEAN DAILY ACCUMULATED UV RADIATION (MTHLY: MEAN DAILY ACC UV RAD)
-#&gt; 47                        MTHLY_STATS: MEAN DAILY GRASS-MIN from dly Grass-mins (MTHLY: MEAN GRASS-MIN)
-#&gt; 48                                  MTHLY_STATS: MEAN DAILY MAXIMUM UVI (MTHLY: MEAN DAILY MAXIMUM UVI)
-#&gt; 49                              MTHLY_STATS: MEAN DAILY RADIATION (diFfuse) (MTHLY: MEAN DAILY RAD (F))
-#&gt; 50                              MTHLY_STATS: MEAN DAILY RADIATION (diRect). (MTHLY: MEAN DAILY RAD (R))
-#&gt; 51                                     MTHLY_STATS: MEAN DAILY RADIATION (Global) (MTHLY: MEAN RAD (G))
-#&gt; 52              MTHLY_STATS: MEAN DAILY WIND RUN (km) with NO direction (MTHLY: MEAN DLY WIND RUN (km))
-#&gt; 53             MTHLY_STATS: MEAN DEFICIT OF SOIL MOISTURE (WBal AWC=150mm) (MTHLY: MEAN DEFICIT (WBAL))
-#&gt; 54                         MTHLY_STATS: MEAN EARTH TEMPERATURE at 100cm depth (MTHLY: MEAN EARTH 100cm)
-#&gt; 55                           MTHLY_STATS: MEAN EARTH TEMPERATURE at 10cm depth (MTHLY: MEAN EARTH 10cm)
-#&gt; 56                           MTHLY_STATS: MEAN EARTH TEMPERATURE at 20cm depth (MTHLY: MEAN EARTH 20cm)
-#&gt; 57                           MTHLY_STATS: MEAN EARTH TEMPERATURE at 30cm depth (MTHLY: MEAN EARTH 30cm)
-#&gt; 58                           MTHLY_STATS: MEAN EARTH TEMPERATURE at 50cm depth (MTHLY: MEAN EARTH 50cm)
-#&gt; 59                             MTHLY_STATS: MEAN EARTH TEMPERATURE at 5cm depth (MTHLY: MEAN EARTH 5cm)
-#&gt; 60                         MTHLY_STATS: MEAN MAXIMUM TEMPERATURE from daily Maxs (MTHLY: MEAN MAX TEMP)
-#&gt; 61                         MTHLY_STATS: MEAN MINIMUM TEMPERATURE from daily Mins (MTHLY: MEAN MIN TEMP)
-#&gt; 62                                 MTHLY_STATS: MEAN PRESSURE at 0900 local time (MTHLY: MEAN PRESSURE)
-#&gt; 63                  MTHLY_STATS: MEAN SOIL MOISTURE Percent at 20cm depth (MTHLY: MEAN SOIL MOISTURE %)
-#&gt; 64                                              MTHLY_STATS: MEAN TOTAL OZONE (MTHLY: MEAN TOTAL OZONE)
-#&gt; 65                                                   MTHLY_STATS: MEAN VAPOUR PRESSURE (MTHLY: MEAN VP)
-#&gt; 66                                 MTHLY_STATS: MEAN WIND SPEED (NO direction) (MTHLY: MEAN WIND SPEED)
-#&gt; 67                MTHLY_STATS: MINIMUM SOIL MOISTURE Percent at 20cm depth (MTHLY: MIN SOIL MOISTURE %)
-#&gt; 68                                        MTHLY_STATS: RAIN DAYS with 0.1 mm or more (MTHLY: RAIN DAYS)
-#&gt; 69                              MTHLY_STATS: STD-DEV OF DAILY MEAN TEMPERATURE (MTHLY: SD OF MEAN TEMP)
-#&gt; 70                 MTHLY_STATS: TOTAL COOLING DEGREE DAYS for 18 deg C. (MTHLY: COOLING DEG DAYS (18C))
-#&gt; 71                            MTHLY_STATS: TOTAL DEFICIT (WBal AWC=150mm) (MTHLY: TOTAL DEFICIT (WBAL))
-#&gt; 72                              MTHLY_STATS: TOTAL EVAPORATION from Raised Pan (MTHLY: TOTAL EVAP (RP))
-#&gt; 73                 MTHLY_STATS: TOTAL GROWING DEGREE DAYS for 10 deg C. (MTHLY: GROWING DEG DAYS (10C))
-#&gt; 74                   MTHLY_STATS: TOTAL GROWING DEGREE DAYS for 5 deg C. (MTHLY: GROWING DEG DAYS (5C))
-#&gt; 75                 MTHLY_STATS: TOTAL HEATING DEGREE DAYS for 18 deg C. (MTHLY: HEATING DEG DAYS (18C))
-#&gt; 76                      MTHLY_STATS: TOTAL PENMAN OPEN WATER EVAPORATION (MTHLY: TOTAL OPEN-WATER EVAP)
-#&gt; 77                     MTHLY_STATS: TOTAL PENMAN POTENTIAL EVAPO-TRANSPIRATION (MTHLY: TOTAL PENMAN PE)
-#&gt; 78 MTHLY_STATS: TOTAL PRIESTLEY-TAYLOR POTENTIAL EVAPO-TRANSPIRATION (MTHLY: TOTAL PRIESTLEY-TAYLOR PE)
-#&gt; 79                                                      MTHLY_STATS: TOTAL RAINFALL (MTHLY: TOTAL RAIN)
-#&gt; 80                              MTHLY_STATS: TOTAL RUNOFF (WBal AWC=150mm) (MTHLY: TOTAL RUNOFF (WBAL))
-#&gt; 81                                                       MTHLY_STATS: TOTAL SUNSHINE (MTHLY: TOTAL SUN)
-#&gt; 82                                   MTHLY_STATS: WET DAYS with rainfall 1 mm or more (MTHLY: WET DAYS)
-#&gt; 83                                          MTHLY_STATS: WINTER CHILL HOURS (MTHLY: WINTER CHILL HOURS)
-#&gt; 84                                          MTHLY_STATS: WINTER CHILL UNITS (MTHLY: WINTER CHILL UNITS)</div></pre>
+<span class='fu'>phenomena</span>(<span class='kw'>sos</span> <span class='kw'>=</span> <span class='no'>mySos</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -1,8 +1,8 @@
 Package: sos4R
 Type: Package
 Title: Client for OGC Sensor Observation Services
-Version: 0.4.0
-Date: 2020-04-22
+Version: 0.4.2
+Date: 2020-06-09
 Authors@R:
   c(person(given = "Daniel",
            family = "Nuest",
@@ -54,7 +54,8 @@ Suggests:
     webmockr,
     kableExtra,
     skimr,
-    clipr
+    clipr,
+    units
 Description: A client for Sensor Observation Services (SOS, see
     <https://www.opengeospatial.org/standards/sos>) as specified by the
     Open Geospatial Consortium (OGC). With the package users can

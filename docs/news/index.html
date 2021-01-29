@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -147,9 +147,28 @@
       <small>Source: <a href='https://github.com/52North/sos4R/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="sos4r-042" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.2">
+<a href="#sos4r-042" class="anchor"></a>sos4R 0.4.2<small> Unreleased </small>
+</h1>
+<ul>
+<li>Bugfix release to adhere to CRAN policy (don’t rely on online resources for examples) <a href="https://github.com/52North/sos4R/pull/173"><a href='https://github.com/52North/sos4R/issues/173'>#173</a></a>
+</li>
+</ul>
+</div>
+    <div id="sos4r-041" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.1">
+<a href="#sos4r-041" class="anchor"></a>sos4R 0.4.1<small> 2020-06-10 </small>
+</h1>
+<ul>
+<li>Bugfix release to fix checks on CRAN (after switch to R 4.0 and new projection strings from R-spatial packages)</li>
+<li>Update README according to <a href="https://wiki.52north.org/Documentation/GitHubProjectDocumentation" class="uri">https://wiki.52north.org/Documentation/GitHubProjectDocumentation</a>
+</li>
+</ul>
+</div>
     <div id="sos4r-040" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.0">
-<a href="#sos4r-040" class="anchor"></a>sos4R 0.4.0<small> Unreleased </small>
+<a href="#sos4r-040" class="anchor"></a>sos4R 0.4.0<small> 2020-04-29 </small>
 </h1>
 <ul>
 <li>Add support for SOS 2.0 operations: GetObservationById (KVP, POX), GetFeatureOfInterest (KVP, POX), DescribeSensor (KVP, POX)</li>
@@ -246,14 +265,13 @@
 <a href="#sos4r-02-9" class="anchor"></a>sos4R 0.2-9<small> 2012-08-08 </small>
 </h1>
 <ul>
-<li>Added error handling for plotting methods so that plot(sos) does not break if one offering cannot be coerced to spatial</li>
-<li>Added ‘ug/m3’ and ‘<a href="http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" class="uri">http://www.opengis.net/def/property/OGC/0/FeatureOfInterest</a>’ to known list of fields &gt; converted with sosConvertDouble and sosConvertString respectively</li>
-<li>Fixed weathersos demo</li>
-<li>Moved vignette to now suggested directory vignettes/, see <a href="http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes" class="uri">http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes</a>
-</li>
+<li><p>Added error handling for plotting methods so that plot(sos) does not break if one offering cannot be coerced to spatial</p></li>
+<li><p>Added ‘ug/m3’ and ‘<a href="http://www.opengis.net/def/property/OGC/0/FeatureOfInterest" class="uri">http://www.opengis.net/def/property/OGC/0/FeatureOfInterest</a>’ to known list of fields &gt; converted with sosConvertDouble and sosConvertString respectively</p></li>
+<li><p>Fixed weathersos demo</p></li>
+<li><p>Moved vignette to now suggested directory vignettes/, see <a href="http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes" class="uri">http://cran.r-project.org/doc/manuals/R-exts.html#Writing-package-vignettes</a></p></li>
 <li><p>Changed DESCRIPTION file: moved xtable to Suggests - section, set ByteCompile: TRUE, added <a href="mailto:Authors@R" class="email">Authors@R</a> (<a href="http://journal.r-project.org/archive/2012-1/RJournal_2012-1_Hornik~et~al.pdf" class="uri">http://journal.r-project.org/archive/2012-1/RJournal_2012-1_Hornik~et~al.pdf</a>), changed minimum R version to 2.14.0</p></li>
-<li>Updated cheat sheet and vignette: added link to Bugzilla</li>
-<li>Added minor improvements for sensor description parsing and coercion: sosCoordinates(SensorML) tries to handle ‘easting’/‘northing’, ‘longitude’/‘latitude’, and ‘elevation’/‘altitude’ coordinates and subsequently plotting does not break if ‘x’/‘y’ are not given.</li>
+<li><p>Updated cheat sheet and vignette: added link to Bugzilla</p></li>
+<li><p>Added minor improvements for sensor description parsing and coercion: sosCoordinates(SensorML) tries to handle ‘easting’/‘northing’, ‘longitude’/‘latitude’, and ‘elevation’/‘altitude’ coordinates and subsequently plotting does not break if ‘x’/‘y’ are not given.</p></li>
 <li><p>Added function to reset the parsers to default: sos &lt;- SosResetParsingFunctions(sos)</p></li>
 </ul>
 </div>

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sos4R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -662,9 +662,7 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='no'>env1</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlEnvelope</span>(<span class='kw'>upperCorner</span> <span class='kw'>=</span> <span class='no'>pos1</span>,
                     <span class='kw'>lowerCorner</span> <span class='kw'>=</span> <span class='fu'>GmlDirectPosition</span>(<span class='st'>"6.0 51.0"</span>),
                     <span class='kw'>srsName</span> <span class='kw'>=</span> <span class='st'>"http://www.opengis.net/def/crs/EPSG/0/4326"</span>)
-<span class='fu'><a href='SOS.html'>sosGetCRS</a></span>(<span class='no'>env1</span>)</div><div class='output co'>#&gt; CRS arguments:
-#&gt;  +init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
-#&gt; +towgs84=0,0,0 </div><div class='input'>
+<span class='fu'><a href='SOS.html'>sosGetCRS</a></span>(<span class='no'>env1</span>)</div><div class='output co'>#&gt; CRS arguments: +proj=longlat +datum=WGS84 +no_defs </div><div class='input'>
 <span class='co'># wrap elements in feature collection</span>
 <span class='fu'>GmlFeatureCollection</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"001"</span>, <span class='kw'>featureMembers</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>pos1</span>, <span class='no'>env1</span>))</div><div class='output co'>#&gt; Object of class GmlFeatureCollection; id: 001;
 #&gt; 	2 featureMember(s): new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), new("GmlEnvelope", lowerCorner = new("GmlDirectPosition", pos = "6.0 51.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), upperCorner = new("GmlDirectPosition", pos = "7.0 52.0", srsName = NA, srsDimension = NA, axisLabels = NA, uomLabels = NA), srsName = "http://www.opengis.net/def/crs/EPSG/0/4326", srsDimension = NA, axisLabels = NA, uomLabels = NA) </div><div class='input'>
@@ -710,8 +708,8 @@ Class <code>"GmlTimeObjectOrNULL"</code>, by class "GmlTimeObject", distance 2.<
 <span class='no'>aWeekAgo</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
 <span class='no'>timePos</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimePosition</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())
 <span class='no'>now</span> <span class='kw'>&lt;-</span> <span class='fu'>GmlTimeInstantProperty</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>GmlTimeInstant</span>(<span class='kw'>time</span> <span class='kw'>=</span> <span class='no'>timePos</span>))
-<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-16 18:36:38 ]
-#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-04-23 18:36:38 ] ] </div></pre>
+<span class='fu'>GmlTimePeriod</span>(<span class='kw'>begin</span> <span class='kw'>=</span> <span class='no'>aWeekAgo</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='no'>now</span>)</div><div class='output co'>#&gt; GmlTimePeriod: [ Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-07-01 18:59:14 ]
+#&gt; 	--&gt; Object of class GmlTimeInstantProperty; href: NA; time: GmlTimePosition [ time: 2020-07-08 18:59:14 ] ] </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
