@@ -1,3 +1,7 @@
+# ARCHIVED
+
+This project is no longer maintained and will not receive any further updates. If you plan to continue using it, please be aware that future security issues will not be addressed.
+
 
 <!-- README.md is generated from README.Rmd. Please edit that file!
      Also see the README guidelines at https://wiki.52north.org/Documentation/GitHubProjectDocumentation -->
@@ -8,8 +12,6 @@
 
 [![cran
 checks](https://cranchecks.info/badges/summary/sos4R)](https://cran.r-project.org/web/checks/check_results_sos4R.html)
-[![Build
-Status](https://travis-ci.org/52North/sos4R.png)](https://travis-ci.org/52North/sos4R)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/52North/sos4R?branch=master&svg=true)](https://ci.appveyor.com/project/52North/sos4R)
 [![CircleCI build
